@@ -15,11 +15,9 @@
  */
 package com.irurueta.navigation.inertial.navigators;
 
-import com.irurueta.algebra.Matrix;
 import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.geometry.InhomogeneousPoint3D;
 import com.irurueta.geometry.InvalidRotationMatrixException;
-import com.irurueta.geometry.Point3D;
 import com.irurueta.geometry.Quaternion;
 import com.irurueta.navigation.frames.CoordinateTransformation;
 import com.irurueta.navigation.frames.ECEFFrame;
@@ -31,19 +29,15 @@ import com.irurueta.navigation.frames.NEDFrame;
 import com.irurueta.navigation.frames.converters.ECEFtoNEDFrameConverter;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.inertial.ECEFGravity;
 import com.irurueta.navigation.inertial.estimators.ECEFGravityEstimator;
 import com.irurueta.navigation.inertial.estimators.ECEFKinematicsEstimator;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import java.util.Random;
+import static org.junit.jupiter.api.Assertions.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-public class ECEFInertialNavigatorTest {
+class ECEFInertialNavigatorTest {
     private static final double TIME_INTERVAL_SECONDS = 0.02;
 
     private static final double LATITUDE_DEGREES = 41.3825;
@@ -74,407 +68,402 @@ public class ECEFInertialNavigatorTest {
 
     private static final int TIMES = 100;
 
-    @Test(expected = InvalidSourceAndDestinationFrameTypeException.class)
-    public void testNavigateEcefWhenInvalidCoordinateTransformationMatrix()
-            throws InvalidSourceAndDestinationFrameTypeException, InertialNavigatorException {
-        final CoordinateTransformation c = new CoordinateTransformation(FrameType.BODY_FRAME, FrameType.BODY_FRAME);
-        final ECEFFrame result = new ECEFFrame();
-        ECEFInertialNavigator.navigateECEF(0.0, 0.0, 0.0, 0.0, c,
-                0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-                0.0, 0.0, 0.0, result);
+    @Test
+    void testNavigateEcefWhenInvalidCoordinateTransformationMatrix() {
+        final var c = new CoordinateTransformation(FrameType.BODY_FRAME, FrameType.BODY_FRAME);
+        final var result = new ECEFFrame();
+        assertThrows(InvalidSourceAndDestinationFrameTypeException.class, () -> ECEFInertialNavigator.navigateECEF(
+                0.0, 0.0, 0.0, 0.0, c, 0.0, 0.0, 0.0,
+                0.0, 0.0, 0.0, 0.0, 0.0, 0.0, result));
     }
 
     @Test
-    public void testNavigate() throws InvalidRotationMatrixException, InvalidSourceAndDestinationFrameTypeException,
+    void testNavigate() throws InvalidRotationMatrixException, InvalidSourceAndDestinationFrameTypeException,
             InertialNavigatorException {
-        final ECEFInertialNavigator navigator = new ECEFInertialNavigator();
+        final var navigator = new ECEFInertialNavigator();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final var randomizer = new UniformRandomizer();
 
-        final double latitude = Math.toRadians(LATITUDE_DEGREES);
-        final double longitude = Math.toRadians(LONGITUDE_DEGREES);
+        final var latitude = Math.toRadians(LATITUDE_DEGREES);
+        final var longitude = Math.toRadians(LONGITUDE_DEGREES);
 
-        final double vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final Quaternion q = new Quaternion(roll, pitch, yaw);
+        final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var q = new Quaternion(roll, pitch, yaw);
 
-        final Matrix m = q.asInhomogeneousMatrix();
-        final CoordinateTransformation c = new CoordinateTransformation(m, FrameType.BODY_FRAME,
-                FrameType.LOCAL_NAVIGATION_FRAME);
+        final var m = q.asInhomogeneousMatrix();
+        final var c = new CoordinateTransformation(m, FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
 
-        final NEDFrame oldNedFrame = new NEDFrame(latitude, longitude, HEIGHT, vn, ve, vd, c);
-        final ECEFFrame oldFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
+        final var oldNedFrame = new NEDFrame(latitude, longitude, HEIGHT, vn, ve, vd, c);
+        final var oldFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
 
-        final double oldX = oldFrame.getX();
-        final double oldY = oldFrame.getY();
-        final double oldZ = oldFrame.getZ();
-        final CoordinateTransformation oldC = oldFrame.getCoordinateTransformation();
-        final double oldVx = oldFrame.getVx();
-        final double oldVy = oldFrame.getVy();
-        final double oldVz = oldFrame.getVz();
+        final var oldX = oldFrame.getX();
+        final var oldY = oldFrame.getY();
+        final var oldZ = oldFrame.getZ();
+        final var oldC = oldFrame.getCoordinateTransformation();
+        final var oldVx = oldFrame.getVx();
+        final var oldVy = oldFrame.getVy();
+        final var oldVz = oldFrame.getVz();
 
-        final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
 
-        final double angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+        final var angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                 MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-        final double angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+        final var angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                 MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-        final double angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+        final var angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                 MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
 
-        final AngularSpeed angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond,
-                AngularSpeedUnit.DEGREES_PER_SECOND);
-        final AngularSpeed angularSpeedY = new AngularSpeed(angularRateYDegreesPerSecond,
-                AngularSpeedUnit.DEGREES_PER_SECOND);
-        final AngularSpeed angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond,
-                AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY = new AngularSpeed(angularRateYDegreesPerSecond, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond, AngularSpeedUnit.DEGREES_PER_SECOND);
 
-        final double angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
+        final var angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
                 angularSpeedX.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-        final double angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
+        final var angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
                 angularSpeedY.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-        final double angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
+        final var angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
                 angularSpeedZ.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
 
-        final BodyKinematics kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+        final var kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result1 = new ECEFFrame();
+        final var result1 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result1);
 
-        final Time timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
-        final ECEFFrame result2 = new ECEFFrame();
+        final var timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
+        final var result2 = new ECEFFrame();
         navigator.navigate(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result2);
 
-        final ECEFPosition oldEcefPosition = new ECEFPosition(oldX, oldY, oldZ);
-        final ECEFFrame result3 = new ECEFFrame();
+        final var oldEcefPosition = new ECEFPosition(oldX, oldY, oldZ);
+        final var result3 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result3);
 
-        final ECEFFrame result4 = new ECEFFrame();
+        final var result4 = new ECEFFrame();
         navigator.navigate(timeInterval, oldEcefPosition, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result4);
 
-        final ECEFVelocity oldEcefVelocity = new ECEFVelocity(oldVx, oldVy, oldVz);
-        final ECEFFrame result5 = new ECEFFrame();
+        final var oldEcefVelocity = new ECEFVelocity(oldVx, oldVy, oldVz);
+        final var result5 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC, oldEcefVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result5);
 
-        final ECEFFrame result6 = new ECEFFrame();
+        final var result6 = new ECEFFrame();
         navigator.navigate(timeInterval, oldX, oldY, oldZ, oldC, oldEcefVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result6);
 
-        final ECEFFrame result7 = new ECEFFrame();
+        final var result7 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC, oldEcefVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result7);
 
-        final ECEFFrame result8 = new ECEFFrame();
+        final var result8 = new ECEFFrame();
         navigator.navigate(timeInterval, oldEcefPosition, oldC, oldEcefVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result8);
 
-        final ECEFFrame result9 = new ECEFFrame();
+        final var result9 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics, result9);
 
-        final ECEFFrame result10 = new ECEFFrame();
+        final var result10 = new ECEFFrame();
         navigator.navigate(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics, result10);
 
-        final ECEFFrame result11 = new ECEFFrame();
+        final var result11 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC, oldVx, oldVy, oldVz, kinematics, result11);
 
-        final ECEFFrame result12 = new ECEFFrame();
+        final var result12 = new ECEFFrame();
         navigator.navigate(timeInterval, oldEcefPosition, oldC, oldVx, oldVy, oldVz, kinematics, result12);
 
-        final ECEFFrame result13 = new ECEFFrame();
+        final var result13 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC, oldEcefVelocity, kinematics, result13);
 
-        final ECEFFrame result14 = new ECEFFrame();
+        final var result14 = new ECEFFrame();
         navigator.navigate(timeInterval, oldX, oldY, oldZ, oldC, oldEcefVelocity, kinematics, result14);
 
-        final ECEFFrame result15 = new ECEFFrame();
+        final var result15 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC, oldEcefVelocity, kinematics, result15);
 
-        final ECEFFrame result16 = new ECEFFrame();
+        final var result16 = new ECEFFrame();
         navigator.navigate(timeInterval, oldEcefPosition, oldC, oldEcefVelocity, kinematics, result16);
 
-        final Point3D oldPosition = new InhomogeneousPoint3D(oldX, oldY, oldZ);
-        final ECEFFrame result17 = new ECEFFrame();
+        final var oldPosition = new InhomogeneousPoint3D(oldX, oldY, oldZ);
+        final var result17 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result17);
 
-        final ECEFFrame result18 = new ECEFFrame();
+        final var result18 = new ECEFFrame();
         navigator.navigate(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result18);
 
-        final ECEFFrame result19 = new ECEFFrame();
+        final var result19 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldEcefVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result19);
 
-        final ECEFFrame result20 = new ECEFFrame();
+        final var result20 = new ECEFFrame();
         navigator.navigate(timeInterval, oldPosition, oldC, oldEcefVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result20);
 
-        final ECEFFrame result21 = new ECEFFrame();
+        final var result21 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVx, oldVy, oldVz, kinematics, result21);
 
-        final ECEFFrame result22 = new ECEFFrame();
+        final var result22 = new ECEFFrame();
         navigator.navigate(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, kinematics, result22);
 
-        final ECEFFrame result23 = new ECEFFrame();
+        final var result23 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldEcefVelocity, kinematics, result23);
 
-        final ECEFFrame result24 = new ECEFFrame();
+        final var result24 = new ECEFFrame();
         navigator.navigate(timeInterval, oldPosition, oldC, oldEcefVelocity, kinematics, result24);
 
-        final Distance oldDistanceX = new Distance(oldX, DistanceUnit.METER);
-        final Distance oldDistanceY = new Distance(oldY, DistanceUnit.METER);
-        final Distance oldDistanceZ = new Distance(oldZ, DistanceUnit.METER);
-        final ECEFFrame result25 = new ECEFFrame();
+        final var oldDistanceX = new Distance(oldX, DistanceUnit.METER);
+        final var oldDistanceY = new Distance(oldY, DistanceUnit.METER);
+        final var oldDistanceZ = new Distance(oldZ, DistanceUnit.METER);
+        final var result25 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldVx, oldVy, oldVz,
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result25);
 
-        final ECEFFrame result26 = new ECEFFrame();
+        final var result26 = new ECEFFrame();
         navigator.navigate(timeInterval, oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldVx, oldVy, oldVz,
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result26);
 
-        final ECEFFrame result27 = new ECEFFrame();
+        final var result27 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldEcefVelocity,
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result27);
 
-        final ECEFFrame result28 = new ECEFFrame();
+        final var result28 = new ECEFFrame();
         navigator.navigate(timeInterval, oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldEcefVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result28);
 
-        final ECEFFrame result29 = new ECEFFrame();
+        final var result29 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldVx, oldVy, oldVz,
                 kinematics, result29);
 
-        final ECEFFrame result30 = new ECEFFrame();
-        navigator.navigate(timeInterval, oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldVx, oldVy, oldVz,
+        final var result30 = new ECEFFrame();
+        navigator.navigate(timeInterval, oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldVx, oldVy, oldVz, 
                 kinematics, result30);
 
-        final ECEFFrame result31 = new ECEFFrame();
+        final var result31 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldEcefVelocity,
                 kinematics, result31);
 
-        final ECEFFrame result32 = new ECEFFrame();
+        final var result32 = new ECEFFrame();
         navigator.navigate(timeInterval, oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldEcefVelocity, kinematics,
                 result32);
 
-        final Speed oldSpeedX = new Speed(oldVx, SpeedUnit.METERS_PER_SECOND);
-        final Speed oldSpeedY = new Speed(oldVy, SpeedUnit.METERS_PER_SECOND);
-        final Speed oldSpeedZ = new Speed(oldVz, SpeedUnit.METERS_PER_SECOND);
-        final ECEFFrame result33 = new ECEFFrame();
-        navigator.navigate(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result33);
+        final var oldSpeedX = new Speed(oldVx, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedY = new Speed(oldVy, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedZ = new Speed(oldVz, SpeedUnit.METERS_PER_SECOND);
+        final var result33 = new ECEFFrame();
+        navigator.navigate(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ, result33);
 
-        final ECEFFrame result34 = new ECEFFrame();
-        navigator.navigate(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
+        final var result34 = new ECEFFrame();
+        navigator.navigate(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz, 
                 angularRateX, angularRateY, angularRateZ, result34);
 
-        final ECEFFrame result35 = new ECEFFrame();
+        final var result35 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result35);
 
-        final ECEFFrame result36 = new ECEFFrame();
+        final var result36 = new ECEFFrame();
         navigator.navigate(timeInterval, oldEcefPosition, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result36);
 
-        final ECEFFrame result37 = new ECEFFrame();
+        final var result37 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, kinematics,
                 result37);
 
-        final ECEFFrame result38 = new ECEFFrame();
+        final var result38 = new ECEFFrame();
         navigator.navigate(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result38);
 
-        final ECEFFrame result39 = new ECEFFrame();
+        final var result39 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, kinematics,
                 result39);
 
-        final ECEFFrame result40 = new ECEFFrame();
+        final var result40 = new ECEFFrame();
         navigator.navigate(timeInterval, oldEcefPosition, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result40);
 
-        final Acceleration accelerationX = new Acceleration(fx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration accelerationY = new Acceleration(fy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration accelerationZ = new Acceleration(fz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final ECEFFrame result41 = new ECEFFrame();
+        final var accelerationX = new Acceleration(fx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var accelerationY = new Acceleration(fy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var accelerationZ = new Acceleration(fz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var result41 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ, result41);
 
-        final ECEFFrame result42 = new ECEFFrame();
+        final var result42 = new ECEFFrame();
         navigator.navigate(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ, result42);
 
-        final ECEFFrame result43 = new ECEFFrame();
+        final var result43 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC, oldVx, oldVy, oldVz,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ, result43);
 
-        final ECEFFrame result44 = new ECEFFrame();
+        final var result44 = new ECEFFrame();
         navigator.navigate(timeInterval, oldEcefPosition, oldC, oldVx, oldVy, oldVz,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ, result44);
 
-        final ECEFFrame result45 = new ECEFFrame();
+        final var result45 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC, oldEcefVelocity,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ, result45);
 
-        final ECEFFrame result46 = new ECEFFrame();
+        final var result46 = new ECEFFrame();
         navigator.navigate(timeInterval, oldX, oldY, oldZ, oldC, oldEcefVelocity,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ, result46);
 
-        final ECEFFrame result47 = new ECEFFrame();
+        final var result47 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC, oldEcefVelocity,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ, result47);
 
-        final ECEFFrame result48 = new ECEFFrame();
+        final var result48 = new ECEFFrame();
         navigator.navigate(timeInterval, oldEcefPosition, oldC, oldEcefVelocity,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ, result48);
 
-        final ECEFFrame result49 = new ECEFFrame();
+        final var result49 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularSpeedX, angularSpeedY, angularSpeedZ, result49);
 
-        final ECEFFrame result50 = new ECEFFrame();
+        final var result50 = new ECEFFrame();
         navigator.navigate(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularSpeedX, angularSpeedY, angularSpeedZ, result50);
 
-        final ECEFFrame result51 = new ECEFFrame();
+        final var result51 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularSpeedX, angularSpeedY, angularSpeedZ, result51);
 
-        final ECEFFrame result52 = new ECEFFrame();
+        final var result52 = new ECEFFrame();
         navigator.navigate(timeInterval, oldEcefPosition, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularSpeedX, angularSpeedY, angularSpeedZ, result52);
 
-        final ECEFFrame result53 = new ECEFFrame();
+        final var result53 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC, oldEcefVelocity, fx, fy, fz,
                 angularSpeedX, angularSpeedY, angularSpeedZ, result53);
 
-        final ECEFFrame result54 = new ECEFFrame();
+        final var result54 = new ECEFFrame();
         navigator.navigate(timeInterval, oldX, oldY, oldZ, oldC, oldEcefVelocity, fx, fy, fz,
                 angularSpeedX, angularSpeedY, angularSpeedZ, result54);
 
-        final ECEFFrame result55 = new ECEFFrame();
+        final var result55 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC, oldEcefVelocity, fx, fy, fz,
                 angularSpeedX, angularSpeedY, angularSpeedZ, result55);
 
-        final ECEFFrame result56 = new ECEFFrame();
+        final var result56 = new ECEFFrame();
         navigator.navigate(timeInterval, oldEcefPosition, oldC, oldEcefVelocity, fx, fy, fz,
                 angularSpeedX, angularSpeedY, angularSpeedZ, result56);
 
-        final ECEFFrame result57 = new ECEFFrame();
+        final var result57 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldDistanceX, oldDistanceY, oldDistanceZ, oldC,
                 oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result57);
 
-        final ECEFFrame result58 = new ECEFFrame();
+        final var result58 = new ECEFFrame();
         navigator.navigate(timeInterval, oldDistanceX, oldDistanceY, oldDistanceZ, oldC,
                 oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result58);
 
-        final ECEFFrame result59 = new ECEFFrame();
+        final var result59 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldDistanceX, oldDistanceY, oldDistanceZ, oldC,
                 oldSpeedX, oldSpeedY, oldSpeedZ, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ, result59);
 
-        final ECEFFrame result60 = new ECEFFrame();
+        final var result60 = new ECEFFrame();
         navigator.navigate(timeInterval, oldDistanceX, oldDistanceY, oldDistanceZ, oldC,
                 oldSpeedX, oldSpeedY, oldSpeedZ, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ, result60);
 
-        final ECEFFrame result61 = new ECEFFrame();
+        final var result61 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ, result61);
 
-        final ECEFFrame result62 = new ECEFFrame();
+        final var result62 = new ECEFFrame();
         navigator.navigate(timeInterval, oldEcefPosition, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ, result62);
 
-        final ECEFFrame result63 = new ECEFFrame();
+        final var result63 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldEcefVelocity,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ, result63);
 
-        final ECEFFrame result64 = new ECEFFrame();
+        final var result64 = new ECEFFrame();
         navigator.navigate(timeInterval, oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldEcefVelocity,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ, result64);
 
-        final ECEFFrame result65 = new ECEFFrame();
+        final var result65 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC, oldEcefVelocity,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ, result65);
 
-        final ECEFFrame result66 = new ECEFFrame();
+        final var result66 = new ECEFFrame();
         navigator.navigate(timeInterval, oldEcefPosition, oldC, oldEcefVelocity,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ, result66);
 
-        final ECEFFrame result67 = new ECEFFrame();
+        final var result67 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ, result67);
 
-        final ECEFFrame result68 = new ECEFFrame();
+        final var result68 = new ECEFFrame();
         navigator.navigate(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ, result68);
 
-        final ECEFFrame result69 = new ECEFFrame();
+        final var result69 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC, oldVx, oldVy, oldVz,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ, result69);
 
-        final ECEFFrame result70 = new ECEFFrame();
+        final var result70 = new ECEFFrame();
         navigator.navigate(timeInterval, oldEcefPosition, oldC, oldVx, oldVy, oldVz,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ, result70);
 
-        final ECEFFrame result71 = new ECEFFrame();
+        final var result71 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC, oldEcefVelocity,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ, result71);
 
-        final ECEFFrame result72 = new ECEFFrame();
+        final var result72 = new ECEFFrame();
         navigator.navigate(timeInterval, oldX, oldY, oldZ, oldC, oldEcefVelocity,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ, result72);
 
-        final ECEFFrame result73 = new ECEFFrame();
+        final var result73 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldDistanceX, oldDistanceY, oldDistanceZ, oldC,
                 oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result73);
 
-        final ECEFFrame result74 = new ECEFFrame();
-        navigator.navigate(timeInterval, oldDistanceX, oldDistanceY, oldDistanceZ, oldC,
+        final var result74 = new ECEFFrame();
+        navigator.navigate(timeInterval, oldDistanceX, oldDistanceY, oldDistanceZ, oldC, 
                 oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result74);
 
-        final ECEFFrame result75 = new ECEFFrame();
+        final var result75 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 result75);
 
-        final ECEFFrame result76 = new ECEFFrame();
+        final var result76 = new ECEFFrame();
         navigator.navigate(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result76);
 
-        final ECEFFrame result77 = new ECEFFrame();
+        final var result77 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldFrame, kinematics, result77);
 
-        final ECEFFrame result78 = new ECEFFrame();
+        final var result78 = new ECEFFrame();
         navigator.navigate(timeInterval, oldFrame, kinematics, result78);
 
-        final ECEFFrame result79 = new ECEFFrame();
+        final var result79 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldFrame, accelerationX, accelerationY, accelerationZ,
                 angularRateX, angularRateY, angularRateZ, result79);
 
-        final ECEFFrame result80 = new ECEFFrame();
-        navigator.navigate(timeInterval, oldFrame, accelerationX, accelerationY, accelerationZ,
+        final var result80 = new ECEFFrame();
+        navigator.navigate(timeInterval, oldFrame, accelerationX, accelerationY, accelerationZ, 
                 angularRateX, angularRateY, angularRateZ, result80);
 
-        final ECEFFrame result81 = new ECEFFrame();
+        final var result81 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldFrame, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ,
                 result81);
 
-        final ECEFFrame result82 = new ECEFFrame();
+        final var result82 = new ECEFFrame();
         navigator.navigate(timeInterval, oldFrame, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ, result82);
 
-        final ECEFFrame result83 = new ECEFFrame();
+        final var result83 = new ECEFFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldFrame, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ, result83);
 
-        final ECEFFrame result84 = new ECEFFrame();
+        final var result84 = new ECEFFrame();
         navigator.navigate(timeInterval, oldFrame, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ, result84);
 
@@ -564,349 +553,338 @@ public class ECEFInertialNavigatorTest {
     }
 
     @Test
-    public void testNavigateAndReturnNew() throws InvalidRotationMatrixException,
+    void testNavigateAndReturnNew() throws InvalidRotationMatrixException, 
             InvalidSourceAndDestinationFrameTypeException, InertialNavigatorException {
-        final ECEFInertialNavigator navigator = new ECEFInertialNavigator();
+        final var navigator = new ECEFInertialNavigator();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final var randomizer = new UniformRandomizer();
 
-        final double latitude = Math.toRadians(LATITUDE_DEGREES);
-        final double longitude = Math.toRadians(LONGITUDE_DEGREES);
+        final var latitude = Math.toRadians(LATITUDE_DEGREES);
+        final var longitude = Math.toRadians(LONGITUDE_DEGREES);
 
-        final double vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final Quaternion q = new Quaternion(roll, pitch, yaw);
+        final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var q = new Quaternion(roll, pitch, yaw);
 
-        final Matrix m = q.asInhomogeneousMatrix();
-        final CoordinateTransformation c = new CoordinateTransformation(m, FrameType.BODY_FRAME,
-                FrameType.LOCAL_NAVIGATION_FRAME);
+        final var m = q.asInhomogeneousMatrix();
+        final var c = new CoordinateTransformation(m, FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
 
-        final NEDFrame oldNedFrame = new NEDFrame(latitude, longitude, HEIGHT, vn, ve, vd, c);
-        final ECEFFrame oldFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
+        final var oldNedFrame = new NEDFrame(latitude, longitude, HEIGHT, vn, ve, vd, c);
+        final var oldFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
 
-        final double oldX = oldFrame.getX();
-        final double oldY = oldFrame.getY();
-        final double oldZ = oldFrame.getZ();
-        final CoordinateTransformation oldC = oldFrame.getCoordinateTransformation();
-        final double oldVx = oldFrame.getVx();
-        final double oldVy = oldFrame.getVy();
-        final double oldVz = oldFrame.getVz();
+        final var oldX = oldFrame.getX();
+        final var oldY = oldFrame.getY();
+        final var oldZ = oldFrame.getZ();
+        final var oldC = oldFrame.getCoordinateTransformation();
+        final var oldVx = oldFrame.getVx();
+        final var oldVy = oldFrame.getVy();
+        final var oldVz = oldFrame.getVz();
 
-        final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
 
-        final double angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+        final var angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                 MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-        final double angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+        final var angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                 MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-        final double angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+        final var angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                 MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
 
-        final AngularSpeed angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond,
-                AngularSpeedUnit.DEGREES_PER_SECOND);
-        final AngularSpeed angularSpeedY = new AngularSpeed(angularRateYDegreesPerSecond,
-                AngularSpeedUnit.DEGREES_PER_SECOND);
-        final AngularSpeed angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond,
-                AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY = new AngularSpeed(angularRateYDegreesPerSecond, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond, AngularSpeedUnit.DEGREES_PER_SECOND);
 
-        final double angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
+        final var angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
                 angularSpeedX.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-        final double angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
+        final var angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
                 angularSpeedY.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-        final double angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
+        final var angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
                 angularSpeedZ.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
 
-        final BodyKinematics kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+        final var kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result1 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ,
+        final var result1 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC, 
+                oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+
+        final var timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
+        final var result2 = navigator.navigateAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, 
+                fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+
+        final var oldEcefPosition = new ECEFPosition(oldX, oldY, oldZ);
+        final var result3 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC, 
+                oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+
+        final var result4 = navigator.navigateAndReturnNew(timeInterval, oldEcefPosition, oldC, oldVx, oldVy, oldVz,
+                fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+
+        final var oldEcefVelocity = new ECEFVelocity(oldVx, oldVy, oldVz);
+        final var result5 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC, 
+                oldEcefVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+
+        final var result6 = navigator.navigateAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldEcefVelocity,
+                fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+
+        final var result7 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC, 
+                oldEcefVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+
+        final var result8 = navigator.navigateAndReturnNew(timeInterval, oldEcefPosition, oldC, oldEcefVelocity,
+                fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+
+        final var result9 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC, 
+                oldVx, oldVy, oldVz, kinematics);
+
+        final var result10 = navigator.navigateAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
+                kinematics);
+
+        final var result11 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC, 
+                oldVx, oldVy, oldVz, kinematics);
+
+        final var result12 = navigator.navigateAndReturnNew(timeInterval, oldEcefPosition, oldC, oldVx, oldVy, oldVz,
+                kinematics);
+
+        final var result13 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC, 
+                oldEcefVelocity, kinematics);
+
+        final var result14 = navigator.navigateAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldEcefVelocity,
+                kinematics);
+
+        final var result15 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC, 
+                oldEcefVelocity, kinematics);
+
+        final var result16 = navigator.navigateAndReturnNew(timeInterval, oldEcefPosition, oldC, oldEcefVelocity,
+                kinematics);
+
+        final var oldPosition = new InhomogeneousPoint3D(oldX, oldY, oldZ);
+        final var result17 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC, 
+                oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+
+        final var result18 = navigator.navigateAndReturnNew(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz,
+                fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+
+        final var result19 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldEcefVelocity,
+                fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+
+        final var result20 = navigator.navigateAndReturnNew(timeInterval, oldPosition, oldC, oldEcefVelocity, 
+                fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+
+        final var result21 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC, 
+                oldVx, oldVy, oldVz, kinematics);
+
+        final var result22 = navigator.navigateAndReturnNew(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz,
+                kinematics);
+
+        final var result23 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldEcefVelocity,
+                kinematics);
+
+        final var result24 = navigator.navigateAndReturnNew(timeInterval, oldPosition, oldC, oldEcefVelocity,
+                kinematics);
+
+        final var oldDistanceX = new Distance(oldX, DistanceUnit.METER);
+        final var oldDistanceY = new Distance(oldY, DistanceUnit.METER);
+        final var oldDistanceZ = new Distance(oldZ, DistanceUnit.METER);
+        final var result25 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, 
+                oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ);
+
+        final var result26 = navigator.navigateAndReturnNew(timeInterval, oldDistanceX, oldDistanceY, oldDistanceZ, 
                 oldC, oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final Time timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
-        final ECEFFrame result2 = navigator.navigateAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
-                oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
-
-        final ECEFPosition oldEcefPosition = new ECEFPosition(oldX, oldY, oldZ);
-        final ECEFFrame result3 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC,
-                oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
-
-        final ECEFFrame result4 = navigator.navigateAndReturnNew(timeInterval, oldEcefPosition, oldC,
-                oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
-
-        final ECEFVelocity oldEcefVelocity = new ECEFVelocity(oldVx, oldVy, oldVz);
-        final ECEFFrame result5 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC,
-                oldEcefVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
-
-        final ECEFFrame result6 = navigator.navigateAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldEcefVelocity,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ);
-
-        final ECEFFrame result7 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC,
-                oldEcefVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
-
-        final ECEFFrame result8 = navigator.navigateAndReturnNew(timeInterval, oldEcefPosition, oldC, oldEcefVelocity,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ);
-
-        final ECEFFrame result9 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC,
-                oldVx, oldVy, oldVz, kinematics);
-
-        final ECEFFrame result10 = navigator.navigateAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
-                oldVx, oldVy, oldVz, kinematics);
-
-        final ECEFFrame result11 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC,
-                oldVx, oldVy, oldVz, kinematics);
-
-        final ECEFFrame result12 = navigator.navigateAndReturnNew(timeInterval, oldEcefPosition, oldC,
-                oldVx, oldVy, oldVz, kinematics);
-
-        final ECEFFrame result13 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC,
-                oldEcefVelocity, kinematics);
-
-        final ECEFFrame result14 = navigator.navigateAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldEcefVelocity,
-                kinematics);
-
-        final ECEFFrame result15 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC,
-                oldEcefVelocity, kinematics);
-
-        final ECEFFrame result16 = navigator.navigateAndReturnNew(timeInterval, oldEcefPosition, oldC, oldEcefVelocity,
-                kinematics);
-
-        final Point3D oldPosition = new InhomogeneousPoint3D(oldX, oldY, oldZ);
-        final ECEFFrame result17 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC,
-                oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
-
-        final ECEFFrame result18 = navigator.navigateAndReturnNew(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ);
-
-        final ECEFFrame result19 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC,
-                oldEcefVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
-
-        final ECEFFrame result20 = navigator.navigateAndReturnNew(timeInterval, oldPosition, oldC, oldEcefVelocity,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ);
-
-        final ECEFFrame result21 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC,
-                oldVx, oldVy, oldVz, kinematics);
-
-        final ECEFFrame result22 = navigator.navigateAndReturnNew(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz,
-                kinematics);
-
-        final ECEFFrame result23 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC,
-                oldEcefVelocity, kinematics);
-
-        final ECEFFrame result24 = navigator.navigateAndReturnNew(timeInterval, oldPosition, oldC, oldEcefVelocity,
-                kinematics);
-
-        final Distance oldDistanceX = new Distance(oldX, DistanceUnit.METER);
-        final Distance oldDistanceY = new Distance(oldY, DistanceUnit.METER);
-        final Distance oldDistanceZ = new Distance(oldZ, DistanceUnit.METER);
-        final ECEFFrame result25 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS,
-                oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
+        final var result27 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, 
+                oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldEcefVelocity, fx, fy, fz, 
                 angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result26 = navigator.navigateAndReturnNew(timeInterval,
-                oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ);
+        final var result28 = navigator.navigateAndReturnNew(timeInterval, oldDistanceX, oldDistanceY, oldDistanceZ, 
+                oldC, oldEcefVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result27 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS,
-                oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldEcefVelocity, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ);
-
-        final ECEFFrame result28 = navigator.navigateAndReturnNew(timeInterval,
-                oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldEcefVelocity, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ);
-
-        final ECEFFrame result29 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result29 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, 
                 oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldVx, oldVy, oldVz, kinematics);
 
-        final ECEFFrame result30 = navigator.navigateAndReturnNew(timeInterval,
-                oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldVx, oldVy, oldVz, kinematics);
+        final var result30 = navigator.navigateAndReturnNew(timeInterval, oldDistanceX, oldDistanceY, oldDistanceZ, 
+                oldC, oldVx, oldVy, oldVz, kinematics);
 
-        final ECEFFrame result31 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result31 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, 
                 oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldEcefVelocity, kinematics);
 
-        final ECEFFrame result32 = navigator.navigateAndReturnNew(timeInterval,
-                oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldEcefVelocity, kinematics);
+        final var result32 = navigator.navigateAndReturnNew(timeInterval, oldDistanceX, oldDistanceY, oldDistanceZ, 
+                oldC, oldEcefVelocity, kinematics);
 
-        final Speed oldSpeedX = new Speed(oldVx, SpeedUnit.METERS_PER_SECOND);
-        final Speed oldSpeedY = new Speed(oldVy, SpeedUnit.METERS_PER_SECOND);
-        final Speed oldSpeedZ = new Speed(oldVz, SpeedUnit.METERS_PER_SECOND);
-        final ECEFFrame result33 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC,
+        final var oldSpeedX = new Speed(oldVx, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedY = new Speed(oldVy, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedZ = new Speed(oldVz, SpeedUnit.METERS_PER_SECOND);
+        final var result33 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC, 
                 oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result34 = navigator.navigateAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
+        final var result34 = navigator.navigateAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, 
                 oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result35 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC,
+        final var result35 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC,
                 oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result36 = navigator.navigateAndReturnNew(timeInterval, oldEcefPosition, oldC,
+        final var result36 = navigator.navigateAndReturnNew(timeInterval, oldEcefPosition, oldC,
                 oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result37 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC,
+        final var result37 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC,
                 oldSpeedX, oldSpeedY, oldSpeedZ, kinematics);
 
-        final ECEFFrame result38 = navigator.navigateAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
+        final var result38 = navigator.navigateAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
                 oldSpeedX, oldSpeedY, oldSpeedZ, kinematics);
 
-        final ECEFFrame result39 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC,
+        final var result39 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC,
                 oldSpeedX, oldSpeedY, oldSpeedZ, kinematics);
 
-        final ECEFFrame result40 = navigator.navigateAndReturnNew(timeInterval, oldEcefPosition, oldC,
+        final var result40 = navigator.navigateAndReturnNew(timeInterval, oldEcefPosition, oldC,
                 oldSpeedX, oldSpeedY, oldSpeedZ, kinematics);
 
-        final Acceleration accelerationX = new Acceleration(fx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration accelerationY = new Acceleration(fy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration accelerationZ = new Acceleration(fz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final ECEFFrame result41 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC,
-                oldVx, oldVy, oldVz, accelerationX, accelerationY, accelerationZ,
+        final var accelerationX = new Acceleration(fx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var accelerationY = new Acceleration(fy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var accelerationZ = new Acceleration(fz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var result41 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC, 
+                oldVx, oldVy, oldVz, accelerationX, accelerationY, accelerationZ, 
                 angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result42 = navigator.navigateAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
-                oldVx, oldVy, oldVz, accelerationX, accelerationY, accelerationZ,
-                angularRateX, angularRateY, angularRateZ);
-
-        final ECEFFrame result43 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC,
-                oldVx, oldVy, oldVz, accelerationX, accelerationY, accelerationZ,
-                angularRateX, angularRateY, angularRateZ);
-
-        final ECEFFrame result44 = navigator.navigateAndReturnNew(timeInterval, oldEcefPosition, oldC,
-                oldVx, oldVy, oldVz, accelerationX, accelerationY, accelerationZ,
-                angularRateX, angularRateY, angularRateZ);
-
-        final ECEFFrame result45 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC,
-                oldEcefVelocity, accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ);
-
-        final ECEFFrame result46 = navigator.navigateAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldEcefVelocity,
+        final var result42 = navigator.navigateAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, 
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result47 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC,
-                oldEcefVelocity, accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ);
+        final var result43 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC,
+                oldVx, oldVy, oldVz, accelerationX, accelerationY, accelerationZ, 
+                angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result48 = navigator.navigateAndReturnNew(timeInterval, oldEcefPosition, oldC, oldEcefVelocity,
+        final var result44 = navigator.navigateAndReturnNew(timeInterval, oldEcefPosition, oldC, oldVx, oldVy, oldVz, 
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result49 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC,
+        final var result45 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC,
+                oldEcefVelocity, accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ);
+
+        final var result46 = navigator.navigateAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldEcefVelocity,
+                accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ);
+
+        final var result47 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC,
+                oldEcefVelocity, accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ);
+
+        final var result48 = navigator.navigateAndReturnNew(timeInterval, oldEcefPosition, oldC, oldEcefVelocity,
+                accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ);
+
+        final var result49 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC, 
                 oldVx, oldVy, oldVz, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result50 = navigator.navigateAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
-                oldVx, oldVy, oldVz, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
-
-        final ECEFFrame result51 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC,
-                oldVx, oldVy, oldVz, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
-
-        final ECEFFrame result52 = navigator.navigateAndReturnNew(timeInterval, oldEcefPosition, oldC,
-                oldVx, oldVy, oldVz, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
-
-        final ECEFFrame result53 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC,
-                oldEcefVelocity, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
-
-        final ECEFFrame result54 = navigator.navigateAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldEcefVelocity,
+        final var result50 = navigator.navigateAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, 
                 fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result55 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC,
-                oldEcefVelocity, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
+        final var result51 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC, 
+                oldVx, oldVy, oldVz, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result56 = navigator.navigateAndReturnNew(timeInterval, oldEcefPosition, oldC, oldEcefVelocity,
+        final var result52 = navigator.navigateAndReturnNew(timeInterval, oldEcefPosition, oldC, oldVx, oldVy, oldVz,
                 fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result57 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result53 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC,
+                oldEcefVelocity, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
+
+        final var result54 = navigator.navigateAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldEcefVelocity,
+                fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
+
+        final var result55 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC,
+                oldEcefVelocity, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
+
+        final var result56 = navigator.navigateAndReturnNew(timeInterval, oldEcefPosition, oldC, oldEcefVelocity,
+                fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
+
+        final var result57 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, 
                 oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result58 = navigator.navigateAndReturnNew(timeInterval,
-                oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ);
+        final var result58 = navigator.navigateAndReturnNew(timeInterval, oldDistanceX, oldDistanceY, oldDistanceZ, 
+                oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result59 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result59 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, 
                 oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result60 = navigator.navigateAndReturnNew(timeInterval,
-                oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
-                accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ);
+        final var result60 = navigator.navigateAndReturnNew(timeInterval, oldDistanceX, oldDistanceY, oldDistanceZ, 
+                oldC, oldSpeedX, oldSpeedY, oldSpeedZ, accelerationX, accelerationY, accelerationZ, 
+                angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result61 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC,
+        final var result61 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC,
                 oldSpeedX, oldSpeedY, oldSpeedZ, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result62 = navigator.navigateAndReturnNew(timeInterval, oldEcefPosition, oldC,
+        final var result62 = navigator.navigateAndReturnNew(timeInterval, oldEcefPosition, oldC, 
                 oldSpeedX, oldSpeedY, oldSpeedZ, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result63 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS,
-                oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldEcefVelocity,
+        final var result63 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, 
+                oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldEcefVelocity, 
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result64 = navigator.navigateAndReturnNew(timeInterval,
-                oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldEcefVelocity,
+        final var result64 = navigator.navigateAndReturnNew(timeInterval, oldDistanceX, oldDistanceY, oldDistanceZ, 
+                oldC, oldEcefVelocity, accelerationX, accelerationY, accelerationZ, 
+                angularSpeedX, angularSpeedY, angularSpeedZ);
+
+        final var result65 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC,
+                oldEcefVelocity, accelerationX, accelerationY, accelerationZ, 
+                angularSpeedX, angularSpeedY, angularSpeedZ);
+
+        final var result66 = navigator.navigateAndReturnNew(timeInterval, oldEcefPosition, oldC, oldEcefVelocity,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result65 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC,
-                oldEcefVelocity, accelerationX, accelerationY, accelerationZ,
+        final var result67 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC,
+                oldVx, oldVy, oldVz, accelerationX, accelerationY, accelerationZ, 
                 angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result66 = navigator.navigateAndReturnNew(timeInterval, oldEcefPosition, oldC, oldEcefVelocity,
+        final var result68 = navigator.navigateAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, 
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result67 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC,
-                oldVx, oldVy, oldVz, accelerationX, accelerationY, accelerationZ,
+        final var result69 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC, 
+                oldVx, oldVy, oldVz, accelerationX, accelerationY, accelerationZ, 
                 angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result68 = navigator.navigateAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
-                oldVx, oldVy, oldVz, accelerationX, accelerationY, accelerationZ,
-                angularSpeedX, angularSpeedY, angularSpeedZ);
-
-        final ECEFFrame result69 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC,
-                oldVx, oldVy, oldVz, accelerationX, accelerationY, accelerationZ,
-                angularSpeedX, angularSpeedY, angularSpeedZ);
-
-        final ECEFFrame result70 = navigator.navigateAndReturnNew(timeInterval, oldEcefPosition, oldC,
-                oldVx, oldVy, oldVz, accelerationX, accelerationY, accelerationZ,
-                angularSpeedX, angularSpeedY, angularSpeedZ);
-
-        final ECEFFrame result71 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC,
-                oldEcefVelocity, accelerationX, accelerationY, accelerationZ,
-                angularSpeedX, angularSpeedY, angularSpeedZ);
-
-        final ECEFFrame result72 = navigator.navigateAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldEcefVelocity,
+        final var result70 = navigator.navigateAndReturnNew(timeInterval, oldEcefPosition, oldC, oldVx, oldVy, oldVz, 
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result73 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result71 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC,
+                oldEcefVelocity, accelerationX, accelerationY, accelerationZ, 
+                angularSpeedX, angularSpeedY, angularSpeedZ);
+
+        final var result72 = navigator.navigateAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldEcefVelocity,
+                accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ);
+
+        final var result73 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, 
                 oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, kinematics);
 
-        final ECEFFrame result74 = navigator.navigateAndReturnNew(timeInterval,
-                oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, kinematics);
+        final var result74 = navigator.navigateAndReturnNew(timeInterval, oldDistanceX, oldDistanceY, oldDistanceZ, 
+                oldC, oldSpeedX, oldSpeedY, oldSpeedZ, kinematics);
 
-        final ECEFFrame result75 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame, fx, fy, fz,
+        final var result75 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result76 = navigator.navigateAndReturnNew(timeInterval, oldFrame, fx, fy, fz,
+        final var result76 = navigator.navigateAndReturnNew(timeInterval, oldFrame, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result77 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame, kinematics);
+        final var result77 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame, kinematics);
 
-        final ECEFFrame result78 = navigator.navigateAndReturnNew(timeInterval, oldFrame, kinematics);
+        final var result78 = navigator.navigateAndReturnNew(timeInterval, oldFrame, kinematics);
 
-        final ECEFFrame result79 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
+        final var result79 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame, 
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result80 = navigator.navigateAndReturnNew(timeInterval, oldFrame,
+        final var result80 = navigator.navigateAndReturnNew(timeInterval, oldFrame, 
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result81 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame, fx, fy, fz,
+        final var result81 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame, fx, fy, fz,
                 angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result82 = navigator.navigateAndReturnNew(timeInterval, oldFrame, fx, fy, fz,
+        final var result82 = navigator.navigateAndReturnNew(timeInterval, oldFrame, fx, fy, fz,
                 angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result83 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
+        final var result83 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame, 
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result84 = navigator.navigateAndReturnNew(timeInterval, oldFrame,
+        final var result84 = navigator.navigateAndReturnNew(timeInterval, oldFrame,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ);
 
         assertEquals(result1, result2);
@@ -995,409 +973,405 @@ public class ECEFInertialNavigatorTest {
     }
 
     @Test
-    public void testNavigateEcef() throws InvalidRotationMatrixException, InvalidSourceAndDestinationFrameTypeException,
+    void testNavigateEcef() throws InvalidRotationMatrixException, InvalidSourceAndDestinationFrameTypeException,
             InertialNavigatorException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final var randomizer = new UniformRandomizer();
 
-        final double latitude = Math.toRadians(LATITUDE_DEGREES);
-        final double longitude = Math.toRadians(LONGITUDE_DEGREES);
+        final var latitude = Math.toRadians(LATITUDE_DEGREES);
+        final var longitude = Math.toRadians(LONGITUDE_DEGREES);
 
-        final double vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final Quaternion q = new Quaternion(roll, pitch, yaw);
+        final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var q = new Quaternion(roll, pitch, yaw);
 
-        final Matrix m = q.asInhomogeneousMatrix();
-        final CoordinateTransformation c = new CoordinateTransformation(m, FrameType.BODY_FRAME,
-                FrameType.LOCAL_NAVIGATION_FRAME);
+        final var m = q.asInhomogeneousMatrix();
+        final var c = new CoordinateTransformation(m, FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
 
-        final NEDFrame oldNedFrame = new NEDFrame(latitude, longitude, HEIGHT, vn, ve, vd, c);
-        final ECEFFrame oldFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
+        final var oldNedFrame = new NEDFrame(latitude, longitude, HEIGHT, vn, ve, vd, c);
+        final var oldFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
 
-        final double oldX = oldFrame.getX();
-        final double oldY = oldFrame.getY();
-        final double oldZ = oldFrame.getZ();
-        final CoordinateTransformation oldC = oldFrame.getCoordinateTransformation();
-        final double oldVx = oldFrame.getVx();
-        final double oldVy = oldFrame.getVy();
-        final double oldVz = oldFrame.getVz();
+        final var oldX = oldFrame.getX();
+        final var oldY = oldFrame.getY();
+        final var oldZ = oldFrame.getZ();
+        final var oldC = oldFrame.getCoordinateTransformation();
+        final var oldVx = oldFrame.getVx();
+        final var oldVy = oldFrame.getVy();
+        final var oldVz = oldFrame.getVz();
 
-        final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
 
-        final double angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+        final var angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                 MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-        final double angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+        final var angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                 MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-        final double angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+        final var angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                 MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
 
-        final AngularSpeed angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond,
-                AngularSpeedUnit.DEGREES_PER_SECOND);
-        final AngularSpeed angularSpeedY = new AngularSpeed(angularRateYDegreesPerSecond,
-                AngularSpeedUnit.DEGREES_PER_SECOND);
-        final AngularSpeed angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond,
-                AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY = new AngularSpeed(angularRateYDegreesPerSecond, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond, AngularSpeedUnit.DEGREES_PER_SECOND);
 
-        final double angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
+        final var angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
                 angularSpeedX.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-        final double angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
+        final var angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
                 angularSpeedY.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-        final double angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
+        final var angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
                 angularSpeedZ.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
 
-        final BodyKinematics kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+        final var kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result1 = new ECEFFrame();
+        final var result1 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result1);
 
-        final Time timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
-        final ECEFFrame result2 = new ECEFFrame();
+        final var timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
+        final var result2 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result2);
 
-        final ECEFPosition oldEcefPosition = new ECEFPosition(oldX, oldY, oldZ);
-        final ECEFFrame result3 = new ECEFFrame();
+        final var oldEcefPosition = new ECEFPosition(oldX, oldY, oldZ);
+        final var result3 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC, oldVx, oldVy, oldVz,
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result3);
 
-        final ECEFFrame result4 = new ECEFFrame();
+        final var result4 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldEcefPosition, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result4);
 
-        final ECEFVelocity oldEcefVelocity = new ECEFVelocity(oldVx, oldVy, oldVz);
-        final ECEFFrame result5 = new ECEFFrame();
+        final var oldEcefVelocity = new ECEFVelocity(oldVx, oldVy, oldVz);
+        final var result5 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC, oldEcefVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result5);
 
-        final ECEFFrame result6 = new ECEFFrame();
+        final var result6 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldEcefVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result6);
 
-        final ECEFFrame result7 = new ECEFFrame();
+        final var result7 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC, oldEcefVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result7);
 
-        final ECEFFrame result8 = new ECEFFrame();
+        final var result8 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldEcefPosition, oldC, oldEcefVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result8);
 
-        final ECEFFrame result9 = new ECEFFrame();
+        final var result9 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
                 kinematics, result9);
 
-        final ECEFFrame result10 = new ECEFFrame();
+        final var result10 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics,
                 result10);
 
-        final ECEFFrame result11 = new ECEFFrame();
-        ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC, oldVx, oldVy, oldVz,
+        final var result11 = new ECEFFrame();
+        ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC, oldVx, oldVy, oldVz, 
                 kinematics, result11);
 
-        final ECEFFrame result12 = new ECEFFrame();
+        final var result12 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldEcefPosition, oldC, oldVx, oldVy, oldVz, kinematics,
                 result12);
 
-        final ECEFFrame result13 = new ECEFFrame();
+        final var result13 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC, oldEcefVelocity, kinematics,
                 result13);
 
-        final ECEFFrame result14 = new ECEFFrame();
+        final var result14 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldEcefVelocity, kinematics, result14);
 
-        final ECEFFrame result15 = new ECEFFrame();
+        final var result15 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC, oldEcefVelocity, kinematics,
                 result15);
 
-        final ECEFFrame result16 = new ECEFFrame();
+        final var result16 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldEcefPosition, oldC, oldEcefVelocity, kinematics, result16);
 
-        final Point3D oldPosition = new InhomogeneousPoint3D(oldX, oldY, oldZ);
-        final ECEFFrame result17 = new ECEFFrame();
+        final var oldPosition = new InhomogeneousPoint3D(oldX, oldY, oldZ);
+        final var result17 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result17);
 
-        final ECEFFrame result18 = new ECEFFrame();
+        final var result18 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result18);
 
-        final ECEFFrame result19 = new ECEFFrame();
+        final var result19 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldEcefVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result19);
 
-        final ECEFFrame result20 = new ECEFFrame();
+        final var result20 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldPosition, oldC, oldEcefVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result20);
 
-        final ECEFFrame result21 = new ECEFFrame();
+        final var result21 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVx, oldVy, oldVz, kinematics,
                 result21);
 
-        final ECEFFrame result22 = new ECEFFrame();
+        final var result22 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, kinematics, result22);
 
-        final ECEFFrame result23 = new ECEFFrame();
+        final var result23 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldEcefVelocity, kinematics,
                 result23);
 
-        final ECEFFrame result24 = new ECEFFrame();
+        final var result24 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldPosition, oldC, oldEcefVelocity, kinematics, result24);
 
-        final Distance oldDistanceX = new Distance(oldX, DistanceUnit.METER);
-        final Distance oldDistanceY = new Distance(oldY, DistanceUnit.METER);
-        final Distance oldDistanceZ = new Distance(oldZ, DistanceUnit.METER);
-        final ECEFFrame result25 = new ECEFFrame();
+        final var oldDistanceX = new Distance(oldX, DistanceUnit.METER);
+        final var oldDistanceY = new Distance(oldY, DistanceUnit.METER);
+        final var oldDistanceZ = new Distance(oldZ, DistanceUnit.METER);
+        final var result25 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldDistanceX, oldDistanceY, oldDistanceZ, oldC,
                 oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result25);
 
-        final ECEFFrame result26 = new ECEFFrame();
+        final var result26 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldDistanceX, oldDistanceY, oldDistanceZ, oldC,
                 oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result26);
 
-        final ECEFFrame result27 = new ECEFFrame();
+        final var result27 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldDistanceX, oldDistanceY, oldDistanceZ, oldC,
                 oldEcefVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result27);
 
-        final ECEFFrame result28 = new ECEFFrame();
+        final var result28 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldDistanceX, oldDistanceY, oldDistanceZ, oldC,
                 oldEcefVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result28);
 
-        final ECEFFrame result29 = new ECEFFrame();
+        final var result29 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldDistanceX, oldDistanceY, oldDistanceZ, oldC,
                 oldVx, oldVy, oldVz, kinematics, result29);
 
-        final ECEFFrame result30 = new ECEFFrame();
+        final var result30 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldDistanceX, oldDistanceY, oldDistanceZ, oldC,
                 oldVx, oldVy, oldVz, kinematics, result30);
 
-        final ECEFFrame result31 = new ECEFFrame();
+        final var result31 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldDistanceX, oldDistanceY, oldDistanceZ, oldC,
                 oldEcefVelocity, kinematics, result31);
 
-        final ECEFFrame result32 = new ECEFFrame();
+        final var result32 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldDistanceX, oldDistanceY, oldDistanceZ, oldC,
                 oldEcefVelocity, kinematics, result32);
 
-        final Speed oldSpeedX = new Speed(oldVx, SpeedUnit.METERS_PER_SECOND);
-        final Speed oldSpeedY = new Speed(oldVy, SpeedUnit.METERS_PER_SECOND);
-        final Speed oldSpeedZ = new Speed(oldVz, SpeedUnit.METERS_PER_SECOND);
-        final ECEFFrame result33 = new ECEFFrame();
+        final var oldSpeedX = new Speed(oldVx, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedY = new Speed(oldVy, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedZ = new Speed(oldVz, SpeedUnit.METERS_PER_SECOND);
+        final var result33 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY,
                 oldSpeedZ, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result33);
 
-        final ECEFFrame result34 = new ECEFFrame();
+        final var result34 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result34);
 
-        final ECEFFrame result35 = new ECEFFrame();
+        final var result35 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC,
                 oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result35);
 
-        final ECEFFrame result36 = new ECEFFrame();
+        final var result36 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldEcefPosition, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result36);
 
-        final ECEFFrame result37 = new ECEFFrame();
-        ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC,
+        final var result37 = new ECEFFrame();
+        ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC, 
                 oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result37);
 
-        final ECEFFrame result38 = new ECEFFrame();
+        final var result38 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
                 kinematics, result38);
 
-        final ECEFFrame result39 = new ECEFFrame();
-        ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC,
+        final var result39 = new ECEFFrame();
+        ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC, 
                 oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result39);
 
-        final ECEFFrame result40 = new ECEFFrame();
+        final var result40 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldEcefPosition, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
                 kinematics, result40);
 
-        final Acceleration accelerationX = new Acceleration(fx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration accelerationY = new Acceleration(fy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration accelerationZ = new Acceleration(fz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final ECEFFrame result41 = new ECEFFrame();
+        final var accelerationX = new Acceleration(fx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var accelerationY = new Acceleration(fy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var accelerationZ = new Acceleration(fz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var result41 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ, result41);
 
-        final ECEFFrame result42 = new ECEFFrame();
+        final var result42 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ, result42);
 
-        final ECEFFrame result43 = new ECEFFrame();
+        final var result43 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC, oldVx, oldVy, oldVz,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ, result43);
 
-        final ECEFFrame result44 = new ECEFFrame();
+        final var result44 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldEcefPosition, oldC, oldVx, oldVy, oldVz,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ, result44);
 
-        final ECEFFrame result45 = new ECEFFrame();
+        final var result45 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC, oldEcefVelocity,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ, result45);
 
-        final ECEFFrame result46 = new ECEFFrame();
+        final var result46 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldEcefVelocity,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ, result46);
 
-        final ECEFFrame result47 = new ECEFFrame();
+        final var result47 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC, oldEcefVelocity,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ, result47);
 
-        final ECEFFrame result48 = new ECEFFrame();
+        final var result48 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldEcefPosition, oldC, oldEcefVelocity,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ, result48);
 
-        final ECEFFrame result49 = new ECEFFrame();
+        final var result49 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
                 fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ, result49);
 
-        final ECEFFrame result50 = new ECEFFrame();
+        final var result50 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularSpeedX, angularSpeedY, angularSpeedZ, result50);
 
-        final ECEFFrame result51 = new ECEFFrame();
+        final var result51 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC, oldVx, oldVy, oldVz,
                 fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ, result51);
 
-        final ECEFFrame result52 = new ECEFFrame();
+        final var result52 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldEcefPosition, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularSpeedX, angularSpeedY, angularSpeedZ, result52);
 
-        final ECEFFrame result53 = new ECEFFrame();
+        final var result53 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC, oldEcefVelocity, fx, fy, fz,
                 angularSpeedX, angularSpeedY, angularSpeedZ, result53);
 
-        final ECEFFrame result54 = new ECEFFrame();
+        final var result54 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldEcefVelocity, fx, fy, fz,
                 angularSpeedX, angularSpeedY, angularSpeedZ, result54);
 
-        final ECEFFrame result55 = new ECEFFrame();
+        final var result55 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC, oldEcefVelocity, fx, fy, fz,
                 angularSpeedX, angularSpeedY, angularSpeedZ, result55);
 
-        final ECEFFrame result56 = new ECEFFrame();
+        final var result56 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldEcefPosition, oldC, oldEcefVelocity, fx, fy, fz,
                 angularSpeedX, angularSpeedY, angularSpeedZ, result56);
 
-        final ECEFFrame result57 = new ECEFFrame();
+        final var result57 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldDistanceX, oldDistanceY, oldDistanceZ, oldC,
                 oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result57);
 
-        final ECEFFrame result58 = new ECEFFrame();
+        final var result58 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldDistanceX, oldDistanceY, oldDistanceZ, oldC,
                 oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result58);
 
-        final ECEFFrame result59 = new ECEFFrame();
-        ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS,
-                oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
-                accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ, result59);
+        final var result59 = new ECEFFrame();
+        ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldDistanceX, oldDistanceY, oldDistanceZ, oldC, 
+                oldSpeedX, oldSpeedY, oldSpeedZ, accelerationX, accelerationY, accelerationZ, 
+                angularSpeedX, angularSpeedY, angularSpeedZ, result59);
 
-        final ECEFFrame result60 = new ECEFFrame();
-        ECEFInertialNavigator.navigateECEF(timeInterval, oldDistanceX, oldDistanceY, oldDistanceZ, oldC,
-                oldSpeedX, oldSpeedY, oldSpeedZ, accelerationX, accelerationY, accelerationZ,
+        final var result60 = new ECEFFrame();
+        ECEFInertialNavigator.navigateECEF(timeInterval, oldDistanceX, oldDistanceY, oldDistanceZ, oldC, 
+                oldSpeedX, oldSpeedY, oldSpeedZ, accelerationX, accelerationY, accelerationZ, 
                 angularSpeedX, angularSpeedY, angularSpeedZ, result60);
 
-        final ECEFFrame result61 = new ECEFFrame();
-        ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC,
+        final var result61 = new ECEFFrame();
+        ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC, 
                 oldSpeedX, oldSpeedY, oldSpeedZ, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ, result61);
 
-        final ECEFFrame result62 = new ECEFFrame();
+        final var result62 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldEcefPosition, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ, result62);
 
-        final ECEFFrame result63 = new ECEFFrame();
+        final var result63 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldDistanceX, oldDistanceY, oldDistanceZ, oldC,
-                oldEcefVelocity, accelerationX, accelerationY, accelerationZ,
+                oldEcefVelocity, accelerationX, accelerationY, accelerationZ, 
                 angularSpeedX, angularSpeedY, angularSpeedZ, result63);
 
-        final ECEFFrame result64 = new ECEFFrame();
+        final var result64 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldDistanceX, oldDistanceY, oldDistanceZ, oldC,
-                oldEcefVelocity, accelerationX, accelerationY, accelerationZ,
+                oldEcefVelocity, accelerationX, accelerationY, accelerationZ, 
                 angularSpeedX, angularSpeedY, angularSpeedZ, result64);
 
-        final ECEFFrame result65 = new ECEFFrame();
+        final var result65 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC, oldEcefVelocity,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ, result65);
 
-        final ECEFFrame result66 = new ECEFFrame();
+        final var result66 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldEcefPosition, oldC, oldEcefVelocity,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ, result66);
 
-        final ECEFFrame result67 = new ECEFFrame();
+        final var result67 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ, result67);
 
-        final ECEFFrame result68 = new ECEFFrame();
+        final var result68 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ, result68);
 
-        final ECEFFrame result69 = new ECEFFrame();
+        final var result69 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldEcefPosition, oldC, oldVx, oldVy, oldVz,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ, result69);
 
-        final ECEFFrame result70 = new ECEFFrame();
+        final var result70 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldEcefPosition, oldC, oldVx, oldVy, oldVz,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ, result70);
 
-        final ECEFFrame result71 = new ECEFFrame();
+        final var result71 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, oldC, oldEcefVelocity,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ, result71);
 
-        final ECEFFrame result72 = new ECEFFrame();
+        final var result72 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldEcefVelocity,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ, result72);
 
-        final ECEFFrame result73 = new ECEFFrame();
+        final var result73 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldDistanceX, oldDistanceY, oldDistanceZ, oldC,
                 oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result73);
 
-        final ECEFFrame result74 = new ECEFFrame();
+        final var result74 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldDistanceX, oldDistanceY, oldDistanceZ, oldC,
                 oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result74);
 
-        final ECEFFrame result75 = new ECEFFrame();
-        ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldFrame, fx, fy, fz,
+        final var result75 = new ECEFFrame();
+        ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldFrame, fx, fy, fz, 
                 angularRateX, angularRateY, angularRateZ, result75);
 
-        final ECEFFrame result76 = new ECEFFrame();
+        final var result76 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 result76);
 
-        final ECEFFrame result77 = new ECEFFrame();
+        final var result77 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldFrame, kinematics, result77);
 
-        final ECEFFrame result78 = new ECEFFrame();
+        final var result78 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldFrame, kinematics, result78);
 
-        final ECEFFrame result79 = new ECEFFrame();
+        final var result79 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldFrame, accelerationX, accelerationY, accelerationZ,
                 angularRateX, angularRateY, angularRateZ, result79);
 
-        final ECEFFrame result80 = new ECEFFrame();
+        final var result80 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldFrame, accelerationX, accelerationY, accelerationZ,
                 angularRateX, angularRateY, angularRateZ, result80);
 
-        final ECEFFrame result81 = new ECEFFrame();
-        ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldFrame, fx, fy, fz,
+        final var result81 = new ECEFFrame();
+        ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldFrame, fx, fy, fz, 
                 angularSpeedX, angularSpeedY, angularSpeedZ, result81);
 
-        final ECEFFrame result82 = new ECEFFrame();
-        ECEFInertialNavigator.navigateECEF(timeInterval, oldFrame, fx, fy, fz,
+        final var result82 = new ECEFFrame();
+        ECEFInertialNavigator.navigateECEF(timeInterval, oldFrame, fx, fy, fz, 
                 angularSpeedX, angularSpeedY, angularSpeedZ, result82);
 
-        final ECEFFrame result83 = new ECEFFrame();
+        final var result83 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_SECONDS, oldFrame, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ, result83);
 
-        final ECEFFrame result84 = new ECEFFrame();
+        final var result84 = new ECEFFrame();
         ECEFInertialNavigator.navigateECEF(timeInterval, oldFrame, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ, result84);
 
@@ -1487,356 +1461,349 @@ public class ECEFInertialNavigatorTest {
     }
 
     @Test
-    public void testNavigateEcefAndReturnNew() throws InvalidRotationMatrixException,
+    void testNavigateEcefAndReturnNew() throws InvalidRotationMatrixException, 
             InvalidSourceAndDestinationFrameTypeException, InertialNavigatorException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final var randomizer = new UniformRandomizer();
 
-        final double latitude = Math.toRadians(LATITUDE_DEGREES);
-        final double longitude = Math.toRadians(LONGITUDE_DEGREES);
+        final var latitude = Math.toRadians(LATITUDE_DEGREES);
+        final var longitude = Math.toRadians(LONGITUDE_DEGREES);
 
-        final double vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final Quaternion q = new Quaternion(roll, pitch, yaw);
+        final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var q = new Quaternion(roll, pitch, yaw);
 
-        final Matrix m = q.asInhomogeneousMatrix();
-        final CoordinateTransformation c = new CoordinateTransformation(m, FrameType.BODY_FRAME,
-                FrameType.LOCAL_NAVIGATION_FRAME);
+        final var m = q.asInhomogeneousMatrix();
+        final var c = new CoordinateTransformation(m, FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
 
-        final NEDFrame oldNedFrame = new NEDFrame(latitude, longitude, HEIGHT, vn, ve, vd, c);
-        final ECEFFrame oldFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
+        final var oldNedFrame = new NEDFrame(latitude, longitude, HEIGHT, vn, ve, vd, c);
+        final var oldFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
 
-        final double oldX = oldFrame.getX();
-        final double oldY = oldFrame.getY();
-        final double oldZ = oldFrame.getZ();
-        final CoordinateTransformation oldC = oldFrame.getCoordinateTransformation();
-        final double oldVx = oldFrame.getVx();
-        final double oldVy = oldFrame.getVy();
-        final double oldVz = oldFrame.getVz();
+        final var oldX = oldFrame.getX();
+        final var oldY = oldFrame.getY();
+        final var oldZ = oldFrame.getZ();
+        final var oldC = oldFrame.getCoordinateTransformation();
+        final var oldVx = oldFrame.getVx();
+        final var oldVy = oldFrame.getVy();
+        final var oldVz = oldFrame.getVz();
 
 
-        final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
 
-        final double angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+        final var angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                 MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-        final double angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+        final var angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                 MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-        final double angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+        final var angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                 MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
 
-        final AngularSpeed angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond,
-                AngularSpeedUnit.DEGREES_PER_SECOND);
-        final AngularSpeed angularSpeedY = new AngularSpeed(angularRateYDegreesPerSecond,
-                AngularSpeedUnit.DEGREES_PER_SECOND);
-        final AngularSpeed angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond,
-                AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY = new AngularSpeed(angularRateYDegreesPerSecond, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond, AngularSpeedUnit.DEGREES_PER_SECOND);
 
-        final double angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
+        final var angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
                 angularSpeedX.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-        final double angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
+        final var angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
                 angularSpeedY.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-        final double angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
+        final var angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
                 angularSpeedZ.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
 
-        final BodyKinematics kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+        final var kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result1 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
-                oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
-
-        final Time timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
-        final ECEFFrame result2 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldX, oldY, oldZ,
+        final var result1 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, 
                 oldC, oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final ECEFPosition oldEcefPosition = new ECEFPosition(oldX, oldY, oldZ);
-        final ECEFFrame result3 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition,
-                oldC, oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
-
-        final ECEFFrame result4 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldEcefPosition, oldC,
+        final var timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
+        final var result2 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, 
                 oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final ECEFVelocity oldEcefVelocity = new ECEFVelocity(oldVx, oldVy, oldVz);
-        final ECEFFrame result5 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
-                oldX, oldY, oldZ, oldC, oldEcefVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+        final var oldEcefPosition = new ECEFPosition(oldX, oldY, oldZ);
+        final var result3 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition, 
+                oldC, oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result6 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
-                oldEcefVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+        final var result4 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldEcefPosition, oldC,
+                oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result7 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition,
+        final var oldEcefVelocity = new ECEFVelocity(oldVx, oldVy, oldVz);
+        final var result5 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, 
                 oldC, oldEcefVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result8 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldEcefPosition, oldC,
+        final var result6 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
                 oldEcefVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result9 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
-                oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics);
+        final var result7 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition,
+                oldC, oldEcefVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result10 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldX, oldY, oldZ,
+        final var result8 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldEcefPosition, oldC,
+                oldEcefVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+
+        final var result9 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, 
                 oldC, oldVx, oldVy, oldVz, kinematics);
 
-        final ECEFFrame result11 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
-                oldEcefPosition, oldC, oldVx, oldVy, oldVz, kinematics);
-
-        final ECEFFrame result12 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldEcefPosition, oldC,
+        final var result10 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, 
                 oldVx, oldVy, oldVz, kinematics);
 
-        final ECEFFrame result13 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
-                oldX, oldY, oldZ, oldC, oldEcefVelocity, kinematics);
-
-        final ECEFFrame result14 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
-                oldEcefVelocity, kinematics);
-
-        final ECEFFrame result15 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
-                oldEcefPosition, oldC, oldEcefVelocity, kinematics);
-
-        final ECEFFrame result16 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldEcefPosition, oldC,
-                oldEcefVelocity, kinematics);
-
-        final Point3D oldPosition = new InhomogeneousPoint3D(oldX, oldY, oldZ);
-        final ECEFFrame result17 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition,
-                oldC, oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
-
-        final ECEFFrame result18 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldPosition,
-                oldC, oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
-
-        final ECEFFrame result19 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition,
-                oldC, oldEcefVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
-
-        final ECEFFrame result20 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldPosition, oldC,
-                oldEcefVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
-
-        final ECEFFrame result21 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition,
+        final var result11 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition, 
                 oldC, oldVx, oldVy, oldVz, kinematics);
 
-        final ECEFFrame result22 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldPosition,
-                oldC, oldVx, oldVy, oldVz, kinematics);
+        final var result12 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldEcefPosition, oldC,
+                oldVx, oldVy, oldVz, kinematics);
 
-        final ECEFFrame result23 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition,
+        final var result13 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, 
                 oldC, oldEcefVelocity, kinematics);
 
-        final ECEFFrame result24 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldPosition, oldC,
+        final var result14 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
                 oldEcefVelocity, kinematics);
 
-        final Distance oldDistanceX = new Distance(oldX, DistanceUnit.METER);
-        final Distance oldDistanceY = new Distance(oldY, DistanceUnit.METER);
-        final Distance oldDistanceZ = new Distance(oldZ, DistanceUnit.METER);
-        final ECEFFrame result25 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
-                oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
+        final var result15 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
+                oldEcefPosition, oldC, oldEcefVelocity, kinematics);
+
+        final var result16 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldEcefPosition, oldC,
+                oldEcefVelocity, kinematics);
+
+        final var oldPosition = new InhomogeneousPoint3D(oldX, oldY, oldZ);
+        final var result17 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC, 
+                oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+
+        final var result18 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldPosition, oldC, 
+                oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+
+        final var result19 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC, 
+                oldEcefVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+
+        final var result20 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldPosition, oldC,
+                oldEcefVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+
+        final var result21 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC, 
+                oldVx, oldVy, oldVz, kinematics);
+
+        final var result22 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldPosition, oldC, 
+                oldVx, oldVy, oldVz, kinematics);
+
+        final var result23 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC, 
+                oldEcefVelocity, kinematics);
+
+        final var result24 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldPosition, oldC, 
+                oldEcefVelocity, kinematics);
+
+        final var oldDistanceX = new Distance(oldX, DistanceUnit.METER);
+        final var oldDistanceY = new Distance(oldY, DistanceUnit.METER);
+        final var oldDistanceZ = new Distance(oldZ, DistanceUnit.METER);
+        final var result25 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, 
+                oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz, 
                 angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result26 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval,
-                oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
+        final var result26 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, 
+                oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz, 
                 angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result27 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result27 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, 
                 oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldEcefVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result28 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval,
+        final var result28 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, 
                 oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldEcefVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result29 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result29 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, 
                 oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldVx, oldVy, oldVz, kinematics);
 
-        final ECEFFrame result30 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval,
+        final var result30 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, 
                 oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldVx, oldVy, oldVz, kinematics);
 
-        final ECEFFrame result31 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result31 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
                 oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldEcefVelocity, kinematics);
 
-        final ECEFFrame result32 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval,
+        final var result32 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval,
                 oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldEcefVelocity, kinematics);
 
-        final Speed oldSpeedX = new Speed(oldVx, SpeedUnit.METERS_PER_SECOND);
-        final Speed oldSpeedY = new Speed(oldVy, SpeedUnit.METERS_PER_SECOND);
-        final Speed oldSpeedZ = new Speed(oldVz, SpeedUnit.METERS_PER_SECOND);
-        final ECEFFrame result33 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
-                oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ);
+        final var oldSpeedX = new Speed(oldVx, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedY = new Speed(oldVy, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedZ = new Speed(oldVz, SpeedUnit.METERS_PER_SECOND);
+        final var result33 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, 
+                oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result34 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval,
-                oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ);
-
-        final ECEFFrame result35 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
-                oldEcefPosition, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ);
-
-        final ECEFFrame result36 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldEcefPosition, oldC,
+        final var result34 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, 
                 oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result37 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
-                oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, kinematics);
+        final var result35 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition, 
+                oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result38 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
+        final var result36 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldEcefPosition, oldC,
+                oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+
+        final var result37 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, 
+                oldC, oldSpeedX, oldSpeedY, oldSpeedZ, kinematics);
+
+        final var result38 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
                 oldSpeedX, oldSpeedY, oldSpeedZ, kinematics);
 
-        final ECEFFrame result39 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
-                oldEcefPosition, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, kinematics);
+        final var result39 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition, 
+                oldC, oldSpeedX, oldSpeedY, oldSpeedZ, kinematics);
 
-        final ECEFFrame result40 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldEcefPosition, oldC,
+        final var result40 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldEcefPosition, oldC,
                 oldSpeedX, oldSpeedY, oldSpeedZ, kinematics);
 
-        final Acceleration accelerationX = new Acceleration(fx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration accelerationY = new Acceleration(fy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration accelerationZ = new Acceleration(fz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final ECEFFrame result41 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
-                oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, accelerationX, accelerationY, accelerationZ,
+        final var accelerationX = new Acceleration(fx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var accelerationY = new Acceleration(fy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var accelerationZ = new Acceleration(fz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var result41 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, 
+                oldC, oldVx, oldVy, oldVz, accelerationX, accelerationY, accelerationZ, 
                 angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result42 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
-                oldVx, oldVy, oldVz, accelerationX, accelerationY, accelerationZ,
+        final var result42 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
+                oldVx, oldVy, oldVz, accelerationX, accelerationY, accelerationZ, 
                 angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result43 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
-                oldEcefPosition, oldC, oldVx, oldVy, oldVz, accelerationX, accelerationY, accelerationZ,
+        final var result43 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition, 
+                oldC, oldVx, oldVy, oldVz, accelerationX, accelerationY, accelerationZ, 
                 angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result44 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldEcefPosition, oldC,
-                oldVx, oldVy, oldVz, accelerationX, accelerationY, accelerationZ,
+        final var result44 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldEcefPosition, oldC,
+                oldVx, oldVy, oldVz, accelerationX, accelerationY, accelerationZ, 
                 angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result45 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
-                oldX, oldY, oldZ, oldC, oldEcefVelocity, accelerationX, accelerationY, accelerationZ,
+        final var result45 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, 
+                oldC, oldEcefVelocity, accelerationX, accelerationY, accelerationZ, 
                 angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result46 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
+        final var result46 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
                 oldEcefVelocity, accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result47 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
-                oldEcefPosition, oldC, oldEcefVelocity, accelerationX, accelerationY, accelerationZ,
+        final var result47 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition, 
+                oldC, oldEcefVelocity, accelerationX, accelerationY, accelerationZ, 
                 angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result48 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldEcefPosition, oldC,
+        final var result48 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldEcefPosition, oldC,
                 oldEcefVelocity, accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result49 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
-                oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
+        final var result49 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, 
+                oldC, oldVx, oldVy, oldVz, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result50 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval,
-                oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
-
-        final ECEFFrame result51 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
-                oldEcefPosition, oldC, oldVx, oldVy, oldVz, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
-
-        final ECEFFrame result52 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldEcefPosition, oldC,
+        final var result50 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, 
                 oldVx, oldVy, oldVz, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result53 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
-                oldX, oldY, oldZ, oldC, oldEcefVelocity, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
+        final var result51 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition, 
+                oldC, oldVx, oldVy, oldVz, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result54 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
+        final var result52 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldEcefPosition, oldC,
+                oldVx, oldVy, oldVz, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
+
+        final var result53 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, 
+                oldC, oldEcefVelocity, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
+
+        final var result54 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
                 oldEcefVelocity, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result55 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
-                oldEcefPosition, oldC, oldEcefVelocity, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
+        final var result55 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefPosition, 
+                oldC, oldEcefVelocity, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result56 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldEcefPosition, oldC,
+        final var result56 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldEcefPosition, oldC,
                 oldEcefVelocity, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result57 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result57 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
                 oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result58 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval,
+        final var result58 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval,
                 oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result59 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result59 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
                 oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result60 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval,
+        final var result60 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval,
                 oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result61 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result61 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
                 oldEcefPosition, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result62 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldEcefPosition, oldC,
+        final var result62 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldEcefPosition, oldC,
                 oldSpeedX, oldSpeedY, oldSpeedZ, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result63 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result63 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
                 oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldEcefVelocity,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result64 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval,
-                oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldEcefVelocity,
+        final var result64 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, 
+                oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldEcefVelocity, 
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result65 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result65 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
                 oldEcefPosition, oldC, oldEcefVelocity, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result66 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldEcefPosition, oldC,
+        final var result66 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldEcefPosition, oldC,
                 oldEcefVelocity, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result67 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
-                oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, accelerationX, accelerationY, accelerationZ,
+        final var result67 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, 
+                oldC, oldVx, oldVy, oldVz, accelerationX, accelerationY, accelerationZ, 
                 angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result68 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval,
-                oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, accelerationX, accelerationY, accelerationZ,
+        final var result68 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, 
+                oldVx, oldVy, oldVz, accelerationX, accelerationY, accelerationZ, 
                 angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result69 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result69 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
                 oldEcefPosition, oldC, oldVx, oldVy, oldVz, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result70 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldEcefPosition, oldC,
+        final var result70 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldEcefPosition, oldC,
                 oldVx, oldVy, oldVz, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result71 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
-                oldX, oldY, oldZ, oldC, oldEcefVelocity, accelerationX, accelerationY, accelerationZ,
+        final var result71 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldX, oldY, oldZ, 
+                oldC, oldEcefVelocity, accelerationX, accelerationY, accelerationZ, 
                 angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result72 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
-                oldEcefVelocity, accelerationX, accelerationY, accelerationZ,
+        final var result72 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
+                oldEcefVelocity, accelerationX, accelerationY, accelerationZ, 
                 angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result73 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result73 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
                 oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, kinematics);
 
-        final ECEFFrame result74 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval,
+        final var result74 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, 
                 oldDistanceX, oldDistanceY, oldDistanceZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, kinematics);
 
-        final ECEFFrame result75 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ);
-
-        final ECEFFrame result76 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldFrame, fx, fy, fz,
+        final var result75 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result77 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
+        final var result76 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldFrame, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ);
+
+        final var result77 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame, 
                 kinematics);
 
-        final ECEFFrame result78 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldFrame, kinematics);
+        final var result78 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldFrame, kinematics);
 
-        final ECEFFrame result79 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
+        final var result79 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result80 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldFrame,
+        final var result80 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldFrame, 
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ);
 
-        final ECEFFrame result81 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
-                fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
-
-        final ECEFFrame result82 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldFrame, fx, fy, fz,
+        final var result81 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame, fx, fy, fz,
                 angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result83 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
+        final var result82 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldFrame, fx, fy, fz,
+                angularSpeedX, angularSpeedY, angularSpeedZ);
+
+        final var result83 = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final ECEFFrame result84 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldFrame,
+        final var result84 = ECEFInertialNavigator.navigateECEFAndReturnNew(timeInterval, oldFrame,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ);
 
         assertEquals(result1, result2);
@@ -1925,75 +1892,74 @@ public class ECEFInertialNavigatorTest {
     }
 
     @Test
-    public void testNavigateFreeFallingBody() throws InvalidRotationMatrixException,
+    void testNavigateFreeFallingBody() throws InvalidRotationMatrixException, 
             InvalidSourceAndDestinationFrameTypeException, InertialNavigatorException, WrongSizeException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double longitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-            final double vn = 0.0;
-            final double ve = 0.0;
-            final double vd = 0.0;
+            final var vn = 0.0;
+            final var ve = 0.0;
+            final var vd = 0.0;
 
-            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final Quaternion q = new Quaternion(roll, pitch, yaw);
+            final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var q = new Quaternion(roll, pitch, yaw);
 
-            final Matrix m = q.asInhomogeneousMatrix();
-            final CoordinateTransformation c = new CoordinateTransformation(m, FrameType.BODY_FRAME,
-                    FrameType.LOCAL_NAVIGATION_FRAME);
+            final var m = q.asInhomogeneousMatrix();
+            final var c = new CoordinateTransformation(m, FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame oldNedFrame = new NEDFrame(latitude, longitude, height, vn, ve, vd, c);
-            final ECEFFrame oldFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
-            final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(oldFrame);
-            final Matrix g = gravity.asMatrix();
-            final Matrix cbe = oldFrame.getCoordinateTransformationMatrix();
-            final Matrix invCbe = cbe.transposeAndReturnNew();
-            final Matrix f = invCbe.multiplyAndReturnNew(g);
+            final var oldNedFrame = new NEDFrame(latitude, longitude, height, vn, ve, vd, c);
+            final var oldFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
+            final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(oldFrame);
+            final var g = gravity.asMatrix();
+            final var cbe = oldFrame.getCoordinateTransformationMatrix();
+            final var invCbe = cbe.transposeAndReturnNew();
+            final var f = invCbe.multiplyAndReturnNew(g);
 
-            final double fx = f.getElementAtIndex(0);
-            final double fy = f.getElementAtIndex(1);
-            final double fz = f.getElementAtIndex(2);
+            final var fx = f.getElementAtIndex(0);
+            final var fy = f.getElementAtIndex(1);
+            final var fz = f.getElementAtIndex(2);
 
-            final double angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+            final var angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                     MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-            final double angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+            final var angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                     MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-            final double angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+            final var angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                     MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
 
-            final AngularSpeed angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond,
+            final var angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond,
                     AngularSpeedUnit.DEGREES_PER_SECOND);
-            final AngularSpeed angularSpeedY = new AngularSpeed(angularRateYDegreesPerSecond,
+            final var angularSpeedY = new AngularSpeed(angularRateYDegreesPerSecond,
                     AngularSpeedUnit.DEGREES_PER_SECOND);
-            final AngularSpeed angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond,
+            final var angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond,
                     AngularSpeedUnit.DEGREES_PER_SECOND);
 
-            final double angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
+            final var angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
                     angularSpeedX.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-            final double angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
+            final var angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
                     angularSpeedY.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-            final double angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
+            final var angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
                     angularSpeedZ.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
 
-            final BodyKinematics kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+            final var kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-            final ECEFFrame newFrame = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
+            final var newFrame = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
                     kinematics);
 
-            final NEDFrame newNedFrame = ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(newFrame);
+            final var newNedFrame = ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(newFrame);
 
-            // Because body is in free fall its latitude and longitude does not change
+            // Because the body is in free fall, its latitude and longitude does not change
             assertEquals(oldNedFrame.getLatitude(), newNedFrame.getLatitude(), ABSOLUTE_ERROR);
             assertEquals(oldNedFrame.getLongitude(), newNedFrame.getLongitude(), ABSOLUTE_ERROR);
 
-            // Since body is falling, new height is smaller than the initial one
+            // Since the body is falling, the new height is smaller than the initial one
             assertTrue(newNedFrame.getHeight() < oldNedFrame.getHeight());
 
             numValid++;
@@ -2003,70 +1969,68 @@ public class ECEFInertialNavigatorTest {
     }
 
     @Test
-    public void testNavigateZeroTimeInterval() throws InvalidRotationMatrixException,
+    void testNavigateZeroTimeInterval() throws InvalidRotationMatrixException,
             InvalidSourceAndDestinationFrameTypeException, InertialNavigatorException, WrongSizeException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double longitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-            final double vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-            final double ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-            final double vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+            final var vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+            final var ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+            final var vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final Quaternion q = new Quaternion(roll, pitch, yaw);
+            final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var q = new Quaternion(roll, pitch, yaw);
 
-            final Matrix m = q.asInhomogeneousMatrix();
-            final CoordinateTransformation c = new CoordinateTransformation(m, FrameType.BODY_FRAME,
-                    FrameType.LOCAL_NAVIGATION_FRAME);
+            final var m = q.asInhomogeneousMatrix();
+            final var c = new CoordinateTransformation(m, FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame oldNedFrame = new NEDFrame(latitude, longitude, height, vn, ve, vd, c);
-            final ECEFFrame oldFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
-            final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(oldFrame);
-            final Matrix g = gravity.asMatrix();
-            final Matrix cbe = oldFrame.getCoordinateTransformation().getMatrix();
-            final Matrix f = cbe.multiplyAndReturnNew(g);
+            final var oldNedFrame = new NEDFrame(latitude, longitude, height, vn, ve, vd, c);
+            final var oldFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
+            final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(oldFrame);
+            final var g = gravity.asMatrix();
+            final var cbe = oldFrame.getCoordinateTransformation().getMatrix();
+            final var f = cbe.multiplyAndReturnNew(g);
 
-            final double fx = f.getElementAtIndex(0);
-            final double fy = f.getElementAtIndex(1);
-            final double fz = f.getElementAtIndex(2);
+            final var fx = f.getElementAtIndex(0);
+            final var fy = f.getElementAtIndex(1);
+            final var fz = f.getElementAtIndex(2);
 
-            final double angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+            final var angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                     MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-            final double angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+            final var angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                     MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-            final double angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+            final var angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                     MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
 
-            final AngularSpeed angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond,
+            final var angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond,
                     AngularSpeedUnit.DEGREES_PER_SECOND);
-            final AngularSpeed angularSpeedY = new AngularSpeed(angularRateYDegreesPerSecond,
+            final var angularSpeedY = new AngularSpeed(angularRateYDegreesPerSecond,
                     AngularSpeedUnit.DEGREES_PER_SECOND);
-            final AngularSpeed angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond,
+            final var angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond,
                     AngularSpeedUnit.DEGREES_PER_SECOND);
 
-            final double angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
+            final var angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
                     angularSpeedX.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-            final double angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
+            final var angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
                     angularSpeedY.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-            final double angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
+            final var angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
                     angularSpeedZ.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
 
-            final BodyKinematics kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+            final var kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-            final ECEFFrame newFrame = ECEFInertialNavigator.navigateECEFAndReturnNew(0.0, oldFrame,
-                    kinematics);
+            final var newFrame = ECEFInertialNavigator.navigateECEFAndReturnNew(0.0, oldFrame, kinematics);
 
-            final NEDFrame newNedFrame = ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(newFrame);
+            final var newNedFrame = ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(newFrame);
 
-            // Because time interval is zero, body hasn't moved
+            // Because the time interval is zero, the body hasn't moved
             assertEquals(oldNedFrame.getLatitude(), newNedFrame.getLatitude(), ABSOLUTE_ERROR);
             assertEquals(oldNedFrame.getLongitude(), newNedFrame.getLongitude(), ABSOLUTE_ERROR);
             assertEquals(oldNedFrame.getHeight(), newNedFrame.getHeight(), ABSOLUTE_ERROR);
@@ -2079,76 +2043,75 @@ public class ECEFInertialNavigatorTest {
     }
 
     @Test
-    public void testNavigateWithInitialVelocityAndNoSpecificForce() throws InvalidRotationMatrixException,
+    void testNavigateWithInitialVelocityAndNoSpecificForce() throws InvalidRotationMatrixException,
             InvalidSourceAndDestinationFrameTypeException, InertialNavigatorException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double longitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-            final double vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-            final double ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-            final double vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+            final var vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+            final var ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+            final var vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final Quaternion q = new Quaternion(roll, pitch, yaw);
+            final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var q = new Quaternion(roll, pitch, yaw);
 
-            final Matrix m = q.asInhomogeneousMatrix();
-            final CoordinateTransformation c = new CoordinateTransformation(m, FrameType.BODY_FRAME,
-                    FrameType.LOCAL_NAVIGATION_FRAME);
+            final var m = q.asInhomogeneousMatrix();
+            final var c = new CoordinateTransformation(m, FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame oldNedFrame = new NEDFrame(latitude, longitude, height, vn, ve, vd, c);
-            final ECEFFrame oldFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
+            final var oldNedFrame = new NEDFrame(latitude, longitude, height, vn, ve, vd, c);
+            final var oldFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
 
-            final double fx = 0.0;
-            final double fy = 0.0;
-            final double fz = 0.0;
+            final var fx = 0.0;
+            final var fy = 0.0;
+            final var fz = 0.0;
 
-            final double angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+            final var angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                     MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-            final double angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+            final var angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                     MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-            final double angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+            final var angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                     MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
 
-            final AngularSpeed angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond,
+            final var angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond,
                     AngularSpeedUnit.DEGREES_PER_SECOND);
-            final AngularSpeed angularSpeedY = new AngularSpeed(angularRateYDegreesPerSecond,
+            final var angularSpeedY = new AngularSpeed(angularRateYDegreesPerSecond,
                     AngularSpeedUnit.DEGREES_PER_SECOND);
-            final AngularSpeed angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond,
+            final var angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond,
                     AngularSpeedUnit.DEGREES_PER_SECOND);
 
-            final double angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
+            final var angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
                     angularSpeedX.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-            final double angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
+            final var angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
                     angularSpeedY.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-            final double angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
+            final var angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
                     angularSpeedZ.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
 
-            final BodyKinematics kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+            final var kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-            final ECEFFrame newFrame = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
+            final var newFrame = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
                     kinematics);
 
-            final NEDFrame newNedFrame = ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(newFrame);
+            final var newNedFrame = ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(newFrame);
 
             // Because no specific force is applied to body, it will keep its inertia
             // (initial speed). This is approximate, since as the body moves the amount
             // of gravity applied to it changes as well
-            final double oldSpeed = oldNedFrame.getVelocityNorm();
-            double newSpeed = newNedFrame.getVelocityNorm();
+            final var oldSpeed = oldNedFrame.getVelocityNorm();
+            final var newSpeed = newNedFrame.getVelocityNorm();
 
-            final Point3D oldPosition = oldFrame.getPosition();
-            final Point3D newPosition = newFrame.getPosition();
-            final double distance = oldPosition.distanceTo(newPosition);
+            final var oldPosition = oldFrame.getPosition();
+            final var newPosition = newFrame.getPosition();
+            final var distance = oldPosition.distanceTo(newPosition);
 
-            final double estimatedSpeed = distance / TIME_INTERVAL_SECONDS;
+            final var estimatedSpeed = distance / TIME_INTERVAL_SECONDS;
 
             assertEquals(estimatedSpeed, newSpeed, VERY_LARGE_ABSOLUTE_ERROR);
             assertEquals(oldSpeed, newSpeed, 2.0 * VERY_LARGE_ABSOLUTE_ERROR);
@@ -2160,64 +2123,63 @@ public class ECEFInertialNavigatorTest {
     }
 
     @Test
-    public void testNavigateWithNoInitialVelocityAndNoSpecificForce() throws InvalidRotationMatrixException,
+    void testNavigateWithNoInitialVelocityAndNoSpecificForce() throws InvalidRotationMatrixException,
             InvalidSourceAndDestinationFrameTypeException, InertialNavigatorException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double longitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-            final double vn = 0.0;
-            final double ve = 0.0;
-            final double vd = 0.0;
+            final var vn = 0.0;
+            final var ve = 0.0;
+            final var vd = 0.0;
 
-            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final Quaternion q = new Quaternion(roll, pitch, yaw);
+            final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var q = new Quaternion(roll, pitch, yaw);
 
-            final Matrix m = q.asInhomogeneousMatrix();
-            final CoordinateTransformation c = new CoordinateTransformation(m, FrameType.BODY_FRAME,
-                    FrameType.LOCAL_NAVIGATION_FRAME);
+            final var m = q.asInhomogeneousMatrix();
+            final var c = new CoordinateTransformation(m, FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame oldNedFrame = new NEDFrame(latitude, longitude, height, vn, ve, vd, c);
-            final ECEFFrame oldFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
+            final var oldNedFrame = new NEDFrame(latitude, longitude, height, vn, ve, vd, c);
+            final var oldFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
 
-            final double fx = 0.0;
-            final double fy = 0.0;
-            final double fz = 0.0;
+            final var fx = 0.0;
+            final var fy = 0.0;
+            final var fz = 0.0;
 
-            final double angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+            final var angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                     MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-            final double angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+            final var angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                     MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-            final double angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+            final var angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                     MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
 
-            final AngularSpeed angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond,
+            final var angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond,
                     AngularSpeedUnit.DEGREES_PER_SECOND);
-            final AngularSpeed angularSpeedY = new AngularSpeed(angularRateYDegreesPerSecond,
+            final var angularSpeedY = new AngularSpeed(angularRateYDegreesPerSecond,
                     AngularSpeedUnit.DEGREES_PER_SECOND);
-            final AngularSpeed angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond,
+            final var angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond,
                     AngularSpeedUnit.DEGREES_PER_SECOND);
 
-            final double angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
+            final var angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
                     angularSpeedX.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-            final double angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
+            final var angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
                     angularSpeedY.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-            final double angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
+            final var angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
                     angularSpeedZ.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
 
-            final BodyKinematics kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+            final var kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-            final ECEFFrame newFrame = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
+            final var newFrame = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
                     kinematics);
 
-            final NEDFrame newNedFrame = ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(newFrame);
+            final var newNedFrame = ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(newFrame);
 
             // Because no forces are applied to the body and the body has no initial velocity,
             // the body will remain on the same position
@@ -2232,34 +2194,33 @@ public class ECEFInertialNavigatorTest {
     }
 
     @Test
-    public void testNavigateWhenFrameRemainsConstant() throws InvalidSourceAndDestinationFrameTypeException,
+    void testNavigateWhenFrameRemainsConstant() throws InvalidSourceAndDestinationFrameTypeException,
             InertialNavigatorException {
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double longitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-            final double vn = 0.0;
-            final double ve = 0.0;
-            final double vd = 0.0;
+            final var vn = 0.0;
+            final var ve = 0.0;
+            final var vd = 0.0;
 
-            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final Quaternion q = new Quaternion(roll, pitch, yaw);
+            final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var q = new Quaternion(roll, pitch, yaw);
 
-            final CoordinateTransformation c = new CoordinateTransformation(q, FrameType.BODY_FRAME,
-                    FrameType.LOCAL_NAVIGATION_FRAME);
+            final var c = new CoordinateTransformation(q, FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame oldNedFrame = new NEDFrame(latitude, longitude, height, vn, ve, vd, c);
-            final ECEFFrame oldFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
-            final BodyKinematics bodyKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
-                    TIME_INTERVAL_SECONDS, oldFrame, oldFrame);
+            final var oldNedFrame = new NEDFrame(latitude, longitude, height, vn, ve, vd, c);
+            final var oldFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
+            final var bodyKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS,
+                    oldFrame, oldFrame);
 
-            final ECEFFrame newFrame = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
+            final var newFrame = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
                     bodyKinematics);
 
             assertTrue(oldFrame.equals(newFrame, NAVIGATE_ABSOLUTE_ERROR));
@@ -2271,34 +2232,33 @@ public class ECEFInertialNavigatorTest {
     }
 
     @Test
-    public void testNavigateWhenFrameRemainsConstant2() throws InvalidSourceAndDestinationFrameTypeException,
+    void testNavigateWhenFrameRemainsConstant2() throws InvalidSourceAndDestinationFrameTypeException,
             InertialNavigatorException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final var randomizer = new UniformRandomizer();
 
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-        final double vn = 0.0;
-        final double ve = 0.0;
-        final double vd = 0.0;
+        final var vn = 0.0;
+        final var ve = 0.0;
+        final var vd = 0.0;
 
-        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final Quaternion q = new Quaternion(roll, pitch, yaw);
+        final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var q = new Quaternion(roll, pitch, yaw);
 
-        final CoordinateTransformation c = new CoordinateTransformation(q, FrameType.BODY_FRAME,
-                FrameType.LOCAL_NAVIGATION_FRAME);
+        final var c = new CoordinateTransformation(q, FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
 
-        final NEDFrame oldNedFrame = new NEDFrame(latitude, longitude, height, vn, ve, vd, c);
-        final ECEFFrame oldFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
-        final BodyKinematics bodyKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
-                TIME_INTERVAL_SECONDS, oldFrame, oldFrame);
-        final ECEFFrame initialFrame = new ECEFFrame(oldFrame);
+        final var oldNedFrame = new NEDFrame(latitude, longitude, height, vn, ve, vd, c);
+        final var oldFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
+        final var bodyKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS,
+                oldFrame, oldFrame);
+        final var initialFrame = new ECEFFrame(oldFrame);
 
-        for (int t = 0; t < TIMES; t++) {
-            final ECEFFrame newFrame = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
+        for (var t = 0; t < TIMES; t++) {
+            final var newFrame = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
                     bodyKinematics);
 
             assertTrue(initialFrame.equals(newFrame, NAVIGATE_ABSOLUTE_ERROR));

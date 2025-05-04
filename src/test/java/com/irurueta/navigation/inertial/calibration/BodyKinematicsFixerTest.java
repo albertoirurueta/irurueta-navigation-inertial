@@ -24,13 +24,13 @@ import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationUnit;
 import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedUnit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class BodyKinematicsFixerTest {
+class BodyKinematicsFixerTest {
 
     private static final double TIME_INTERVAL_SECONDS = 0.02;
 
@@ -46,53 +46,53 @@ public class BodyKinematicsFixerTest {
     private static final double ABSOLUTE_ERROR = 1e-12;
 
     @Test
-    public void testConstructor() throws WrongSizeException {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testConstructor() throws WrongSizeException {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default values
-        assertEquals(fixer.getAccelerationBias(), new Matrix(3, 1));
-        final Matrix ba = new Matrix(3, 1);
+        assertEquals(new Matrix(3, 1), fixer.getAccelerationBias());
+        final var ba = new Matrix(3, 1);
         fixer.getAccelerationBias(ba);
-        assertEquals(ba, new Matrix(3, 1));
+        assertEquals(new Matrix(3, 1), ba);
 
-        assertArrayEquals(fixer.getAccelerationBiasArray(), new double[3], 0.0);
-        final double[] ba2 = new double[3];
+        assertArrayEquals(new double[3], fixer.getAccelerationBiasArray(), 0.0);
+        final var ba2 = new double[3];
         fixer.getAccelerationBiasArray(ba2);
-        assertArrayEquals(ba2, new double[3], 0.0);
+        assertArrayEquals(new double[3], ba2, 0.0);
         assertEquals(0.0, fixer.getAccelerationBiasX(), 0.0);
         assertEquals(0.0, fixer.getAccelerationBiasY(), 0.0);
         assertEquals(0.0, fixer.getAccelerationBiasZ(), 0.0);
 
-        final AccelerationTriad accelerationTriad1 = fixer.getAccelerationBiasAsTriad();
+        final var accelerationTriad1 = fixer.getAccelerationBiasAsTriad();
         assertEquals(0.0, accelerationTriad1.getValueX(), 0.0);
         assertEquals(0.0, accelerationTriad1.getValueY(), 0.0);
         assertEquals(0.0, accelerationTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationTriad1.getUnit());
-        final AccelerationTriad accelerationTriad2 = new AccelerationTriad();
+        final var accelerationTriad2 = new AccelerationTriad();
         fixer.getAccelerationBiasAsTriad(accelerationTriad2);
         assertEquals(accelerationTriad1, accelerationTriad2);
 
         assertEquals(new Matrix(3, 3), fixer.getAccelerationCrossCouplingErrors());
-        final Matrix ma = new Matrix(3, 3);
+        final var ma = new Matrix(3, 3);
         fixer.getAccelerationCrossCouplingErrors(ma);
         assertEquals(new Matrix(3, 3), ma);
 
-        final Acceleration bax1 = fixer.getAccelerationBiasXAsAcceleration();
+        final var bax1 = fixer.getAccelerationBiasXAsAcceleration();
         assertEquals(0.0, bax1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, bax1.getUnit());
-        final Acceleration bax2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var bax2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         fixer.getAccelerationBiasXAsAcceleration(bax2);
         assertEquals(bax1, bax2);
-        final Acceleration bay1 = fixer.getAccelerationBiasYAsAcceleration();
+        final var bay1 = fixer.getAccelerationBiasYAsAcceleration();
         assertEquals(0.0, bay1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, bay1.getUnit());
-        final Acceleration bay2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var bay2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         fixer.getAccelerationBiasYAsAcceleration(bay2);
         assertEquals(bay1, bay2);
-        final Acceleration baz1 = fixer.getAccelerationBiasZAsAcceleration();
+        final var baz1 = fixer.getAccelerationBiasZAsAcceleration();
         assertEquals(0.0, baz1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, baz1.getUnit());
-        final Acceleration baz2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var baz2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         fixer.getAccelerationBiasZAsAcceleration(baz2);
         assertEquals(baz1, baz2);
 
@@ -107,21 +107,21 @@ public class BodyKinematicsFixerTest {
         assertEquals(0.0, fixer.getAccelerationMzy(), 0.0);
 
         assertEquals(new Matrix(3, 1), fixer.getAngularSpeedBias());
-        final Matrix bg = new Matrix(3, 1);
+        final var bg = new Matrix(3, 1);
         fixer.getAngularSpeedBias(bg);
         assertEquals(new Matrix(3, 1), bg);
 
         assertArrayEquals(new double[3], fixer.getAngularSpeedBiasArray(), 0.0);
-        final double[] bg2 = new double[3];
+        final var bg2 = new double[3];
         fixer.getAngularSpeedBiasArray(bg2);
         assertArrayEquals(new double[3], bg2, 0.0);
 
-        final AngularSpeedTriad angularSpeedTriad1 = fixer.getAngularSpeedBiasAsTriad();
+        final var angularSpeedTriad1 = fixer.getAngularSpeedBiasAsTriad();
         assertEquals(0.0, angularSpeedTriad1.getValueX(), 0.0);
         assertEquals(0.0, angularSpeedTriad1.getValueY(), 0.0);
         assertEquals(0.0, angularSpeedTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedTriad1.getUnit());
-        final AngularSpeedTriad angularSpeedTriad2 = new AngularSpeedTriad();
+        final var angularSpeedTriad2 = new AngularSpeedTriad();
         fixer.getAngularSpeedBiasAsTriad(angularSpeedTriad2);
         assertEquals(angularSpeedTriad1, angularSpeedTriad2);
 
@@ -129,27 +129,27 @@ public class BodyKinematicsFixerTest {
         assertEquals(0.0, fixer.getAngularSpeedBiasY(), 0.0);
         assertEquals(0.0, fixer.getAngularSpeedBiasZ(), 0.0);
 
-        final AngularSpeed bgx1 = fixer.getAngularSpeedBiasXAsAngularSpeed();
+        final var bgx1 = fixer.getAngularSpeedBiasXAsAngularSpeed();
         assertEquals(0.0, bgx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgx1.getUnit());
-        final AngularSpeed bgx2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bgx2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         fixer.getAngularSpeedBiasXAsAngularSpeed(bgx2);
         assertEquals(bgx1, bgx2);
-        final AngularSpeed bgy1 = fixer.getAngularSpeedBiasYAsAngularSpeed();
+        final var bgy1 = fixer.getAngularSpeedBiasYAsAngularSpeed();
         assertEquals(0.0, bgy1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgy1.getUnit());
-        final AngularSpeed bgy2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bgy2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         fixer.getAngularSpeedBiasYAsAngularSpeed(bgy2);
         assertEquals(bgy1, bgy2);
-        final AngularSpeed bgz1 = fixer.getAngularSpeedBiasZAsAngularSpeed();
+        final var bgz1 = fixer.getAngularSpeedBiasZAsAngularSpeed();
         assertEquals(0.0, bgz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgz1.getUnit());
-        final AngularSpeed bgz2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bgz2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         fixer.getAngularSpeedBiasZAsAngularSpeed(bgz2);
         assertEquals(bgz1, bgz2);
 
         assertEquals(new Matrix(3, 3), fixer.getAngularSpeedCrossCouplingErrors());
-        final Matrix mg = new Matrix(3, 3);
+        final var mg = new Matrix(3, 3);
         fixer.getAngularSpeedCrossCouplingErrors(mg);
         assertEquals(new Matrix(3, 3), mg);
 
@@ -164,30 +164,30 @@ public class BodyKinematicsFixerTest {
         assertEquals(0.0, fixer.getAngularSpeedMzy(), 0.0);
 
         assertEquals(new Matrix(3, 3), fixer.getAngularSpeedGDependantCrossBias());
-        final Matrix gg = new Matrix(3, 3);
+        final var gg = new Matrix(3, 3);
         fixer.getAngularSpeedGDependantCrossBias(gg);
         assertEquals(new Matrix(3, 3), gg);
     }
 
     @Test
-    public void testGetSetAccelerationBias() throws WrongSizeException {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAccelerationBias() throws WrongSizeException {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default value
-        final Matrix b1 = fixer.getAccelerationBias();
-        final Matrix b2 = new Matrix(1, 1);
+        final var b1 = fixer.getAccelerationBias();
+        final var b2 = new Matrix(1, 1);
         fixer.getAccelerationBias(b2);
 
         assertEquals(new Matrix(3, 1), b1);
         assertEquals(b1, b2);
 
         // set new value
-        final Matrix b3 = generateBa();
+        final var b3 = generateBa();
         fixer.setAccelerationBias(b3);
 
         // check
-        final Matrix b4 = fixer.getAccelerationBias();
-        final Matrix b5 = new Matrix(3, 1);
+        final var b4 = fixer.getAccelerationBias();
+        final var b5 = new Matrix(3, 1);
         fixer.getAccelerationBias(b5);
 
         assertEquals(b3, b4);
@@ -201,24 +201,24 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAccelerationBiasArray() {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAccelerationBiasArray() {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default value
-        final double[] b1 = fixer.getAccelerationBiasArray();
-        final double[] b2 = new double[3];
+        final var b1 = fixer.getAccelerationBiasArray();
+        final var b2 = new double[3];
         fixer.getAccelerationBiasArray(b2);
 
         assertArrayEquals(new double[3], b1, 0.0);
         assertArrayEquals(b1, b2, 0.0);
 
         // set new value
-        final double[] b3 = generateBa().getBuffer();
+        final var b3 = generateBa().getBuffer();
         fixer.setAccelerationBias(b3);
 
         // check
-        final double[] b4 = fixer.getAccelerationBiasArray();
-        final double[] b5 = new double[3];
+        final var b4 = fixer.getAccelerationBiasArray();
+        final var b5 = new double[3];
         fixer.getAccelerationBiasArray(b5);
 
         assertArrayEquals(b3, b4, 0.0);
@@ -230,24 +230,24 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAccelerationBiasTriad() {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAccelerationBiasTriad() {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default value
-        final AccelerationTriad triad1 = fixer.getAccelerationBiasAsTriad();
+        final var triad1 = fixer.getAccelerationBiasAsTriad();
         assertEquals(0.0, triad1.getValueX(), 0.0);
         assertEquals(0.0, triad1.getValueY(), 0.0);
         assertEquals(0.0, triad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, triad1.getUnit());
 
         // set new value
-        final AccelerationTriad triad2 = new AccelerationTriad();
+        final var triad2 = new AccelerationTriad();
         triad2.setValueCoordinates(generateBa());
         fixer.setAccelerationBias(triad2);
 
         // check
-        final AccelerationTriad triad3 = fixer.getAccelerationBiasAsTriad();
-        final AccelerationTriad triad4 = new AccelerationTriad();
+        final var triad3 = fixer.getAccelerationBiasAsTriad();
+        final var triad4 = new AccelerationTriad();
         fixer.getAccelerationBiasAsTriad(triad4);
 
         assertEquals(triad2, triad3);
@@ -255,15 +255,15 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAccelerationBiasX() {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAccelerationBiasX() {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default value
         assertEquals(0.0, fixer.getAccelerationBiasX(), 0.0);
 
         // set new value
-        final Matrix b = generateBa();
-        final double bx = b.getElementAtIndex(0);
+        final var b = generateBa();
+        final var bx = b.getElementAtIndex(0);
         fixer.setAccelerationBiasX(bx);
 
         // check
@@ -271,15 +271,15 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAccelerationBiasY() {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAccelerationBiasY() {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default value
         assertEquals(0.0, fixer.getAccelerationBiasY(), 0.0);
 
         // set new value
-        final Matrix b = generateBa();
-        final double by = b.getElementAtIndex(1);
+        final var b = generateBa();
+        final var by = b.getElementAtIndex(1);
         fixer.setAccelerationBiasY(by);
 
         // check
@@ -287,15 +287,15 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAccelerationBiasZ() {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAccelerationBiasZ() {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default value
         assertEquals(0.0, fixer.getAccelerationBiasZ(), 0.0);
 
         // set new value
-        final Matrix b = generateBa();
-        final double bz = b.getElementAtIndex(2);
+        final var b = generateBa();
+        final var bz = b.getElementAtIndex(2);
         fixer.setAccelerationBiasZ(bz);
 
         // check
@@ -303,8 +303,8 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testSetAccelerationBias1() {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testSetAccelerationBias1() {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default values
         assertEquals(0.0, fixer.getAccelerationBiasX(), 0.0);
@@ -312,10 +312,10 @@ public class BodyKinematicsFixerTest {
         assertEquals(0.0, fixer.getAccelerationBiasZ(), 0.0);
 
         // set new values
-        final Matrix b = generateBa();
-        final double bx = b.getElementAtIndex(0);
-        final double by = b.getElementAtIndex(1);
-        final double bz = b.getElementAtIndex(2);
+        final var b = generateBa();
+        final var bx = b.getElementAtIndex(0);
+        final var by = b.getElementAtIndex(1);
+        final var bz = b.getElementAtIndex(2);
         fixer.setAccelerationBias(bx, by, bz);
 
         // check
@@ -325,23 +325,23 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAccelerationBiasXAsAcceleration() {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAccelerationBiasXAsAcceleration() {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default value
-        final Acceleration bx1 = fixer.getAccelerationBiasXAsAcceleration();
+        final var bx1 = fixer.getAccelerationBiasXAsAcceleration();
         assertEquals(0.0, bx1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, bx1.getUnit());
 
         // set new value
-        final Matrix b = generateBa();
-        final double bx = b.getElementAtIndex(0);
-        final Acceleration bx2 = new Acceleration(bx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var b = generateBa();
+        final var bx = b.getElementAtIndex(0);
+        final var bx2 = new Acceleration(bx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         fixer.setAccelerationBiasX(bx2);
 
         // check
-        final Acceleration bx3 = fixer.getAccelerationBiasXAsAcceleration();
-        final Acceleration bx4 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var bx3 = fixer.getAccelerationBiasXAsAcceleration();
+        final var bx4 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         fixer.getAccelerationBiasXAsAcceleration(bx4);
 
         assertEquals(bx2, bx3);
@@ -349,23 +349,23 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAccelerationBiasYAsAcceleration() {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAccelerationBiasYAsAcceleration() {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default value
-        final Acceleration by1 = fixer.getAccelerationBiasYAsAcceleration();
+        final var by1 = fixer.getAccelerationBiasYAsAcceleration();
         assertEquals(0.0, by1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, by1.getUnit());
 
         // set new value
-        final Matrix b = generateBa();
-        final double by = b.getElementAtIndex(1);
-        final Acceleration by2 = new Acceleration(by, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var b = generateBa();
+        final var by = b.getElementAtIndex(1);
+        final var by2 = new Acceleration(by, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         fixer.setAccelerationBiasY(by2);
 
         // check
-        final Acceleration by3 = fixer.getAccelerationBiasYAsAcceleration();
-        final Acceleration by4 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var by3 = fixer.getAccelerationBiasYAsAcceleration();
+        final var by4 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         fixer.getAccelerationBiasYAsAcceleration(by4);
 
         assertEquals(by2, by3);
@@ -373,23 +373,23 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAccelerationBiasZAsAcceleration() {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAccelerationBiasZAsAcceleration() {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default value
-        final Acceleration bz1 = fixer.getAccelerationBiasZAsAcceleration();
+        final var bz1 = fixer.getAccelerationBiasZAsAcceleration();
         assertEquals(0.0, bz1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, bz1.getUnit());
 
         // set new value
-        final Matrix b = generateBa();
-        final double bz = b.getElementAtIndex(2);
-        final Acceleration bz2 = new Acceleration(bz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var b = generateBa();
+        final var bz = b.getElementAtIndex(2);
+        final var bz2 = new Acceleration(bz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         fixer.setAccelerationBiasZ(bz2);
 
         // check
-        final Acceleration bz3 = fixer.getAccelerationBiasZAsAcceleration();
-        final Acceleration bz4 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var bz3 = fixer.getAccelerationBiasZAsAcceleration();
+        final var bz4 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         fixer.getAccelerationBiasZAsAcceleration(bz4);
 
         assertEquals(bz2, bz3);
@@ -397,36 +397,36 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetBias2() {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetBias2() {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default values
-        final Acceleration bx1 = fixer.getAccelerationBiasXAsAcceleration();
+        final var bx1 = fixer.getAccelerationBiasXAsAcceleration();
         assertEquals(0.0, bx1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, bx1.getUnit());
 
-        final Acceleration by1 = fixer.getAccelerationBiasYAsAcceleration();
+        final var by1 = fixer.getAccelerationBiasYAsAcceleration();
         assertEquals(0.0, by1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, by1.getUnit());
 
-        final Acceleration bz1 = fixer.getAccelerationBiasZAsAcceleration();
+        final var bz1 = fixer.getAccelerationBiasZAsAcceleration();
         assertEquals(0.0, bz1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, bz1.getUnit());
 
         // set new values
-        final Matrix b = generateBa();
-        final double bx = b.getElementAtIndex(0);
-        final double by = b.getElementAtIndex(1);
-        final double bz = b.getElementAtIndex(2);
-        final Acceleration bx2 = new Acceleration(bx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration by2 = new Acceleration(by, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration bz2 = new Acceleration(bz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var b = generateBa();
+        final var bx = b.getElementAtIndex(0);
+        final var by = b.getElementAtIndex(1);
+        final var bz = b.getElementAtIndex(2);
+        final var bx2 = new Acceleration(bx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var by2 = new Acceleration(by, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var bz2 = new Acceleration(bz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         fixer.setAccelerationBias(bx2, by2, bz2);
 
         // check
-        final Acceleration bx3 = fixer.getAccelerationBiasXAsAcceleration();
-        final Acceleration by3 = fixer.getAccelerationBiasYAsAcceleration();
-        final Acceleration bz3 = fixer.getAccelerationBiasZAsAcceleration();
+        final var bx3 = fixer.getAccelerationBiasXAsAcceleration();
+        final var by3 = fixer.getAccelerationBiasYAsAcceleration();
+        final var bz3 = fixer.getAccelerationBiasZAsAcceleration();
 
         assertEquals(bx2, bx3);
         assertEquals(by2, by3);
@@ -434,34 +434,34 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAccelerationCrossCouplingErrors() throws AlgebraException {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAccelerationCrossCouplingErrors() throws AlgebraException {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default values
-        final Matrix m1 = fixer.getAccelerationCrossCouplingErrors();
-        final Matrix m2 = new Matrix(1, 1);
+        final var m1 = fixer.getAccelerationCrossCouplingErrors();
+        final var m2 = new Matrix(1, 1);
         fixer.getAccelerationCrossCouplingErrors(m2);
 
-        assertEquals(m1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), m1);
         assertEquals(m1, m2);
 
         // set new values
-        final Matrix m3 = generateMa();
-        final double sx = m3.getElementAt(0, 0);
-        final double sy = m3.getElementAt(1, 1);
-        final double sz = m3.getElementAt(2, 2);
-        final double mxy = m3.getElementAt(0, 1);
-        final double mxz = m3.getElementAt(0, 2);
-        final double myx = m3.getElementAt(1, 0);
-        final double myz = m3.getElementAt(1, 2);
-        final double mzx = m3.getElementAt(2, 0);
-        final double mzy = m3.getElementAt(2, 1);
+        final var m3 = generateMa();
+        final var sx = m3.getElementAt(0, 0);
+        final var sy = m3.getElementAt(1, 1);
+        final var sz = m3.getElementAt(2, 2);
+        final var mxy = m3.getElementAt(0, 1);
+        final var mxz = m3.getElementAt(0, 2);
+        final var myx = m3.getElementAt(1, 0);
+        final var myz = m3.getElementAt(1, 2);
+        final var mzx = m3.getElementAt(2, 0);
+        final var mzy = m3.getElementAt(2, 1);
 
         fixer.setAccelerationCrossCouplingErrors(m3);
 
         // check
-        final Matrix m4 = fixer.getAccelerationCrossCouplingErrors();
-        final Matrix m5 = new Matrix(3, 3);
+        final var m4 = fixer.getAccelerationCrossCouplingErrors();
+        final var m5 = new Matrix(3, 3);
         fixer.getAccelerationCrossCouplingErrors(m5);
 
         assertEquals(m3, m4);
@@ -484,21 +484,21 @@ public class BodyKinematicsFixerTest {
         assertThrows(IllegalArgumentException.class, () -> fixer.setAccelerationCrossCouplingErrors(m7));
 
         // Force AlgebraException
-        final Matrix wrong = Matrix.identity(3, 3);
+        final var wrong = Matrix.identity(3, 3);
         wrong.multiplyByScalar(-1.0);
         assertThrows(AlgebraException.class, () -> fixer.setAccelerationCrossCouplingErrors(wrong));
     }
 
     @Test
-    public void testGetSetAccelerationSx() throws AlgebraException {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAccelerationSx() throws AlgebraException {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default value
         assertEquals(0.0, fixer.getAccelerationSx(), 0.0);
 
         // set new value
-        final Matrix m = generateMa();
-        final double sx = m.getElementAt(0, 0);
+        final var m = generateMa();
+        final var sx = m.getElementAt(0, 0);
 
         fixer.setAccelerationSx(sx);
 
@@ -507,15 +507,15 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAccelerationSy() throws AlgebraException {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAccelerationSy() throws AlgebraException {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default value
         assertEquals(0.0, fixer.getAccelerationSy(), 0.0);
 
         // set new value
-        final Matrix m = generateMa();
-        final double sy = m.getElementAt(1, 1);
+        final var m = generateMa();
+        final var sy = m.getElementAt(1, 1);
 
         fixer.setAccelerationSy(sy);
 
@@ -524,15 +524,15 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAccelerationSz() throws AlgebraException {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAccelerationSz() throws AlgebraException {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default value
         assertEquals(0.0, fixer.getAccelerationSz(), 0.0);
 
         // set new value
-        final Matrix m = generateMa();
-        final double sz = m.getElementAt(2, 2);
+        final var m = generateMa();
+        final var sz = m.getElementAt(2, 2);
 
         fixer.setAccelerationSz(sz);
 
@@ -541,15 +541,15 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAccelerationMxy() throws AlgebraException {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAccelerationMxy() throws AlgebraException {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default value
         assertEquals(0.0, fixer.getAccelerationMxy(), 0.0);
 
         // set new value
-        final Matrix m = generateMa();
-        final double mxy = m.getElementAt(0, 1);
+        final var m = generateMa();
+        final var mxy = m.getElementAt(0, 1);
 
         fixer.setAccelerationMxy(mxy);
 
@@ -558,15 +558,15 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAccelerationMxz() throws AlgebraException {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAccelerationMxz() throws AlgebraException {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default value
         assertEquals(0.0, fixer.getAccelerationMxz(), 0.0);
 
         // set new value
-        final Matrix m = generateMa();
-        final double mxz = m.getElementAt(0, 2);
+        final var m = generateMa();
+        final var mxz = m.getElementAt(0, 2);
 
         fixer.setAccelerationMxz(mxz);
 
@@ -575,15 +575,15 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAccelerationMyx() throws AlgebraException {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAccelerationMyx() throws AlgebraException {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default value
         assertEquals(0.0, fixer.getAccelerationMyx(), 0.0);
 
         // set new value
-        final Matrix m = generateMa();
-        final double myx = m.getElementAt(1, 0);
+        final var m = generateMa();
+        final var myx = m.getElementAt(1, 0);
 
         fixer.setAccelerationMyx(myx);
 
@@ -592,15 +592,15 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAccelerationMyz() throws AlgebraException {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAccelerationMyz() throws AlgebraException {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default value
         assertEquals(0.0, fixer.getAccelerationMyz(), 0.0);
 
         // set new value
-        final Matrix m = generateMa();
-        final double myz = m.getElementAt(1, 2);
+        final var m = generateMa();
+        final var myz = m.getElementAt(1, 2);
 
         fixer.setAccelerationMyz(myz);
 
@@ -609,15 +609,15 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAccelerationMzx() throws AlgebraException {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAccelerationMzx() throws AlgebraException {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default value
         assertEquals(0.0, fixer.getAccelerationMzx(), 0.0);
 
         // set new value
-        final Matrix m = generateMa();
-        final double mzx = m.getElementAt(2, 0);
+        final var m = generateMa();
+        final var mzx = m.getElementAt(2, 0);
 
         fixer.setAccelerationMzx(mzx);
 
@@ -626,15 +626,15 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAccelerationMzy() throws AlgebraException {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAccelerationMzy() throws AlgebraException {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default value
         assertEquals(0.0, fixer.getAccelerationMzy(), 0.0);
 
         // set new value
-        final Matrix m = generateMa();
-        final double mzy = m.getElementAt(2, 1);
+        final var m = generateMa();
+        final var mzy = m.getElementAt(2, 1);
 
         fixer.setAccelerationMzy(mzy);
 
@@ -643,8 +643,8 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testSetAccelerationScalingFactors() throws AlgebraException {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testSetAccelerationScalingFactors() throws AlgebraException {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default values
         assertEquals(0.0, fixer.getAccelerationSx(), 0.0);
@@ -652,10 +652,10 @@ public class BodyKinematicsFixerTest {
         assertEquals(0.0, fixer.getAccelerationSz(), 0.0);
 
         // set new values
-        final Matrix m = generateMa();
-        final double sx = m.getElementAt(0, 0);
-        final double sy = m.getElementAt(1, 1);
-        final double sz = m.getElementAt(2, 2);
+        final var m = generateMa();
+        final var sx = m.getElementAt(0, 0);
+        final var sy = m.getElementAt(1, 1);
+        final var sz = m.getElementAt(2, 2);
 
         fixer.setAccelerationScalingFactors(sx, sy, sz);
 
@@ -666,8 +666,8 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testSetAccelerationCrossCouplingErrors() throws AlgebraException {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testSetAccelerationCrossCouplingErrors() throws AlgebraException {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default values
         assertEquals(0.0, fixer.getAccelerationMxy(), 0.0);
@@ -678,13 +678,13 @@ public class BodyKinematicsFixerTest {
         assertEquals(0.0, fixer.getAccelerationMzy(), 0.0);
 
         // set new values
-        final Matrix m = generateMa();
-        final double mxy = m.getElementAt(0, 1);
-        final double mxz = m.getElementAt(0, 2);
-        final double myx = m.getElementAt(1, 0);
-        final double myz = m.getElementAt(1, 2);
-        final double mzx = m.getElementAt(2, 0);
-        final double mzy = m.getElementAt(2, 1);
+        final var m = generateMa();
+        final var mxy = m.getElementAt(0, 1);
+        final var mxz = m.getElementAt(0, 2);
+        final var myx = m.getElementAt(1, 0);
+        final var myz = m.getElementAt(1, 2);
+        final var mzx = m.getElementAt(2, 0);
+        final var mzy = m.getElementAt(2, 1);
 
         fixer.setAccelerationCrossCouplingErrors(mxy, mxz, myx, myz, mzx, mzy);
 
@@ -698,8 +698,8 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testSetAccelerationScalingFactorsAndCrossCouplingErrors() throws AlgebraException {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testSetAccelerationScalingFactorsAndCrossCouplingErrors() throws AlgebraException {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default values
         assertEquals(0.0, fixer.getAccelerationSx(), 0.0);
@@ -713,16 +713,16 @@ public class BodyKinematicsFixerTest {
         assertEquals(0.0, fixer.getAccelerationMzy(), 0.0);
 
         // set new values
-        final Matrix m = generateMa();
-        final double sx = m.getElementAt(0, 0);
-        final double sy = m.getElementAt(1, 1);
-        final double sz = m.getElementAt(2, 2);
-        final double mxy = m.getElementAt(0, 1);
-        final double mxz = m.getElementAt(0, 2);
-        final double myx = m.getElementAt(1, 0);
-        final double myz = m.getElementAt(1, 2);
-        final double mzx = m.getElementAt(2, 0);
-        final double mzy = m.getElementAt(2, 1);
+        final var m = generateMa();
+        final var sx = m.getElementAt(0, 0);
+        final var sy = m.getElementAt(1, 1);
+        final var sz = m.getElementAt(2, 2);
+        final var mxy = m.getElementAt(0, 1);
+        final var mxz = m.getElementAt(0, 2);
+        final var myx = m.getElementAt(1, 0);
+        final var myz = m.getElementAt(1, 2);
+        final var mzx = m.getElementAt(2, 0);
+        final var mzy = m.getElementAt(2, 1);
 
         fixer.setAccelerationScalingFactorsAndCrossCouplingErrors(sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy);
 
@@ -739,24 +739,24 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAngularSpeedBias() throws WrongSizeException {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAngularSpeedBias() throws WrongSizeException {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default value
-        final Matrix b1 = fixer.getAngularSpeedBias();
-        final Matrix b2 = new Matrix(1, 1);
+        final var b1 = fixer.getAngularSpeedBias();
+        final var b2 = new Matrix(1, 1);
         fixer.getAngularSpeedBias(b2);
 
-        assertEquals(b1, new Matrix(3, 1));
+        assertEquals(new Matrix(3, 1), b1);
         assertEquals(b1, b2);
 
         // set new value
-        final Matrix b3 = generateBg();
+        final var b3 = generateBg();
         fixer.setAngularSpeedBias(b3);
 
         // check
-        final Matrix b4 = fixer.getAngularSpeedBias();
-        final Matrix b5 = new Matrix(3, 1);
+        final var b4 = fixer.getAngularSpeedBias();
+        final var b5 = new Matrix(3, 1);
         fixer.getAngularSpeedBias(b5);
 
         assertEquals(b3, b4);
@@ -770,24 +770,24 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAngularSpeedBiasArray() {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAngularSpeedBiasArray() {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default value
-        final double[] b1 = fixer.getAngularSpeedBiasArray();
-        final double[] b2 = new double[3];
+        final var b1 = fixer.getAngularSpeedBiasArray();
+        final var b2 = new double[3];
         fixer.getAngularSpeedBiasArray(b2);
 
         assertArrayEquals(new double[3], b1, 0.0);
         assertArrayEquals(b1, b2, 0.0);
 
         // set new value
-        final double[] b3 = generateBg().getBuffer();
+        final var b3 = generateBg().getBuffer();
         fixer.setAngularSpeedBias(b3);
 
         // check
-        final double[] b4 = fixer.getAngularSpeedBiasArray();
-        final double[] b5 = new double[3];
+        final var b4 = fixer.getAngularSpeedBiasArray();
+        final var b5 = new double[3];
         fixer.getAngularSpeedBiasArray(b5);
 
         assertArrayEquals(b3, b4, 0.0);
@@ -799,24 +799,24 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAngularSpeedBiasTriad() {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAngularSpeedBiasTriad() {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default value
-        final AngularSpeedTriad triad1 = fixer.getAngularSpeedBiasAsTriad();
+        final var triad1 = fixer.getAngularSpeedBiasAsTriad();
         assertEquals(0.0, triad1.getValueX(), 0.0);
         assertEquals(0.0, triad1.getValueY(), 0.0);
         assertEquals(0.0, triad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, triad1.getUnit());
 
         // set new value
-        final AngularSpeedTriad triad2 = new AngularSpeedTriad();
+        final var triad2 = new AngularSpeedTriad();
         triad2.setValueCoordinates(generateBg());
         fixer.setAngularSpeedBias(triad2);
 
         // check
-        final AngularSpeedTriad triad3 = fixer.getAngularSpeedBiasAsTriad();
-        final AngularSpeedTriad triad4 = new AngularSpeedTriad();
+        final var triad3 = fixer.getAngularSpeedBiasAsTriad();
+        final var triad4 = new AngularSpeedTriad();
         fixer.getAngularSpeedBiasAsTriad(triad4);
 
         assertEquals(triad2, triad3);
@@ -824,15 +824,15 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAngularSpeedBiasX() {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAngularSpeedBiasX() {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default value
         assertEquals(0.0, fixer.getAngularSpeedBiasX(), 0.0);
 
         // set new value
-        final Matrix b = generateBg();
-        final double bx = b.getElementAtIndex(0);
+        final var b = generateBg();
+        final var bx = b.getElementAtIndex(0);
         fixer.setAngularSpeedBiasX(bx);
 
         // check
@@ -840,15 +840,15 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAngularSpeedBiasY() {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAngularSpeedBiasY() {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default value
         assertEquals(0.0, fixer.getAngularSpeedBiasY(), 0.0);
 
         // set new value
-        final Matrix b = generateBg();
-        final double by = b.getElementAtIndex(1);
+        final var b = generateBg();
+        final var by = b.getElementAtIndex(1);
         fixer.setAngularSpeedBiasY(by);
 
         // check
@@ -856,15 +856,15 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAngularSpeedBiasZ() {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAngularSpeedBiasZ() {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default value
         assertEquals(0.0, fixer.getAngularSpeedBiasZ(), 0.0);
 
         // set new value
-        final Matrix b = generateBg();
-        final double bz = b.getElementAtIndex(2);
+        final var b = generateBg();
+        final var bz = b.getElementAtIndex(2);
         fixer.setAngularSpeedBiasZ(bz);
 
         // check
@@ -872,8 +872,8 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testSetAngularSpeedBias1() {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testSetAngularSpeedBias1() {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default values
         assertEquals(0.0, fixer.getAngularSpeedBiasX(), 0.0);
@@ -881,10 +881,10 @@ public class BodyKinematicsFixerTest {
         assertEquals(0.0, fixer.getAngularSpeedBiasZ(), 0.0);
 
         // set new values
-        final Matrix b = generateBg();
-        final double bx = b.getElementAtIndex(0);
-        final double by = b.getElementAtIndex(1);
-        final double bz = b.getElementAtIndex(2);
+        final var b = generateBg();
+        final var bx = b.getElementAtIndex(0);
+        final var by = b.getElementAtIndex(1);
+        final var bz = b.getElementAtIndex(2);
         fixer.setAngularSpeedBias(bx, by, bz);
 
         // check
@@ -894,23 +894,23 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAngularSpeedBiasXAsAngularSpeed() {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAngularSpeedBiasXAsAngularSpeed() {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default value
-        final AngularSpeed bx1 = fixer.getAngularSpeedBiasXAsAngularSpeed();
+        final var bx1 = fixer.getAngularSpeedBiasXAsAngularSpeed();
         assertEquals(0.0, bx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bx1.getUnit());
 
         // set new value
-        final Matrix b = generateBg();
-        final double bx = b.getElementAtIndex(0);
-        final AngularSpeed bx2 = new AngularSpeed(bx, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var b = generateBg();
+        final var bx = b.getElementAtIndex(0);
+        final var bx2 = new AngularSpeed(bx, AngularSpeedUnit.RADIANS_PER_SECOND);
         fixer.setAngularSpeedBiasX(bx2);
 
         // check
-        final AngularSpeed bx3 = fixer.getAngularSpeedBiasXAsAngularSpeed();
-        final AngularSpeed bx4 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bx3 = fixer.getAngularSpeedBiasXAsAngularSpeed();
+        final var bx4 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         fixer.getAngularSpeedBiasXAsAngularSpeed(bx4);
 
         assertEquals(bx2, bx3);
@@ -918,23 +918,23 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAngularSpeedBiasYAsAngularSpeed() {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAngularSpeedBiasYAsAngularSpeed() {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default value
-        final AngularSpeed by1 = fixer.getAngularSpeedBiasYAsAngularSpeed();
+        final var by1 = fixer.getAngularSpeedBiasYAsAngularSpeed();
         assertEquals(0.0, by1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, by1.getUnit());
 
         // set new value
-        final Matrix b = generateBg();
-        final double by = b.getElementAtIndex(1);
-        final AngularSpeed by2 = new AngularSpeed(by, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var b = generateBg();
+        final var by = b.getElementAtIndex(1);
+        final var by2 = new AngularSpeed(by, AngularSpeedUnit.RADIANS_PER_SECOND);
         fixer.setAngularSpeedBiasY(by2);
 
         // check
-        final AngularSpeed by3 = fixer.getAngularSpeedBiasYAsAngularSpeed();
-        final AngularSpeed by4 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var by3 = fixer.getAngularSpeedBiasYAsAngularSpeed();
+        final var by4 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         fixer.getAngularSpeedBiasYAsAngularSpeed(by4);
 
         assertEquals(by2, by3);
@@ -942,23 +942,23 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAngularSpeedBiasZAsAngularSpeed() {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAngularSpeedBiasZAsAngularSpeed() {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default value
-        final AngularSpeed bz1 = fixer.getAngularSpeedBiasZAsAngularSpeed();
+        final var bz1 = fixer.getAngularSpeedBiasZAsAngularSpeed();
         assertEquals(0.0, bz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bz1.getUnit());
 
         // set new value
-        final Matrix b = generateBg();
-        final double bz = b.getElementAtIndex(2);
-        final AngularSpeed bz2 = new AngularSpeed(bz, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var b = generateBg();
+        final var bz = b.getElementAtIndex(2);
+        final var bz2 = new AngularSpeed(bz, AngularSpeedUnit.RADIANS_PER_SECOND);
         fixer.setAngularSpeedBiasZ(bz2);
 
         // check
-        final AngularSpeed bz3 = fixer.getAngularSpeedBiasZAsAngularSpeed();
-        final AngularSpeed bz4 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bz3 = fixer.getAngularSpeedBiasZAsAngularSpeed();
+        final var bz4 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         fixer.getAngularSpeedBiasZAsAngularSpeed(bz4);
 
         assertEquals(bz2, bz3);
@@ -966,36 +966,36 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAngularSpeedBias2() {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAngularSpeedBias2() {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default values
-        final AngularSpeed bx1 = fixer.getAngularSpeedBiasXAsAngularSpeed();
+        final var bx1 = fixer.getAngularSpeedBiasXAsAngularSpeed();
         assertEquals(0.0, bx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bx1.getUnit());
 
-        final AngularSpeed by1 = fixer.getAngularSpeedBiasYAsAngularSpeed();
+        final var by1 = fixer.getAngularSpeedBiasYAsAngularSpeed();
         assertEquals(0.0, by1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, by1.getUnit());
 
-        final AngularSpeed bz1 = fixer.getAngularSpeedBiasZAsAngularSpeed();
+        final var bz1 = fixer.getAngularSpeedBiasZAsAngularSpeed();
         assertEquals(0.0, bz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bz1.getUnit());
 
         // set new values
-        final Matrix b = generateBg();
-        final double bx = b.getElementAtIndex(0);
-        final double by = b.getElementAtIndex(1);
-        final double bz = b.getElementAtIndex(2);
-        final AngularSpeed bx2 = new AngularSpeed(bx, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed by2 = new AngularSpeed(by, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed bz2 = new AngularSpeed(bz, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var b = generateBg();
+        final var bx = b.getElementAtIndex(0);
+        final var by = b.getElementAtIndex(1);
+        final var bz = b.getElementAtIndex(2);
+        final var bx2 = new AngularSpeed(bx, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var by2 = new AngularSpeed(by, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bz2 = new AngularSpeed(bz, AngularSpeedUnit.RADIANS_PER_SECOND);
         fixer.setAngularSpeedBias(bx2, by2, bz2);
 
         // check
-        final AngularSpeed bx3 = fixer.getAngularSpeedBiasXAsAngularSpeed();
-        final AngularSpeed by3 = fixer.getAngularSpeedBiasYAsAngularSpeed();
-        final AngularSpeed bz3 = fixer.getAngularSpeedBiasZAsAngularSpeed();
+        final var bx3 = fixer.getAngularSpeedBiasXAsAngularSpeed();
+        final var by3 = fixer.getAngularSpeedBiasYAsAngularSpeed();
+        final var bz3 = fixer.getAngularSpeedBiasZAsAngularSpeed();
 
         assertEquals(bx2, bx3);
         assertEquals(by2, by3);
@@ -1003,34 +1003,34 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAngularSpeedCrossCouplingErrors() throws AlgebraException {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAngularSpeedCrossCouplingErrors() throws AlgebraException {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default values
-        final Matrix m1 = fixer.getAngularSpeedCrossCouplingErrors();
-        final Matrix m2 = new Matrix(1, 1);
+        final var m1 = fixer.getAngularSpeedCrossCouplingErrors();
+        final var m2 = new Matrix(1, 1);
         fixer.getAngularSpeedCrossCouplingErrors(m2);
 
-        assertEquals(m1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), m1);
         assertEquals(m1, m2);
 
         // set new values
-        final Matrix m3 = generateMg();
-        final double sx = m3.getElementAt(0, 0);
-        final double sy = m3.getElementAt(1, 1);
-        final double sz = m3.getElementAt(2, 2);
-        final double mxy = m3.getElementAt(0, 1);
-        final double mxz = m3.getElementAt(0, 2);
-        final double myx = m3.getElementAt(1, 0);
-        final double myz = m3.getElementAt(1, 2);
-        final double mzx = m3.getElementAt(2, 0);
-        final double mzy = m3.getElementAt(2, 1);
+        final var m3 = generateMg();
+        final var sx = m3.getElementAt(0, 0);
+        final var sy = m3.getElementAt(1, 1);
+        final var sz = m3.getElementAt(2, 2);
+        final var mxy = m3.getElementAt(0, 1);
+        final var mxz = m3.getElementAt(0, 2);
+        final var myx = m3.getElementAt(1, 0);
+        final var myz = m3.getElementAt(1, 2);
+        final var mzx = m3.getElementAt(2, 0);
+        final var mzy = m3.getElementAt(2, 1);
 
         fixer.setAngularSpeedCrossCouplingErrors(m3);
 
         // check
-        final Matrix m4 = fixer.getAngularSpeedCrossCouplingErrors();
-        final Matrix m5 = new Matrix(3, 3);
+        final var m4 = fixer.getAngularSpeedCrossCouplingErrors();
+        final var m5 = new Matrix(3, 3);
         fixer.getAngularSpeedCrossCouplingErrors(m5);
 
         assertEquals(m3, m4);
@@ -1053,21 +1053,21 @@ public class BodyKinematicsFixerTest {
         assertThrows(IllegalArgumentException.class, () -> fixer.setAngularSpeedCrossCouplingErrors(m7));
 
         // Force AlgebraException
-        final Matrix wrong = Matrix.identity(3, 3);
+        final var wrong = Matrix.identity(3, 3);
         wrong.multiplyByScalar(-1.0);
         assertThrows(AlgebraException.class, () -> fixer.setAngularSpeedCrossCouplingErrors(wrong));
     }
 
     @Test
-    public void testGetSetAngularSpeedSx() throws AlgebraException {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAngularSpeedSx() throws AlgebraException {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default value
         assertEquals(0.0, fixer.getAngularSpeedSx(), 0.0);
 
         // set new value
-        final Matrix m = generateMg();
-        final double sx = m.getElementAt(0, 0);
+        final var m = generateMg();
+        final var sx = m.getElementAt(0, 0);
 
         fixer.setAngularSpeedSx(sx);
 
@@ -1076,15 +1076,15 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAngularSpeedSy() throws AlgebraException {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAngularSpeedSy() throws AlgebraException {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default value
         assertEquals(0.0, fixer.getAngularSpeedSy(), 0.0);
 
         // set new value
-        final Matrix m = generateMg();
-        final double sy = m.getElementAt(1, 1);
+        final var m = generateMg();
+        final var sy = m.getElementAt(1, 1);
 
         fixer.setAngularSpeedSy(sy);
 
@@ -1093,15 +1093,15 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAngularSpeedSz() throws AlgebraException {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAngularSpeedSz() throws AlgebraException {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default value
         assertEquals(0.0, fixer.getAngularSpeedSz(), 0.0);
 
         // set new value
-        final Matrix m = generateMg();
-        final double sz = m.getElementAt(2, 2);
+        final var m = generateMg();
+        final var sz = m.getElementAt(2, 2);
 
         fixer.setAngularSpeedSz(sz);
 
@@ -1110,15 +1110,15 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAngularSpeedMxy() throws AlgebraException {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAngularSpeedMxy() throws AlgebraException {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default value
         assertEquals(0.0, fixer.getAngularSpeedMxy(), 0.0);
 
         // set new value
-        final Matrix m = generateMg();
-        final double mxy = m.getElementAt(0, 1);
+        final var m = generateMg();
+        final var mxy = m.getElementAt(0, 1);
 
         fixer.setAngularSpeedMxy(mxy);
 
@@ -1127,15 +1127,15 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAngularSpeedMxz() throws AlgebraException {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAngularSpeedMxz() throws AlgebraException {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default value
         assertEquals(0.0, fixer.getAngularSpeedMxz(), 0.0);
 
         // set new value
-        final Matrix m = generateMg();
-        final double mxz = m.getElementAt(0, 2);
+        final var m = generateMg();
+        final var mxz = m.getElementAt(0, 2);
 
         fixer.setAngularSpeedMxz(mxz);
 
@@ -1144,15 +1144,15 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAngularSpeedMyx() throws AlgebraException {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAngularSpeedMyx() throws AlgebraException {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default value
         assertEquals(0.0, fixer.getAngularSpeedMyx(), 0.0);
 
         // set new value
-        final Matrix m = generateMg();
-        final double myx = m.getElementAt(1, 0);
+        final var m = generateMg();
+        final var myx = m.getElementAt(1, 0);
 
         fixer.setAngularSpeedMyx(myx);
 
@@ -1161,15 +1161,15 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAngularSpeedMyz() throws AlgebraException {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAngularSpeedMyz() throws AlgebraException {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default value
         assertEquals(0.0, fixer.getAngularSpeedMyz(), 0.0);
 
         // set new value
-        final Matrix m = generateMg();
-        final double myz = m.getElementAt(1, 2);
+        final var m = generateMg();
+        final var myz = m.getElementAt(1, 2);
 
         fixer.setAngularSpeedMyz(myz);
 
@@ -1178,15 +1178,15 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAngularSpeedMzx() throws AlgebraException {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAngularSpeedMzx() throws AlgebraException {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default value
         assertEquals(0.0, fixer.getAngularSpeedMzx(), 0.0);
 
         // set new value
-        final Matrix m = generateMg();
-        final double mzx = m.getElementAt(2, 0);
+        final var m = generateMg();
+        final var mzx = m.getElementAt(2, 0);
 
         fixer.setAngularSpeedMzx(mzx);
 
@@ -1195,15 +1195,15 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAngularSpeedMzy() throws AlgebraException {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAngularSpeedMzy() throws AlgebraException {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default value
         assertEquals(0.0, fixer.getAngularSpeedMzy(), 0.0);
 
         // set new value
-        final Matrix m = generateMg();
-        final double mzy = m.getElementAt(2, 1);
+        final var m = generateMg();
+        final var mzy = m.getElementAt(2, 1);
 
         fixer.setAngularSpeedMzy(mzy);
 
@@ -1212,8 +1212,8 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testSetAngularSpeedScalingFactors() throws AlgebraException {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testSetAngularSpeedScalingFactors() throws AlgebraException {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default values
         assertEquals(0.0, fixer.getAngularSpeedSx(), 0.0);
@@ -1221,10 +1221,10 @@ public class BodyKinematicsFixerTest {
         assertEquals(0.0, fixer.getAngularSpeedSz(), 0.0);
 
         // set new values
-        final Matrix m = generateMg();
-        final double sx = m.getElementAt(0, 0);
-        final double sy = m.getElementAt(1, 1);
-        final double sz = m.getElementAt(2, 2);
+        final var m = generateMg();
+        final var sx = m.getElementAt(0, 0);
+        final var sy = m.getElementAt(1, 1);
+        final var sz = m.getElementAt(2, 2);
 
         fixer.setAngularSpeedScalingFactors(sx, sy, sz);
 
@@ -1235,8 +1235,8 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testSetAngularSpeedCrossCouplingErrors() throws AlgebraException {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testSetAngularSpeedCrossCouplingErrors() throws AlgebraException {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default values
         assertEquals(0.0, fixer.getAngularSpeedMxy(), 0.0);
@@ -1247,13 +1247,13 @@ public class BodyKinematicsFixerTest {
         assertEquals(0.0, fixer.getAngularSpeedMzy(), 0.0);
 
         // set new values
-        final Matrix m = generateMg();
-        final double mxy = m.getElementAt(0, 1);
-        final double mxz = m.getElementAt(0, 2);
-        final double myx = m.getElementAt(1, 0);
-        final double myz = m.getElementAt(1, 2);
-        final double mzx = m.getElementAt(2, 0);
-        final double mzy = m.getElementAt(2, 1);
+        final var m = generateMg();
+        final var mxy = m.getElementAt(0, 1);
+        final var mxz = m.getElementAt(0, 2);
+        final var myx = m.getElementAt(1, 0);
+        final var myz = m.getElementAt(1, 2);
+        final var mzx = m.getElementAt(2, 0);
+        final var mzy = m.getElementAt(2, 1);
 
         fixer.setAngularSpeedCrossCouplingErrors(mxy, mxz, myx, myz, mzx, mzy);
 
@@ -1267,8 +1267,8 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testSetAngularSpeedScalingFactorsAndCrossCouplingErrors() throws AlgebraException {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testSetAngularSpeedScalingFactorsAndCrossCouplingErrors() throws AlgebraException {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default values
         assertEquals(0.0, fixer.getAngularSpeedSx(), 0.0);
@@ -1282,16 +1282,16 @@ public class BodyKinematicsFixerTest {
         assertEquals(0.0, fixer.getAngularSpeedMzy(), 0.0);
 
         // set new values
-        final Matrix m = generateMg();
-        final double sx = m.getElementAt(0, 0);
-        final double sy = m.getElementAt(1, 1);
-        final double sz = m.getElementAt(2, 2);
-        final double mxy = m.getElementAt(0, 1);
-        final double mxz = m.getElementAt(0, 2);
-        final double myx = m.getElementAt(1, 0);
-        final double myz = m.getElementAt(1, 2);
-        final double mzx = m.getElementAt(2, 0);
-        final double mzy = m.getElementAt(2, 1);
+        final var m = generateMg();
+        final var sx = m.getElementAt(0, 0);
+        final var sy = m.getElementAt(1, 1);
+        final var sz = m.getElementAt(2, 2);
+        final var mxy = m.getElementAt(0, 1);
+        final var mxz = m.getElementAt(0, 2);
+        final var myx = m.getElementAt(1, 0);
+        final var myz = m.getElementAt(1, 2);
+        final var mzx = m.getElementAt(2, 0);
+        final var mzy = m.getElementAt(2, 1);
 
         fixer.setAngularSpeedScalingFactorsAndCrossCouplingErrors(sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy);
 
@@ -1308,25 +1308,25 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testGetSetAngularSpeedGDependantCrossBias() throws AlgebraException {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testGetSetAngularSpeedGDependantCrossBias() throws AlgebraException {
+        final var fixer = new BodyKinematicsFixer();
 
         // check default values
-        final Matrix g1 = fixer.getAngularSpeedGDependantCrossBias();
-        final Matrix g2 = new Matrix(1, 1);
+        final var g1 = fixer.getAngularSpeedGDependantCrossBias();
+        final var g2 = new Matrix(1, 1);
         fixer.getAngularSpeedGDependantCrossBias(g2);
 
-        assertEquals(g1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), g1);
         assertEquals(g1, g2);
 
         // set new values
-        final Matrix g3 = generateGg();
+        final var g3 = generateGg();
 
         fixer.setAngularSpeedGDependantCrossBias(g3);
 
         // check
-        final Matrix g4 = fixer.getAngularSpeedGDependantCrossBias();
-        final Matrix g5 = new Matrix(3, 3);
+        final var g4 = fixer.getAngularSpeedGDependantCrossBias();
+        final var g5 = new Matrix(3, 3);
         fixer.getAngularSpeedGDependantCrossBias(g5);
 
         assertEquals(g3, g4);
@@ -1340,18 +1340,18 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testFix1() throws AlgebraException {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testFix1() throws AlgebraException {
+        final var fixer = new BodyKinematicsFixer();
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
         fixer.setAccelerationBias(ba);
         fixer.setAccelerationCrossCouplingErrors(ma);
@@ -1359,15 +1359,15 @@ public class BodyKinematicsFixerTest {
         fixer.setAngularSpeedCrossCouplingErrors(mg);
         fixer.setAngularSpeedGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final BodyKinematics trueKinematics = getTrueKinematics();
+        final var trueKinematics = getTrueKinematics();
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, new Random());
+        final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                new Random());
 
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         fixer.fix(measuredKinematics, result);
 
         // check
@@ -1375,18 +1375,18 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testFix2() throws AlgebraException {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testFix2() throws AlgebraException {
+        final var fixer = new BodyKinematicsFixer();
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
         fixer.setAccelerationBias(ba);
         fixer.setAccelerationCrossCouplingErrors(ma);
@@ -1394,20 +1394,20 @@ public class BodyKinematicsFixerTest {
         fixer.setAngularSpeedCrossCouplingErrors(mg);
         fixer.setAngularSpeedGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final BodyKinematics trueKinematics = getTrueKinematics();
-        final AccelerationTriad trueF = trueKinematics.getSpecificForceTriad();
-        final AngularSpeedTriad trueAngularSpeed = trueKinematics.getAngularRateTriad();
+        final var trueKinematics = getTrueKinematics();
+        final var trueF = trueKinematics.getSpecificForceTriad();
+        final var trueAngularSpeed = trueKinematics.getAngularRateTriad();
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, new Random());
-        final AccelerationTriad measuredF = measuredKinematics.getSpecificForceTriad();
-        final AngularSpeedTriad measuredAngularSpeed = measuredKinematics.getAngularRateTriad();
+        final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                new Random());
+        final var measuredF = measuredKinematics.getSpecificForceTriad();
+        final var measuredAngularSpeed = measuredKinematics.getAngularRateTriad();
 
-        final AccelerationTriad fixedF = new AccelerationTriad();
-        final AngularSpeedTriad fixedAngularSpeed = new AngularSpeedTriad();
+        final var fixedF = new AccelerationTriad();
+        final var fixedAngularSpeed = new AngularSpeedTriad();
         fixer.fix(measuredF, measuredAngularSpeed, fixedF, fixedAngularSpeed);
 
         // check
@@ -1416,18 +1416,18 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testFix3() throws AlgebraException {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testFix3() throws AlgebraException {
+        final var fixer = new BodyKinematicsFixer();
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
         fixer.setAccelerationBias(ba);
         fixer.setAccelerationCrossCouplingErrors(ma);
@@ -1435,18 +1435,18 @@ public class BodyKinematicsFixerTest {
         fixer.setAngularSpeedCrossCouplingErrors(mg);
         fixer.setAngularSpeedGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final BodyKinematics trueKinematics = getTrueKinematics();
-        final AccelerationTriad trueF = trueKinematics.getSpecificForceTriad();
-        final AngularSpeedTriad trueAngularSpeed = trueKinematics.getAngularRateTriad();
+        final var trueKinematics = getTrueKinematics();
+        final var trueF = trueKinematics.getSpecificForceTriad();
+        final var trueAngularSpeed = trueKinematics.getAngularRateTriad();
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, new Random());
+        final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                new Random());
 
-        final AccelerationTriad fixedF = new AccelerationTriad();
-        final AngularSpeedTriad fixedAngularSpeed = new AngularSpeedTriad();
+        final var fixedF = new AccelerationTriad();
+        final var fixedAngularSpeed = new AngularSpeedTriad();
         fixer.fix(measuredKinematics, fixedF, fixedAngularSpeed);
 
         // check
@@ -1455,18 +1455,18 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void testFix4() throws AlgebraException {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testFix4() throws AlgebraException {
+        final var fixer = new BodyKinematicsFixer();
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
         fixer.setAccelerationBias(ba);
         fixer.setAccelerationCrossCouplingErrors(ma);
@@ -1474,17 +1474,17 @@ public class BodyKinematicsFixerTest {
         fixer.setAngularSpeedCrossCouplingErrors(mg);
         fixer.setAngularSpeedGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final BodyKinematics trueKinematics = getTrueKinematics();
+        final var trueKinematics = getTrueKinematics();
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, new Random());
-        final AccelerationTriad measuredF = measuredKinematics.getSpecificForceTriad();
-        final AngularSpeedTriad measuredAngularSpeed = measuredKinematics.getAngularRateTriad();
+        final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                new Random());
+        final var measuredF = measuredKinematics.getSpecificForceTriad();
+        final var measuredAngularSpeed = measuredKinematics.getAngularRateTriad();
 
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         fixer.fix(measuredF, measuredAngularSpeed, result);
 
         // check
@@ -1492,18 +1492,18 @@ public class BodyKinematicsFixerTest {
     }
 
     @Test
-    public void fixAndReturnNew1() throws AlgebraException {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testFixAndReturnNew1() throws AlgebraException {
+        final var fixer = new BodyKinematicsFixer();
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
         fixer.setAccelerationBias(ba);
         fixer.setAccelerationCrossCouplingErrors(ma);
@@ -1511,33 +1511,33 @@ public class BodyKinematicsFixerTest {
         fixer.setAngularSpeedCrossCouplingErrors(mg);
         fixer.setAngularSpeedGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final BodyKinematics trueKinematics = getTrueKinematics();
+        final var trueKinematics = getTrueKinematics();
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, new Random());
+        final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                new Random());
 
-        final BodyKinematics result = fixer.fixAndReturnNew(measuredKinematics);
+        final var result = fixer.fixAndReturnNew(measuredKinematics);
 
         // check
         assertTrue(result.equals(trueKinematics, ABSOLUTE_ERROR));
     }
 
     @Test
-    public void fixAndReturnNew2() throws AlgebraException {
-        final BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+    void testFixAndReturnNew2() throws AlgebraException {
+        final var fixer = new BodyKinematicsFixer();
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
         fixer.setAccelerationBias(ba);
         fixer.setAccelerationCrossCouplingErrors(ma);
@@ -1545,17 +1545,17 @@ public class BodyKinematicsFixerTest {
         fixer.setAngularSpeedCrossCouplingErrors(mg);
         fixer.setAngularSpeedGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final BodyKinematics trueKinematics = getTrueKinematics();
+        final var trueKinematics = getTrueKinematics();
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, new Random());
-        final AccelerationTriad measuredF = measuredKinematics.getSpecificForceTriad();
-        final AngularSpeedTriad measuredAngularSpeed = measuredKinematics.getAngularRateTriad();
+        final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                new Random());
+        final var measuredF = measuredKinematics.getSpecificForceTriad();
+        final var measuredAngularSpeed = measuredKinematics.getAngularRateTriad();
 
-        final BodyKinematics result = fixer.fixAndReturnNew(measuredF, measuredAngularSpeed);
+        final var result = fixer.fixAndReturnNew(measuredF, measuredAngularSpeed);
 
         // check
         assertTrue(result.equals(trueKinematics, ABSOLUTE_ERROR));
@@ -1576,7 +1576,7 @@ public class BodyKinematicsFixerTest {
     }
 
     private static Matrix generateMa() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
+        final var result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 500e-6, -300e-6, 200e-6,
                 -150e-6, -600e-6, 250e-6,
@@ -1587,7 +1587,7 @@ public class BodyKinematicsFixerTest {
     }
 
     private static Matrix generateMg() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
+        final var result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 400e-6, -300e-6, 250e-6,
                 0.0, -300e-6, -150e-6,
@@ -1598,8 +1598,8 @@ public class BodyKinematicsFixerTest {
     }
 
     private static Matrix generateGg() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
-        final double tmp = DEG_TO_RAD / (3600 * 9.80665);
+        final var result = new Matrix(3, 3);
+        final var tmp = DEG_TO_RAD / (3600 * 9.80665);
         result.fromArray(new double[]{
                 0.9 * tmp, -1.1 * tmp, -0.6 * tmp,
                 -0.5 * tmp, 1.9 * tmp, -1.6 * tmp,
@@ -1610,14 +1610,14 @@ public class BodyKinematicsFixerTest {
     }
 
     private static BodyKinematics getTrueKinematics() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var randomizer = new UniformRandomizer();
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
-        final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
         return new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
     }

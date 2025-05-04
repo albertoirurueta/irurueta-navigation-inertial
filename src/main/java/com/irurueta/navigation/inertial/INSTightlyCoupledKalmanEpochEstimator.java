@@ -103,28 +103,28 @@ public class INSTightlyCoupledKalmanEpochEstimator {
             final INSTightlyCoupledKalmanState result) throws AlgebraException {
 
         // Skew symmetric matrix of Earth rate
-        final Matrix omegaIe = Utils.skewMatrix(new double[]{0.0, 0.0, EARTH_ROTATION_RATE});
+        final var omegaIe = Utils.skewMatrix(new double[]{0.0, 0.0, EARTH_ROTATION_RATE});
 
         // SYSTEM PROPAGATION PHASE
 
         // 1. Determine transition matrix using (14.50) (first-order approx)
-        final Matrix phiMatrix = Matrix.identity(
+        final var phiMatrix = Matrix.identity(
                 INSTightlyCoupledKalmanState.NUM_PARAMS, INSTightlyCoupledKalmanState.NUM_PARAMS);
 
-        final Matrix tmp1 = omegaIe.multiplyByScalarAndReturnNew(propagationInterval);
-        final Matrix tmp2 = phiMatrix.getSubmatrix(0, 0, 2, 2);
+        final var tmp1 = omegaIe.multiplyByScalarAndReturnNew(propagationInterval);
+        final var tmp2 = phiMatrix.getSubmatrix(0, 0, 2, 2);
         tmp2.subtract(tmp1);
 
         phiMatrix.setSubmatrix(0, 0, 2, 2, tmp2);
 
-        final Matrix estCbeOld = previousState.getBodyToEcefCoordinateTransformationMatrix();
+        final var estCbeOld = previousState.getBodyToEcefCoordinateTransformationMatrix();
         tmp1.copyFrom(estCbeOld);
         tmp1.multiplyByScalar(propagationInterval);
 
         phiMatrix.setSubmatrix(0, 12, 2, 14, tmp1);
         phiMatrix.setSubmatrix(3, 9, 5, 11, tmp1);
 
-        final Matrix measFibb = new Matrix(BodyKinematics.COMPONENTS, 1);
+        final var measFibb = new Matrix(BodyKinematics.COMPONENTS, 1);
         measFibb.setElementAtIndex(0, fx);
         measFibb.setElementAtIndex(1, fy);
         measFibb.setElementAtIndex(2, fz);
@@ -142,96 +142,96 @@ public class INSTightlyCoupledKalmanEpochEstimator {
         tmp1.subtract(tmp2);
         phiMatrix.setSubmatrix(3, 3, 5, 5, tmp1);
 
-        final double sinPrevLat = Math.sin(previousLatitude);
-        final double cosPrevLat = Math.cos(previousLatitude);
-        final double sinPrevLat2 = sinPrevLat * sinPrevLat;
-        final double cosPrevLat2 = cosPrevLat * cosPrevLat;
+        final var sinPrevLat = Math.sin(previousLatitude);
+        final var cosPrevLat = Math.cos(previousLatitude);
+        final var sinPrevLat2 = sinPrevLat * sinPrevLat;
+        final var cosPrevLat2 = cosPrevLat * cosPrevLat;
 
         // From (2.137)
-        final double geocentricRadius = EARTH_EQUATORIAL_RADIUS_WGS84
+        final var geocentricRadius = EARTH_EQUATORIAL_RADIUS_WGS84
                 / Math.sqrt(1.0 - Math.pow(EARTH_ECCENTRICITY * sinPrevLat, 2.0))
                 * Math.sqrt(cosPrevLat2 + Math.pow(1.0 - EARTH_ECCENTRICITY * EARTH_ECCENTRICITY, 2.0) * sinPrevLat2);
 
-        final double prevX = previousState.getX();
-        final double prevY = previousState.getY();
-        final double prevZ = previousState.getZ();
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(prevX, prevY, prevZ);
+        final var prevX = previousState.getX();
+        final var prevY = previousState.getY();
+        final var prevZ = previousState.getZ();
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(prevX, prevY, prevZ);
 
-        final double previousPositionNorm = Math.sqrt(prevX * prevX + prevY * prevY + prevZ * prevZ);
+        final var previousPositionNorm = Math.sqrt(prevX * prevX + prevY * prevY + prevZ * prevZ);
 
-        final Matrix estRebeOld = new Matrix(com.irurueta.navigation.frames.ECEFPosition.COMPONENTS, 1);
+        final var estRebeOld = new Matrix(com.irurueta.navigation.frames.ECEFPosition.COMPONENTS, 1);
         estRebeOld.setElementAtIndex(0, prevX);
         estRebeOld.setElementAtIndex(1, prevY);
         estRebeOld.setElementAtIndex(2, prevZ);
 
-        final Matrix g = gravity.asMatrix();
+        final var g = gravity.asMatrix();
         g.multiplyByScalar(-2.0 * propagationInterval / geocentricRadius);
 
-        final Matrix estRebeOldTrans = estRebeOld.transposeAndReturnNew();
+        final var estRebeOldTrans = estRebeOld.transposeAndReturnNew();
         estRebeOldTrans.multiplyByScalar(1.0 / previousPositionNorm);
 
         g.multiply(estRebeOldTrans, tmp1);
 
         phiMatrix.setSubmatrix(3, 6, 5, 8, tmp1);
 
-        for (int i = 0; i < ECEFPosition.COMPONENTS; i++) {
+        for (var i = 0; i < ECEFPosition.COMPONENTS; i++) {
             phiMatrix.setElementAt(6 + i, 3 + i, propagationInterval);
         }
 
         phiMatrix.setElementAt(15, 16, propagationInterval);
 
         // 2. Determine approximate system noise covariance matrix using (14.82)
-        final Matrix qPrimeMatrix = new Matrix(
+        final var qPrimeMatrix = new Matrix(
                 INSTightlyCoupledKalmanState.NUM_PARAMS, INSTightlyCoupledKalmanState.NUM_PARAMS);
 
-        final double gyroNoisePSD = config.getGyroNoisePSD();
-        final double gyroNoiseValue = gyroNoisePSD * propagationInterval;
-        for (int i = 0; i < 3; i++) {
+        final var gyroNoisePSD = config.getGyroNoisePSD();
+        final var gyroNoiseValue = gyroNoisePSD * propagationInterval;
+        for (var i = 0; i < 3; i++) {
             qPrimeMatrix.setElementAt(i, i, gyroNoiseValue);
         }
 
-        final double accelNoisePSD = config.getAccelerometerNoisePSD();
-        final double accelNoiseValue = accelNoisePSD * propagationInterval;
-        for (int i = 3; i < 6; i++) {
+        final var accelNoisePSD = config.getAccelerometerNoisePSD();
+        final var accelNoiseValue = accelNoisePSD * propagationInterval;
+        for (var i = 3; i < 6; i++) {
             qPrimeMatrix.setElementAt(i, i, accelNoiseValue);
         }
 
-        final double accelBiasPSD = config.getAccelerometerBiasPSD();
-        final double accelBiasValue = accelBiasPSD * propagationInterval;
-        for (int i = 9; i < 12; i++) {
+        final var accelBiasPSD = config.getAccelerometerBiasPSD();
+        final var accelBiasValue = accelBiasPSD * propagationInterval;
+        for (var i = 9; i < 12; i++) {
             qPrimeMatrix.setElementAt(i, i, accelBiasValue);
         }
 
-        final double gyroBiasPSD = config.getGyroBiasPSD();
-        final double gyroBiasValue = gyroBiasPSD * propagationInterval;
-        for (int i = 12; i < 15; i++) {
+        final var gyroBiasPSD = config.getGyroBiasPSD();
+        final var gyroBiasValue = gyroBiasPSD * propagationInterval;
+        for (var i = 12; i < 15; i++) {
             qPrimeMatrix.setElementAt(i, i, gyroBiasValue);
         }
 
-        final double clockPhasePSD = config.getClockPhasePSD();
-        final double clockPhaseValue = clockPhasePSD * propagationInterval;
+        final var clockPhasePSD = config.getClockPhasePSD();
+        final var clockPhaseValue = clockPhasePSD * propagationInterval;
         qPrimeMatrix.setElementAt(15, 15, clockPhaseValue);
 
-        final double clockFreqPSD = config.getClockFrequencyPSD();
-        final double clockFreqValue = clockFreqPSD * propagationInterval;
+        final var clockFreqPSD = config.getClockFrequencyPSD();
+        final var clockFreqValue = clockFreqPSD * propagationInterval;
         qPrimeMatrix.setElementAt(16, 16, clockFreqValue);
 
         // 3. Propagate state estimates using (3.14) noting that only the clock
         // states are non-zero due to closed-loop correction
-        final double prevClockOffset = previousState.getReceiverClockOffset();
-        final double prevClockDrift = previousState.getReceiverClockDrift();
+        final var prevClockOffset = previousState.getReceiverClockOffset();
+        final var prevClockDrift = previousState.getReceiverClockDrift();
 
-        final Matrix xEstPropagated = new Matrix(INSTightlyCoupledKalmanState.NUM_PARAMS, 1);
+        final var xEstPropagated = new Matrix(INSTightlyCoupledKalmanState.NUM_PARAMS, 1);
         xEstPropagated.setElementAtIndex(15, prevClockOffset + prevClockDrift * propagationInterval);
         xEstPropagated.setElementAtIndex(16, prevClockDrift);
 
         // 4. Propagate state estimation error covariance matrix using (3.46)
-        final Matrix pMatrixOld = previousState.getCovariance();
+        final var pMatrixOld = previousState.getCovariance();
 
         qPrimeMatrix.multiplyByScalar(0.5);
 
-        final Matrix tmp3 = pMatrixOld.addAndReturnNew(qPrimeMatrix);
-        final Matrix pMatrixPropagated = phiMatrix.multiplyAndReturnNew(tmp3);
+        final var tmp3 = pMatrixOld.addAndReturnNew(qPrimeMatrix);
+        final var pMatrixPropagated = phiMatrix.multiplyAndReturnNew(tmp3);
 
         phiMatrix.transpose();
         pMatrixPropagated.multiply(phiMatrix);
@@ -240,45 +240,45 @@ public class INSTightlyCoupledKalmanEpochEstimator {
 
         // MEASUREMENT UPDATE PHASE
 
-        final int numberOfMeasurements = measurements.size();
-        final Matrix uAseT = new Matrix(numberOfMeasurements, 3);
-        final Matrix predMeas = new Matrix(numberOfMeasurements, 2);
+        final var numberOfMeasurements = measurements.size();
+        final var uAseT = new Matrix(numberOfMeasurements, 3);
+        final var predMeas = new Matrix(numberOfMeasurements, 2);
 
-        final Matrix cei = Matrix.identity(CoordinateTransformation.ROWS, CoordinateTransformation.COLS);
-        final Matrix satellitePosition = new Matrix(CoordinateTransformation.ROWS, 1);
-        final Matrix satelliteVelocity = new Matrix(CoordinateTransformation.ROWS, 1);
-        final Matrix deltaR = new Matrix(CoordinateTransformation.ROWS, 1);
-        final Matrix tmp1b = new Matrix(CoordinateTransformation.ROWS, 1);
-        final Matrix tmp2b = new Matrix(CoordinateTransformation.ROWS, 1);
-        final Matrix tmp3b = new Matrix(CoordinateTransformation.ROWS, 1);
-        final Matrix tmp4b = new Matrix(CoordinateTransformation.ROWS, 1);
-        final Matrix tmp5b = new Matrix(CoordinateTransformation.ROWS, 1);
-        final Matrix tmp6b = new Matrix(CoordinateTransformation.ROWS, 1);
-        final Matrix tmp7b = new Matrix(1, CoordinateTransformation.ROWS);
+        final var cei = Matrix.identity(CoordinateTransformation.ROWS, CoordinateTransformation.COLS);
+        final var satellitePosition = new Matrix(CoordinateTransformation.ROWS, 1);
+        final var satelliteVelocity = new Matrix(CoordinateTransformation.ROWS, 1);
+        final var deltaR = new Matrix(CoordinateTransformation.ROWS, 1);
+        final var tmp1b = new Matrix(CoordinateTransformation.ROWS, 1);
+        final var tmp2b = new Matrix(CoordinateTransformation.ROWS, 1);
+        final var tmp3b = new Matrix(CoordinateTransformation.ROWS, 1);
+        final var tmp4b = new Matrix(CoordinateTransformation.ROWS, 1);
+        final var tmp5b = new Matrix(CoordinateTransformation.ROWS, 1);
+        final var tmp6b = new Matrix(CoordinateTransformation.ROWS, 1);
+        final var tmp7b = new Matrix(1, CoordinateTransformation.ROWS);
 
-        final double prevVx = previousState.getVx();
-        final double prevVy = previousState.getVy();
-        final double prevVz = previousState.getVz();
+        final var prevVx = previousState.getVx();
+        final var prevVy = previousState.getVy();
+        final var prevVz = previousState.getVz();
 
-        final Matrix estVebeOld = new Matrix(ECEFVelocity.COMPONENTS, 1);
+        final var estVebeOld = new Matrix(ECEFVelocity.COMPONENTS, 1);
         estVebeOld.setElementAtIndex(0, prevVx);
         estVebeOld.setElementAtIndex(1, prevVy);
         estVebeOld.setElementAtIndex(2, prevVz);
 
-        int j = 0;
-        for (final GNSSMeasurement measurement : measurements) {
+        var j = 0;
+        for (final var measurement : measurements) {
             // Predict approx range
-            final double measX = measurement.getX();
-            final double measY = measurement.getY();
-            final double measZ = measurement.getZ();
+            final var measX = measurement.getX();
+            final var measY = measurement.getY();
+            final var measZ = measurement.getZ();
 
-            final double deltaX = measX - prevX;
-            final double deltaY = measY - prevY;
-            final double deltaZ = measZ - prevZ;
-            final double approxRange = Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
+            final var deltaX = measX - prevX;
+            final var deltaY = measY - prevY;
+            final var deltaZ = measZ - prevZ;
+            final var approxRange = Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
 
             // Calculate frame rotation during signal transit time using (8.36)
-            final double ceiValue = EARTH_ROTATION_RATE * approxRange / SPEED_OF_LIGHT;
+            final var ceiValue = EARTH_ROTATION_RATE * approxRange / SPEED_OF_LIGHT;
             cei.setElementAt(0, 1, ceiValue);
             cei.setElementAt(1, 0, -ceiValue);
 
@@ -288,15 +288,15 @@ public class INSTightlyCoupledKalmanEpochEstimator {
             satellitePosition.setElementAtIndex(2, measZ);
 
             cei.multiply(satellitePosition, deltaR);
-            for (int i = 0; i < CoordinateTransformation.ROWS; i++) {
+            for (var i = 0; i < CoordinateTransformation.ROWS; i++) {
                 deltaR.setElementAtIndex(i, deltaR.getElementAtIndex(i) - estRebeOld.getElementAtIndex(i));
             }
-            final double range = Utils.normF(deltaR);
+            final var range = Utils.normF(deltaR);
 
             predMeas.setElementAt(j, 0, range + xEstPropagated.getElementAtIndex(15));
 
             // Predict line of sight
-            for (int i = 0; i < CoordinateTransformation.ROWS; i++) {
+            for (var i = 0; i < CoordinateTransformation.ROWS; i++) {
                 uAseT.setElementAt(j, i, deltaR.getElementAtIndex(i) / range);
             }
 
@@ -316,7 +316,7 @@ public class INSTightlyCoupledKalmanEpochEstimator {
 
             uAseT.getSubmatrix(j, 0, j, 2, tmp7b);
 
-            final double rangeRate = Utils.dotProduct(tmp7b, tmp5b);
+            final var rangeRate = Utils.dotProduct(tmp7b, tmp5b);
 
             predMeas.setElementAt(j, 1, rangeRate + xEstPropagated.getElementAtIndex(16));
 
@@ -324,10 +324,10 @@ public class INSTightlyCoupledKalmanEpochEstimator {
         }
 
         // 5. Set-up measurement matrix using (14.126)
-        final Matrix h = new Matrix(2 * numberOfMeasurements, INSTightlyCoupledKalmanState.NUM_PARAMS);
+        final var h = new Matrix(2 * numberOfMeasurements, INSTightlyCoupledKalmanState.NUM_PARAMS);
         for (int j1 = 0, j2 = numberOfMeasurements; j1 < numberOfMeasurements; j1++, j2++) {
             for (int i1 = 0, i2 = 6, i3 = 3; i1 < CoordinateTransformation.ROWS; i1++, i2++, i3++) {
-                final double value = uAseT.getElementAt(j1, i1);
+                final var value = uAseT.getElementAt(j1, i1);
 
                 h.setElementAt(j1, i2, value);
                 h.setElementAt(j2, i3, value);
@@ -338,29 +338,29 @@ public class INSTightlyCoupledKalmanEpochEstimator {
 
         // 6. Set-up measurement noise covariance matrix assuming all measurements are independent
         // and have equal variance for a given measurement type.
-        final double pseudoRangeSD = config.getPseudoRangeSD();
-        final double pseudoRangeSD2 = pseudoRangeSD * pseudoRangeSD;
-        final double rangeRateSD = config.getRangeRateSD();
-        final double rangeRateSD2 = rangeRateSD * rangeRateSD;
-        final Matrix r = new Matrix(2 * numberOfMeasurements, 2 * numberOfMeasurements);
+        final var pseudoRangeSD = config.getPseudoRangeSD();
+        final var pseudoRangeSD2 = pseudoRangeSD * pseudoRangeSD;
+        final var rangeRateSD = config.getRangeRateSD();
+        final var rangeRateSD2 = rangeRateSD * rangeRateSD;
+        final var r = new Matrix(2 * numberOfMeasurements, 2 * numberOfMeasurements);
         for (int i1 = 0, i2 = numberOfMeasurements; i1 < numberOfMeasurements; i1++, i2++) {
             r.setElementAt(i1, i1, pseudoRangeSD2);
             r.setElementAt(i2, i2, rangeRateSD2);
         }
 
         // 7. Calculate Kalman gain using (3.21)
-        final Matrix hTransposed = h.transposeAndReturnNew();
-        final Matrix tmp8b = h.multiplyAndReturnNew(pMatrixPropagated.multiplyAndReturnNew(hTransposed));
+        final var hTransposed = h.transposeAndReturnNew();
+        final var tmp8b = h.multiplyAndReturnNew(pMatrixPropagated.multiplyAndReturnNew(hTransposed));
         tmp8b.add(r);
-        final Matrix tmp9b = Utils.inverse(tmp8b);
-        final Matrix k = pMatrixPropagated.multiplyAndReturnNew(hTransposed);
+        final var tmp9b = Utils.inverse(tmp8b);
+        final var k = pMatrixPropagated.multiplyAndReturnNew(hTransposed);
         k.multiply(tmp9b);
 
         // 8. Formulate measurement innovations using (14.119)
-        final Matrix deltaZ = new Matrix(2 * numberOfMeasurements, 1);
-        int i1 = 0;
-        int i2 = numberOfMeasurements;
-        for (final GNSSMeasurement measurement : measurements) {
+        final var deltaZ = new Matrix(2 * numberOfMeasurements, 1);
+        var i1 = 0;
+        var i2 = numberOfMeasurements;
+        for (final var measurement : measurements) {
             deltaZ.setElementAtIndex(i1, measurement.getPseudoRange() - predMeas.getElementAt(i1, 0));
             deltaZ.setElementAtIndex(i2, measurement.getPseudoRate() - predMeas.getElementAt(i1, 1));
 
@@ -375,8 +375,8 @@ public class INSTightlyCoupledKalmanEpochEstimator {
 
         // 10. Update state estimation error covariance matrix using (3.25)
         Matrix updatedCovariance = result.getCovariance();
-        if (updatedCovariance == null || updatedCovariance.getRows() != INSTightlyCoupledKalmanState.NUM_PARAMS ||
-                updatedCovariance.getColumns() != INSTightlyCoupledKalmanState.NUM_PARAMS) {
+        if (updatedCovariance == null || updatedCovariance.getRows() != INSTightlyCoupledKalmanState.NUM_PARAMS
+                || updatedCovariance.getColumns() != INSTightlyCoupledKalmanState.NUM_PARAMS) {
             updatedCovariance = Matrix.identity(
                     INSTightlyCoupledKalmanState.NUM_PARAMS, INSTightlyCoupledKalmanState.NUM_PARAMS);
         } else {
@@ -390,7 +390,7 @@ public class INSTightlyCoupledKalmanEpochEstimator {
 
         // Correct attitude, velocity, and position using (14.7-9)
 
-        final Matrix estCbeNew = Matrix.identity(CoordinateTransformation.ROWS, CoordinateTransformation.COLS);
+        final var estCbeNew = Matrix.identity(CoordinateTransformation.ROWS, CoordinateTransformation.COLS);
 
         xEstPropagated.getSubmatrix(0, 0, 2, 0, tmp1b);
         estCbeNew.subtract(Utils.skewMatrix(tmp1b));
@@ -409,12 +409,12 @@ public class INSTightlyCoupledKalmanEpochEstimator {
         result.setCovariance(updatedCovariance);
 
         // Update IMU bias and GNSS receiver clock estimates
-        final double prevAccelBiasX = previousState.getAccelerationBiasX();
-        final double prevAccelBiasY = previousState.getAccelerationBiasY();
-        final double prevAccelBiasZ = previousState.getAccelerationBiasZ();
-        final double prevGyroBiasX = previousState.getGyroBiasX();
-        final double prevGyroBiasY = previousState.getGyroBiasY();
-        final double prevGyroBiasZ = previousState.getGyroBiasZ();
+        final var prevAccelBiasX = previousState.getAccelerationBiasX();
+        final var prevAccelBiasY = previousState.getAccelerationBiasY();
+        final var prevAccelBiasZ = previousState.getAccelerationBiasZ();
+        final var prevGyroBiasX = previousState.getGyroBiasX();
+        final var prevGyroBiasY = previousState.getGyroBiasY();
+        final var prevGyroBiasZ = previousState.getGyroBiasZ();
 
         result.setAccelerationBiasCoordinates(
                 prevAccelBiasX + xEstPropagated.getElementAtIndex(9),
@@ -454,7 +454,7 @@ public class INSTightlyCoupledKalmanEpochEstimator {
             final Collection<GNSSMeasurement> measurements, final double propagationInterval,
             final INSTightlyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
             final double previousLatitude, final INSTightlyCoupledKalmanConfig config) throws AlgebraException {
-        final INSTightlyCoupledKalmanState result = new INSTightlyCoupledKalmanState();
+        final var result = new INSTightlyCoupledKalmanState();
         estimate(measurements, propagationInterval, previousState, fx, fy, fz, previousLatitude, config, result);
         return result;
     }
@@ -545,13 +545,13 @@ public class INSTightlyCoupledKalmanEpochEstimator {
             final INSTightlyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
             final INSTightlyCoupledKalmanConfig config, final INSTightlyCoupledKalmanState result) throws AlgebraException {
 
-        final NEDPosition prevNedPosition = new NEDPosition();
-        final NEDVelocity prevNedVelocity = new NEDVelocity();
+        final var prevNedPosition = new NEDPosition();
+        final var prevNedVelocity = new NEDVelocity();
         ECEFtoNEDPositionVelocityConverter.convertECEFtoNED(
                 previousState.getX(), previousState.getY(), previousState.getZ(),
                 previousState.getVx(), previousState.getVy(), previousState.getVz(), prevNedPosition, prevNedVelocity);
 
-        final double previousLatitude = prevNedPosition.getLatitude();
+        final var previousLatitude = prevNedPosition.getLatitude();
 
         estimate(measurements, propagationInterval, previousState, fx, fy, fz, previousLatitude, config, result);
     }
@@ -580,7 +580,7 @@ public class INSTightlyCoupledKalmanEpochEstimator {
             final Collection<GNSSMeasurement> measurements, final double propagationInterval,
             final INSTightlyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
             final INSTightlyCoupledKalmanConfig config) throws AlgebraException {
-        final INSTightlyCoupledKalmanState result = new INSTightlyCoupledKalmanState();
+        final var result = new INSTightlyCoupledKalmanState();
         estimate(measurements, propagationInterval, previousState, fx, fy, fz, config, result);
         return result;
     }
@@ -661,9 +661,9 @@ public class INSTightlyCoupledKalmanEpochEstimator {
             final double previousLatitude, final INSTightlyCoupledKalmanConfig config,
             final INSTightlyCoupledKalmanState result) throws AlgebraException {
 
-        final double fx = bodyKinematics.getFx();
-        final double fy = bodyKinematics.getFy();
-        final double fz = bodyKinematics.getFz();
+        final var fx = bodyKinematics.getFx();
+        final var fy = bodyKinematics.getFy();
+        final var fz = bodyKinematics.getFz();
 
         estimate(measurements, propagationInterval, previousState, fx, fy, fz, previousLatitude, config, result);
     }
@@ -686,7 +686,7 @@ public class INSTightlyCoupledKalmanEpochEstimator {
             final Collection<GNSSMeasurement> measurements, final double propagationInterval,
             final INSTightlyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
             final double previousLatitude, final INSTightlyCoupledKalmanConfig config) throws AlgebraException {
-        final INSTightlyCoupledKalmanState result = new INSTightlyCoupledKalmanState();
+        final var result = new INSTightlyCoupledKalmanState();
         estimate(measurements, propagationInterval, previousState, bodyKinematics, previousLatitude, config, result);
         return result;
     }
@@ -757,9 +757,9 @@ public class INSTightlyCoupledKalmanEpochEstimator {
             final INSTightlyCoupledKalmanConfig config, final INSTightlyCoupledKalmanState result)
             throws AlgebraException {
 
-        final double fx = bodyKinematics.getFx();
-        final double fy = bodyKinematics.getFy();
-        final double fz = bodyKinematics.getFz();
+        final var fx = bodyKinematics.getFx();
+        final var fy = bodyKinematics.getFy();
+        final var fz = bodyKinematics.getFz();
 
         estimate(measurements, propagationInterval, previousState, fx, fy, fz, config, result);
     }
@@ -781,7 +781,7 @@ public class INSTightlyCoupledKalmanEpochEstimator {
             final Collection<GNSSMeasurement> measurements, final double propagationInterval,
             final INSTightlyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
             final INSTightlyCoupledKalmanConfig config) throws AlgebraException {
-        final INSTightlyCoupledKalmanState result = new INSTightlyCoupledKalmanState();
+        final var result = new INSTightlyCoupledKalmanState();
         estimate(measurements, propagationInterval, previousState, bodyKinematics, config, result);
         return result;
     }

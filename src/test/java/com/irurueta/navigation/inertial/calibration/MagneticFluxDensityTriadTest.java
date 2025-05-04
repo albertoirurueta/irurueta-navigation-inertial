@@ -21,21 +21,19 @@ import com.irurueta.navigation.inertial.SerializationHelper;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.MagneticFluxDensity;
 import com.irurueta.units.MagneticFluxDensityUnit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class MagneticFluxDensityTriadTest {
+class MagneticFluxDensityTriadTest {
 
     private static final double ABSOLUTE_ERROR = 1e-12;
 
     @Test
-    public void testConstructor1() throws WrongSizeException {
-        final MagneticFluxDensityTriad triad = new MagneticFluxDensityTriad();
+    void testConstructor1() throws WrongSizeException {
+        final var triad = new MagneticFluxDensityTriad();
 
         // check
         assertEquals(0.0, triad.getValueX(), 0.0);
@@ -43,39 +41,39 @@ public class MagneticFluxDensityTriadTest {
         assertEquals(0.0, triad.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, triad.getUnit());
         assertArrayEquals(new double[3], triad.getValuesAsArray(), 0.0);
-        final double[] values = new double[3];
+        final var values = new double[3];
         triad.getValuesAsArray(values);
         assertArrayEquals(new double[3], values, 0.0);
         assertEquals(new Matrix(3, 1), triad.getValuesAsMatrix());
-        final Matrix v = new Matrix(3, 1);
+        final var v = new Matrix(3, 1);
         triad.getValuesAsMatrix(v);
         assertEquals(new Matrix(3, 1), v);
-        final MagneticFluxDensity vx1 = triad.getMeasurementX();
+        final var vx1 = triad.getMeasurementX();
         assertEquals(0.0, vx1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, vx1.getUnit());
-        final MagneticFluxDensity vx2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var vx2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         triad.getMeasurementX(vx2);
         assertEquals(0.0, vx2.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, vx2.getUnit());
-        final MagneticFluxDensity vy1 = triad.getMeasurementY();
+        final var vy1 = triad.getMeasurementY();
         assertEquals(0.0, vy1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, vy1.getUnit());
-        final MagneticFluxDensity vy2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var vy2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         triad.getMeasurementY(vy2);
         assertEquals(0.0, vy2.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, vy2.getUnit());
-        final MagneticFluxDensity vz1 = triad.getMeasurementZ();
+        final var vz1 = triad.getMeasurementZ();
         assertEquals(0.0, vz1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, vz1.getUnit());
-        final MagneticFluxDensity vz2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var vz2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         triad.getMeasurementZ(vz2);
         assertEquals(0.0, vz2.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, vz2.getUnit());
     }
 
     @Test
-    public void testConstructor2() throws WrongSizeException {
-        final MagneticFluxDensityTriad triad = new MagneticFluxDensityTriad(MagneticFluxDensityUnit.NANOTESLA);
+    void testConstructor2() throws WrongSizeException {
+        final var triad = new MagneticFluxDensityTriad(MagneticFluxDensityUnit.NANOTESLA);
 
         // check
         assertEquals(0.0, triad.getValueX(), 0.0);
@@ -83,47 +81,47 @@ public class MagneticFluxDensityTriadTest {
         assertEquals(0.0, triad.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.NANOTESLA, triad.getUnit());
         assertArrayEquals(new double[3], triad.getValuesAsArray(), 0.0);
-        final double[] values = new double[3];
+        final var values = new double[3];
         triad.getValuesAsArray(values);
         assertArrayEquals(new double[3], values, 0.0);
         assertEquals(new Matrix(3, 1), triad.getValuesAsMatrix());
-        final Matrix v = new Matrix(3, 1);
+        final var v = new Matrix(3, 1);
         triad.getValuesAsMatrix(v);
         assertEquals(new Matrix(3, 1), v);
-        final MagneticFluxDensity vx1 = triad.getMeasurementX();
+        final var vx1 = triad.getMeasurementX();
         assertEquals(0.0, vx1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.NANOTESLA, vx1.getUnit());
-        final MagneticFluxDensity vx2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var vx2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         triad.getMeasurementX(vx2);
         assertEquals(0.0, vx2.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.NANOTESLA, vx2.getUnit());
-        final MagneticFluxDensity vy1 = triad.getMeasurementY();
+        final var vy1 = triad.getMeasurementY();
         assertEquals(0.0, vy1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.NANOTESLA, vy1.getUnit());
-        final MagneticFluxDensity vy2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var vy2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         triad.getMeasurementY(vy2);
         assertEquals(0.0, vy2.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.NANOTESLA, vy2.getUnit());
-        final MagneticFluxDensity vz1 = triad.getMeasurementZ();
+        final var vz1 = triad.getMeasurementZ();
         assertEquals(0.0, vz1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.NANOTESLA, vz1.getUnit());
-        final MagneticFluxDensity vz2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var vz2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         triad.getMeasurementZ(vz2);
         assertEquals(0.0, vz2.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.NANOTESLA, vz2.getUnit());
     }
 
     @Test
-    public void testConstructor3() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testConstructor3() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final double[] values1 = new double[]{valueX, valueY, valueZ};
-        final Matrix v1 = Matrix.newFromArray(values1);
+        final var values1 = new double[]{valueX, valueY, valueZ};
+        final var v1 = Matrix.newFromArray(values1);
 
-        final MagneticFluxDensityTriad triad = new MagneticFluxDensityTriad(valueX, valueY, valueZ);
+        final var triad = new MagneticFluxDensityTriad(valueX, valueY, valueZ);
 
         // check
         assertEquals(valueX, triad.getValueX(), 0.0);
@@ -131,48 +129,47 @@ public class MagneticFluxDensityTriadTest {
         assertEquals(valueZ, triad.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityTriad.DEFAULT_UNIT, triad.getUnit());
         assertArrayEquals(new double[]{valueX, valueY, valueZ}, triad.getValuesAsArray(), 0.0);
-        final double[] values2 = new double[3];
+        final var values2 = new double[3];
         triad.getValuesAsArray(values2);
         assertArrayEquals(values1, values2, 0.0);
         assertEquals(v1, triad.getValuesAsMatrix());
-        final Matrix v2 = new Matrix(3, 1);
+        final var v2 = new Matrix(3, 1);
         triad.getValuesAsMatrix(v2);
         assertEquals(v1, v2);
-        final MagneticFluxDensity vx1 = triad.getMeasurementX();
+        final var vx1 = triad.getMeasurementX();
         assertEquals(valueX, vx1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, vx1.getUnit());
-        final MagneticFluxDensity vx2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var vx2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         triad.getMeasurementX(vx2);
         assertEquals(valueX, vx2.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, vx2.getUnit());
-        final MagneticFluxDensity vy1 = triad.getMeasurementY();
+        final var vy1 = triad.getMeasurementY();
         assertEquals(valueY, vy1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, vy1.getUnit());
-        final MagneticFluxDensity vy2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var vy2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         triad.getMeasurementY(vy2);
         assertEquals(valueY, vy2.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, vy2.getUnit());
-        final MagneticFluxDensity vz1 = triad.getMeasurementZ();
+        final var vz1 = triad.getMeasurementZ();
         assertEquals(valueZ, vz1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, vz1.getUnit());
-        final MagneticFluxDensity vz2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var vz2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         triad.getMeasurementZ(vz2);
         assertEquals(valueZ, vz2.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, vz2.getUnit());
     }
 
     @Test
-    public void testConstructor4() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testConstructor4() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final double[] values1 = new double[]{valueX, valueY, valueZ};
-        final Matrix v1 = Matrix.newFromArray(values1);
+        final var values1 = new double[]{valueX, valueY, valueZ};
+        final var v1 = Matrix.newFromArray(values1);
 
-        final MagneticFluxDensityTriad triad = new MagneticFluxDensityTriad(MagneticFluxDensityUnit.NANOTESLA,
-                valueX, valueY, valueZ);
+        final var triad = new MagneticFluxDensityTriad(MagneticFluxDensityUnit.NANOTESLA, valueX, valueY, valueZ);
 
         // check
         assertEquals(valueX, triad.getValueX(), 0.0);
@@ -180,51 +177,51 @@ public class MagneticFluxDensityTriadTest {
         assertEquals(valueZ, triad.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.NANOTESLA, triad.getUnit());
         assertArrayEquals(new double[]{valueX, valueY, valueZ}, triad.getValuesAsArray(), 0.0);
-        final double[] values2 = new double[3];
+        final var values2 = new double[3];
         triad.getValuesAsArray(values2);
         assertArrayEquals(values1, values2, 0.0);
         assertEquals(v1, triad.getValuesAsMatrix());
-        final Matrix v2 = new Matrix(3, 1);
+        final var v2 = new Matrix(3, 1);
         triad.getValuesAsMatrix(v2);
         assertEquals(v1, v2);
-        final MagneticFluxDensity vx1 = triad.getMeasurementX();
+        final var vx1 = triad.getMeasurementX();
         assertEquals(valueX, vx1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.NANOTESLA, vx1.getUnit());
-        final MagneticFluxDensity vx2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var vx2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         triad.getMeasurementX(vx2);
         assertEquals(valueX, vx2.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.NANOTESLA, vx2.getUnit());
-        final MagneticFluxDensity vy1 = triad.getMeasurementY();
+        final var vy1 = triad.getMeasurementY();
         assertEquals(valueY, vy1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.NANOTESLA, vy1.getUnit());
-        final MagneticFluxDensity vy2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var vy2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         triad.getMeasurementY(vy2);
         assertEquals(valueY, vy2.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.NANOTESLA, vy2.getUnit());
-        final MagneticFluxDensity vz1 = triad.getMeasurementZ();
+        final var vz1 = triad.getMeasurementZ();
         assertEquals(valueZ, vz1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.NANOTESLA, vz1.getUnit());
-        final MagneticFluxDensity vz2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var vz2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         triad.getMeasurementZ(vz2);
         assertEquals(valueZ, vz2.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.NANOTESLA, vz2.getUnit());
     }
 
     @Test
-    public void testConstructor5() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testConstructor5() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final MagneticFluxDensity bx = new MagneticFluxDensity(valueX, MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity by = new MagneticFluxDensity(valueY, MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity bz = new MagneticFluxDensity(valueZ, MagneticFluxDensityUnit.TESLA);
+        final var bx = new MagneticFluxDensity(valueX, MagneticFluxDensityUnit.TESLA);
+        final var by = new MagneticFluxDensity(valueY, MagneticFluxDensityUnit.TESLA);
+        final var bz = new MagneticFluxDensity(valueZ, MagneticFluxDensityUnit.TESLA);
 
-        final double[] values1 = new double[]{valueX, valueY, valueZ};
-        final Matrix v1 = Matrix.newFromArray(values1);
+        final var values1 = new double[]{valueX, valueY, valueZ};
+        final var v1 = Matrix.newFromArray(values1);
 
-        final MagneticFluxDensityTriad triad = new MagneticFluxDensityTriad(bx, by, bz);
+        final var triad = new MagneticFluxDensityTriad(bx, by, bz);
 
         // check
         assertEquals(valueX, triad.getValueX(), 0.0);
@@ -232,45 +229,45 @@ public class MagneticFluxDensityTriadTest {
         assertEquals(valueZ, triad.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityTriad.DEFAULT_UNIT, triad.getUnit());
         assertArrayEquals(new double[]{valueX, valueY, valueZ}, triad.getValuesAsArray(), 0.0);
-        final double[] values2 = new double[3];
+        final var values2 = new double[3];
         triad.getValuesAsArray(values2);
         assertArrayEquals(values1, values2, 0.0);
         assertEquals(v1, triad.getValuesAsMatrix());
-        final Matrix v2 = new Matrix(3, 1);
+        final var v2 = new Matrix(3, 1);
         triad.getValuesAsMatrix(v2);
         assertEquals(v1, v2);
-        final MagneticFluxDensity vx1 = triad.getMeasurementX();
+        final var vx1 = triad.getMeasurementX();
         assertEquals(valueX, vx1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, vx1.getUnit());
-        final MagneticFluxDensity vx2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var vx2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         triad.getMeasurementX(vx2);
         assertEquals(valueX, vx2.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, vx2.getUnit());
-        final MagneticFluxDensity vy1 = triad.getMeasurementY();
+        final var vy1 = triad.getMeasurementY();
         assertEquals(valueY, vy1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, vy1.getUnit());
-        final MagneticFluxDensity vy2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var vy2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         triad.getMeasurementY(vy2);
         assertEquals(valueY, vy2.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, vy2.getUnit());
-        final MagneticFluxDensity vz1 = triad.getMeasurementZ();
+        final var vz1 = triad.getMeasurementZ();
         assertEquals(valueZ, vz1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, vz1.getUnit());
-        final MagneticFluxDensity vz2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var vz2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         triad.getMeasurementZ(vz2);
         assertEquals(valueZ, vz2.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, vz2.getUnit());
     }
 
     @Test
-    public void testConstructor6() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testConstructor6() {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final MagneticFluxDensityTriad triad1 = new MagneticFluxDensityTriad(valueX, valueY, valueZ);
-        final MagneticFluxDensityTriad triad2 = new MagneticFluxDensityTriad(triad1);
+        final var triad1 = new MagneticFluxDensityTriad(valueX, valueY, valueZ);
+        final var triad2 = new MagneticFluxDensityTriad(triad1);
 
         // check
         assertEquals(valueX, triad2.getValueX(), 0.0);
@@ -280,15 +277,15 @@ public class MagneticFluxDensityTriadTest {
     }
 
     @Test
-    public void testGetSetValueX() {
-        final MagneticFluxDensityTriad triad = new MagneticFluxDensityTriad();
+    void testGetSetValueX() {
+        final var triad = new MagneticFluxDensityTriad();
 
         // check default value
         assertEquals(0.0, triad.getValueX(), 0.0);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
 
         triad.setValueX(valueX);
 
@@ -297,15 +294,15 @@ public class MagneticFluxDensityTriadTest {
     }
 
     @Test
-    public void testGetSetValueY() {
-        final MagneticFluxDensityTriad triad = new MagneticFluxDensityTriad();
+    void testGetSetValueY() {
+        final var triad = new MagneticFluxDensityTriad();
 
         // check default value
         assertEquals(0.0, triad.getValueY(), 0.0);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueY = randomizer.nextDouble();
+        final var randomizer = new UniformRandomizer();
+        final var valueY = randomizer.nextDouble();
 
         triad.setValueY(valueY);
 
@@ -314,15 +311,15 @@ public class MagneticFluxDensityTriadTest {
     }
 
     @Test
-    public void testGetSetValueZ() {
-        final MagneticFluxDensityTriad triad = new MagneticFluxDensityTriad();
+    void testGetSetValueZ() {
+        final var triad = new MagneticFluxDensityTriad();
 
         // check default value
         assertEquals(0.0, triad.getValueZ(), 0.0);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueZ = randomizer.nextDouble();
+        final var randomizer = new UniformRandomizer();
+        final var valueZ = randomizer.nextDouble();
 
         triad.setValueZ(valueZ);
 
@@ -331,8 +328,8 @@ public class MagneticFluxDensityTriadTest {
     }
 
     @Test
-    public void testSetValueCoordinates() {
-        final MagneticFluxDensityTriad triad = new MagneticFluxDensityTriad();
+    void testSetValueCoordinates() {
+        final var triad = new MagneticFluxDensityTriad();
 
         // check default value
         assertEquals(0.0, triad.getValueX(), 0.0);
@@ -340,10 +337,10 @@ public class MagneticFluxDensityTriadTest {
         assertEquals(0.0, triad.getValueZ(), 0.0);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
         triad.setValueCoordinates(valueX, valueY, valueZ);
 
@@ -354,8 +351,8 @@ public class MagneticFluxDensityTriadTest {
     }
 
     @Test
-    public void testGetSetUnit() {
-        final MagneticFluxDensityTriad triad = new MagneticFluxDensityTriad();
+    void testGetSetUnit() {
+        final var triad = new MagneticFluxDensityTriad();
 
         // check default value
         assertEquals(MagneticFluxDensityUnit.TESLA, triad.getUnit());
@@ -371,8 +368,8 @@ public class MagneticFluxDensityTriadTest {
     }
 
     @Test
-    public void testSetValueCoordinatesAndUnit() {
-        final MagneticFluxDensityTriad triad = new MagneticFluxDensityTriad();
+    void testSetValueCoordinatesAndUnit() {
+        final var triad = new MagneticFluxDensityTriad();
 
         // check default values
         assertEquals(0.0, triad.getValueX(), 0.0);
@@ -381,10 +378,10 @@ public class MagneticFluxDensityTriadTest {
         assertEquals(MagneticFluxDensityUnit.TESLA, triad.getUnit());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
         triad.setValueCoordinatesAndUnit(valueX, valueY, valueZ, MagneticFluxDensityUnit.NANOTESLA);
 
@@ -400,22 +397,22 @@ public class MagneticFluxDensityTriadTest {
     }
 
     @Test
-    public void testGetSetValuesAsArray() {
-        final MagneticFluxDensityTriad triad = new MagneticFluxDensityTriad();
+    void testGetSetValuesAsArray() {
+        final var triad = new MagneticFluxDensityTriad();
 
         // check default value
         assertArrayEquals(new double[3], triad.getValuesAsArray(), 0.0);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] values1 = new double[3];
+        final var randomizer = new UniformRandomizer();
+        final var values1 = new double[3];
         randomizer.fill(values1);
 
         triad.setValueCoordinates(values1);
 
         // check
-        final double[] values2 = triad.getValuesAsArray();
-        final double[] values3 = new double[3];
+        final var values2 = triad.getValuesAsArray();
+        final var values3 = new double[3];
         triad.getValuesAsArray(values3);
 
         assertArrayEquals(values1, values2, 0.0);
@@ -427,20 +424,20 @@ public class MagneticFluxDensityTriadTest {
     }
 
     @Test
-    public void testGetSetValuesAsMatrix() throws WrongSizeException {
-        final MagneticFluxDensityTriad triad = new MagneticFluxDensityTriad();
+    void testGetSetValuesAsMatrix() throws WrongSizeException {
+        final var triad = new MagneticFluxDensityTriad();
 
         // check default value
         assertEquals(new Matrix(3, 1), triad.getValuesAsMatrix());
 
         // set new value
-        final Matrix values1 = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+        final var values1 = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
 
         triad.setValueCoordinates(values1);
 
         // check
-        final Matrix values2 = triad.getValuesAsMatrix();
-        final Matrix values3 = new Matrix(3, 1);
+        final var values2 = triad.getValuesAsMatrix();
+        final var values3 = new Matrix(3, 1);
         triad.getValuesAsMatrix(values3);
 
         assertEquals(values1, values2);
@@ -458,24 +455,24 @@ public class MagneticFluxDensityTriadTest {
     }
 
     @Test
-    public void testGetSetMeasurementX() {
-        final MagneticFluxDensityTriad triad = new MagneticFluxDensityTriad();
+    void testGetSetMeasurementX() {
+        final var triad = new MagneticFluxDensityTriad();
 
         // check default value
-        final MagneticFluxDensity bx1 = triad.getMeasurementX();
+        final var bx1 = triad.getMeasurementX();
         assertEquals(0.0, bx1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bx1.getUnit());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final MagneticFluxDensity bx2 = new MagneticFluxDensity(valueX, MagneticFluxDensityUnit.TESLA);
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var bx2 = new MagneticFluxDensity(valueX, MagneticFluxDensityUnit.TESLA);
 
         triad.setMeasurementX(bx2);
 
         // check
-        final MagneticFluxDensity bx3 = triad.getMeasurementX();
-        final MagneticFluxDensity bx4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var bx3 = triad.getMeasurementX();
+        final var bx4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         triad.getMeasurementX(bx4);
 
         assertEquals(bx2, bx3);
@@ -483,24 +480,24 @@ public class MagneticFluxDensityTriadTest {
     }
 
     @Test
-    public void testGetSetMeasurementY() {
-        final MagneticFluxDensityTriad triad = new MagneticFluxDensityTriad();
+    void testGetSetMeasurementY() {
+        final var triad = new MagneticFluxDensityTriad();
 
         // check default value
-        final MagneticFluxDensity by1 = triad.getMeasurementY();
+        final var by1 = triad.getMeasurementY();
         assertEquals(0.0, by1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, by1.getUnit());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueY = randomizer.nextDouble();
-        final MagneticFluxDensity by2 = new MagneticFluxDensity(valueY, MagneticFluxDensityUnit.TESLA);
+        final var randomizer = new UniformRandomizer();
+        final var valueY = randomizer.nextDouble();
+        final var by2 = new MagneticFluxDensity(valueY, MagneticFluxDensityUnit.TESLA);
 
         triad.setMeasurementY(by2);
 
         // check
-        final MagneticFluxDensity by3 = triad.getMeasurementY();
-        final MagneticFluxDensity by4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var by3 = triad.getMeasurementY();
+        final var by4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         triad.getMeasurementY(by4);
 
         assertEquals(by2, by3);
@@ -508,24 +505,24 @@ public class MagneticFluxDensityTriadTest {
     }
 
     @Test
-    public void testGetSetMeasurementZ() {
-        final MagneticFluxDensityTriad triad = new MagneticFluxDensityTriad();
+    void testGetSetMeasurementZ() {
+        final var triad = new MagneticFluxDensityTriad();
 
         // check default value
-        final MagneticFluxDensity bz1 = triad.getMeasurementZ();
+        final var bz1 = triad.getMeasurementZ();
         assertEquals(0.0, bz1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bz1.getUnit());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueZ = randomizer.nextDouble();
-        final MagneticFluxDensity bz2 = new MagneticFluxDensity(valueZ, MagneticFluxDensityUnit.TESLA);
+        final var randomizer = new UniformRandomizer();
+        final var valueZ = randomizer.nextDouble();
+        final var bz2 = new MagneticFluxDensity(valueZ, MagneticFluxDensityUnit.TESLA);
 
         triad.setMeasurementZ(bz2);
 
         // check
-        final MagneticFluxDensity bz3 = triad.getMeasurementZ();
-        final MagneticFluxDensity bz4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var bz3 = triad.getMeasurementZ();
+        final var bz4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         triad.getMeasurementZ(bz4);
 
         assertEquals(bz2, bz3);
@@ -533,13 +530,13 @@ public class MagneticFluxDensityTriadTest {
     }
 
     @Test
-    public void testSetMeasurementCoordinates() {
-        final MagneticFluxDensityTriad triad = new MagneticFluxDensityTriad();
+    void testSetMeasurementCoordinates() {
+        final var triad = new MagneticFluxDensityTriad();
 
         // check default values
-        final MagneticFluxDensity bx1 = triad.getMeasurementX();
-        final MagneticFluxDensity by1 = triad.getMeasurementY();
-        final MagneticFluxDensity bz1 = triad.getMeasurementZ();
+        final var bx1 = triad.getMeasurementX();
+        final var by1 = triad.getMeasurementY();
+        final var bz1 = triad.getMeasurementZ();
 
         assertEquals(0.0, bx1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bx1.getUnit());
@@ -549,20 +546,20 @@ public class MagneticFluxDensityTriadTest {
         assertEquals(MagneticFluxDensityUnit.TESLA, bz1.getUnit());
 
         // set new values
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
-        final MagneticFluxDensity bx2 = new MagneticFluxDensity(valueX, MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity by2 = new MagneticFluxDensity(valueY, MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity bz2 = new MagneticFluxDensity(valueZ, MagneticFluxDensityUnit.TESLA);
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
+        final var bx2 = new MagneticFluxDensity(valueX, MagneticFluxDensityUnit.TESLA);
+        final var by2 = new MagneticFluxDensity(valueY, MagneticFluxDensityUnit.TESLA);
+        final var bz2 = new MagneticFluxDensity(valueZ, MagneticFluxDensityUnit.TESLA);
 
         triad.setMeasurementCoordinates(bx2, by2, bz2);
 
         // check
-        final MagneticFluxDensity bx3 = triad.getMeasurementX();
-        final MagneticFluxDensity by3 = triad.getMeasurementY();
-        final MagneticFluxDensity bz3 = triad.getMeasurementZ();
+        final var bx3 = triad.getMeasurementX();
+        final var by3 = triad.getMeasurementY();
+        final var bz3 = triad.getMeasurementZ();
 
         assertEquals(bx2, bx3);
         assertEquals(by2, by3);
@@ -570,14 +567,14 @@ public class MagneticFluxDensityTriadTest {
     }
 
     @Test
-    public void testCopyTo() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testCopyTo() {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final MagneticFluxDensityTriad triad1 = new MagneticFluxDensityTriad(valueX, valueY, valueZ);
-        final MagneticFluxDensityTriad triad2 = new MagneticFluxDensityTriad(MagneticFluxDensityUnit.NANOTESLA);
+        final var triad1 = new MagneticFluxDensityTriad(valueX, valueY, valueZ);
+        final var triad2 = new MagneticFluxDensityTriad(MagneticFluxDensityUnit.NANOTESLA);
 
         triad1.copyTo(triad2);
 
@@ -589,14 +586,14 @@ public class MagneticFluxDensityTriadTest {
     }
 
     @Test
-    public void testCopyFrom() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testCopyFrom() {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final MagneticFluxDensityTriad triad1 = new MagneticFluxDensityTriad(valueX, valueY, valueZ);
-        final MagneticFluxDensityTriad triad2 = new MagneticFluxDensityTriad(MagneticFluxDensityUnit.NANOTESLA);
+        final var triad1 = new MagneticFluxDensityTriad(valueX, valueY, valueZ);
+        final var triad2 = new MagneticFluxDensityTriad(MagneticFluxDensityUnit.NANOTESLA);
 
         triad2.copyFrom(triad1);
 
@@ -608,30 +605,30 @@ public class MagneticFluxDensityTriadTest {
     }
 
     @Test
-    public void testHashCode() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testHashCode() {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final MagneticFluxDensityTriad triad1 = new MagneticFluxDensityTriad(valueX, valueY, valueZ);
-        final MagneticFluxDensityTriad triad2 = new MagneticFluxDensityTriad(triad1);
-        final MagneticFluxDensityTriad triad3 = new MagneticFluxDensityTriad();
+        final var triad1 = new MagneticFluxDensityTriad(valueX, valueY, valueZ);
+        final var triad2 = new MagneticFluxDensityTriad(triad1);
+        final var triad3 = new MagneticFluxDensityTriad();
 
         assertEquals(triad1.hashCode(), triad2.hashCode());
         assertNotEquals(triad1.hashCode(), triad3.hashCode());
     }
 
     @Test
-    public void testEquals1() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testEquals1() {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final MagneticFluxDensityTriad triad1 = new MagneticFluxDensityTriad(valueX, valueY, valueZ);
-        final MagneticFluxDensityTriad triad2 = new MagneticFluxDensityTriad(triad1);
-        final MagneticFluxDensityTriad triad3 = new MagneticFluxDensityTriad();
+        final var triad1 = new MagneticFluxDensityTriad(valueX, valueY, valueZ);
+        final var triad2 = new MagneticFluxDensityTriad(triad1);
+        final var triad3 = new MagneticFluxDensityTriad();
 
         assertTrue(triad1.equals(triad2));
         assertTrue(triad2.equals(triad1));
@@ -645,15 +642,15 @@ public class MagneticFluxDensityTriadTest {
     }
 
     @Test
-    public void testEquals2() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testEquals2() {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final MagneticFluxDensityTriad triad1 = new MagneticFluxDensityTriad(valueX, valueY, valueZ);
-        final MagneticFluxDensityTriad triad2 = new MagneticFluxDensityTriad(triad1);
-        final MagneticFluxDensityTriad triad3 = new MagneticFluxDensityTriad();
+        final var triad1 = new MagneticFluxDensityTriad(valueX, valueY, valueZ);
+        final var triad2 = new MagneticFluxDensityTriad(triad1);
+        final var triad3 = new MagneticFluxDensityTriad();
 
         assertTrue(triad1.equals(triad2, ABSOLUTE_ERROR));
         assertTrue(triad2.equals(triad1, ABSOLUTE_ERROR));
@@ -665,77 +662,77 @@ public class MagneticFluxDensityTriadTest {
     }
 
     @Test
-    public void testEquals3() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testEquals3() {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final MagneticFluxDensityTriad triad1 = new MagneticFluxDensityTriad(valueX, valueY, valueZ);
-        final MagneticFluxDensityTriad triad2 = new MagneticFluxDensityTriad(triad1);
-        final MagneticFluxDensityTriad triad3 = new MagneticFluxDensityTriad();
-        final Object obj = new Object();
+        final var triad1 = new MagneticFluxDensityTriad(valueX, valueY, valueZ);
+        final var triad2 = new MagneticFluxDensityTriad(triad1);
+        final var triad3 = new MagneticFluxDensityTriad();
+        final var obj = new Object();
 
         assertEquals(triad1, triad2);
         assertNotEquals(triad1, triad3);
         assertNotEquals(triad1, obj);
-        assertNotEquals(triad1, null);
+        assertNotEquals(null, triad1);
     }
 
     @Test
-    public void testClone() throws CloneNotSupportedException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testClone() throws CloneNotSupportedException {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final MagneticFluxDensityTriad triad1 = new MagneticFluxDensityTriad(valueX, valueY, valueZ);
-        final MagneticFluxDensityTriad triad2 = (MagneticFluxDensityTriad) triad1.clone();
+        final var triad1 = new MagneticFluxDensityTriad(valueX, valueY, valueZ);
+        final var triad2 = (MagneticFluxDensityTriad) triad1.clone();
 
         assertEquals(triad1, triad2);
     }
 
     @Test
-    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final MagneticFluxDensityTriad triad1 = new MagneticFluxDensityTriad(valueX, valueY, valueZ);
+        final var triad1 = new MagneticFluxDensityTriad(valueX, valueY, valueZ);
 
-        final byte[] bytes = SerializationHelper.serialize(triad1);
-        final MagneticFluxDensityTriad triad2 = SerializationHelper.deserialize(bytes);
+        final var bytes = SerializationHelper.serialize(triad1);
+        final var triad2 = SerializationHelper.deserialize(bytes);
 
         assertEquals(triad1, triad2);
         assertNotSame(triad1, triad2);
     }
 
     @Test
-    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
-        final Field field = MagneticFluxDensityTriad.class.getDeclaredField("serialVersionUID");
+    void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final var field = MagneticFluxDensityTriad.class.getDeclaredField("serialVersionUID");
         field.setAccessible(true);
 
         assertEquals(0L, field.get(null));
     }
 
     @Test
-    public void testGetNorm() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testGetNorm() {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final MagneticFluxDensityTriad triad = new MagneticFluxDensityTriad(valueX, valueY, valueZ);
+        final var triad = new MagneticFluxDensityTriad(valueX, valueY, valueZ);
 
-        final double sqrNorm = valueX * valueX + valueY * valueY + valueZ * valueZ;
-        final double norm = Math.sqrt(sqrNorm);
+        final var sqrNorm = valueX * valueX + valueY * valueY + valueZ * valueZ;
+        final var norm = Math.sqrt(sqrNorm);
 
         assertEquals(sqrNorm, triad.getSqrNorm(), 0.0);
         assertEquals(norm, triad.getNorm(), 0.0);
 
-        final MagneticFluxDensity b1 = triad.getMeasurementNorm();
-        final MagneticFluxDensity b2 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var b1 = triad.getMeasurementNorm();
+        final var b2 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.NANOTESLA);
         triad.getMeasurementNorm(b2);
 
         assertEquals(norm, b1.getValue().doubleValue(), 0.0);

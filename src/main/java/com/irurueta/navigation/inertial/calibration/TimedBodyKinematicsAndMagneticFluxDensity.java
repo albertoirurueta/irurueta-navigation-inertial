@@ -46,7 +46,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
     /**
      * Timestamp value expressed in seconds.
      */
-    private double mTimestampSeconds;
+    private double timestampSeconds;
 
     /**
      * Constructor.
@@ -92,7 +92,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      * @param timestampSeconds timestamp value expressed in seconds.
      */
     public TimedBodyKinematicsAndMagneticFluxDensity(final double timestampSeconds) {
-        mTimestampSeconds = timestampSeconds;
+        this.timestampSeconds = timestampSeconds;
     }
 
     /**
@@ -101,7 +101,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      * @param timestamp timestamp value.
      */
     public TimedBodyKinematicsAndMagneticFluxDensity(final Time timestamp) {
-        mTimestampSeconds = convertTime(timestamp);
+        timestampSeconds = convertTime(timestamp);
     }
 
     /**
@@ -113,7 +113,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      */
     public TimedBodyKinematicsAndMagneticFluxDensity(final BodyKinematics kinematics, final double timestampSeconds) {
         super(kinematics);
-        mTimestampSeconds = timestampSeconds;
+        this.timestampSeconds = timestampSeconds;
     }
 
     /**
@@ -125,7 +125,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      */
     public TimedBodyKinematicsAndMagneticFluxDensity(final BodyKinematics kinematics, final Time timestamp) {
         super(kinematics);
-        mTimestampSeconds = convertTime(timestamp);
+        timestampSeconds = convertTime(timestamp);
     }
 
     /**
@@ -137,7 +137,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
     public TimedBodyKinematicsAndMagneticFluxDensity(
             final BodyMagneticFluxDensity magneticFluxDensity, final double timestampSeconds) {
         super(magneticFluxDensity);
-        mTimestampSeconds = timestampSeconds;
+        this.timestampSeconds = timestampSeconds;
     }
 
     /**
@@ -149,7 +149,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
     public TimedBodyKinematicsAndMagneticFluxDensity(
             final BodyMagneticFluxDensity magneticFluxDensity, final Time timestamp) {
         super(magneticFluxDensity);
-        mTimestampSeconds = convertTime(timestamp);
+        timestampSeconds = convertTime(timestamp);
     }
 
     /**
@@ -164,7 +164,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
             final BodyKinematics kinematics, final BodyMagneticFluxDensity magneticFluxDensity,
             final double timestampSeconds) {
         super(kinematics, magneticFluxDensity);
-        mTimestampSeconds = timestampSeconds;
+        this.timestampSeconds = timestampSeconds;
     }
 
 
@@ -179,7 +179,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
     public TimedBodyKinematicsAndMagneticFluxDensity(
             final BodyKinematics kinematics, final BodyMagneticFluxDensity magneticFluxDensity, final Time timestamp) {
         super(kinematics, magneticFluxDensity);
-        mTimestampSeconds = convertTime(timestamp);
+        timestampSeconds = convertTime(timestamp);
     }
 
     /**
@@ -197,7 +197,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      * @return timestamp value expressed in seconds.
      */
     public double getTimestampSeconds() {
-        return mTimestampSeconds;
+        return timestampSeconds;
     }
 
     /**
@@ -206,7 +206,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      * @param timestampSeconds timestamp value expressed in seconds.
      */
     public void setTimestampSeconds(final double timestampSeconds) {
-        mTimestampSeconds = timestampSeconds;
+        this.timestampSeconds = timestampSeconds;
     }
 
     /**
@@ -215,7 +215,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      * @return a new timestamp instance.
      */
     public Time getTimestamp() {
-        return new Time(mTimestampSeconds, TimeUnit.SECOND);
+        return new Time(timestampSeconds, TimeUnit.SECOND);
     }
 
     /**
@@ -224,7 +224,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      * @param result instance where result data will be stored.
      */
     public void getTimestamp(final Time result) {
-        result.setValue(mTimestampSeconds);
+        result.setValue(timestampSeconds);
         result.setUnit(TimeUnit.SECOND);
     }
 
@@ -234,7 +234,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      * @param timestamp timestamp to be set.
      */
     public void setTimestamp(final Time timestamp) {
-        mTimestampSeconds = convertTime(timestamp);
+        timestampSeconds = convertTime(timestamp);
     }
 
     /**
@@ -244,7 +244,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      * @return a timed body kinematics
      */
     public TimedBodyKinematics getTimedKinematics() {
-        return new TimedBodyKinematics(getKinematics(), mTimestampSeconds);
+        return new TimedBodyKinematics(getKinematics(), timestampSeconds);
     }
 
     /**
@@ -255,7 +255,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      */
     public void getTimedKinematics(final TimedBodyKinematics result) {
         result.setKinematics(getKinematics());
-        result.setTimestampSeconds(mTimestampSeconds);
+        result.setTimestampSeconds(timestampSeconds);
     }
 
     /**
@@ -265,7 +265,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      */
     public void setTimedKinematics(final TimedBodyKinematics timedKinematics) {
         setKinematics(timedKinematics.getKinematics());
-        mTimestampSeconds = timedKinematics.getTimestampSeconds();
+        timestampSeconds = timedKinematics.getTimestampSeconds();
     }
 
     /**
@@ -275,7 +275,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      */
     public void copyFrom(final TimedBodyKinematicsAndMagneticFluxDensity input) {
         super.copyFrom(input);
-        mTimestampSeconds = input.mTimestampSeconds;
+        timestampSeconds = input.timestampSeconds;
     }
 
     /**
@@ -295,7 +295,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      */
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), mTimestampSeconds);
+        return Objects.hash(super.hashCode(), timestampSeconds);
     }
 
     /**
@@ -318,7 +318,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      * threshold), false otherwise.
      */
     public boolean equals(final TimedBodyKinematicsAndMagneticFluxDensity other, final double threshold) {
-        return super.equals(other, threshold) && Math.abs(other.mTimestampSeconds - mTimestampSeconds) <= threshold;
+        return super.equals(other, threshold) && Math.abs(other.timestampSeconds - timestampSeconds) <= threshold;
     }
 
     /**
@@ -336,7 +336,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        final TimedBodyKinematicsAndMagneticFluxDensity other = (TimedBodyKinematicsAndMagneticFluxDensity) obj;
+        final var other = (TimedBodyKinematicsAndMagneticFluxDensity) obj;
         return equals(other);
     }
 
@@ -348,8 +348,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final TimedBodyKinematicsAndMagneticFluxDensity result =
-                (TimedBodyKinematicsAndMagneticFluxDensity) super.clone();
+        final var result = (TimedBodyKinematicsAndMagneticFluxDensity) super.clone();
         copyTo(result);
         return result;
     }

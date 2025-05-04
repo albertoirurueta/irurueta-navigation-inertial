@@ -102,100 +102,100 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      * Ground truth magnetic flux density norm to be expected at location where measurements have been made,
      * expressed in Teslas (T).
      */
-    protected Double mGroundTruthMagneticFluxDensityNorm;
+    protected Double groundTruthMagneticFluxDensityNorm;
 
     /**
      * Levenberg-Marquardt fitter to find a non-linear solution.
      */
-    private final LevenbergMarquardtMultiDimensionFitter mFitter = new LevenbergMarquardtMultiDimensionFitter();
+    private final LevenbergMarquardtMultiDimensionFitter fitter = new LevenbergMarquardtMultiDimensionFitter();
 
     /**
      * Initial x-coordinate of hard-iron bias to be used to find a solution.
      * This is expressed in Teslas (T).
      */
-    private double mInitialHardIronX;
+    private double initialHardIronX;
 
     /**
      * Initial y-coordinate of hard-iron bias to be used to find a solution.
      * This is expressed in Teslas (T).
      */
-    private double mInitialHardIronY;
+    private double initialHardIronY;
 
     /**
      * Initial z-coordinate of hard-iron bias to be used to find a solution.
      * This is expressed in Teslas (T).
      */
-    private double mInitialHardIronZ;
+    private double initialHardIronZ;
 
     /**
      * Initial x scaling factor.
      */
-    private double mInitialSx;
+    private double initialSx;
 
     /**
      * Initial y scaling factor.
      */
-    private double mInitialSy;
+    private double initialSy;
 
     /**
      * Initial z scaling factor.
      */
-    private double mInitialSz;
+    private double initialSz;
 
     /**
      * Initial x-y cross coupling error.
      */
-    private double mInitialMxy;
+    private double initialMxy;
 
     /**
      * Initial x-z cross coupling error.
      */
-    private double mInitialMxz;
+    private double initialMxz;
 
     /**
      * Initial y-x cross coupling error.
      */
-    private double mInitialMyx;
+    private double initialMyx;
 
     /**
      * Initial y-z cross coupling error.
      */
-    private double mInitialMyz;
+    private double initialMyz;
 
     /**
      * Initial z-x cross coupling error.
      */
-    private double mInitialMzx;
+    private double initialMzx;
 
     /**
      * Initial z-y cross coupling error.
      */
-    private double mInitialMzy;
+    private double initialMzy;
 
     /**
      * Contains a collection of body magnetic flux density measurements taken
      * at a given position with different unknown orientations and containing the
      * standard deviation of magnetometer measurements.
      */
-    private Collection<StandardDeviationBodyMagneticFluxDensity> mMeasurements;
+    private Collection<StandardDeviationBodyMagneticFluxDensity> measurements;
 
     /**
      * This flag indicates whether z-axis is assumed to be common for accelerometer,
      * gyroscope and magnetometer.
      * When enabled, this eliminates 3 variables from Mm matrix.
      */
-    private boolean mCommonAxisUsed = DEFAULT_USE_COMMON_Z_AXIS;
+    private boolean commonAxisUsed = DEFAULT_USE_COMMON_Z_AXIS;
 
     /**
      * Listener to handle events raised by this calibrator.
      */
-    private L mListener;
+    private L listener;
 
     /**
      * Estimated magnetometer hard-iron biases for each magnetometer axis
      * expressed in Teslas (T).
      */
-    private double[] mEstimatedHardIron;
+    private double[] estimatedHardIron;
 
     /**
      * Estimated magnetometer soft-iron matrix containing scale factors
@@ -237,72 +237,72 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      * </pre>
      * Values of this matrix are unit-less.
      */
-    private Matrix mEstimatedMm;
+    private Matrix estimatedMm;
 
     /**
      * Estimated covariance matrix for estimated parameters.
      */
-    private Matrix mEstimatedCovariance;
+    private Matrix estimatedCovariance;
 
     /**
      * Estimated chi square value.
      */
-    private double mEstimatedChiSq;
+    private double estimatedChiSq;
 
     /**
      * Estimated mean square error respect to provided measurements.
      */
-    private double mEstimatedMse;
+    private double estimatedMse;
 
     /**
      * Indicates whether calibrator is running.
      */
-    private boolean mRunning;
+    private boolean running;
 
     /**
      * Internally holds x-coordinate of measured magnetic flux density
      * during calibration.
      */
-    private double mBmeasX;
+    private double bmeasX;
 
     /**
      * Internally holds y-coordinate of measured magnetic flux density
      * during calibration.
      */
-    private double mBmeasY;
+    private double bmeasY;
 
     /**
      * Internally holds z-coordinate of measured magnetic flux density
      * during calibration.
      */
-    private double mBmeasZ;
+    private double bmeasZ;
 
     /**
      * Internally holds measured magnetic flux density during calibration
      * expressed as a column matrix.
      */
-    private Matrix mBmeas;
+    private Matrix bmeas;
 
     /**
      * Internally holds cross-coupling errors during calibration.
      */
-    private Matrix mM;
+    private Matrix m;
 
     /**
      * Internally holds inverse of cross-coupling errors during calibration.
      */
-    private Matrix mInvM;
+    private Matrix invM;
 
     /**
      * Internally holds biases during calibration.
      */
-    private Matrix mB;
+    private Matrix b;
 
     /**
      * Internally holds computed true magnetic flux density during
      * calibration.
      */
-    private Matrix mBtrue;
+    private Matrix btrue;
 
     /**
      * Constructor.
@@ -316,7 +316,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      * @param listener listener to handle events raised by this calibrator.
      */
     protected BaseMagneticFluxDensityNormMagnetometerCalibrator(final L listener) {
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -330,7 +330,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
             final Collection<StandardDeviationBodyMagneticFluxDensity> measurements) {
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -340,7 +340,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      *                       for the accelerometer, gyroscope and magnetometer.
      */
     protected BaseMagneticFluxDensityNormMagnetometerCalibrator(final boolean commonAxisUsed) {
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -405,7 +405,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
     protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
             final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final L listener) {
         this(measurements);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -422,7 +422,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
     protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
             final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed) {
         this(measurements);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -441,7 +441,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
             final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final L listener) {
         this(measurements, commonAxisUsed);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -459,7 +459,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
     protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
             final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] initialHardIron) {
         this(initialHardIron);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -479,7 +479,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
             final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] initialHardIron,
             final L listener) {
         this(measurements, initialHardIron);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -500,7 +500,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
             final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final double[] initialHardIron) {
         this(measurements, initialHardIron);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -522,7 +522,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
             final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final double[] initialHardIron, final L listener) {
         this(measurements, commonAxisUsed, initialHardIron);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -540,7 +540,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
     protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
             final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix initialHardIron) {
         this(initialHardIron);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -560,7 +560,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
             final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix initialHardIron,
             final L listener) {
         this(measurements, initialHardIron);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -581,7 +581,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
             final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final Matrix initialHardIron) {
         this(measurements, initialHardIron);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -603,7 +603,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
             final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final Matrix initialHardIron, final L listener) {
         this(measurements, commonAxisUsed, initialHardIron);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -625,7 +625,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
             final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix initialHardIron,
             final Matrix initialMm) {
         this(initialHardIron, initialMm);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -648,7 +648,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
             final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix initialHardIron,
             final Matrix initialMm, final L listener) {
         this(measurements, initialHardIron, initialMm);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -672,7 +672,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
             final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final Matrix initialHardIron, final Matrix initialMm) {
         this(measurements, initialHardIron, initialMm);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -697,7 +697,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
             final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final Matrix initialHardIron, final Matrix initialMm, final L listener) {
         this(measurements, commonAxisUsed, initialHardIron, initialMm);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -720,7 +720,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
     protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm, final L listener) {
         this(groundTruthMagneticFluxDensityNorm);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -738,7 +738,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
             final Double groundTruthMagneticFluxDensityNorm,
             final Collection<StandardDeviationBodyMagneticFluxDensity> measurements) {
         this(groundTruthMagneticFluxDensityNorm);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -752,7 +752,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
     protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm, final boolean commonAxisUsed) {
         this(groundTruthMagneticFluxDensityNorm);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -831,7 +831,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
             final Double groundTruthMagneticFluxDensityNorm,
             final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final L listener) {
         this(groundTruthMagneticFluxDensityNorm, measurements);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -851,7 +851,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
             final Double groundTruthMagneticFluxDensityNorm,
             final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed) {
         this(groundTruthMagneticFluxDensityNorm, measurements);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -873,7 +873,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
             final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final L listener) {
         this(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -893,7 +893,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
             final Double groundTruthMagneticFluxDensityNorm,
             final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] initialHardIron) {
         this(groundTruthMagneticFluxDensityNorm, initialHardIron);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -915,7 +915,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
             final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] initialHardIron,
             final L listener) {
         this(groundTruthMagneticFluxDensityNorm, measurements, initialHardIron);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -938,7 +938,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
             final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final double[] initialHardIron) {
         this(groundTruthMagneticFluxDensityNorm, measurements, initialHardIron);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -962,7 +962,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
             final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final double[] initialHardIron, final L listener) {
         this(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, initialHardIron);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -982,7 +982,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
             final Double groundTruthMagneticFluxDensityNorm,
             final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix initialHardIron) {
         this(groundTruthMagneticFluxDensityNorm, initialHardIron);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1004,7 +1004,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
             final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix initialHardIron,
             final L listener) {
         this(groundTruthMagneticFluxDensityNorm, measurements, initialHardIron);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1027,7 +1027,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
             final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final Matrix initialHardIron) {
         this(groundTruthMagneticFluxDensityNorm, measurements, initialHardIron);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -1051,7 +1051,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
             final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final Matrix initialHardIron, final L listener) {
         this(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, initialHardIron);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1075,7 +1075,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
             final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix initialHardIron,
             final Matrix initialMm) {
         this(groundTruthMagneticFluxDensityNorm, initialHardIron, initialMm);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1100,7 +1100,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
             final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix initialHardIron,
             final Matrix initialMm, final L listener) {
         this(groundTruthMagneticFluxDensityNorm, measurements, initialHardIron, initialMm);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1126,7 +1126,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
             final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final Matrix initialHardIron, final Matrix initialMm) {
         this(groundTruthMagneticFluxDensityNorm, measurements, initialHardIron, initialMm);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -1153,7 +1153,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
             final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final Matrix initialHardIron, final Matrix initialMm, final L listener) {
         this(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, initialHardIron, initialMm);
-        mListener = listener;
+        this.listener = listener;
     }
 
 
@@ -1164,7 +1164,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      * @return ground truth magnetic flux density or null.
      */
     public Double getGroundTruthMagneticFluxDensityNorm() {
-        return mGroundTruthMagneticFluxDensityNorm;
+        return groundTruthMagneticFluxDensityNorm;
     }
 
     /**
@@ -1173,8 +1173,8 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      * @return ground truth magnetic flux density or null.
      */
     public MagneticFluxDensity getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity() {
-        return mGroundTruthMagneticFluxDensityNorm != null
-                ? new MagneticFluxDensity(mGroundTruthMagneticFluxDensityNorm, MagneticFluxDensityUnit.TESLA) : null;
+        return groundTruthMagneticFluxDensityNorm != null
+                ? new MagneticFluxDensity(groundTruthMagneticFluxDensityNorm, MagneticFluxDensityUnit.TESLA) : null;
     }
 
     /**
@@ -1184,8 +1184,8 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      * @return true if ground truth magnetic flux density norm has been defined, false if it is not available yet.
      */
     public boolean getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(final MagneticFluxDensity result) {
-        if (mGroundTruthMagneticFluxDensityNorm != null) {
-            result.setValue(mGroundTruthMagneticFluxDensityNorm);
+        if (groundTruthMagneticFluxDensityNorm != null) {
+            result.setValue(groundTruthMagneticFluxDensityNorm);
             result.setUnit(MagneticFluxDensityUnit.TESLA);
             return true;
         } else {
@@ -1202,7 +1202,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public double getInitialHardIronX() {
-        return mInitialHardIronX;
+        return initialHardIronX;
     }
 
     /**
@@ -1216,10 +1216,10 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public void setInitialHardIronX(final double initialHardIronX) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialHardIronX = initialHardIronX;
+        this.initialHardIronX = initialHardIronX;
     }
 
     /**
@@ -1231,7 +1231,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public double getInitialHardIronY() {
-        return mInitialHardIronY;
+        return initialHardIronY;
     }
 
     /**
@@ -1245,10 +1245,10 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public void setInitialHardIronY(final double initialHardIronY) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialHardIronY = initialHardIronY;
+        this.initialHardIronY = initialHardIronY;
     }
 
     /**
@@ -1260,7 +1260,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public double getInitialHardIronZ() {
-        return mInitialHardIronZ;
+        return initialHardIronZ;
     }
 
     /**
@@ -1274,10 +1274,10 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public void setInitialHardIronZ(final double initialHardIronZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialHardIronZ = initialHardIronZ;
+        this.initialHardIronZ = initialHardIronZ;
     }
 
     /**
@@ -1288,7 +1288,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public MagneticFluxDensity getInitialHardIronXAsMagneticFluxDensity() {
-        return new MagneticFluxDensity(mInitialHardIronX, MagneticFluxDensityUnit.TESLA);
+        return new MagneticFluxDensity(initialHardIronX, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -1299,7 +1299,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public void getInitialHardIronXAsMagneticFluxDensity(final MagneticFluxDensity result) {
-        result.setValue(mInitialHardIronX);
+        result.setValue(initialHardIronX);
         result.setUnit(MagneticFluxDensityUnit.TESLA);
     }
 
@@ -1312,10 +1312,10 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public void setInitialHardIronX(final MagneticFluxDensity initialHardIronX) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialHardIronX = convertMagneticFluxDensity(initialHardIronX);
+        this.initialHardIronX = convertMagneticFluxDensity(initialHardIronX);
     }
 
     /**
@@ -1326,7 +1326,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public MagneticFluxDensity getInitialHardIronYAsMagneticFluxDensity() {
-        return new MagneticFluxDensity(mInitialHardIronY, MagneticFluxDensityUnit.TESLA);
+        return new MagneticFluxDensity(initialHardIronY, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -1337,7 +1337,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public void getInitialHardIronYAsMagneticFluxDensity(final MagneticFluxDensity result) {
-        result.setValue(mInitialHardIronY);
+        result.setValue(initialHardIronY);
         result.setUnit(MagneticFluxDensityUnit.TESLA);
     }
 
@@ -1350,10 +1350,10 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public void setInitialHardIronY(final MagneticFluxDensity initialHardIronY) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialHardIronY = convertMagneticFluxDensity(initialHardIronY);
+        this.initialHardIronY = convertMagneticFluxDensity(initialHardIronY);
     }
 
     /**
@@ -1364,7 +1364,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public MagneticFluxDensity getInitialHardIronZAsMagneticFluxDensity() {
-        return new MagneticFluxDensity(mInitialHardIronZ, MagneticFluxDensityUnit.TESLA);
+        return new MagneticFluxDensity(initialHardIronZ, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -1375,7 +1375,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public void getInitialHardIronZAsMagneticFluxDensity(final MagneticFluxDensity result) {
-        result.setValue(mInitialHardIronZ);
+        result.setValue(initialHardIronZ);
         result.setUnit(MagneticFluxDensityUnit.TESLA);
     }
 
@@ -1388,10 +1388,10 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public void setInitialHardIronZ(final MagneticFluxDensity initialHardIronZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialHardIronZ = convertMagneticFluxDensity(initialHardIronZ);
+        this.initialHardIronZ = convertMagneticFluxDensity(initialHardIronZ);
     }
 
     /**
@@ -1410,12 +1410,12 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
     public void setInitialHardIron(
             final double initialHardIronX, final double initialHardIronY, final double initialHardIronZ)
             throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialHardIronX = initialHardIronX;
-        mInitialHardIronY = initialHardIronY;
-        mInitialHardIronZ = initialHardIronZ;
+        this.initialHardIronX = initialHardIronX;
+        this.initialHardIronY = initialHardIronY;
+        this.initialHardIronZ = initialHardIronZ;
     }
 
     /**
@@ -1430,13 +1430,13 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
     public void setInitialHardIron(
             final MagneticFluxDensity initialHardIronX, final MagneticFluxDensity initialHardIronY,
             final MagneticFluxDensity initialHardIronZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mInitialHardIronX = convertMagneticFluxDensity(initialHardIronX);
-        mInitialHardIronY = convertMagneticFluxDensity(initialHardIronY);
-        mInitialHardIronZ = convertMagneticFluxDensity(initialHardIronZ);
+        this.initialHardIronX = convertMagneticFluxDensity(initialHardIronX);
+        this.initialHardIronY = convertMagneticFluxDensity(initialHardIronY);
+        this.initialHardIronZ = convertMagneticFluxDensity(initialHardIronZ);
     }
 
     /**
@@ -1447,7 +1447,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
     @Override
     public MagneticFluxDensityTriad getInitialHardIronAsTriad() {
         return new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA,
-                mInitialHardIronX, mInitialHardIronY, mInitialHardIronZ);
+                initialHardIronX, initialHardIronY, initialHardIronZ);
     }
 
     /**
@@ -1457,8 +1457,8 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public void getInitialHardIronAsTriad(final MagneticFluxDensityTriad result) {
-        result.setValueCoordinatesAndUnit(
-                mInitialHardIronX, mInitialHardIronY, mInitialHardIronZ, MagneticFluxDensityUnit.TESLA);
+        result.setValueCoordinatesAndUnit(initialHardIronX, initialHardIronY, initialHardIronZ,
+                MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -1469,13 +1469,13 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public void setInitialHardIron(final MagneticFluxDensityTriad initialHardIron) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mInitialHardIronX = convertMagneticFluxDensity(initialHardIron.getValueX(), initialHardIron.getUnit());
-        mInitialHardIronY = convertMagneticFluxDensity(initialHardIron.getValueY(), initialHardIron.getUnit());
-        mInitialHardIronZ = convertMagneticFluxDensity(initialHardIron.getValueZ(), initialHardIron.getUnit());
+        initialHardIronX = convertMagneticFluxDensity(initialHardIron.getValueX(), initialHardIron.getUnit());
+        initialHardIronY = convertMagneticFluxDensity(initialHardIron.getValueY(), initialHardIron.getUnit());
+        initialHardIronZ = convertMagneticFluxDensity(initialHardIron.getValueZ(), initialHardIron.getUnit());
     }
 
     /**
@@ -1485,7 +1485,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public double getInitialSx() {
-        return mInitialSx;
+        return initialSx;
     }
 
     /**
@@ -1496,10 +1496,10 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public void setInitialSx(final double initialSx) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialSx = initialSx;
+        this.initialSx = initialSx;
     }
 
     /**
@@ -1509,7 +1509,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public double getInitialSy() {
-        return mInitialSy;
+        return initialSy;
     }
 
     /**
@@ -1520,10 +1520,10 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public void setInitialSy(final double initialSy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialSy = initialSy;
+        this.initialSy = initialSy;
     }
 
     /**
@@ -1533,7 +1533,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public double getInitialSz() {
-        return mInitialSz;
+        return initialSz;
     }
 
     /**
@@ -1544,10 +1544,10 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public void setInitialSz(final double initialSz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialSz = initialSz;
+        this.initialSz = initialSz;
     }
 
     /**
@@ -1557,7 +1557,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public double getInitialMxy() {
-        return mInitialMxy;
+        return initialMxy;
     }
 
     /**
@@ -1568,10 +1568,10 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public void setInitialMxy(final double initialMxy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMxy = initialMxy;
+        this.initialMxy = initialMxy;
     }
 
     /**
@@ -1581,7 +1581,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public double getInitialMxz() {
-        return mInitialMxz;
+        return initialMxz;
     }
 
     /**
@@ -1592,10 +1592,10 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public void setInitialMxz(final double initialMxz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMxz = initialMxz;
+        this.initialMxz = initialMxz;
     }
 
     /**
@@ -1605,7 +1605,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public double getInitialMyx() {
-        return mInitialMyx;
+        return initialMyx;
     }
 
     /**
@@ -1616,10 +1616,10 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public void setInitialMyx(final double initialMyx) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMyx = initialMyx;
+        this.initialMyx = initialMyx;
     }
 
     /**
@@ -1629,7 +1629,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public double getInitialMyz() {
-        return mInitialMyz;
+        return initialMyz;
     }
 
     /**
@@ -1640,10 +1640,10 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public void setInitialMyz(final double initialMyz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMyz = initialMyz;
+        this.initialMyz = initialMyz;
     }
 
     /**
@@ -1653,7 +1653,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public double getInitialMzx() {
-        return mInitialMzx;
+        return initialMzx;
     }
 
     /**
@@ -1664,10 +1664,10 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public void setInitialMzx(final double initialMzx) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMzx = initialMzx;
+        this.initialMzx = initialMzx;
     }
 
     /**
@@ -1677,7 +1677,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public double getInitialMzy() {
-        return mInitialMzy;
+        return initialMzy;
     }
 
     /**
@@ -1688,10 +1688,10 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public void setInitialMzy(final double initialMzy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMzy = initialMzy;
+        this.initialMzy = initialMzy;
     }
 
     /**
@@ -1705,12 +1705,12 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
     @Override
     public void setInitialScalingFactors(
             final double initialSx, final double initialSy, final double initialSz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialSx = initialSx;
-        mInitialSy = initialSy;
-        mInitialSz = initialSz;
+        this.initialSx = initialSx;
+        this.initialSy = initialSy;
+        this.initialSz = initialSz;
     }
 
     /**
@@ -1728,15 +1728,15 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
     public void setInitialCrossCouplingErrors(
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMxy = initialMxy;
-        mInitialMxz = initialMxz;
-        mInitialMyx = initialMyx;
-        mInitialMyz = initialMyz;
-        mInitialMzx = initialMzx;
-        mInitialMzy = initialMzy;
+        this.initialMxy = initialMxy;
+        this.initialMxz = initialMxz;
+        this.initialMyx = initialMyx;
+        this.initialMyz = initialMyz;
+        this.initialMzx = initialMzx;
+        this.initialMzy = initialMzy;
     }
 
     /**
@@ -1758,7 +1758,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
             final double initialSx, final double initialSy, final double initialSz,
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         setInitialScalingFactors(initialSx, initialSy, initialSz);
@@ -1773,7 +1773,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public double[] getInitialHardIron() {
-        final double[] result = new double[BodyMagneticFluxDensity.COMPONENTS];
+        final var result = new double[BodyMagneticFluxDensity.COMPONENTS];
         getInitialHardIron(result);
         return result;
     }
@@ -1791,9 +1791,9 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
         if (result.length != BodyMagneticFluxDensity.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        result[0] = mInitialHardIronX;
-        result[1] = mInitialHardIronY;
-        result[2] = mInitialHardIronZ;
+        result[0] = initialHardIronX;
+        result[1] = initialHardIronY;
+        result[2] = initialHardIronZ;
     }
 
     /**
@@ -1806,16 +1806,16 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public void setInitialHardIron(final double[] initialHardIron) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
         if (initialHardIron.length != BodyMagneticFluxDensity.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        mInitialHardIronX = initialHardIron[0];
-        mInitialHardIronY = initialHardIron[1];
-        mInitialHardIronZ = initialHardIron[2];
+        initialHardIronX = initialHardIron[0];
+        initialHardIronY = initialHardIron[1];
+        initialHardIronZ = initialHardIron[2];
     }
 
     /**
@@ -1852,9 +1852,9 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
         if (result.getRows() != BodyMagneticFluxDensity.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
-        result.setElementAtIndex(0, mInitialHardIronX);
-        result.setElementAtIndex(1, mInitialHardIronY);
-        result.setElementAtIndex(2, mInitialHardIronZ);
+        result.setElementAtIndex(0, initialHardIronX);
+        result.setElementAtIndex(1, initialHardIronY);
+        result.setElementAtIndex(2, initialHardIronZ);
     }
 
     /**
@@ -1867,16 +1867,16 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public void setInitialHardIron(final Matrix initialHardIron) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (initialHardIron.getRows() != BodyMagneticFluxDensity.COMPONENTS || initialHardIron.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
-        mInitialHardIronX = initialHardIron.getElementAtIndex(0);
-        mInitialHardIronY = initialHardIron.getElementAtIndex(1);
-        mInitialHardIronZ = initialHardIron.getElementAtIndex(2);
+        initialHardIronX = initialHardIron.getElementAtIndex(0);
+        initialHardIronY = initialHardIron.getElementAtIndex(1);
+        initialHardIronZ = initialHardIron.getElementAtIndex(2);
     }
 
     /**
@@ -1908,17 +1908,17 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
         if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        result.setElementAtIndex(0, mInitialSx);
-        result.setElementAtIndex(1, mInitialMyx);
-        result.setElementAtIndex(2, mInitialMzx);
+        result.setElementAtIndex(0, initialSx);
+        result.setElementAtIndex(1, initialMyx);
+        result.setElementAtIndex(2, initialMzx);
 
-        result.setElementAtIndex(3, mInitialMxy);
-        result.setElementAtIndex(4, mInitialSy);
-        result.setElementAtIndex(5, mInitialMzy);
+        result.setElementAtIndex(3, initialMxy);
+        result.setElementAtIndex(4, initialSy);
+        result.setElementAtIndex(5, initialMzy);
 
-        result.setElementAtIndex(6, mInitialMxz);
-        result.setElementAtIndex(7, mInitialMyz);
-        result.setElementAtIndex(8, mInitialSz);
+        result.setElementAtIndex(6, initialMxz);
+        result.setElementAtIndex(7, initialMyz);
+        result.setElementAtIndex(8, initialSz);
     }
 
     /**
@@ -1930,24 +1930,24 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public void setInitialMm(final Matrix initialMm) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (initialMm.getRows() != BodyKinematics.COMPONENTS || initialMm.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
-        mInitialSx = initialMm.getElementAtIndex(0);
-        mInitialMyx = initialMm.getElementAtIndex(1);
-        mInitialMzx = initialMm.getElementAtIndex(2);
+        initialSx = initialMm.getElementAtIndex(0);
+        initialMyx = initialMm.getElementAtIndex(1);
+        initialMzx = initialMm.getElementAtIndex(2);
 
-        mInitialMxy = initialMm.getElementAtIndex(3);
-        mInitialSy = initialMm.getElementAtIndex(4);
-        mInitialMzy = initialMm.getElementAtIndex(5);
+        initialMxy = initialMm.getElementAtIndex(3);
+        initialSy = initialMm.getElementAtIndex(4);
+        initialMzy = initialMm.getElementAtIndex(5);
 
-        mInitialMxz = initialMm.getElementAtIndex(6);
-        mInitialMyz = initialMm.getElementAtIndex(7);
-        mInitialSz = initialMm.getElementAtIndex(8);
+        initialMxz = initialMm.getElementAtIndex(6);
+        initialMyz = initialMm.getElementAtIndex(7);
+        initialSz = initialMm.getElementAtIndex(8);
     }
 
     /**
@@ -1960,7 +1960,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public Collection<StandardDeviationBodyMagneticFluxDensity> getMeasurements() {
-        return mMeasurements;
+        return measurements;
     }
 
     /**
@@ -1976,10 +1976,10 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
     @Override
     public void setMeasurements(
             final Collection<StandardDeviationBodyMagneticFluxDensity> measurements) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -2024,7 +2024,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public boolean isCommonAxisUsed() {
-        return mCommonAxisUsed;
+        return commonAxisUsed;
     }
 
     /**
@@ -2039,11 +2039,11 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public void setCommonAxisUsed(final boolean commonAxisUsed) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -2052,7 +2052,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      * @return listener to handle events raised by this calibrator.
      */
     public L getListener() {
-        return mListener;
+        return listener;
     }
 
     /**
@@ -2062,11 +2062,11 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      * @throws LockedException if calibrator is currently running.
      */
     public void setListener(final L listener) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2076,7 +2076,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public int getMinimumRequiredMeasurements() {
-        return mCommonAxisUsed ? MINIMUM_MEASUREMENTS_COMMON_Z_AXIS : MINIMUM_MEASUREMENTS_GENERAL;
+        return commonAxisUsed ? MINIMUM_MEASUREMENTS_COMMON_Z_AXIS : MINIMUM_MEASUREMENTS_GENERAL;
     }
 
     /**
@@ -2086,7 +2086,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public boolean isReady() {
-        return mMeasurements != null && mMeasurements.size() >= getMinimumRequiredMeasurements();
+        return measurements != null && measurements.size() >= getMinimumRequiredMeasurements();
     }
 
     /**
@@ -2096,7 +2096,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public boolean isRunning() {
-        return mRunning;
+        return running;
     }
 
     /**
@@ -2109,7 +2109,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public void calibrate() throws LockedException, NotReadyException, CalibrationException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
@@ -2118,30 +2118,30 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
         }
 
         try {
-            mRunning = true;
+            running = true;
 
             onBeforeCalibrate();
 
-            if (mListener != null) {
+            if (listener != null) {
                 //noinspection unchecked
-                mListener.onCalibrateStart((C) this);
+                listener.onCalibrateStart((C) this);
             }
 
-            if (mCommonAxisUsed) {
+            if (commonAxisUsed) {
                 calibrateCommonAxis();
             } else {
                 calibrateGeneral();
             }
 
-            if (mListener != null) {
+            if (listener != null) {
                 //noinspection unchecked
-                mListener.onCalibrateEnd((C) this);
+                listener.onCalibrateEnd((C) this);
             }
 
         } catch (final AlgebraException | FittingException | com.irurueta.numerical.NotReadyException e) {
             throw new CalibrationException(e);
         } finally {
-            mRunning = false;
+            running = false;
         }
     }
 
@@ -2154,7 +2154,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public double[] getEstimatedHardIron() {
-        return mEstimatedHardIron;
+        return estimatedHardIron;
     }
 
     /**
@@ -2168,9 +2168,8 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public boolean getEstimatedHardIron(final double[] result) {
-        if (mEstimatedHardIron != null) {
-            System.arraycopy(mEstimatedHardIron, 0, result,
-                    0, mEstimatedHardIron.length);
+        if (estimatedHardIron != null) {
+            System.arraycopy(estimatedHardIron, 0, result, 0, estimatedHardIron.length);
             return true;
         } else {
             return false;
@@ -2186,7 +2185,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public Matrix getEstimatedHardIronAsMatrix() {
-        return mEstimatedHardIron != null ? Matrix.newFromArray(mEstimatedHardIron) : null;
+        return estimatedHardIron != null ? Matrix.newFromArray(estimatedHardIron) : null;
     }
 
     /**
@@ -2199,8 +2198,8 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public boolean getEstimatedHardIronAsMatrix(final Matrix result) throws WrongSizeException {
-        if (mEstimatedHardIron != null) {
-            result.fromArray(mEstimatedHardIron);
+        if (estimatedHardIron != null) {
+            result.fromArray(estimatedHardIron);
             return true;
         } else {
             return false;
@@ -2216,7 +2215,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public Double getEstimatedHardIronX() {
-        return mEstimatedHardIron != null ? mEstimatedHardIron[0] : null;
+        return estimatedHardIron != null ? estimatedHardIron[0] : null;
     }
 
     /**
@@ -2228,7 +2227,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public Double getEstimatedHardIronY() {
-        return mEstimatedHardIron != null ? mEstimatedHardIron[1] : null;
+        return estimatedHardIron != null ? estimatedHardIron[1] : null;
     }
 
     /**
@@ -2240,7 +2239,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public Double getEstimatedHardIronZ() {
-        return mEstimatedHardIron != null ? mEstimatedHardIron[2] : null;
+        return estimatedHardIron != null ? estimatedHardIron[2] : null;
     }
 
     /**
@@ -2250,8 +2249,8 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public MagneticFluxDensity getEstimatedHardIronXAsMagneticFluxDensity() {
-        return mEstimatedHardIron != null ?
-                new MagneticFluxDensity(mEstimatedHardIron[0], MagneticFluxDensityUnit.TESLA) : null;
+        return estimatedHardIron != null
+                ? new MagneticFluxDensity(estimatedHardIron[0], MagneticFluxDensityUnit.TESLA) : null;
     }
 
     /**
@@ -2262,8 +2261,8 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public boolean getEstimatedHardIronXAsMagneticFluxDensity(final MagneticFluxDensity result) {
-        if (mEstimatedHardIron != null) {
-            result.setValue(mEstimatedHardIron[0]);
+        if (estimatedHardIron != null) {
+            result.setValue(estimatedHardIron[0]);
             result.setUnit(MagneticFluxDensityUnit.TESLA);
             return true;
         } else {
@@ -2278,8 +2277,8 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public MagneticFluxDensity getEstimatedHardIronYAsMagneticFluxDensity() {
-        return mEstimatedHardIron != null ?
-                new MagneticFluxDensity(mEstimatedHardIron[1], MagneticFluxDensityUnit.TESLA) : null;
+        return estimatedHardIron != null
+                ? new MagneticFluxDensity(estimatedHardIron[1], MagneticFluxDensityUnit.TESLA) : null;
     }
 
     /**
@@ -2290,8 +2289,8 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public boolean getEstimatedHardIronYAsMagneticFluxDensity(final MagneticFluxDensity result) {
-        if (mEstimatedHardIron != null) {
-            result.setValue(mEstimatedHardIron[1]);
+        if (estimatedHardIron != null) {
+            result.setValue(estimatedHardIron[1]);
             result.setUnit(MagneticFluxDensityUnit.TESLA);
             return true;
         } else {
@@ -2306,8 +2305,8 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public MagneticFluxDensity getEstimatedHardIronZAsMagneticFluxDensity() {
-        return mEstimatedHardIron != null ?
-                new MagneticFluxDensity(mEstimatedHardIron[2], MagneticFluxDensityUnit.TESLA) : null;
+        return estimatedHardIron != null
+                ? new MagneticFluxDensity(estimatedHardIron[2], MagneticFluxDensityUnit.TESLA) : null;
     }
 
     /**
@@ -2318,8 +2317,8 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public boolean getEstimatedHardIronZAsMagneticFluxDensity(final MagneticFluxDensity result) {
-        if (mEstimatedHardIron != null) {
-            result.setValue(mEstimatedHardIron[2]);
+        if (estimatedHardIron != null) {
+            result.setValue(estimatedHardIron[2]);
             result.setUnit(MagneticFluxDensityUnit.TESLA);
             return true;
         } else {
@@ -2334,9 +2333,10 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public MagneticFluxDensityTriad getEstimatedHardIronAsTriad() {
-        return mEstimatedHardIron != null ?
-                new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA,
-                        mEstimatedHardIron[0], mEstimatedHardIron[1], mEstimatedHardIron[2]) : null;
+        return estimatedHardIron != null
+                ? new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA,
+                estimatedHardIron[0], estimatedHardIron[1], estimatedHardIron[2])
+                : null;
     }
 
     /**
@@ -2348,9 +2348,9 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public boolean getEstimatedHardIronAsTriad(final MagneticFluxDensityTriad result) {
-        if (mEstimatedHardIron != null) {
-            result.setValueCoordinatesAndUnit(
-                    mEstimatedHardIron[0], mEstimatedHardIron[1], mEstimatedHardIron[2], MagneticFluxDensityUnit.TESLA);
+        if (estimatedHardIron != null) {
+            result.setValueCoordinatesAndUnit(estimatedHardIron[0], estimatedHardIron[1], estimatedHardIron[2],
+                    MagneticFluxDensityUnit.TESLA);
             return true;
         } else {
             return false;
@@ -2402,7 +2402,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public Matrix getEstimatedMm() {
-        return mEstimatedMm;
+        return estimatedMm;
     }
 
     /**
@@ -2412,7 +2412,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public Double getEstimatedSx() {
-        return mEstimatedMm != null ? mEstimatedMm.getElementAt(0, 0) : null;
+        return estimatedMm != null ? estimatedMm.getElementAt(0, 0) : null;
     }
 
     /**
@@ -2422,7 +2422,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public Double getEstimatedSy() {
-        return mEstimatedMm != null ? mEstimatedMm.getElementAt(1, 1) : null;
+        return estimatedMm != null ? estimatedMm.getElementAt(1, 1) : null;
     }
 
     /**
@@ -2432,7 +2432,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public Double getEstimatedSz() {
-        return mEstimatedMm != null ? mEstimatedMm.getElementAt(2, 2) : null;
+        return estimatedMm != null ? estimatedMm.getElementAt(2, 2) : null;
     }
 
     /**
@@ -2442,7 +2442,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public Double getEstimatedMxy() {
-        return mEstimatedMm != null ? mEstimatedMm.getElementAt(0, 1) : null;
+        return estimatedMm != null ? estimatedMm.getElementAt(0, 1) : null;
     }
 
     /**
@@ -2452,7 +2452,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public Double getEstimatedMxz() {
-        return mEstimatedMm != null ? mEstimatedMm.getElementAt(0, 2) : null;
+        return estimatedMm != null ? estimatedMm.getElementAt(0, 2) : null;
     }
 
     /**
@@ -2462,7 +2462,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public Double getEstimatedMyx() {
-        return mEstimatedMm != null ? mEstimatedMm.getElementAt(1, 0) : null;
+        return estimatedMm != null ? estimatedMm.getElementAt(1, 0) : null;
     }
 
     /**
@@ -2472,7 +2472,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public Double getEstimatedMyz() {
-        return mEstimatedMm != null ? mEstimatedMm.getElementAt(1, 2) : null;
+        return estimatedMm != null ? estimatedMm.getElementAt(1, 2) : null;
     }
 
     /**
@@ -2482,7 +2482,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public Double getEstimatedMzx() {
-        return mEstimatedMm != null ? mEstimatedMm.getElementAt(2, 0) : null;
+        return estimatedMm != null ? estimatedMm.getElementAt(2, 0) : null;
     }
 
     /**
@@ -2492,7 +2492,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public Double getEstimatedMzy() {
-        return mEstimatedMm != null ? mEstimatedMm.getElementAt(2, 1) : null;
+        return estimatedMm != null ? estimatedMm.getElementAt(2, 1) : null;
     }
 
     /**
@@ -2505,7 +2505,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public Matrix getEstimatedCovariance() {
-        return mEstimatedCovariance;
+        return estimatedCovariance;
     }
 
     /**
@@ -2515,7 +2515,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public double getEstimatedChiSq() {
-        return mEstimatedChiSq;
+        return estimatedChiSq;
     }
 
     /**
@@ -2525,7 +2525,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     @Override
     public double getEstimatedMse() {
-        return mEstimatedMse;
+        return estimatedMse;
     }
 
     /**
@@ -2536,7 +2536,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      * not available.
      */
     public Double getEstimatedHardIronXVariance() {
-        return mEstimatedCovariance != null ? mEstimatedCovariance.getElementAt(0, 0) : null;
+        return estimatedCovariance != null ? estimatedCovariance.getElementAt(0, 0) : null;
     }
 
     /**
@@ -2547,7 +2547,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      * or null if not available.
      */
     public Double getEstimatedHardIronXStandardDeviation() {
-        final Double variance = getEstimatedHardIronXVariance();
+        final var variance = getEstimatedHardIronXVariance();
         return variance != null ? Math.sqrt(variance) : null;
     }
 
@@ -2558,8 +2558,9 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      * or null if not available.
      */
     public MagneticFluxDensity getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity() {
-        return mEstimatedCovariance != null ?
-                new MagneticFluxDensity(getEstimatedHardIronXStandardDeviation(), MagneticFluxDensityUnit.TESLA) : null;
+        return estimatedCovariance != null
+                ? new MagneticFluxDensity(getEstimatedHardIronXStandardDeviation(), MagneticFluxDensityUnit.TESLA)
+                : null;
     }
 
     /**
@@ -2571,7 +2572,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     public boolean getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity(
             final MagneticFluxDensity result) {
-        if (mEstimatedCovariance != null) {
+        if (estimatedCovariance != null) {
             result.setValue(getEstimatedHardIronXStandardDeviation());
             result.setUnit(MagneticFluxDensityUnit.TESLA);
             return true;
@@ -2588,7 +2589,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      * not available.
      */
     public Double getEstimatedHardIronYVariance() {
-        return mEstimatedCovariance != null ? mEstimatedCovariance.getElementAt(1, 1) : null;
+        return estimatedCovariance != null ? estimatedCovariance.getElementAt(1, 1) : null;
     }
 
     /**
@@ -2599,7 +2600,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      * or null if not available.
      */
     public Double getEstimatedHardIronYStandardDeviation() {
-        final Double variance = getEstimatedHardIronYVariance();
+        final var variance = getEstimatedHardIronYVariance();
         return variance != null ? Math.sqrt(variance) : null;
     }
 
@@ -2610,8 +2611,9 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      * or null if not available.
      */
     public MagneticFluxDensity getEstimatedHardIronYStandardDeviationAsMagneticFluxDensity() {
-        return mEstimatedCovariance != null ?
-                new MagneticFluxDensity(getEstimatedHardIronYStandardDeviation(), MagneticFluxDensityUnit.TESLA) : null;
+        return estimatedCovariance != null
+                ? new MagneticFluxDensity(getEstimatedHardIronYStandardDeviation(), MagneticFluxDensityUnit.TESLA)
+                : null;
     }
 
     /**
@@ -2623,7 +2625,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     public boolean getEstimatedHardIronYStandardDeviationAsMagneticFluxDensity(
             final MagneticFluxDensity result) {
-        if (mEstimatedCovariance != null) {
+        if (estimatedCovariance != null) {
             result.setValue(getEstimatedHardIronYStandardDeviation());
             result.setUnit(MagneticFluxDensityUnit.TESLA);
             return true;
@@ -2640,7 +2642,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      * not available.
      */
     public Double getEstimatedHardIronZVariance() {
-        return mEstimatedCovariance != null ? mEstimatedCovariance.getElementAt(2, 2) : null;
+        return estimatedCovariance != null ? estimatedCovariance.getElementAt(2, 2) : null;
     }
 
     /**
@@ -2651,7 +2653,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      * or null if not available.
      */
     public Double getEstimatedHardIronZStandardDeviation() {
-        final Double variance = getEstimatedHardIronZVariance();
+        final var variance = getEstimatedHardIronZVariance();
         return variance != null ? Math.sqrt(variance) : null;
     }
 
@@ -2662,8 +2664,9 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      * or null if not available.
      */
     public MagneticFluxDensity getEstimatedHardIronZStandardDeviationAsMagneticFluxDensity() {
-        return mEstimatedCovariance != null ?
-                new MagneticFluxDensity(getEstimatedHardIronZStandardDeviation(), MagneticFluxDensityUnit.TESLA) : null;
+        return estimatedCovariance != null
+                ? new MagneticFluxDensity(getEstimatedHardIronZStandardDeviation(), MagneticFluxDensityUnit.TESLA)
+                : null;
     }
 
     /**
@@ -2673,9 +2676,8 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      * @return true if standard deviation of estimated z coordinate of
      * magnetometer bias is available, false otherwise.
      */
-    public boolean getEstimatedHardIronZStandardDeviationAsMagneticFluxDensity(
-            final MagneticFluxDensity result) {
-        if (mEstimatedCovariance != null) {
+    public boolean getEstimatedHardIronZStandardDeviationAsMagneticFluxDensity(final MagneticFluxDensity result) {
+        if (estimatedCovariance != null) {
             result.setValue(getEstimatedHardIronZStandardDeviation());
             result.setUnit(MagneticFluxDensityUnit.TESLA);
             return true;
@@ -2690,11 +2692,12 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      * @return standard deviation of estimated magnetometer bias coordinates.
      */
     public MagneticFluxDensityTriad getEstimatedHardIronStandardDeviation() {
-        return mEstimatedCovariance != null ?
-                new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA,
-                        getEstimatedHardIronXStandardDeviation(),
-                        getEstimatedHardIronYStandardDeviation(),
-                        getEstimatedHardIronZStandardDeviation()) : null;
+        return estimatedCovariance != null
+                ? new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA,
+                getEstimatedHardIronXStandardDeviation(),
+                getEstimatedHardIronYStandardDeviation(),
+                getEstimatedHardIronZStandardDeviation())
+                : null;
     }
 
     /**
@@ -2705,7 +2708,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      * false otherwise.
      */
     public boolean getEstimatedHardIronStandardDeviation(final MagneticFluxDensityTriad result) {
-        if (mEstimatedCovariance != null) {
+        if (estimatedCovariance != null) {
             result.setValueCoordinatesAndUnit(
                     getEstimatedHardIronXStandardDeviation(),
                     getEstimatedHardIronYStandardDeviation(),
@@ -2725,9 +2728,10 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      * or null if not available.
      */
     public Double getEstimatedHardIronStandardDeviationAverage() {
-        return mEstimatedCovariance != null ?
-                (getEstimatedHardIronXStandardDeviation() + getEstimatedHardIronYStandardDeviation() +
-                        getEstimatedHardIronZStandardDeviation()) / 3.0 : null;
+        return estimatedCovariance != null
+                ? (getEstimatedHardIronXStandardDeviation() + getEstimatedHardIronYStandardDeviation()
+                + getEstimatedHardIronZStandardDeviation()) / 3.0
+                : null;
     }
 
     /**
@@ -2737,9 +2741,9 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      * or null if not available.
      */
     public MagneticFluxDensity getEstimatedHardIronStandardDeviationAverageAsMagneticFluxDensity() {
-        return mEstimatedCovariance != null ?
-                new MagneticFluxDensity(getEstimatedHardIronStandardDeviationAverage(),
-                        MagneticFluxDensityUnit.TESLA) : null;
+        return estimatedCovariance != null
+                ? new MagneticFluxDensity(getEstimatedHardIronStandardDeviationAverage(), MagneticFluxDensityUnit.TESLA)
+                : null;
     }
 
     /**
@@ -2749,9 +2753,8 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      * @return true if average of estimated standard deviation of magnetometer bias is available,
      * false otherwise.
      */
-    public boolean getEstimatedHardIronStandardDeviationAverageAsMagneticFluxDensity(
-            final MagneticFluxDensity result) {
-        if (mEstimatedCovariance != null) {
+    public boolean getEstimatedHardIronStandardDeviationAverageAsMagneticFluxDensity(final MagneticFluxDensity result) {
+        if (estimatedCovariance != null) {
             result.setValue(getEstimatedHardIronStandardDeviationAverage());
             result.setUnit(MagneticFluxDensityUnit.TESLA);
             return true;
@@ -2768,9 +2771,9 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      * if not available.
      */
     public Double getEstimatedHardIronStandardDeviationNorm() {
-        return mEstimatedCovariance != null ?
-                Math.sqrt(getEstimatedHardIronXVariance() + getEstimatedHardIronYVariance()
-                        + getEstimatedHardIronZVariance()) : null;
+        return estimatedCovariance != null
+                ? Math.sqrt(getEstimatedHardIronXVariance() + getEstimatedHardIronYVariance()
+                + getEstimatedHardIronZVariance()) : null;
     }
 
     /**
@@ -2780,9 +2783,9 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      * if not available.
      */
     public MagneticFluxDensity getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity() {
-        return mEstimatedCovariance != null ?
-                new MagneticFluxDensity(getEstimatedHardIronStandardDeviationNorm(),
-                        MagneticFluxDensityUnit.TESLA) : null;
+        return estimatedCovariance != null
+                ? new MagneticFluxDensity(getEstimatedHardIronStandardDeviationNorm(), MagneticFluxDensityUnit.TESLA)
+                : null;
     }
 
     /**
@@ -2794,7 +2797,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      */
     public boolean getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(
             final MagneticFluxDensity result) {
-        if (mEstimatedCovariance != null) {
+        if (estimatedCovariance != null) {
             result.setValue(getEstimatedHardIronStandardDeviationNorm());
             result.setUnit(MagneticFluxDensityUnit.TESLA);
             return true;
@@ -2809,7 +2812,8 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      *
      * @throws CalibrationException if anything fails.
      */
-    protected void onBeforeCalibrate() throws CalibrationException { }
+    protected void onBeforeCalibrate() throws CalibrationException {
+    }
 
     /**
      * Internally sets ground truth magnetic flux density norm to be expected at location where
@@ -2822,7 +2826,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
         if (groundTruthMagneticFluxDensityNorm != null && groundTruthMagneticFluxDensityNorm < 0.0) {
             throw new IllegalArgumentException();
         }
-        mGroundTruthMagneticFluxDensityNorm = groundTruthMagneticFluxDensityNorm;
+        this.groundTruthMagneticFluxDensityNorm = groundTruthMagneticFluxDensityNorm;
     }
 
     /**
@@ -2831,33 +2835,33 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      * @throws WrongSizeException never happens.
      */
     protected void setInputData() throws WrongSizeException {
-        final double b = mGroundTruthMagneticFluxDensityNorm;
-        final double b2 = b * b;
+        final var gtb = groundTruthMagneticFluxDensityNorm;
+        final var gtb2 = gtb * gtb;
 
-        final int numMeasurements = mMeasurements.size();
-        final Matrix x = new Matrix(numMeasurements, BodyMagneticFluxDensity.COMPONENTS);
-        final double[] y = new double[numMeasurements];
-        final double[] specificForceStandardDeviations = new double[numMeasurements];
-        int i = 0;
-        for (final StandardDeviationBodyMagneticFluxDensity measurement : mMeasurements) {
-            final BodyMagneticFluxDensity measuredMagneticFluxDensity = measurement.getMagneticFluxDensity();
+        final var numMeasurements = measurements.size();
+        final var x = new Matrix(numMeasurements, BodyMagneticFluxDensity.COMPONENTS);
+        final var y = new double[numMeasurements];
+        final var specificForceStandardDeviations = new double[numMeasurements];
+        var i = 0;
+        for (final var measurement : measurements) {
+            final var measuredMagneticFluxDensity = measurement.getMagneticFluxDensity();
 
-            final double bmeasX = measuredMagneticFluxDensity.getBx();
-            final double bmeasY = measuredMagneticFluxDensity.getBy();
-            final double bmeasZ = measuredMagneticFluxDensity.getBz();
+            final var bmeasuredX = measuredMagneticFluxDensity.getBx();
+            final var bmeasuredY = measuredMagneticFluxDensity.getBy();
+            final var bmeasuredZ = measuredMagneticFluxDensity.getBz();
 
-            x.setElementAt(i, 0, bmeasX);
-            x.setElementAt(i, 1, bmeasY);
-            x.setElementAt(i, 2, bmeasZ);
+            x.setElementAt(i, 0, bmeasuredX);
+            x.setElementAt(i, 1, bmeasuredY);
+            x.setElementAt(i, 2, bmeasuredZ);
 
-            y[i] = b2;
+            y[i] = gtb2;
 
             specificForceStandardDeviations[i] = measurement.getMagneticFluxDensityStandardDeviation();
 
             i++;
         }
 
-        mFitter.setInputData(x, y, specificForceStandardDeviations);
+        fitter.setInputData(x, y, specificForceStandardDeviations);
     }
 
     /**
@@ -2911,99 +2915,96 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
         //     [m21 	m22 	m23]
         //     [m31 	m32 	m33]
 
-        final GradientEstimator gradientEstimator = new GradientEstimator(this::evaluateGeneral);
+        final var gradientEstimator = new GradientEstimator(this::evaluateGeneral);
 
-        final Matrix initialM = Matrix.identity(BodyMagneticFluxDensity.COMPONENTS,
-                BodyMagneticFluxDensity.COMPONENTS);
+        final var initialM = Matrix.identity(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
         initialM.add(getInitialMm());
 
-        final Matrix invInitialM = Utils.inverse(initialM);
-        final Matrix initialBm = getInitialHardIronAsMatrix();
-        final Matrix initialB = invInitialM.multiplyAndReturnNew(initialBm);
+        final var invInitialM = Utils.inverse(initialM);
+        final var initialBm = getInitialHardIronAsMatrix();
+        final var initialB = invInitialM.multiplyAndReturnNew(initialBm);
 
-        mFitter.setFunctionEvaluator(
-                new LevenbergMarquardtMultiDimensionFunctionEvaluator() {
-                    @Override
-                    public int getNumberOfDimensions() {
-                        // Input points are measured magnetic flux density coordinates
-                        return BodyMagneticFluxDensity.COMPONENTS;
-                    }
+        fitter.setFunctionEvaluator(new LevenbergMarquardtMultiDimensionFunctionEvaluator() {
+            @Override
+            public int getNumberOfDimensions() {
+                // Input points are measured magnetic flux density coordinates
+                return BodyMagneticFluxDensity.COMPONENTS;
+            }
 
-                    @Override
-                    public double[] createInitialParametersArray() {
-                        final double[] initial = new double[GENERAL_UNKNOWNS];
+            @Override
+            public double[] createInitialParametersArray() {
+                final var initial = new double[GENERAL_UNKNOWNS];
 
-                        // biases b
-                        for (int i = 0; i < BodyMagneticFluxDensity.COMPONENTS; i++) {
-                            initial[i] = initialB.getElementAtIndex(i);
-                        }
+                // biases b
+                for (var i = 0; i < BodyMagneticFluxDensity.COMPONENTS; i++) {
+                    initial[i] = initialB.getElementAtIndex(i);
+                }
 
-                        // cross coupling errors M
-                        final int num = BodyMagneticFluxDensity.COMPONENTS * BodyMagneticFluxDensity.COMPONENTS;
-                        for (int i = 0, j = BodyMagneticFluxDensity.COMPONENTS; i < num; i++, j++) {
-                            initial[j] = initialM.getElementAtIndex(i);
-                        }
+                // cross coupling errors M
+                final var num = BodyMagneticFluxDensity.COMPONENTS * BodyMagneticFluxDensity.COMPONENTS;
+                for (int i = 0, j = BodyMagneticFluxDensity.COMPONENTS; i < num; i++, j++) {
+                    initial[j] = initialM.getElementAtIndex(i);
+                }
 
-                        return initial;
-                    }
+                return initial;
+            }
 
-                    @Override
-                    public double evaluate(
-                            final int i, final double[] point, final double[] params, final double[] derivatives)
-                            throws EvaluationException {
+            @Override
+            public double evaluate(
+                    final int i, final double[] point, final double[] params, final double[] derivatives)
+                    throws EvaluationException {
 
-                        mBmeasX = point[0];
-                        mBmeasY = point[1];
-                        mBmeasZ = point[2];
+                bmeasX = point[0];
+                bmeasY = point[1];
+                bmeasZ = point[2];
 
-                        gradientEstimator.gradient(params, derivatives);
+                gradientEstimator.gradient(params, derivatives);
 
-                        return evaluateGeneral(params);
-                    }
-                });
+                return evaluateGeneral(params);
+            }
+        });
 
         setInputData();
 
-        mFitter.fit();
+        fitter.fit();
 
-        final double[] result = mFitter.getA();
+        final var result = fitter.getA();
 
-        final double bx = result[0];
-        final double by = result[1];
-        final double bz = result[2];
+        final var bx = result[0];
+        final var by = result[1];
+        final var bz = result[2];
 
-        final double m11 = result[3];
-        final double m21 = result[4];
-        final double m31 = result[5];
+        final var m11 = result[3];
+        final var m21 = result[4];
+        final var m31 = result[5];
 
-        final double m12 = result[6];
-        final double m22 = result[7];
-        final double m32 = result[8];
+        final var m12 = result[6];
+        final var m22 = result[7];
+        final var m32 = result[8];
 
-        final double m13 = result[9];
-        final double m23 = result[10];
-        final double m33 = result[11];
+        final var m13 = result[9];
+        final var m23 = result[10];
+        final var m33 = result[11];
 
-        final Matrix b = new Matrix(BodyMagneticFluxDensity.COMPONENTS,
-                1);
-        b.setElementAtIndex(0, bx);
-        b.setElementAtIndex(1, by);
-        b.setElementAtIndex(2, bz);
+        final var mb = new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1);
+        mb.setElementAtIndex(0, bx);
+        mb.setElementAtIndex(1, by);
+        mb.setElementAtIndex(2, bz);
 
-        final Matrix m = new Matrix(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
-        m.setElementAtIndex(0, m11);
-        m.setElementAtIndex(1, m21);
-        m.setElementAtIndex(2, m31);
+        final var mm = new Matrix(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
+        mm.setElementAtIndex(0, m11);
+        mm.setElementAtIndex(1, m21);
+        mm.setElementAtIndex(2, m31);
 
-        m.setElementAtIndex(3, m12);
-        m.setElementAtIndex(4, m22);
-        m.setElementAtIndex(5, m32);
+        mm.setElementAtIndex(3, m12);
+        mm.setElementAtIndex(4, m22);
+        mm.setElementAtIndex(5, m32);
 
-        m.setElementAtIndex(6, m13);
-        m.setElementAtIndex(7, m23);
-        m.setElementAtIndex(8, m33);
+        mm.setElementAtIndex(6, m13);
+        mm.setElementAtIndex(7, m23);
+        mm.setElementAtIndex(8, m33);
 
-        setResult(m, b);
+        setResult(mm, mb);
 
         // at this point covariance is expressed in terms of b and M, and must
         // be expressed in terms of ba and Ma.
@@ -3060,7 +3061,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
         //	    [0    0    0    0   0   0   0   0   1   0   0   0 ]
 
         // We know that the propagated covariance is J * Cov * J', hence:
-        final Matrix jacobian = new Matrix(GENERAL_UNKNOWNS, GENERAL_UNKNOWNS);
+        final var jacobian = new Matrix(GENERAL_UNKNOWNS, GENERAL_UNKNOWNS);
 
         jacobian.setElementAt(0, 0, m11);
         jacobian.setElementAt(1, 0, m21);
@@ -3101,10 +3102,10 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
         jacobian.setElementAt(2, 11, bz);
         jacobian.setElementAt(5, 11, 1.0);
 
-        final Matrix jacobianTrans = jacobian.transposeAndReturnNew();
-        jacobian.multiply(mEstimatedCovariance);
+        final var jacobianTrans = jacobian.transposeAndReturnNew();
+        jacobian.multiply(estimatedCovariance);
         jacobian.multiply(jacobianTrans);
-        mEstimatedCovariance = jacobian;
+        estimatedCovariance = jacobian;
     }
 
     /**
@@ -3160,9 +3161,9 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
         //     [0 	 	0 		m33]
 
 
-        final GradientEstimator gradientEstimator = new GradientEstimator(this::evaluateCommonAxis);
+        final var gradientEstimator = new GradientEstimator(this::evaluateCommonAxis);
 
-        final Matrix initialM = Matrix.identity(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
+        final var initialM = Matrix.identity(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
         initialM.add(getInitialMm());
 
         // Force initial M to be upper diagonal
@@ -3170,94 +3171,93 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
         initialM.setElementAt(2, 0, 0.0);
         initialM.setElementAt(2, 1, 0.0);
 
-        final Matrix invInitialM = Utils.inverse(initialM);
-        final Matrix initialBm = getInitialHardIronAsMatrix();
-        final Matrix initialB = invInitialM.multiplyAndReturnNew(initialBm);
+        final var invInitialM = Utils.inverse(initialM);
+        final var initialBm = getInitialHardIronAsMatrix();
+        final var initialB = invInitialM.multiplyAndReturnNew(initialBm);
 
-        mFitter.setFunctionEvaluator(
-                new LevenbergMarquardtMultiDimensionFunctionEvaluator() {
-                    @Override
-                    public int getNumberOfDimensions() {
-                        // Input points are measured magnetic flux density coordinates
-                        return BodyKinematics.COMPONENTS;
-                    }
+        fitter.setFunctionEvaluator(new LevenbergMarquardtMultiDimensionFunctionEvaluator() {
+            @Override
+            public int getNumberOfDimensions() {
+                // Input points are measured magnetic flux density coordinates
+                return BodyKinematics.COMPONENTS;
+            }
 
-                    @Override
-                    public double[] createInitialParametersArray() {
-                        final double[] initial = new double[COMMON_Z_AXIS_UNKNOWNS];
+            @Override
+            public double[] createInitialParametersArray() {
+                final var initial = new double[COMMON_Z_AXIS_UNKNOWNS];
 
-                        // biases b
-                        for (int i = 0; i < BodyMagneticFluxDensity.COMPONENTS; i++) {
-                            initial[i] = initialB.getElementAtIndex(i);
+                // biases b
+                for (var i = 0; i < BodyMagneticFluxDensity.COMPONENTS; i++) {
+                    initial[i] = initialB.getElementAtIndex(i);
+                }
+
+                // upper diagonal cross coupling errors M
+                var k = BodyMagneticFluxDensity.COMPONENTS;
+                for (var j = 0; j < BodyMagneticFluxDensity.COMPONENTS; j++) {
+                    for (var i = 0; i < BodyMagneticFluxDensity.COMPONENTS; i++) {
+                        if (i <= j) {
+                            initial[k] = initialM.getElementAt(i, j);
+                            k++;
                         }
-
-                        // upper diagonal cross coupling errors M
-                        int k = BodyMagneticFluxDensity.COMPONENTS;
-                        for (int j = 0; j < BodyMagneticFluxDensity.COMPONENTS; j++) {
-                            for (int i = 0; i < BodyMagneticFluxDensity.COMPONENTS; i++) {
-                                if (i <= j) {
-                                    initial[k] = initialM.getElementAt(i, j);
-                                    k++;
-                                }
-                            }
-                        }
-
-                        return initial;
                     }
+                }
 
-                    @Override
-                    public double evaluate(
-                            final int i, final double[] point, final double[] params, final double[] derivatives)
-                            throws EvaluationException {
+                return initial;
+            }
 
-                        mBmeasX = point[0];
-                        mBmeasY = point[1];
-                        mBmeasZ = point[2];
+            @Override
+            public double evaluate(
+                    final int i, final double[] point, final double[] params, final double[] derivatives)
+                    throws EvaluationException {
 
-                        gradientEstimator.gradient(params, derivatives);
+                bmeasX = point[0];
+                bmeasY = point[1];
+                bmeasZ = point[2];
 
-                        return evaluateCommonAxis(params);
-                    }
-                });
+                gradientEstimator.gradient(params, derivatives);
+
+                return evaluateCommonAxis(params);
+            }
+        });
 
         setInputData();
 
-        mFitter.fit();
+        fitter.fit();
 
-        final double[] result = mFitter.getA();
+        final var result = fitter.getA();
 
-        final double bx = result[0];
-        final double by = result[1];
-        final double bz = result[2];
+        final var bx = result[0];
+        final var by = result[1];
+        final var bz = result[2];
 
-        final double m11 = result[3];
+        final var m11 = result[3];
 
-        final double m12 = result[4];
-        final double m22 = result[5];
+        final var m12 = result[4];
+        final var m22 = result[5];
 
-        final double m13 = result[6];
-        final double m23 = result[7];
-        final double m33 = result[8];
+        final var m13 = result[6];
+        final var m23 = result[7];
+        final var m33 = result[8];
 
-        final Matrix b = new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1);
-        b.setElementAtIndex(0, bx);
-        b.setElementAtIndex(1, by);
-        b.setElementAtIndex(2, bz);
+        final var mb = new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1);
+        mb.setElementAtIndex(0, bx);
+        mb.setElementAtIndex(1, by);
+        mb.setElementAtIndex(2, bz);
 
-        final Matrix m = new Matrix(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
-        m.setElementAtIndex(0, m11);
-        m.setElementAtIndex(1, 0.0);
-        m.setElementAtIndex(2, 0.0);
+        final var mm = new Matrix(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
+        mm.setElementAtIndex(0, m11);
+        mm.setElementAtIndex(1, 0.0);
+        mm.setElementAtIndex(2, 0.0);
 
-        m.setElementAtIndex(3, m12);
-        m.setElementAtIndex(4, m22);
-        m.setElementAtIndex(5, 0.0);
+        mm.setElementAtIndex(3, m12);
+        mm.setElementAtIndex(4, m22);
+        mm.setElementAtIndex(5, 0.0);
 
-        m.setElementAtIndex(6, m13);
-        m.setElementAtIndex(7, m23);
-        m.setElementAtIndex(8, m33);
+        mm.setElementAtIndex(6, m13);
+        mm.setElementAtIndex(7, m23);
+        mm.setElementAtIndex(8, m33);
 
-        setResult(m, b);
+        setResult(mm, mb);
 
         // at this point covariance is expressed in terms of b and M, and must
         // be expressed in terms of ba and Ma.
@@ -3316,7 +3316,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
         //	    [0    0    0    0   0   0   0   0   0 ]
 
         // We know that the propagated covariance is J * Cov * J', hence:
-        final Matrix jacobian = new Matrix(GENERAL_UNKNOWNS, COMMON_Z_AXIS_UNKNOWNS);
+        final var jacobian = new Matrix(GENERAL_UNKNOWNS, COMMON_Z_AXIS_UNKNOWNS);
 
         jacobian.setElementAt(0, 0, m11);
 
@@ -3345,10 +3345,10 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
         jacobian.setElementAt(2, 8, bz);
         jacobian.setElementAt(5, 8, 1.0);
 
-        final Matrix jacobianTrans = jacobian.transposeAndReturnNew();
-        jacobian.multiply(mEstimatedCovariance);
+        final var jacobianTrans = jacobian.transposeAndReturnNew();
+        jacobian.multiply(estimatedCovariance);
         jacobian.multiply(jacobianTrans);
-        mEstimatedCovariance = jacobian;
+        estimatedCovariance = jacobian;
     }
 
     /**
@@ -3367,26 +3367,26 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
         // Mm = M - I
         // bm = M*b
 
-        if (mEstimatedHardIron == null) {
-            mEstimatedHardIron = new double[BodyMagneticFluxDensity.COMPONENTS];
+        if (estimatedHardIron == null) {
+            estimatedHardIron = new double[BodyMagneticFluxDensity.COMPONENTS];
         }
 
-        final Matrix bm = m.multiplyAndReturnNew(b);
-        bm.toArray(mEstimatedHardIron);
+        final var bm = m.multiplyAndReturnNew(b);
+        bm.toArray(estimatedHardIron);
 
-        if (mEstimatedMm == null) {
-            mEstimatedMm = m;
+        if (estimatedMm == null) {
+            estimatedMm = m;
         } else {
-            mEstimatedMm.copyFrom(m);
+            estimatedMm.copyFrom(m);
         }
 
-        for (int i = 0; i < BodyMagneticFluxDensity.COMPONENTS; i++) {
-            mEstimatedMm.setElementAt(i, i, mEstimatedMm.getElementAt(i, i) - 1.0);
+        for (var i = 0; i < BodyMagneticFluxDensity.COMPONENTS; i++) {
+            estimatedMm.setElementAt(i, i, estimatedMm.getElementAt(i, i) - 1.0);
         }
 
-        mEstimatedCovariance = mFitter.getCovar();
-        mEstimatedChiSq = mFitter.getChisq();
-        mEstimatedMse = mFitter.getMse();
+        estimatedCovariance = fitter.getCovar();
+        estimatedChiSq = fitter.getChisq();
+        estimatedMse = fitter.getMse();
     }
 
     /**
@@ -3401,21 +3401,21 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      * @throws EvaluationException if there are numerical instabilities.
      */
     private double evaluateGeneral(final double[] params) throws EvaluationException {
-        final double bx = params[0];
-        final double by = params[1];
-        final double bz = params[2];
+        final var bx = params[0];
+        final var by = params[1];
+        final var bz = params[2];
 
-        final double m11 = params[3];
-        final double m21 = params[4];
-        final double m31 = params[5];
+        final var m11 = params[3];
+        final var m21 = params[4];
+        final var m31 = params[5];
 
-        final double m12 = params[6];
-        final double m22 = params[7];
-        final double m32 = params[8];
+        final var m12 = params[6];
+        final var m22 = params[7];
+        final var m32 = params[8];
 
-        final double m13 = params[9];
-        final double m23 = params[10];
-        final double m33 = params[11];
+        final var m13 = params[9];
+        final var m23 = params[10];
+        final var m33 = params[11];
 
         return evaluate(bx, by, bz, m11, m21, m31, m12, m22, m32, m13, m23, m33);
     }
@@ -3432,18 +3432,18 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      * @throws EvaluationException if there are numerical instabilities.
      */
     private double evaluateCommonAxis(final double[] params) throws EvaluationException {
-        final double bx = params[0];
-        final double by = params[1];
-        final double bz = params[2];
+        final var bx = params[0];
+        final var by = params[1];
+        final var bz = params[2];
 
-        final double m11 = params[3];
+        final var m11 = params[3];
 
-        final double m12 = params[4];
-        final double m22 = params[5];
+        final var m12 = params[4];
+        final var m22 = params[5];
 
-        final double m13 = params[6];
-        final double m23 = params[7];
-        final double m33 = params[8];
+        final var m13 = params[6];
+        final var m23 = params[7];
+        final var m33 = params[8];
 
         return evaluate(bx, by, bz, m11, 0.0, 0.0, m12, m22, 0.0, m13, m23, m33);
     }
@@ -3479,48 +3479,48 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
         // btrue = M^-1*bmeas - b
 
         try {
-            if (mBmeas == null) {
-                mBmeas = new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1);
+            if (bmeas == null) {
+                bmeas = new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1);
             }
-            if (mM == null) {
-                mM = new Matrix(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
+            if (m == null) {
+                m = new Matrix(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
             }
-            if (mInvM == null) {
-                mInvM = new Matrix(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
+            if (invM == null) {
+                invM = new Matrix(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
             }
-            if (mB == null) {
-                mB = new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1);
+            if (b == null) {
+                b = new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1);
             }
-            if (mBtrue == null) {
-                mBtrue = new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1);
+            if (btrue == null) {
+                btrue = new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1);
             }
 
-            mBmeas.setElementAtIndex(0, mBmeasX);
-            mBmeas.setElementAtIndex(1, mBmeasY);
-            mBmeas.setElementAtIndex(2, mBmeasZ);
+            bmeas.setElementAtIndex(0, bmeasX);
+            bmeas.setElementAtIndex(1, bmeasY);
+            bmeas.setElementAtIndex(2, bmeasZ);
 
-            mM.setElementAt(0, 0, m11);
-            mM.setElementAt(1, 0, m21);
-            mM.setElementAt(2, 0, m31);
+            m.setElementAt(0, 0, m11);
+            m.setElementAt(1, 0, m21);
+            m.setElementAt(2, 0, m31);
 
-            mM.setElementAt(0, 1, m12);
-            mM.setElementAt(1, 1, m22);
-            mM.setElementAt(2, 1, m32);
+            m.setElementAt(0, 1, m12);
+            m.setElementAt(1, 1, m22);
+            m.setElementAt(2, 1, m32);
 
-            mM.setElementAt(0, 2, m13);
-            mM.setElementAt(1, 2, m23);
-            mM.setElementAt(2, 2, m33);
+            m.setElementAt(0, 2, m13);
+            m.setElementAt(1, 2, m23);
+            m.setElementAt(2, 2, m33);
 
-            Utils.inverse(mM, mInvM);
+            Utils.inverse(m, invM);
 
-            mB.setElementAtIndex(0, bx);
-            mB.setElementAtIndex(1, by);
-            mB.setElementAtIndex(2, bz);
+            b.setElementAtIndex(0, bx);
+            b.setElementAtIndex(1, by);
+            b.setElementAtIndex(2, bz);
 
-            mInvM.multiply(mBmeas, mBtrue);
-            mBtrue.subtract(mB);
+            invM.multiply(bmeas, btrue);
+            btrue.subtract(b);
 
-            final double norm = Utils.normF(mBtrue);
+            final var norm = Utils.normF(btrue);
             return norm * norm;
 
         } catch (final AlgebraException e) {

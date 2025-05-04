@@ -20,7 +20,6 @@ import com.irurueta.algebra.Matrix;
 import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
-import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.inertial.BodyKinematics;
 import com.irurueta.navigation.inertial.INSLooselyCoupledKalmanInitializerConfig;
 import com.irurueta.navigation.inertial.INSTightlyCoupledKalmanInitializerConfig;
@@ -101,76 +100,76 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
     /**
      * Levenberg-Marquardt fitter to find a non-linear solution.
      */
-    private final LevenbergMarquardtMultiVariateFitter mFitter = new LevenbergMarquardtMultiVariateFitter();
+    private final LevenbergMarquardtMultiVariateFitter fitter = new LevenbergMarquardtMultiVariateFitter();
 
     /**
      * Initial x-coordinate of gyroscope bias to be used to find a solution.
      * This is expressed in radians per second (rad/s).
      */
-    private double mInitialBiasX;
+    private double initialBiasX;
 
     /**
      * Initial y-coordinate of gyroscope bias to be used to find a solution.
      * This is expressed in radians per second (rad/s).
      */
-    private double mInitialBiasY;
+    private double initialBiasY;
 
     /**
      * Initial z-coordinate of gyroscope bias to be used to find a solution.
      * This is expressed in radians per second (rad/s).
      */
-    private double mInitialBiasZ;
+    private double initialBiasZ;
 
     /**
      * Initial x scaling factor.
      */
-    private double mInitialSx;
+    private double initialSx;
 
     /**
      * Initial y scaling factor.
      */
-    private double mInitialSy;
+    private double initialSy;
 
     /**
      * Initial z scaling factor.
      */
-    private double mInitialSz;
+    private double initialSz;
 
     /**
      * Initial x-y cross coupling error.
      */
-    private double mInitialMxy;
+    private double initialMxy;
 
     /**
      * Initial x-z cross coupling error.
      */
-    private double mInitialMxz;
+    private double initialMxz;
 
     /**
      * Initial y-x cross coupling error.
      */
-    private double mInitialMyx;
+    private double initialMyx;
 
     /**
      * Initial y-z cross coupling error.
      */
-    private double mInitialMyz;
+    private double initialMyz;
 
     /**
      * Initial z-x cross coupling error.
      */
-    private double mInitialMzx;
+    private double initialMzx;
 
     /**
      * Initial z-y cross coupling error.
      */
-    private double mInitialMzy;
+    private double initialMzy;
 
     /**
      * Initial G-dependent cross biases introduced on the gyroscope by the
      * specific forces sensed by the accelerometer.
      */
-    private Matrix mInitialGg;
+    private Matrix initialGg;
 
     /**
      * Contains a collections of body kinematics measurements taken at different
@@ -186,25 +185,25 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      * typically constant at horizontal orientation while the phone remains on a
      * flat surface.
      */
-    private Collection<StandardDeviationFrameBodyKinematics> mMeasurements;
+    private Collection<StandardDeviationFrameBodyKinematics> measurements;
 
     /**
      * This flag indicates whether z-axis is assumed to be common for accelerometer
      * and gyroscope.
      * When enabled, this eliminates 3 variables from Ma matrix.
      */
-    private boolean mCommonAxisUsed = DEFAULT_USE_COMMON_Z_AXIS;
+    private boolean commonAxisUsed = DEFAULT_USE_COMMON_Z_AXIS;
 
     /**
      * Listener to handle events raised by this calibrator.
      */
-    private KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener mListener;
+    private KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener;
 
     /**
      * Estimated angular rate biases for each IMU axis expressed in radians per
      * second (rad/s).
      */
-    private double[] mEstimatedBiases;
+    private double[] estimatedBiases;
 
     /**
      * Estimated gyroscope scale factors and cross coupling errors.
@@ -245,41 +244,41 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      * </pre>
      * Values of this matrix are unit-less.
      */
-    private Matrix mEstimatedMg;
+    private Matrix estimatedMg;
 
     /**
      * Estimated G-dependent cross biases introduced on the gyroscope by the
      * specific forces sensed by the accelerometer.
      * This instance allows any 3x3 matrix.
      */
-    private Matrix mEstimatedGg;
+    private Matrix estimatedGg;
 
     /**
      * Estimated covariance matrix for estimated parameters.
      */
-    private Matrix mEstimatedCovariance;
+    private Matrix estimatedCovariance;
 
     /**
      * Estimated chi square value.
      */
-    private double mEstimatedChiSq;
+    private double estimatedChiSq;
 
     /**
      * Estimated mean square error respect to provided measurements.
      */
-    private double mEstimatedMse;
+    private double estimatedMse;
 
     /**
      * Indicates whether calibrator is running.
      */
-    private boolean mRunning;
+    private boolean running;
 
     /**
      * Constructor.
      */
     public KnownFrameGyroscopeNonLinearLeastSquaresCalibrator() {
         try {
-            mInitialGg = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+            initialGg = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         } catch (final WrongSizeException ignore) {
             // never happens
         }
@@ -293,7 +292,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
     public KnownFrameGyroscopeNonLinearLeastSquaresCalibrator(
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this();
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -306,7 +305,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
     public KnownFrameGyroscopeNonLinearLeastSquaresCalibrator(
             final Collection<StandardDeviationFrameBodyKinematics> measurements) {
         this();
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -321,7 +320,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final Collection<StandardDeviationFrameBodyKinematics> measurements,
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -332,7 +331,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     public KnownFrameGyroscopeNonLinearLeastSquaresCalibrator(final boolean commonAxisUsed) {
         this();
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -345,7 +344,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
     public KnownFrameGyroscopeNonLinearLeastSquaresCalibrator(
             final boolean commonAxisUsed, final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -360,7 +359,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
     public KnownFrameGyroscopeNonLinearLeastSquaresCalibrator(
             final Collection<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed) {
         this(measurements);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -377,7 +376,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final Collection<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed,
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -421,7 +420,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final double initialBiasX, final double initialBiasY, final double initialBiasZ,
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(initialBiasX, initialBiasY, initialBiasZ);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -444,7 +443,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final Collection<StandardDeviationFrameBodyKinematics> measurements,
             final double initialBiasX, final double initialBiasY, final double initialBiasZ) {
         this(initialBiasX, initialBiasY, initialBiasZ);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -469,7 +468,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final double initialBiasX, final double initialBiasY, final double initialBiasZ,
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, initialBiasX, initialBiasY, initialBiasZ);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -491,7 +490,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final boolean commonAxisUsed, final double initialBiasX, final double initialBiasY,
             final double initialBiasZ) {
         this(initialBiasX, initialBiasY, initialBiasZ);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -515,7 +514,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final double initialBiasX, final double initialBiasY, final double initialBiasZ,
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -540,7 +539,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final Collection<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed,
             final double initialBiasX, final double initialBiasY, final double initialBiasZ) {
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -567,7 +566,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final double initialBiasX, final double initialBiasY, final double initialBiasZ,
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -605,7 +604,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final AngularSpeed initialBiasX, final AngularSpeed initialBiasY, final AngularSpeed initialBiasZ,
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(initialBiasX, initialBiasY, initialBiasZ);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -625,7 +624,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final Collection<StandardDeviationFrameBodyKinematics> measurements,
             final AngularSpeed initialBiasX, final AngularSpeed initialBiasY, final AngularSpeed initialBiasZ) {
         this(initialBiasX, initialBiasY, initialBiasZ);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -647,7 +646,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final AngularSpeed initialBiasX, final AngularSpeed initialBiasY, final AngularSpeed initialBiasZ,
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, initialBiasX, initialBiasY, initialBiasZ);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -666,7 +665,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final boolean commonAxisUsed, final AngularSpeed initialBiasX, final AngularSpeed initialBiasY,
             final AngularSpeed initialBiasZ) {
         this(initialBiasX, initialBiasY, initialBiasZ);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -687,7 +686,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final AngularSpeed initialBiasX, final AngularSpeed initialBiasY, final AngularSpeed initialBiasZ,
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -709,7 +708,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final Collection<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed,
             final AngularSpeed initialBiasX, final AngularSpeed initialBiasY, final AngularSpeed initialBiasZ) {
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -733,7 +732,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final AngularSpeed initialBiasX, final AngularSpeed initialBiasY, final AngularSpeed initialBiasZ,
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -787,7 +786,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final double initialBiasX, final double initialBiasY, final double initialBiasZ,
             final double initialSx, final double initialSy, final double initialSz) {
         this(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -816,7 +815,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final double initialSx, final double initialSy, final double initialSz,
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -842,7 +841,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final double initialBiasX, final double initialBiasY, final double initialBiasZ,
             final double initialSx, final double initialSy, final double initialSz) {
         this(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -870,7 +869,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final double initialSx, final double initialSy, final double initialSz,
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -899,7 +898,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final double initialBiasX, final double initialBiasY, final double initialBiasZ,
             final double initialSx, final double initialSy, final double initialSz) {
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -930,7 +929,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final double initialSx, final double initialSy, final double initialSz,
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -976,7 +975,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final double initialSx, final double initialSy, final double initialSz,
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1000,7 +999,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final AngularSpeed initialBiasX, final AngularSpeed initialBiasY, final AngularSpeed initialBiasZ,
             final double initialSx, final double initialSy, final double initialSz) {
         this(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1026,7 +1025,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final double initialSx, final double initialSy, final double initialSz,
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1049,7 +1048,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final AngularSpeed initialBiasX, final AngularSpeed initialBiasY, final AngularSpeed initialBiasZ,
             final double initialSx, final double initialSy, final double initialSz) {
         this(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -1074,7 +1073,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final double initialSx, final double initialSy, final double initialSz,
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1100,7 +1099,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final AngularSpeed initialBiasX, final AngularSpeed initialBiasY, final AngularSpeed initialBiasZ,
             final double initialSx, final double initialSy, final double initialSz) {
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1128,7 +1127,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final double initialSx, final double initialSy, final double initialSz,
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1200,7 +1199,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final double initialMyz, final double initialMzx, final double initialMzy) {
         this(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1238,7 +1237,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1273,7 +1272,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final double initialMyz, final double initialMzx, final double initialMzy) {
         this(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -1310,7 +1309,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1348,7 +1347,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final double initialMyz, final double initialMzx, final double initialMzy) {
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1388,7 +1387,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1452,7 +1451,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1485,7 +1484,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final double initialMyz, final double initialMzx, final double initialMzy) {
         this(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
 
@@ -1521,7 +1520,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1553,7 +1552,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final double initialMyz, final double initialMzx, final double initialMzy) {
         this(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -1587,7 +1586,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1622,7 +1621,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final double initialMyz, final double initialMzx, final double initialMzy) {
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1659,7 +1658,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1691,7 +1690,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
     public KnownFrameGyroscopeNonLinearLeastSquaresCalibrator(
             final double[] initialBias, final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(initialBias);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1708,7 +1707,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
     public KnownFrameGyroscopeNonLinearLeastSquaresCalibrator(
             final Collection<StandardDeviationFrameBodyKinematics> measurements, final double[] initialBias) {
         this(initialBias);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1727,7 +1726,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final Collection<StandardDeviationFrameBodyKinematics> measurements, final double[] initialBias,
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, initialBias);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1743,7 +1742,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
     public KnownFrameGyroscopeNonLinearLeastSquaresCalibrator(
             final boolean commonAxisUsed, final double[] initialBias) {
         this(initialBias);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -1761,7 +1760,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final boolean commonAxisUsed, final double[] initialBias,
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed, initialBias);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1781,7 +1780,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final Collection<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed,
             final double[] initialBias) {
         this(commonAxisUsed, initialBias);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1802,7 +1801,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final Collection<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed,
             final double[] initialBias, final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed, initialBias);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1830,7 +1829,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
     public KnownFrameGyroscopeNonLinearLeastSquaresCalibrator(
             final Matrix initialBias, final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(initialBias);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1845,7 +1844,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
     public KnownFrameGyroscopeNonLinearLeastSquaresCalibrator(
             final Collection<StandardDeviationFrameBodyKinematics> measurements, final Matrix initialBias) {
         this(initialBias);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1862,7 +1861,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final Collection<StandardDeviationFrameBodyKinematics> measurements, final Matrix initialBias,
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, initialBias);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1875,7 +1874,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     public KnownFrameGyroscopeNonLinearLeastSquaresCalibrator(final boolean commonAxisUsed, final Matrix initialBias) {
         this(initialBias);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -1891,7 +1890,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final boolean commonAxisUsed, final Matrix initialBias,
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed, initialBias);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1909,7 +1908,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final Collection<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed,
             final Matrix initialBias) {
         this(commonAxisUsed, initialBias);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1928,7 +1927,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final Collection<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed,
             final Matrix initialBias, final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed, initialBias);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1961,7 +1960,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final Matrix initialBias, final Matrix initialMg,
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(initialBias, initialMg);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1979,7 +1978,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final Collection<StandardDeviationFrameBodyKinematics> measurements,
             final Matrix initialBias, final Matrix initialMg) {
         this(initialBias, initialMg);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1998,7 +1997,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final Collection<StandardDeviationFrameBodyKinematics> measurements, final Matrix initialBias,
             final Matrix initialMg, final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, initialBias, initialMg);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2014,7 +2013,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
     public KnownFrameGyroscopeNonLinearLeastSquaresCalibrator(
             final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMg) {
         this(initialBias, initialMg);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -2032,7 +2031,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMg,
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed, initialBias, initialMg);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2052,7 +2051,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final Collection<StandardDeviationFrameBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMg) {
         this(commonAxisUsed, initialBias, initialMg);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -2074,7 +2073,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMg,
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed, initialBias, initialMg);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2112,7 +2111,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final Matrix initialBias, final Matrix initialMg, final Matrix initialGg,
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(initialBias, initialMg, initialGg);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2132,7 +2131,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final Collection<StandardDeviationFrameBodyKinematics> measurements,
             final Matrix initialBias, final Matrix initialMg, final Matrix initialGg) {
         this(initialBias, initialMg, initialGg);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -2154,7 +2153,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final Matrix initialBias, final Matrix initialMg, final Matrix initialGg,
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, initialBias, initialMg, initialGg);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2172,7 +2171,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
     public KnownFrameGyroscopeNonLinearLeastSquaresCalibrator(
             final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMg, final Matrix initialGg) {
         this(initialBias, initialMg, initialGg);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -2192,7 +2191,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMg, final Matrix initialGg,
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed, initialBias, initialMg, initialGg);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2214,7 +2213,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final Collection<StandardDeviationFrameBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMg, final Matrix initialGg) {
         this(commonAxisUsed, initialBias, initialMg, initialGg);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -2238,7 +2237,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMg, final Matrix initialGg,
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed, initialBias, initialMg, initialGg);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2249,7 +2248,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public double getInitialBiasX() {
-        return mInitialBiasX;
+        return initialBiasX;
     }
 
     /**
@@ -2261,10 +2260,10 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialBiasX(final double initialBiasX) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialBiasX = initialBiasX;
+        this.initialBiasX = initialBiasX;
     }
 
     /**
@@ -2275,7 +2274,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public double getInitialBiasY() {
-        return mInitialBiasY;
+        return initialBiasY;
     }
 
     /**
@@ -2287,10 +2286,10 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialBiasY(final double initialBiasY) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialBiasY = initialBiasY;
+        this.initialBiasY = initialBiasY;
     }
 
     /**
@@ -2301,7 +2300,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public double getInitialBiasZ() {
-        return mInitialBiasZ;
+        return initialBiasZ;
     }
 
     /**
@@ -2313,10 +2312,10 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialBiasZ(final double initialBiasZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialBiasZ = initialBiasZ;
+        this.initialBiasZ = initialBiasZ;
     }
 
     /**
@@ -2326,7 +2325,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public AngularSpeed getInitialBiasAngularSpeedX() {
-        return new AngularSpeed(mInitialBiasX, AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(initialBiasX, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -2336,7 +2335,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void getInitialBiasAngularSpeedX(final AngularSpeed result) {
-        result.setValue(mInitialBiasX);
+        result.setValue(initialBiasX);
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -2348,10 +2347,10 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialBiasX(final AngularSpeed initialBiasX) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialBiasX = convertAngularSpeed(initialBiasX);
+        this.initialBiasX = convertAngularSpeed(initialBiasX);
     }
 
     /**
@@ -2361,7 +2360,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public AngularSpeed getInitialBiasAngularSpeedY() {
-        return new AngularSpeed(mInitialBiasY, AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(initialBiasY, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -2371,7 +2370,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void getInitialBiasAngularSpeedY(final AngularSpeed result) {
-        result.setValue(mInitialBiasY);
+        result.setValue(initialBiasY);
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -2383,10 +2382,10 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialBiasY(final AngularSpeed initialBiasY) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialBiasY = convertAngularSpeed(initialBiasY);
+        this.initialBiasY = convertAngularSpeed(initialBiasY);
     }
 
     /**
@@ -2396,7 +2395,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public AngularSpeed getInitialBiasAngularSpeedZ() {
-        return new AngularSpeed(mInitialBiasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(initialBiasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -2406,7 +2405,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void getInitialBiasAngularSpeedZ(final AngularSpeed result) {
-        result.setValue(mInitialBiasZ);
+        result.setValue(initialBiasZ);
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -2418,10 +2417,10 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialBiasZ(final AngularSpeed initialBiasZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialBiasZ = convertAngularSpeed(initialBiasZ);
+        this.initialBiasZ = convertAngularSpeed(initialBiasZ);
     }
 
     /**
@@ -2436,12 +2435,12 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
     @Override
     public void setInitialBias(final double initialBiasX, final double initialBiasY, final double initialBiasZ)
             throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialBiasX = initialBiasX;
-        mInitialBiasY = initialBiasY;
-        mInitialBiasZ = initialBiasZ;
+        this.initialBiasX = initialBiasX;
+        this.initialBiasY = initialBiasY;
+        this.initialBiasZ = initialBiasZ;
     }
 
     /**
@@ -2457,12 +2456,12 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final AngularSpeed initialBiasX, final AngularSpeed initialBiasY, final AngularSpeed initialBiasZ)
             throws LockedException {
 
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialBiasX = convertAngularSpeed(initialBiasX);
-        mInitialBiasY = convertAngularSpeed(initialBiasY);
-        mInitialBiasZ = convertAngularSpeed(initialBiasZ);
+        this.initialBiasX = convertAngularSpeed(initialBiasX);
+        this.initialBiasY = convertAngularSpeed(initialBiasY);
+        this.initialBiasZ = convertAngularSpeed(initialBiasZ);
     }
 
     /**
@@ -2472,7 +2471,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public double getInitialSx() {
-        return mInitialSx;
+        return initialSx;
     }
 
     /**
@@ -2483,10 +2482,10 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialSx(final double initialSx) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialSx = initialSx;
+        this.initialSx = initialSx;
     }
 
     /**
@@ -2496,7 +2495,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public double getInitialSy() {
-        return mInitialSy;
+        return initialSy;
     }
 
     /**
@@ -2507,10 +2506,10 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialSy(final double initialSy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialSy = initialSy;
+        this.initialSy = initialSy;
     }
 
     /**
@@ -2520,7 +2519,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public double getInitialSz() {
-        return mInitialSz;
+        return initialSz;
     }
 
     /**
@@ -2531,10 +2530,10 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialSz(final double initialSz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialSz = initialSz;
+        this.initialSz = initialSz;
     }
 
     /**
@@ -2544,7 +2543,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public double getInitialMxy() {
-        return mInitialMxy;
+        return initialMxy;
     }
 
     /**
@@ -2555,10 +2554,10 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialMxy(final double initialMxy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMxy = initialMxy;
+        this.initialMxy = initialMxy;
     }
 
     /**
@@ -2568,7 +2567,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public double getInitialMxz() {
-        return mInitialMxz;
+        return initialMxz;
     }
 
     /**
@@ -2579,10 +2578,10 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialMxz(final double initialMxz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMxz = initialMxz;
+        this.initialMxz = initialMxz;
     }
 
     /**
@@ -2592,7 +2591,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public double getInitialMyx() {
-        return mInitialMyx;
+        return initialMyx;
     }
 
     /**
@@ -2603,10 +2602,10 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialMyx(final double initialMyx) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMyx = initialMyx;
+        this.initialMyx = initialMyx;
     }
 
     /**
@@ -2616,7 +2615,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public double getInitialMyz() {
-        return mInitialMyz;
+        return initialMyz;
     }
 
     /**
@@ -2627,10 +2626,10 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialMyz(final double initialMyz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMyz = initialMyz;
+        this.initialMyz = initialMyz;
     }
 
     /**
@@ -2640,7 +2639,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public double getInitialMzx() {
-        return mInitialMzx;
+        return initialMzx;
     }
 
     /**
@@ -2651,10 +2650,10 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialMzx(final double initialMzx) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMzx = initialMzx;
+        this.initialMzx = initialMzx;
     }
 
     /**
@@ -2664,7 +2663,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public double getInitialMzy() {
-        return mInitialMzy;
+        return initialMzy;
     }
 
     /**
@@ -2675,10 +2674,10 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialMzy(final double initialMzy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMzy = initialMzy;
+        this.initialMzy = initialMzy;
     }
 
     /**
@@ -2692,12 +2691,12 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
     @Override
     public void setInitialScalingFactors(
             final double initialSx, final double initialSy, final double initialSz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialSx = initialSx;
-        mInitialSy = initialSy;
-        mInitialSz = initialSz;
+        this.initialSx = initialSx;
+        this.initialSy = initialSy;
+        this.initialSz = initialSz;
     }
 
     /**
@@ -2715,15 +2714,15 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
     public void setInitialCrossCouplingErrors(
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMxy = initialMxy;
-        mInitialMxz = initialMxz;
-        mInitialMyx = initialMyx;
-        mInitialMyz = initialMyz;
-        mInitialMzx = initialMzx;
-        mInitialMzy = initialMzy;
+        this.initialMxy = initialMxy;
+        this.initialMxz = initialMxz;
+        this.initialMyx = initialMyx;
+        this.initialMyz = initialMyz;
+        this.initialMzx = initialMzx;
+        this.initialMzy = initialMzy;
     }
 
     /**
@@ -2745,7 +2744,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             final double initialSx, final double initialSy, final double initialSz,
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         setInitialScalingFactors(initialSx, initialSy, initialSz);
@@ -2760,7 +2759,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public double[] getInitialBias() {
-        final double[] result = new double[BodyKinematics.COMPONENTS];
+        final var result = new double[BodyKinematics.COMPONENTS];
         getInitialBias(result);
         return result;
     }
@@ -2777,9 +2776,9 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
         if (result.length != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        result[0] = mInitialBiasX;
-        result[1] = mInitialBiasY;
-        result[2] = mInitialBiasZ;
+        result[0] = initialBiasX;
+        result[1] = initialBiasY;
+        result[2] = initialBiasZ;
     }
 
     /**
@@ -2792,16 +2791,16 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialBias(final double[] initialBias) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
         if (initialBias.length != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        mInitialBiasX = initialBias[0];
-        mInitialBiasY = initialBias[1];
-        mInitialBiasZ = initialBias[2];
+        initialBiasX = initialBias[0];
+        initialBiasY = initialBias[1];
+        initialBiasZ = initialBias[2];
     }
 
     /**
@@ -2835,9 +2834,9 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
         if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
-        result.setElementAtIndex(0, mInitialBiasX);
-        result.setElementAtIndex(1, mInitialBiasY);
-        result.setElementAtIndex(2, mInitialBiasZ);
+        result.setElementAtIndex(0, initialBiasX);
+        result.setElementAtIndex(1, initialBiasY);
+        result.setElementAtIndex(2, initialBiasZ);
     }
 
     /**
@@ -2850,16 +2849,16 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialBias(final Matrix initialBias) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (initialBias.getRows() != BodyKinematics.COMPONENTS || initialBias.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
-        mInitialBiasX = initialBias.getElementAtIndex(0);
-        mInitialBiasY = initialBias.getElementAtIndex(1);
-        mInitialBiasZ = initialBias.getElementAtIndex(2);
+        initialBiasX = initialBias.getElementAtIndex(0);
+        initialBiasY = initialBias.getElementAtIndex(1);
+        initialBiasZ = initialBias.getElementAtIndex(2);
     }
 
     /**
@@ -2869,7 +2868,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public AngularSpeedTriad getInitialBiasAsTriad() {
-        return new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND, mInitialBiasX, mInitialBiasY, mInitialBiasZ);
+        return new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasX, initialBiasY, initialBiasZ);
     }
 
     /**
@@ -2879,7 +2878,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void getInitialBiasAsTriad(final AngularSpeedTriad result) {
-        result.setValueCoordinatesAndUnit(mInitialBiasX, mInitialBiasY, mInitialBiasZ,
+        result.setValueCoordinatesAndUnit(initialBiasX, initialBiasY, initialBiasZ,
                 AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -2891,13 +2890,13 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialBias(final AngularSpeedTriad initialBias) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mInitialBiasX = convertAngularSpeed(initialBias.getValueX(), initialBias.getUnit());
-        mInitialBiasY = convertAngularSpeed(initialBias.getValueY(), initialBias.getUnit());
-        mInitialBiasZ = convertAngularSpeed(initialBias.getValueZ(), initialBias.getUnit());
+        initialBiasX = convertAngularSpeed(initialBias.getValueX(), initialBias.getUnit());
+        initialBiasY = convertAngularSpeed(initialBias.getValueY(), initialBias.getUnit());
+        initialBiasZ = convertAngularSpeed(initialBias.getValueZ(), initialBias.getUnit());
     }
 
     /**
@@ -2929,17 +2928,17 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
         if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        result.setElementAtIndex(0, mInitialSx);
-        result.setElementAtIndex(1, mInitialMyx);
-        result.setElementAtIndex(2, mInitialMzx);
+        result.setElementAtIndex(0, initialSx);
+        result.setElementAtIndex(1, initialMyx);
+        result.setElementAtIndex(2, initialMzx);
 
-        result.setElementAtIndex(3, mInitialMxy);
-        result.setElementAtIndex(4, mInitialSy);
-        result.setElementAtIndex(5, mInitialMzy);
+        result.setElementAtIndex(3, initialMxy);
+        result.setElementAtIndex(4, initialSy);
+        result.setElementAtIndex(5, initialMzy);
 
-        result.setElementAtIndex(6, mInitialMxz);
-        result.setElementAtIndex(7, mInitialMyz);
-        result.setElementAtIndex(8, mInitialSz);
+        result.setElementAtIndex(6, initialMxz);
+        result.setElementAtIndex(7, initialMyz);
+        result.setElementAtIndex(8, initialSz);
     }
 
     /**
@@ -2951,24 +2950,24 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialMg(final Matrix initialMg) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (initialMg.getRows() != BodyKinematics.COMPONENTS || initialMg.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
-        mInitialSx = initialMg.getElementAtIndex(0);
-        mInitialMyx = initialMg.getElementAtIndex(1);
-        mInitialMzx = initialMg.getElementAtIndex(2);
+        initialSx = initialMg.getElementAtIndex(0);
+        initialMyx = initialMg.getElementAtIndex(1);
+        initialMzx = initialMg.getElementAtIndex(2);
 
-        mInitialMxy = initialMg.getElementAtIndex(3);
-        mInitialSy = initialMg.getElementAtIndex(4);
-        mInitialMzy = initialMg.getElementAtIndex(5);
+        initialMxy = initialMg.getElementAtIndex(3);
+        initialSy = initialMg.getElementAtIndex(4);
+        initialMzy = initialMg.getElementAtIndex(5);
 
-        mInitialMxz = initialMg.getElementAtIndex(6);
-        mInitialMyz = initialMg.getElementAtIndex(7);
-        mInitialSz = initialMg.getElementAtIndex(8);
+        initialMxz = initialMg.getElementAtIndex(6);
+        initialMyz = initialMg.getElementAtIndex(7);
+        initialSz = initialMg.getElementAtIndex(8);
     }
 
     /**
@@ -2979,7 +2978,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Matrix getInitialGg() {
-        return new Matrix(mInitialGg);
+        return new Matrix(initialGg);
     }
 
     /**
@@ -2991,12 +2990,11 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void getInitialGg(final Matrix result) {
-
         if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
-        result.copyFrom(mInitialGg);
+        result.copyFrom(initialGg);
     }
 
     /**
@@ -3009,7 +3007,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialGg(final Matrix initialGg) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
@@ -3017,7 +3015,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             throw new IllegalArgumentException();
         }
 
-        initialGg.copyTo(mInitialGg);
+        initialGg.copyTo(this.initialGg);
     }
 
     /**
@@ -3039,7 +3037,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Collection<StandardDeviationFrameBodyKinematics> getMeasurements() {
-        return mMeasurements;
+        return measurements;
     }
 
     /**
@@ -3063,11 +3061,11 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
     @Override
     public void setMeasurements(
             final Collection<? extends StandardDeviationFrameBodyKinematics> measurements) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         //noinspection unchecked
-        mMeasurements = (Collection<StandardDeviationFrameBodyKinematics>) measurements;
+        this.measurements = (Collection<StandardDeviationFrameBodyKinematics>) measurements;
     }
 
     /**
@@ -3112,7 +3110,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean isCommonAxisUsed() {
-        return mCommonAxisUsed;
+        return commonAxisUsed;
     }
 
     /**
@@ -3126,11 +3124,11 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setCommonAxisUsed(final boolean commonAxisUsed) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -3140,7 +3138,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener getListener() {
-        return mListener;
+        return listener;
     }
 
     /**
@@ -3152,11 +3150,11 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
     @Override
     public void setListener(
             final KnownFrameGyroscopeNonLinearLeastSquaresCalibratorListener listener) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -3176,7 +3174,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean isReady() {
-        return mMeasurements != null && mMeasurements.size() >= MINIMUM_MEASUREMENTS;
+        return measurements != null && measurements.size() >= MINIMUM_MEASUREMENTS;
     }
 
     /**
@@ -3186,7 +3184,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean isRunning() {
-        return mRunning;
+        return running;
     }
 
     /**
@@ -3199,7 +3197,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void calibrate() throws LockedException, NotReadyException, CalibrationException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
@@ -3208,26 +3206,26 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
         }
 
         try {
-            mRunning = true;
+            running = true;
 
-            if (mListener != null) {
-                mListener.onCalibrateStart(this);
+            if (listener != null) {
+                listener.onCalibrateStart(this);
             }
 
-            if (mCommonAxisUsed) {
+            if (commonAxisUsed) {
                 calibrateCommonAxis();
             } else {
                 calibrateGeneral();
             }
 
-            if (mListener != null) {
-                mListener.onCalibrateEnd(this);
+            if (listener != null) {
+                listener.onCalibrateEnd(this);
             }
 
         } catch (final AlgebraException | FittingException | com.irurueta.numerical.NotReadyException e) {
             throw new CalibrationException(e);
         } finally {
-            mRunning = false;
+            running = false;
         }
     }
 
@@ -3239,7 +3237,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public double[] getEstimatedBiases() {
-        return mEstimatedBiases;
+        return estimatedBiases;
     }
 
     /**
@@ -3252,8 +3250,8 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean getEstimatedBiases(final double[] result) {
-        if (mEstimatedBiases != null) {
-            System.arraycopy(mEstimatedBiases, 0, result, 0, mEstimatedBiases.length);
+        if (estimatedBiases != null) {
+            System.arraycopy(estimatedBiases, 0, result, 0, estimatedBiases.length);
             return true;
         } else {
             return false;
@@ -3269,7 +3267,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Matrix getEstimatedBiasesAsMatrix() {
-        return mEstimatedBiases != null ? Matrix.newFromArray(mEstimatedBiases) : null;
+        return estimatedBiases != null ? Matrix.newFromArray(estimatedBiases) : null;
     }
 
     /**
@@ -3282,8 +3280,8 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean getEstimatedBiasesAsMatrix(final Matrix result) throws WrongSizeException {
-        if (mEstimatedBiases != null) {
-            result.fromArray(mEstimatedBiases);
+        if (estimatedBiases != null) {
+            result.fromArray(estimatedBiases);
             return true;
         } else {
             return false;
@@ -3298,7 +3296,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedBiasX() {
-        return mEstimatedBiases != null ? mEstimatedBiases[0] : null;
+        return estimatedBiases != null ? estimatedBiases[0] : null;
     }
 
     /**
@@ -3309,7 +3307,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedBiasY() {
-        return mEstimatedBiases != null ? mEstimatedBiases[1] : null;
+        return estimatedBiases != null ? estimatedBiases[1] : null;
     }
 
     /**
@@ -3320,7 +3318,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedBiasZ() {
-        return mEstimatedBiases != null ? mEstimatedBiases[2] : null;
+        return estimatedBiases != null ? estimatedBiases[2] : null;
     }
 
     /**
@@ -3330,8 +3328,8 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public AngularSpeed getEstimatedBiasAngularSpeedX() {
-        return mEstimatedBiases != null ?
-                new AngularSpeed(mEstimatedBiases[0], AngularSpeedUnit.RADIANS_PER_SECOND) : null;
+        return estimatedBiases != null
+                ? new AngularSpeed(estimatedBiases[0], AngularSpeedUnit.RADIANS_PER_SECOND) : null;
     }
 
     /**
@@ -3342,8 +3340,8 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean getEstimatedBiasAngularSpeedX(final AngularSpeed result) {
-        if (mEstimatedBiases != null) {
-            result.setValue(mEstimatedBiases[0]);
+        if (estimatedBiases != null) {
+            result.setValue(estimatedBiases[0]);
             result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
             return true;
         } else {
@@ -3358,8 +3356,8 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public AngularSpeed getEstimatedBiasAngularSpeedY() {
-        return mEstimatedBiases != null ?
-                new AngularSpeed(mEstimatedBiases[1], AngularSpeedUnit.RADIANS_PER_SECOND) : null;
+        return estimatedBiases != null
+                ? new AngularSpeed(estimatedBiases[1], AngularSpeedUnit.RADIANS_PER_SECOND) : null;
     }
 
     /**
@@ -3370,8 +3368,8 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean getEstimatedBiasAngularSpeedY(final AngularSpeed result) {
-        if (mEstimatedBiases != null) {
-            result.setValue(mEstimatedBiases[1]);
+        if (estimatedBiases != null) {
+            result.setValue(estimatedBiases[1]);
             result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
             return true;
         } else {
@@ -3386,8 +3384,8 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public AngularSpeed getEstimatedBiasAngularSpeedZ() {
-        return mEstimatedBiases != null ?
-                new AngularSpeed(mEstimatedBiases[2], AngularSpeedUnit.RADIANS_PER_SECOND) : null;
+        return estimatedBiases != null
+                ? new AngularSpeed(estimatedBiases[2], AngularSpeedUnit.RADIANS_PER_SECOND) : null;
     }
 
     /**
@@ -3398,8 +3396,8 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean getEstimatedBiasAngularSpeedZ(final AngularSpeed result) {
-        if (mEstimatedBiases != null) {
-            result.setValue(mEstimatedBiases[2]);
+        if (estimatedBiases != null) {
+            result.setValue(estimatedBiases[2]);
             result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
             return true;
         } else {
@@ -3414,9 +3412,10 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public AngularSpeedTriad getEstimatedBiasAsTriad() {
-        return mEstimatedBiases != null ?
-                new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND,
-                        mEstimatedBiases[0], mEstimatedBiases[1], mEstimatedBiases[2]) : null;
+        return estimatedBiases != null
+                ? new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND,
+                estimatedBiases[0], estimatedBiases[1], estimatedBiases[2])
+                : null;
     }
 
     /**
@@ -3428,9 +3427,9 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean getEstimatedBiasAsTriad(final AngularSpeedTriad result) {
-        if (mEstimatedBiases != null) {
+        if (estimatedBiases != null) {
             result.setValueCoordinatesAndUnit(
-                    mEstimatedBiases[0], mEstimatedBiases[1], mEstimatedBiases[2],
+                    estimatedBiases[0], estimatedBiases[1], estimatedBiases[2],
                     AngularSpeedUnit.RADIANS_PER_SECOND);
             return true;
         } else {
@@ -3482,7 +3481,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Matrix getEstimatedMg() {
-        return mEstimatedMg;
+        return estimatedMg;
     }
 
     /**
@@ -3492,7 +3491,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedSx() {
-        return mEstimatedMg != null ? mEstimatedMg.getElementAt(0, 0) : null;
+        return estimatedMg != null ? estimatedMg.getElementAt(0, 0) : null;
     }
 
     /**
@@ -3502,8 +3501,8 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedSy() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(1, 1) : null;
+        return estimatedMg != null
+                ? estimatedMg.getElementAt(1, 1) : null;
     }
 
     /**
@@ -3513,7 +3512,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedSz() {
-        return mEstimatedMg != null ? mEstimatedMg.getElementAt(2, 2) : null;
+        return estimatedMg != null ? estimatedMg.getElementAt(2, 2) : null;
     }
 
     /**
@@ -3523,7 +3522,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedMxy() {
-        return mEstimatedMg != null ? mEstimatedMg.getElementAt(0, 1) : null;
+        return estimatedMg != null ? estimatedMg.getElementAt(0, 1) : null;
     }
 
     /**
@@ -3533,7 +3532,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedMxz() {
-        return mEstimatedMg != null ? mEstimatedMg.getElementAt(0, 2) : null;
+        return estimatedMg != null ? estimatedMg.getElementAt(0, 2) : null;
     }
 
     /**
@@ -3543,7 +3542,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedMyx() {
-        return mEstimatedMg != null ? mEstimatedMg.getElementAt(1, 0) : null;
+        return estimatedMg != null ? estimatedMg.getElementAt(1, 0) : null;
     }
 
     /**
@@ -3553,7 +3552,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedMyz() {
-        return mEstimatedMg != null ? mEstimatedMg.getElementAt(1, 2) : null;
+        return estimatedMg != null ? estimatedMg.getElementAt(1, 2) : null;
     }
 
     /**
@@ -3563,7 +3562,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedMzx() {
-        return mEstimatedMg != null ? mEstimatedMg.getElementAt(2, 0) : null;
+        return estimatedMg != null ? estimatedMg.getElementAt(2, 0) : null;
     }
 
     /**
@@ -3573,7 +3572,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedMzy() {
-        return mEstimatedMg != null ? mEstimatedMg.getElementAt(2, 1) : null;
+        return estimatedMg != null ? estimatedMg.getElementAt(2, 1) : null;
     }
 
     /**
@@ -3585,7 +3584,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Matrix getEstimatedGg() {
-        return mEstimatedGg;
+        return estimatedGg;
     }
 
     /**
@@ -3599,7 +3598,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Matrix getEstimatedCovariance() {
-        return mEstimatedCovariance;
+        return estimatedCovariance;
     }
 
     /**
@@ -3609,7 +3608,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public double getEstimatedChiSq() {
-        return mEstimatedChiSq;
+        return estimatedChiSq;
     }
 
     /**
@@ -3619,7 +3618,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public double getEstimatedMse() {
-        return mEstimatedMse;
+        return estimatedMse;
     }
 
     /**
@@ -3628,7 +3627,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      * @return variance of estimated x coordinate of gyroscope bias or null if not available.
      */
     public Double getEstimatedBiasXVariance() {
-        return mEstimatedCovariance != null ? mEstimatedCovariance.getElementAt(0, 0) : null;
+        return estimatedCovariance != null ? estimatedCovariance.getElementAt(0, 0) : null;
     }
 
     /**
@@ -3639,7 +3638,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      * available.
      */
     public Double getEstimatedBiasXStandardDeviation() {
-        final Double variance = getEstimatedBiasXVariance();
+        final var variance = getEstimatedBiasXVariance();
         return variance != null ? Math.sqrt(variance) : null;
     }
 
@@ -3650,9 +3649,9 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      * available.
      */
     public AngularSpeed getEstimatedBiasXStandardDeviationAsAngularSpeed() {
-        return mEstimatedCovariance != null ?
-                new AngularSpeed(getEstimatedBiasXStandardDeviation(), AngularSpeedUnit.RADIANS_PER_SECOND) :
-                null;
+        return estimatedCovariance != null
+                ? new AngularSpeed(getEstimatedBiasXStandardDeviation(), AngularSpeedUnit.RADIANS_PER_SECOND)
+                : null;
     }
 
     /**
@@ -3663,7 +3662,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      * false otherwise.
      */
     public boolean getEstimatedBiasXStandardDeviationAsAngularSpeed(final AngularSpeed result) {
-        if (mEstimatedCovariance != null) {
+        if (estimatedCovariance != null) {
             result.setValue(getEstimatedBiasXStandardDeviation());
             result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
             return true;
@@ -3678,7 +3677,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      * @return variance of estimated y coordinate of gyroscope bias or null if not available.
      */
     public Double getEstimatedBiasYVariance() {
-        return mEstimatedCovariance != null ? mEstimatedCovariance.getElementAt(1, 1) : null;
+        return estimatedCovariance != null ? estimatedCovariance.getElementAt(1, 1) : null;
     }
 
     /**
@@ -3689,7 +3688,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      * available.
      */
     public Double getEstimatedBiasYStandardDeviation() {
-        final Double variance = getEstimatedBiasYVariance();
+        final var variance = getEstimatedBiasYVariance();
         return variance != null ? Math.sqrt(variance) : null;
     }
 
@@ -3700,9 +3699,9 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      * available.
      */
     public AngularSpeed getEstimatedBiasYStandardDeviationAsAngularSpeed() {
-        return mEstimatedCovariance != null ?
-                new AngularSpeed(getEstimatedBiasYStandardDeviation(), AngularSpeedUnit.RADIANS_PER_SECOND) :
-                null;
+        return estimatedCovariance != null
+                ? new AngularSpeed(getEstimatedBiasYStandardDeviation(), AngularSpeedUnit.RADIANS_PER_SECOND)
+                : null;
     }
 
     /**
@@ -3713,7 +3712,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      * false otherwise.
      */
     public boolean getEstimatedBiasYStandardDeviationAsAngularSpeed(final AngularSpeed result) {
-        if (mEstimatedCovariance != null) {
+        if (estimatedCovariance != null) {
             result.setValue(getEstimatedBiasYStandardDeviation());
             result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
             return true;
@@ -3728,7 +3727,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      * @return variance of estimated z coordinate of gyroscope bias or null if not available.
      */
     public Double getEstimatedBiasZVariance() {
-        return mEstimatedCovariance != null ? mEstimatedCovariance.getElementAt(2, 2) : null;
+        return estimatedCovariance != null ? estimatedCovariance.getElementAt(2, 2) : null;
     }
 
     /**
@@ -3739,7 +3738,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      * available.
      */
     public Double getEstimatedBiasZStandardDeviation() {
-        final Double variance = getEstimatedBiasZVariance();
+        final var variance = getEstimatedBiasZVariance();
         return variance != null ? Math.sqrt(variance) : null;
     }
 
@@ -3750,9 +3749,9 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      * available.
      */
     public AngularSpeed getEstimatedBiasZStandardDeviationAsAngularSpeed() {
-        return mEstimatedCovariance != null ?
-                new AngularSpeed(getEstimatedBiasZStandardDeviation(), AngularSpeedUnit.RADIANS_PER_SECOND) :
-                null;
+        return estimatedCovariance != null
+                ? new AngularSpeed(getEstimatedBiasZStandardDeviation(), AngularSpeedUnit.RADIANS_PER_SECOND)
+                : null;
     }
 
     /**
@@ -3763,7 +3762,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      * false otherwise.
      */
     public boolean getEstimatedBiasZStandardDeviationAsAngularSpeed(final AngularSpeed result) {
-        if (mEstimatedCovariance != null) {
+        if (estimatedCovariance != null) {
             result.setValue(getEstimatedBiasZStandardDeviation());
             result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
             return true;
@@ -3778,11 +3777,12 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      * @return standard deviation of estimated gyroscope bias coordinates.
      */
     public AngularSpeedTriad getEstimatedBiasStandardDeviation() {
-        return mEstimatedCovariance != null ?
-                new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND,
-                        getEstimatedBiasXStandardDeviation(),
-                        getEstimatedBiasYStandardDeviation(),
-                        getEstimatedBiasZStandardDeviation()) : null;
+        return estimatedCovariance != null
+                ? new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND,
+                getEstimatedBiasXStandardDeviation(),
+                getEstimatedBiasYStandardDeviation(),
+                getEstimatedBiasZStandardDeviation())
+                : null;
     }
 
     /**
@@ -3793,7 +3793,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      * otherwise.
      */
     public boolean getEstimatedBiasStandardDeviation(final AngularSpeedTriad result) {
-        if (mEstimatedCovariance != null) {
+        if (estimatedCovariance != null) {
             result.setValueCoordinatesAndUnit(
                     getEstimatedBiasXStandardDeviation(),
                     getEstimatedBiasYStandardDeviation(),
@@ -3813,9 +3813,10 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      * if not available.
      */
     public Double getEstimatedBiasStandardDeviationAverage() {
-        return mEstimatedCovariance != null ?
-                (getEstimatedBiasXStandardDeviation() + getEstimatedBiasYStandardDeviation() +
-                        getEstimatedBiasZStandardDeviation()) / 3.0 : null;
+        return estimatedCovariance != null
+                ? (getEstimatedBiasXStandardDeviation() + getEstimatedBiasYStandardDeviation()
+                + getEstimatedBiasZStandardDeviation()) / 3.0
+                : null;
     }
 
     /**
@@ -3824,9 +3825,9 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      * @return average of estimated standard deviation of gyroscope bias coordinates or null.
      */
     public AngularSpeed getEstimatedBiasStandardDeviationAverageAsAngularSpeed() {
-        return mEstimatedCovariance != null ?
-                new AngularSpeed(getEstimatedBiasStandardDeviationAverage(),
-                        AngularSpeedUnit.RADIANS_PER_SECOND) : null;
+        return estimatedCovariance != null
+                ? new AngularSpeed(getEstimatedBiasStandardDeviationAverage(), AngularSpeedUnit.RADIANS_PER_SECOND)
+                : null;
     }
 
     /**
@@ -3837,7 +3838,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      * false otherwise.
      */
     public boolean getEstimatedBiasStandardDeviationAverageAsAngularSpeed(final AngularSpeed result) {
-        if (mEstimatedCovariance != null) {
+        if (estimatedCovariance != null) {
             result.setValue(getEstimatedBiasStandardDeviationAverage());
             result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
             return true;
@@ -3857,9 +3858,9 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedBiasStandardDeviationNorm() {
-        return mEstimatedCovariance != null ?
-                Math.sqrt(getEstimatedBiasXVariance() + getEstimatedBiasYVariance() + getEstimatedBiasZVariance()) :
-                null;
+        return estimatedCovariance != null
+                ? Math.sqrt(getEstimatedBiasXVariance() + getEstimatedBiasYVariance() + getEstimatedBiasZVariance())
+                : null;
     }
 
     /**
@@ -3871,9 +3872,9 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      * if not available.
      */
     public AngularSpeed getEstimatedBiasStandardDeviationNormAsAngularSpeed() {
-        return mEstimatedCovariance != null ?
-                new AngularSpeed(getEstimatedBiasStandardDeviationNorm(),
-                        AngularSpeedUnit.RADIANS_PER_SECOND) : null;
+        return estimatedCovariance != null
+                ? new AngularSpeed(getEstimatedBiasStandardDeviationNorm(), AngularSpeedUnit.RADIANS_PER_SECOND)
+                : null;
     }
 
     /**
@@ -3886,7 +3887,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      * available, false otherwise.
      */
     public boolean getEstimatedBiasStandardDeviationNormAsAngularSpeed(final AngularSpeed result) {
-        if (mEstimatedCovariance != null) {
+        if (estimatedCovariance != null) {
             result.setValue(getEstimatedBiasStandardDeviationNorm());
             result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
             return true;
@@ -3956,276 +3957,275 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
         //                                                                                                                                              [g32]
         //                                                                                                                                              [g33]
 
-        mFitter.setFunctionEvaluator(
-                new LevenbergMarquardtMultiVariateFunctionEvaluator() {
-                    @Override
-                    public int getNumberOfDimensions() {
-                        // Input points are true angular rate + specific force coordinates
-                        return 2 * BodyKinematics.COMPONENTS;
-                    }
+        fitter.setFunctionEvaluator(new LevenbergMarquardtMultiVariateFunctionEvaluator() {
+            @Override
+            public int getNumberOfDimensions() {
+                // Input points are true angular rate + specific force coordinates
+                return 2 * BodyKinematics.COMPONENTS;
+            }
 
-                    @Override
-                    public int getNumberOfVariables() {
-                        // The multivariate function returns the components of measured angular rate
-                        return BodyKinematics.COMPONENTS;
-                    }
+            @Override
+            public int getNumberOfVariables() {
+                // The multivariate function returns the components of measured angular rate
+                return BodyKinematics.COMPONENTS;
+            }
 
-                    @Override
-                    public double[] createInitialParametersArray() {
-                        final double[] initial = new double[COMMON_Z_AXIS_UNKNOWNS];
+            @Override
+            public double[] createInitialParametersArray() {
+                final var initial = new double[COMMON_Z_AXIS_UNKNOWNS];
 
-                        initial[0] = mInitialBiasX;
-                        initial[1] = mInitialBiasY;
-                        initial[2] = mInitialBiasZ;
+                initial[0] = initialBiasX;
+                initial[1] = initialBiasY;
+                initial[2] = initialBiasZ;
 
-                        initial[3] = mInitialSx;
-                        initial[4] = mInitialSy;
-                        initial[5] = mInitialSz;
+                initial[3] = initialSx;
+                initial[4] = initialSy;
+                initial[5] = initialSz;
 
-                        initial[6] = mInitialMxy;
-                        initial[7] = mInitialMxz;
-                        initial[8] = mInitialMyz;
+                initial[6] = initialMxy;
+                initial[7] = initialMxz;
+                initial[8] = initialMyz;
 
-                        final double[] buffer = mInitialGg.getBuffer();
-                        final int num = buffer.length;
-                        System.arraycopy(buffer, 0, initial, 9, num);
+                final var buffer = initialGg.getBuffer();
+                final var num = buffer.length;
+                System.arraycopy(buffer, 0, initial, 9, num);
 
-                        return initial;
-                    }
+                return initial;
+            }
 
-                    @Override
-                    public void evaluate(final int i, final double[] point, final double[] result,
-                                         final double[] params, final Matrix jacobian) {
-                        // We know that:
-                        // Ωmeasx = bx + Ωtruex + sx * Ωtruex + mxy * Ωtruey + mxz * Ωtruez + g11 * ftruex + g12 * ftruey + g13 * ftruez
-                        // Ωmeasy = by + Ωtruey + sy * Ωtruey + myz * Ωtruez + g21 * ftruex * g22 * ftruey + g23 * ftruez
-                        // Ωmeasz = bz + Ωtruez + sz * Ωtruez + g31 * ftruex + g32 * ftruey + g33 * ftruez
+            @Override
+            public void evaluate(final int i, final double[] point, final double[] result, final double[] params,
+                                 final Matrix jacobian) {
+                // We know that:
+                // Ωmeasx = bx + Ωtruex + sx * Ωtruex + mxy * Ωtruey + mxz * Ωtruez + g11 * ftruex + g12 * ftruey + g13 * ftruez
+                // Ωmeasy = by + Ωtruey + sy * Ωtruey + myz * Ωtruez + g21 * ftruex * g22 * ftruey + g23 * ftruez
+                // Ωmeasz = bz + Ωtruez + sz * Ωtruez + g31 * ftruex + g32 * ftruey + g33 * ftruez
 
-                        // Hence, the derivatives respect the parameters bx, by, bz,
-                        // sx, sy, sz, mxy mxz, myz, g11, g12, g13, g21, g22, g23,
-                        // g31, g32, and g33 is:
+                // Hence, the derivatives respect the parameters bx, by, bz,
+                // sx, sy, sz, mxy mxz, myz, g11, g12, g13, g21, g22, g23,
+                // g31, g32, and g33 is:
 
-                        // d(Ωmeasx)/d(bx) = 1.0
-                        // d(Ωmeasx)/d(by) = 0.0
-                        // d(Ωmeasx)/d(bz) = 0.0
-                        // d(Ωmeasx)/d(sx) = Ωtruex
-                        // d(Ωmeasx)/d(sy) = 0.0
-                        // d(Ωmeasx)/d(sz) = 0.0
-                        // d(Ωmeasx)/d(mxy) = Ωtruey
-                        // d(Ωmeasx)/d(mxz) = Ωtruez
-                        // d(Ωmeasx)/d(myz) = 0.0
-                        // d(Ωmeasx)/d(g11) = ftruex
-                        // d(Ωmeasx)/d(g12) = ftruey
-                        // d(Ωmeasx)/d(g13) = ftruez
-                        // d(Ωmeasx)/d(g21) = 0.0
-                        // d(Ωmeasx)/d(g22) = 0.0
-                        // d(Ωmeasx)/d(g23) = 0.0
-                        // d(Ωmeasx)/d(g31) = 0.0
-                        // d(Ωmeasx)/d(g32) = 0.0
-                        // d(Ωmeasx)/d(g33) = 0.0
+                // d(Ωmeasx)/d(bx) = 1.0
+                // d(Ωmeasx)/d(by) = 0.0
+                // d(Ωmeasx)/d(bz) = 0.0
+                // d(Ωmeasx)/d(sx) = Ωtruex
+                // d(Ωmeasx)/d(sy) = 0.0
+                // d(Ωmeasx)/d(sz) = 0.0
+                // d(Ωmeasx)/d(mxy) = Ωtruey
+                // d(Ωmeasx)/d(mxz) = Ωtruez
+                // d(Ωmeasx)/d(myz) = 0.0
+                // d(Ωmeasx)/d(g11) = ftruex
+                // d(Ωmeasx)/d(g12) = ftruey
+                // d(Ωmeasx)/d(g13) = ftruez
+                // d(Ωmeasx)/d(g21) = 0.0
+                // d(Ωmeasx)/d(g22) = 0.0
+                // d(Ωmeasx)/d(g23) = 0.0
+                // d(Ωmeasx)/d(g31) = 0.0
+                // d(Ωmeasx)/d(g32) = 0.0
+                // d(Ωmeasx)/d(g33) = 0.0
 
-                        // d(Ωmeasy)/d(bx) = 0.0
-                        // d(Ωmeasy)/d(by) = 1.0
-                        // d(Ωmeasy)/d(bz) = 0.0
-                        // d(Ωmeasy)/d(sx) = 0.0
-                        // d(Ωmeasy)/d(sy) = Ωtruey
-                        // d(Ωmeasy)/d(sz) = 0.0
-                        // d(Ωmeasy)/d(mxy) = 0.0
-                        // d(Ωmeasy)/d(mxz) = 0.0
-                        // d(Ωmeasy)/d(myz) = Ωtruez
-                        // d(Ωmeasx)/d(g11) = 0.0
-                        // d(Ωmeasx)/d(g12) = 0.0
-                        // d(Ωmeasx)/d(g13) = 0.0
-                        // d(Ωmeasx)/d(g21) = ftruex
-                        // d(Ωmeasx)/d(g22) = ftruey
-                        // d(Ωmeasx)/d(g23) = ftruez
-                        // d(Ωmeasx)/d(g31) = 0.0
-                        // d(Ωmeasx)/d(g32) = 0.0
-                        // d(Ωmeasx)/d(g33) = 0.0
+                // d(Ωmeasy)/d(bx) = 0.0
+                // d(Ωmeasy)/d(by) = 1.0
+                // d(Ωmeasy)/d(bz) = 0.0
+                // d(Ωmeasy)/d(sx) = 0.0
+                // d(Ωmeasy)/d(sy) = Ωtruey
+                // d(Ωmeasy)/d(sz) = 0.0
+                // d(Ωmeasy)/d(mxy) = 0.0
+                // d(Ωmeasy)/d(mxz) = 0.0
+                // d(Ωmeasy)/d(myz) = Ωtruez
+                // d(Ωmeasx)/d(g11) = 0.0
+                // d(Ωmeasx)/d(g12) = 0.0
+                // d(Ωmeasx)/d(g13) = 0.0
+                // d(Ωmeasx)/d(g21) = ftruex
+                // d(Ωmeasx)/d(g22) = ftruey
+                // d(Ωmeasx)/d(g23) = ftruez
+                // d(Ωmeasx)/d(g31) = 0.0
+                // d(Ωmeasx)/d(g32) = 0.0
+                // d(Ωmeasx)/d(g33) = 0.0
 
-                        // d(Ωmeasz)/d(bx) = 0.0
-                        // d(Ωmeasz)/d(by) = 0.0
-                        // d(Ωmeasz)/d(bz) = 1.0
-                        // d(Ωmeasz)/d(sx) = 0.0
-                        // d(Ωmeasz)/d(sy) = 0.0
-                        // d(Ωmeasz)/d(sz) = Ωtruez
-                        // d(Ωmeasz)/d(mxy) = 0.0
-                        // d(Ωmeasz)/d(mxz) = 0.0
-                        // d(Ωmeasz)/d(myz) = 0.0
-                        // d(Ωmeasx)/d(g11) = 0.0
-                        // d(Ωmeasx)/d(g12) = 0.0
-                        // d(Ωmeasx)/d(g13) = 0.0
-                        // d(Ωmeasx)/d(g21) = 0.0
-                        // d(Ωmeasx)/d(g22) = 0.0
-                        // d(Ωmeasx)/d(g23) = 0.0
-                        // d(Ωmeasx)/d(g31) = ftruex
-                        // d(Ωmeasx)/d(g32) = ftruey
-                        // d(Ωmeasx)/d(g33) = ftruez
+                // d(Ωmeasz)/d(bx) = 0.0
+                // d(Ωmeasz)/d(by) = 0.0
+                // d(Ωmeasz)/d(bz) = 1.0
+                // d(Ωmeasz)/d(sx) = 0.0
+                // d(Ωmeasz)/d(sy) = 0.0
+                // d(Ωmeasz)/d(sz) = Ωtruez
+                // d(Ωmeasz)/d(mxy) = 0.0
+                // d(Ωmeasz)/d(mxz) = 0.0
+                // d(Ωmeasz)/d(myz) = 0.0
+                // d(Ωmeasx)/d(g11) = 0.0
+                // d(Ωmeasx)/d(g12) = 0.0
+                // d(Ωmeasx)/d(g13) = 0.0
+                // d(Ωmeasx)/d(g21) = 0.0
+                // d(Ωmeasx)/d(g22) = 0.0
+                // d(Ωmeasx)/d(g23) = 0.0
+                // d(Ωmeasx)/d(g31) = ftruex
+                // d(Ωmeasx)/d(g32) = ftruey
+                // d(Ωmeasx)/d(g33) = ftruez
 
-                        final double bx = params[0];
-                        final double by = params[1];
-                        final double bz = params[2];
+                final var bx = params[0];
+                final var by = params[1];
+                final var bz = params[2];
 
-                        final double sx = params[3];
-                        final double sy = params[4];
-                        final double sz = params[5];
+                final var sx = params[3];
+                final var sy = params[4];
+                final var sz = params[5];
 
-                        final double mxy = params[6];
-                        final double mxz = params[7];
-                        final double myz = params[8];
+                final var mxy = params[6];
+                final var mxz = params[7];
+                final var myz = params[8];
 
-                        final double g11 = params[9];
-                        final double g21 = params[10];
-                        final double g31 = params[11];
-                        final double g12 = params[12];
-                        final double g22 = params[13];
-                        final double g32 = params[14];
-                        final double g13 = params[15];
-                        final double g23 = params[16];
-                        final double g33 = params[17];
+                final var g11 = params[9];
+                final var g21 = params[10];
+                final var g31 = params[11];
+                final var g12 = params[12];
+                final var g22 = params[13];
+                final var g32 = params[14];
+                final var g13 = params[15];
+                final var g23 = params[16];
+                final var g33 = params[17];
 
-                        final double omegatruex = point[0];
-                        final double omegatruey = point[1];
-                        final double omegatruez = point[2];
+                final var omegatruex = point[0];
+                final var omegatruey = point[1];
+                final var omegatruez = point[2];
 
-                        final double ftruex = point[3];
-                        final double ftruey = point[4];
-                        final double ftruez = point[5];
+                final var ftruex = point[3];
+                final var ftruey = point[4];
+                final var ftruez = point[5];
 
-                        result[0] = bx + omegatruex + sx * omegatruex + mxy * omegatruey + mxz * omegatruez
-                                + g11 * ftruex + g12 * ftruey + g13 * ftruez;
-                        result[1] = by + omegatruey + sy * omegatruey + myz * omegatruez
-                                + g21 * ftruex * g22 * ftruey + g23 * ftruez;
-                        result[2] = bz + omegatruez + sz * omegatruez
-                                + g31 * ftruex + g32 * ftruey + g33 * ftruez;
+                result[0] = bx + omegatruex + sx * omegatruex + mxy * omegatruey + mxz * omegatruez
+                        + g11 * ftruex + g12 * ftruey + g13 * ftruez;
+                result[1] = by + omegatruey + sy * omegatruey + myz * omegatruez
+                        + g21 * ftruex * g22 * ftruey + g23 * ftruez;
+                result[2] = bz + omegatruez + sz * omegatruez
+                        + g31 * ftruex + g32 * ftruey + g33 * ftruez;
 
-                        jacobian.setElementAt(0, 0, 1.0);
-                        jacobian.setElementAt(0, 1, 0.0);
-                        jacobian.setElementAt(0, 2, 0.0);
-                        jacobian.setElementAt(0, 3, omegatruex);
-                        jacobian.setElementAt(0, 4, 0.0);
-                        jacobian.setElementAt(0, 5, 0.0);
-                        jacobian.setElementAt(0, 6, omegatruey);
-                        jacobian.setElementAt(0, 7, omegatruez);
-                        jacobian.setElementAt(0, 8, 0.0);
-                        jacobian.setElementAt(0, 9, ftruex);
-                        jacobian.setElementAt(0, 10, ftruey);
-                        jacobian.setElementAt(0, 11, ftruez);
-                        jacobian.setElementAt(0, 12, 0.0);
-                        jacobian.setElementAt(0, 13, 0.0);
-                        jacobian.setElementAt(0, 14, 0.0);
-                        jacobian.setElementAt(0, 15, 0.0);
-                        jacobian.setElementAt(0, 16, 0.0);
-                        jacobian.setElementAt(0, 17, 0.0);
+                jacobian.setElementAt(0, 0, 1.0);
+                jacobian.setElementAt(0, 1, 0.0);
+                jacobian.setElementAt(0, 2, 0.0);
+                jacobian.setElementAt(0, 3, omegatruex);
+                jacobian.setElementAt(0, 4, 0.0);
+                jacobian.setElementAt(0, 5, 0.0);
+                jacobian.setElementAt(0, 6, omegatruey);
+                jacobian.setElementAt(0, 7, omegatruez);
+                jacobian.setElementAt(0, 8, 0.0);
+                jacobian.setElementAt(0, 9, ftruex);
+                jacobian.setElementAt(0, 10, ftruey);
+                jacobian.setElementAt(0, 11, ftruez);
+                jacobian.setElementAt(0, 12, 0.0);
+                jacobian.setElementAt(0, 13, 0.0);
+                jacobian.setElementAt(0, 14, 0.0);
+                jacobian.setElementAt(0, 15, 0.0);
+                jacobian.setElementAt(0, 16, 0.0);
+                jacobian.setElementAt(0, 17, 0.0);
 
-                        jacobian.setElementAt(1, 0, 0.0);
-                        jacobian.setElementAt(1, 1, 1.0);
-                        jacobian.setElementAt(1, 2, 0.0);
-                        jacobian.setElementAt(1, 3, 0.0);
-                        jacobian.setElementAt(1, 4, omegatruey);
-                        jacobian.setElementAt(1, 5, 0.0);
-                        jacobian.setElementAt(1, 6, 0.0);
-                        jacobian.setElementAt(1, 7, 0.0);
-                        jacobian.setElementAt(1, 8, omegatruez);
-                        jacobian.setElementAt(1, 9, 0.0);
-                        jacobian.setElementAt(1, 10, 0.0);
-                        jacobian.setElementAt(1, 11, 0.0);
-                        jacobian.setElementAt(1, 12, ftruex);
-                        jacobian.setElementAt(1, 13, ftruey);
-                        jacobian.setElementAt(1, 14, ftruez);
-                        jacobian.setElementAt(1, 15, 0.0);
-                        jacobian.setElementAt(1, 16, 0.0);
-                        jacobian.setElementAt(1, 17, 0.0);
+                jacobian.setElementAt(1, 0, 0.0);
+                jacobian.setElementAt(1, 1, 1.0);
+                jacobian.setElementAt(1, 2, 0.0);
+                jacobian.setElementAt(1, 3, 0.0);
+                jacobian.setElementAt(1, 4, omegatruey);
+                jacobian.setElementAt(1, 5, 0.0);
+                jacobian.setElementAt(1, 6, 0.0);
+                jacobian.setElementAt(1, 7, 0.0);
+                jacobian.setElementAt(1, 8, omegatruez);
+                jacobian.setElementAt(1, 9, 0.0);
+                jacobian.setElementAt(1, 10, 0.0);
+                jacobian.setElementAt(1, 11, 0.0);
+                jacobian.setElementAt(1, 12, ftruex);
+                jacobian.setElementAt(1, 13, ftruey);
+                jacobian.setElementAt(1, 14, ftruez);
+                jacobian.setElementAt(1, 15, 0.0);
+                jacobian.setElementAt(1, 16, 0.0);
+                jacobian.setElementAt(1, 17, 0.0);
 
-                        jacobian.setElementAt(2, 0, 0.0);
-                        jacobian.setElementAt(2, 1, 0.0);
-                        jacobian.setElementAt(2, 2, 1.0);
-                        jacobian.setElementAt(2, 3, 0.0);
-                        jacobian.setElementAt(2, 4, 0.0);
-                        jacobian.setElementAt(2, 5, omegatruez);
-                        jacobian.setElementAt(2, 6, 0.0);
-                        jacobian.setElementAt(2, 7, 0.0);
-                        jacobian.setElementAt(2, 8, 0.0);
-                        jacobian.setElementAt(2, 9, 0.0);
-                        jacobian.setElementAt(2, 10, 0.0);
-                        jacobian.setElementAt(2, 11, 0.0);
-                        jacobian.setElementAt(2, 12, 0.0);
-                        jacobian.setElementAt(2, 13, 0.0);
-                        jacobian.setElementAt(2, 14, 0.0);
-                        jacobian.setElementAt(2, 15, ftruex);
-                        jacobian.setElementAt(2, 16, ftruey);
-                        jacobian.setElementAt(2, 17, ftruez);
-                    }
-                });
+                jacobian.setElementAt(2, 0, 0.0);
+                jacobian.setElementAt(2, 1, 0.0);
+                jacobian.setElementAt(2, 2, 1.0);
+                jacobian.setElementAt(2, 3, 0.0);
+                jacobian.setElementAt(2, 4, 0.0);
+                jacobian.setElementAt(2, 5, omegatruez);
+                jacobian.setElementAt(2, 6, 0.0);
+                jacobian.setElementAt(2, 7, 0.0);
+                jacobian.setElementAt(2, 8, 0.0);
+                jacobian.setElementAt(2, 9, 0.0);
+                jacobian.setElementAt(2, 10, 0.0);
+                jacobian.setElementAt(2, 11, 0.0);
+                jacobian.setElementAt(2, 12, 0.0);
+                jacobian.setElementAt(2, 13, 0.0);
+                jacobian.setElementAt(2, 14, 0.0);
+                jacobian.setElementAt(2, 15, ftruex);
+                jacobian.setElementAt(2, 16, ftruey);
+                jacobian.setElementAt(2, 17, ftruez);
+            }
+        });
 
         setInputData();
 
-        mFitter.fit();
+        fitter.fit();
 
-        final double[] result = mFitter.getA();
+        final var result = fitter.getA();
 
-        final double bx = result[0];
-        final double by = result[1];
-        final double bz = result[2];
+        final var bx = result[0];
+        final var by = result[1];
+        final var bz = result[2];
 
-        final double sx = result[3];
-        final double sy = result[4];
-        final double sz = result[5];
+        final var sx = result[3];
+        final var sy = result[4];
+        final var sz = result[5];
 
-        final double mxy = result[6];
-        final double mxz = result[7];
-        final double myz = result[8];
+        final var mxy = result[6];
+        final var mxz = result[7];
+        final var myz = result[8];
 
-        final double g11 = result[9];
-        final double g21 = result[10];
-        final double g31 = result[11];
-        final double g12 = result[12];
-        final double g22 = result[13];
-        final double g32 = result[14];
-        final double g13 = result[15];
-        final double g23 = result[16];
-        final double g33 = result[17];
+        final var g11 = result[9];
+        final var g21 = result[10];
+        final var g31 = result[11];
+        final var g12 = result[12];
+        final var g22 = result[13];
+        final var g32 = result[14];
+        final var g13 = result[15];
+        final var g23 = result[16];
+        final var g33 = result[17];
 
-        if (mEstimatedBiases == null) {
-            mEstimatedBiases = new double[BodyKinematics.COMPONENTS];
+        if (estimatedBiases == null) {
+            estimatedBiases = new double[BodyKinematics.COMPONENTS];
         }
 
-        mEstimatedBiases[0] = bx;
-        mEstimatedBiases[1] = by;
-        mEstimatedBiases[2] = bz;
+        estimatedBiases[0] = bx;
+        estimatedBiases[1] = by;
+        estimatedBiases[2] = bz;
 
-        if (mEstimatedMg == null) {
-            mEstimatedMg = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+        if (estimatedMg == null) {
+            estimatedMg = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         } else {
-            mEstimatedMg.initialize(0.0);
+            estimatedMg.initialize(0.0);
         }
 
-        mEstimatedMg.setElementAt(0, 0, sx);
+        estimatedMg.setElementAt(0, 0, sx);
 
-        mEstimatedMg.setElementAt(0, 1, mxy);
-        mEstimatedMg.setElementAt(1, 1, sy);
+        estimatedMg.setElementAt(0, 1, mxy);
+        estimatedMg.setElementAt(1, 1, sy);
 
-        mEstimatedMg.setElementAt(0, 2, mxz);
-        mEstimatedMg.setElementAt(1, 2, myz);
-        mEstimatedMg.setElementAt(2, 2, sz);
+        estimatedMg.setElementAt(0, 2, mxz);
+        estimatedMg.setElementAt(1, 2, myz);
+        estimatedMg.setElementAt(2, 2, sz);
 
-        if (mEstimatedGg == null) {
-            mEstimatedGg = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+        if (estimatedGg == null) {
+            estimatedGg = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         } else {
-            mEstimatedGg.initialize(0.0);
+            estimatedGg.initialize(0.0);
         }
 
-        mEstimatedGg.setElementAtIndex(0, g11);
-        mEstimatedGg.setElementAtIndex(1, g21);
-        mEstimatedGg.setElementAtIndex(2, g31);
-        mEstimatedGg.setElementAtIndex(3, g12);
-        mEstimatedGg.setElementAtIndex(4, g22);
-        mEstimatedGg.setElementAtIndex(5, g32);
-        mEstimatedGg.setElementAtIndex(6, g13);
-        mEstimatedGg.setElementAtIndex(7, g23);
-        mEstimatedGg.setElementAtIndex(8, g33);
+        estimatedGg.setElementAtIndex(0, g11);
+        estimatedGg.setElementAtIndex(1, g21);
+        estimatedGg.setElementAtIndex(2, g31);
+        estimatedGg.setElementAtIndex(3, g12);
+        estimatedGg.setElementAtIndex(4, g22);
+        estimatedGg.setElementAtIndex(5, g32);
+        estimatedGg.setElementAtIndex(6, g13);
+        estimatedGg.setElementAtIndex(7, g23);
+        estimatedGg.setElementAtIndex(8, g33);
 
-        mEstimatedCovariance = mFitter.getCovar();
+        estimatedCovariance = fitter.getCovar();
 
         // propagate covariance matrix so that all parameters are taken into
         // account in the order: bx, by, bz, sx, sy, sz, mxy, mxz, myx,
@@ -4258,7 +4258,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
         // As defined in com.irurueta.statistics.MultivariateNormalDist,
         // if we consider the jacobian of the lineal application the matrix shown
         // above, then covariance can be propagated as follows
-        final Matrix jacobian = new Matrix(GENERAL_UNKNOWNS, COMMON_Z_AXIS_UNKNOWNS);
+        final var jacobian = new Matrix(GENERAL_UNKNOWNS, COMMON_Z_AXIS_UNKNOWNS);
         for (int i = 0; i < 8; i++) {
             jacobian.setElementAt(i, i, 1.0);
         }
@@ -4269,12 +4269,12 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
         }
 
         // propagated covariance is J * Cov * J'
-        final Matrix jacobianTrans = jacobian.transposeAndReturnNew();
-        jacobian.multiply(mEstimatedCovariance);
+        final var jacobianTrans = jacobian.transposeAndReturnNew();
+        jacobian.multiply(estimatedCovariance);
         jacobian.multiply(jacobianTrans);
-        mEstimatedCovariance = jacobian;
-        mEstimatedChiSq = mFitter.getChisq();
-        mEstimatedMse = mFitter.getMse();
+        estimatedCovariance = jacobian;
+        estimatedChiSq = fitter.getChisq();
+        estimatedMse = fitter.getMse();
     }
 
     /**
@@ -4339,308 +4339,307 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
         //                                                                                                                                                             [g32]
         //                                                                                                                                                             [g33]
 
-        mFitter.setFunctionEvaluator(
-                new LevenbergMarquardtMultiVariateFunctionEvaluator() {
-                    @Override
-                    public int getNumberOfDimensions() {
-                        // Input points are true angular rate + specific force coordinates
-                        return 2 * BodyKinematics.COMPONENTS;
-                    }
+        fitter.setFunctionEvaluator(new LevenbergMarquardtMultiVariateFunctionEvaluator() {
+            @Override
+            public int getNumberOfDimensions() {
+                // Input points are true angular rate + specific force coordinates
+                return 2 * BodyKinematics.COMPONENTS;
+            }
 
-                    @Override
-                    public int getNumberOfVariables() {
-                        // The multivariate function returns the components of measured angular rate
-                        return BodyKinematics.COMPONENTS;
-                    }
+            @Override
+            public int getNumberOfVariables() {
+                // The multivariate function returns the components of measured angular rate
+                return BodyKinematics.COMPONENTS;
+            }
 
-                    @Override
-                    public double[] createInitialParametersArray() {
-                        final double[] initial = new double[GENERAL_UNKNOWNS];
+            @Override
+            public double[] createInitialParametersArray() {
+                final var initial = new double[GENERAL_UNKNOWNS];
 
-                        initial[0] = mInitialBiasX;
-                        initial[1] = mInitialBiasY;
-                        initial[2] = mInitialBiasZ;
+                initial[0] = initialBiasX;
+                initial[1] = initialBiasY;
+                initial[2] = initialBiasZ;
 
-                        initial[3] = mInitialSx;
-                        initial[4] = mInitialSy;
-                        initial[5] = mInitialSz;
+                initial[3] = initialSx;
+                initial[4] = initialSy;
+                initial[5] = initialSz;
 
-                        initial[6] = mInitialMxy;
-                        initial[7] = mInitialMxz;
-                        initial[8] = mInitialMyx;
-                        initial[9] = mInitialMyz;
-                        initial[10] = mInitialMzx;
-                        initial[11] = mInitialMzy;
+                initial[6] = initialMxy;
+                initial[7] = initialMxz;
+                initial[8] = initialMyx;
+                initial[9] = initialMyz;
+                initial[10] = initialMzx;
+                initial[11] = initialMzy;
 
-                        final double[] buffer = mInitialGg.getBuffer();
-                        final int num = buffer.length;
-                        System.arraycopy(buffer, 0, initial, 12, num);
+                final var buffer = initialGg.getBuffer();
+                final var num = buffer.length;
+                System.arraycopy(buffer, 0, initial, 12, num);
 
-                        return initial;
-                    }
+                return initial;
+            }
 
-                    @Override
-                    public void evaluate(final int i, final double[] point, final double[] result,
-                                         final double[] params, final Matrix jacobian) {
-                        // We know that:
-                        // Ωmeasx = bx + Ωtruex + sx * Ωtruex + mxy * Ωtruey + mxz * Ωtruez + g11 * ftruex + g12 * ftruey + g13 * ftruez
-                        // Ωmeasy = by + myx * Ωtruex + Ωtruey + sy * Ωtruey + myz * Ωtruez + g21 * ftruex * g22 * ftruey + g23 * ftruez
-                        // Ωmeasz = bz + mzx * Ωtruex + mzy * Ωtruey + Ωtruez + sz * Ωtruez + g31 * ftruex + g32 * ftruey + g33 * ftruez
+            @Override
+            public void evaluate(final int i, final double[] point, final double[] result, final double[] params,
+                                 final Matrix jacobian) {
+                // We know that:
+                // Ωmeasx = bx + Ωtruex + sx * Ωtruex + mxy * Ωtruey + mxz * Ωtruez + g11 * ftruex + g12 * ftruey + g13 * ftruez
+                // Ωmeasy = by + myx * Ωtruex + Ωtruey + sy * Ωtruey + myz * Ωtruez + g21 * ftruex * g22 * ftruey + g23 * ftruez
+                // Ωmeasz = bz + mzx * Ωtruex + mzy * Ωtruey + Ωtruez + sz * Ωtruez + g31 * ftruex + g32 * ftruey + g33 * ftruez
 
-                        // Hence, the derivatives respect the parameters bx, by, bz, sx, sy,
-                        // sz, mxy, mxz, myx, myz, mzx, mzy, g11, g12, g13, g21, g22, g23,
-                        // g31, g32 and g33 is:
+                // Hence, the derivatives respect the parameters bx, by, bz, sx, sy,
+                // sz, mxy, mxz, myx, myz, mzx, mzy, g11, g12, g13, g21, g22, g23,
+                // g31, g32 and g33 is:
 
-                        // d(Ωmeasx)/d(bx) = 1.0
-                        // d(Ωmeasx)/d(by) = 0.0
-                        // d(Ωmeasx)/d(bz) = 0.0
-                        // d(Ωmeasx)/d(sx) = Ωtruex
-                        // d(Ωmeasx)/d(sy) = 0.0
-                        // d(Ωmeasx)/d(sz) = 0.0
-                        // d(Ωmeasx)/d(mxy) = Ωtruey
-                        // d(Ωmeasx)/d(mxz) = Ωtruez
-                        // d(Ωmeasx)/d(myx) = 0.0
-                        // d(Ωmeasx)/d(myz) = 0.0
-                        // d(Ωmeasx)/d(mzx) = 0.0
-                        // d(Ωmeasx)/d(mzy) = 0.0
-                        // d(Ωmeasx)/d(g11) = ftruex
-                        // d(Ωmeasx)/d(g12) = ftruey
-                        // d(Ωmeasx)/d(g13) = ftruez
-                        // d(Ωmeasx)/d(g21) = 0.0
-                        // d(Ωmeasx)/d(g22) = 0.0
-                        // d(Ωmeasx)/d(g23) = 0.0
-                        // d(Ωmeasx)/d(g31) = 0.0
-                        // d(Ωmeasx)/d(g32) = 0.0
-                        // d(Ωmeasx)/d(g33) = 0.0
+                // d(Ωmeasx)/d(bx) = 1.0
+                // d(Ωmeasx)/d(by) = 0.0
+                // d(Ωmeasx)/d(bz) = 0.0
+                // d(Ωmeasx)/d(sx) = Ωtruex
+                // d(Ωmeasx)/d(sy) = 0.0
+                // d(Ωmeasx)/d(sz) = 0.0
+                // d(Ωmeasx)/d(mxy) = Ωtruey
+                // d(Ωmeasx)/d(mxz) = Ωtruez
+                // d(Ωmeasx)/d(myx) = 0.0
+                // d(Ωmeasx)/d(myz) = 0.0
+                // d(Ωmeasx)/d(mzx) = 0.0
+                // d(Ωmeasx)/d(mzy) = 0.0
+                // d(Ωmeasx)/d(g11) = ftruex
+                // d(Ωmeasx)/d(g12) = ftruey
+                // d(Ωmeasx)/d(g13) = ftruez
+                // d(Ωmeasx)/d(g21) = 0.0
+                // d(Ωmeasx)/d(g22) = 0.0
+                // d(Ωmeasx)/d(g23) = 0.0
+                // d(Ωmeasx)/d(g31) = 0.0
+                // d(Ωmeasx)/d(g32) = 0.0
+                // d(Ωmeasx)/d(g33) = 0.0
 
-                        // d(Ωmeasy)/d(bx) = 0.0
-                        // d(Ωmeasy)/d(by) = 1.0
-                        // d(Ωmeasy)/d(bz) = 0.0
-                        // d(Ωmeasy)/d(sx) = 0.0
-                        // d(Ωmeasy)/d(sy) = Ωtruey
-                        // d(Ωmeasy)/d(sz) = 0.0
-                        // d(Ωmeasy)/d(mxy) = 0.0
-                        // d(Ωmeasy)/d(mxz) = 0.0
-                        // d(Ωmeasy)/d(myx) = Ωtruex
-                        // d(Ωmeasy)/d(myz) = Ωtruez
-                        // d(Ωmeasy)/d(mzx) = 0.0
-                        // d(Ωmeasy)/d(mzy) = 0.0
-                        // d(Ωmeasx)/d(g11) = 0.0
-                        // d(Ωmeasx)/d(g12) = 0.0
-                        // d(Ωmeasx)/d(g13) = 0.0
-                        // d(Ωmeasx)/d(g21) = ftruex
-                        // d(Ωmeasx)/d(g22) = ftruey
-                        // d(Ωmeasx)/d(g23) = ftruez
-                        // d(Ωmeasx)/d(g31) = 0.0
-                        // d(Ωmeasx)/d(g32) = 0.0
-                        // d(Ωmeasx)/d(g33) = 0.0
+                // d(Ωmeasy)/d(bx) = 0.0
+                // d(Ωmeasy)/d(by) = 1.0
+                // d(Ωmeasy)/d(bz) = 0.0
+                // d(Ωmeasy)/d(sx) = 0.0
+                // d(Ωmeasy)/d(sy) = Ωtruey
+                // d(Ωmeasy)/d(sz) = 0.0
+                // d(Ωmeasy)/d(mxy) = 0.0
+                // d(Ωmeasy)/d(mxz) = 0.0
+                // d(Ωmeasy)/d(myx) = Ωtruex
+                // d(Ωmeasy)/d(myz) = Ωtruez
+                // d(Ωmeasy)/d(mzx) = 0.0
+                // d(Ωmeasy)/d(mzy) = 0.0
+                // d(Ωmeasx)/d(g11) = 0.0
+                // d(Ωmeasx)/d(g12) = 0.0
+                // d(Ωmeasx)/d(g13) = 0.0
+                // d(Ωmeasx)/d(g21) = ftruex
+                // d(Ωmeasx)/d(g22) = ftruey
+                // d(Ωmeasx)/d(g23) = ftruez
+                // d(Ωmeasx)/d(g31) = 0.0
+                // d(Ωmeasx)/d(g32) = 0.0
+                // d(Ωmeasx)/d(g33) = 0.0
 
-                        // d(Ωmeasz)/d(bx) = 0.0
-                        // d(Ωmeasz)/d(by) = 0.0
-                        // d(Ωmeasz)/d(bz) = 1.0
-                        // d(Ωmeasz)/d(sx) = 0.0
-                        // d(Ωmeasz)/d(sy) = 0.0
-                        // d(Ωmeasz)/d(sz) = Ωtruez
-                        // d(Ωmeasz)/d(mxy) = 0.0
-                        // d(Ωmeasz)/d(mxz) = 0.0
-                        // d(Ωmeasz)/d(myx) = 0.0
-                        // d(Ωmeasz)/d(myz) = 0.0
-                        // d(Ωmeasz)/d(mzx) = Ωtruex
-                        // d(Ωmeasz)/d(mzy) = Ωtruey
-                        // d(Ωmeasx)/d(g11) = 0.0
-                        // d(Ωmeasx)/d(g12) = 0.0
-                        // d(Ωmeasx)/d(g13) = 0.0
-                        // d(Ωmeasx)/d(g21) = 0.0
-                        // d(Ωmeasx)/d(g22) = 0.0
-                        // d(Ωmeasx)/d(g23) = 0.0
-                        // d(Ωmeasx)/d(g31) = ftruex
-                        // d(Ωmeasx)/d(g32) = ftruey
-                        // d(Ωmeasx)/d(g33) = ftruez
+                // d(Ωmeasz)/d(bx) = 0.0
+                // d(Ωmeasz)/d(by) = 0.0
+                // d(Ωmeasz)/d(bz) = 1.0
+                // d(Ωmeasz)/d(sx) = 0.0
+                // d(Ωmeasz)/d(sy) = 0.0
+                // d(Ωmeasz)/d(sz) = Ωtruez
+                // d(Ωmeasz)/d(mxy) = 0.0
+                // d(Ωmeasz)/d(mxz) = 0.0
+                // d(Ωmeasz)/d(myx) = 0.0
+                // d(Ωmeasz)/d(myz) = 0.0
+                // d(Ωmeasz)/d(mzx) = Ωtruex
+                // d(Ωmeasz)/d(mzy) = Ωtruey
+                // d(Ωmeasx)/d(g11) = 0.0
+                // d(Ωmeasx)/d(g12) = 0.0
+                // d(Ωmeasx)/d(g13) = 0.0
+                // d(Ωmeasx)/d(g21) = 0.0
+                // d(Ωmeasx)/d(g22) = 0.0
+                // d(Ωmeasx)/d(g23) = 0.0
+                // d(Ωmeasx)/d(g31) = ftruex
+                // d(Ωmeasx)/d(g32) = ftruey
+                // d(Ωmeasx)/d(g33) = ftruez
 
-                        final double bx = params[0];
-                        final double by = params[1];
-                        final double bz = params[2];
+                final var bx = params[0];
+                final var by = params[1];
+                final var bz = params[2];
 
-                        final double sx = params[3];
-                        final double sy = params[4];
-                        final double sz = params[5];
+                final var sx = params[3];
+                final var sy = params[4];
+                final var sz = params[5];
 
-                        final double mxy = params[6];
-                        final double mxz = params[7];
-                        final double myx = params[8];
-                        final double myz = params[9];
-                        final double mzx = params[10];
-                        final double mzy = params[11];
+                final var mxy = params[6];
+                final var mxz = params[7];
+                final var myx = params[8];
+                final var myz = params[9];
+                final var mzx = params[10];
+                final var mzy = params[11];
 
-                        final double g11 = params[12];
-                        final double g21 = params[13];
-                        final double g31 = params[14];
-                        final double g12 = params[15];
-                        final double g22 = params[16];
-                        final double g32 = params[17];
-                        final double g13 = params[18];
-                        final double g23 = params[19];
-                        final double g33 = params[20];
+                final var g11 = params[12];
+                final var g21 = params[13];
+                final var g31 = params[14];
+                final var g12 = params[15];
+                final var g22 = params[16];
+                final var g32 = params[17];
+                final var g13 = params[18];
+                final var g23 = params[19];
+                final var g33 = params[20];
 
-                        final double omegatruex = point[0];
-                        final double omegatruey = point[1];
-                        final double omegatruez = point[2];
+                final var omegatruex = point[0];
+                final var omegatruey = point[1];
+                final var omegatruez = point[2];
 
-                        final double ftruex = point[3];
-                        final double ftruey = point[4];
-                        final double ftruez = point[5];
+                final var ftruex = point[3];
+                final var ftruey = point[4];
+                final var ftruez = point[5];
 
-                        result[0] = bx + omegatruex + sx * omegatruex + mxy * omegatruey + mxz * omegatruez
-                                + g11 * ftruex + g12 * ftruey + g13 * ftruez;
-                        result[1] = by + myx * omegatruex + omegatruey + sy * omegatruey + myz * omegatruez
-                                + g21 * ftruex * g22 * ftruey + g23 * ftruez;
-                        result[2] = bz + mzx * omegatruex + mzy * omegatruey + omegatruez + sz * omegatruez
-                                + g31 * ftruex + g32 * ftruey + g33 * ftruez;
+                result[0] = bx + omegatruex + sx * omegatruex + mxy * omegatruey + mxz * omegatruez
+                        + g11 * ftruex + g12 * ftruey + g13 * ftruez;
+                result[1] = by + myx * omegatruex + omegatruey + sy * omegatruey + myz * omegatruez
+                        + g21 * ftruex * g22 * ftruey + g23 * ftruez;
+                result[2] = bz + mzx * omegatruex + mzy * omegatruey + omegatruez + sz * omegatruez
+                        + g31 * ftruex + g32 * ftruey + g33 * ftruez;
 
-                        jacobian.setElementAt(0, 0, 1.0);
-                        jacobian.setElementAt(0, 1, 0.0);
-                        jacobian.setElementAt(0, 2, 0.0);
-                        jacobian.setElementAt(0, 3, omegatruex);
-                        jacobian.setElementAt(0, 4, 0.0);
-                        jacobian.setElementAt(0, 5, 0.0);
-                        jacobian.setElementAt(0, 6, omegatruey);
-                        jacobian.setElementAt(0, 7, omegatruez);
-                        jacobian.setElementAt(0, 8, 0.0);
-                        jacobian.setElementAt(0, 9, 0.0);
-                        jacobian.setElementAt(0, 10, 0.0);
-                        jacobian.setElementAt(0, 11, 0.0);
-                        jacobian.setElementAt(0, 12, ftruex);
-                        jacobian.setElementAt(0, 13, ftruey);
-                        jacobian.setElementAt(0, 14, ftruez);
-                        jacobian.setElementAt(0, 15, 0.0);
-                        jacobian.setElementAt(0, 16, 0.0);
-                        jacobian.setElementAt(0, 17, 0.0);
-                        jacobian.setElementAt(0, 18, 0.0);
-                        jacobian.setElementAt(0, 19, 0.0);
-                        jacobian.setElementAt(0, 20, 0.0);
+                jacobian.setElementAt(0, 0, 1.0);
+                jacobian.setElementAt(0, 1, 0.0);
+                jacobian.setElementAt(0, 2, 0.0);
+                jacobian.setElementAt(0, 3, omegatruex);
+                jacobian.setElementAt(0, 4, 0.0);
+                jacobian.setElementAt(0, 5, 0.0);
+                jacobian.setElementAt(0, 6, omegatruey);
+                jacobian.setElementAt(0, 7, omegatruez);
+                jacobian.setElementAt(0, 8, 0.0);
+                jacobian.setElementAt(0, 9, 0.0);
+                jacobian.setElementAt(0, 10, 0.0);
+                jacobian.setElementAt(0, 11, 0.0);
+                jacobian.setElementAt(0, 12, ftruex);
+                jacobian.setElementAt(0, 13, ftruey);
+                jacobian.setElementAt(0, 14, ftruez);
+                jacobian.setElementAt(0, 15, 0.0);
+                jacobian.setElementAt(0, 16, 0.0);
+                jacobian.setElementAt(0, 17, 0.0);
+                jacobian.setElementAt(0, 18, 0.0);
+                jacobian.setElementAt(0, 19, 0.0);
+                jacobian.setElementAt(0, 20, 0.0);
 
-                        jacobian.setElementAt(1, 0, 0.0);
-                        jacobian.setElementAt(1, 1, 1.0);
-                        jacobian.setElementAt(1, 2, 0.0);
-                        jacobian.setElementAt(1, 3, 0.0);
-                        jacobian.setElementAt(1, 4, omegatruey);
-                        jacobian.setElementAt(1, 5, 0.0);
-                        jacobian.setElementAt(1, 6, 0.0);
-                        jacobian.setElementAt(1, 7, 0.0);
-                        jacobian.setElementAt(1, 8, omegatruex);
-                        jacobian.setElementAt(1, 9, omegatruez);
-                        jacobian.setElementAt(1, 10, 0.0);
-                        jacobian.setElementAt(1, 11, 0.0);
-                        jacobian.setElementAt(1, 12, 0.0);
-                        jacobian.setElementAt(1, 13, 0.0);
-                        jacobian.setElementAt(1, 14, 0.0);
-                        jacobian.setElementAt(1, 15, ftruex);
-                        jacobian.setElementAt(1, 16, ftruey);
-                        jacobian.setElementAt(1, 17, ftruez);
-                        jacobian.setElementAt(1, 18, 0.0);
-                        jacobian.setElementAt(1, 19, 0.0);
-                        jacobian.setElementAt(1, 20, 0.0);
+                jacobian.setElementAt(1, 0, 0.0);
+                jacobian.setElementAt(1, 1, 1.0);
+                jacobian.setElementAt(1, 2, 0.0);
+                jacobian.setElementAt(1, 3, 0.0);
+                jacobian.setElementAt(1, 4, omegatruey);
+                jacobian.setElementAt(1, 5, 0.0);
+                jacobian.setElementAt(1, 6, 0.0);
+                jacobian.setElementAt(1, 7, 0.0);
+                jacobian.setElementAt(1, 8, omegatruex);
+                jacobian.setElementAt(1, 9, omegatruez);
+                jacobian.setElementAt(1, 10, 0.0);
+                jacobian.setElementAt(1, 11, 0.0);
+                jacobian.setElementAt(1, 12, 0.0);
+                jacobian.setElementAt(1, 13, 0.0);
+                jacobian.setElementAt(1, 14, 0.0);
+                jacobian.setElementAt(1, 15, ftruex);
+                jacobian.setElementAt(1, 16, ftruey);
+                jacobian.setElementAt(1, 17, ftruez);
+                jacobian.setElementAt(1, 18, 0.0);
+                jacobian.setElementAt(1, 19, 0.0);
+                jacobian.setElementAt(1, 20, 0.0);
 
-                        jacobian.setElementAt(2, 0, 0.0);
-                        jacobian.setElementAt(2, 1, 0.0);
-                        jacobian.setElementAt(2, 2, 1.0);
-                        jacobian.setElementAt(2, 3, 0.0);
-                        jacobian.setElementAt(2, 4, 0.0);
-                        jacobian.setElementAt(2, 5, omegatruez);
-                        jacobian.setElementAt(2, 6, 0.0);
-                        jacobian.setElementAt(2, 7, 0.0);
-                        jacobian.setElementAt(2, 8, 0.0);
-                        jacobian.setElementAt(2, 9, 0.0);
-                        jacobian.setElementAt(2, 10, omegatruex);
-                        jacobian.setElementAt(2, 11, omegatruey);
-                        jacobian.setElementAt(2, 12, 0.0);
-                        jacobian.setElementAt(2, 13, 0.0);
-                        jacobian.setElementAt(2, 14, 0.0);
-                        jacobian.setElementAt(2, 15, 0.0);
-                        jacobian.setElementAt(2, 16, 0.0);
-                        jacobian.setElementAt(2, 17, 0.0);
-                        jacobian.setElementAt(2, 18, ftruex);
-                        jacobian.setElementAt(2, 19, ftruey);
-                        jacobian.setElementAt(2, 20, ftruez);
-                    }
-                });
+                jacobian.setElementAt(2, 0, 0.0);
+                jacobian.setElementAt(2, 1, 0.0);
+                jacobian.setElementAt(2, 2, 1.0);
+                jacobian.setElementAt(2, 3, 0.0);
+                jacobian.setElementAt(2, 4, 0.0);
+                jacobian.setElementAt(2, 5, omegatruez);
+                jacobian.setElementAt(2, 6, 0.0);
+                jacobian.setElementAt(2, 7, 0.0);
+                jacobian.setElementAt(2, 8, 0.0);
+                jacobian.setElementAt(2, 9, 0.0);
+                jacobian.setElementAt(2, 10, omegatruex);
+                jacobian.setElementAt(2, 11, omegatruey);
+                jacobian.setElementAt(2, 12, 0.0);
+                jacobian.setElementAt(2, 13, 0.0);
+                jacobian.setElementAt(2, 14, 0.0);
+                jacobian.setElementAt(2, 15, 0.0);
+                jacobian.setElementAt(2, 16, 0.0);
+                jacobian.setElementAt(2, 17, 0.0);
+                jacobian.setElementAt(2, 18, ftruex);
+                jacobian.setElementAt(2, 19, ftruey);
+                jacobian.setElementAt(2, 20, ftruez);
+            }
+        });
 
         setInputData();
 
-        mFitter.fit();
+        fitter.fit();
 
-        final double[] result = mFitter.getA();
+        final var result = fitter.getA();
 
-        final double bx = result[0];
-        final double by = result[1];
-        final double bz = result[2];
+        final var bx = result[0];
+        final var by = result[1];
+        final var bz = result[2];
 
-        final double sx = result[3];
-        final double sy = result[4];
-        final double sz = result[5];
+        final var sx = result[3];
+        final var sy = result[4];
+        final var sz = result[5];
 
-        final double mxy = result[6];
-        final double mxz = result[7];
-        final double myx = result[8];
-        final double myz = result[9];
-        final double mzx = result[10];
-        final double mzy = result[11];
+        final var mxy = result[6];
+        final var mxz = result[7];
+        final var myx = result[8];
+        final var myz = result[9];
+        final var mzx = result[10];
+        final var mzy = result[11];
 
-        final double g11 = result[12];
-        final double g21 = result[13];
-        final double g31 = result[14];
-        final double g12 = result[15];
-        final double g22 = result[16];
-        final double g32 = result[17];
-        final double g13 = result[18];
-        final double g23 = result[19];
-        final double g33 = result[20];
+        final var g11 = result[12];
+        final var g21 = result[13];
+        final var g31 = result[14];
+        final var g12 = result[15];
+        final var g22 = result[16];
+        final var g32 = result[17];
+        final var g13 = result[18];
+        final var g23 = result[19];
+        final var g33 = result[20];
 
-        if (mEstimatedBiases == null) {
-            mEstimatedBiases = new double[BodyKinematics.COMPONENTS];
+        if (estimatedBiases == null) {
+            estimatedBiases = new double[BodyKinematics.COMPONENTS];
         }
 
-        mEstimatedBiases[0] = bx;
-        mEstimatedBiases[1] = by;
-        mEstimatedBiases[2] = bz;
+        estimatedBiases[0] = bx;
+        estimatedBiases[1] = by;
+        estimatedBiases[2] = bz;
 
-        if (mEstimatedMg == null) {
-            mEstimatedMg = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+        if (estimatedMg == null) {
+            estimatedMg = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         } else {
-            mEstimatedMg.initialize(0.0);
+            estimatedMg.initialize(0.0);
         }
 
-        mEstimatedMg.setElementAt(0, 0, sx);
-        mEstimatedMg.setElementAt(1, 0, myx);
-        mEstimatedMg.setElementAt(2, 0, mzx);
+        estimatedMg.setElementAt(0, 0, sx);
+        estimatedMg.setElementAt(1, 0, myx);
+        estimatedMg.setElementAt(2, 0, mzx);
 
-        mEstimatedMg.setElementAt(0, 1, mxy);
-        mEstimatedMg.setElementAt(1, 1, sy);
-        mEstimatedMg.setElementAt(2, 1, mzy);
+        estimatedMg.setElementAt(0, 1, mxy);
+        estimatedMg.setElementAt(1, 1, sy);
+        estimatedMg.setElementAt(2, 1, mzy);
 
-        mEstimatedMg.setElementAt(0, 2, mxz);
-        mEstimatedMg.setElementAt(1, 2, myz);
-        mEstimatedMg.setElementAt(2, 2, sz);
+        estimatedMg.setElementAt(0, 2, mxz);
+        estimatedMg.setElementAt(1, 2, myz);
+        estimatedMg.setElementAt(2, 2, sz);
 
-        if (mEstimatedGg == null) {
-            mEstimatedGg = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+        if (estimatedGg == null) {
+            estimatedGg = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         } else {
-            mEstimatedGg.initialize(0.0);
+            estimatedGg.initialize(0.0);
         }
 
-        mEstimatedGg.setElementAtIndex(0, g11);
-        mEstimatedGg.setElementAtIndex(1, g21);
-        mEstimatedGg.setElementAtIndex(2, g31);
-        mEstimatedGg.setElementAtIndex(3, g12);
-        mEstimatedGg.setElementAtIndex(4, g22);
-        mEstimatedGg.setElementAtIndex(5, g32);
-        mEstimatedGg.setElementAtIndex(6, g13);
-        mEstimatedGg.setElementAtIndex(7, g23);
-        mEstimatedGg.setElementAtIndex(8, g33);
+        estimatedGg.setElementAtIndex(0, g11);
+        estimatedGg.setElementAtIndex(1, g21);
+        estimatedGg.setElementAtIndex(2, g31);
+        estimatedGg.setElementAtIndex(3, g12);
+        estimatedGg.setElementAtIndex(4, g22);
+        estimatedGg.setElementAtIndex(5, g32);
+        estimatedGg.setElementAtIndex(6, g13);
+        estimatedGg.setElementAtIndex(7, g23);
+        estimatedGg.setElementAtIndex(8, g33);
 
-        mEstimatedCovariance = mFitter.getCovar();
-        mEstimatedChiSq = mFitter.getChisq();
-        mEstimatedMse = mFitter.getMse();
+        estimatedCovariance = fitter.getCovar();
+        estimatedChiSq = fitter.getChisq();
+        estimatedMse = fitter.getMse();
     }
 
     /**
@@ -4658,32 +4657,32 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
         // fmeasy = by + myx * ftruex + ftruey + sy * ftruey + myz * ftruez
         // fmeasz = bz + mzx * ftruex + mzy * ftruey + ftruez + sz * ftruez
 
-        final BodyKinematics expectedKinematics = new BodyKinematics();
+        final var expectedKinematics = new BodyKinematics();
 
-        final int numMeasurements = mMeasurements.size();
-        final Matrix x = new Matrix(numMeasurements, 2 * BodyKinematics.COMPONENTS);
-        final Matrix y = new Matrix(numMeasurements, BodyKinematics.COMPONENTS);
-        final double[] standardDeviations = new double[numMeasurements];
-        int i = 0;
-        for (final StandardDeviationFrameBodyKinematics measurement : mMeasurements) {
-            final BodyKinematics measuredKinematics = measurement.getKinematics();
-            final ECEFFrame ecefFrame = measurement.getFrame();
-            final ECEFFrame previousEcefFrame = measurement.getPreviousFrame();
-            final double timeInterval = measurement.getTimeInterval();
+        final var numMeasurements = measurements.size();
+        final var x = new Matrix(numMeasurements, 2 * BodyKinematics.COMPONENTS);
+        final var y = new Matrix(numMeasurements, BodyKinematics.COMPONENTS);
+        final var standardDeviations = new double[numMeasurements];
+        var i = 0;
+        for (final var measurement : measurements) {
+            final var measuredKinematics = measurement.getKinematics();
+            final var ecefFrame = measurement.getFrame();
+            final var previousEcefFrame = measurement.getPreviousFrame();
+            final var timeInterval = measurement.getTimeInterval();
 
             ECEFKinematicsEstimator.estimateKinematics(timeInterval, ecefFrame, previousEcefFrame, expectedKinematics);
 
-            final double omegaMeasX = measuredKinematics.getAngularRateX();
-            final double omegaMeasY = measuredKinematics.getAngularRateY();
-            final double omegaMeasZ = measuredKinematics.getAngularRateZ();
+            final var omegaMeasX = measuredKinematics.getAngularRateX();
+            final var omegaMeasY = measuredKinematics.getAngularRateY();
+            final var omegaMeasZ = measuredKinematics.getAngularRateZ();
 
-            final double omegaTrueX = expectedKinematics.getAngularRateX();
-            final double omegaTrueY = expectedKinematics.getAngularRateY();
-            final double omegaTrueZ = expectedKinematics.getAngularRateZ();
+            final var omegaTrueX = expectedKinematics.getAngularRateX();
+            final var omegaTrueY = expectedKinematics.getAngularRateY();
+            final var omegaTrueZ = expectedKinematics.getAngularRateZ();
 
-            final double fTrueX = expectedKinematics.getFx();
-            final double fTrueY = expectedKinematics.getFy();
-            final double fTrueZ = expectedKinematics.getFz();
+            final var fTrueX = expectedKinematics.getFx();
+            final var fTrueY = expectedKinematics.getFy();
+            final var fTrueZ = expectedKinematics.getFz();
 
             x.setElementAt(i, 0, omegaTrueX);
             x.setElementAt(i, 1, omegaTrueY);
@@ -4701,7 +4700,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             i++;
         }
 
-        mFitter.setInputData(x, y, standardDeviations);
+        fitter.setInputData(x, y, standardDeviations);
     }
 
     /**

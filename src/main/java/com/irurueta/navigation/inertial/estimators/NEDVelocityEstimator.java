@@ -18,7 +18,6 @@ package com.irurueta.navigation.inertial.estimators;
 import com.irurueta.navigation.frames.NEDFrame;
 import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.NEDVelocity;
-import com.irurueta.navigation.inertial.RadiiOfCurvature;
 import com.irurueta.units.*;
 
 /**
@@ -1163,23 +1162,23 @@ public class NEDVelocityEstimator {
         }
 
         // Calculate meridian and transverse radii of curvature
-        final RadiiOfCurvature oldRadii = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(oldLatitude);
-        final double oldRn = oldRadii.getRn();
-        final double oldRe = oldRadii.getRe();
+        final var oldRadii = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(oldLatitude);
+        final var oldRn = oldRadii.getRn();
+        final var oldRe = oldRadii.getRe();
 
-        final RadiiOfCurvature radii = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(latitude);
-        final double re = radii.getRe();
+        final var radii = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(latitude);
+        final var re = radii.getRe();
 
         // Differentiate latitude, longitude, and height
-        final double latRate = (latitude - oldLatitude) / timeInterval;
-        final double longRate = (longitude - oldLongitude) / timeInterval;
-        final double heightRate = (height - oldHeight) / timeInterval;
+        final var latRate = (latitude - oldLatitude) / timeInterval;
+        final var longRate = (longitude - oldLongitude) / timeInterval;
+        final var heightRate = (height - oldHeight) / timeInterval;
 
         // Derive the current velocity using (5.56)
-        final double vn = (oldRn + height) * (2.0 * latRate - oldVn / (oldRn + oldHeight));
-        final double ve = ((re + height) * Math.cos(latitude))
+        final var vn = (oldRn + height) * (2.0 * latRate - oldVn / (oldRn + oldHeight));
+        final var ve = ((re + height) * Math.cos(latitude))
                 * (2.0 * longRate - oldVe / ((oldRe + oldHeight) * Math.cos(oldLatitude)));
-        final double vd = -2.0 * heightRate - oldVd;
+        final var vd = -2.0 * heightRate - oldVd;
 
         result.setCoordinates(vn, ve, vd);
     }
@@ -1755,7 +1754,7 @@ public class NEDVelocityEstimator {
             final double timeInterval, final double oldLatitude, final double oldLongitude, final double oldHeight,
             final double oldVn, final double oldVe, final double oldVd,
             final double latitude, final double longitude, final double height) {
-        final NEDVelocity result = new NEDVelocity();
+        final var result = new NEDVelocity();
         estimateVelocity(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd,
                 latitude, longitude, height, result);
         return result;
@@ -1786,7 +1785,7 @@ public class NEDVelocityEstimator {
             final Time timeInterval, final double oldLatitude, final double oldLongitude, final double oldHeight,
             final double oldVn, final double oldVe, final double oldVd,
             final double latitude, final double longitude, final double height) {
-        final NEDVelocity result = new NEDVelocity();
+        final var result = new NEDVelocity();
         estimateVelocity(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, latitude, longitude,
                 height, result);
         return result;
@@ -1817,7 +1816,7 @@ public class NEDVelocityEstimator {
             final double timeInterval, final Angle oldLatitude, final Angle oldLongitude, final Distance oldHeight,
             final Speed oldVn, final Speed oldVe, final Speed oldVd,
             final Angle latitude, final Angle longitude, final Distance height) {
-        final NEDVelocity result = new NEDVelocity();
+        final var result = new NEDVelocity();
         estimateVelocity(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd,
                 latitude, longitude, height, result);
         return result;
@@ -1848,7 +1847,7 @@ public class NEDVelocityEstimator {
             final Time timeInterval, final Angle oldLatitude, final Angle oldLongitude, final Distance oldHeight,
             final Speed oldVn, final Speed oldVe, final Speed oldVd,
             final Angle latitude, final Angle longitude, final Distance height) {
-        final NEDVelocity result = new NEDVelocity();
+        final var result = new NEDVelocity();
         estimateVelocity(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd,
                 latitude, longitude, height, result);
         return result;
@@ -1879,7 +1878,7 @@ public class NEDVelocityEstimator {
             final double timeInterval, final Angle oldLatitude, final Angle oldLongitude, final Distance oldHeight,
             final double oldVn, final double oldVe, final double oldVd,
             final Angle latitude, final Angle longitude, final Distance height) {
-        final NEDVelocity result = new NEDVelocity();
+        final var result = new NEDVelocity();
         estimateVelocity(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd,
                 latitude, longitude, height, result);
         return result;
@@ -1910,7 +1909,7 @@ public class NEDVelocityEstimator {
             final Time timeInterval, final Angle oldLatitude, final Angle oldLongitude, final Distance oldHeight,
             final double oldVn, final double oldVe, final double oldVd,
             final Angle latitude, final Angle longitude, final Distance height) {
-        final NEDVelocity result = new NEDVelocity();
+        final var result = new NEDVelocity();
         estimateVelocity(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd,
                 latitude, longitude, height, result);
         return result;
@@ -1937,7 +1936,7 @@ public class NEDVelocityEstimator {
     public static NEDVelocity estimateVelocityAndReturnNew(
             final double timeInterval, final double oldLatitude, final double oldLongitude, final double oldHeight,
             final NEDVelocity oldVelocity, final double latitude, final double longitude, final double height) {
-        final NEDVelocity result = new NEDVelocity();
+        final var result = new NEDVelocity();
         estimateVelocity(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVelocity, latitude, longitude, height,
                 result);
         return result;
@@ -1964,7 +1963,7 @@ public class NEDVelocityEstimator {
     public static NEDVelocity estimateVelocityAndReturnNew(
             final Time timeInterval, final double oldLatitude, final double oldLongitude, final double oldHeight,
             final NEDVelocity oldVelocity, final double latitude, final double longitude, final double height) {
-        final NEDVelocity result = new NEDVelocity();
+        final var result = new NEDVelocity();
         estimateVelocity(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVelocity, latitude, longitude, height,
                 result);
         return result;
@@ -1991,7 +1990,7 @@ public class NEDVelocityEstimator {
     public static NEDVelocity estimateVelocityAndReturnNew(
             final double timeInterval, final Angle oldLatitude, final Angle oldLongitude, final Distance oldHeight,
             final NEDVelocity oldVelocity, final Angle latitude, final Angle longitude, final Distance height) {
-        final NEDVelocity result = new NEDVelocity();
+        final var result = new NEDVelocity();
         estimateVelocity(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVelocity, latitude, longitude, height,
                 result);
         return result;
@@ -2018,7 +2017,7 @@ public class NEDVelocityEstimator {
     public static NEDVelocity estimateVelocityAndReturnNew(
             final Time timeInterval, final Angle oldLatitude, final Angle oldLongitude, final Distance oldHeight,
             final NEDVelocity oldVelocity, final Angle latitude, final Angle longitude, final Distance height) {
-        final NEDVelocity result = new NEDVelocity();
+        final var result = new NEDVelocity();
         estimateVelocity(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVelocity, latitude, longitude, height,
                 result);
         return result;
@@ -2041,7 +2040,7 @@ public class NEDVelocityEstimator {
     public static NEDVelocity estimateVelocityAndReturnNew(
             final double timeInterval, final NEDFrame oldFrame,
             final double latitude, final double longitude, final double height) {
-        final NEDVelocity result = new NEDVelocity();
+        final var result = new NEDVelocity();
         estimateVelocity(timeInterval, oldFrame, latitude, longitude, height, result);
         return result;
     }
@@ -2063,7 +2062,7 @@ public class NEDVelocityEstimator {
     public static NEDVelocity estimateVelocityAndReturnNew(
             final Time timeInterval, final NEDFrame oldFrame,
             final double latitude, final double longitude, final double height) {
-        final NEDVelocity result = new NEDVelocity();
+        final var result = new NEDVelocity();
         estimateVelocity(timeInterval, oldFrame, latitude, longitude, height, result);
         return result;
     }
@@ -2085,7 +2084,7 @@ public class NEDVelocityEstimator {
     public static NEDVelocity estimateVelocityAndReturnNew(
             final double timeInterval, final NEDFrame oldFrame,
             final Angle latitude, final Angle longitude, final Distance height) {
-        final NEDVelocity result = new NEDVelocity();
+        final var result = new NEDVelocity();
         estimateVelocity(timeInterval, oldFrame, latitude, longitude, height, result);
         return result;
     }
@@ -2107,7 +2106,7 @@ public class NEDVelocityEstimator {
     public static NEDVelocity estimateVelocityAndReturnNew(
             final Time timeInterval, final NEDFrame oldFrame,
             final Angle latitude, final Angle longitude, final Distance height) {
-        final NEDVelocity result = new NEDVelocity();
+        final var result = new NEDVelocity();
         estimateVelocity(timeInterval, oldFrame, latitude, longitude, height, result);
         return result;
     }
@@ -2134,7 +2133,7 @@ public class NEDVelocityEstimator {
     public static NEDVelocity estimateVelocityAndReturnNew(
             final double timeInterval, final NEDPosition oldPosition,
             final double oldVn, final double oldVe, final double oldVd, final NEDPosition position) {
-        final NEDVelocity result = new NEDVelocity();
+        final var result = new NEDVelocity();
         estimateVelocity(timeInterval, oldPosition, oldVn, oldVe, oldVd, position, result);
         return result;
     }
@@ -2161,7 +2160,7 @@ public class NEDVelocityEstimator {
     public static NEDVelocity estimateVelocityAndReturnNew(
             final Time timeInterval, final NEDPosition oldPosition,
             final double oldVn, final double oldVe, final double oldVd, final NEDPosition position) {
-        final NEDVelocity result = new NEDVelocity();
+        final var result = new NEDVelocity();
         estimateVelocity(timeInterval, oldPosition, oldVn, oldVe, oldVd, position, result);
         return result;
     }
@@ -2188,7 +2187,7 @@ public class NEDVelocityEstimator {
     public static NEDVelocity estimateVelocityAndReturnNew(
             final double timeInterval, final NEDPosition oldPosition,
             final Speed oldVn, final Speed oldVe, final Speed oldVd, final NEDPosition position) {
-        final NEDVelocity result = new NEDVelocity();
+        final var result = new NEDVelocity();
         estimateVelocity(timeInterval, oldPosition, oldVn, oldVe, oldVd, position, result);
         return result;
     }
@@ -2215,7 +2214,7 @@ public class NEDVelocityEstimator {
     public static NEDVelocity estimateVelocityAndReturnNew(
             final Time timeInterval, final NEDPosition oldPosition,
             final Speed oldVn, final Speed oldVe, final Speed oldVd, final NEDPosition position) {
-        final NEDVelocity result = new NEDVelocity();
+        final var result = new NEDVelocity();
         estimateVelocity(timeInterval, oldPosition, oldVn, oldVe, oldVd, position, result);
         return result;
     }
@@ -2239,7 +2238,7 @@ public class NEDVelocityEstimator {
     public static NEDVelocity estimateVelocityAndReturnNew(
             final double timeInterval, final NEDPosition oldPosition, final NEDVelocity oldVelocity,
             final NEDPosition position) {
-        final NEDVelocity result = new NEDVelocity();
+        final var result = new NEDVelocity();
         estimateVelocity(timeInterval, oldPosition, oldVelocity, position, result);
         return result;
     }
@@ -2263,7 +2262,7 @@ public class NEDVelocityEstimator {
     public static NEDVelocity estimateVelocityAndReturnNew(
             final Time timeInterval, final NEDPosition oldPosition, final NEDVelocity oldVelocity,
             final NEDPosition position) {
-        final NEDVelocity result = new NEDVelocity();
+        final var result = new NEDVelocity();
         estimateVelocity(timeInterval, oldPosition, oldVelocity, position, result);
         return result;
     }
@@ -2283,7 +2282,7 @@ public class NEDVelocityEstimator {
      */
     public static NEDVelocity estimateVelocityAndReturnNew(
             final double timeInterval, final NEDFrame oldFrame, final NEDPosition position) {
-        final NEDVelocity result = new NEDVelocity();
+        final var result = new NEDVelocity();
         estimateVelocity(timeInterval, oldFrame, position, result);
         return result;
     }
@@ -2303,7 +2302,7 @@ public class NEDVelocityEstimator {
      */
     public static NEDVelocity estimateVelocityAndReturnNew(
             final Time timeInterval, final NEDFrame oldFrame, final NEDPosition position) {
-        final NEDVelocity result = new NEDVelocity();
+        final var result = new NEDVelocity();
         estimateVelocity(timeInterval, oldFrame, position, result);
         return result;
     }

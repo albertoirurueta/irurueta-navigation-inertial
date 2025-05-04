@@ -59,29 +59,29 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
     /**
      * Listener to handle events raised by this estimator.
      */
-    private AccumulatedBodyKinematicsNoiseEstimatorListener mListener;
+    private AccumulatedBodyKinematicsNoiseEstimatorListener listener;
 
     /**
      * Last provided body kinematics.
      */
-    private BodyKinematics mLastBodyKinematics;
+    private BodyKinematics lastBodyKinematics;
 
     /**
      * Accumulated acceleration estimator.
      */
-    private final AccumulatedAccelerationTriadNoiseEstimator mAccelerationEstimator =
+    private final AccumulatedAccelerationTriadNoiseEstimator accelerationEstimator =
             new AccumulatedAccelerationTriadNoiseEstimator();
 
     /**
      * Accumulated angular speed estimator.
      */
-    private final AccumulatedAngularSpeedTriadNoiseEstimator mAngularSpeedEstimator =
+    private final AccumulatedAngularSpeedTriadNoiseEstimator angularSpeedEstimator =
             new AccumulatedAngularSpeedTriadNoiseEstimator();
 
     /**
      * Indicates that estimator is running.
      */
-    private boolean mRunning;
+    private boolean running;
 
     /**
      * Constructor.
@@ -95,7 +95,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @param listener listener to handle events raised by this estimator.
      */
     public AccumulatedBodyKinematicsNoiseEstimator(final AccumulatedBodyKinematicsNoiseEstimatorListener listener) {
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -105,7 +105,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return time interval between body kinematics samples.
      */
     public double getTimeInterval() {
-        return mAccelerationEstimator.getTimeInterval();
+        return accelerationEstimator.getTimeInterval();
     }
 
     /**
@@ -117,12 +117,12 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @throws LockedException          if estimator is currently running.
      */
     public void setTimeInterval(final double timeInterval) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mAccelerationEstimator.setTimeInterval(timeInterval);
-        mAngularSpeedEstimator.setTimeInterval(timeInterval);
+        accelerationEstimator.setTimeInterval(timeInterval);
+        angularSpeedEstimator.setTimeInterval(timeInterval);
     }
 
     /**
@@ -131,7 +131,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return time interval between body kinematics samples.
      */
     public Time getTimeIntervalAsTime() {
-        return mAccelerationEstimator.getTimeIntervalAsTime();
+        return accelerationEstimator.getTimeIntervalAsTime();
     }
 
     /**
@@ -140,7 +140,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @param result instance where body kinematics will be stored.
      */
     public void getTimeIntervalAsTime(final Time result) {
-        mAccelerationEstimator.getTimeIntervalAsTime(result);
+        accelerationEstimator.getTimeIntervalAsTime(result);
     }
 
     /**
@@ -150,12 +150,12 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @throws LockedException if estimator is currently running.
      */
     public void setTimeInterval(final Time timeInterval) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mAccelerationEstimator.setTimeInterval(timeInterval);
-        mAngularSpeedEstimator.setTimeInterval(timeInterval);
+        accelerationEstimator.setTimeInterval(timeInterval);
+        angularSpeedEstimator.setTimeInterval(timeInterval);
     }
 
     /**
@@ -164,7 +164,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return listener to handle events raised by this estimator.
      */
     public AccumulatedBodyKinematicsNoiseEstimatorListener getListener() {
-        return mListener;
+        return listener;
     }
 
     /**
@@ -174,11 +174,11 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @throws LockedException if this estimator is running.
      */
     public void setListener(final AccumulatedBodyKinematicsNoiseEstimatorListener listener) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -187,7 +187,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return last provided body kinematics or null.
      */
     public BodyKinematics getLastBodyKinematics() {
-        return mLastBodyKinematics;
+        return lastBodyKinematics;
     }
 
     /**
@@ -197,8 +197,8 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return true if result instance was updated, false otherwise.
      */
     public boolean getLastBodyKinematics(final BodyKinematics result) {
-        if (mLastBodyKinematics != null) {
-            mLastBodyKinematics.copyTo(result);
+        if (lastBodyKinematics != null) {
+            lastBodyKinematics.copyTo(result);
             return true;
         } else {
             return false;
@@ -214,7 +214,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return average of x coordinate of sensed specific force.
      */
     public double getAvgSpecificForceX() {
-        return mAccelerationEstimator.getAvgX();
+        return accelerationEstimator.getAvgX();
     }
 
     /**
@@ -225,7 +225,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return average of x coordinate of sensed specific force.
      */
     public Acceleration getAvgSpecificForceXAsMeasurement() {
-        return mAccelerationEstimator.getAvgXAsMeasurement();
+        return accelerationEstimator.getAvgXAsMeasurement();
     }
 
     /**
@@ -237,7 +237,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      *               will be stored.
      */
     public void getAvgSpecificForceXAsMeasurement(final Acceleration result) {
-        mAccelerationEstimator.getAvgXAsMeasurement(result);
+        accelerationEstimator.getAvgXAsMeasurement(result);
     }
 
     /**
@@ -249,7 +249,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return average of y coordinate of sensed specific force.
      */
     public double getAvgSpecificForceY() {
-        return mAccelerationEstimator.getAvgY();
+        return accelerationEstimator.getAvgY();
     }
 
     /**
@@ -260,7 +260,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return average of y coordinate of sensed specific force.
      */
     public Acceleration getAvgSpecificForceYAsMeasurement() {
-        return mAccelerationEstimator.getAvgYAsMeasurement();
+        return accelerationEstimator.getAvgYAsMeasurement();
     }
 
     /**
@@ -272,7 +272,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      *               will be stored.
      */
     public void getAvgSpecificForceYAsMeasurement(final Acceleration result) {
-        mAccelerationEstimator.getAvgYAsMeasurement(result);
+        accelerationEstimator.getAvgYAsMeasurement(result);
     }
 
     /**
@@ -284,7 +284,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return average of z coordinate of sensed specific force.
      */
     public double getAvgSpecificForceZ() {
-        return mAccelerationEstimator.getAvgZ();
+        return accelerationEstimator.getAvgZ();
     }
 
     /**
@@ -295,7 +295,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return average of z coordinate of sensed specific force.
      */
     public Acceleration getAvgSpecificForceZAsMeasurement() {
-        return mAccelerationEstimator.getAvgZAsMeasurement();
+        return accelerationEstimator.getAvgZAsMeasurement();
     }
 
     /**
@@ -307,7 +307,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      *               will be stored.
      */
     public void getAvgSpecificForceZAsMeasurement(final Acceleration result) {
-        mAccelerationEstimator.getAvgZAsMeasurement(result);
+        accelerationEstimator.getAvgZAsMeasurement(result);
     }
 
     /**
@@ -317,7 +317,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return average accelerometer triad.
      */
     public AccelerationTriad getAvgSpecificForceAsTriad() {
-        return mAccelerationEstimator.getAvgTriad();
+        return accelerationEstimator.getAvgTriad();
     }
 
     /**
@@ -327,7 +327,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @param result instance where average accelerometer triad will be stored.
      */
     public void getAvgSpecificForceAsTriad(final AccelerationTriad result) {
-        mAccelerationEstimator.getAvgTriad(result);
+        accelerationEstimator.getAvgTriad(result);
     }
 
     /**
@@ -337,7 +337,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return norm of estimated average acceleration.
      */
     public double getAvgSpecificForceNorm() {
-        return mAccelerationEstimator.getAvgNorm();
+        return accelerationEstimator.getAvgNorm();
     }
 
     /**
@@ -346,7 +346,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return norm of estimated average acceleration.
      */
     public Acceleration getAvgSpecificForceNormAsMeasurement() {
-        return mAccelerationEstimator.getAvgNormAsMeasurement();
+        return accelerationEstimator.getAvgNormAsMeasurement();
     }
 
     /**
@@ -355,7 +355,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @param result instance where norm of estimated average acceleration will be stored.
      */
     public void getAvgSpecificForceNormAsMeasurement(final Acceleration result) {
-        mAccelerationEstimator.getAvgNormAsMeasurement(result);
+        accelerationEstimator.getAvgNormAsMeasurement(result);
     }
 
     /**
@@ -367,7 +367,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return average of x coordinate of sensed angular rate.
      */
     public double getAvgAngularRateX() {
-        return mAngularSpeedEstimator.getAvgX();
+        return angularSpeedEstimator.getAvgX();
     }
 
     /**
@@ -378,7 +378,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return average of x coordinate of sensed angular rate.
      */
     public AngularSpeed getAvgAngularRateXAsMeasurement() {
-        return mAngularSpeedEstimator.getAvgXAsMeasurement();
+        return angularSpeedEstimator.getAvgXAsMeasurement();
     }
 
     /**
@@ -390,7 +390,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      *               will be stored.
      */
     public void getAvgAngularRateXAsMeasurement(final AngularSpeed result) {
-        mAngularSpeedEstimator.getAvgXAsMeasurement(result);
+        angularSpeedEstimator.getAvgXAsMeasurement(result);
     }
 
     /**
@@ -402,7 +402,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return average of y coordinate of sensed angular rate.
      */
     public double getAvgAngularRateY() {
-        return mAngularSpeedEstimator.getAvgY();
+        return angularSpeedEstimator.getAvgY();
     }
 
     /**
@@ -413,7 +413,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return average of y coordinate of sensed angular rate.
      */
     public AngularSpeed getAvgAngularRateYAsMeasurement() {
-        return mAngularSpeedEstimator.getAvgYAsMeasurement();
+        return angularSpeedEstimator.getAvgYAsMeasurement();
     }
 
     /**
@@ -425,7 +425,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      *               will be stored.
      */
     public void getAvgAngularRateYAsMeasurement(final AngularSpeed result) {
-        mAngularSpeedEstimator.getAvgYAsMeasurement(result);
+        angularSpeedEstimator.getAvgYAsMeasurement(result);
     }
 
     /**
@@ -437,7 +437,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return average of z coordinate of sensed angular rate.
      */
     public double getAvgAngularRateZ() {
-        return mAngularSpeedEstimator.getAvgZ();
+        return angularSpeedEstimator.getAvgZ();
     }
 
     /**
@@ -448,7 +448,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return average of z coordinate of sensed angular rate.
      */
     public AngularSpeed getAvgAngularRateZAsMeasurement() {
-        return mAngularSpeedEstimator.getAvgZAsMeasurement();
+        return angularSpeedEstimator.getAvgZAsMeasurement();
     }
 
     /**
@@ -460,7 +460,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      *               will be stored.
      */
     public void getAvgAngularRateZAsMeasurement(final AngularSpeed result) {
-        mAngularSpeedEstimator.getAvgZAsMeasurement(result);
+        angularSpeedEstimator.getAvgZAsMeasurement(result);
     }
 
     /**
@@ -470,7 +470,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return average angular speed triad.
      */
     public AngularSpeedTriad getAvgAngularRateTriad() {
-        return mAngularSpeedEstimator.getAvgTriad();
+        return angularSpeedEstimator.getAvgTriad();
     }
 
     /**
@@ -480,7 +480,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @param result instance where average angular speed triad will be stored.
      */
     public void getAvgAngularRateTriad(final AngularSpeedTriad result) {
-        mAngularSpeedEstimator.getAvgTriad(result);
+        angularSpeedEstimator.getAvgTriad(result);
     }
 
     /**
@@ -490,7 +490,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return norm of estimated average angular speed.
      */
     public double getAvgAngularRateNorm() {
-        return mAngularSpeedEstimator.getAvgNorm();
+        return angularSpeedEstimator.getAvgNorm();
     }
 
     /**
@@ -500,7 +500,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return norm of estimated average angular speed.
      */
     public AngularSpeed getAvgAngularRateNormAsMeasurement() {
-        return mAngularSpeedEstimator.getAvgNormAsMeasurement();
+        return angularSpeedEstimator.getAvgNormAsMeasurement();
     }
 
     /**
@@ -510,7 +510,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @param result instance where norm of estimated average angular speed will be stored.
      */
     public void getAvgAngularRateNormAsMeasurement(final AngularSpeed result) {
-        mAngularSpeedEstimator.getAvgNormAsMeasurement(result);
+        angularSpeedEstimator.getAvgNormAsMeasurement(result);
     }
 
     /**
@@ -519,7 +519,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return estimated average of body kinematics.
      */
     public BodyKinematics getAvgBodyKinematics() {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         getAvgBodyKinematics(result);
         return result;
     }
@@ -530,13 +530,13 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @param result instance where estimated average of body kinematics will be stored.
      */
     public void getAvgBodyKinematics(final BodyKinematics result) {
-        final double avgFx = mAccelerationEstimator.getAvgX();
-        final double avgFy = mAccelerationEstimator.getAvgY();
-        final double avgFz = mAccelerationEstimator.getAvgZ();
+        final var avgFx = accelerationEstimator.getAvgX();
+        final var avgFy = accelerationEstimator.getAvgY();
+        final var avgFz = accelerationEstimator.getAvgZ();
 
-        final double avgWx = mAngularSpeedEstimator.getAvgX();
-        final double avgWy = mAngularSpeedEstimator.getAvgY();
-        final double avgWz = mAngularSpeedEstimator.getAvgZ();
+        final var avgWx = angularSpeedEstimator.getAvgX();
+        final var avgWy = angularSpeedEstimator.getAvgY();
+        final var avgWz = angularSpeedEstimator.getAvgZ();
 
         result.setSpecificForceCoordinates(avgFx, avgFy, avgFz);
         result.setAngularRateCoordinates(avgWx, avgWy, avgWz);
@@ -549,7 +549,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return estimated variance of x coordinate of sensed specific force.
      */
     public double getVarianceSpecificForceX() {
-        return mAccelerationEstimator.getVarianceX();
+        return accelerationEstimator.getVarianceX();
     }
 
     /**
@@ -559,7 +559,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return estimated variance of y coordinate of sensed specific force.
      */
     public double getVarianceSpecificForceY() {
-        return mAccelerationEstimator.getVarianceY();
+        return accelerationEstimator.getVarianceY();
     }
 
     /**
@@ -569,7 +569,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return estimated variance of z coordinate of sensed specific force.
      */
     public double getVarianceSpecificForceZ() {
-        return mAccelerationEstimator.getVarianceZ();
+        return accelerationEstimator.getVarianceZ();
     }
 
     /**
@@ -579,7 +579,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return estimated variance of x coordinate of sensed angular rate.
      */
     public double getVarianceAngularRateX() {
-        return mAngularSpeedEstimator.getVarianceX();
+        return angularSpeedEstimator.getVarianceX();
     }
 
     /**
@@ -589,7 +589,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return estimated variance of y coordinate of sensed angular rate.
      */
     public double getVarianceAngularRateY() {
-        return mAngularSpeedEstimator.getVarianceY();
+        return angularSpeedEstimator.getVarianceY();
     }
 
     /**
@@ -599,7 +599,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return estimated variance of z coordinate of sensed angular rate.
      */
     public double getVarianceAngularRateZ() {
-        return mAngularSpeedEstimator.getVarianceZ();
+        return angularSpeedEstimator.getVarianceZ();
     }
 
     /**
@@ -610,7 +610,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * force.
      */
     public double getStandardDeviationSpecificForceX() {
-        return mAccelerationEstimator.getStandardDeviationX();
+        return accelerationEstimator.getStandardDeviationX();
     }
 
     /**
@@ -621,7 +621,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * force.
      */
     public Acceleration getStandardDeviationSpecificForceXAsMeasurement() {
-        return mAccelerationEstimator.getStandardDeviationXAsMeasurement();
+        return accelerationEstimator.getStandardDeviationXAsMeasurement();
     }
 
     /**
@@ -632,7 +632,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      *               coordinate of sensed specific force will be stored.
      */
     public void getStandardDeviationSpecificForceXAsMeasurement(final Acceleration result) {
-        mAccelerationEstimator.getStandardDeviationXAsMeasurement(result);
+        accelerationEstimator.getStandardDeviationXAsMeasurement(result);
     }
 
     /**
@@ -643,7 +643,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * force.
      */
     public double getStandardDeviationSpecificForceY() {
-        return mAccelerationEstimator.getStandardDeviationY();
+        return accelerationEstimator.getStandardDeviationY();
     }
 
     /**
@@ -654,7 +654,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * force.
      */
     public Acceleration getStandardDeviationSpecificForceYAsMeasurement() {
-        return mAccelerationEstimator.getStandardDeviationYAsMeasurement();
+        return accelerationEstimator.getStandardDeviationYAsMeasurement();
     }
 
     /**
@@ -665,7 +665,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      *               coordinate of sensed specific force will be stored.
      */
     public void getStandardDeviationSpecificForceYAsMeasurement(final Acceleration result) {
-        mAccelerationEstimator.getStandardDeviationYAsMeasurement(result);
+        accelerationEstimator.getStandardDeviationYAsMeasurement(result);
     }
 
     /**
@@ -676,7 +676,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * force.
      */
     public double getStandardDeviationSpecificForceZ() {
-        return mAccelerationEstimator.getStandardDeviationZ();
+        return accelerationEstimator.getStandardDeviationZ();
     }
 
     /**
@@ -687,7 +687,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * force.
      */
     public Acceleration getStandardDeviationSpecificForceZAsMeasurement() {
-        return mAccelerationEstimator.getStandardDeviationZAsMeasurement();
+        return accelerationEstimator.getStandardDeviationZAsMeasurement();
     }
 
     /**
@@ -698,7 +698,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      *               coordinate of sensed specific force will be stored.
      */
     public void getStandardDeviationSpecificForceZAsMeasurement(final Acceleration result) {
-        mAccelerationEstimator.getStandardDeviationZAsMeasurement(result);
+        accelerationEstimator.getStandardDeviationZAsMeasurement(result);
     }
 
     /**
@@ -707,7 +707,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return estimated standard deviation triad of accelerometer measurements.
      */
     public AccelerationTriad getStandardDeviationSpecificForceTriad() {
-        return mAccelerationEstimator.getStandardDeviationTriad();
+        return accelerationEstimator.getStandardDeviationTriad();
     }
 
     /**
@@ -717,7 +717,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      *               accelerometer measurements will be stored.
      */
     public void getStandardDeviationSpecificForceTriad(final AccelerationTriad result) {
-        mAccelerationEstimator.getStandardDeviationTriad(result);
+        accelerationEstimator.getStandardDeviationTriad(result);
     }
 
     /**
@@ -728,7 +728,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * measurements.
      */
     public double getStandardDeviationSpecificForceNorm() {
-        return mAccelerationEstimator.getStandardDeviationNorm();
+        return accelerationEstimator.getStandardDeviationNorm();
     }
 
     /**
@@ -737,7 +737,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return norm of estimated standard deviation of measurements.
      */
     public Acceleration getStandardDeviationSpecificForceNormAsMeasurement() {
-        return mAccelerationEstimator.getStandardDeviationNormAsMeasurement();
+        return accelerationEstimator.getStandardDeviationNormAsMeasurement();
     }
 
     /**
@@ -747,7 +747,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      *               stored.
      */
     public void getStandardDeviationSpecificForceNormAsMeasurement(final Acceleration result) {
-        mAccelerationEstimator.getStandardDeviationNormAsMeasurement(result);
+        accelerationEstimator.getStandardDeviationNormAsMeasurement(result);
     }
 
     /**
@@ -757,7 +757,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return average of estimated standard deviation coordinates.
      */
     public double getAverageStandardDeviationSpecificForce() {
-        return mAccelerationEstimator.getAverageStandardDeviation();
+        return accelerationEstimator.getAverageStandardDeviation();
     }
 
     /**
@@ -767,7 +767,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return average of estimated standard deviation coordinates.
      */
     public Acceleration getAverageStandardDeviationSpecificForceAsMeasurement() {
-        return mAccelerationEstimator.getAverageStandardDeviationAsMeasurement();
+        return accelerationEstimator.getAverageStandardDeviationAsMeasurement();
     }
 
     /**
@@ -778,7 +778,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      *               will be stored.
      */
     public void getAverageStandardDeviationSpecificForceAsMeasurement(final Acceleration result) {
-        mAccelerationEstimator.getAverageStandardDeviationAsMeasurement(result);
+        accelerationEstimator.getAverageStandardDeviationAsMeasurement(result);
     }
 
     /**
@@ -788,7 +788,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return estimated standard deviation of x coordinate of gyroscope.
      */
     public double getStandardDeviationAngularRateX() {
-        return mAngularSpeedEstimator.getStandardDeviationX();
+        return angularSpeedEstimator.getStandardDeviationX();
     }
 
     /**
@@ -797,7 +797,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return estimated standard deviation of x coordinate of gyroscope.
      */
     public AngularSpeed getStandardDeviationAngularRateXAsMeasurement() {
-        return mAngularSpeedEstimator.getStandardDeviationXAsMeasurement();
+        return angularSpeedEstimator.getStandardDeviationXAsMeasurement();
     }
 
     /**
@@ -806,7 +806,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @param result estimated standard deviation of x coordinate of gyroscope.
      */
     public void getStandardDeviationAngularRateXAsMeasurement(final AngularSpeed result) {
-        mAngularSpeedEstimator.getStandardDeviationXAsMeasurement(result);
+        angularSpeedEstimator.getStandardDeviationXAsMeasurement(result);
     }
 
     /**
@@ -816,7 +816,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return estimated standard deviation of y coordinate of gyroscope.
      */
     public double getStandardDeviationAngularRateY() {
-        return mAngularSpeedEstimator.getStandardDeviationY();
+        return angularSpeedEstimator.getStandardDeviationY();
     }
 
     /**
@@ -825,7 +825,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return estimated standard deviation of y coordinate of gyroscope.
      */
     public AngularSpeed getStandardDeviationAngularRateYAsMeasurement() {
-        return mAngularSpeedEstimator.getStandardDeviationYAsMeasurement();
+        return angularSpeedEstimator.getStandardDeviationYAsMeasurement();
     }
 
     /**
@@ -834,7 +834,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @param result estimated standard deviation of y coordinate of gyroscope.
      */
     public void getStandardDeviationAngularRateYAsMeasurement(final AngularSpeed result) {
-        mAngularSpeedEstimator.getStandardDeviationYAsMeasurement(result);
+        angularSpeedEstimator.getStandardDeviationYAsMeasurement(result);
     }
 
     /**
@@ -844,7 +844,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return estimated standard deviation of z coordinate of gyroscope.
      */
     public double getStandardDeviationAngularRateZ() {
-        return mAngularSpeedEstimator.getStandardDeviationZ();
+        return angularSpeedEstimator.getStandardDeviationZ();
     }
 
     /**
@@ -853,7 +853,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return estimated standard deviation of z coordinate of gyroscope.
      */
     public AngularSpeed getStandardDeviationAngularRateZAsMeasurement() {
-        return mAngularSpeedEstimator.getStandardDeviationZAsMeasurement();
+        return angularSpeedEstimator.getStandardDeviationZAsMeasurement();
     }
 
     /**
@@ -862,7 +862,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @param result estimated standard deviation of z coordinate of gyroscope.
      */
     public void getStandardDeviationAngularRateZAsMeasurement(final AngularSpeed result) {
-        mAngularSpeedEstimator.getStandardDeviationZAsMeasurement(result);
+        angularSpeedEstimator.getStandardDeviationZAsMeasurement(result);
     }
 
     /**
@@ -871,7 +871,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return estimated standard deviation triad of angular speed measurements.
      */
     public AngularSpeedTriad getStandardDeviationAngularSpeedTriad() {
-        return mAngularSpeedEstimator.getStandardDeviationTriad();
+        return angularSpeedEstimator.getStandardDeviationTriad();
     }
 
     /**
@@ -881,7 +881,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      *               gyroscope measurements will be stored.
      */
     public void getStandardDeviationAngularSpeedTriad(final AngularSpeedTriad result) {
-        mAngularSpeedEstimator.getStandardDeviationTriad(result);
+        angularSpeedEstimator.getStandardDeviationTriad(result);
     }
 
     /**
@@ -892,7 +892,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * measurements.
      */
     public double getStandardDeviationAngularSpeedNorm() {
-        return mAngularSpeedEstimator.getStandardDeviationNorm();
+        return angularSpeedEstimator.getStandardDeviationNorm();
     }
 
     /**
@@ -901,7 +901,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return norm of estimated standard deviation of measurements.
      */
     public AngularSpeed getStandardDeviationAngularSpeedNormAsMeasurement() {
-        return mAngularSpeedEstimator.getStandardDeviationNormAsMeasurement();
+        return angularSpeedEstimator.getStandardDeviationNormAsMeasurement();
     }
 
     /**
@@ -911,7 +911,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      *               stored.
      */
     public void getStandardDeviationAngularSpeedNormAsMeasurement(final AngularSpeed result) {
-        mAngularSpeedEstimator.getStandardDeviationNormAsMeasurement(result);
+        angularSpeedEstimator.getStandardDeviationNormAsMeasurement(result);
     }
 
     /**
@@ -921,7 +921,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return average of estimated standard deviation coordinates.
      */
     public double getAverageStandardDeviationAngularSpeed() {
-        return mAngularSpeedEstimator.getAverageStandardDeviation();
+        return angularSpeedEstimator.getAverageStandardDeviation();
     }
 
     /**
@@ -931,7 +931,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return average of estimated standard deviation coordinates.
      */
     public AngularSpeed getAverageStandardDeviationAngularSpeedAsMeasurement() {
-        return mAngularSpeedEstimator.getAverageStandardDeviationAsMeasurement();
+        return angularSpeedEstimator.getAverageStandardDeviationAsMeasurement();
     }
 
     /**
@@ -942,8 +942,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      *               will be stored.
      */
     public void getAverageStandardDeviationAngularSpeedAsMeasurement(final AngularSpeed result) {
-        mAngularSpeedEstimator.getAverageStandardDeviationAsMeasurement(
-                result);
+        angularSpeedEstimator.getAverageStandardDeviationAsMeasurement(result);
     }
 
     /**
@@ -983,7 +982,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return accelerometer noise PSD on x axis.
      */
     public double getSpecificForcePsdX() {
-        return mAccelerationEstimator.getPsdX();
+        return accelerationEstimator.getPsdX();
     }
 
     /**
@@ -993,7 +992,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return accelerometer noise PSD on y axis.
      */
     public double getSpecificForcePsdY() {
-        return mAccelerationEstimator.getPsdY();
+        return accelerationEstimator.getPsdY();
     }
 
     /**
@@ -1003,7 +1002,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return accelerometer noise PSD on z axis.
      */
     public double getSpecificForcePsdZ() {
-        return mAccelerationEstimator.getPsdZ();
+        return accelerationEstimator.getPsdZ();
     }
 
     /**
@@ -1013,7 +1012,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return gyroscope noise PSD on x axis.
      */
     public double getAngularRatePsdX() {
-        return mAngularSpeedEstimator.getPsdX();
+        return angularSpeedEstimator.getPsdX();
     }
 
     /**
@@ -1023,7 +1022,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return gyroscope noise PSD on y axis.
      */
     public double getAngularRatePsdY() {
-        return mAngularSpeedEstimator.getPsdY();
+        return angularSpeedEstimator.getPsdY();
     }
 
     /**
@@ -1033,7 +1032,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return gyroscope noise PSD on z axis.
      */
     public double getAngularRatePsdZ() {
-        return mAngularSpeedEstimator.getPsdZ();
+        return angularSpeedEstimator.getPsdZ();
     }
 
     /**
@@ -1043,7 +1042,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return accelerometer noise root PSD on x axis.
      */
     public double getSpecificForceRootPsdX() {
-        return mAccelerationEstimator.getRootPsdX();
+        return accelerationEstimator.getRootPsdX();
     }
 
     /**
@@ -1053,7 +1052,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return accelerometer noise root PSD on y axis.
      */
     public double getSpecificForceRootPsdY() {
-        return mAccelerationEstimator.getRootPsdY();
+        return accelerationEstimator.getRootPsdY();
     }
 
     /**
@@ -1063,7 +1062,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return accelerometer noise root PSD on z axis.
      */
     public double getSpecificForceRootPsdZ() {
-        return mAccelerationEstimator.getRootPsdZ();
+        return accelerationEstimator.getRootPsdZ();
     }
 
     /**
@@ -1073,7 +1072,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return gyroscope noise root PSD on x axis.
      */
     public double getAngularRateRootPsdX() {
-        return mAngularSpeedEstimator.getRootPsdX();
+        return angularSpeedEstimator.getRootPsdX();
     }
 
     /**
@@ -1083,7 +1082,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return gyroscope noise root PSD on y axis.
      */
     public double getAngularRateRootPsdY() {
-        return mAngularSpeedEstimator.getRootPsdY();
+        return angularSpeedEstimator.getRootPsdY();
     }
 
     /**
@@ -1093,7 +1092,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return gyroscope noise root PSD on z axis.
      */
     public double getAngularRateRootPsdZ() {
-        return mAngularSpeedEstimator.getRootPsdZ();
+        return angularSpeedEstimator.getRootPsdZ();
     }
 
     /**
@@ -1103,7 +1102,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return average accelerometer noise PSD.
      */
     public double getAvgSpecificForceNoisePsd() {
-        return mAccelerationEstimator.getAvgNoisePsd();
+        return accelerationEstimator.getAvgNoisePsd();
     }
 
     /**
@@ -1113,7 +1112,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return norm of noise root PSD.
      */
     public double getSpecificForceNoiseRootPsdNorm() {
-        return mAccelerationEstimator.getNoiseRootPsdNorm();
+        return accelerationEstimator.getNoiseRootPsdNorm();
     }
 
     /**
@@ -1123,7 +1122,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return average gyroscope noise PSD.
      */
     public double getAvgAngularRateNoisePsd() {
-        return mAngularSpeedEstimator.getAvgNoisePsd();
+        return angularSpeedEstimator.getAvgNoisePsd();
     }
 
     /**
@@ -1133,7 +1132,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return norm of noise root PSD.
      */
     public double getAngularRateNoiseRootPsdNorm() {
-        return mAngularSpeedEstimator.getNoiseRootPsdNorm();
+        return angularSpeedEstimator.getNoiseRootPsdNorm();
     }
 
     /**
@@ -1142,7 +1141,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return number of samples that have been processed so far.
      */
     public int getNumberOfProcessedSamples() {
-        return mAccelerationEstimator.getNumberOfProcessedSamples();
+        return accelerationEstimator.getNumberOfProcessedSamples();
     }
 
     /**
@@ -1151,7 +1150,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @return true if estimator is running, false otherwise.
      */
     public boolean isRunning() {
-        return mRunning;
+        return running;
     }
 
     /**
@@ -1169,30 +1168,30 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
             final double specificForceX, final double specificForceY, final double specificForceZ,
             final double angularRateX, final double angularRateY, final double angularRateZ) throws LockedException {
 
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mRunning = true;
+        running = true;
 
-        if (mLastBodyKinematics == null && mListener != null) {
-            mListener.onStart(this);
+        if (lastBodyKinematics == null && listener != null) {
+            listener.onStart(this);
         }
 
-        if (mLastBodyKinematics == null) {
-            mLastBodyKinematics = new BodyKinematics();
+        if (lastBodyKinematics == null) {
+            lastBodyKinematics = new BodyKinematics();
         }
-        mLastBodyKinematics.setSpecificForceCoordinates(specificForceX, specificForceY, specificForceZ);
-        mLastBodyKinematics.setAngularRateCoordinates(angularRateX, angularRateY, angularRateZ);
+        lastBodyKinematics.setSpecificForceCoordinates(specificForceX, specificForceY, specificForceZ);
+        lastBodyKinematics.setAngularRateCoordinates(angularRateX, angularRateY, angularRateZ);
 
-        mAccelerationEstimator.addTriad(specificForceX, specificForceY, specificForceZ);
-        mAngularSpeedEstimator.addTriad(angularRateX, angularRateY, angularRateZ);
+        accelerationEstimator.addTriad(specificForceX, specificForceY, specificForceZ);
+        angularSpeedEstimator.addTriad(angularRateX, angularRateY, angularRateZ);
 
-        if (mListener != null) {
-            mListener.onBodyKinematicsAdded(this);
+        if (listener != null) {
+            listener.onBodyKinematicsAdded(this);
         }
 
-        mRunning = false;
+        running = false;
     }
 
     /**
@@ -1253,20 +1252,20 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @throws LockedException if estimator is currently running.
      */
     public boolean reset() throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mRunning = true;
+        running = true;
 
-        mLastBodyKinematics = null;
-        final boolean result = mAccelerationEstimator.reset() && mAngularSpeedEstimator.reset();
+        lastBodyKinematics = null;
+        final var result = accelerationEstimator.reset() && angularSpeedEstimator.reset();
 
-        if (mListener != null) {
-            mListener.onReset(this);
+        if (listener != null) {
+            listener.onReset(this);
         }
 
-        mRunning = false;
+        running = false;
 
         return result;
     }
@@ -1311,8 +1310,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoi
      * @param unit  unit of value to be converted.
      * @return converted value.
      */
-    private double convertAngularSpeed(
-            final double value, final AngularSpeedUnit unit) {
+    private double convertAngularSpeed(final double value, final AngularSpeedUnit unit) {
         return AngularSpeedConverter.convert(value, unit, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 

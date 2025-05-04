@@ -44,16 +44,15 @@ import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationUnit;
 import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedUnit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCalibratorListener {
+class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCalibratorListener {
 
     private static final double TIME_INTERVAL_SECONDS = 0.02;
 
@@ -87,45 +86,45 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
 
     private static final int TIMES = 100;
 
-    private int mCalibrateStart;
-    private int mCalibrateEnd;
-    private int mCalibrateNextIteration;
-    private int mCalibrateProgressChange;
+    private int calibrateStart;
+    private int calibrateEnd;
+    private int calibrateNextIteration;
+    private int calibrateProgressChange;
 
     @Test
-    public void testConstructor1() throws WrongSizeException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testConstructor1() throws WrongSizeException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] ba1 = calibrator.getAccelerometerBias();
-        assertArrayEquals(ba1, new double[3], 0.0);
-        final double[] ba2 = new double[3];
+        final var ba1 = calibrator.getAccelerometerBias();
+        assertArrayEquals(new double[3], ba1, 0.0);
+        final var ba2 = new double[3];
         calibrator.getAccelerometerBias(ba2);
         assertArrayEquals(ba1, ba2, 0.0);
-        final Matrix ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
-        assertEquals(ba1Matrix, new Matrix(3, 1));
-        final Matrix ba2Matrix = new Matrix(3, 1);
+        final var ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), ba1Matrix);
+        final var ba2Matrix = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2Matrix);
         assertEquals(ba1Matrix, ba2Matrix);
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
@@ -137,42 +136,42 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
-        assertEquals(ma1, new Matrix(3, 3));
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = calibrator.getAccelerometerMa();
+        assertEquals(new Matrix(3, 3), ma1);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
 
-        final AngularSpeed angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(0.0, angularSpeedX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
 
-        final AngularSpeed angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(0.0, angularSpeedY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
 
-        final AngularSpeed angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(0.0, angularSpeedZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
 
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
 
@@ -186,27 +185,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] bg1 = calibrator.getInitialBias();
-        assertArrayEquals(bg1, new double[3], 0.0);
-        final double[] bg2 = new double[3];
+        final var bg1 = calibrator.getInitialBias();
+        assertArrayEquals(new double[3], bg1, 0.0);
+        final var bg2 = new double[3];
         calibrator.getInitialBias(bg2);
         assertArrayEquals(bg1, bg2, 0.0);
 
-        final Matrix bg1Matrix = calibrator.getInitialBiasAsMatrix();
-        assertEquals(bg1Matrix, new Matrix(3, 1));
-        final Matrix bg2Matrix = new Matrix(3, 1);
+        final var bg1Matrix = calibrator.getInitialBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), bg1Matrix);
+        final var bg2Matrix = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bg2Matrix);
         assertEquals(bg1Matrix, bg2Matrix);
 
-        final Matrix mg1 = calibrator.getInitialMg();
-        assertEquals(mg1, new Matrix(3, 3));
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg1 = calibrator.getInitialMg();
+        assertEquals(new Matrix(3, 3), mg1);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
 
-        final Matrix gg1 = calibrator.getInitialGg();
-        assertEquals(gg1, new Matrix(3, 3));
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg1 = calibrator.getInitialGg();
+        assertEquals(new Matrix(3, 3), gg1);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
 
@@ -223,7 +222,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
-        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 
+                0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
@@ -289,60 +289,59 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testConstructor2() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
+    void testConstructor2() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
 
-        final Matrix bg = generateBg();
-        final Matrix mg = generateGeneralMg();
-        final Matrix gg = generateGg();
+        final var bg = generateBg();
+        final var mg = generateGeneralMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(sequences,
-                bg, mg, gg);
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(sequences, bg, mg, gg);
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] ba1 = calibrator.getAccelerometerBias();
+        final var ba1 = calibrator.getAccelerometerBias();
         assertArrayEquals(new double[3], ba1, 0.0);
-        final double[] ba2 = new double[3];
+        final var ba2 = new double[3];
         calibrator.getAccelerometerBias(ba2);
         assertArrayEquals(ba1, ba2, 0.0);
-        final Matrix ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
-        assertEquals(ba1Matrix, new Matrix(3, 1));
-        final Matrix ba2Matrix = new Matrix(3, 1);
+        final var ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), ba1Matrix);
+        final var ba2Matrix = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2Matrix);
         assertEquals(ba1Matrix, ba2Matrix);
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
@@ -354,42 +353,42 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
-        assertEquals(ma1, new Matrix(3, 3));
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = calibrator.getAccelerometerMa();
+        assertEquals(new Matrix(3, 3), ma1);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(bgy, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bgz, calibrator.getInitialBiasZ(), 0.0);
 
-        final AngularSpeed angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(bgx, angularSpeedX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
 
-        final AngularSpeed angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(bgy, angularSpeedY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
 
-        final AngularSpeed angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(bgz, angularSpeedZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
 
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bgx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(bgy, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bgz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
 
@@ -403,27 +402,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] bg1 = calibrator.getInitialBias();
+        final var bg1 = calibrator.getInitialBias();
         assertArrayEquals(bg1, bg.getBuffer(), 0.0);
-        final double[] bg2 = new double[3];
+        final var bg2 = new double[3];
         calibrator.getInitialBias(bg2);
         assertArrayEquals(bg1, bg2, 0.0);
 
-        final Matrix bg1Matrix = calibrator.getInitialBiasAsMatrix();
+        final var bg1Matrix = calibrator.getInitialBiasAsMatrix();
         assertEquals(bg1Matrix, bg);
-        final Matrix bg2Matrix = new Matrix(3, 1);
+        final var bg2Matrix = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bg2Matrix);
         assertEquals(bg1Matrix, bg2Matrix);
 
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
 
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
 
@@ -440,7 +439,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
-        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
@@ -526,60 +526,59 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testConstructor3() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
+    void testConstructor3() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
 
-        final Matrix bg = generateBg();
-        final Matrix mg = generateGeneralMg();
-        final Matrix gg = generateGg();
+        final var bg = generateBg();
+        final var mg = generateGeneralMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(sequences,
-                bg, mg, gg, this);
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(sequences, bg, mg, gg, this);
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] ba1 = calibrator.getAccelerometerBias();
+        final var ba1 = calibrator.getAccelerometerBias();
         assertArrayEquals(new double[3], ba1, 0.0);
-        final double[] ba2 = new double[3];
+        final var ba2 = new double[3];
         calibrator.getAccelerometerBias(ba2);
         assertArrayEquals(ba1, ba2, 0.0);
-        final Matrix ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
-        assertEquals(ba1Matrix, new Matrix(3, 1));
-        final Matrix ba2Matrix = new Matrix(3, 1);
+        final var ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), ba1Matrix);
+        final var ba2Matrix = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2Matrix);
         assertEquals(ba1Matrix, ba2Matrix);
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
@@ -591,42 +590,42 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
-        assertEquals(ma1, new Matrix(3, 3));
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = calibrator.getAccelerometerMa();
+        assertEquals(new Matrix(3, 3), ma1);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(bgy, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bgz, calibrator.getInitialBiasZ(), 0.0);
 
-        final AngularSpeed angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(bgx, angularSpeedX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
 
-        final AngularSpeed angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(bgy, angularSpeedY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
 
-        final AngularSpeed angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(bgz, angularSpeedZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
 
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bgx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(bgy, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bgz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
 
@@ -640,27 +639,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] bg1 = calibrator.getInitialBias();
+        final var bg1 = calibrator.getInitialBias();
         assertArrayEquals(bg1, bg.getBuffer(), 0.0);
-        final double[] bg2 = new double[3];
+        final var bg2 = new double[3];
         calibrator.getInitialBias(bg2);
         assertArrayEquals(bg1, bg2, 0.0);
 
-        final Matrix bg1Matrix = calibrator.getInitialBiasAsMatrix();
+        final var bg1Matrix = calibrator.getInitialBiasAsMatrix();
         assertEquals(bg1Matrix, bg);
-        final Matrix bg2Matrix = new Matrix(3, 1);
+        final var bg2Matrix = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bg2Matrix);
         assertEquals(bg1Matrix, bg2Matrix);
 
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
 
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
 
@@ -677,7 +676,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
-        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
@@ -763,62 +763,61 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testConstructor4() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
+    void testConstructor4() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
 
-        final Matrix bg = generateBg();
-        final Matrix mg = generateGeneralMg();
-        final Matrix gg = generateGg();
+        final var bg = generateBg();
+        final var mg = generateGeneralMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double[] bias = bg.getBuffer();
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(sequences,
-                bias, mg, gg);
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(sequences, bias, mg, gg);
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] ba1 = calibrator.getAccelerometerBias();
+        final var ba1 = calibrator.getAccelerometerBias();
         assertArrayEquals(new double[3], ba1, 0.0);
-        final double[] ba2 = new double[3];
+        final var ba2 = new double[3];
         calibrator.getAccelerometerBias(ba2);
         assertArrayEquals(ba1, ba2, 0.0);
-        final Matrix ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
-        assertEquals(ba1Matrix, new Matrix(3, 1));
-        final Matrix ba2Matrix = new Matrix(3, 1);
+        final var ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), ba1Matrix);
+        final var ba2Matrix = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2Matrix);
         assertEquals(ba1Matrix, ba2Matrix);
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
@@ -830,42 +829,42 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
-        assertEquals(ma1, new Matrix(3, 3));
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = calibrator.getAccelerometerMa();
+        assertEquals(new Matrix(3, 3), ma1);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(bgy, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bgz, calibrator.getInitialBiasZ(), 0.0);
 
-        final AngularSpeed angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(bgx, angularSpeedX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
 
-        final AngularSpeed angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(bgy, angularSpeedY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
 
-        final AngularSpeed angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(bgz, angularSpeedZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
 
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bgx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(bgy, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bgz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
 
@@ -879,27 +878,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] bg1 = calibrator.getInitialBias();
+        final var bg1 = calibrator.getInitialBias();
         assertArrayEquals(bg1, bias, 0.0);
-        final double[] bg2 = new double[3];
+        final var bg2 = new double[3];
         calibrator.getInitialBias(bg2);
         assertArrayEquals(bg1, bg2, 0.0);
 
-        final Matrix bg1Matrix = calibrator.getInitialBiasAsMatrix();
+        final var bg1Matrix = calibrator.getInitialBiasAsMatrix();
         assertEquals(bg1Matrix, bg);
-        final Matrix bg2Matrix = new Matrix(3, 1);
+        final var bg2Matrix = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bg2Matrix);
         assertEquals(bg1Matrix, bg2Matrix);
 
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
 
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
 
@@ -916,7 +915,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
-        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
@@ -998,62 +998,61 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testConstructor5() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
+    void testConstructor5() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
 
-        final Matrix bg = generateBg();
-        final Matrix mg = generateGeneralMg();
-        final Matrix gg = generateGg();
+        final var bg = generateBg();
+        final var mg = generateGeneralMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double[] bias = bg.getBuffer();
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(sequences, bias,
-                mg, gg, this);
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(sequences, bias, mg, gg, this);
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] ba1 = calibrator.getAccelerometerBias();
+        final var ba1 = calibrator.getAccelerometerBias();
         assertArrayEquals(new double[3], ba1, 0.0);
-        final double[] ba2 = new double[3];
+        final var ba2 = new double[3];
         calibrator.getAccelerometerBias(ba2);
         assertArrayEquals(ba1, ba2, 0.0);
-        final Matrix ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
-        assertEquals(ba1Matrix, new Matrix(3, 1));
-        final Matrix ba2Matrix = new Matrix(3, 1);
+        final var ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), ba1Matrix);
+        final var ba2Matrix = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2Matrix);
         assertEquals(ba1Matrix, ba2Matrix);
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
@@ -1065,42 +1064,42 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
-        assertEquals(ma1, new Matrix(3, 3));
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = calibrator.getAccelerometerMa();
+        assertEquals(new Matrix(3, 3), ma1);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(bgy, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bgz, calibrator.getInitialBiasZ(), 0.0);
 
-        final AngularSpeed angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(bgx, angularSpeedX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
 
-        final AngularSpeed angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(bgy, angularSpeedY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
 
-        final AngularSpeed angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(bgz, angularSpeedZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
 
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bgx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(bgy, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bgz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
 
@@ -1114,27 +1113,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] bg1 = calibrator.getInitialBias();
+        final var bg1 = calibrator.getInitialBias();
         assertArrayEquals(bg1, bias, 0.0);
-        final double[] bg2 = new double[3];
+        final var bg2 = new double[3];
         calibrator.getInitialBias(bg2);
         assertArrayEquals(bg1, bg2, 0.0);
 
-        final Matrix bg1Matrix = calibrator.getInitialBiasAsMatrix();
+        final var bg1Matrix = calibrator.getInitialBiasAsMatrix();
         assertEquals(bg1Matrix, bg);
-        final Matrix bg2Matrix = new Matrix(3, 1);
+        final var bg2Matrix = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bg2Matrix);
         assertEquals(bg1Matrix, bg2Matrix);
 
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
 
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
 
@@ -1151,7 +1150,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
-        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 
+                0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
@@ -1233,80 +1233,79 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testConstructor6() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
+    void testConstructor6() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
 
-        final Matrix bg = generateBg();
-        final Matrix mg = generateGeneralMg();
-        final Matrix gg = generateGg();
+        final var bg = generateBg();
+        final var mg = generateGeneralMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double[] bias = bg.getBuffer();
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final Matrix ba = generateBa();
-        final Matrix ma = generateMa();
-        final double[] baArray = ba.getBuffer();
+        final var ba = generateBa();
+        final var ma = generateMa();
+        final var baArray = ba.getBuffer();
 
-        final double baX = ba.getElementAtIndex(0);
-        final double baY = ba.getElementAtIndex(1);
-        final double baZ = ba.getElementAtIndex(2);
+        final var baX = ba.getElementAtIndex(0);
+        final var baY = ba.getElementAtIndex(1);
+        final var baZ = ba.getElementAtIndex(2);
 
-        final double sxa = ma.getElementAt(0, 0);
-        final double sya = ma.getElementAt(1, 1);
-        final double sza = ma.getElementAt(2, 2);
-        final double mxya = ma.getElementAt(0, 1);
-        final double mxza = ma.getElementAt(0, 2);
-        final double myxa = ma.getElementAt(1, 0);
-        final double myza = ma.getElementAt(1, 2);
-        final double mzxa = ma.getElementAt(2, 0);
-        final double mzya = ma.getElementAt(2, 1);
+        final var sxa = ma.getElementAt(0, 0);
+        final var sya = ma.getElementAt(1, 1);
+        final var sza = ma.getElementAt(2, 2);
+        final var mxya = ma.getElementAt(0, 1);
+        final var mxza = ma.getElementAt(0, 2);
+        final var myxa = ma.getElementAt(1, 0);
+        final var myza = ma.getElementAt(1, 2);
+        final var mzxa = ma.getElementAt(2, 0);
+        final var mzya = ma.getElementAt(2, 1);
 
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(sequences, bias,
-                mg, gg, baArray, ma);
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(sequences, bias, mg, gg, baArray, ma);
 
         // check default values
         assertEquals(baX, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(baY, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(baZ, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(baX, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(baY, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(baZ, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] ba1 = calibrator.getAccelerometerBias();
+        final var ba1 = calibrator.getAccelerometerBias();
         assertArrayEquals(ba1, baArray, 0.0);
-        final double[] ba2 = new double[3];
+        final var ba2 = new double[3];
         calibrator.getAccelerometerBias(ba2);
         assertArrayEquals(ba1, ba2, 0.0);
-        final Matrix ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
+        final var ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
         assertEquals(ba1Matrix, ba);
-        final Matrix ba2Matrix = new Matrix(3, 1);
+        final var ba2Matrix = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2Matrix);
         assertEquals(ba1Matrix, ba2Matrix);
         assertEquals(sxa, calibrator.getAccelerometerSx(), 0.0);
@@ -1318,42 +1317,42 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(myza, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(mzxa, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(mzya, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
+        final var ma1 = calibrator.getAccelerometerMa();
         assertEquals(ma1, ma);
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(bgy, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bgz, calibrator.getInitialBiasZ(), 0.0);
 
-        final AngularSpeed angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(bgx, angularSpeedX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
 
-        final AngularSpeed angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(bgy, angularSpeedY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
 
-        final AngularSpeed angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(bgz, angularSpeedZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
 
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bgx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(bgy, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bgz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
 
@@ -1367,27 +1366,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] bg1 = calibrator.getInitialBias();
+        final var bg1 = calibrator.getInitialBias();
         assertArrayEquals(bg1, bias, 0.0);
-        final double[] bg2 = new double[3];
+        final var bg2 = new double[3];
         calibrator.getInitialBias(bg2);
         assertArrayEquals(bg1, bg2, 0.0);
 
-        final Matrix bg1Matrix = calibrator.getInitialBiasAsMatrix();
+        final var bg1Matrix = calibrator.getInitialBiasAsMatrix();
         assertEquals(bg1Matrix, bg);
-        final Matrix bg2Matrix = new Matrix(3, 1);
+        final var bg2Matrix = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bg2Matrix);
         assertEquals(bg1Matrix, bg2Matrix);
 
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
 
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
 
@@ -1404,7 +1403,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
-        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
@@ -1494,81 +1494,80 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testConstructor7() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences =
-                Collections.emptyList();
+    void testConstructor7() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
 
-        final Matrix bg = generateBg();
-        final Matrix mg = generateGeneralMg();
-        final Matrix gg = generateGg();
+        final var bg = generateBg();
+        final var mg = generateGeneralMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double[] bias = bg.getBuffer();
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final Matrix ba = generateBa();
-        final Matrix ma = generateMa();
-        final double[] baArray = ba.getBuffer();
+        final var ba = generateBa();
+        final var ma = generateMa();
+        final var baArray = ba.getBuffer();
 
-        final double baX = ba.getElementAtIndex(0);
-        final double baY = ba.getElementAtIndex(1);
-        final double baZ = ba.getElementAtIndex(2);
+        final var baX = ba.getElementAtIndex(0);
+        final var baY = ba.getElementAtIndex(1);
+        final var baZ = ba.getElementAtIndex(2);
 
-        final double sxa = ma.getElementAt(0, 0);
-        final double sya = ma.getElementAt(1, 1);
-        final double sza = ma.getElementAt(2, 2);
-        final double mxya = ma.getElementAt(0, 1);
-        final double mxza = ma.getElementAt(0, 2);
-        final double myxa = ma.getElementAt(1, 0);
-        final double myza = ma.getElementAt(1, 2);
-        final double mzxa = ma.getElementAt(2, 0);
-        final double mzya = ma.getElementAt(2, 1);
+        final var sxa = ma.getElementAt(0, 0);
+        final var sya = ma.getElementAt(1, 1);
+        final var sza = ma.getElementAt(2, 2);
+        final var mxya = ma.getElementAt(0, 1);
+        final var mxza = ma.getElementAt(0, 2);
+        final var myxa = ma.getElementAt(1, 0);
+        final var myza = ma.getElementAt(1, 2);
+        final var mzxa = ma.getElementAt(2, 0);
+        final var mzya = ma.getElementAt(2, 1);
 
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(sequences, bias,
-                mg, gg, baArray, ma, this);
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(sequences, bias, mg, gg, baArray, ma,
+                this);
 
         // check default values
         assertEquals(baX, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(baY, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(baZ, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(baX, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(baY, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(baZ, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] ba1 = calibrator.getAccelerometerBias();
+        final var ba1 = calibrator.getAccelerometerBias();
         assertArrayEquals(ba1, baArray, 0.0);
-        final double[] ba2 = new double[3];
+        final var ba2 = new double[3];
         calibrator.getAccelerometerBias(ba2);
         assertArrayEquals(ba1, ba2, 0.0);
-        final Matrix ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
+        final var ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
         assertEquals(ba1Matrix, ba);
-        final Matrix ba2Matrix = new Matrix(3, 1);
+        final var ba2Matrix = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2Matrix);
         assertEquals(ba1Matrix, ba2Matrix);
         assertEquals(sxa, calibrator.getAccelerometerSx(), 0.0);
@@ -1580,42 +1579,42 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(myza, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(mzxa, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(mzya, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
+        final var ma1 = calibrator.getAccelerometerMa();
         assertEquals(ma1, ma);
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(bgy, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bgz, calibrator.getInitialBiasZ(), 0.0);
 
-        final AngularSpeed angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(bgx, angularSpeedX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
 
-        final AngularSpeed angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(bgy, angularSpeedY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
 
-        final AngularSpeed angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(bgz, angularSpeedZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
 
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bgx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(bgy, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bgz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
 
@@ -1629,27 +1628,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] bg1 = calibrator.getInitialBias();
+        final var bg1 = calibrator.getInitialBias();
         assertArrayEquals(bg1, bias, 0.0);
-        final double[] bg2 = new double[3];
+        final var bg2 = new double[3];
         calibrator.getInitialBias(bg2);
         assertArrayEquals(bg1, bg2, 0.0);
 
-        final Matrix bg1Matrix = calibrator.getInitialBiasAsMatrix();
+        final var bg1Matrix = calibrator.getInitialBiasAsMatrix();
         assertEquals(bg1Matrix, bg);
-        final Matrix bg2Matrix = new Matrix(3, 1);
+        final var bg2Matrix = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bg2Matrix);
         assertEquals(bg1Matrix, bg2Matrix);
 
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
 
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
 
@@ -1666,7 +1665,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
-        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
@@ -1734,11 +1734,11 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustEasyGyroscopeCalibrator(sequences,
                 new double[1], mg, gg, baArray, ma, this));
         final var m1 = new Matrix(1, 3);
-        assertThrows(IllegalArgumentException.class, () -> new PROSACRobustEasyGyroscopeCalibrator(sequences, bias,
-                m1, gg, baArray, ma, this));
+        assertThrows(IllegalArgumentException.class, () -> new PROSACRobustEasyGyroscopeCalibrator(sequences, bias, m1,
+                gg, baArray, ma, this));
         final var m2 = new Matrix(3, 1);
-        assertThrows(IllegalArgumentException.class, () -> new PROSACRobustEasyGyroscopeCalibrator(sequences, bias,
-                m2, gg, baArray, ma, this));
+        assertThrows(IllegalArgumentException.class, () -> new PROSACRobustEasyGyroscopeCalibrator(sequences, bias, m2,
+                gg, baArray, ma, this));
         final var m3 = new Matrix(1, 3);
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustEasyGyroscopeCalibrator(sequences, bias, mg,
                 m3, baArray, ma, this));
@@ -1756,80 +1756,79 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testConstructor8() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
+    void testConstructor8() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
 
-        final Matrix bg = generateBg();
-        final Matrix mg = generateGeneralMg();
-        final Matrix gg = generateGg();
+        final var bg = generateBg();
+        final var mg = generateGeneralMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double[] bias = bg.getBuffer();
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final Matrix ba = generateBa();
-        final Matrix ma = generateMa();
-        final double[] baArray = ba.getBuffer();
+        final var ba = generateBa();
+        final var ma = generateMa();
+        final var baArray = ba.getBuffer();
 
-        final double baX = ba.getElementAtIndex(0);
-        final double baY = ba.getElementAtIndex(1);
-        final double baZ = ba.getElementAtIndex(2);
+        final var baX = ba.getElementAtIndex(0);
+        final var baY = ba.getElementAtIndex(1);
+        final var baZ = ba.getElementAtIndex(2);
 
-        final double sxa = ma.getElementAt(0, 0);
-        final double sya = ma.getElementAt(1, 1);
-        final double sza = ma.getElementAt(2, 2);
-        final double mxya = ma.getElementAt(0, 1);
-        final double mxza = ma.getElementAt(0, 2);
-        final double myxa = ma.getElementAt(1, 0);
-        final double myza = ma.getElementAt(1, 2);
-        final double mzxa = ma.getElementAt(2, 0);
-        final double mzya = ma.getElementAt(2, 1);
+        final var sxa = ma.getElementAt(0, 0);
+        final var sya = ma.getElementAt(1, 1);
+        final var sza = ma.getElementAt(2, 2);
+        final var mxya = ma.getElementAt(0, 1);
+        final var mxza = ma.getElementAt(0, 2);
+        final var myxa = ma.getElementAt(1, 0);
+        final var myza = ma.getElementAt(1, 2);
+        final var mzxa = ma.getElementAt(2, 0);
+        final var mzya = ma.getElementAt(2, 1);
 
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(sequences,
-                bg, mg, gg, ba, ma);
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(sequences, bg, mg, gg, ba, ma);
 
         // check default values
         assertEquals(baX, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(baY,calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(baZ, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(baX, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(baY, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(baZ, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] ba1 = calibrator.getAccelerometerBias();
+        final var ba1 = calibrator.getAccelerometerBias();
         assertArrayEquals(ba1, baArray, 0.0);
-        final double[] ba2 = new double[3];
+        final var ba2 = new double[3];
         calibrator.getAccelerometerBias(ba2);
         assertArrayEquals(ba1, ba2, 0.0);
-        final Matrix ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
+        final var ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
         assertEquals(ba1Matrix, ba);
-        final Matrix ba2Matrix = new Matrix(3, 1);
+        final var ba2Matrix = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2Matrix);
         assertEquals(ba1Matrix, ba2Matrix);
         assertEquals(sxa, calibrator.getAccelerometerSx(), 0.0);
@@ -1841,42 +1840,42 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(myza, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(mzxa, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(mzya, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
+        final var ma1 = calibrator.getAccelerometerMa();
         assertEquals(ma1, ma);
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(bgy, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bgz, calibrator.getInitialBiasZ(), 0.0);
 
-        final AngularSpeed angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(bgx, angularSpeedX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
 
-        final AngularSpeed angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(bgy, angularSpeedY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
 
-        final AngularSpeed angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(bgz, angularSpeedZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
 
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bgx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(bgy, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bgz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
 
@@ -1890,27 +1889,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] bg1 = calibrator.getInitialBias();
+        final var bg1 = calibrator.getInitialBias();
         assertArrayEquals(bg1, bias, 0.0);
-        final double[] bg2 = new double[3];
+        final var bg2 = new double[3];
         calibrator.getInitialBias(bg2);
         assertArrayEquals(bg1, bg2, 0.0);
 
-        final Matrix bg1Matrix = calibrator.getInitialBiasAsMatrix();
+        final var bg1Matrix = calibrator.getInitialBiasAsMatrix();
         assertEquals(bg1Matrix, bg);
-        final Matrix bg2Matrix = new Matrix(3, 1);
+        final var bg2Matrix = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bg2Matrix);
         assertEquals(bg1Matrix, bg2Matrix);
 
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
 
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
 
@@ -1927,7 +1926,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
-        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
@@ -2025,80 +2025,79 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testConstructor9() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
+    void testConstructor9() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
 
-        final Matrix bg = generateBg();
-        final Matrix mg = generateGeneralMg();
-        final Matrix gg = generateGg();
+        final var bg = generateBg();
+        final var mg = generateGeneralMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double[] bias = bg.getBuffer();
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final Matrix ba = generateBa();
-        final Matrix ma = generateMa();
-        final double[] baArray = ba.getBuffer();
+        final var ba = generateBa();
+        final var ma = generateMa();
+        final var baArray = ba.getBuffer();
 
-        final double baX = ba.getElementAtIndex(0);
-        final double baY = ba.getElementAtIndex(1);
-        final double baZ = ba.getElementAtIndex(2);
+        final var baX = ba.getElementAtIndex(0);
+        final var baY = ba.getElementAtIndex(1);
+        final var baZ = ba.getElementAtIndex(2);
 
-        final double sxa = ma.getElementAt(0, 0);
-        final double sya = ma.getElementAt(1, 1);
-        final double sza = ma.getElementAt(2, 2);
-        final double mxya = ma.getElementAt(0, 1);
-        final double mxza = ma.getElementAt(0, 2);
-        final double myxa = ma.getElementAt(1, 0);
-        final double myza = ma.getElementAt(1, 2);
-        final double mzxa = ma.getElementAt(2, 0);
-        final double mzya = ma.getElementAt(2, 1);
+        final var sxa = ma.getElementAt(0, 0);
+        final var sya = ma.getElementAt(1, 1);
+        final var sza = ma.getElementAt(2, 2);
+        final var mxya = ma.getElementAt(0, 1);
+        final var mxza = ma.getElementAt(0, 2);
+        final var myxa = ma.getElementAt(1, 0);
+        final var myza = ma.getElementAt(1, 2);
+        final var mzxa = ma.getElementAt(2, 0);
+        final var mzya = ma.getElementAt(2, 1);
 
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(sequences,
-                bg, mg, gg, ba, ma, this);
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(sequences, bg, mg, gg, ba, ma, this);
 
         // check default values
         assertEquals(baX, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(baY, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(baZ, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(baX, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(baY, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(baZ, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] ba1 = calibrator.getAccelerometerBias();
+        final var ba1 = calibrator.getAccelerometerBias();
         assertArrayEquals(ba1, baArray, 0.0);
-        final double[] ba2 = new double[3];
+        final var ba2 = new double[3];
         calibrator.getAccelerometerBias(ba2);
         assertArrayEquals(ba1, ba2, 0.0);
-        final Matrix ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
+        final var ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
         assertEquals(ba1Matrix, ba);
-        final Matrix ba2Matrix = new Matrix(3, 1);
+        final var ba2Matrix = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2Matrix);
         assertEquals(ba1Matrix, ba2Matrix);
         assertEquals(sxa, calibrator.getAccelerometerSx(), 0.0);
@@ -2110,42 +2109,42 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(myza, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(mzxa, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(mzya, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
+        final var ma1 = calibrator.getAccelerometerMa();
         assertEquals(ma1, ma);
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(bgy, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bgz, calibrator.getInitialBiasZ(), 0.0);
 
-        final AngularSpeed angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(bgx, angularSpeedX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
 
-        final AngularSpeed angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(bgy, angularSpeedY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
 
-        final AngularSpeed angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(bgz, angularSpeedZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
 
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bgx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(bgy, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bgz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
 
@@ -2159,27 +2158,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] bg1 = calibrator.getInitialBias();
+        final var bg1 = calibrator.getInitialBias();
         assertArrayEquals(bg1, bias, 0.0);
-        final double[] bg2 = new double[3];
+        final var bg2 = new double[3];
         calibrator.getInitialBias(bg2);
         assertArrayEquals(bg1, bg2, 0.0);
 
-        final Matrix bg1Matrix = calibrator.getInitialBiasAsMatrix();
+        final var bg1Matrix = calibrator.getInitialBiasAsMatrix();
         assertEquals(bg1Matrix, bg);
-        final Matrix bg2Matrix = new Matrix(3, 1);
+        final var bg2Matrix = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bg2Matrix);
         assertEquals(bg1Matrix, bg2Matrix);
 
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
 
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
 
@@ -2196,7 +2195,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
-        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
@@ -2294,60 +2294,60 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testConstructor10() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
+    void testConstructor10() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
 
-        final Matrix bg = generateBg();
-        final Matrix mg = generateGeneralMg();
-        final Matrix gg = generateGg();
+        final var bg = generateBg();
+        final var mg = generateGeneralMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(sequences,
-                false, false, bg, mg, gg);
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(sequences, false,
+                false, bg, mg, gg);
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] ba1 = calibrator.getAccelerometerBias();
+        final var ba1 = calibrator.getAccelerometerBias();
         assertArrayEquals(new double[3], ba1, 0.0);
-        final double[] ba2 = new double[3];
+        final var ba2 = new double[3];
         calibrator.getAccelerometerBias(ba2);
         assertArrayEquals(ba1, ba2, 0.0);
-        final Matrix ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
-        assertEquals(ba1Matrix, new Matrix(3, 1));
-        final Matrix ba2Matrix = new Matrix(3, 1);
+        final var ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), ba1Matrix);
+        final var ba2Matrix = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2Matrix);
         assertEquals(ba1Matrix, ba2Matrix);
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
@@ -2359,42 +2359,42 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
-        assertEquals(ma1, new Matrix(3, 3));
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = calibrator.getAccelerometerMa();
+        assertEquals(new Matrix(3, 3), ma1);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(bgy, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bgz, calibrator.getInitialBiasZ(), 0.0);
 
-        final AngularSpeed angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(bgx, angularSpeedX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
 
-        final AngularSpeed angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(bgy, angularSpeedY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
 
-        final AngularSpeed angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(bgz, angularSpeedZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
 
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bgx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(bgy, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bgz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
 
@@ -2408,27 +2408,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] bg1 = calibrator.getInitialBias();
+        final var bg1 = calibrator.getInitialBias();
         assertArrayEquals(bg1, bg.getBuffer(), 0.0);
-        final double[] bg2 = new double[3];
+        final var bg2 = new double[3];
         calibrator.getInitialBias(bg2);
         assertArrayEquals(bg1, bg2, 0.0);
 
-        final Matrix bg1Matrix = calibrator.getInitialBiasAsMatrix();
+        final var bg1Matrix = calibrator.getInitialBiasAsMatrix();
         assertEquals(bg1Matrix, bg);
-        final Matrix bg2Matrix = new Matrix(3, 1);
+        final var bg2Matrix = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bg2Matrix);
         assertEquals(bg1Matrix, bg2Matrix);
 
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
 
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
 
@@ -2445,7 +2445,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
-        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
@@ -2455,7 +2456,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(), 0.0);
         assertFalse(calibrator.isComputeAndKeepInliersEnabled());
         assertFalse(calibrator.isComputeAndKeepResiduals());
-        assertEquals(EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_GENERAL_AND_CROSS_BIASES, calibrator.getPreliminarySubsetSize());
+        assertEquals(EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_GENERAL_AND_CROSS_BIASES,
+                calibrator.getPreliminarySubsetSize());
         assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
 
         assertNull(calibrator.getEstimatedBiases());
@@ -2530,60 +2532,60 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testConstructor11() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
+    void testConstructor11() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
 
-        final Matrix bg = generateBg();
-        final Matrix mg = generateGeneralMg();
-        final Matrix gg = generateGg();
+        final var bg = generateBg();
+        final var mg = generateGeneralMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(sequences,
-                false, false, bg, mg, gg, this);
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(sequences, false,
+                false, bg, mg, gg, this);
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] ba1 = calibrator.getAccelerometerBias();
+        final var ba1 = calibrator.getAccelerometerBias();
         assertArrayEquals(new double[3], ba1, 0.0);
-        final double[] ba2 = new double[3];
+        final var ba2 = new double[3];
         calibrator.getAccelerometerBias(ba2);
         assertArrayEquals(ba1, ba2, 0.0);
-        final Matrix ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
-        assertEquals(ba1Matrix, new Matrix(3, 1));
-        final Matrix ba2Matrix = new Matrix(3, 1);
+        final var ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), ba1Matrix);
+        final var ba2Matrix = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2Matrix);
         assertEquals(ba1Matrix, ba2Matrix);
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
@@ -2595,42 +2597,42 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
-        assertEquals(ma1, new Matrix(3, 3));
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = calibrator.getAccelerometerMa();
+        assertEquals(new Matrix(3, 3), ma1);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(bgy, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bgz, calibrator.getInitialBiasZ(), 0.0);
 
-        final AngularSpeed angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(bgx, angularSpeedX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
 
-        final AngularSpeed angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(bgy, angularSpeedY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
 
-        final AngularSpeed angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(bgz, angularSpeedZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
 
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bgx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(bgy, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bgz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
 
@@ -2644,27 +2646,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] bg1 = calibrator.getInitialBias();
+        final var bg1 = calibrator.getInitialBias();
         assertArrayEquals(bg1, bg.getBuffer(), 0.0);
-        final double[] bg2 = new double[3];
+        final var bg2 = new double[3];
         calibrator.getInitialBias(bg2);
         assertArrayEquals(bg1, bg2, 0.0);
 
-        final Matrix bg1Matrix = calibrator.getInitialBiasAsMatrix();
+        final var bg1Matrix = calibrator.getInitialBiasAsMatrix();
         assertEquals(bg1Matrix, bg);
-        final Matrix bg2Matrix = new Matrix(3, 1);
+        final var bg2Matrix = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bg2Matrix);
         assertEquals(bg1Matrix, bg2Matrix);
 
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
 
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
 
@@ -2681,7 +2683,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
-        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
@@ -2767,62 +2770,62 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testConstructor12() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
+    void testConstructor12() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
 
-        final Matrix bg = generateBg();
-        final Matrix mg = generateGeneralMg();
-        final Matrix gg = generateGg();
+        final var bg = generateBg();
+        final var mg = generateGeneralMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double[] bias = bg.getBuffer();
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(sequences,
-                false, false, bias, mg, gg);
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(sequences, false,
+                false, bias, mg, gg);
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] ba1 = calibrator.getAccelerometerBias();
+        final var ba1 = calibrator.getAccelerometerBias();
         assertArrayEquals(new double[3], ba1, 0.0);
-        final double[] ba2 = new double[3];
+        final var ba2 = new double[3];
         calibrator.getAccelerometerBias(ba2);
         assertArrayEquals(ba1, ba2, 0.0);
-        final Matrix ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
-        assertEquals(ba1Matrix, new Matrix(3, 1));
-        final Matrix ba2Matrix = new Matrix(3, 1);
+        final var ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), ba1Matrix);
+        final var ba2Matrix = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2Matrix);
         assertEquals(ba1Matrix, ba2Matrix);
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
@@ -2834,42 +2837,42 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
-        assertEquals(ma1, new Matrix(3, 3));
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = calibrator.getAccelerometerMa();
+        assertEquals(new Matrix(3, 3), ma1);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(bgy, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bgz, calibrator.getInitialBiasZ(), 0.0);
 
-        final AngularSpeed angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(bgx, angularSpeedX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
 
-        final AngularSpeed angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(bgy, angularSpeedY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
 
-        final AngularSpeed angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(bgz, angularSpeedZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
 
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bgx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(bgy, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bgz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
 
@@ -2883,27 +2886,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] bg1 = calibrator.getInitialBias();
+        final var bg1 = calibrator.getInitialBias();
         assertArrayEquals(bg1, bias, 0.0);
-        final double[] bg2 = new double[3];
+        final var bg2 = new double[3];
         calibrator.getInitialBias(bg2);
         assertArrayEquals(bg1, bg2, 0.0);
 
-        final Matrix bg1Matrix = calibrator.getInitialBiasAsMatrix();
+        final var bg1Matrix = calibrator.getInitialBiasAsMatrix();
         assertEquals(bg1Matrix, bg);
-        final Matrix bg2Matrix = new Matrix(3, 1);
+        final var bg2Matrix = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bg2Matrix);
         assertEquals(bg1Matrix, bg2Matrix);
 
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
 
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
 
@@ -2920,7 +2923,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
-        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
@@ -3002,62 +3006,62 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testConstructor13() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
+    void testConstructor13() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
 
-        final Matrix bg = generateBg();
-        final Matrix mg = generateGeneralMg();
-        final Matrix gg = generateGg();
+        final var bg = generateBg();
+        final var mg = generateGeneralMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double[] bias = bg.getBuffer();
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(
-                sequences, false, false, bias, mg, gg, this);
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(sequences, false,
+                false, bias, mg, gg, this);
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] ba1 = calibrator.getAccelerometerBias();
-        assertArrayEquals(ba1, new double[3], 0.0);
-        final double[] ba2 = new double[3];
+        final var ba1 = calibrator.getAccelerometerBias();
+        assertArrayEquals(new double[3], ba1, 0.0);
+        final var ba2 = new double[3];
         calibrator.getAccelerometerBias(ba2);
         assertArrayEquals(ba1, ba2, 0.0);
-        final Matrix ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
-        assertEquals(ba1Matrix, new Matrix(3, 1));
-        final Matrix ba2Matrix = new Matrix(3, 1);
+        final var ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), ba1Matrix);
+        final var ba2Matrix = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2Matrix);
         assertEquals(ba1Matrix, ba2Matrix);
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
@@ -3069,42 +3073,42 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
-        assertEquals(ma1, new Matrix(3, 3));
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = calibrator.getAccelerometerMa();
+        assertEquals(new Matrix(3, 3), ma1);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(bgy, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bgz, calibrator.getInitialBiasZ(), 0.0);
 
-        final AngularSpeed angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(bgx, angularSpeedX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
 
-        final AngularSpeed angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(bgy, angularSpeedY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
 
-        final AngularSpeed angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(bgz, angularSpeedZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
 
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bgx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(bgy, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bgz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
 
@@ -3118,27 +3122,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] bg1 = calibrator.getInitialBias();
+        final var bg1 = calibrator.getInitialBias();
         assertArrayEquals(bg1, bias, 0.0);
-        final double[] bg2 = new double[3];
+        final var bg2 = new double[3];
         calibrator.getInitialBias(bg2);
         assertArrayEquals(bg1, bg2, 0.0);
 
-        final Matrix bg1Matrix = calibrator.getInitialBiasAsMatrix();
+        final var bg1Matrix = calibrator.getInitialBiasAsMatrix();
         assertEquals(bg1Matrix, bg);
-        final Matrix bg2Matrix = new Matrix(3, 1);
+        final var bg2Matrix = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bg2Matrix);
         assertEquals(bg1Matrix, bg2Matrix);
 
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
 
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
 
@@ -3155,7 +3159,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
-        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
@@ -3237,80 +3242,80 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testConstructor14() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
+    void testConstructor14() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
 
-        final Matrix bg = generateBg();
-        final Matrix mg = generateGeneralMg();
-        final Matrix gg = generateGg();
+        final var bg = generateBg();
+        final var mg = generateGeneralMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double[] bias = bg.getBuffer();
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final Matrix ba = generateBa();
-        final Matrix ma = generateMa();
-        final double[] baArray = ba.getBuffer();
+        final var ba = generateBa();
+        final var ma = generateMa();
+        final var baArray = ba.getBuffer();
 
-        final double baX = ba.getElementAtIndex(0);
-        final double baY = ba.getElementAtIndex(1);
-        final double baZ = ba.getElementAtIndex(2);
+        final var baX = ba.getElementAtIndex(0);
+        final var baY = ba.getElementAtIndex(1);
+        final var baZ = ba.getElementAtIndex(2);
 
-        final double sxa = ma.getElementAt(0, 0);
-        final double sya = ma.getElementAt(1, 1);
-        final double sza = ma.getElementAt(2, 2);
-        final double mxya = ma.getElementAt(0, 1);
-        final double mxza = ma.getElementAt(0, 2);
-        final double myxa = ma.getElementAt(1, 0);
-        final double myza = ma.getElementAt(1, 2);
-        final double mzxa = ma.getElementAt(2, 0);
-        final double mzya = ma.getElementAt(2, 1);
+        final var sxa = ma.getElementAt(0, 0);
+        final var sya = ma.getElementAt(1, 1);
+        final var sza = ma.getElementAt(2, 2);
+        final var mxya = ma.getElementAt(0, 1);
+        final var mxza = ma.getElementAt(0, 2);
+        final var myxa = ma.getElementAt(1, 0);
+        final var myza = ma.getElementAt(1, 2);
+        final var mzxa = ma.getElementAt(2, 0);
+        final var mzya = ma.getElementAt(2, 1);
 
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(sequences,
-                false, false, bias, mg, gg, baArray, ma);
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(sequences, false,
+                false, bias, mg, gg, baArray, ma);
 
         // check default values
         assertEquals(baX, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(baY, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(baZ, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(baX, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(baY, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(baZ, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] ba1 = calibrator.getAccelerometerBias();
+        final var ba1 = calibrator.getAccelerometerBias();
         assertArrayEquals(ba1, baArray, 0.0);
-        final double[] ba2 = new double[3];
+        final var ba2 = new double[3];
         calibrator.getAccelerometerBias(ba2);
         assertArrayEquals(ba1, ba2, 0.0);
-        final Matrix ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
+        final var ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
         assertEquals(ba1Matrix, ba);
-        final Matrix ba2Matrix = new Matrix(3, 1);
+        final var ba2Matrix = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2Matrix);
         assertEquals(ba1Matrix, ba2Matrix);
         assertEquals(sxa, calibrator.getAccelerometerSx(), 0.0);
@@ -3322,42 +3327,42 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(myza, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(mzxa, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(mzya, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
+        final var ma1 = calibrator.getAccelerometerMa();
         assertEquals(ma1, ma);
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(bgy, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bgz, calibrator.getInitialBiasZ(), 0.0);
 
-        final AngularSpeed angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(bgx, angularSpeedX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
 
-        final AngularSpeed angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(bgy, angularSpeedY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
 
-        final AngularSpeed angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(bgz, angularSpeedZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
 
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bgx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(bgy, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bgz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
 
@@ -3371,27 +3376,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] bg1 = calibrator.getInitialBias();
+        final var bg1 = calibrator.getInitialBias();
         assertArrayEquals(bg1, bias, 0.0);
-        final double[] bg2 = new double[3];
+        final var bg2 = new double[3];
         calibrator.getInitialBias(bg2);
         assertArrayEquals(bg1, bg2, 0.0);
 
-        final Matrix bg1Matrix = calibrator.getInitialBiasAsMatrix();
+        final var bg1Matrix = calibrator.getInitialBiasAsMatrix();
         assertEquals(bg1Matrix, bg);
-        final Matrix bg2Matrix = new Matrix(3, 1);
+        final var bg2Matrix = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bg2Matrix);
         assertEquals(bg1Matrix, bg2Matrix);
 
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
 
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
 
@@ -3408,7 +3413,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
-        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
@@ -3498,80 +3504,80 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testConstructor15() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
+    void testConstructor15() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
 
-        final Matrix bg = generateBg();
-        final Matrix mg = generateGeneralMg();
-        final Matrix gg = generateGg();
+        final var bg = generateBg();
+        final var mg = generateGeneralMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double[] bias = bg.getBuffer();
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final Matrix ba = generateBa();
-        final Matrix ma = generateMa();
-        final double[] baArray = ba.getBuffer();
+        final var ba = generateBa();
+        final var ma = generateMa();
+        final var baArray = ba.getBuffer();
 
-        final double baX = ba.getElementAtIndex(0);
-        final double baY = ba.getElementAtIndex(1);
-        final double baZ = ba.getElementAtIndex(2);
+        final var baX = ba.getElementAtIndex(0);
+        final var baY = ba.getElementAtIndex(1);
+        final var baZ = ba.getElementAtIndex(2);
 
-        final double sxa = ma.getElementAt(0, 0);
-        final double sya = ma.getElementAt(1, 1);
-        final double sza = ma.getElementAt(2, 2);
-        final double mxya = ma.getElementAt(0, 1);
-        final double mxza = ma.getElementAt(0, 2);
-        final double myxa = ma.getElementAt(1, 0);
-        final double myza = ma.getElementAt(1, 2);
-        final double mzxa = ma.getElementAt(2, 0);
-        final double mzya = ma.getElementAt(2, 1);
+        final var sxa = ma.getElementAt(0, 0);
+        final var sya = ma.getElementAt(1, 1);
+        final var sza = ma.getElementAt(2, 2);
+        final var mxya = ma.getElementAt(0, 1);
+        final var mxza = ma.getElementAt(0, 2);
+        final var myxa = ma.getElementAt(1, 0);
+        final var myza = ma.getElementAt(1, 2);
+        final var mzxa = ma.getElementAt(2, 0);
+        final var mzya = ma.getElementAt(2, 1);
 
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(sequences,
-                false, false, bias, mg, gg, baArray, ma, this);
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(sequences, false,
+                false, bias, mg, gg, baArray, ma, this);
 
         // check default values
         assertEquals(baX, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(baY, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(baZ, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(baX, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(baY, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(baZ, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] ba1 = calibrator.getAccelerometerBias();
+        final var ba1 = calibrator.getAccelerometerBias();
         assertArrayEquals(ba1, baArray, 0.0);
-        final double[] ba2 = new double[3];
+        final var ba2 = new double[3];
         calibrator.getAccelerometerBias(ba2);
         assertArrayEquals(ba1, ba2, 0.0);
-        final Matrix ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
+        final var ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
         assertEquals(ba1Matrix, ba);
-        final Matrix ba2Matrix = new Matrix(3, 1);
+        final var ba2Matrix = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2Matrix);
         assertEquals(ba1Matrix, ba2Matrix);
         assertEquals(sxa, calibrator.getAccelerometerSx(), 0.0);
@@ -3583,42 +3589,42 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(myza, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(mzxa, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(mzya, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
+        final var ma1 = calibrator.getAccelerometerMa();
         assertEquals(ma1, ma);
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(bgy, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bgz, calibrator.getInitialBiasZ(), 0.0);
 
-        final AngularSpeed angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(bgx, angularSpeedX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
 
-        final AngularSpeed angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(bgy, angularSpeedY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
 
-        final AngularSpeed angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(bgz, angularSpeedZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
 
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bgx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(bgy, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bgz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
 
@@ -3632,27 +3638,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] bg1 = calibrator.getInitialBias();
+        final var bg1 = calibrator.getInitialBias();
         assertArrayEquals(bg1, bias, 0.0);
-        final double[] bg2 = new double[3];
+        final var bg2 = new double[3];
         calibrator.getInitialBias(bg2);
         assertArrayEquals(bg1, bg2, 0.0);
 
-        final Matrix bg1Matrix = calibrator.getInitialBiasAsMatrix();
+        final var bg1Matrix = calibrator.getInitialBiasAsMatrix();
         assertEquals(bg1Matrix, bg);
-        final Matrix bg2Matrix = new Matrix(3, 1);
+        final var bg2Matrix = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bg2Matrix);
         assertEquals(bg1Matrix, bg2Matrix);
 
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
 
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
 
@@ -3669,7 +3675,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
-        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
@@ -3760,80 +3767,80 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testConstructor16() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
+    void testConstructor16() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
 
-        final Matrix bg = generateBg();
-        final Matrix mg = generateGeneralMg();
-        final Matrix gg = generateGg();
+        final var bg = generateBg();
+        final var mg = generateGeneralMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double[] bias = bg.getBuffer();
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final Matrix ba = generateBa();
-        final Matrix ma = generateMa();
-        final double[] baArray = ba.getBuffer();
+        final var ba = generateBa();
+        final var ma = generateMa();
+        final var baArray = ba.getBuffer();
 
-        final double baX = ba.getElementAtIndex(0);
-        final double baY = ba.getElementAtIndex(1);
-        final double baZ = ba.getElementAtIndex(2);
+        final var baX = ba.getElementAtIndex(0);
+        final var baY = ba.getElementAtIndex(1);
+        final var baZ = ba.getElementAtIndex(2);
 
-        final double sxa = ma.getElementAt(0, 0);
-        final double sya = ma.getElementAt(1, 1);
-        final double sza = ma.getElementAt(2, 2);
-        final double mxya = ma.getElementAt(0, 1);
-        final double mxza = ma.getElementAt(0, 2);
-        final double myxa = ma.getElementAt(1, 0);
-        final double myza = ma.getElementAt(1, 2);
-        final double mzxa = ma.getElementAt(2, 0);
-        final double mzya = ma.getElementAt(2, 1);
+        final var sxa = ma.getElementAt(0, 0);
+        final var sya = ma.getElementAt(1, 1);
+        final var sza = ma.getElementAt(2, 2);
+        final var mxya = ma.getElementAt(0, 1);
+        final var mxza = ma.getElementAt(0, 2);
+        final var myxa = ma.getElementAt(1, 0);
+        final var myza = ma.getElementAt(1, 2);
+        final var mzxa = ma.getElementAt(2, 0);
+        final var mzya = ma.getElementAt(2, 1);
 
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(
-                sequences, false, false, bg, mg, gg, ba, ma);
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(sequences, false,
+                false, bg, mg, gg, ba, ma);
 
         // check default values
         assertEquals(baX, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(baY, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(baZ, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(baX, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(baY, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(baZ, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] ba1 = calibrator.getAccelerometerBias();
+        final var ba1 = calibrator.getAccelerometerBias();
         assertArrayEquals(ba1, baArray, 0.0);
-        final double[] ba2 = new double[3];
+        final var ba2 = new double[3];
         calibrator.getAccelerometerBias(ba2);
         assertArrayEquals(ba1, ba2, 0.0);
-        final Matrix ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
+        final var ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
         assertEquals(ba1Matrix, ba);
-        final Matrix ba2Matrix = new Matrix(3, 1);
+        final var ba2Matrix = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2Matrix);
         assertEquals(ba1Matrix, ba2Matrix);
         assertEquals(sxa, calibrator.getAccelerometerSx(), 0.0);
@@ -3845,42 +3852,42 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(myza, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(mzxa, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(mzya, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
+        final var ma1 = calibrator.getAccelerometerMa();
         assertEquals(ma1, ma);
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(bgy, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bgz, calibrator.getInitialBiasZ(), 0.0);
 
-        final AngularSpeed angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(bgx, angularSpeedX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
 
-        final AngularSpeed angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(bgy, angularSpeedY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
 
-        final AngularSpeed angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(bgz, angularSpeedZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
 
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bgx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(bgy, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bgz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
 
@@ -3894,27 +3901,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] bg1 = calibrator.getInitialBias();
+        final var bg1 = calibrator.getInitialBias();
         assertArrayEquals(bg1, bias, 0.0);
-        final double[] bg2 = new double[3];
+        final var bg2 = new double[3];
         calibrator.getInitialBias(bg2);
         assertArrayEquals(bg1, bg2, 0.0);
 
-        final Matrix bg1Matrix = calibrator.getInitialBiasAsMatrix();
+        final var bg1Matrix = calibrator.getInitialBiasAsMatrix();
         assertEquals(bg1Matrix, bg);
-        final Matrix bg2Matrix = new Matrix(3, 1);
+        final var bg2Matrix = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bg2Matrix);
         assertEquals(bg1Matrix, bg2Matrix);
 
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
 
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
 
@@ -3931,7 +3938,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
-        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
@@ -4029,80 +4037,80 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testConstructor17() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
+    void testConstructor17() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
 
-        final Matrix bg = generateBg();
-        final Matrix mg = generateGeneralMg();
-        final Matrix gg = generateGg();
+        final var bg = generateBg();
+        final var mg = generateGeneralMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double[] bias = bg.getBuffer();
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final Matrix ba = generateBa();
-        final Matrix ma = generateMa();
-        final double[] baArray = ba.getBuffer();
+        final var ba = generateBa();
+        final var ma = generateMa();
+        final var baArray = ba.getBuffer();
 
-        final double baX = ba.getElementAtIndex(0);
-        final double baY = ba.getElementAtIndex(1);
-        final double baZ = ba.getElementAtIndex(2);
+        final var baX = ba.getElementAtIndex(0);
+        final var baY = ba.getElementAtIndex(1);
+        final var baZ = ba.getElementAtIndex(2);
 
-        final double sxa = ma.getElementAt(0, 0);
-        final double sya = ma.getElementAt(1, 1);
-        final double sza = ma.getElementAt(2, 2);
-        final double mxya = ma.getElementAt(0, 1);
-        final double mxza = ma.getElementAt(0, 2);
-        final double myxa = ma.getElementAt(1, 0);
-        final double myza = ma.getElementAt(1, 2);
-        final double mzxa = ma.getElementAt(2, 0);
-        final double mzya = ma.getElementAt(2, 1);
+        final var sxa = ma.getElementAt(0, 0);
+        final var sya = ma.getElementAt(1, 1);
+        final var sza = ma.getElementAt(2, 2);
+        final var mxya = ma.getElementAt(0, 1);
+        final var mxza = ma.getElementAt(0, 2);
+        final var myxa = ma.getElementAt(1, 0);
+        final var myza = ma.getElementAt(1, 2);
+        final var mzxa = ma.getElementAt(2, 0);
+        final var mzya = ma.getElementAt(2, 1);
 
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(
-                sequences, false, false, bg, mg, gg, ba, ma, this);
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(sequences, false,
+                false, bg, mg, gg, ba, ma, this);
 
         // check default values
         assertEquals(baX, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(baY, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(baZ, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(baX, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(baY, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(baZ, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] ba1 = calibrator.getAccelerometerBias();
+        final var ba1 = calibrator.getAccelerometerBias();
         assertArrayEquals(ba1, baArray, 0.0);
-        final double[] ba2 = new double[3];
+        final var ba2 = new double[3];
         calibrator.getAccelerometerBias(ba2);
         assertArrayEquals(ba1, ba2, 0.0);
-        final Matrix ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
+        final var ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
         assertEquals(ba1Matrix, ba);
-        final Matrix ba2Matrix = new Matrix(3, 1);
+        final var ba2Matrix = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2Matrix);
         assertEquals(ba1Matrix, ba2Matrix);
         assertEquals(sxa, calibrator.getAccelerometerSx(), 0.0);
@@ -4114,42 +4122,42 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(myza, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(mzxa, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(mzya, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
+        final var ma1 = calibrator.getAccelerometerMa();
         assertEquals(ma1, ma);
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(bgy, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bgz, calibrator.getInitialBiasZ(), 0.0);
 
-        final AngularSpeed angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(bgx, angularSpeedX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
 
-        final AngularSpeed angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(bgy, angularSpeedY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
 
-        final AngularSpeed angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(bgz, angularSpeedZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
 
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bgx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(bgy, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bgz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
 
@@ -4163,27 +4171,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] bg1 = calibrator.getInitialBias();
+        final var bg1 = calibrator.getInitialBias();
         assertArrayEquals(bg1, bias, 0.0);
-        final double[] bg2 = new double[3];
+        final var bg2 = new double[3];
         calibrator.getInitialBias(bg2);
         assertArrayEquals(bg1, bg2, 0.0);
 
-        final Matrix bg1Matrix = calibrator.getInitialBiasAsMatrix();
+        final var bg1Matrix = calibrator.getInitialBiasAsMatrix();
         assertEquals(bg1Matrix, bg);
-        final Matrix bg2Matrix = new Matrix(3, 1);
+        final var bg2Matrix = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bg2Matrix);
         assertEquals(bg1Matrix, bg2Matrix);
 
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
 
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
 
@@ -4200,7 +4208,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
-        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
@@ -4210,7 +4219,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(), 0.0);
         assertFalse(calibrator.isComputeAndKeepInliersEnabled());
         assertFalse(calibrator.isComputeAndKeepResiduals());
-        assertEquals(EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_GENERAL_AND_CROSS_BIASES, calibrator.getPreliminarySubsetSize());
+        assertEquals(EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_GENERAL_AND_CROSS_BIASES,
+                calibrator.getPreliminarySubsetSize());
         assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
 
         assertNull(calibrator.getEstimatedBiases());
@@ -4297,40 +4307,40 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testConstructor18() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores);
+    void testConstructor18() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores);
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] ba1 = calibrator.getAccelerometerBias();
-        assertArrayEquals(ba1, new double[3], 0.0);
-        final double[] ba2 = new double[3];
+        final var ba1 = calibrator.getAccelerometerBias();
+        assertArrayEquals(new double[3], ba1, 0.0);
+        final var ba2 = new double[3];
         calibrator.getAccelerometerBias(ba2);
         assertArrayEquals(ba1, ba2, 0.0);
-        final Matrix ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
-        assertEquals(ba1Matrix, new Matrix(3, 1));
-        final Matrix ba2Matrix = new Matrix(3, 1);
+        final var ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), ba1Matrix);
+        final var ba2Matrix = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2Matrix);
         assertEquals(ba1Matrix, ba2Matrix);
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
@@ -4342,42 +4352,42 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
-        assertEquals(ma1, new Matrix(3, 3));
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = calibrator.getAccelerometerMa();
+        assertEquals(new Matrix(3, 3), ma1);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
 
-        final AngularSpeed angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(0.0, angularSpeedX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
 
-        final AngularSpeed angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(0.0, angularSpeedY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
 
-        final AngularSpeed angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(0.0, angularSpeedZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
 
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
 
@@ -4391,27 +4401,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] bg1 = calibrator.getInitialBias();
-        assertArrayEquals(bg1, new double[3], 0.0);
-        final double[] bg2 = new double[3];
+        final var bg1 = calibrator.getInitialBias();
+        assertArrayEquals(new double[3], bg1, 0.0);
+        final var bg2 = new double[3];
         calibrator.getInitialBias(bg2);
         assertArrayEquals(bg1, bg2, 0.0);
 
-        final Matrix bg1Matrix = calibrator.getInitialBiasAsMatrix();
-        assertEquals(bg1Matrix, new Matrix(3, 1));
-        final Matrix bg2Matrix = new Matrix(3, 1);
+        final var bg1Matrix = calibrator.getInitialBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), bg1Matrix);
+        final var bg2Matrix = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bg2Matrix);
         assertEquals(bg1Matrix, bg2Matrix);
 
-        final Matrix mg1 = calibrator.getInitialMg();
-        assertEquals(mg1, new Matrix(3, 3));
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg1 = calibrator.getInitialMg();
+        assertEquals(new Matrix(3, 3), mg1);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
 
-        final Matrix gg1 = calibrator.getInitialGg();
-        assertEquals(gg1, new Matrix(3, 3));
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg1 = calibrator.getInitialGg();
+        assertEquals(new Matrix(3, 3), gg1);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
 
@@ -4428,7 +4438,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
-        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
@@ -4497,61 +4508,60 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testConstructor19() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
+    void testConstructor19() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
 
-        final Matrix bg = generateBg();
-        final Matrix mg = generateGeneralMg();
-        final Matrix gg = generateGg();
+        final var bg = generateBg();
+        final var mg = generateGeneralMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores,
-                sequences, bg, mg, gg);
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences, bg, mg, gg);
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] ba1 = calibrator.getAccelerometerBias();
-        assertArrayEquals(ba1, new double[3], 0.0);
-        final double[] ba2 = new double[3];
+        final var ba1 = calibrator.getAccelerometerBias();
+        assertArrayEquals(new double[3], ba1, 0.0);
+        final var ba2 = new double[3];
         calibrator.getAccelerometerBias(ba2);
         assertArrayEquals(ba1, ba2, 0.0);
-        final Matrix ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
-        assertEquals(ba1Matrix, new Matrix(3, 1));
-        final Matrix ba2Matrix = new Matrix(3, 1);
+        final var ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), ba1Matrix);
+        final var ba2Matrix = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2Matrix);
         assertEquals(ba1Matrix, ba2Matrix);
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
@@ -4563,42 +4573,42 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
-        assertEquals(ma1, new Matrix(3, 3));
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = calibrator.getAccelerometerMa();
+        assertEquals(new Matrix(3, 3), ma1);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(bgy, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bgz, calibrator.getInitialBiasZ(), 0.0);
 
-        final AngularSpeed angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(bgx, angularSpeedX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
 
-        final AngularSpeed angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(bgy, angularSpeedY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
 
-        final AngularSpeed angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(bgz, angularSpeedZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
 
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bgx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(bgy, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bgz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
 
@@ -4612,27 +4622,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] bg1 = calibrator.getInitialBias();
+        final var bg1 = calibrator.getInitialBias();
         assertArrayEquals(bg1, bg.getBuffer(), 0.0);
-        final double[] bg2 = new double[3];
+        final var bg2 = new double[3];
         calibrator.getInitialBias(bg2);
         assertArrayEquals(bg1, bg2, 0.0);
 
-        final Matrix bg1Matrix = calibrator.getInitialBiasAsMatrix();
+        final var bg1Matrix = calibrator.getInitialBiasAsMatrix();
         assertEquals(bg1Matrix, bg);
-        final Matrix bg2Matrix = new Matrix(3, 1);
+        final var bg2Matrix = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bg2Matrix);
         assertEquals(bg1Matrix, bg2Matrix);
 
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
 
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
 
@@ -4649,7 +4659,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
-        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
@@ -4737,61 +4748,61 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testConstructor20() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
+    void testConstructor20() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
 
-        final Matrix bg = generateBg();
-        final Matrix mg = generateGeneralMg();
-        final Matrix gg = generateGg();
+        final var bg = generateBg();
+        final var mg = generateGeneralMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores,
-                sequences, bg, mg, gg, this);
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences, bg, mg, gg,
+                this);
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] ba1 = calibrator.getAccelerometerBias();
-        assertArrayEquals(ba1, new double[3], 0.0);
-        final double[] ba2 = new double[3];
+        final var ba1 = calibrator.getAccelerometerBias();
+        assertArrayEquals(new double[3], ba1, 0.0);
+        final var ba2 = new double[3];
         calibrator.getAccelerometerBias(ba2);
         assertArrayEquals(ba1, ba2, 0.0);
-        final Matrix ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
-        assertEquals(ba1Matrix, new Matrix(3, 1));
-        final Matrix ba2Matrix = new Matrix(3, 1);
+        final var ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), ba1Matrix);
+        final var ba2Matrix = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2Matrix);
         assertEquals(ba1Matrix, ba2Matrix);
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
@@ -4803,42 +4814,42 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
-        assertEquals(ma1, new Matrix(3, 3));
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = calibrator.getAccelerometerMa();
+        assertEquals(new Matrix(3, 3), ma1);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(bgy, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bgz, calibrator.getInitialBiasZ(), 0.0);
 
-        final AngularSpeed angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(bgx, angularSpeedX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
 
-        final AngularSpeed angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(bgy, angularSpeedY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
 
-        final AngularSpeed angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(bgz, angularSpeedZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
 
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bgx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(bgy, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bgz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
 
@@ -4852,27 +4863,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] bg1 = calibrator.getInitialBias();
+        final var bg1 = calibrator.getInitialBias();
         assertArrayEquals(bg1, bg.getBuffer(), 0.0);
-        final double[] bg2 = new double[3];
+        final var bg2 = new double[3];
         calibrator.getInitialBias(bg2);
         assertArrayEquals(bg1, bg2, 0.0);
 
-        final Matrix bg1Matrix = calibrator.getInitialBiasAsMatrix();
+        final var bg1Matrix = calibrator.getInitialBiasAsMatrix();
         assertEquals(bg1Matrix, bg);
-        final Matrix bg2Matrix = new Matrix(3, 1);
+        final var bg2Matrix = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bg2Matrix);
         assertEquals(bg1Matrix, bg2Matrix);
 
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
 
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
 
@@ -4889,7 +4900,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
-        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
@@ -4977,63 +4989,62 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testConstructor21() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
+    void testConstructor21() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
 
-        final Matrix bg = generateBg();
-        final Matrix mg = generateGeneralMg();
-        final Matrix gg = generateGg();
+        final var bg = generateBg();
+        final var mg = generateGeneralMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double[] bias = bg.getBuffer();
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores,
-                sequences, bias, mg, gg);
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences, bias, mg, gg);
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] ba1 = calibrator.getAccelerometerBias();
+        final var ba1 = calibrator.getAccelerometerBias();
         assertArrayEquals(new double[3], ba1, 0.0);
-        final double[] ba2 = new double[3];
+        final var ba2 = new double[3];
         calibrator.getAccelerometerBias(ba2);
         assertArrayEquals(ba1, ba2, 0.0);
-        final Matrix ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
-        assertEquals(ba1Matrix, new Matrix(3, 1));
-        final Matrix ba2Matrix = new Matrix(3, 1);
+        final var ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), ba1Matrix);
+        final var ba2Matrix = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2Matrix);
         assertEquals(ba1Matrix, ba2Matrix);
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
@@ -5045,42 +5056,42 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
-        assertEquals(ma1, new Matrix(3, 3));
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = calibrator.getAccelerometerMa();
+        assertEquals(new Matrix(3, 3), ma1);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(bgy, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bgz, calibrator.getInitialBiasZ(), 0.0);
 
-        final AngularSpeed angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(bgx, angularSpeedX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
 
-        final AngularSpeed angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(bgy, angularSpeedY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
 
-        final AngularSpeed angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(bgz, angularSpeedZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
 
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bgx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(bgy, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bgz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
 
@@ -5094,27 +5105,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] bg1 = calibrator.getInitialBias();
+        final var bg1 = calibrator.getInitialBias();
         assertArrayEquals(bg1, bias, 0.0);
-        final double[] bg2 = new double[3];
+        final var bg2 = new double[3];
         calibrator.getInitialBias(bg2);
         assertArrayEquals(bg1, bg2, 0.0);
 
-        final Matrix bg1Matrix = calibrator.getInitialBiasAsMatrix();
+        final var bg1Matrix = calibrator.getInitialBiasAsMatrix();
         assertEquals(bg1Matrix, bg);
-        final Matrix bg2Matrix = new Matrix(3, 1);
+        final var bg2Matrix = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bg2Matrix);
         assertEquals(bg1Matrix, bg2Matrix);
 
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
 
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
 
@@ -5131,7 +5142,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
-        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
@@ -5215,63 +5227,63 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testConstructor22() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
+    void testConstructor22() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
 
-        final Matrix bg = generateBg();
-        final Matrix mg = generateGeneralMg();
-        final Matrix gg = generateGg();
+        final var bg = generateBg();
+        final var mg = generateGeneralMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double[] bias = bg.getBuffer();
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores,
-                sequences, bias, mg, gg, this);
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences, bias, mg, gg,
+                this);
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] ba1 = calibrator.getAccelerometerBias();
+        final var ba1 = calibrator.getAccelerometerBias();
         assertArrayEquals(new double[3], ba1, 0.0);
-        final double[] ba2 = new double[3];
+        final var ba2 = new double[3];
         calibrator.getAccelerometerBias(ba2);
         assertArrayEquals(ba1, ba2, 0.0);
-        final Matrix ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
-        assertEquals(ba1Matrix, new Matrix(3, 1));
-        final Matrix ba2Matrix = new Matrix(3, 1);
+        final var ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), ba1Matrix);
+        final var ba2Matrix = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2Matrix);
         assertEquals(ba1Matrix, ba2Matrix);
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
@@ -5283,42 +5295,42 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
-        assertEquals(ma1, new Matrix(3, 3));
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = calibrator.getAccelerometerMa();
+        assertEquals(new Matrix(3, 3), ma1);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(bgy, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bgz, calibrator.getInitialBiasZ(), 0.0);
 
-        final AngularSpeed angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(bgx, angularSpeedX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
 
-        final AngularSpeed angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(angularSpeedY1.getValue().doubleValue(), bgy, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
 
-        final AngularSpeed angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(bgz, angularSpeedZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
 
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bgx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(bgy, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bgz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
 
@@ -5332,27 +5344,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(mzx,calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] bg1 = calibrator.getInitialBias();
+        final var bg1 = calibrator.getInitialBias();
         assertArrayEquals(bg1, bias, 0.0);
-        final double[] bg2 = new double[3];
+        final var bg2 = new double[3];
         calibrator.getInitialBias(bg2);
         assertArrayEquals(bg1, bg2, 0.0);
 
-        final Matrix bg1Matrix = calibrator.getInitialBiasAsMatrix();
+        final var bg1Matrix = calibrator.getInitialBiasAsMatrix();
         assertEquals(bg1Matrix, bg);
-        final Matrix bg2Matrix = new Matrix(3, 1);
+        final var bg2Matrix = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bg2Matrix);
         assertEquals(bg1Matrix, bg2Matrix);
 
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
 
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
 
@@ -5369,7 +5381,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
-        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
@@ -5453,81 +5466,81 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testConstructor23() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
+    void testConstructor23() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
 
-        final Matrix bg = generateBg();
-        final Matrix mg = generateGeneralMg();
-        final Matrix gg = generateGg();
+        final var bg = generateBg();
+        final var mg = generateGeneralMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double[] bias = bg.getBuffer();
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final Matrix ba = generateBa();
-        final Matrix ma = generateMa();
-        final double[] baArray = ba.getBuffer();
+        final var ba = generateBa();
+        final var ma = generateMa();
+        final var baArray = ba.getBuffer();
 
-        final double baX = ba.getElementAtIndex(0);
-        final double baY = ba.getElementAtIndex(1);
-        final double baZ = ba.getElementAtIndex(2);
+        final var baX = ba.getElementAtIndex(0);
+        final var baY = ba.getElementAtIndex(1);
+        final var baZ = ba.getElementAtIndex(2);
 
-        final double sxa = ma.getElementAt(0, 0);
-        final double sya = ma.getElementAt(1, 1);
-        final double sza = ma.getElementAt(2, 2);
-        final double mxya = ma.getElementAt(0, 1);
-        final double mxza = ma.getElementAt(0, 2);
-        final double myxa = ma.getElementAt(1, 0);
-        final double myza = ma.getElementAt(1, 2);
-        final double mzxa = ma.getElementAt(2, 0);
-        final double mzya = ma.getElementAt(2, 1);
+        final var sxa = ma.getElementAt(0, 0);
+        final var sya = ma.getElementAt(1, 1);
+        final var sza = ma.getElementAt(2, 2);
+        final var mxya = ma.getElementAt(0, 1);
+        final var mxza = ma.getElementAt(0, 2);
+        final var myxa = ma.getElementAt(1, 0);
+        final var myza = ma.getElementAt(1, 2);
+        final var mzxa = ma.getElementAt(2, 0);
+        final var mzya = ma.getElementAt(2, 1);
 
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores,
-                sequences, bias, mg, gg, baArray, ma);
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences, bias, mg, gg, baArray,
+                ma);
 
         // check default values
         assertEquals(baX, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(baY, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(baZ, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(baX, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(baY, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(baZ, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] ba1 = calibrator.getAccelerometerBias();
+        final var ba1 = calibrator.getAccelerometerBias();
         assertArrayEquals(ba1, baArray, 0.0);
-        final double[] ba2 = new double[3];
+        final var ba2 = new double[3];
         calibrator.getAccelerometerBias(ba2);
         assertArrayEquals(ba1, ba2, 0.0);
-        final Matrix ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
+        final var ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
         assertEquals(ba1Matrix, ba);
-        final Matrix ba2Matrix = new Matrix(3, 1);
+        final var ba2Matrix = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2Matrix);
         assertEquals(ba1Matrix, ba2Matrix);
         assertEquals(sxa, calibrator.getAccelerometerSx(), 0.0);
@@ -5539,42 +5552,42 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(myza, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(mzxa, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(mzya, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
+        final var ma1 = calibrator.getAccelerometerMa();
         assertEquals(ma1, ma);
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(bgy, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bgz, calibrator.getInitialBiasZ(), 0.0);
 
-        final AngularSpeed angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(bgx, angularSpeedX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
 
-        final AngularSpeed angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(bgy, angularSpeedY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
 
-        final AngularSpeed angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(bgz, angularSpeedZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
 
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bgx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(bgy, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bgz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
 
@@ -5588,27 +5601,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] bg1 = calibrator.getInitialBias();
+        final var bg1 = calibrator.getInitialBias();
         assertArrayEquals(bg1, bias, 0.0);
-        final double[] bg2 = new double[3];
+        final var bg2 = new double[3];
         calibrator.getInitialBias(bg2);
         assertArrayEquals(bg1, bg2, 0.0);
 
-        final Matrix bg1Matrix = calibrator.getInitialBiasAsMatrix();
+        final var bg1Matrix = calibrator.getInitialBiasAsMatrix();
         assertEquals(bg1Matrix, bg);
-        final Matrix bg2Matrix = new Matrix(3, 1);
+        final var bg2Matrix = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bg2Matrix);
         assertEquals(bg1Matrix, bg2Matrix);
 
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
 
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
 
@@ -5625,7 +5638,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
-        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
@@ -5717,81 +5731,81 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testConstructor24() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
+    void testConstructor24() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
 
-        final Matrix bg = generateBg();
-        final Matrix mg = generateGeneralMg();
-        final Matrix gg = generateGg();
+        final var bg = generateBg();
+        final var mg = generateGeneralMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double[] bias = bg.getBuffer();
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final Matrix ba = generateBa();
-        final Matrix ma = generateMa();
-        final double[] baArray = ba.getBuffer();
+        final var ba = generateBa();
+        final var ma = generateMa();
+        final var baArray = ba.getBuffer();
 
-        final double baX = ba.getElementAtIndex(0);
-        final double baY = ba.getElementAtIndex(1);
-        final double baZ = ba.getElementAtIndex(2);
+        final var baX = ba.getElementAtIndex(0);
+        final var baY = ba.getElementAtIndex(1);
+        final var baZ = ba.getElementAtIndex(2);
 
-        final double sxa = ma.getElementAt(0, 0);
-        final double sya = ma.getElementAt(1, 1);
-        final double sza = ma.getElementAt(2, 2);
-        final double mxya = ma.getElementAt(0, 1);
-        final double mxza = ma.getElementAt(0, 2);
-        final double myxa = ma.getElementAt(1, 0);
-        final double myza = ma.getElementAt(1, 2);
-        final double mzxa = ma.getElementAt(2, 0);
-        final double mzya = ma.getElementAt(2, 1);
+        final var sxa = ma.getElementAt(0, 0);
+        final var sya = ma.getElementAt(1, 1);
+        final var sza = ma.getElementAt(2, 2);
+        final var mxya = ma.getElementAt(0, 1);
+        final var mxza = ma.getElementAt(0, 2);
+        final var myxa = ma.getElementAt(1, 0);
+        final var myza = ma.getElementAt(1, 2);
+        final var mzxa = ma.getElementAt(2, 0);
+        final var mzya = ma.getElementAt(2, 1);
 
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores,
-                sequences, bias, mg, gg, baArray, ma, this);
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences, bias, mg, gg, baArray,
+                ma, this);
 
         // check default values
         assertEquals(baX, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(baY, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(baZ, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(baX, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(baY, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(baZ, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] ba1 = calibrator.getAccelerometerBias();
+        final var ba1 = calibrator.getAccelerometerBias();
         assertArrayEquals(ba1, baArray, 0.0);
-        final double[] ba2 = new double[3];
+        final var ba2 = new double[3];
         calibrator.getAccelerometerBias(ba2);
         assertArrayEquals(ba1, ba2, 0.0);
-        final Matrix ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
+        final var ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
         assertEquals(ba1Matrix, ba);
-        final Matrix ba2Matrix = new Matrix(3, 1);
+        final var ba2Matrix = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2Matrix);
         assertEquals(ba1Matrix, ba2Matrix);
         assertEquals(sxa, calibrator.getAccelerometerSx(), 0.0);
@@ -5803,42 +5817,42 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(myza, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(mzxa, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(mzya, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
+        final var ma1 = calibrator.getAccelerometerMa();
         assertEquals(ma1, ma);
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(bgy, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bgz, calibrator.getInitialBiasZ(), 0.0);
 
-        final AngularSpeed angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(bgx, angularSpeedX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
 
-        final AngularSpeed angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(bgy, angularSpeedY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
 
-        final AngularSpeed angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(bgz, angularSpeedZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
 
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bgx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(bgy, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bgz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
 
@@ -5852,27 +5866,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] bg1 = calibrator.getInitialBias();
+        final var bg1 = calibrator.getInitialBias();
         assertArrayEquals(bg1, bias, 0.0);
-        final double[] bg2 = new double[3];
+        final var bg2 = new double[3];
         calibrator.getInitialBias(bg2);
         assertArrayEquals(bg1, bg2, 0.0);
 
-        final Matrix bg1Matrix = calibrator.getInitialBiasAsMatrix();
+        final var bg1Matrix = calibrator.getInitialBiasAsMatrix();
         assertEquals(bg1Matrix, bg);
-        final Matrix bg2Matrix = new Matrix(3, 1);
+        final var bg2Matrix = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bg2Matrix);
         assertEquals(bg1Matrix, bg2Matrix);
 
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
 
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
 
@@ -5889,7 +5903,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
-        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
@@ -5981,81 +5996,80 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testConstructor25() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
+    void testConstructor25() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
 
-        final Matrix bg = generateBg();
-        final Matrix mg = generateGeneralMg();
-        final Matrix gg = generateGg();
+        final var bg = generateBg();
+        final var mg = generateGeneralMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double[] bias = bg.getBuffer();
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final Matrix ba = generateBa();
-        final Matrix ma = generateMa();
-        final double[] baArray = ba.getBuffer();
+        final var ba = generateBa();
+        final var ma = generateMa();
+        final var baArray = ba.getBuffer();
 
-        final double baX = ba.getElementAtIndex(0);
-        final double baY = ba.getElementAtIndex(1);
-        final double baZ = ba.getElementAtIndex(2);
+        final var baX = ba.getElementAtIndex(0);
+        final var baY = ba.getElementAtIndex(1);
+        final var baZ = ba.getElementAtIndex(2);
 
-        final double sxa = ma.getElementAt(0, 0);
-        final double sya = ma.getElementAt(1, 1);
-        final double sza = ma.getElementAt(2, 2);
-        final double mxya = ma.getElementAt(0, 1);
-        final double mxza = ma.getElementAt(0, 2);
-        final double myxa = ma.getElementAt(1, 0);
-        final double myza = ma.getElementAt(1, 2);
-        final double mzxa = ma.getElementAt(2, 0);
-        final double mzya = ma.getElementAt(2, 1);
+        final var sxa = ma.getElementAt(0, 0);
+        final var sya = ma.getElementAt(1, 1);
+        final var sza = ma.getElementAt(2, 2);
+        final var mxya = ma.getElementAt(0, 1);
+        final var mxza = ma.getElementAt(0, 2);
+        final var myxa = ma.getElementAt(1, 0);
+        final var myza = ma.getElementAt(1, 2);
+        final var mzxa = ma.getElementAt(2, 0);
+        final var mzya = ma.getElementAt(2, 1);
 
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores,
-                sequences, bg, mg, gg, ba, ma);
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences, bg, mg, gg, ba, ma);
 
         // check default values
         assertEquals(baX, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(baY, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(baZ, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(baX, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(baY, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(baZ, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] ba1 = calibrator.getAccelerometerBias();
+        final var ba1 = calibrator.getAccelerometerBias();
         assertArrayEquals(ba1, baArray, 0.0);
-        final double[] ba2 = new double[3];
+        final var ba2 = new double[3];
         calibrator.getAccelerometerBias(ba2);
         assertArrayEquals(ba1, ba2, 0.0);
-        final Matrix ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
+        final var ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
         assertEquals(ba1Matrix, ba);
-        final Matrix ba2Matrix = new Matrix(3, 1);
+        final var ba2Matrix = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2Matrix);
         assertEquals(ba1Matrix, ba2Matrix);
         assertEquals(sxa, calibrator.getAccelerometerSx(), 0.0);
@@ -6067,42 +6081,42 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(myza, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(mzxa, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(mzya, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
+        final var ma1 = calibrator.getAccelerometerMa();
         assertEquals(ma1, ma);
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(bgy, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bgz, calibrator.getInitialBiasZ(), 0.0);
 
-        final AngularSpeed angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(bgx, angularSpeedX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
 
-        final AngularSpeed angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(bgy, angularSpeedY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
 
-        final AngularSpeed angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(bgz, angularSpeedZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
 
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bgx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(bgy, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bgz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
 
@@ -6116,27 +6130,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] bg1 = calibrator.getInitialBias();
+        final var bg1 = calibrator.getInitialBias();
         assertArrayEquals(bg1, bias, 0.0);
-        final double[] bg2 = new double[3];
+        final var bg2 = new double[3];
         calibrator.getInitialBias(bg2);
         assertArrayEquals(bg1, bg2, 0.0);
 
-        final Matrix bg1Matrix = calibrator.getInitialBiasAsMatrix();
+        final var bg1Matrix = calibrator.getInitialBiasAsMatrix();
         assertEquals(bg1Matrix, bg);
-        final Matrix bg2Matrix = new Matrix(3, 1);
+        final var bg2Matrix = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bg2Matrix);
         assertEquals(bg1Matrix, bg2Matrix);
 
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
 
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
 
@@ -6153,7 +6167,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
-        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 
+                0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
@@ -6253,81 +6268,81 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testConstructor26() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
+    void testConstructor26() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
 
-        final Matrix bg = generateBg();
-        final Matrix mg = generateGeneralMg();
-        final Matrix gg = generateGg();
+        final var bg = generateBg();
+        final var mg = generateGeneralMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double[] bias = bg.getBuffer();
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final Matrix ba = generateBa();
-        final Matrix ma = generateMa();
-        final double[] baArray = ba.getBuffer();
+        final var ba = generateBa();
+        final var ma = generateMa();
+        final var baArray = ba.getBuffer();
 
-        final double baX = ba.getElementAtIndex(0);
-        final double baY = ba.getElementAtIndex(1);
-        final double baZ = ba.getElementAtIndex(2);
+        final var baX = ba.getElementAtIndex(0);
+        final var baY = ba.getElementAtIndex(1);
+        final var baZ = ba.getElementAtIndex(2);
 
-        final double sxa = ma.getElementAt(0, 0);
-        final double sya = ma.getElementAt(1, 1);
-        final double sza = ma.getElementAt(2, 2);
-        final double mxya = ma.getElementAt(0, 1);
-        final double mxza = ma.getElementAt(0, 2);
-        final double myxa = ma.getElementAt(1, 0);
-        final double myza = ma.getElementAt(1, 2);
-        final double mzxa = ma.getElementAt(2, 0);
-        final double mzya = ma.getElementAt(2, 1);
+        final var sxa = ma.getElementAt(0, 0);
+        final var sya = ma.getElementAt(1, 1);
+        final var sza = ma.getElementAt(2, 2);
+        final var mxya = ma.getElementAt(0, 1);
+        final var mxza = ma.getElementAt(0, 2);
+        final var myxa = ma.getElementAt(1, 0);
+        final var myza = ma.getElementAt(1, 2);
+        final var mzxa = ma.getElementAt(2, 0);
+        final var mzya = ma.getElementAt(2, 1);
 
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores,
-                sequences, bg, mg, gg, ba, ma, this);
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences, bg, mg, gg, ba, ma,
+                this);
 
         // check default values
         assertEquals(baX, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(baY, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(baZ, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(baX, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(baY, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(baZ, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] ba1 = calibrator.getAccelerometerBias();
+        final var ba1 = calibrator.getAccelerometerBias();
         assertArrayEquals(ba1, baArray, 0.0);
-        final double[] ba2 = new double[3];
+        final var ba2 = new double[3];
         calibrator.getAccelerometerBias(ba2);
         assertArrayEquals(ba1, ba2, 0.0);
-        final Matrix ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
+        final var ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
         assertEquals(ba1Matrix, ba);
-        final Matrix ba2Matrix = new Matrix(3, 1);
+        final var ba2Matrix = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2Matrix);
         assertEquals(ba1Matrix, ba2Matrix);
         assertEquals(sxa, calibrator.getAccelerometerSx(), 0.0);
@@ -6339,42 +6354,42 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(myza, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(mzxa, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(mzya, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
+        final var ma1 = calibrator.getAccelerometerMa();
         assertEquals(ma1, ma);
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(bgy, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bgz, calibrator.getInitialBiasZ(), 0.0);
 
-        final AngularSpeed angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(bgx, angularSpeedX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
 
-        final AngularSpeed angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(bgy, angularSpeedY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
 
-        final AngularSpeed angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(bgz, angularSpeedZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
 
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bgx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(bgy, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bgz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
 
@@ -6388,27 +6403,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] bg1 = calibrator.getInitialBias();
+        final var bg1 = calibrator.getInitialBias();
         assertArrayEquals(bg1, bias, 0.0);
-        final double[] bg2 = new double[3];
+        final var bg2 = new double[3];
         calibrator.getInitialBias(bg2);
         assertArrayEquals(bg1, bg2, 0.0);
 
-        final Matrix bg1Matrix = calibrator.getInitialBiasAsMatrix();
+        final var bg1Matrix = calibrator.getInitialBiasAsMatrix();
         assertEquals(bg1Matrix, bg);
-        final Matrix bg2Matrix = new Matrix(3, 1);
+        final var bg2Matrix = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bg2Matrix);
         assertEquals(bg1Matrix, bg2Matrix);
 
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
 
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
 
@@ -6425,7 +6440,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
-        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 
+                0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
@@ -6525,61 +6541,61 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testConstructor27() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
+    void testConstructor27() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
 
-        final Matrix bg = generateBg();
-        final Matrix mg = generateGeneralMg();
-        final Matrix gg = generateGg();
+        final var bg = generateBg();
+        final var mg = generateGeneralMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores,
-                sequences, false, false, bg, mg, gg);
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences, false,
+                false, bg, mg, gg);
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] ba1 = calibrator.getAccelerometerBias();
+        final var ba1 = calibrator.getAccelerometerBias();
         assertArrayEquals(new double[3], ba1, 0.0);
-        final double[] ba2 = new double[3];
+        final var ba2 = new double[3];
         calibrator.getAccelerometerBias(ba2);
         assertArrayEquals(ba1, ba2, 0.0);
-        final Matrix ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
-        assertEquals(ba1Matrix, new Matrix(3, 1));
-        final Matrix ba2Matrix = new Matrix(3, 1);
+        final var ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), ba1Matrix);
+        final var ba2Matrix = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2Matrix);
         assertEquals(ba1Matrix, ba2Matrix);
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
@@ -6591,42 +6607,42 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
-        assertEquals(ma1, new Matrix(3, 3));
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = calibrator.getAccelerometerMa();
+        assertEquals(new Matrix(3, 3), ma1);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(bgy, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bgz, calibrator.getInitialBiasZ(), 0.0);
 
-        final AngularSpeed angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(bgx, angularSpeedX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
 
-        final AngularSpeed angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(bgy, angularSpeedY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
 
-        final AngularSpeed angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(bgz, angularSpeedZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
 
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bgx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(bgy, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bgz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
 
@@ -6640,27 +6656,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] bg1 = calibrator.getInitialBias();
+        final var bg1 = calibrator.getInitialBias();
         assertArrayEquals(bg1, bg.getBuffer(), 0.0);
-        final double[] bg2 = new double[3];
+        final var bg2 = new double[3];
         calibrator.getInitialBias(bg2);
         assertArrayEquals(bg1, bg2, 0.0);
 
-        final Matrix bg1Matrix = calibrator.getInitialBiasAsMatrix();
+        final var bg1Matrix = calibrator.getInitialBiasAsMatrix();
         assertEquals(bg1Matrix, bg);
-        final Matrix bg2Matrix = new Matrix(3, 1);
+        final var bg2Matrix = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bg2Matrix);
         assertEquals(bg1Matrix, bg2Matrix);
 
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
 
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
 
@@ -6677,7 +6693,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
-        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
@@ -6765,61 +6782,61 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testConstructor28() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
+    void testConstructor28() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
 
-        final Matrix bg = generateBg();
-        final Matrix mg = generateGeneralMg();
-        final Matrix gg = generateGg();
+        final var bg = generateBg();
+        final var mg = generateGeneralMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores,
-                sequences, false, false, bg, mg, gg, this);
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences, false,
+                false, bg, mg, gg, this);
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] ba1 = calibrator.getAccelerometerBias();
+        final var ba1 = calibrator.getAccelerometerBias();
         assertArrayEquals(new double[3], ba1, 0.0);
-        final double[] ba2 = new double[3];
+        final var ba2 = new double[3];
         calibrator.getAccelerometerBias(ba2);
         assertArrayEquals(ba1, ba2, 0.0);
-        final Matrix ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
-        assertEquals(ba1Matrix, new Matrix(3, 1));
-        final Matrix ba2Matrix = new Matrix(3, 1);
+        final var ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), ba1Matrix);
+        final var ba2Matrix = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2Matrix);
         assertEquals(ba1Matrix, ba2Matrix);
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
@@ -6831,42 +6848,42 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
-        assertEquals(ma1, new Matrix(3, 3));
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = calibrator.getAccelerometerMa();
+        assertEquals(new Matrix(3, 3), ma1);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(bgy, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bgz, calibrator.getInitialBiasZ(), 0.0);
 
-        final AngularSpeed angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(bgx, angularSpeedX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
 
-        final AngularSpeed angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(bgy, angularSpeedY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
 
-        final AngularSpeed angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(bgz, angularSpeedZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
 
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bgx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(bgy, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bgz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
 
@@ -6880,27 +6897,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] bg1 = calibrator.getInitialBias();
+        final var bg1 = calibrator.getInitialBias();
         assertArrayEquals(bg1, bg.getBuffer(), 0.0);
-        final double[] bg2 = new double[3];
+        final var bg2 = new double[3];
         calibrator.getInitialBias(bg2);
         assertArrayEquals(bg1, bg2, 0.0);
 
-        final Matrix bg1Matrix = calibrator.getInitialBiasAsMatrix();
+        final var bg1Matrix = calibrator.getInitialBiasAsMatrix();
         assertEquals(bg1Matrix, bg);
-        final Matrix bg2Matrix = new Matrix(3, 1);
+        final var bg2Matrix = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bg2Matrix);
         assertEquals(bg1Matrix, bg2Matrix);
 
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
 
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
 
@@ -6917,7 +6934,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
-        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 
+                0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
@@ -7005,63 +7023,63 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testConstructor29() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
+    void testConstructor29() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
 
-        final Matrix bg = generateBg();
-        final Matrix mg = generateGeneralMg();
-        final Matrix gg = generateGg();
+        final var bg = generateBg();
+        final var mg = generateGeneralMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double[] bias = bg.getBuffer();
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores,
-                sequences, false, false, bias, mg, gg);
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences, false,
+                false, bias, mg, gg);
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] ba1 = calibrator.getAccelerometerBias();
+        final var ba1 = calibrator.getAccelerometerBias();
         assertArrayEquals(new double[3], ba1, 0.0);
-        final double[] ba2 = new double[3];
+        final var ba2 = new double[3];
         calibrator.getAccelerometerBias(ba2);
         assertArrayEquals(ba1, ba2, 0.0);
-        final Matrix ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
-        assertEquals(ba1Matrix, new Matrix(3, 1));
-        final Matrix ba2Matrix = new Matrix(3, 1);
+        final var ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), ba1Matrix);
+        final var ba2Matrix = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2Matrix);
         assertEquals(ba1Matrix, ba2Matrix);
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
@@ -7073,42 +7091,42 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
-        assertEquals(ma1, new Matrix(3, 3));
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = calibrator.getAccelerometerMa();
+        assertEquals(new Matrix(3, 3), ma1);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(bgy, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bgz, calibrator.getInitialBiasZ(), 0.0);
 
-        final AngularSpeed angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(bgx, angularSpeedX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
 
-        final AngularSpeed angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(bgy, angularSpeedY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
 
-        final AngularSpeed angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(bgz, angularSpeedZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
 
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bgx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(bgy, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bgz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
 
@@ -7122,27 +7140,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] bg1 = calibrator.getInitialBias();
+        final var bg1 = calibrator.getInitialBias();
         assertArrayEquals(bg1, bias, 0.0);
-        final double[] bg2 = new double[3];
+        final var bg2 = new double[3];
         calibrator.getInitialBias(bg2);
         assertArrayEquals(bg1, bg2, 0.0);
 
-        final Matrix bg1Matrix = calibrator.getInitialBiasAsMatrix();
+        final var bg1Matrix = calibrator.getInitialBiasAsMatrix();
         assertEquals(bg1Matrix, bg);
-        final Matrix bg2Matrix = new Matrix(3, 1);
+        final var bg2Matrix = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bg2Matrix);
         assertEquals(bg1Matrix, bg2Matrix);
 
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
 
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
 
@@ -7159,7 +7177,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
-        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 
+                0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
@@ -7243,63 +7262,63 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testConstructor30() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
+    void testConstructor30() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
 
-        final Matrix bg = generateBg();
-        final Matrix mg = generateGeneralMg();
-        final Matrix gg = generateGg();
+        final var bg = generateBg();
+        final var mg = generateGeneralMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double[] bias = bg.getBuffer();
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores,
-                sequences, false, false, bias, mg, gg, this);
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences, false,
+                false, bias, mg, gg, this);
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] ba1 = calibrator.getAccelerometerBias();
+        final var ba1 = calibrator.getAccelerometerBias();
         assertArrayEquals(new double[3], ba1, 0.0);
-        final double[] ba2 = new double[3];
+        final var ba2 = new double[3];
         calibrator.getAccelerometerBias(ba2);
         assertArrayEquals(ba1, ba2, 0.0);
-        final Matrix ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
-        assertEquals(ba1Matrix, new Matrix(3, 1));
-        final Matrix ba2Matrix = new Matrix(3, 1);
+        final var ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), ba1Matrix);
+        final var ba2Matrix = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2Matrix);
         assertEquals(ba1Matrix, ba2Matrix);
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
@@ -7311,42 +7330,42 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
-        assertEquals(ma1, new Matrix(3, 3));
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = calibrator.getAccelerometerMa();
+        assertEquals(new Matrix(3, 3), ma1);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(bgy, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bgz, calibrator.getInitialBiasZ(), 0.0);
 
-        final AngularSpeed angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(bgx, angularSpeedX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
 
-        final AngularSpeed angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(bgy, angularSpeedY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
 
-        final AngularSpeed angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(bgz, angularSpeedZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
 
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bgx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(bgy, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bgz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
 
@@ -7360,27 +7379,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] bg1 = calibrator.getInitialBias();
+        final var bg1 = calibrator.getInitialBias();
         assertArrayEquals(bg1, bias, 0.0);
-        final double[] bg2 = new double[3];
+        final var bg2 = new double[3];
         calibrator.getInitialBias(bg2);
         assertArrayEquals(bg1, bg2, 0.0);
 
-        final Matrix bg1Matrix = calibrator.getInitialBiasAsMatrix();
+        final var bg1Matrix = calibrator.getInitialBiasAsMatrix();
         assertEquals(bg1Matrix, bg);
-        final Matrix bg2Matrix = new Matrix(3, 1);
+        final var bg2Matrix = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bg2Matrix);
         assertEquals(bg1Matrix, bg2Matrix);
 
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
 
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
 
@@ -7397,7 +7416,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
-        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 
+                0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
@@ -7482,81 +7502,81 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testConstructor31() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
+    void testConstructor31() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
 
-        final Matrix bg = generateBg();
-        final Matrix mg = generateGeneralMg();
-        final Matrix gg = generateGg();
+        final var bg = generateBg();
+        final var mg = generateGeneralMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double[] bias = bg.getBuffer();
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final Matrix ba = generateBa();
-        final Matrix ma = generateMa();
-        final double[] baArray = ba.getBuffer();
+        final var ba = generateBa();
+        final var ma = generateMa();
+        final var baArray = ba.getBuffer();
 
-        final double baX = ba.getElementAtIndex(0);
-        final double baY = ba.getElementAtIndex(1);
-        final double baZ = ba.getElementAtIndex(2);
+        final var baX = ba.getElementAtIndex(0);
+        final var baY = ba.getElementAtIndex(1);
+        final var baZ = ba.getElementAtIndex(2);
 
-        final double sxa = ma.getElementAt(0, 0);
-        final double sya = ma.getElementAt(1, 1);
-        final double sza = ma.getElementAt(2, 2);
-        final double mxya = ma.getElementAt(0, 1);
-        final double mxza = ma.getElementAt(0, 2);
-        final double myxa = ma.getElementAt(1, 0);
-        final double myza = ma.getElementAt(1, 2);
-        final double mzxa = ma.getElementAt(2, 0);
-        final double mzya = ma.getElementAt(2, 1);
+        final var sxa = ma.getElementAt(0, 0);
+        final var sya = ma.getElementAt(1, 1);
+        final var sza = ma.getElementAt(2, 2);
+        final var mxya = ma.getElementAt(0, 1);
+        final var mxza = ma.getElementAt(0, 2);
+        final var myxa = ma.getElementAt(1, 0);
+        final var myza = ma.getElementAt(1, 2);
+        final var mzxa = ma.getElementAt(2, 0);
+        final var mzya = ma.getElementAt(2, 1);
 
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores,
-                sequences, false, false, bias, mg, gg, baArray, ma);
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences, false,
+                false, bias, mg, gg, baArray, ma);
 
         // check default values
         assertEquals(baX, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(baY, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(baZ, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(baX, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(baY, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(baZ, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] ba1 = calibrator.getAccelerometerBias();
+        final var ba1 = calibrator.getAccelerometerBias();
         assertArrayEquals(ba1, baArray, 0.0);
-        final double[] ba2 = new double[3];
+        final var ba2 = new double[3];
         calibrator.getAccelerometerBias(ba2);
         assertArrayEquals(ba1, ba2, 0.0);
-        final Matrix ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
+        final var ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
         assertEquals(ba1Matrix, ba);
-        final Matrix ba2Matrix = new Matrix(3, 1);
+        final var ba2Matrix = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2Matrix);
         assertEquals(ba1Matrix, ba2Matrix);
         assertEquals(sxa, calibrator.getAccelerometerSx(), 0.0);
@@ -7568,42 +7588,42 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(myza, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(mzxa, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(mzya, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
+        final var ma1 = calibrator.getAccelerometerMa();
         assertEquals(ma1, ma);
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(bgy, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bgz, calibrator.getInitialBiasZ(), 0.0);
 
-        final AngularSpeed angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(bgx, angularSpeedX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
 
-        final AngularSpeed angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(bgy, angularSpeedY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
 
-        final AngularSpeed angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(bgz, angularSpeedZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
 
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bgx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(bgy, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bgz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
 
@@ -7617,27 +7637,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] bg1 = calibrator.getInitialBias();
+        final var bg1 = calibrator.getInitialBias();
         assertArrayEquals(bg1, bias, 0.0);
-        final double[] bg2 = new double[3];
+        final var bg2 = new double[3];
         calibrator.getInitialBias(bg2);
         assertArrayEquals(bg1, bg2, 0.0);
 
-        final Matrix bg1Matrix = calibrator.getInitialBiasAsMatrix();
+        final var bg1Matrix = calibrator.getInitialBiasAsMatrix();
         assertEquals(bg1Matrix, bg);
-        final Matrix bg2Matrix = new Matrix(3, 1);
+        final var bg2Matrix = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bg2Matrix);
         assertEquals(bg1Matrix, bg2Matrix);
 
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
 
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
 
@@ -7654,7 +7674,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
-        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 
+                0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
@@ -7746,82 +7767,81 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testConstructor32() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
+    void testConstructor32() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
 
-        final Matrix bg = generateBg();
-        final Matrix mg = generateGeneralMg();
-        final Matrix gg = generateGg();
+        final var bg = generateBg();
+        final var mg = generateGeneralMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double[] bias = bg.getBuffer();
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final Matrix ba = generateBa();
-        final Matrix ma = generateMa();
-        final double[] baArray = ba.getBuffer();
+        final var ba = generateBa();
+        final var ma = generateMa();
+        final var baArray = ba.getBuffer();
 
-        final double baX = ba.getElementAtIndex(0);
-        final double baY = ba.getElementAtIndex(1);
-        final double baZ = ba.getElementAtIndex(2);
+        final var baX = ba.getElementAtIndex(0);
+        final var baY = ba.getElementAtIndex(1);
+        final var baZ = ba.getElementAtIndex(2);
 
-        final double sxa = ma.getElementAt(0, 0);
-        final double sya = ma.getElementAt(1, 1);
-        final double sza = ma.getElementAt(2, 2);
-        final double mxya = ma.getElementAt(0, 1);
-        final double mxza = ma.getElementAt(0, 2);
-        final double myxa = ma.getElementAt(1, 0);
-        final double myza = ma.getElementAt(1, 2);
-        final double mzxa = ma.getElementAt(2, 0);
-        final double mzya = ma.getElementAt(2, 1);
+        final var sxa = ma.getElementAt(0, 0);
+        final var sya = ma.getElementAt(1, 1);
+        final var sza = ma.getElementAt(2, 2);
+        final var mxya = ma.getElementAt(0, 1);
+        final var mxza = ma.getElementAt(0, 2);
+        final var myxa = ma.getElementAt(1, 0);
+        final var myza = ma.getElementAt(1, 2);
+        final var mzxa = ma.getElementAt(2, 0);
+        final var mzya = ma.getElementAt(2, 1);
 
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores,
-                sequences, false, false, bias, mg, gg, baArray, ma,
-                this);
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences, false,
+                false, bias, mg, gg, baArray, ma, this);
 
         // check default values
         assertEquals(baX, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(baY, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(baZ, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(baX, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(baY, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(baZ, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] ba1 = calibrator.getAccelerometerBias();
+        final var ba1 = calibrator.getAccelerometerBias();
         assertArrayEquals(ba1, baArray, 0.0);
-        final double[] ba2 = new double[3];
+        final var ba2 = new double[3];
         calibrator.getAccelerometerBias(ba2);
         assertArrayEquals(ba1, ba2, 0.0);
-        final Matrix ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
+        final var ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
         assertEquals(ba1Matrix, ba);
-        final Matrix ba2Matrix = new Matrix(3, 1);
+        final var ba2Matrix = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2Matrix);
         assertEquals(ba1Matrix, ba2Matrix);
         assertEquals(sxa, calibrator.getAccelerometerSx(), 0.0);
@@ -7833,42 +7853,42 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(myza, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(mzxa, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(mzya, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
+        final var ma1 = calibrator.getAccelerometerMa();
         assertEquals(ma1, ma);
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(bgy, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bgz, calibrator.getInitialBiasZ(), 0.0);
 
-        final AngularSpeed angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(bgx, angularSpeedX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
 
-        final AngularSpeed angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(bgy, angularSpeedY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
 
-        final AngularSpeed angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(bgz, angularSpeedZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
 
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bgx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(bgy, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bgz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
 
@@ -7882,27 +7902,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] bg1 = calibrator.getInitialBias();
+        final var bg1 = calibrator.getInitialBias();
         assertArrayEquals(bg1, bias, 0.0);
-        final double[] bg2 = new double[3];
+        final var bg2 = new double[3];
         calibrator.getInitialBias(bg2);
         assertArrayEquals(bg1, bg2, 0.0);
 
-        final Matrix bg1Matrix = calibrator.getInitialBiasAsMatrix();
+        final var bg1Matrix = calibrator.getInitialBiasAsMatrix();
         assertEquals(bg1Matrix, bg);
-        final Matrix bg2Matrix = new Matrix(3, 1);
+        final var bg2Matrix = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bg2Matrix);
         assertEquals(bg1Matrix, bg2Matrix);
 
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
 
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
 
@@ -7919,7 +7939,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
-        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 
+                0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
@@ -8020,81 +8041,81 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testConstructor33() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
+    void testConstructor33() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
 
-        final Matrix bg = generateBg();
-        final Matrix mg = generateGeneralMg();
-        final Matrix gg = generateGg();
+        final var bg = generateBg();
+        final var mg = generateGeneralMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double[] bias = bg.getBuffer();
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final Matrix ba = generateBa();
-        final Matrix ma = generateMa();
-        final double[] baArray = ba.getBuffer();
+        final var ba = generateBa();
+        final var ma = generateMa();
+        final var baArray = ba.getBuffer();
 
-        final double baX = ba.getElementAtIndex(0);
-        final double baY = ba.getElementAtIndex(1);
-        final double baZ = ba.getElementAtIndex(2);
+        final var baX = ba.getElementAtIndex(0);
+        final var baY = ba.getElementAtIndex(1);
+        final var baZ = ba.getElementAtIndex(2);
 
-        final double sxa = ma.getElementAt(0, 0);
-        final double sya = ma.getElementAt(1, 1);
-        final double sza = ma.getElementAt(2, 2);
-        final double mxya = ma.getElementAt(0, 1);
-        final double mxza = ma.getElementAt(0, 2);
-        final double myxa = ma.getElementAt(1, 0);
-        final double myza = ma.getElementAt(1, 2);
-        final double mzxa = ma.getElementAt(2, 0);
-        final double mzya = ma.getElementAt(2, 1);
+        final var sxa = ma.getElementAt(0, 0);
+        final var sya = ma.getElementAt(1, 1);
+        final var sza = ma.getElementAt(2, 2);
+        final var mxya = ma.getElementAt(0, 1);
+        final var mxza = ma.getElementAt(0, 2);
+        final var myxa = ma.getElementAt(1, 0);
+        final var myza = ma.getElementAt(1, 2);
+        final var mzxa = ma.getElementAt(2, 0);
+        final var mzya = ma.getElementAt(2, 1);
 
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores,
-                sequences, false, false, bg, mg, gg, ba, ma);
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences, false,
+                false, bg, mg, gg, ba, ma);
 
         // check default values
         assertEquals(baX, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(baY, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(baZ, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(baX, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(baY, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(baZ, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] ba1 = calibrator.getAccelerometerBias();
+        final var ba1 = calibrator.getAccelerometerBias();
         assertArrayEquals(ba1, baArray, 0.0);
-        final double[] ba2 = new double[3];
+        final var ba2 = new double[3];
         calibrator.getAccelerometerBias(ba2);
         assertArrayEquals(ba1, ba2, 0.0);
-        final Matrix ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
+        final var ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
         assertEquals(ba1Matrix, ba);
-        final Matrix ba2Matrix = new Matrix(3, 1);
+        final var ba2Matrix = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2Matrix);
         assertEquals(ba1Matrix, ba2Matrix);
         assertEquals(sxa, calibrator.getAccelerometerSx(), 0.0);
@@ -8106,42 +8127,42 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(myza, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(mzxa, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(mzya, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
+        final var ma1 = calibrator.getAccelerometerMa();
         assertEquals(ma1, ma);
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(bgy, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bgz, calibrator.getInitialBiasZ(), 0.0);
 
-        final AngularSpeed angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(bgx, angularSpeedX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
 
-        final AngularSpeed angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(bgy, angularSpeedY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
 
-        final AngularSpeed angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(bgz, angularSpeedZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
 
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bgx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(bgy, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bgz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
 
@@ -8155,27 +8176,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] bg1 = calibrator.getInitialBias();
+        final var bg1 = calibrator.getInitialBias();
         assertArrayEquals(bg1, bias, 0.0);
-        final double[] bg2 = new double[3];
+        final var bg2 = new double[3];
         calibrator.getInitialBias(bg2);
         assertArrayEquals(bg1, bg2, 0.0);
 
-        final Matrix bg1Matrix = calibrator.getInitialBiasAsMatrix();
+        final var bg1Matrix = calibrator.getInitialBiasAsMatrix();
         assertEquals(bg1Matrix, bg);
-        final Matrix bg2Matrix = new Matrix(3, 1);
+        final var bg2Matrix = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bg2Matrix);
         assertEquals(bg1Matrix, bg2Matrix);
 
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
 
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
 
@@ -8192,7 +8213,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
-        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 
+                0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
@@ -8292,81 +8314,81 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testConstructor34() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
+    void testConstructor34() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
 
-        final Matrix bg = generateBg();
-        final Matrix mg = generateGeneralMg();
-        final Matrix gg = generateGg();
+        final var bg = generateBg();
+        final var mg = generateGeneralMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double[] bias = bg.getBuffer();
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final Matrix ba = generateBa();
-        final Matrix ma = generateMa();
-        final double[] baArray = ba.getBuffer();
+        final var ba = generateBa();
+        final var ma = generateMa();
+        final var baArray = ba.getBuffer();
 
-        final double baX = ba.getElementAtIndex(0);
-        final double baY = ba.getElementAtIndex(1);
-        final double baZ = ba.getElementAtIndex(2);
+        final var baX = ba.getElementAtIndex(0);
+        final var baY = ba.getElementAtIndex(1);
+        final var baZ = ba.getElementAtIndex(2);
 
-        final double sxa = ma.getElementAt(0, 0);
-        final double sya = ma.getElementAt(1, 1);
-        final double sza = ma.getElementAt(2, 2);
-        final double mxya = ma.getElementAt(0, 1);
-        final double mxza = ma.getElementAt(0, 2);
-        final double myxa = ma.getElementAt(1, 0);
-        final double myza = ma.getElementAt(1, 2);
-        final double mzxa = ma.getElementAt(2, 0);
-        final double mzya = ma.getElementAt(2, 1);
+        final var sxa = ma.getElementAt(0, 0);
+        final var sya = ma.getElementAt(1, 1);
+        final var sza = ma.getElementAt(2, 2);
+        final var mxya = ma.getElementAt(0, 1);
+        final var mxza = ma.getElementAt(0, 2);
+        final var myxa = ma.getElementAt(1, 0);
+        final var myza = ma.getElementAt(1, 2);
+        final var mzxa = ma.getElementAt(2, 0);
+        final var mzya = ma.getElementAt(2, 1);
 
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores,
-                sequences, false, false, bg, mg, gg, ba, ma, this);
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences, false,
+                false, bg, mg, gg, ba, ma, this);
 
         // check default values
         assertEquals(baX, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(baY, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(baZ, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(baX, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(baY, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(baZ, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] ba1 = calibrator.getAccelerometerBias();
+        final var ba1 = calibrator.getAccelerometerBias();
         assertArrayEquals(ba1, baArray, 0.0);
-        final double[] ba2 = new double[3];
+        final var ba2 = new double[3];
         calibrator.getAccelerometerBias(ba2);
         assertArrayEquals(ba1, ba2, 0.0);
-        final Matrix ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
+        final var ba1Matrix = calibrator.getAccelerometerBiasAsMatrix();
         assertEquals(ba1Matrix, ba);
-        final Matrix ba2Matrix = new Matrix(3, 1);
+        final var ba2Matrix = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2Matrix);
         assertEquals(ba1Matrix, ba2Matrix);
         assertEquals(sxa, calibrator.getAccelerometerSx(), 0.0);
@@ -8378,42 +8400,42 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(myza, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(mzxa, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(mzya, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
+        final var ma1 = calibrator.getAccelerometerMa();
         assertEquals(ma1, ma);
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(bgy, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bgz, calibrator.getInitialBiasZ(), 0.0);
 
-        final AngularSpeed angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(bgx, angularSpeedX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
 
-        final AngularSpeed angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(bgy, angularSpeedY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
 
-        final AngularSpeed angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(bgz, angularSpeedZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
 
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bgx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(bgy, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bgz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
 
@@ -8427,27 +8449,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] bg1 = calibrator.getInitialBias();
+        final var bg1 = calibrator.getInitialBias();
         assertArrayEquals(bg1, bias, 0.0);
-        final double[] bg2 = new double[3];
+        final var bg2 = new double[3];
         calibrator.getInitialBias(bg2);
         assertArrayEquals(bg1, bg2, 0.0);
 
-        final Matrix bg1Matrix = calibrator.getInitialBiasAsMatrix();
+        final var bg1Matrix = calibrator.getInitialBiasAsMatrix();
         assertEquals(bg1Matrix, bg);
-        final Matrix bg2Matrix = new Matrix(3, 1);
+        final var bg2Matrix = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bg2Matrix);
         assertEquals(bg1Matrix, bg2Matrix);
 
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
 
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
 
@@ -8565,8 +8587,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetThreshold() throws LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetThreshold() throws LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(), 0.0);
@@ -8582,8 +8604,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testIsSetComputeAndKeepInliersEnabled() throws LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testIsSetComputeAndKeepInliersEnabled() throws LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
         assertFalse(calibrator.isComputeAndKeepInliersEnabled());
@@ -8596,8 +8618,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testIsSetComputeAndKeepResidualsEnabled() throws LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testIsSetComputeAndKeepResidualsEnabled() throws LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
         assertFalse(calibrator.isComputeAndKeepResiduals());
@@ -8610,15 +8632,15 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetAccelerometerBiasX() throws LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetAccelerometerBiasX() throws LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
 
         // set new value
-        final Matrix ba = generateBa();
-        final double bax = ba.getElementAtIndex(0);
+        final var ba = generateBa();
+        final var bax = ba.getElementAtIndex(0);
 
         calibrator.setAccelerometerBiasX(bax);
 
@@ -8627,15 +8649,15 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetAccelerometerBiasY() throws LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetAccelerometerBiasY() throws LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
 
         // set new value
-        final Matrix ba = generateBa();
-        final double bay = ba.getElementAtIndex(1);
+        final var ba = generateBa();
+        final var bay = ba.getElementAtIndex(1);
 
         calibrator.setAccelerometerBiasY(bay);
 
@@ -8644,15 +8666,15 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetAccelerometerBiasZ() throws LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetAccelerometerBiasZ() throws LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
 
         // set new value
-        final Matrix ba = generateBa();
-        final double baz = ba.getElementAtIndex(2);
+        final var ba = generateBa();
+        final var baz = ba.getElementAtIndex(2);
 
         calibrator.setAccelerometerBiasZ(baz);
 
@@ -8661,86 +8683,86 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetAccelerometerBiasXAsAcceleration() throws LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetAccelerometerBiasXAsAcceleration() throws LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
-        final Acceleration bax1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var bax1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, bax1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, bax1.getUnit());
-        final Acceleration bax2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var bax2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(bax2);
         assertEquals(bax1, bax2);
 
         // set new value
-        final Matrix ba = generateBa();
-        final double bax = ba.getElementAtIndex(0);
-        final Acceleration bax3 = new Acceleration(bax, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var ba = generateBa();
+        final var bax = ba.getElementAtIndex(0);
+        final var bax3 = new Acceleration(bax, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.setAccelerometerBiasX(bax3);
 
         // check
-        final Acceleration bax4 = calibrator.getAccelerometerBiasXAsAcceleration();
-        final Acceleration bax5 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var bax4 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var bax5 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(bax5);
         assertEquals(bax3, bax4);
         assertEquals(bax3, bax5);
     }
 
     @Test
-    public void testGetSetAccelerometerBiasYAsAcceleration() throws LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetAccelerometerBiasYAsAcceleration() throws LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
-        final Acceleration bay1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var bay1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, bay1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, bay1.getUnit());
-        final Acceleration bay2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var bay2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(bay2);
         assertEquals(bay1, bay2);
 
         // set new value
-        final Matrix ba = generateBa();
-        final double bay = ba.getElementAtIndex(1);
-        final Acceleration bay3 = new Acceleration(bay, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var ba = generateBa();
+        final var bay = ba.getElementAtIndex(1);
+        final var bay3 = new Acceleration(bay, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.setAccelerometerBiasY(bay3);
 
         // check
-        final Acceleration bay4 = calibrator.getAccelerometerBiasYAsAcceleration();
-        final Acceleration bay5 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var bay4 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var bay5 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(bay5);
         assertEquals(bay3, bay4);
         assertEquals(bay3, bay5);
     }
 
     @Test
-    public void testGetSetAccelerometerBiasZAsAcceleration() throws LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetAccelerometerBiasZAsAcceleration() throws LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
-        final Acceleration baz1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var baz1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, baz1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, baz1.getUnit());
-        final Acceleration baz2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var baz2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(baz2);
         assertEquals(baz1, baz2);
 
         // set new value
-        final Matrix ba = generateBa();
-        final double baz = ba.getElementAtIndex(2);
-        final Acceleration baz3 = new Acceleration(baz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var ba = generateBa();
+        final var baz = ba.getElementAtIndex(2);
+        final var baz3 = new Acceleration(baz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.setAccelerometerBiasZ(baz3);
 
         // check
-        final Acceleration baz4 = calibrator.getAccelerometerBiasZAsAcceleration();
-        final Acceleration baz5 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var baz4 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var baz5 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(baz5);
         assertEquals(baz3, baz4);
         assertEquals(baz3, baz5);
     }
 
     @Test
-    public void testSetAccelerometerBias1() throws LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testSetAccelerometerBias1() throws LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
@@ -8748,10 +8770,10 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
 
         // set new value
-        final Matrix ba = generateBa();
-        final double bax = ba.getElementAtIndex(0);
-        final double bay = ba.getElementAtIndex(1);
-        final double baz = ba.getElementAtIndex(2);
+        final var ba = generateBa();
+        final var bax = ba.getElementAtIndex(0);
+        final var bay = ba.getElementAtIndex(1);
+        final var baz = ba.getElementAtIndex(2);
 
         calibrator.setAccelerometerBias(bax, bay, baz);
 
@@ -8762,8 +8784,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testSetAccelerometerBias2() throws LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testSetAccelerometerBias2() throws LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
@@ -8771,14 +8793,14 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
 
         // set new value
-        final Matrix ba = generateBa();
-        final double bax = ba.getElementAtIndex(0);
-        final double bay = ba.getElementAtIndex(1);
-        final double baz = ba.getElementAtIndex(2);
+        final var ba = generateBa();
+        final var bax = ba.getElementAtIndex(0);
+        final var bay = ba.getElementAtIndex(1);
+        final var baz = ba.getElementAtIndex(2);
 
-        final Acceleration bax1 = new Acceleration(bax, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration bay1 = new Acceleration(bay, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration baz1 = new Acceleration(baz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var bax1 = new Acceleration(bax, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var bay1 = new Acceleration(bay, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var baz1 = new Acceleration(baz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
         calibrator.setAccelerometerBias(bax1, bay1, baz1);
 
@@ -8789,24 +8811,24 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetAccelerometerBias() throws LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetAccelerometerBias() throws LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
-        final double[] ba1 = calibrator.getAccelerometerBias();
-        final double[] ba2 = new double[3];
+        final var ba1 = calibrator.getAccelerometerBias();
+        final var ba2 = new double[3];
         calibrator.getAccelerometerBias(ba2);
 
         assertArrayEquals(new double[3], ba1, 0.0);
         assertArrayEquals(ba1, ba2, 0.0);
 
         // set new value
-        final double[] ba3 = generateBa().getBuffer();
+        final var ba3 = generateBa().getBuffer();
         calibrator.setAccelerometerBias(ba3);
 
         // check
-        final double[] ba4 = calibrator.getAccelerometerBias();
-        final double[] ba5 = new double[3];
+        final var ba4 = calibrator.getAccelerometerBias();
+        final var ba5 = new double[3];
         calibrator.getAccelerometerBias(ba5);
 
         assertArrayEquals(ba3, ba4, 0.0);
@@ -8818,24 +8840,24 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetAccelerometerBiasAsMatrix() throws WrongSizeException, LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetAccelerometerBiasAsMatrix() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
-        final Matrix ba1 = calibrator.getAccelerometerBiasAsMatrix();
-        final Matrix ba2 = new Matrix(3, 1);
+        final var ba1 = calibrator.getAccelerometerBiasAsMatrix();
+        final var ba2 = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2);
 
         // check
-        assertEquals(ba1, new Matrix(3, 1));
+        assertEquals(new Matrix(3, 1), ba1);
         assertEquals(ba1, ba2);
 
         // set new value
-        final Matrix ba3 = generateBa();
+        final var ba3 = generateBa();
         calibrator.setAccelerometerBias(ba3);
 
-        final Matrix ba4 = calibrator.getAccelerometerBiasAsMatrix();
-        final Matrix ba5 = new Matrix(3, 1);
+        final var ba4 = calibrator.getAccelerometerBiasAsMatrix();
+        final var ba5 = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba5);
 
         assertEquals(ba3, ba4);
@@ -8843,15 +8865,15 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetAccelerometerSx() throws WrongSizeException, LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetAccelerometerSx() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
 
         // set new value
-        final Matrix ma = generateMa();
-        final double sxa = ma.getElementAt(0, 0);
+        final var ma = generateMa();
+        final var sxa = ma.getElementAt(0, 0);
 
         calibrator.setAccelerometerSx(sxa);
 
@@ -8860,15 +8882,15 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetAccelerometerSy() throws WrongSizeException, LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetAccelerometerSy() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
 
         // set new value
-        final Matrix ma = generateMa();
-        final double sya = ma.getElementAt(1, 1);
+        final var ma = generateMa();
+        final var sya = ma.getElementAt(1, 1);
 
         calibrator.setAccelerometerSy(sya);
 
@@ -8877,15 +8899,15 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetAccelerometerSz() throws WrongSizeException, LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetAccelerometerSz() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getAccelerometerSz(), 0.0);
 
         // set new value
-        final Matrix ma = generateMa();
-        final double sza = ma.getElementAt(2, 2);
+        final var ma = generateMa();
+        final var sza = ma.getElementAt(2, 2);
 
         calibrator.setAccelerometerSz(sza);
 
@@ -8894,15 +8916,15 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetAccelerometerMxy() throws WrongSizeException, LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetAccelerometerMxy() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getAccelerometerMxy(), 0.0);
 
         // set new value
-        final Matrix ma = generateMa();
-        final double mxya = ma.getElementAt(0, 1);
+        final var ma = generateMa();
+        final var mxya = ma.getElementAt(0, 1);
 
         calibrator.setAccelerometerMxy(mxya);
 
@@ -8911,15 +8933,15 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetAccelerometerMxz() throws WrongSizeException, LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetAccelerometerMxz() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getAccelerometerMxz(), 0.0);
 
         // set new value
-        final Matrix ma = generateMa();
-        final double mxza = ma.getElementAt(0, 2);
+        final var ma = generateMa();
+        final var mxza = ma.getElementAt(0, 2);
 
         calibrator.setAccelerometerMxz(mxza);
 
@@ -8928,15 +8950,15 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetAccelerometerMyx() throws WrongSizeException, LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetAccelerometerMyx() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getAccelerometerMyx(), 0.0);
 
         // set new value
-        final Matrix ma = generateMa();
-        final double myxa = ma.getElementAt(1, 0);
+        final var ma = generateMa();
+        final var myxa = ma.getElementAt(1, 0);
 
         calibrator.setAccelerometerMyx(myxa);
 
@@ -8945,15 +8967,15 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetAccelerometerMyz() throws WrongSizeException, LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetAccelerometerMyz() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
 
         // set new value
-        final Matrix ma = generateMa();
-        final double myza = ma.getElementAt(1, 2);
+        final var ma = generateMa();
+        final var myza = ma.getElementAt(1, 2);
 
         calibrator.setAccelerometerMyz(myza);
 
@@ -8962,15 +8984,15 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetAccelerometerMzx() throws WrongSizeException, LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetAccelerometerMzx() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
 
         // set new value
-        final Matrix ma = generateMa();
-        final double mzxa = ma.getElementAt(2, 0);
+        final var ma = generateMa();
+        final var mzxa = ma.getElementAt(2, 0);
 
         calibrator.setAccelerometerMzx(mzxa);
 
@@ -8979,15 +9001,15 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetAccelerometerMzy() throws WrongSizeException, LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetAccelerometerMzy() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
 
         // set new value
-        final Matrix ma = generateMa();
-        final double mzya = ma.getElementAt(2, 1);
+        final var ma = generateMa();
+        final var mzya = ma.getElementAt(2, 1);
 
         calibrator.setAccelerometerMzy(mzya);
 
@@ -8996,8 +9018,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testSetAccelerometerScalingFactors() throws WrongSizeException, LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testSetAccelerometerScalingFactors() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
@@ -9005,10 +9027,10 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(0.0, calibrator.getAccelerometerSz(), 0.0);
 
         // set new values
-        final Matrix ma = generateMa();
-        final double sxa = ma.getElementAt(0, 0);
-        final double sya = ma.getElementAt(1, 1);
-        final double sza = ma.getElementAt(2, 2);
+        final var ma = generateMa();
+        final var sxa = ma.getElementAt(0, 0);
+        final var sya = ma.getElementAt(1, 1);
+        final var sza = ma.getElementAt(2, 2);
 
         calibrator.setAccelerometerScalingFactors(sxa, sya, sza);
 
@@ -9019,8 +9041,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testSetAccelerometerCrossCouplingErrors() throws WrongSizeException, LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testSetAccelerometerCrossCouplingErrors() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerMxy(), 0.0);
@@ -9031,13 +9053,13 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
 
         // set new values
-        final Matrix ma = generateMa();
-        final double mxya = ma.getElementAt(0, 1);
-        final double mxza = ma.getElementAt(0, 2);
-        final double myxa = ma.getElementAt(1, 0);
-        final double myza = ma.getElementAt(1, 2);
-        final double mzxa = ma.getElementAt(2, 0);
-        final double mzya = ma.getElementAt(2, 1);
+        final var ma = generateMa();
+        final var mxya = ma.getElementAt(0, 1);
+        final var mxza = ma.getElementAt(0, 2);
+        final var myxa = ma.getElementAt(1, 0);
+        final var myza = ma.getElementAt(1, 2);
+        final var mzxa = ma.getElementAt(2, 0);
+        final var mzya = ma.getElementAt(2, 1);
 
         calibrator.setAccelerometerCrossCouplingErrors(mxya, mxza, myxa, myza, mzxa, mzya);
 
@@ -9051,8 +9073,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testSetAccelerometerScalingFactorsAndCrossCouplingErrors() throws WrongSizeException, LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testSetAccelerometerScalingFactorsAndCrossCouplingErrors() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
@@ -9066,16 +9088,16 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
 
         // set new values
-        final Matrix ma = generateMa();
-        final double sxa = ma.getElementAt(0, 0);
-        final double sya = ma.getElementAt(1, 1);
-        final double sza = ma.getElementAt(2, 2);
-        final double mxya = ma.getElementAt(0, 1);
-        final double mxza = ma.getElementAt(0, 2);
-        final double myxa = ma.getElementAt(1, 0);
-        final double myza = ma.getElementAt(1, 2);
-        final double mzxa = ma.getElementAt(2, 0);
-        final double mzya = ma.getElementAt(2, 1);
+        final var ma = generateMa();
+        final var sxa = ma.getElementAt(0, 0);
+        final var sya = ma.getElementAt(1, 1);
+        final var sza = ma.getElementAt(2, 2);
+        final var mxya = ma.getElementAt(0, 1);
+        final var mxza = ma.getElementAt(0, 2);
+        final var myxa = ma.getElementAt(1, 0);
+        final var myza = ma.getElementAt(1, 2);
+        final var mzxa = ma.getElementAt(2, 0);
+        final var mzya = ma.getElementAt(2, 1);
 
         calibrator.setAccelerometerScalingFactorsAndCrossCouplingErrors(sxa, sya, sza, mxya, mxza, myxa, myza, mzxa,
                 mzya);
@@ -9093,22 +9115,22 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetAccelerometerMa() throws WrongSizeException, LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetAccelerometerMa() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check initial value
-        assertEquals(calibrator.getAccelerometerMa(), new Matrix(3, 3));
-        final Matrix ma1 = new Matrix(3, 3);
+        assertEquals(new Matrix(3, 3), calibrator.getAccelerometerMa());
+        final var ma1 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma1);
-        assertEquals(ma1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), ma1);
 
         // set new value
-        final Matrix ma2 = generateMa();
+        final var ma2 = generateMa();
         calibrator.setAccelerometerMa(ma2);
 
         // check
         assertEquals(ma2, calibrator.getAccelerometerMa());
-        final Matrix ma3 = new Matrix(3, 3);
+        final var ma3 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma3);
         assertEquals(ma2, ma3);
 
@@ -9124,15 +9146,15 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetInitialBiasX() throws LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetInitialBiasX() throws LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
 
         // set new value
-        final Matrix bg = generateBg();
-        final double bgx = bg.getElementAtIndex(0);
+        final var bg = generateBg();
+        final var bgx = bg.getElementAtIndex(0);
 
         calibrator.setInitialBiasX(bgx);
 
@@ -9141,15 +9163,15 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetInitialBiasY() throws LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetInitialBiasY() throws LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
 
         // set new value
-        final Matrix bg = generateBg();
-        final double bgy = bg.getElementAtIndex(1);
+        final var bg = generateBg();
+        final var bgy = bg.getElementAtIndex(1);
 
         calibrator.setInitialBiasY(bgy);
 
@@ -9158,15 +9180,15 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetInitialBiasZ() throws LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetInitialBiasZ() throws LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
 
         // set new value
-        final Matrix bg = generateBg();
-        final double bgz = bg.getElementAtIndex(2);
+        final var bg = generateBg();
+        final var bgz = bg.getElementAtIndex(2);
 
         calibrator.setInitialBiasZ(bgz);
 
@@ -9175,27 +9197,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetInitialBiasAngularSpeedX() throws LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetInitialBiasAngularSpeedX() throws LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
-        final AngularSpeed bgx1 = calibrator.getInitialBiasAngularSpeedX();
+        final var bgx1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(0.0, bgx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgx1.getUnit());
 
-        final AngularSpeed bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(bgx2);
         assertEquals(bgx1, bgx2);
 
         // set new value
-        final Matrix bg = generateBg();
-        final double bgx = bg.getElementAtIndex(0);
-        final AngularSpeed bgx3 = new AngularSpeed(bgx, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bg = generateBg();
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgx3 = new AngularSpeed(bgx, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.setInitialBiasX(bgx3);
 
         // check
-        final AngularSpeed bgx4 = calibrator.getInitialBiasAngularSpeedX();
-        final AngularSpeed bgx5 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bgx4 = calibrator.getInitialBiasAngularSpeedX();
+        final var bgx5 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(bgx5);
 
         assertEquals(bgx3, bgx4);
@@ -9203,27 +9225,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetInitialBiasAngularSpeedY() throws LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetInitialBiasAngularSpeedY() throws LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
-        final AngularSpeed bgy1 = calibrator.getInitialBiasAngularSpeedY();
+        final var bgy1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(0.0, bgy1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgy1.getUnit());
 
-        final AngularSpeed bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(bgy2);
         assertEquals(bgy1, bgy2);
 
         // set new value
-        final Matrix bg = generateBg();
-        final double bgy = bg.getElementAtIndex(1);
-        final AngularSpeed bgy3 = new AngularSpeed(bgy, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bg = generateBg();
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgy3 = new AngularSpeed(bgy, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.setInitialBiasY(bgy3);
 
         // check
-        final AngularSpeed bgy4 = calibrator.getInitialBiasAngularSpeedY();
-        final AngularSpeed bgy5 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bgy4 = calibrator.getInitialBiasAngularSpeedY();
+        final var bgy5 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(bgy5);
 
         assertEquals(bgy3, bgy4);
@@ -9231,27 +9253,27 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetInitialBiasAngularSpeedZ() throws LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetInitialBiasAngularSpeedZ() throws LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
-        final AngularSpeed bgz1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var bgz1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(0.0, bgz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgz1.getUnit());
 
-        final AngularSpeed bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(bgz2);
         assertEquals(bgz1, bgz2);
 
         // set new value
-        final Matrix bg = generateBg();
-        final double bgz = bg.getElementAtIndex(2);
-        final AngularSpeed bgz3 = new AngularSpeed(bgz, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bg = generateBg();
+        final var bgz = bg.getElementAtIndex(2);
+        final var bgz3 = new AngularSpeed(bgz, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.setInitialBiasZ(bgz3);
 
         // check
-        final AngularSpeed bgz4 = calibrator.getInitialBiasAngularSpeedZ();
-        final AngularSpeed bgz5 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bgz4 = calibrator.getInitialBiasAngularSpeedZ();
+        final var bgz5 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(bgz5);
 
         assertEquals(bgz3, bgz4);
@@ -9259,8 +9281,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testSetInitialBias1() throws LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testSetInitialBias1() throws LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
@@ -9268,10 +9290,10 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
 
         // set new values
-        final Matrix bg = generateBg();
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bg = generateBg();
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
         calibrator.setInitialBias(bgx, bgy, bgz);
 
@@ -9282,8 +9304,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testSetInitialBias2() throws LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testSetInitialBias2() throws LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
@@ -9291,14 +9313,14 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
 
         // set new values
-        final Matrix bg = generateBg();
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bg = generateBg();
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final AngularSpeed bgx1 = new AngularSpeed(bgx, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed bgy1 = new AngularSpeed(bgy, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed bgz1 = new AngularSpeed(bgz, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bgx1 = new AngularSpeed(bgx, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bgy1 = new AngularSpeed(bgy, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bgz1 = new AngularSpeed(bgz, AngularSpeedUnit.RADIANS_PER_SECOND);
 
         calibrator.setInitialBias(bgx1, bgy1, bgz1);
 
@@ -9309,31 +9331,31 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetInitialBiasAsTriad() throws LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetInitialBiasAsTriad() throws LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default values
-        final AngularSpeedTriad triad1 = calibrator.getInitialBiasAsTriad();
+        final var triad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, triad1.getValueX(), 0.0);
         assertEquals(0.0, triad1.getValueY(), 0.0);
         assertEquals(0.0, triad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, triad1.getUnit());
-        final AngularSpeedTriad triad2 = new AngularSpeedTriad();
+        final var triad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(triad2);
         assertEquals(triad1, triad2);
 
         // set new values
-        final Matrix bg = generateBg();
-        final double initialBiasX = bg.getElementAtIndex(0);
-        final double initialBiasY = bg.getElementAtIndex(1);
-        final double initialBiasZ = bg.getElementAtIndex(2);
+        final var bg = generateBg();
+        final var initialBiasX = bg.getElementAtIndex(0);
+        final var initialBiasY = bg.getElementAtIndex(1);
+        final var initialBiasZ = bg.getElementAtIndex(2);
 
-        final AngularSpeedTriad triad3 = new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND,
+        final var triad3 = new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND, 
                 initialBiasX, initialBiasY, initialBiasZ);
         calibrator.setInitialBias(triad3);
 
-        final AngularSpeedTriad triad4 = calibrator.getInitialBiasAsTriad();
-        final AngularSpeedTriad triad5 = new AngularSpeedTriad();
+        final var triad4 = calibrator.getInitialBiasAsTriad();
+        final var triad5 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(triad5);
 
         assertEquals(triad3, triad4);
@@ -9341,15 +9363,15 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetInitialSx() throws WrongSizeException, LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetInitialSx() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
 
         // set new value
-        final Matrix mg = generateGeneralMg();
-        final double sx = mg.getElementAt(0, 0);
+        final var mg = generateGeneralMg();
+        final var sx = mg.getElementAt(0, 0);
 
         calibrator.setInitialSx(sx);
 
@@ -9358,15 +9380,15 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetInitialSy() throws WrongSizeException, LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetInitialSy() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialSy(), 0.0);
 
         // set new value
-        final Matrix mg = generateGeneralMg();
-        final double sy = mg.getElementAt(1, 1);
+        final var mg = generateGeneralMg();
+        final var sy = mg.getElementAt(1, 1);
 
         calibrator.setInitialSy(sy);
 
@@ -9375,15 +9397,15 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetInitialSz() throws WrongSizeException, LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetInitialSz() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialSz(), 0.0);
 
         // set new value
-        final Matrix mg = generateGeneralMg();
-        final double sz = mg.getElementAt(2, 2);
+        final var mg = generateGeneralMg();
+        final var sz = mg.getElementAt(2, 2);
 
         calibrator.setInitialSz(sz);
 
@@ -9392,15 +9414,15 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetInitialMxy() throws WrongSizeException, LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetInitialMxy() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
 
         // set new value
-        final Matrix mg = generateGeneralMg();
-        final double mxy = mg.getElementAt(0, 1);
+        final var mg = generateGeneralMg();
+        final var mxy = mg.getElementAt(0, 1);
 
         calibrator.setInitialMxy(mxy);
 
@@ -9409,15 +9431,15 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetInitialMxz() throws WrongSizeException, LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetInitialMxz() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
 
         // set new value
-        final Matrix mg = generateGeneralMg();
-        final double mxz = mg.getElementAt(0, 2);
+        final var mg = generateGeneralMg();
+        final var mxz = mg.getElementAt(0, 2);
 
         calibrator.setInitialMxz(mxz);
 
@@ -9426,16 +9448,15 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetInitialMyx() throws WrongSizeException, LockedException {
-
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetInitialMyx() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
 
         // set new value
-        final Matrix mg = generateGeneralMg();
-        final double myx = mg.getElementAt(1, 0);
+        final var mg = generateGeneralMg();
+        final var myx = mg.getElementAt(1, 0);
 
         calibrator.setInitialMyx(myx);
 
@@ -9444,16 +9465,15 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetInitialMyz() throws WrongSizeException, LockedException {
-
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetInitialMyz() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
 
         // set new value
-        final Matrix mg = generateGeneralMg();
-        final double myz = mg.getElementAt(1, 2);
+        final var mg = generateGeneralMg();
+        final var myz = mg.getElementAt(1, 2);
 
         calibrator.setInitialMyz(myz);
 
@@ -9462,16 +9482,15 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetInitialMzx() throws WrongSizeException, LockedException {
-
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetInitialMzx() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
 
         // set new value
-        final Matrix mg = generateGeneralMg();
-        final double mzx = mg.getElementAt(2, 0);
+        final var mg = generateGeneralMg();
+        final var mzx = mg.getElementAt(2, 0);
 
         calibrator.setInitialMzx(mzx);
 
@@ -9480,16 +9499,15 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetInitialMzy() throws WrongSizeException, LockedException {
-
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetInitialMzy() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         // set new value
-        final Matrix mg = generateGeneralMg();
-        final double mzy = mg.getElementAt(2, 1);
+        final var mg = generateGeneralMg();
+        final var mzy = mg.getElementAt(2, 1);
 
         calibrator.setInitialMzy(mzy);
 
@@ -9498,8 +9516,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testSetInitialScalingFactors() throws WrongSizeException, LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testSetInitialScalingFactors() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -9507,10 +9525,10 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(0.0, calibrator.getInitialSz(), 0.0);
 
         // set new values
-        final Matrix mg = generateGeneralMg();
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
+        final var mg = generateGeneralMg();
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
 
         calibrator.setInitialScalingFactors(sx, sy, sz);
 
@@ -9521,8 +9539,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testSetInitialCrossCouplingErrors() throws WrongSizeException, LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testSetInitialCrossCouplingErrors() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
@@ -9533,13 +9551,13 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         // set new values
-        final Matrix mg = generateGeneralMg();
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var mg = generateGeneralMg();
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
         calibrator.setInitialCrossCouplingErrors(mxy, mxz, myx, myz, mzx, mzy);
 
@@ -9553,8 +9571,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testSetInitialScalingFactorsAndCrossCouplingErrors() throws WrongSizeException, LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testSetInitialScalingFactorsAndCrossCouplingErrors() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -9568,16 +9586,16 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         // set new values
-        final Matrix mg = generateGeneralMg();
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var mg = generateGeneralMg();
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
         calibrator.setInitialScalingFactorsAndCrossCouplingErrors(sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy);
 
@@ -9594,24 +9612,24 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetInitialBias() throws LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetInitialBias() throws LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check initial value
-        final double[] bg1 = calibrator.getInitialBias();
-        final double[] bg2 = new double[3];
+        final var bg1 = calibrator.getInitialBias();
+        final var bg2 = new double[3];
         calibrator.getInitialBias(bg2);
 
-        assertArrayEquals(bg1, new double[3], 0.0);
+        assertArrayEquals(new double[3], bg1, 0.0);
         assertArrayEquals(bg1, bg2, 0.0);
 
         // set new value
-        final double[] bg3 = generateBg().getBuffer();
+        final var bg3 = generateBg().getBuffer();
         calibrator.setInitialBias(bg3);
 
         // check
-        final double[] bg4 = calibrator.getInitialBias();
-        final double[] bg5 = new double[3];
+        final var bg4 = calibrator.getInitialBias();
+        final var bg5 = new double[3];
         calibrator.getInitialBias(bg5);
 
         assertArrayEquals(bg3, bg4, 0.0);
@@ -9623,24 +9641,24 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetInitialBiasAsMatrix() throws WrongSizeException, LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetInitialBiasAsMatrix() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check initial values
-        final Matrix bg1 = calibrator.getInitialBiasAsMatrix();
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg1 = calibrator.getInitialBiasAsMatrix();
+        final var bg2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bg2);
 
-        assertEquals(bg1, new Matrix(3, 1));
+        assertEquals(new Matrix(3, 1), bg1);
         assertEquals(bg1, bg2);
 
         // set new value
-        final Matrix bg3 = generateBg();
+        final var bg3 = generateBg();
         calibrator.setInitialBias(bg3);
 
         // check
-        final Matrix bg4 = calibrator.getInitialBiasAsMatrix();
-        final Matrix bg5 = new Matrix(3, 1);
+        final var bg4 = calibrator.getInitialBiasAsMatrix();
+        final var bg5 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bg5);
 
         assertEquals(bg3, bg4);
@@ -9658,24 +9676,24 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetInitialMg() throws WrongSizeException, LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetInitialMg() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check initial value
-        final Matrix mg1 = calibrator.getInitialMg();
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg1 = calibrator.getInitialMg();
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
 
-        assertEquals(mg1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), mg1);
         assertEquals(mg1, mg2);
 
         // set new value
-        final Matrix mg3 = generateGeneralMg();
+        final var mg3 = generateGeneralMg();
         calibrator.setInitialMg(mg3);
 
         // check
-        final Matrix mg4 = calibrator.getInitialMg();
-        final Matrix mg5 = new Matrix(3, 3);
+        final var mg4 = calibrator.getInitialMg();
+        final var mg5 = new Matrix(3, 3);
         calibrator.getInitialMg(mg5);
 
         assertEquals(mg3, mg4);
@@ -9693,24 +9711,24 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetInitialGg() throws WrongSizeException, LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetInitialGg() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check initial value
-        final Matrix gg1 = calibrator.getInitialGg();
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg1 = calibrator.getInitialGg();
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
 
-        assertEquals(gg1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), gg1);
         assertEquals(gg1, gg2);
 
         // set new value
-        final Matrix gg3 = generateGg();
+        final var gg3 = generateGg();
         calibrator.setInitialGg(gg3);
 
         // check
-        final Matrix gg4 = calibrator.getInitialGg();
-        final Matrix gg5 = new Matrix(3, 3);
+        final var gg4 = calibrator.getInitialGg();
+        final var gg5 = new Matrix(3, 3);
         calibrator.getInitialGg(gg5);
 
         assertEquals(gg3, gg4);
@@ -9728,14 +9746,14 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetSequences() throws LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetSequences() throws LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check initial value
         assertNull(calibrator.getSequences());
 
         // set new value
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
         calibrator.setSequences(sequences);
 
         // check
@@ -9743,8 +9761,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testIsSetCommonAxisUsed() throws LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testIsSetCommonAxisUsed() throws LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check initial value
         assertTrue(calibrator.isCommonAxisUsed());
@@ -9757,8 +9775,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testIsSetGDependentCrossBiasesEstimated() throws LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testIsSetGDependentCrossBiasesEstimated() throws LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check initial value
         assertTrue(calibrator.isGDependentCrossBiasesEstimated());
@@ -9771,8 +9789,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void tetGetSetListener() throws LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetListener() throws LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check initial value
         assertNull(calibrator.getListener());
@@ -9785,8 +9803,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetMinimumRequiredMeasurementsOrSequences() throws LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetMinimumRequiredMeasurementsOrSequences() throws LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check initial value
         assertEquals(19, calibrator.getMinimumRequiredMeasurementsOrSequences());
@@ -9819,22 +9837,22 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testIsReady() throws LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testIsReady() throws LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         assertFalse(calibrator.isReady());
         assertEquals(19, calibrator.getMinimumRequiredMeasurementsOrSequences());
 
         // set empty sequences
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences1 = Collections.emptyList();
+        final var sequences1 = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
         calibrator.setSequences(sequences1);
 
         // check
         assertFalse(calibrator.isReady());
 
         // set enough sequences
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences2 = new ArrayList<>();
-        for (int i = 0; i < calibrator.getMinimumRequiredMeasurementsOrSequences(); i++) {
+        final var sequences2 = new ArrayList<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>();
+        for (var i = 0; i < calibrator.getMinimumRequiredMeasurementsOrSequences(); i++) {
             sequences2.add(new BodyKinematicsSequence<>());
         }
         calibrator.setSequences(sequences2);
@@ -9843,7 +9861,7 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertFalse(calibrator.isReady());
 
         // add quality scores with invalid size
-        double[] qualityScores = new double[sequences2.size() + 1];
+        var qualityScores = new double[sequences2.size() + 1];
         calibrator.setQualityScores(qualityScores);
 
         assertFalse(calibrator.isReady());
@@ -9856,11 +9874,12 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetProgressDelta() throws LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetProgressDelta() throws LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
-        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 
+                0.0);
 
         // set new value
         calibrator.setProgressDelta(0.5f);
@@ -9874,8 +9893,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetConfidence() throws LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetConfidence() throws LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
@@ -9892,8 +9911,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetMaxIterations() throws LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetMaxIterations() throws LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
         assertEquals(PROSACRobustEasyGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations());
@@ -9908,8 +9927,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testIsSetResultRefined() throws LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testIsSetResultRefined() throws LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
         assertTrue(calibrator.isResultRefined());
@@ -9922,8 +9941,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testIsSetCovarianceKept() throws LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testIsSetCovarianceKept() throws LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
         assertTrue(calibrator.isCovarianceKept());
@@ -9936,14 +9955,14 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetQualityScores() throws LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetQualityScores() throws LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
         assertNull(calibrator.getQualityScores());
 
         // set new value
-        final double[] qualityScores = new double[EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS];
+        final var qualityScores = new double[EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS];
         calibrator.setQualityScores(qualityScores);
 
         // check
@@ -9954,11 +9973,11 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testGetSetPreliminarySubsetSize() throws LockedException {
-        final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator();
+    void testGetSetPreliminarySubsetSize() throws LockedException {
+        final var calibrator = new PROSACRobustEasyGyroscopeCalibrator();
 
         // check default value
-        assertEquals(EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_GENERAL_AND_CROSS_BIASES,
+        assertEquals(EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_GENERAL_AND_CROSS_BIASES, 
                 calibrator.getPreliminarySubsetSize());
 
         // set new value
@@ -9972,93 +9991,89 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testCalibrateCommonAxisAndGDependentCrossBiasesDisabledAndNoInlierNoise() throws WrongSizeException,
-            InvalidRotationMatrixException, InvalidSourceAndDestinationFrameTypeException, LockedException,
+    void testCalibrateCommonAxisAndGDependentCrossBiasesDisabledAndNoInlierNoise() throws WrongSizeException,
+            InvalidRotationMatrixException, InvalidSourceAndDestinationFrameTypeException, LockedException, 
             NotReadyException, RotationException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Matrix ba = generateBa();
-            final Matrix bg = generateBg();
-            final Matrix ma = generateMa();
-            final Matrix mg = generateCommonAxisMg();
-            final Matrix gg = new Matrix(3, 3);
-            final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-            final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-            final double accelQuantLevel = 0.0;
-            final double gyroQuantLevel = 0.0;
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var ba = generateBa();
+            final var bg = generateBg();
+            final var ma = generateMa();
+            final var mg = generateCommonAxisMg();
+            final var gg = new Matrix(3, 3);
+            final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+            final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+            final var accelQuantLevel = 0.0;
+            final var gyroQuantLevel = 0.0;
 
-            final IMUErrors errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
+            final var errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
                     accelQuantLevel, gyroQuantLevel);
-            final IMUErrors errorsInlier = new IMUErrors(ba, bg, ma, mg, gg, 0.0,
-                    0.0, accelQuantLevel, gyroQuantLevel);
+            final var errorsInlier = new IMUErrors(ba, bg, ma, mg, gg, 0.0, 0.0,
+                    accelQuantLevel, gyroQuantLevel);
+            
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+            final var sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
+            final var specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
+            final var angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
 
-            final double sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
-            final double specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
-            final double angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
+            final var errorRandomizer = new GaussianRandomizer(0.0, angularRateStandardDeviation);
 
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(random, 0.0,
-                    angularRateStandardDeviation);
-
-            final int m = EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS;
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = new ArrayList<>();
-            final double[] qualityScores = new double[MEASUREMENT_NUMBER];
+            final var m = EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS;
+            final var sequences = new ArrayList<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>();
+            final var qualityScores = new double[MEASUREMENT_NUMBER];
+            final var random = new Random();
             double error;
-            for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
+            for (var i = 0; i < MEASUREMENT_NUMBER; i++) {
                 // initial attitude of sequence
-                final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw,
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+                final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME, 
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final Quaternion beforeQ = new Quaternion();
+                final var beforeQ = new Quaternion();
                 nedC.asRotation(beforeQ);
 
-                final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+                final var nedFrame = new NEDFrame(nedPosition, nedC);
+                final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
-                final BodyKinematics trueBeforeGravityKinematics = ECEFKinematicsEstimator
-                        .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
-                final BodyKinematics measuredBeforeGravityKinematics = BodyKinematicsGenerator.generate(
-                        TIME_INTERVAL_SECONDS, trueBeforeGravityKinematics, errorsInlier, random);
+                final var trueBeforeGravityKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                        TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
+                final var measuredBeforeGravityKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                        trueBeforeGravityKinematics, errorsInlier, random);
 
-                final double beforeMeanFx = measuredBeforeGravityKinematics.getFx();
-                final double beforeMeanFy = measuredBeforeGravityKinematics.getFy();
-                final double beforeMeanFz = measuredBeforeGravityKinematics.getFz();
+                final var beforeMeanFx = measuredBeforeGravityKinematics.getFx();
+                final var beforeMeanFy = measuredBeforeGravityKinematics.getFy();
+                final var beforeMeanFz = measuredBeforeGravityKinematics.getFz();
 
-                final double deltaRoll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
+                final var deltaRoll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
                         MAX_ANGLE_VARIATION_DEGREES));
-                final double deltaPitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
+                final var deltaPitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
                         MAX_ANGLE_VARIATION_DEGREES));
-                final double deltaYaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
+                final var deltaYaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
                         MAX_ANGLE_VARIATION_DEGREES));
 
-                final NEDFrame oldNedFrame = new NEDFrame(nedFrame);
-                final NEDFrame newNedFrame = new NEDFrame();
-                final ECEFFrame oldEcefFrame = new ECEFFrame();
-                final ECEFFrame newEcefFrame = new ECEFFrame();
-                double oldRoll = roll - deltaRoll;
-                double oldPitch = pitch - deltaPitch;
-                double oldYaw = yaw - deltaYaw;
+                final var oldNedFrame = new NEDFrame(nedFrame);
+                final var newNedFrame = new NEDFrame();
+                final var oldEcefFrame = new ECEFFrame();
+                final var newEcefFrame = new ECEFFrame();
+                var oldRoll = roll - deltaRoll;
+                var oldPitch = pitch - deltaPitch;
+                var oldYaw = yaw - deltaYaw;
 
-                final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> trueSequence =
-                        new BodyKinematicsSequence<>();
-                final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence =
-                        new BodyKinematicsSequence<>();
+                final var trueSequence = new BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>();
+                final var sequence = new BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>();
                 sequence.setBeforeMeanSpecificForceCoordinates(beforeMeanFx, beforeMeanFy, beforeMeanFz);
 
-                final List<StandardDeviationTimedBodyKinematics> trueTimedKinematicsList = new ArrayList<>();
-                final List<StandardDeviationTimedBodyKinematics> measuredTimedKinematicsList = new ArrayList<>();
-                final boolean sequenceCanHaveOutliers = randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE;
+                final var trueTimedKinematicsList = new ArrayList<StandardDeviationTimedBodyKinematics>();
+                final var measuredTimedKinematicsList = new ArrayList<StandardDeviationTimedBodyKinematics>();
+                final var sequenceCanHaveOutliers = randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE;
                 if (sequenceCanHaveOutliers) {
                     error = Math.abs(errorRandomizer.nextDouble());
                 } else {
@@ -10066,13 +10081,13 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
                 }
                 qualityScores[i] = 1.0 / (1.0 + error);
 
-                for (int j = 0; j < m; j++) {
-                    final double newRoll = oldRoll + deltaRoll;
-                    final double newPitch = oldPitch + deltaPitch;
-                    final double newYaw = oldYaw + deltaYaw;
-                    final CoordinateTransformation newNedC = new CoordinateTransformation(newRoll, newPitch, newYaw,
-                            FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
-                    final NEDPosition newNedPosition = oldNedFrame.getPosition();
+                for (var j = 0; j < m; j++) {
+                    final var newRoll = oldRoll + deltaRoll;
+                    final var newPitch = oldPitch + deltaPitch;
+                    final var newYaw = oldYaw + deltaYaw;
+                    final var newNedC = new CoordinateTransformation(newRoll, newPitch, newYaw, FrameType.BODY_FRAME,
+                            FrameType.LOCAL_NAVIGATION_FRAME);
+                    final var newNedPosition = oldNedFrame.getPosition();
 
                     newNedFrame.setPosition(newNedPosition);
                     newNedFrame.setCoordinateTransformation(newNedC);
@@ -10080,11 +10095,11 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
                     NEDtoECEFFrameConverter.convertNEDtoECEF(newNedFrame, newEcefFrame);
                     NEDtoECEFFrameConverter.convertNEDtoECEF(oldNedFrame, oldEcefFrame);
 
-                    final double timestampSeconds = j * TIME_INTERVAL_SECONDS;
+                    final var timestampSeconds = j * TIME_INTERVAL_SECONDS;
 
                     // compute ground-truth kinematics that should be generated at provided
                     // position, velocity and orientation
-                    final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                    final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
                             TIME_INTERVAL_SECONDS, newEcefFrame, oldEcefFrame);
 
                     // apply known calibration parameters to distort ground-truth and generate a
@@ -10100,13 +10115,11 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
                                 errorsInlier, random);
                     }
 
-                    final StandardDeviationTimedBodyKinematics trueTimedKinematics =
-                            new StandardDeviationTimedBodyKinematics(trueKinematics, timestampSeconds,
-                                    specificForceStandardDeviation, angularRateStandardDeviation);
+                    final var trueTimedKinematics = new StandardDeviationTimedBodyKinematics(trueKinematics,
+                            timestampSeconds, specificForceStandardDeviation, angularRateStandardDeviation);
 
-                    final StandardDeviationTimedBodyKinematics measuredTimedKinematics =
-                            new StandardDeviationTimedBodyKinematics(measuredKinematics, timestampSeconds,
-                                    specificForceStandardDeviation, angularRateStandardDeviation);
+                    final var measuredTimedKinematics = new StandardDeviationTimedBodyKinematics(measuredKinematics,
+                            timestampSeconds, specificForceStandardDeviation, angularRateStandardDeviation);
 
                     trueTimedKinematicsList.add(trueTimedKinematics);
                     measuredTimedKinematicsList.add(measuredTimedKinematics);
@@ -10119,44 +10132,43 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
                 trueSequence.setItems(trueTimedKinematicsList);
                 sequence.setItems(measuredTimedKinematicsList);
 
-                final Quaternion afterQ = new Quaternion();
+                final var afterQ = new Quaternion();
                 QuaternionIntegrator.integrateGyroSequence(trueSequence, beforeQ,
                         QuaternionStepIntegratorType.RUNGE_KUTTA, afterQ);
 
-                final CoordinateTransformation newNedC = new CoordinateTransformation(afterQ.asInhomogeneousMatrix(),
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+                final var newNedC = new CoordinateTransformation(afterQ.asInhomogeneousMatrix(), FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
                 newNedFrame.setPosition(nedPosition);
                 newNedFrame.setCoordinateTransformation(newNedC);
 
                 NEDtoECEFFrameConverter.convertNEDtoECEF(newNedFrame, newEcefFrame);
 
-                final BodyKinematics trueAfterGravityKinematics = ECEFKinematicsEstimator
-                        .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, newEcefFrame, newEcefFrame);
-                final BodyKinematics measuredAfterGravityKinematics = BodyKinematicsGenerator.generate(
-                        TIME_INTERVAL_SECONDS, trueAfterGravityKinematics, errorsInlier, random);
+                final var trueAfterGravityKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                        TIME_INTERVAL_SECONDS, newEcefFrame, newEcefFrame);
+                final var measuredAfterGravityKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                        trueAfterGravityKinematics, errorsInlier, random);
 
-                final double afterMeanFx = measuredAfterGravityKinematics.getFx();
-                final double afterMeanFy = measuredAfterGravityKinematics.getFy();
-                final double afterMeanFz = measuredAfterGravityKinematics.getFz();
+                final var afterMeanFx = measuredAfterGravityKinematics.getFx();
+                final var afterMeanFy = measuredAfterGravityKinematics.getFy();
+                final var afterMeanFz = measuredAfterGravityKinematics.getFz();
 
                 sequence.setAfterMeanSpecificForceCoordinates(afterMeanFx, afterMeanFy, afterMeanFz);
 
                 sequences.add(sequence);
             }
 
-            final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(
-                    qualityScores, sequences, true, false, bg, mg, gg, ba,
-                    ma, this);
+            final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences,
+                    true, false, bg, mg, gg, ba, ma, this);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
-            assertEquals(0, mCalibrateNextIteration);
-            assertEquals(0, mCalibrateProgressChange);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
+            assertEquals(0, calibrateNextIteration);
+            assertEquals(0, calibrateProgressChange);
 
             try {
                 calibrator.calibrate();
@@ -10166,14 +10178,14 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
 
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
-            assertTrue(mCalibrateNextIteration > 0);
-            assertTrue(mCalibrateProgressChange >= 0);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
+            assertTrue(calibrateNextIteration > 0);
+            assertTrue(calibrateProgressChange >= 0);
 
-            final Matrix estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
-            final Matrix estimatedMg = calibrator.getEstimatedMg();
-            final Matrix estimatedGg = calibrator.getEstimatedGg();
+            final var estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
+            final var estimatedMg = calibrator.getEstimatedMg();
+            final var estimatedGg = calibrator.getEstimatedGg();
 
             assertTrue(bg.equals(estimatedBg, LARGE_ABSOLUTE_ERROR));
             assertTrue(mg.equals(estimatedMg, LARGE_ABSOLUTE_ERROR));
@@ -10184,7 +10196,7 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
+            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
             break;
@@ -10194,93 +10206,89 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testCalibrateGeneralAndGDependentCrossBiasesDisabledAndNoInlierNoise() throws WrongSizeException,
+    void testCalibrateGeneralAndGDependentCrossBiasesDisabledAndNoInlierNoise() throws WrongSizeException,
             InvalidRotationMatrixException, InvalidSourceAndDestinationFrameTypeException, LockedException,
             NotReadyException, RotationException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Matrix ba = generateBa();
-            final Matrix bg = generateBg();
-            final Matrix ma = generateMa();
-            final Matrix mg = generateGeneralMg();
-            final Matrix gg = new Matrix(3, 3);
-            final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-            final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-            final double accelQuantLevel = 0.0;
-            final double gyroQuantLevel = 0.0;
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var ba = generateBa();
+            final var bg = generateBg();
+            final var ma = generateMa();
+            final var mg = generateGeneralMg();
+            final var gg = new Matrix(3, 3);
+            final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+            final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+            final var accelQuantLevel = 0.0;
+            final var gyroQuantLevel = 0.0;
 
-            final IMUErrors errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
+            final var errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
                     accelQuantLevel, gyroQuantLevel);
-            final IMUErrors errorsInlier = new IMUErrors(ba, bg, ma, mg, gg, 0.0,
-                    0.0, accelQuantLevel, gyroQuantLevel);
+            final var errorsInlier = new IMUErrors(ba, bg, ma, mg, gg, 0.0, 0.0,
+                    accelQuantLevel, gyroQuantLevel);
 
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
-            final double specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
-            final double angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
+            final var sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
+            final var specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
+            final var angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
 
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(random, 0.0,
-                    angularRateStandardDeviation);
+            final var errorRandomizer = new GaussianRandomizer(0.0, angularRateStandardDeviation);
 
-            final int m = EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS;
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = new ArrayList<>();
-            final double[] qualityScores = new double[MEASUREMENT_NUMBER];
+            final var m = EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS;
+            final var sequences = new ArrayList<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>();
+            final var qualityScores = new double[MEASUREMENT_NUMBER];
+            final var random = new Random();
             double error;
-            for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
+            for (var i = 0; i < MEASUREMENT_NUMBER; i++) {
                 // initial attitude of sequence
-                final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw,
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+                final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final Quaternion beforeQ = new Quaternion();
+                final var beforeQ = new Quaternion();
                 nedC.asRotation(beforeQ);
 
-                final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+                final var nedFrame = new NEDFrame(nedPosition, nedC);
+                final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
-                final BodyKinematics trueBeforeGravityKinematics = ECEFKinematicsEstimator
-                        .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
-                final BodyKinematics measuredBeforeGravityKinematics = BodyKinematicsGenerator.generate(
-                        TIME_INTERVAL_SECONDS, trueBeforeGravityKinematics, errorsInlier, random);
+                final var trueBeforeGravityKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                        TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
+                final var measuredBeforeGravityKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                        trueBeforeGravityKinematics, errorsInlier, random);
 
-                final double beforeMeanFx = measuredBeforeGravityKinematics.getFx();
-                final double beforeMeanFy = measuredBeforeGravityKinematics.getFy();
-                final double beforeMeanFz = measuredBeforeGravityKinematics.getFz();
+                final var beforeMeanFx = measuredBeforeGravityKinematics.getFx();
+                final var beforeMeanFy = measuredBeforeGravityKinematics.getFy();
+                final var beforeMeanFz = measuredBeforeGravityKinematics.getFz();
 
-                final double deltaRoll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
+                final var deltaRoll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
                         MAX_ANGLE_VARIATION_DEGREES));
-                final double deltaPitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
+                final var deltaPitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
                         MAX_ANGLE_VARIATION_DEGREES));
-                final double deltaYaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
+                final var deltaYaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
                         MAX_ANGLE_VARIATION_DEGREES));
 
-                final NEDFrame oldNedFrame = new NEDFrame(nedFrame);
-                final NEDFrame newNedFrame = new NEDFrame();
-                final ECEFFrame oldEcefFrame = new ECEFFrame();
-                final ECEFFrame newEcefFrame = new ECEFFrame();
-                double oldRoll = roll - deltaRoll;
-                double oldPitch = pitch - deltaPitch;
-                double oldYaw = yaw - deltaYaw;
+                final var oldNedFrame = new NEDFrame(nedFrame);
+                final var newNedFrame = new NEDFrame();
+                final var oldEcefFrame = new ECEFFrame();
+                final var newEcefFrame = new ECEFFrame();
+                var oldRoll = roll - deltaRoll;
+                var oldPitch = pitch - deltaPitch;
+                var oldYaw = yaw - deltaYaw;
 
-                final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> trueSequence =
-                        new BodyKinematicsSequence<>();
-                final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence =
-                        new BodyKinematicsSequence<>();
+                final var trueSequence = new BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>();
+                final var sequence = new BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>();
                 sequence.setBeforeMeanSpecificForceCoordinates(beforeMeanFx, beforeMeanFy, beforeMeanFz);
 
-                final List<StandardDeviationTimedBodyKinematics> trueTimedKinematicsList = new ArrayList<>();
-                final List<StandardDeviationTimedBodyKinematics> measuredTimedKinematicsList = new ArrayList<>();
-                final boolean sequenceCanHaveOutliers = randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE;
+                final var trueTimedKinematicsList = new ArrayList<StandardDeviationTimedBodyKinematics>();
+                final var measuredTimedKinematicsList = new ArrayList<StandardDeviationTimedBodyKinematics>();
+                final var sequenceCanHaveOutliers = randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE;
                 if (sequenceCanHaveOutliers) {
                     error = Math.abs(errorRandomizer.nextDouble());
                 } else {
@@ -10288,13 +10296,13 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
                 }
                 qualityScores[i] = 1.0 / (1.0 + error);
 
-                for (int j = 0; j < m; j++) {
-                    final double newRoll = oldRoll + deltaRoll;
-                    final double newPitch = oldPitch + deltaPitch;
-                    final double newYaw = oldYaw + deltaYaw;
-                    final CoordinateTransformation newNedC = new CoordinateTransformation(newRoll, newPitch, newYaw,
-                            FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
-                    final NEDPosition newNedPosition = oldNedFrame.getPosition();
+                for (var j = 0; j < m; j++) {
+                    final var newRoll = oldRoll + deltaRoll;
+                    final var newPitch = oldPitch + deltaPitch;
+                    final var newYaw = oldYaw + deltaYaw;
+                    final var newNedC = new CoordinateTransformation(newRoll, newPitch, newYaw, FrameType.BODY_FRAME,
+                            FrameType.LOCAL_NAVIGATION_FRAME);
+                    final var newNedPosition = oldNedFrame.getPosition();
 
                     newNedFrame.setPosition(newNedPosition);
                     newNedFrame.setCoordinateTransformation(newNedC);
@@ -10302,11 +10310,11 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
                     NEDtoECEFFrameConverter.convertNEDtoECEF(newNedFrame, newEcefFrame);
                     NEDtoECEFFrameConverter.convertNEDtoECEF(oldNedFrame, oldEcefFrame);
 
-                    final double timestampSeconds = j * TIME_INTERVAL_SECONDS;
+                    final var timestampSeconds = j * TIME_INTERVAL_SECONDS;
 
                     // compute ground-truth kinematics that should be generated at provided
                     // position, velocity and orientation
-                    final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                    final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
                             TIME_INTERVAL_SECONDS, newEcefFrame, oldEcefFrame);
 
                     // apply known calibration parameters to distort ground-truth and generate a
@@ -10322,13 +10330,11 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
                                 errorsInlier, random);
                     }
 
-                    final StandardDeviationTimedBodyKinematics trueTimedKinematics =
-                            new StandardDeviationTimedBodyKinematics(trueKinematics, timestampSeconds,
-                                    specificForceStandardDeviation, angularRateStandardDeviation);
+                    final var trueTimedKinematics = new StandardDeviationTimedBodyKinematics(trueKinematics,
+                            timestampSeconds, specificForceStandardDeviation, angularRateStandardDeviation);
 
-                    final StandardDeviationTimedBodyKinematics measuredTimedKinematics =
-                            new StandardDeviationTimedBodyKinematics(measuredKinematics, timestampSeconds,
-                                    specificForceStandardDeviation, angularRateStandardDeviation);
+                    final var measuredTimedKinematics = new StandardDeviationTimedBodyKinematics(measuredKinematics,
+                            timestampSeconds, specificForceStandardDeviation, angularRateStandardDeviation);
 
                     trueTimedKinematicsList.add(trueTimedKinematics);
                     measuredTimedKinematicsList.add(measuredTimedKinematics);
@@ -10341,44 +10347,43 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
                 trueSequence.setItems(trueTimedKinematicsList);
                 sequence.setItems(measuredTimedKinematicsList);
 
-                final Quaternion afterQ = new Quaternion();
+                final var afterQ = new Quaternion();
                 QuaternionIntegrator.integrateGyroSequence(trueSequence, beforeQ,
                         QuaternionStepIntegratorType.RUNGE_KUTTA, afterQ);
 
-                final CoordinateTransformation newNedC = new CoordinateTransformation(afterQ.asInhomogeneousMatrix(),
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+                final var newNedC = new CoordinateTransformation(afterQ.asInhomogeneousMatrix(), FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
                 newNedFrame.setPosition(nedPosition);
                 newNedFrame.setCoordinateTransformation(newNedC);
 
                 NEDtoECEFFrameConverter.convertNEDtoECEF(newNedFrame, newEcefFrame);
 
-                final BodyKinematics trueAfterGravityKinematics = ECEFKinematicsEstimator
-                        .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, newEcefFrame, newEcefFrame);
-                final BodyKinematics measuredAfterGravityKinematics = BodyKinematicsGenerator.generate(
-                        TIME_INTERVAL_SECONDS, trueAfterGravityKinematics, errorsInlier, random);
+                final var trueAfterGravityKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                        TIME_INTERVAL_SECONDS, newEcefFrame, newEcefFrame);
+                final var measuredAfterGravityKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                        trueAfterGravityKinematics, errorsInlier, random);
 
-                final double afterMeanFx = measuredAfterGravityKinematics.getFx();
-                final double afterMeanFy = measuredAfterGravityKinematics.getFy();
-                final double afterMeanFz = measuredAfterGravityKinematics.getFz();
+                final var afterMeanFx = measuredAfterGravityKinematics.getFx();
+                final var afterMeanFy = measuredAfterGravityKinematics.getFy();
+                final var afterMeanFz = measuredAfterGravityKinematics.getFz();
 
                 sequence.setAfterMeanSpecificForceCoordinates(afterMeanFx, afterMeanFy, afterMeanFz);
 
                 sequences.add(sequence);
             }
 
-            final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(
-                    qualityScores, sequences, false, false, bg, mg, gg, ba,
-                    ma, this);
+            final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences,
+                    false, false, bg, mg, gg, ba, ma, this);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
-            assertEquals(0, mCalibrateNextIteration);
-            assertEquals(0, mCalibrateProgressChange);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
+            assertEquals(0, calibrateNextIteration);
+            assertEquals(0, calibrateProgressChange);
 
             try {
                 calibrator.calibrate();
@@ -10388,14 +10393,14 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
 
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
-            assertTrue(mCalibrateNextIteration > 0);
-            assertTrue(mCalibrateProgressChange >= 0);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
+            assertTrue(calibrateNextIteration > 0);
+            assertTrue(calibrateProgressChange >= 0);
 
-            final Matrix estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
-            final Matrix estimatedMg = calibrator.getEstimatedMg();
-            final Matrix estimatedGg = calibrator.getEstimatedGg();
+            final var estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
+            final var estimatedMg = calibrator.getEstimatedMg();
+            final var estimatedGg = calibrator.getEstimatedGg();
 
             assertTrue(bg.equals(estimatedBg, LARGE_ABSOLUTE_ERROR));
             assertTrue(mg.equals(estimatedMg, LARGE_ABSOLUTE_ERROR));
@@ -10406,7 +10411,7 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
+            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
             break;
@@ -10416,93 +10421,89 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testCalibrateCommonAxisAndGDependentCrossBiasesEnabledAndNoInlierNoise() throws WrongSizeException,
+    void testCalibrateCommonAxisAndGDependentCrossBiasesEnabledAndNoInlierNoise() throws WrongSizeException,
             InvalidRotationMatrixException, InvalidSourceAndDestinationFrameTypeException, LockedException,
             NotReadyException, RotationException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Matrix ba = generateBa();
-            final Matrix bg = generateBg();
-            final Matrix ma = generateMa();
-            final Matrix mg = generateCommonAxisMg();
-            final Matrix gg = generateGg();
-            final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-            final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-            final double accelQuantLevel = 0.0;
-            final double gyroQuantLevel = 0.0;
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var ba = generateBa();
+            final var bg = generateBg();
+            final var ma = generateMa();
+            final var mg = generateCommonAxisMg();
+            final var gg = generateGg();
+            final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+            final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+            final var accelQuantLevel = 0.0;
+            final var gyroQuantLevel = 0.0;
 
-            final IMUErrors errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
+            final var errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
                     accelQuantLevel, gyroQuantLevel);
-            final IMUErrors errorsInlier = new IMUErrors(ba, bg, ma, mg, gg, 0.0,
-                    0.0, accelQuantLevel, gyroQuantLevel);
+            final var errorsInlier = new IMUErrors(ba, bg, ma, mg, gg, 0.0, 0.0,
+                    accelQuantLevel, gyroQuantLevel);
 
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
-            final double specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
-            final double angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
+            final var sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
+            final var specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
+            final var angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
 
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(random, 0.0,
-                    angularRateStandardDeviation);
+            final var errorRandomizer = new GaussianRandomizer(0.0, angularRateStandardDeviation);
 
-            final int m = EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS;
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = new ArrayList<>();
-            final double[] qualityScores = new double[MEASUREMENT_NUMBER];
+            final var m = EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS;
+            final var sequences = new ArrayList<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>();
+            final var qualityScores = new double[MEASUREMENT_NUMBER];
+            final var random = new Random();
             double error;
-            for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
+            for (var i = 0; i < MEASUREMENT_NUMBER; i++) {
                 // initial attitude of sequence
-                final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw,
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+                final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final Quaternion beforeQ = new Quaternion();
+                final var beforeQ = new Quaternion();
                 nedC.asRotation(beforeQ);
 
-                final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+                final var nedFrame = new NEDFrame(nedPosition, nedC);
+                final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
-                final BodyKinematics trueBeforeGravityKinematics = ECEFKinematicsEstimator
-                        .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
-                final BodyKinematics measuredBeforeGravityKinematics = BodyKinematicsGenerator.generate(
-                        TIME_INTERVAL_SECONDS, trueBeforeGravityKinematics, errorsInlier, random);
+                final var trueBeforeGravityKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                        TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
+                final var measuredBeforeGravityKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                        trueBeforeGravityKinematics, errorsInlier, random);
 
-                final double beforeMeanFx = measuredBeforeGravityKinematics.getFx();
-                final double beforeMeanFy = measuredBeforeGravityKinematics.getFy();
-                final double beforeMeanFz = measuredBeforeGravityKinematics.getFz();
+                final var beforeMeanFx = measuredBeforeGravityKinematics.getFx();
+                final var beforeMeanFy = measuredBeforeGravityKinematics.getFy();
+                final var beforeMeanFz = measuredBeforeGravityKinematics.getFz();
 
-                final double deltaRoll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
+                final var deltaRoll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
                         MAX_ANGLE_VARIATION_DEGREES));
-                final double deltaPitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
+                final var deltaPitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
                         MAX_ANGLE_VARIATION_DEGREES));
-                final double deltaYaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
+                final var deltaYaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
                         MAX_ANGLE_VARIATION_DEGREES));
 
-                final NEDFrame oldNedFrame = new NEDFrame(nedFrame);
-                final NEDFrame newNedFrame = new NEDFrame();
-                final ECEFFrame oldEcefFrame = new ECEFFrame();
-                final ECEFFrame newEcefFrame = new ECEFFrame();
-                double oldRoll = roll - deltaRoll;
-                double oldPitch = pitch - deltaPitch;
-                double oldYaw = yaw - deltaYaw;
+                final var oldNedFrame = new NEDFrame(nedFrame);
+                final var newNedFrame = new NEDFrame();
+                final var oldEcefFrame = new ECEFFrame();
+                final var newEcefFrame = new ECEFFrame();
+                var oldRoll = roll - deltaRoll;
+                var oldPitch = pitch - deltaPitch;
+                var oldYaw = yaw - deltaYaw;
 
-                final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> trueSequence =
-                        new BodyKinematicsSequence<>();
-                final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence =
-                        new BodyKinematicsSequence<>();
+                final var trueSequence = new BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>();
+                final var sequence = new BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>();
                 sequence.setBeforeMeanSpecificForceCoordinates(beforeMeanFx, beforeMeanFy, beforeMeanFz);
 
-                final List<StandardDeviationTimedBodyKinematics> trueTimedKinematicsList = new ArrayList<>();
-                final List<StandardDeviationTimedBodyKinematics> measuredTimedKinematicsList = new ArrayList<>();
-                final boolean sequenceCanHaveOutliers = randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE;
+                final var trueTimedKinematicsList = new ArrayList<StandardDeviationTimedBodyKinematics>();
+                final var measuredTimedKinematicsList = new ArrayList<StandardDeviationTimedBodyKinematics>();
+                final var sequenceCanHaveOutliers = randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE;
                 if (sequenceCanHaveOutliers) {
                     error = Math.abs(errorRandomizer.nextDouble());
                 } else {
@@ -10510,13 +10511,13 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
                 }
                 qualityScores[i] = 1.0 / (1.0 + error);
 
-                for (int j = 0; j < m; j++) {
-                    final double newRoll = oldRoll + deltaRoll;
-                    final double newPitch = oldPitch + deltaPitch;
-                    final double newYaw = oldYaw + deltaYaw;
-                    final CoordinateTransformation newNedC = new CoordinateTransformation(newRoll, newPitch, newYaw,
-                            FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
-                    final NEDPosition newNedPosition = oldNedFrame.getPosition();
+                for (var j = 0; j < m; j++) {
+                    final var newRoll = oldRoll + deltaRoll;
+                    final var newPitch = oldPitch + deltaPitch;
+                    final var newYaw = oldYaw + deltaYaw;
+                    final var newNedC = new CoordinateTransformation(newRoll, newPitch, newYaw, FrameType.BODY_FRAME,
+                            FrameType.LOCAL_NAVIGATION_FRAME);
+                    final var newNedPosition = oldNedFrame.getPosition();
 
                     newNedFrame.setPosition(newNedPosition);
                     newNedFrame.setCoordinateTransformation(newNedC);
@@ -10524,11 +10525,11 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
                     NEDtoECEFFrameConverter.convertNEDtoECEF(newNedFrame, newEcefFrame);
                     NEDtoECEFFrameConverter.convertNEDtoECEF(oldNedFrame, oldEcefFrame);
 
-                    final double timestampSeconds = j * TIME_INTERVAL_SECONDS;
+                    final var timestampSeconds = j * TIME_INTERVAL_SECONDS;
 
                     // compute ground-truth kinematics that should be generated at provided
                     // position, velocity and orientation
-                    final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                    final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
                             TIME_INTERVAL_SECONDS, newEcefFrame, oldEcefFrame);
 
                     // apply known calibration parameters to distort ground-truth and generate a
@@ -10544,13 +10545,11 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
                                 errorsInlier, random);
                     }
 
-                    final StandardDeviationTimedBodyKinematics trueTimedKinematics =
-                            new StandardDeviationTimedBodyKinematics(trueKinematics, timestampSeconds,
-                                    specificForceStandardDeviation, angularRateStandardDeviation);
+                    final var trueTimedKinematics = new StandardDeviationTimedBodyKinematics(trueKinematics,
+                            timestampSeconds, specificForceStandardDeviation, angularRateStandardDeviation);
 
-                    final StandardDeviationTimedBodyKinematics measuredTimedKinematics =
-                            new StandardDeviationTimedBodyKinematics(measuredKinematics, timestampSeconds,
-                                    specificForceStandardDeviation, angularRateStandardDeviation);
+                    final var measuredTimedKinematics = new StandardDeviationTimedBodyKinematics(measuredKinematics,
+                            timestampSeconds, specificForceStandardDeviation, angularRateStandardDeviation);
 
                     trueTimedKinematicsList.add(trueTimedKinematics);
                     measuredTimedKinematicsList.add(measuredTimedKinematics);
@@ -10563,44 +10562,43 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
                 trueSequence.setItems(trueTimedKinematicsList);
                 sequence.setItems(measuredTimedKinematicsList);
 
-                final Quaternion afterQ = new Quaternion();
+                final var afterQ = new Quaternion();
                 QuaternionIntegrator.integrateGyroSequence(trueSequence, beforeQ,
                         QuaternionStepIntegratorType.RUNGE_KUTTA, afterQ);
 
-                final CoordinateTransformation newNedC = new CoordinateTransformation(afterQ.asInhomogeneousMatrix(),
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+                final var newNedC = new CoordinateTransformation(afterQ.asInhomogeneousMatrix(), FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
                 newNedFrame.setPosition(nedPosition);
                 newNedFrame.setCoordinateTransformation(newNedC);
 
                 NEDtoECEFFrameConverter.convertNEDtoECEF(newNedFrame, newEcefFrame);
 
-                final BodyKinematics trueAfterGravityKinematics = ECEFKinematicsEstimator
-                        .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, newEcefFrame, newEcefFrame);
-                final BodyKinematics measuredAfterGravityKinematics = BodyKinematicsGenerator.generate(
-                        TIME_INTERVAL_SECONDS, trueAfterGravityKinematics, errorsInlier, random);
+                final var trueAfterGravityKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                        TIME_INTERVAL_SECONDS, newEcefFrame, newEcefFrame);
+                final var measuredAfterGravityKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                        trueAfterGravityKinematics, errorsInlier, random);
 
-                final double afterMeanFx = measuredAfterGravityKinematics.getFx();
-                final double afterMeanFy = measuredAfterGravityKinematics.getFy();
-                final double afterMeanFz = measuredAfterGravityKinematics.getFz();
+                final var afterMeanFx = measuredAfterGravityKinematics.getFx();
+                final var afterMeanFy = measuredAfterGravityKinematics.getFy();
+                final var afterMeanFz = measuredAfterGravityKinematics.getFz();
 
                 sequence.setAfterMeanSpecificForceCoordinates(afterMeanFx, afterMeanFy, afterMeanFz);
 
                 sequences.add(sequence);
             }
 
-            final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(
-                    qualityScores, sequences, true, true, bg, mg, gg, ba, ma,
-                    this);
+            final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences,
+                    true, true, bg, mg, gg, ba, ma, this);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
-            assertEquals(0, mCalibrateNextIteration);
-            assertEquals(0, mCalibrateProgressChange);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
+            assertEquals(0, calibrateNextIteration);
+            assertEquals(0, calibrateProgressChange);
 
             try {
                 calibrator.calibrate();
@@ -10610,14 +10608,14 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
 
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
-            assertTrue(mCalibrateNextIteration > 0);
-            assertTrue(mCalibrateProgressChange >= 0);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
+            assertTrue(calibrateNextIteration > 0);
+            assertTrue(calibrateProgressChange >= 0);
 
-            final Matrix estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
-            final Matrix estimatedMg = calibrator.getEstimatedMg();
-            final Matrix estimatedGg = calibrator.getEstimatedGg();
+            final var estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
+            final var estimatedMg = calibrator.getEstimatedMg();
+            final var estimatedGg = calibrator.getEstimatedGg();
 
             if (!bg.equals(estimatedBg, LARGE_ABSOLUTE_ERROR)) {
                 continue;
@@ -10638,7 +10636,7 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisAndGDependantCrossBiasesCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
+            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
             break;
@@ -10648,93 +10646,89 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testCalibrateGeneralAndGDependentCrossBiasesEnabledAndNoInlierNoise() throws WrongSizeException,
+    void testCalibrateGeneralAndGDependentCrossBiasesEnabledAndNoInlierNoise() throws WrongSizeException,
             InvalidRotationMatrixException, InvalidSourceAndDestinationFrameTypeException, LockedException,
             NotReadyException, RotationException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Matrix ba = generateBa();
-            final Matrix bg = generateBg();
-            final Matrix ma = generateMa();
-            final Matrix mg = generateGeneralMg();
-            final Matrix gg = generateGg();
-            final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-            final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-            final double accelQuantLevel = 0.0;
-            final double gyroQuantLevel = 0.0;
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var ba = generateBa();
+            final var bg = generateBg();
+            final var ma = generateMa();
+            final var mg = generateGeneralMg();
+            final var gg = generateGg();
+            final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+            final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+            final var accelQuantLevel = 0.0;
+            final var gyroQuantLevel = 0.0;
 
-            final IMUErrors errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
+            final var errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
                     accelQuantLevel, gyroQuantLevel);
-            final IMUErrors errorsInlier = new IMUErrors(ba, bg, ma, mg, gg, 0.0,
-                    0.0, accelQuantLevel, gyroQuantLevel);
+            final var errorsInlier = new IMUErrors(ba, bg, ma, mg, gg, 0.0, 0.0,
+                    accelQuantLevel, gyroQuantLevel);
 
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
-            final double specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
-            final double angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
+            final var sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
+            final var specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
+            final var angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
 
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(random, 0.0,
-                    angularRateStandardDeviation);
+            final var errorRandomizer = new GaussianRandomizer(0.0, angularRateStandardDeviation);
 
-            final int m = EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS;
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = new ArrayList<>();
-            final double[] qualityScores = new double[MEASUREMENT_NUMBER];
+            final var m = EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS;
+            final var sequences = new ArrayList<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>();
+            final var qualityScores = new double[MEASUREMENT_NUMBER];
+            final var random = new Random();
             double error;
-            for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
+            for (var i = 0; i < MEASUREMENT_NUMBER; i++) {
                 // initial attitude of sequence
-                final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw,
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+                final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final Quaternion beforeQ = new Quaternion();
+                final var beforeQ = new Quaternion();
                 nedC.asRotation(beforeQ);
 
-                final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+                final var nedFrame = new NEDFrame(nedPosition, nedC);
+                final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
-                final BodyKinematics trueBeforeGravityKinematics = ECEFKinematicsEstimator
-                        .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
-                final BodyKinematics measuredBeforeGravityKinematics = BodyKinematicsGenerator.generate(
-                        TIME_INTERVAL_SECONDS, trueBeforeGravityKinematics, errorsInlier, random);
+                final var trueBeforeGravityKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                        TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
+                final var measuredBeforeGravityKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                        trueBeforeGravityKinematics, errorsInlier, random);
 
-                final double beforeMeanFx = measuredBeforeGravityKinematics.getFx();
-                final double beforeMeanFy = measuredBeforeGravityKinematics.getFy();
-                final double beforeMeanFz = measuredBeforeGravityKinematics.getFz();
+                final var beforeMeanFx = measuredBeforeGravityKinematics.getFx();
+                final var beforeMeanFy = measuredBeforeGravityKinematics.getFy();
+                final var beforeMeanFz = measuredBeforeGravityKinematics.getFz();
 
-                final double deltaRoll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
+                final var deltaRoll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
                         MAX_ANGLE_VARIATION_DEGREES));
-                final double deltaPitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
+                final var deltaPitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
                         MAX_ANGLE_VARIATION_DEGREES));
-                final double deltaYaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
+                final var deltaYaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
                         MAX_ANGLE_VARIATION_DEGREES));
 
-                final NEDFrame oldNedFrame = new NEDFrame(nedFrame);
-                final NEDFrame newNedFrame = new NEDFrame();
-                final ECEFFrame oldEcefFrame = new ECEFFrame();
-                final ECEFFrame newEcefFrame = new ECEFFrame();
-                double oldRoll = roll - deltaRoll;
-                double oldPitch = pitch - deltaPitch;
-                double oldYaw = yaw - deltaYaw;
+                final var oldNedFrame = new NEDFrame(nedFrame);
+                final var newNedFrame = new NEDFrame();
+                final var oldEcefFrame = new ECEFFrame();
+                final var newEcefFrame = new ECEFFrame();
+                var oldRoll = roll - deltaRoll;
+                var oldPitch = pitch - deltaPitch;
+                var oldYaw = yaw - deltaYaw;
 
-                final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> trueSequence =
-                        new BodyKinematicsSequence<>();
-                final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence =
-                        new BodyKinematicsSequence<>();
+                final var trueSequence = new BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>();
+                final var sequence = new BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>();
                 sequence.setBeforeMeanSpecificForceCoordinates(beforeMeanFx, beforeMeanFy, beforeMeanFz);
 
-                final List<StandardDeviationTimedBodyKinematics> trueTimedKinematicsList = new ArrayList<>();
-                final List<StandardDeviationTimedBodyKinematics> measuredTimedKinematicsList = new ArrayList<>();
-                final boolean sequenceCanHaveOutliers = randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE;
+                final var trueTimedKinematicsList = new ArrayList<StandardDeviationTimedBodyKinematics>();
+                final var measuredTimedKinematicsList = new ArrayList<StandardDeviationTimedBodyKinematics>();
+                final var sequenceCanHaveOutliers = randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE;
                 if (sequenceCanHaveOutliers) {
                     error = Math.abs(errorRandomizer.nextDouble());
                 } else {
@@ -10742,13 +10736,13 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
                 }
                 qualityScores[i] = 1.0 / (1.0 + error);
 
-                for (int j = 0; j < m; j++) {
-                    final double newRoll = oldRoll + deltaRoll;
-                    final double newPitch = oldPitch + deltaPitch;
-                    final double newYaw = oldYaw + deltaYaw;
-                    final CoordinateTransformation newNedC = new CoordinateTransformation(newRoll, newPitch, newYaw,
-                            FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
-                    final NEDPosition newNedPosition = oldNedFrame.getPosition();
+                for (var j = 0; j < m; j++) {
+                    final var newRoll = oldRoll + deltaRoll;
+                    final var newPitch = oldPitch + deltaPitch;
+                    final var newYaw = oldYaw + deltaYaw;
+                    final var newNedC = new CoordinateTransformation(newRoll, newPitch, newYaw, FrameType.BODY_FRAME,
+                            FrameType.LOCAL_NAVIGATION_FRAME);
+                    final var newNedPosition = oldNedFrame.getPosition();
 
                     newNedFrame.setPosition(newNedPosition);
                     newNedFrame.setCoordinateTransformation(newNedC);
@@ -10756,11 +10750,11 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
                     NEDtoECEFFrameConverter.convertNEDtoECEF(newNedFrame, newEcefFrame);
                     NEDtoECEFFrameConverter.convertNEDtoECEF(oldNedFrame, oldEcefFrame);
 
-                    final double timestampSeconds = j * TIME_INTERVAL_SECONDS;
+                    final var timestampSeconds = j * TIME_INTERVAL_SECONDS;
 
                     // compute ground-truth kinematics that should be generated at provided
                     // position, velocity and orientation
-                    final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                    final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
                             TIME_INTERVAL_SECONDS, newEcefFrame, oldEcefFrame);
 
                     // apply known calibration parameters to distort ground-truth and generate a
@@ -10776,13 +10770,11 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
                                 trueKinematics, errorsInlier, random);
                     }
 
-                    final StandardDeviationTimedBodyKinematics trueTimedKinematics =
-                            new StandardDeviationTimedBodyKinematics(trueKinematics, timestampSeconds,
-                                    specificForceStandardDeviation, angularRateStandardDeviation);
+                    final var trueTimedKinematics = new StandardDeviationTimedBodyKinematics(trueKinematics,
+                            timestampSeconds, specificForceStandardDeviation, angularRateStandardDeviation);
 
-                    final StandardDeviationTimedBodyKinematics measuredTimedKinematics =
-                            new StandardDeviationTimedBodyKinematics(measuredKinematics, timestampSeconds,
-                                    specificForceStandardDeviation, angularRateStandardDeviation);
+                    final var measuredTimedKinematics = new StandardDeviationTimedBodyKinematics(measuredKinematics,
+                            timestampSeconds, specificForceStandardDeviation, angularRateStandardDeviation);
 
                     trueTimedKinematicsList.add(trueTimedKinematics);
                     measuredTimedKinematicsList.add(measuredTimedKinematics);
@@ -10795,44 +10787,43 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
                 trueSequence.setItems(trueTimedKinematicsList);
                 sequence.setItems(measuredTimedKinematicsList);
 
-                final Quaternion afterQ = new Quaternion();
+                final var afterQ = new Quaternion();
                 QuaternionIntegrator.integrateGyroSequence(trueSequence, beforeQ,
                         QuaternionStepIntegratorType.RUNGE_KUTTA, afterQ);
 
-                final CoordinateTransformation newNedC = new CoordinateTransformation(afterQ.asInhomogeneousMatrix(),
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+                final var newNedC = new CoordinateTransformation(afterQ.asInhomogeneousMatrix(), FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
                 newNedFrame.setPosition(nedPosition);
                 newNedFrame.setCoordinateTransformation(newNedC);
 
                 NEDtoECEFFrameConverter.convertNEDtoECEF(newNedFrame, newEcefFrame);
 
-                final BodyKinematics trueAfterGravityKinematics = ECEFKinematicsEstimator
-                        .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, newEcefFrame, newEcefFrame);
-                final BodyKinematics measuredAfterGravityKinematics = BodyKinematicsGenerator.generate(
-                        TIME_INTERVAL_SECONDS, trueAfterGravityKinematics, errorsInlier, random);
+                final var trueAfterGravityKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                        TIME_INTERVAL_SECONDS, newEcefFrame, newEcefFrame);
+                final var measuredAfterGravityKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                        trueAfterGravityKinematics, errorsInlier, random);
 
-                final double afterMeanFx = measuredAfterGravityKinematics.getFx();
-                final double afterMeanFy = measuredAfterGravityKinematics.getFy();
-                final double afterMeanFz = measuredAfterGravityKinematics.getFz();
+                final var afterMeanFx = measuredAfterGravityKinematics.getFx();
+                final var afterMeanFy = measuredAfterGravityKinematics.getFy();
+                final var afterMeanFz = measuredAfterGravityKinematics.getFz();
 
                 sequence.setAfterMeanSpecificForceCoordinates(afterMeanFx, afterMeanFy, afterMeanFz);
 
                 sequences.add(sequence);
             }
 
-            final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(
-                    qualityScores, sequences, false, true, bg, mg, gg, ba,
-                    ma, this);
+            final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences,
+                    false, true, bg, mg, gg, ba, ma, this);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
-            assertEquals(0, mCalibrateNextIteration);
-            assertEquals(0, mCalibrateProgressChange);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
+            assertEquals(0, calibrateNextIteration);
+            assertEquals(0, calibrateProgressChange);
 
             try {
                 calibrator.calibrate();
@@ -10842,14 +10833,14 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
 
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
-            assertTrue(mCalibrateNextIteration > 0);
-            assertTrue(mCalibrateProgressChange >= 0);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
+            assertTrue(calibrateNextIteration > 0);
+            assertTrue(calibrateProgressChange >= 0);
 
-            final Matrix estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
-            final Matrix estimatedMg = calibrator.getEstimatedMg();
-            final Matrix estimatedGg = calibrator.getEstimatedGg();
+            final var estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
+            final var estimatedMg = calibrator.getEstimatedMg();
+            final var estimatedGg = calibrator.getEstimatedGg();
 
             if (!bg.equals(estimatedBg, LARGE_ABSOLUTE_ERROR)) {
                 continue;
@@ -10870,7 +10861,7 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralAndGDependantCrossBiasesCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
+            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
             break;
@@ -10880,96 +10871,92 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testCalibrateCommonAxisAndGDependentCrossBiasesDisabledWithInlierNoise() throws WrongSizeException,
+    void testCalibrateCommonAxisAndGDependentCrossBiasesDisabledWithInlierNoise() throws WrongSizeException,
             InvalidRotationMatrixException, InvalidSourceAndDestinationFrameTypeException, LockedException,
             NotReadyException, RotationException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Matrix ba = generateBa();
-            final Matrix bg = generateBg();
-            final Matrix ma = generateMa();
-            final Matrix mg = generateCommonAxisMg();
-            final Matrix gg = new Matrix(3, 3);
-            final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-            final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-            final double accelQuantLevel = 0.0;
-            final double gyroQuantLevel = 0.0;
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var ba = generateBa();
+            final var bg = generateBg();
+            final var ma = generateMa();
+            final var mg = generateCommonAxisMg();
+            final var gg = new Matrix(3, 3);
+            final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+            final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+            final var accelQuantLevel = 0.0;
+            final var gyroQuantLevel = 0.0;
 
-            final IMUErrors errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg,
+            final var errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg,
                     OUTLIER_ERROR_FACTOR * accelNoiseRootPSD,
                     OUTLIER_ERROR_FACTOR * gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
-            final IMUErrors errorsInlier = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
+            final var errorsInlier = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
                     accelQuantLevel, gyroQuantLevel);
-            final IMUErrors noErrorsInlier = new IMUErrors(ba, bg, ma, mg, gg, 0.0,
+            final var noErrorsInlier = new IMUErrors(ba, bg, ma, mg, gg, 0.0,
                     0.0, accelQuantLevel, gyroQuantLevel);
 
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
-            final double specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
-            final double angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
+            final var sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
+            final var specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
+            final var angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
 
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(random, 0.0,
-                    angularRateStandardDeviation);
+            final var errorRandomizer = new GaussianRandomizer(0.0, angularRateStandardDeviation);
 
-            final int m = EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS;
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = new ArrayList<>();
-            final double[] qualityScores = new double[MEASUREMENT_NUMBER];
+            final var m = EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS;
+            final var sequences = new ArrayList<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>();
+            final var qualityScores = new double[MEASUREMENT_NUMBER];
+            final var random = new Random();
             double error;
-            for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
+            for (var i = 0; i < MEASUREMENT_NUMBER; i++) {
                 // initial attitude of sequence
-                final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw,
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+                final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final Quaternion beforeQ = new Quaternion();
+                final var beforeQ = new Quaternion();
                 nedC.asRotation(beforeQ);
 
-                final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+                final var nedFrame = new NEDFrame(nedPosition, nedC);
+                final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
-                final BodyKinematics trueBeforeGravityKinematics = ECEFKinematicsEstimator
-                        .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
-                final BodyKinematics measuredBeforeGravityKinematics = BodyKinematicsGenerator.generate(
-                        TIME_INTERVAL_SECONDS, trueBeforeGravityKinematics, noErrorsInlier, random);
+                final var trueBeforeGravityKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                        TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
+                final var measuredBeforeGravityKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                        trueBeforeGravityKinematics, noErrorsInlier, random);
 
-                final double beforeMeanFx = measuredBeforeGravityKinematics.getFx();
-                final double beforeMeanFy = measuredBeforeGravityKinematics.getFy();
-                final double beforeMeanFz = measuredBeforeGravityKinematics.getFz();
+                final var beforeMeanFx = measuredBeforeGravityKinematics.getFx();
+                final var beforeMeanFy = measuredBeforeGravityKinematics.getFy();
+                final var beforeMeanFz = measuredBeforeGravityKinematics.getFz();
 
-                final double deltaRoll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
+                final var deltaRoll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
                         MAX_ANGLE_VARIATION_DEGREES));
-                final double deltaPitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
+                final var deltaPitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
                         MAX_ANGLE_VARIATION_DEGREES));
-                final double deltaYaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
+                final var deltaYaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
                         MAX_ANGLE_VARIATION_DEGREES));
 
-                final NEDFrame oldNedFrame = new NEDFrame(nedFrame);
-                final NEDFrame newNedFrame = new NEDFrame();
-                final ECEFFrame oldEcefFrame = new ECEFFrame();
-                final ECEFFrame newEcefFrame = new ECEFFrame();
-                double oldRoll = roll - deltaRoll;
-                double oldPitch = pitch - deltaPitch;
-                double oldYaw = yaw - deltaYaw;
+                final var oldNedFrame = new NEDFrame(nedFrame);
+                final var newNedFrame = new NEDFrame();
+                final var oldEcefFrame = new ECEFFrame();
+                final var newEcefFrame = new ECEFFrame();
+                var oldRoll = roll - deltaRoll;
+                var oldPitch = pitch - deltaPitch;
+                var oldYaw = yaw - deltaYaw;
 
-                final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> trueSequence =
-                        new BodyKinematicsSequence<>();
-                final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence =
-                        new BodyKinematicsSequence<>();
+                final var trueSequence = new BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>();
+                final var sequence = new BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>();
                 sequence.setBeforeMeanSpecificForceCoordinates(beforeMeanFx, beforeMeanFy, beforeMeanFz);
 
-                final List<StandardDeviationTimedBodyKinematics> trueTimedKinematicsList = new ArrayList<>();
-                final List<StandardDeviationTimedBodyKinematics> measuredTimedKinematicsList = new ArrayList<>();
-                final boolean sequenceCanHaveOutliers = randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE;
+                final var trueTimedKinematicsList = new ArrayList<StandardDeviationTimedBodyKinematics>();
+                final var measuredTimedKinematicsList = new ArrayList<StandardDeviationTimedBodyKinematics>();
+                final var sequenceCanHaveOutliers = randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE;
                 if (sequenceCanHaveOutliers) {
                     error = Math.abs(errorRandomizer.nextDouble());
                 } else {
@@ -10977,13 +10964,13 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
                 }
                 qualityScores[i] = 1.0 / (1.0 + error);
 
-                for (int j = 0; j < m; j++) {
-                    final double newRoll = oldRoll + deltaRoll;
-                    final double newPitch = oldPitch + deltaPitch;
-                    final double newYaw = oldYaw + deltaYaw;
-                    final CoordinateTransformation newNedC = new CoordinateTransformation(newRoll, newPitch, newYaw,
-                            FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
-                    final NEDPosition newNedPosition = oldNedFrame.getPosition();
+                for (var j = 0; j < m; j++) {
+                    final var newRoll = oldRoll + deltaRoll;
+                    final var newPitch = oldPitch + deltaPitch;
+                    final var newYaw = oldYaw + deltaYaw;
+                    final var newNedC = new CoordinateTransformation(newRoll, newPitch, newYaw, FrameType.BODY_FRAME,
+                            FrameType.LOCAL_NAVIGATION_FRAME);
+                    final var newNedPosition = oldNedFrame.getPosition();
 
                     newNedFrame.setPosition(newNedPosition);
                     newNedFrame.setCoordinateTransformation(newNedC);
@@ -10991,11 +10978,11 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
                     NEDtoECEFFrameConverter.convertNEDtoECEF(newNedFrame, newEcefFrame);
                     NEDtoECEFFrameConverter.convertNEDtoECEF(oldNedFrame, oldEcefFrame);
 
-                    final double timestampSeconds = j * TIME_INTERVAL_SECONDS;
+                    final var timestampSeconds = j * TIME_INTERVAL_SECONDS;
 
                     // compute ground-truth kinematics that should be generated at provided
                     // position, velocity and orientation
-                    final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                    final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
                             TIME_INTERVAL_SECONDS, newEcefFrame, oldEcefFrame);
 
                     // apply known calibration parameters to distort ground-truth and generate a
@@ -11011,13 +10998,11 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
                                 errorsInlier, random);
                     }
 
-                    final StandardDeviationTimedBodyKinematics trueTimedKinematics =
-                            new StandardDeviationTimedBodyKinematics(trueKinematics, timestampSeconds,
-                                    specificForceStandardDeviation, angularRateStandardDeviation);
+                    final var trueTimedKinematics = new StandardDeviationTimedBodyKinematics(trueKinematics,
+                            timestampSeconds, specificForceStandardDeviation, angularRateStandardDeviation);
 
-                    final StandardDeviationTimedBodyKinematics measuredTimedKinematics =
-                            new StandardDeviationTimedBodyKinematics(measuredKinematics, timestampSeconds,
-                                    specificForceStandardDeviation, angularRateStandardDeviation);
+                    final var measuredTimedKinematics = new StandardDeviationTimedBodyKinematics(measuredKinematics,
+                            timestampSeconds, specificForceStandardDeviation, angularRateStandardDeviation);
 
                     trueTimedKinematicsList.add(trueTimedKinematics);
                     measuredTimedKinematicsList.add(measuredTimedKinematics);
@@ -11030,35 +11015,34 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
                 trueSequence.setItems(trueTimedKinematicsList);
                 sequence.setItems(measuredTimedKinematicsList);
 
-                final Quaternion afterQ = new Quaternion();
+                final var afterQ = new Quaternion();
                 QuaternionIntegrator.integrateGyroSequence(trueSequence, beforeQ,
                         QuaternionStepIntegratorType.RUNGE_KUTTA, afterQ);
 
-                final CoordinateTransformation newNedC = new CoordinateTransformation(afterQ.asInhomogeneousMatrix(),
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+                final var newNedC = new CoordinateTransformation(afterQ.asInhomogeneousMatrix(), FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
                 newNedFrame.setPosition(nedPosition);
                 newNedFrame.setCoordinateTransformation(newNedC);
 
                 NEDtoECEFFrameConverter.convertNEDtoECEF(newNedFrame, newEcefFrame);
 
-                final BodyKinematics trueAfterGravityKinematics = ECEFKinematicsEstimator
-                        .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, newEcefFrame, newEcefFrame);
-                final BodyKinematics measuredAfterGravityKinematics = BodyKinematicsGenerator.generate(
-                        TIME_INTERVAL_SECONDS, trueAfterGravityKinematics, noErrorsInlier, random);
+                final var trueAfterGravityKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                        TIME_INTERVAL_SECONDS, newEcefFrame, newEcefFrame);
+                final var measuredAfterGravityKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                        trueAfterGravityKinematics, noErrorsInlier, random);
 
-                final double afterMeanFx = measuredAfterGravityKinematics.getFx();
-                final double afterMeanFy = measuredAfterGravityKinematics.getFy();
-                final double afterMeanFz = measuredAfterGravityKinematics.getFz();
+                final var afterMeanFx = measuredAfterGravityKinematics.getFx();
+                final var afterMeanFy = measuredAfterGravityKinematics.getFy();
+                final var afterMeanFz = measuredAfterGravityKinematics.getFz();
 
                 sequence.setAfterMeanSpecificForceCoordinates(afterMeanFx, afterMeanFy, afterMeanFz);
 
                 sequences.add(sequence);
             }
 
-            final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(
-                    qualityScores, sequences, true, false, bg, mg, gg, ba,
-                    ma, this);
+            final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences,
+                    true, false, bg, mg, gg, ba, ma, this);
             final int subsetSize = calibrator.getMinimumRequiredMeasurementsOrSequences();
             calibrator.setPreliminarySubsetSize(subsetSize);
             calibrator.setThreshold(THRESHOLD);
@@ -11067,10 +11051,10 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
-            assertEquals(0, mCalibrateNextIteration);
-            assertEquals(0, mCalibrateProgressChange);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
+            assertEquals(0, calibrateNextIteration);
+            assertEquals(0, calibrateProgressChange);
 
             try {
                 calibrator.calibrate();
@@ -11080,14 +11064,14 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
 
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
-            assertTrue(mCalibrateNextIteration > 0);
-            assertTrue(mCalibrateProgressChange >= 0);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
+            assertTrue(calibrateNextIteration > 0);
+            assertTrue(calibrateProgressChange >= 0);
 
-            final Matrix estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
-            final Matrix estimatedMg = calibrator.getEstimatedMg();
-            final Matrix estimatedGg = calibrator.getEstimatedGg();
+            final var estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
+            final var estimatedMg = calibrator.getEstimatedMg();
+            final var estimatedGg = calibrator.getEstimatedGg();
 
             assertTrue(bg.equals(estimatedBg, VERY_LARGE_ABSOLUTE_ERROR));
             assertTrue(mg.equals(estimatedMg, LARGE_ABSOLUTE_ERROR));
@@ -11098,7 +11082,7 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
+            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
             break;
@@ -11108,96 +11092,92 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testCalibrateGeneralAndGDependentCrossBiasesDisabledWithInlierNoise() throws WrongSizeException,
+    void testCalibrateGeneralAndGDependentCrossBiasesDisabledWithInlierNoise() throws WrongSizeException,
             InvalidRotationMatrixException, InvalidSourceAndDestinationFrameTypeException, LockedException,
             NotReadyException, RotationException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Matrix ba = generateBa();
-            final Matrix bg = generateBg();
-            final Matrix ma = generateMa();
-            final Matrix mg = generateGeneralMg();
-            final Matrix gg = new Matrix(3, 3);
-            final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-            final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-            final double accelQuantLevel = 0.0;
-            final double gyroQuantLevel = 0.0;
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var ba = generateBa();
+            final var bg = generateBg();
+            final var ma = generateMa();
+            final var mg = generateGeneralMg();
+            final var gg = new Matrix(3, 3);
+            final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+            final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+            final var accelQuantLevel = 0.0;
+            final var gyroQuantLevel = 0.0;
 
-            final IMUErrors errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg,
+            final var errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg,
                     OUTLIER_ERROR_FACTOR * accelNoiseRootPSD,
                     OUTLIER_ERROR_FACTOR * gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
-            final IMUErrors errorsInlier = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
+            final var errorsInlier = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
                     accelQuantLevel, gyroQuantLevel);
-            final IMUErrors noErrorsInlier = new IMUErrors(ba, bg, ma, mg, gg, 0.0,
+            final var noErrorsInlier = new IMUErrors(ba, bg, ma, mg, gg, 0.0,
                     0.0, accelQuantLevel, gyroQuantLevel);
 
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
-            final double specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
-            final double angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
+            final var sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
+            final var specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
+            final var angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
 
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(random, 0.0,
-                    angularRateStandardDeviation);
+            final var errorRandomizer = new GaussianRandomizer(0.0, angularRateStandardDeviation);
 
-            final int m = EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS;
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = new ArrayList<>();
-            final double[] qualityScores = new double[MEASUREMENT_NUMBER];
+            final var m = EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS;
+            final var sequences = new ArrayList<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>();
+            final var qualityScores = new double[MEASUREMENT_NUMBER];
+            final var random = new Random();
             double error;
-            for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
+            for (var i = 0; i < MEASUREMENT_NUMBER; i++) {
                 // initial attitude of sequence
-                final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw,
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+                final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final Quaternion beforeQ = new Quaternion();
+                final var beforeQ = new Quaternion();
                 nedC.asRotation(beforeQ);
 
-                final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+                final var nedFrame = new NEDFrame(nedPosition, nedC);
+                final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
-                final BodyKinematics trueBeforeGravityKinematics = ECEFKinematicsEstimator
-                        .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
-                final BodyKinematics measuredBeforeGravityKinematics = BodyKinematicsGenerator.generate(
-                        TIME_INTERVAL_SECONDS, trueBeforeGravityKinematics, noErrorsInlier, random);
+                final var trueBeforeGravityKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                        TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
+                final var measuredBeforeGravityKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                        trueBeforeGravityKinematics, noErrorsInlier, random);
 
-                final double beforeMeanFx = measuredBeforeGravityKinematics.getFx();
-                final double beforeMeanFy = measuredBeforeGravityKinematics.getFy();
-                final double beforeMeanFz = measuredBeforeGravityKinematics.getFz();
+                final var beforeMeanFx = measuredBeforeGravityKinematics.getFx();
+                final var beforeMeanFy = measuredBeforeGravityKinematics.getFy();
+                final var beforeMeanFz = measuredBeforeGravityKinematics.getFz();
 
-                final double deltaRoll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
+                final var deltaRoll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
                         MAX_ANGLE_VARIATION_DEGREES));
-                final double deltaPitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
+                final var deltaPitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
                         MAX_ANGLE_VARIATION_DEGREES));
-                final double deltaYaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
+                final var deltaYaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
                         MAX_ANGLE_VARIATION_DEGREES));
 
-                final NEDFrame oldNedFrame = new NEDFrame(nedFrame);
-                final NEDFrame newNedFrame = new NEDFrame();
-                final ECEFFrame oldEcefFrame = new ECEFFrame();
-                final ECEFFrame newEcefFrame = new ECEFFrame();
-                double oldRoll = roll - deltaRoll;
-                double oldPitch = pitch - deltaPitch;
-                double oldYaw = yaw - deltaYaw;
+                final var oldNedFrame = new NEDFrame(nedFrame);
+                final var newNedFrame = new NEDFrame();
+                final var oldEcefFrame = new ECEFFrame();
+                final var newEcefFrame = new ECEFFrame();
+                var oldRoll = roll - deltaRoll;
+                var oldPitch = pitch - deltaPitch;
+                var oldYaw = yaw - deltaYaw;
 
-                final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> trueSequence =
-                        new BodyKinematicsSequence<>();
-                final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence =
-                        new BodyKinematicsSequence<>();
+                final var trueSequence = new BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>();
+                final var sequence = new BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>();
                 sequence.setBeforeMeanSpecificForceCoordinates(beforeMeanFx, beforeMeanFy, beforeMeanFz);
 
-                final List<StandardDeviationTimedBodyKinematics> trueTimedKinematicsList = new ArrayList<>();
-                final List<StandardDeviationTimedBodyKinematics> measuredTimedKinematicsList = new ArrayList<>();
-                final boolean sequenceCanHaveOutliers = randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE;
+                final var trueTimedKinematicsList = new ArrayList<StandardDeviationTimedBodyKinematics>();
+                final var measuredTimedKinematicsList = new ArrayList<StandardDeviationTimedBodyKinematics>();
+                final var sequenceCanHaveOutliers = randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE;
                 if (sequenceCanHaveOutliers) {
                     error = Math.abs(errorRandomizer.nextDouble());
                 } else {
@@ -11205,13 +11185,13 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
                 }
                 qualityScores[i] = 1.0 / (1.0 + error);
 
-                for (int j = 0; j < m; j++) {
-                    final double newRoll = oldRoll + deltaRoll;
-                    final double newPitch = oldPitch + deltaPitch;
-                    final double newYaw = oldYaw + deltaYaw;
-                    final CoordinateTransformation newNedC = new CoordinateTransformation(newRoll, newPitch, newYaw,
-                            FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
-                    final NEDPosition newNedPosition = oldNedFrame.getPosition();
+                for (var j = 0; j < m; j++) {
+                    final var newRoll = oldRoll + deltaRoll;
+                    final var newPitch = oldPitch + deltaPitch;
+                    final var newYaw = oldYaw + deltaYaw;
+                    final var newNedC = new CoordinateTransformation(newRoll, newPitch, newYaw, FrameType.BODY_FRAME,
+                            FrameType.LOCAL_NAVIGATION_FRAME);
+                    final var newNedPosition = oldNedFrame.getPosition();
 
                     newNedFrame.setPosition(newNedPosition);
                     newNedFrame.setCoordinateTransformation(newNedC);
@@ -11219,11 +11199,11 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
                     NEDtoECEFFrameConverter.convertNEDtoECEF(newNedFrame, newEcefFrame);
                     NEDtoECEFFrameConverter.convertNEDtoECEF(oldNedFrame, oldEcefFrame);
 
-                    final double timestampSeconds = j * TIME_INTERVAL_SECONDS;
+                    final var timestampSeconds = j * TIME_INTERVAL_SECONDS;
 
                     // compute ground-truth kinematics that should be generated at provided
                     // position, velocity and orientation
-                    final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                    final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
                             TIME_INTERVAL_SECONDS, newEcefFrame, oldEcefFrame);
 
                     // apply known calibration parameters to distort ground-truth and generate a
@@ -11239,13 +11219,11 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
                                 errorsInlier, random);
                     }
 
-                    final StandardDeviationTimedBodyKinematics trueTimedKinematics =
-                            new StandardDeviationTimedBodyKinematics(trueKinematics, timestampSeconds,
-                                    specificForceStandardDeviation, angularRateStandardDeviation);
+                    final var trueTimedKinematics = new StandardDeviationTimedBodyKinematics(trueKinematics,
+                            timestampSeconds, specificForceStandardDeviation, angularRateStandardDeviation);
 
-                    final StandardDeviationTimedBodyKinematics measuredTimedKinematics =
-                            new StandardDeviationTimedBodyKinematics(measuredKinematics, timestampSeconds,
-                                    specificForceStandardDeviation, angularRateStandardDeviation);
+                    final var measuredTimedKinematics = new StandardDeviationTimedBodyKinematics(measuredKinematics,
+                            timestampSeconds, specificForceStandardDeviation, angularRateStandardDeviation);
 
                     trueTimedKinematicsList.add(trueTimedKinematics);
                     measuredTimedKinematicsList.add(measuredTimedKinematics);
@@ -11258,36 +11236,35 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
                 trueSequence.setItems(trueTimedKinematicsList);
                 sequence.setItems(measuredTimedKinematicsList);
 
-                final Quaternion afterQ = new Quaternion();
+                final var afterQ = new Quaternion();
                 QuaternionIntegrator.integrateGyroSequence(trueSequence, beforeQ,
                         QuaternionStepIntegratorType.RUNGE_KUTTA, afterQ);
 
-                final CoordinateTransformation newNedC = new CoordinateTransformation(afterQ.asInhomogeneousMatrix(),
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+                final var newNedC = new CoordinateTransformation(afterQ.asInhomogeneousMatrix(), FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
                 newNedFrame.setPosition(nedPosition);
                 newNedFrame.setCoordinateTransformation(newNedC);
 
                 NEDtoECEFFrameConverter.convertNEDtoECEF(newNedFrame, newEcefFrame);
 
-                final BodyKinematics trueAfterGravityKinematics = ECEFKinematicsEstimator
-                        .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, newEcefFrame, newEcefFrame);
-                final BodyKinematics measuredAfterGravityKinematics = BodyKinematicsGenerator.generate(
-                        TIME_INTERVAL_SECONDS, trueAfterGravityKinematics, noErrorsInlier, random);
+                final var trueAfterGravityKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                        TIME_INTERVAL_SECONDS, newEcefFrame, newEcefFrame);
+                final var measuredAfterGravityKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                        trueAfterGravityKinematics, noErrorsInlier, random);
 
-                final double afterMeanFx = measuredAfterGravityKinematics.getFx();
-                final double afterMeanFy = measuredAfterGravityKinematics.getFy();
-                final double afterMeanFz = measuredAfterGravityKinematics.getFz();
+                final var afterMeanFx = measuredAfterGravityKinematics.getFx();
+                final var afterMeanFy = measuredAfterGravityKinematics.getFy();
+                final var afterMeanFz = measuredAfterGravityKinematics.getFz();
 
                 sequence.setAfterMeanSpecificForceCoordinates(afterMeanFx, afterMeanFy, afterMeanFz);
 
                 sequences.add(sequence);
             }
 
-            final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(
-                    qualityScores, sequences, false, false, bg, mg, gg, ba,
-                    ma, this);
-            final int subsetSize = calibrator.getMinimumRequiredMeasurementsOrSequences();
+            final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences,
+                    false, false, bg, mg, gg, ba, ma, this);
+            final var subsetSize = calibrator.getMinimumRequiredMeasurementsOrSequences();
             calibrator.setPreliminarySubsetSize(subsetSize);
             calibrator.setThreshold(THRESHOLD);
 
@@ -11295,10 +11272,10 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
-            assertEquals(0, mCalibrateNextIteration);
-            assertEquals(0, mCalibrateProgressChange);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
+            assertEquals(0, calibrateNextIteration);
+            assertEquals(0, calibrateProgressChange);
 
             try {
                 calibrator.calibrate();
@@ -11308,14 +11285,14 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
 
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
-            assertTrue(mCalibrateNextIteration > 0);
-            assertTrue(mCalibrateProgressChange >= 0);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
+            assertTrue(calibrateNextIteration > 0);
+            assertTrue(calibrateProgressChange >= 0);
 
-            final Matrix estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
-            final Matrix estimatedMg = calibrator.getEstimatedMg();
-            final Matrix estimatedGg = calibrator.getEstimatedGg();
+            final var estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
+            final var estimatedMg = calibrator.getEstimatedMg();
+            final var estimatedGg = calibrator.getEstimatedGg();
 
             if (!bg.equals(estimatedBg, VERY_LARGE_ABSOLUTE_ERROR)) {
                 continue;
@@ -11332,7 +11309,7 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
+            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
             break;
@@ -11342,96 +11319,92 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testCalibrateCommonAxisAndGDependentCrossBiasesEnabledWithInlierNoise() throws WrongSizeException,
+    void testCalibrateCommonAxisAndGDependentCrossBiasesEnabledWithInlierNoise() throws WrongSizeException,
             InvalidRotationMatrixException, InvalidSourceAndDestinationFrameTypeException, LockedException,
             NotReadyException, RotationException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Matrix ba = generateBa();
-            final Matrix bg = generateBg();
-            final Matrix ma = generateMa();
-            final Matrix mg = generateCommonAxisMg();
-            final Matrix gg = generateGg();
-            final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-            final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-            final double accelQuantLevel = 0.0;
-            final double gyroQuantLevel = 0.0;
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var ba = generateBa();
+            final var bg = generateBg();
+            final var ma = generateMa();
+            final var mg = generateCommonAxisMg();
+            final var gg = generateGg();
+            final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+            final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+            final var accelQuantLevel = 0.0;
+            final var gyroQuantLevel = 0.0;
 
-            final IMUErrors errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg,
+            final var errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg,
                     OUTLIER_ERROR_FACTOR * accelNoiseRootPSD,
                     OUTLIER_ERROR_FACTOR * gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
-            final IMUErrors errorsInlier = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
+            final var errorsInlier = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
                     accelQuantLevel, gyroQuantLevel);
-            final IMUErrors noErrorsInlier = new IMUErrors(ba, bg, ma, mg, gg, 0.0,
+            final var noErrorsInlier = new IMUErrors(ba, bg, ma, mg, gg, 0.0,
                     0.0, accelQuantLevel, gyroQuantLevel);
 
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
-            final double specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
-            final double angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
+            final var sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
+            final var specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
+            final var angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
 
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(random, 0.0,
-                    angularRateStandardDeviation);
+            final var errorRandomizer = new GaussianRandomizer(0.0, angularRateStandardDeviation);
 
-            final int m = EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS;
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = new ArrayList<>();
-            final double[] qualityScores = new double[MEASUREMENT_NUMBER];
+            final var m = EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS;
+            final var sequences = new ArrayList<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>();
+            final var qualityScores = new double[MEASUREMENT_NUMBER];
+            final var random = new Random();
             double error;
-            for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
+            for (var i = 0; i < MEASUREMENT_NUMBER; i++) {
                 // initial attitude of sequence
-                final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw,
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+                final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final Quaternion beforeQ = new Quaternion();
+                final var beforeQ = new Quaternion();
                 nedC.asRotation(beforeQ);
 
-                final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+                final var nedFrame = new NEDFrame(nedPosition, nedC);
+                final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
-                final BodyKinematics trueBeforeGravityKinematics = ECEFKinematicsEstimator
-                        .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
-                final BodyKinematics measuredBeforeGravityKinematics = BodyKinematicsGenerator.generate(
+                final var trueBeforeGravityKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                        TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
+                final var measuredBeforeGravityKinematics = BodyKinematicsGenerator.generate(
                         TIME_INTERVAL_SECONDS, trueBeforeGravityKinematics, noErrorsInlier, random);
 
-                final double beforeMeanFx = measuredBeforeGravityKinematics.getFx();
-                final double beforeMeanFy = measuredBeforeGravityKinematics.getFy();
-                final double beforeMeanFz = measuredBeforeGravityKinematics.getFz();
+                final var beforeMeanFx = measuredBeforeGravityKinematics.getFx();
+                final var beforeMeanFy = measuredBeforeGravityKinematics.getFy();
+                final var beforeMeanFz = measuredBeforeGravityKinematics.getFz();
 
-                final double deltaRoll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
+                final var deltaRoll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
                         MAX_ANGLE_VARIATION_DEGREES));
-                final double deltaPitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
+                final var deltaPitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
                         MAX_ANGLE_VARIATION_DEGREES));
-                final double deltaYaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
+                final var deltaYaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
                         MAX_ANGLE_VARIATION_DEGREES));
 
-                final NEDFrame oldNedFrame = new NEDFrame(nedFrame);
-                final NEDFrame newNedFrame = new NEDFrame();
-                final ECEFFrame oldEcefFrame = new ECEFFrame();
-                final ECEFFrame newEcefFrame = new ECEFFrame();
-                double oldRoll = roll - deltaRoll;
-                double oldPitch = pitch - deltaPitch;
-                double oldYaw = yaw - deltaYaw;
+                final var oldNedFrame = new NEDFrame(nedFrame);
+                final var newNedFrame = new NEDFrame();
+                final var oldEcefFrame = new ECEFFrame();
+                final var newEcefFrame = new ECEFFrame();
+                var oldRoll = roll - deltaRoll;
+                var oldPitch = pitch - deltaPitch;
+                var oldYaw = yaw - deltaYaw;
 
-                final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> trueSequence =
-                        new BodyKinematicsSequence<>();
-                final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence =
-                        new BodyKinematicsSequence<>();
+                final var trueSequence = new BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>();
+                final var sequence = new BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>();
                 sequence.setBeforeMeanSpecificForceCoordinates(beforeMeanFx, beforeMeanFy, beforeMeanFz);
 
-                final List<StandardDeviationTimedBodyKinematics> trueTimedKinematicsList = new ArrayList<>();
-                final List<StandardDeviationTimedBodyKinematics> measuredTimedKinematicsList = new ArrayList<>();
-                final boolean sequenceCanHaveOutliers = randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE;
+                final var trueTimedKinematicsList = new ArrayList<StandardDeviationTimedBodyKinematics>();
+                final var measuredTimedKinematicsList = new ArrayList<StandardDeviationTimedBodyKinematics>();
+                final var sequenceCanHaveOutliers = randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE;
                 if (sequenceCanHaveOutliers) {
                     error = Math.abs(errorRandomizer.nextDouble());
                 } else {
@@ -11439,13 +11412,13 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
                 }
                 qualityScores[i] = 1.0 / (1.0 + error);
 
-                for (int j = 0; j < m; j++) {
-                    final double newRoll = oldRoll + deltaRoll;
-                    final double newPitch = oldPitch + deltaPitch;
-                    final double newYaw = oldYaw + deltaYaw;
-                    final CoordinateTransformation newNedC = new CoordinateTransformation(newRoll, newPitch, newYaw,
-                            FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
-                    final NEDPosition newNedPosition = oldNedFrame.getPosition();
+                for (var j = 0; j < m; j++) {
+                    final var newRoll = oldRoll + deltaRoll;
+                    final var newPitch = oldPitch + deltaPitch;
+                    final var newYaw = oldYaw + deltaYaw;
+                    final var newNedC = new CoordinateTransformation(newRoll, newPitch, newYaw, FrameType.BODY_FRAME,
+                            FrameType.LOCAL_NAVIGATION_FRAME);
+                    final var newNedPosition = oldNedFrame.getPosition();
 
                     newNedFrame.setPosition(newNedPosition);
                     newNedFrame.setCoordinateTransformation(newNedC);
@@ -11453,11 +11426,11 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
                     NEDtoECEFFrameConverter.convertNEDtoECEF(newNedFrame, newEcefFrame);
                     NEDtoECEFFrameConverter.convertNEDtoECEF(oldNedFrame, oldEcefFrame);
 
-                    final double timestampSeconds = j * TIME_INTERVAL_SECONDS;
+                    final var timestampSeconds = j * TIME_INTERVAL_SECONDS;
 
                     // compute ground-truth kinematics that should be generated at provided
                     // position, velocity and orientation
-                    final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                    final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
                             TIME_INTERVAL_SECONDS, newEcefFrame, oldEcefFrame);
 
                     // apply known calibration parameters to distort ground-truth and generate a
@@ -11473,13 +11446,11 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
                                 errorsInlier, random);
                     }
 
-                    final StandardDeviationTimedBodyKinematics trueTimedKinematics =
-                            new StandardDeviationTimedBodyKinematics(trueKinematics, timestampSeconds,
-                                    specificForceStandardDeviation, angularRateStandardDeviation);
+                    final var trueTimedKinematics = new StandardDeviationTimedBodyKinematics(trueKinematics,
+                            timestampSeconds, specificForceStandardDeviation, angularRateStandardDeviation);
 
-                    final StandardDeviationTimedBodyKinematics measuredTimedKinematics =
-                            new StandardDeviationTimedBodyKinematics(measuredKinematics, timestampSeconds,
-                                    specificForceStandardDeviation, angularRateStandardDeviation);
+                    final var measuredTimedKinematics = new StandardDeviationTimedBodyKinematics(measuredKinematics,
+                            timestampSeconds, specificForceStandardDeviation, angularRateStandardDeviation);
 
                     trueTimedKinematicsList.add(trueTimedKinematics);
                     measuredTimedKinematicsList.add(measuredTimedKinematics);
@@ -11492,37 +11463,35 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
                 trueSequence.setItems(trueTimedKinematicsList);
                 sequence.setItems(measuredTimedKinematicsList);
 
-                final Quaternion afterQ = new Quaternion();
+                final var afterQ = new Quaternion();
                 QuaternionIntegrator.integrateGyroSequence(trueSequence, beforeQ,
                         QuaternionStepIntegratorType.RUNGE_KUTTA, afterQ);
 
-                final CoordinateTransformation newNedC = new CoordinateTransformation(afterQ.asInhomogeneousMatrix(),
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+                final var newNedC = new CoordinateTransformation(afterQ.asInhomogeneousMatrix(), FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
                 newNedFrame.setPosition(nedPosition);
                 newNedFrame.setCoordinateTransformation(newNedC);
 
                 NEDtoECEFFrameConverter.convertNEDtoECEF(newNedFrame, newEcefFrame);
 
-                final BodyKinematics trueAfterGravityKinematics = ECEFKinematicsEstimator
-                        .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, newEcefFrame, newEcefFrame);
-                final BodyKinematics measuredAfterGravityKinematics = BodyKinematicsGenerator.generate(
-                        TIME_INTERVAL_SECONDS, trueAfterGravityKinematics, noErrorsInlier, random);
+                final var trueAfterGravityKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                        TIME_INTERVAL_SECONDS, newEcefFrame, newEcefFrame);
+                final var measuredAfterGravityKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                        trueAfterGravityKinematics, noErrorsInlier, random);
 
-                final double afterMeanFx = measuredAfterGravityKinematics.getFx();
-                final double afterMeanFy = measuredAfterGravityKinematics.getFy();
-                final double afterMeanFz = measuredAfterGravityKinematics.getFz();
+                final var afterMeanFx = measuredAfterGravityKinematics.getFx();
+                final var afterMeanFy = measuredAfterGravityKinematics.getFy();
+                final var afterMeanFz = measuredAfterGravityKinematics.getFz();
 
-                sequence.setAfterMeanSpecificForceCoordinates(
-                        afterMeanFx, afterMeanFy, afterMeanFz);
+                sequence.setAfterMeanSpecificForceCoordinates(afterMeanFx, afterMeanFy, afterMeanFz);
 
                 sequences.add(sequence);
             }
 
-            final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(
-                    qualityScores, sequences, true, true, bg, mg, gg, ba,
-                    ma, this);
-            final int subsetSize = calibrator.getMinimumRequiredMeasurementsOrSequences();
+            final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences,
+                    true, true, bg, mg, gg, ba, ma, this);
+            final var subsetSize = calibrator.getMinimumRequiredMeasurementsOrSequences();
             calibrator.setPreliminarySubsetSize(subsetSize);
             calibrator.setThreshold(THRESHOLD);
 
@@ -11530,10 +11499,10 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
-            assertEquals(0, mCalibrateNextIteration);
-            assertEquals(0, mCalibrateProgressChange);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
+            assertEquals(0, calibrateNextIteration);
+            assertEquals(0, calibrateProgressChange);
 
             try {
                 calibrator.calibrate();
@@ -11543,14 +11512,14 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
 
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
-            assertTrue(mCalibrateNextIteration > 0);
-            assertTrue(mCalibrateProgressChange >= 0);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
+            assertTrue(calibrateNextIteration > 0);
+            assertTrue(calibrateProgressChange >= 0);
 
-            final Matrix estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
-            final Matrix estimatedMg = calibrator.getEstimatedMg();
-            final Matrix estimatedGg = calibrator.getEstimatedGg();
+            final var estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
+            final var estimatedMg = calibrator.getEstimatedMg();
+            final var estimatedGg = calibrator.getEstimatedGg();
 
             if (!bg.equals(estimatedBg, VERY_LARGE_ABSOLUTE_ERROR)) {
                 continue;
@@ -11571,7 +11540,7 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
                 checkCommonAxisAndGDependantCrossBiasesCovariance(calibrator.getEstimatedCovariance());
             }
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
+            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
             break;
@@ -11581,96 +11550,92 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     @Test
-    public void testCalibrateGeneralAndGDependentCrossBiasesEnabledWithInlierNoise() throws WrongSizeException,
+    void testCalibrateGeneralAndGDependentCrossBiasesEnabledWithInlierNoise() throws WrongSizeException,
             InvalidRotationMatrixException, InvalidSourceAndDestinationFrameTypeException, LockedException,
             NotReadyException, RotationException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Matrix ba = generateBa();
-            final Matrix bg = generateBg();
-            final Matrix ma = generateMa();
-            final Matrix mg = generateGeneralMg();
-            final Matrix gg = generateGg();
-            final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-            final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-            final double accelQuantLevel = 0.0;
-            final double gyroQuantLevel = 0.0;
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var ba = generateBa();
+            final var bg = generateBg();
+            final var ma = generateMa();
+            final var mg = generateGeneralMg();
+            final var gg = generateGg();
+            final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+            final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+            final var accelQuantLevel = 0.0;
+            final var gyroQuantLevel = 0.0;
 
-            final IMUErrors errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg,
+            final var errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg,
                     OUTLIER_ERROR_FACTOR * accelNoiseRootPSD,
                     OUTLIER_ERROR_FACTOR * gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
-            final IMUErrors errorsInlier = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
+            final var errorsInlier = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
                     accelQuantLevel, gyroQuantLevel);
-            final IMUErrors noErrorsInlier = new IMUErrors(ba, bg, ma, mg, gg, 0.0,
+            final var noErrorsInlier = new IMUErrors(ba, bg, ma, mg, gg, 0.0,
                     0.0, accelQuantLevel, gyroQuantLevel);
 
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
-            final double specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
-            final double angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
+            final var sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
+            final var specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
+            final var angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
 
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(random, 0.0,
-                    angularRateStandardDeviation);
+            final var errorRandomizer = new GaussianRandomizer(0.0, angularRateStandardDeviation);
 
-            final int m = EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS;
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = new ArrayList<>();
-            final double[] qualityScores = new double[MEASUREMENT_NUMBER];
+            final var m = EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS;
+            final var sequences = new ArrayList<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>();
+            final var qualityScores = new double[MEASUREMENT_NUMBER];
+            final var random = new Random();
             double error;
-            for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
+            for (var i = 0; i < MEASUREMENT_NUMBER; i++) {
                 // initial attitude of sequence
-                final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw,
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+                final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final Quaternion beforeQ = new Quaternion();
+                final var beforeQ = new Quaternion();
                 nedC.asRotation(beforeQ);
 
-                final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+                final var nedFrame = new NEDFrame(nedPosition, nedC);
+                final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
-                final BodyKinematics trueBeforeGravityKinematics = ECEFKinematicsEstimator
-                        .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
-                final BodyKinematics measuredBeforeGravityKinematics = BodyKinematicsGenerator.generate(
-                        TIME_INTERVAL_SECONDS, trueBeforeGravityKinematics, noErrorsInlier, random);
+                final var trueBeforeGravityKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                        TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
+                final var measuredBeforeGravityKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                        trueBeforeGravityKinematics, noErrorsInlier, random);
 
-                final double beforeMeanFx = measuredBeforeGravityKinematics.getFx();
-                final double beforeMeanFy = measuredBeforeGravityKinematics.getFy();
-                final double beforeMeanFz = measuredBeforeGravityKinematics.getFz();
+                final var beforeMeanFx = measuredBeforeGravityKinematics.getFx();
+                final var beforeMeanFy = measuredBeforeGravityKinematics.getFy();
+                final var beforeMeanFz = measuredBeforeGravityKinematics.getFz();
 
-                final double deltaRoll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
+                final var deltaRoll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
                         MAX_ANGLE_VARIATION_DEGREES));
-                final double deltaPitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
+                final var deltaPitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
                         MAX_ANGLE_VARIATION_DEGREES));
-                final double deltaYaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
+                final var deltaYaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
                         MAX_ANGLE_VARIATION_DEGREES));
 
-                final NEDFrame oldNedFrame = new NEDFrame(nedFrame);
-                final NEDFrame newNedFrame = new NEDFrame();
-                final ECEFFrame oldEcefFrame = new ECEFFrame();
-                final ECEFFrame newEcefFrame = new ECEFFrame();
-                double oldRoll = roll - deltaRoll;
-                double oldPitch = pitch - deltaPitch;
-                double oldYaw = yaw - deltaYaw;
+                final var oldNedFrame = new NEDFrame(nedFrame);
+                final var newNedFrame = new NEDFrame();
+                final var oldEcefFrame = new ECEFFrame();
+                final var newEcefFrame = new ECEFFrame();
+                var oldRoll = roll - deltaRoll;
+                var oldPitch = pitch - deltaPitch;
+                var oldYaw = yaw - deltaYaw;
 
-                final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> trueSequence =
-                        new BodyKinematicsSequence<>();
-                final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence =
-                        new BodyKinematicsSequence<>();
+                final var trueSequence = new BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>();
+                final var sequence = new BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>();
                 sequence.setBeforeMeanSpecificForceCoordinates(beforeMeanFx, beforeMeanFy, beforeMeanFz);
 
-                final List<StandardDeviationTimedBodyKinematics> trueTimedKinematicsList = new ArrayList<>();
-                final List<StandardDeviationTimedBodyKinematics> measuredTimedKinematicsList = new ArrayList<>();
-                final boolean sequenceCanHaveOutliers = randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE;
+                final var trueTimedKinematicsList = new ArrayList<StandardDeviationTimedBodyKinematics>();
+                final var measuredTimedKinematicsList = new ArrayList<StandardDeviationTimedBodyKinematics>();
+                final var sequenceCanHaveOutliers = randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE;
                 if (sequenceCanHaveOutliers) {
                     error = Math.abs(errorRandomizer.nextDouble());
                 } else {
@@ -11678,13 +11643,13 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
                 }
                 qualityScores[i] = 1.0 / (1.0 + error);
 
-                for (int j = 0; j < m; j++) {
-                    final double newRoll = oldRoll + deltaRoll;
-                    final double newPitch = oldPitch + deltaPitch;
-                    final double newYaw = oldYaw + deltaYaw;
-                    final CoordinateTransformation newNedC = new CoordinateTransformation(newRoll, newPitch, newYaw,
-                            FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
-                    final NEDPosition newNedPosition = oldNedFrame.getPosition();
+                for (var j = 0; j < m; j++) {
+                    final var newRoll = oldRoll + deltaRoll;
+                    final var newPitch = oldPitch + deltaPitch;
+                    final var newYaw = oldYaw + deltaYaw;
+                    final var newNedC = new CoordinateTransformation(newRoll, newPitch, newYaw, FrameType.BODY_FRAME,
+                            FrameType.LOCAL_NAVIGATION_FRAME);
+                    final var newNedPosition = oldNedFrame.getPosition();
 
                     newNedFrame.setPosition(newNedPosition);
                     newNedFrame.setCoordinateTransformation(newNedC);
@@ -11692,11 +11657,11 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
                     NEDtoECEFFrameConverter.convertNEDtoECEF(newNedFrame, newEcefFrame);
                     NEDtoECEFFrameConverter.convertNEDtoECEF(oldNedFrame, oldEcefFrame);
 
-                    final double timestampSeconds = j * TIME_INTERVAL_SECONDS;
+                    final var timestampSeconds = j * TIME_INTERVAL_SECONDS;
 
                     // compute ground-truth kinematics that should be generated at provided
                     // position, velocity and orientation
-                    final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                    final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
                             TIME_INTERVAL_SECONDS, newEcefFrame, oldEcefFrame);
 
                     // apply known calibration parameters to distort ground-truth and generate a
@@ -11712,13 +11677,11 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
                                 errorsInlier, random);
                     }
 
-                    final StandardDeviationTimedBodyKinematics trueTimedKinematics =
-                            new StandardDeviationTimedBodyKinematics(trueKinematics, timestampSeconds,
-                                    specificForceStandardDeviation, angularRateStandardDeviation);
+                    final var trueTimedKinematics = new StandardDeviationTimedBodyKinematics(trueKinematics,
+                            timestampSeconds, specificForceStandardDeviation, angularRateStandardDeviation);
 
-                    final StandardDeviationTimedBodyKinematics measuredTimedKinematics =
-                            new StandardDeviationTimedBodyKinematics(measuredKinematics, timestampSeconds,
-                                    specificForceStandardDeviation, angularRateStandardDeviation);
+                    final var measuredTimedKinematics = new StandardDeviationTimedBodyKinematics(measuredKinematics,
+                            timestampSeconds, specificForceStandardDeviation, angularRateStandardDeviation);
 
                     trueTimedKinematicsList.add(trueTimedKinematics);
                     measuredTimedKinematicsList.add(measuredTimedKinematics);
@@ -11731,35 +11694,34 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
                 trueSequence.setItems(trueTimedKinematicsList);
                 sequence.setItems(measuredTimedKinematicsList);
 
-                final Quaternion afterQ = new Quaternion();
+                final var afterQ = new Quaternion();
                 QuaternionIntegrator.integrateGyroSequence(trueSequence, beforeQ,
                         QuaternionStepIntegratorType.RUNGE_KUTTA, afterQ);
 
-                final CoordinateTransformation newNedC = new CoordinateTransformation(afterQ.asInhomogeneousMatrix(),
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+                final var newNedC = new CoordinateTransformation(afterQ.asInhomogeneousMatrix(), FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
                 newNedFrame.setPosition(nedPosition);
                 newNedFrame.setCoordinateTransformation(newNedC);
 
                 NEDtoECEFFrameConverter.convertNEDtoECEF(newNedFrame, newEcefFrame);
 
-                final BodyKinematics trueAfterGravityKinematics = ECEFKinematicsEstimator
-                        .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, newEcefFrame, newEcefFrame);
-                final BodyKinematics measuredAfterGravityKinematics = BodyKinematicsGenerator.generate(
-                        TIME_INTERVAL_SECONDS, trueAfterGravityKinematics, noErrorsInlier, random);
+                final var trueAfterGravityKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                        TIME_INTERVAL_SECONDS, newEcefFrame, newEcefFrame);
+                final var measuredAfterGravityKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                        trueAfterGravityKinematics, noErrorsInlier, random);
 
-                final double afterMeanFx = measuredAfterGravityKinematics.getFx();
-                final double afterMeanFy = measuredAfterGravityKinematics.getFy();
-                final double afterMeanFz = measuredAfterGravityKinematics.getFz();
+                final var afterMeanFx = measuredAfterGravityKinematics.getFx();
+                final var afterMeanFy = measuredAfterGravityKinematics.getFy();
+                final var afterMeanFz = measuredAfterGravityKinematics.getFz();
 
                 sequence.setAfterMeanSpecificForceCoordinates(afterMeanFx, afterMeanFy, afterMeanFz);
 
                 sequences.add(sequence);
             }
 
-            final PROSACRobustEasyGyroscopeCalibrator calibrator = new PROSACRobustEasyGyroscopeCalibrator(
-                    qualityScores, sequences, false, true, bg, mg, gg, ba,
-                    ma, this);
+            final var calibrator = new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences,
+                    false, true, bg, mg, gg, ba, ma, this);
             final int subsetSize = calibrator.getMinimumRequiredMeasurementsOrSequences();
             calibrator.setPreliminarySubsetSize(subsetSize);
             calibrator.setThreshold(THRESHOLD);
@@ -11768,10 +11730,10 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
-            assertEquals(0, mCalibrateNextIteration);
-            assertEquals(0, mCalibrateProgressChange);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
+            assertEquals(0, calibrateNextIteration);
+            assertEquals(0, calibrateProgressChange);
 
             try {
                 calibrator.calibrate();
@@ -11781,14 +11743,14 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
 
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
-            assertTrue(mCalibrateNextIteration > 0);
-            assertTrue(mCalibrateProgressChange >= 0);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
+            assertTrue(calibrateNextIteration > 0);
+            assertTrue(calibrateProgressChange >= 0);
 
-            final Matrix estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
-            final Matrix estimatedMg = calibrator.getEstimatedMg();
-            final Matrix estimatedGg = calibrator.getEstimatedGg();
+            final var estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
+            final var estimatedMg = calibrator.getEstimatedMg();
+            final var estimatedGg = calibrator.getEstimatedGg();
 
             if (!bg.equals(estimatedBg, VERY_LARGE_ABSOLUTE_ERROR)) {
                 continue;
@@ -11808,7 +11770,7 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralAndGDependantCrossBiasesCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
+            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
             break;
@@ -11820,32 +11782,32 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     @Override
     public void onCalibrateStart(final RobustEasyGyroscopeCalibrator calibrator) {
         checkLocked((PROSACRobustEasyGyroscopeCalibrator) calibrator);
-        mCalibrateStart++;
+        calibrateStart++;
     }
 
     @Override
     public void onCalibrateEnd(final RobustEasyGyroscopeCalibrator calibrator) {
         checkLocked((PROSACRobustEasyGyroscopeCalibrator) calibrator);
-        mCalibrateEnd++;
+        calibrateEnd++;
     }
 
     @Override
     public void onCalibrateNextIteration(final RobustEasyGyroscopeCalibrator calibrator, final int iteration) {
         checkLocked((PROSACRobustEasyGyroscopeCalibrator) calibrator);
-        mCalibrateNextIteration++;
+        calibrateNextIteration++;
     }
 
     @Override
     public void onCalibrateProgressChange(final RobustEasyGyroscopeCalibrator calibrator, final float progress) {
         checkLocked((PROSACRobustEasyGyroscopeCalibrator) calibrator);
-        mCalibrateProgressChange++;
+        calibrateProgressChange++;
     }
 
     private void reset() {
-        mCalibrateStart = 0;
-        mCalibrateEnd = 0;
-        mCalibrateNextIteration = 0;
-        mCalibrateProgressChange = 0;
+        calibrateStart = 0;
+        calibrateEnd = 0;
+        calibrateNextIteration = 0;
+        calibrateProgressChange = 0;
     }
 
     private static void checkLocked(final PROSACRobustEasyGyroscopeCalibrator calibrator) {
@@ -11930,14 +11892,14 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
             final Matrix bg, final Matrix mg, final Matrix gg, final RobustEasyGyroscopeCalibrator calibrator) 
             throws WrongSizeException {
 
-        final double[] estimatedBiases = calibrator.getEstimatedBiases();
+        final var estimatedBiases = calibrator.getEstimatedBiases();
         assertArrayEquals(bg.getBuffer(), estimatedBiases, 0.0);
 
-        final double[] estimatedBiases2 = new double[3];
+        final var estimatedBiases2 = new double[3];
         calibrator.getEstimatedBiases(estimatedBiases2);
         assertArrayEquals(estimatedBiases, estimatedBiases2, 0.0);
 
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getEstimatedBiasesAsMatrix(bg2);
 
         assertEquals(bg, bg2);
@@ -11946,22 +11908,22 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(bg.getElementAtIndex(1), calibrator.getEstimatedBiasY(), 0.0);
         assertEquals(bg.getElementAtIndex(2), calibrator.getEstimatedBiasZ(), 0.0);
 
-        final AngularSpeed bgx1 = calibrator.getEstimatedBiasAngularSpeedX();
-        final AngularSpeed bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bgx1 = calibrator.getEstimatedBiasAngularSpeedX();
+        final var bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getEstimatedBiasAngularSpeedX(bgx2);
         assertEquals(bgx1, bgx2);
         assertEquals(bgx1.getValue().doubleValue(), calibrator.getEstimatedBiasX(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgx1.getUnit());
 
-        final AngularSpeed bgy1 = calibrator.getEstimatedBiasAngularSpeedY();
-        final AngularSpeed bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bgy1 = calibrator.getEstimatedBiasAngularSpeedY();
+        final var bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getEstimatedBiasAngularSpeedY(bgy2);
         assertEquals(bgy1, bgy2);
         assertEquals(bgy1.getValue().doubleValue(), calibrator.getEstimatedBiasY(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgy1.getUnit());
 
-        final AngularSpeed bgz1 = calibrator.getEstimatedBiasAngularSpeedZ();
-        final AngularSpeed bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bgz1 = calibrator.getEstimatedBiasAngularSpeedZ();
+        final var bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getEstimatedBiasAngularSpeedZ(bgz2);
         assertEquals(bgz1, bgz2);
         assertEquals(bgz1.getValue().doubleValue(), calibrator.getEstimatedBiasZ(), 0.0);
@@ -11987,52 +11949,52 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
 
         assertNotNull(calibrator.getEstimatedBiasXVariance());
         assertNotNull(calibrator.getEstimatedBiasXStandardDeviation());
-        final AngularSpeed stdBx1 = calibrator.getEstimatedBiasXStandardDeviationAsAngularSpeed();
+        final var stdBx1 = calibrator.getEstimatedBiasXStandardDeviationAsAngularSpeed();
         assertNotNull(stdBx1);
-        final AngularSpeed stdBx2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var stdBx2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         assertTrue(calibrator.getEstimatedBiasXStandardDeviationAsAngularSpeed(stdBx2));
         assertEquals(stdBx1, stdBx2);
 
         assertNotNull(calibrator.getEstimatedBiasYVariance());
         assertNotNull(calibrator.getEstimatedBiasYStandardDeviation());
-        final AngularSpeed stdBy1 = calibrator.getEstimatedBiasYStandardDeviationAsAngularSpeed();
+        final var stdBy1 = calibrator.getEstimatedBiasYStandardDeviationAsAngularSpeed();
         assertNotNull(stdBy1);
-        final AngularSpeed stdBy2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var stdBy2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         assertTrue(calibrator.getEstimatedBiasYStandardDeviationAsAngularSpeed(stdBy2));
         assertEquals(stdBy1, stdBy2);
 
         assertNotNull(calibrator.getEstimatedBiasZVariance());
         assertNotNull(calibrator.getEstimatedBiasZStandardDeviation());
-        final AngularSpeed stdBz1 = calibrator.getEstimatedBiasZStandardDeviationAsAngularSpeed();
+        final var stdBz1 = calibrator.getEstimatedBiasZStandardDeviationAsAngularSpeed();
         assertNotNull(stdBz1);
-        final AngularSpeed stdBz2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var stdBz2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         assertTrue(calibrator.getEstimatedBiasZStandardDeviationAsAngularSpeed(stdBz2));
         assertEquals(stdBz1, stdBz2);
 
-        final AngularSpeedTriad std1 = calibrator.getEstimatedBiasStandardDeviation();
+        final var std1 = calibrator.getEstimatedBiasStandardDeviation();
         assertEquals(std1.getValueX(), calibrator.getEstimatedBiasXStandardDeviation(), 0.0);
         assertEquals(std1.getValueY(), calibrator.getEstimatedBiasYStandardDeviation(), 0.0);
         assertEquals(std1.getValueZ(), calibrator.getEstimatedBiasZStandardDeviation(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, std1.getUnit());
-        final AngularSpeedTriad std2 = new AngularSpeedTriad();
+        final var std2 = new AngularSpeedTriad();
         calibrator.getEstimatedBiasStandardDeviation(std2);
 
-        final double avgStd = (calibrator.getEstimatedBiasXStandardDeviation() +
+        final var avgStd = (calibrator.getEstimatedBiasXStandardDeviation() +
                 calibrator.getEstimatedBiasYStandardDeviation() +
                 calibrator.getEstimatedBiasZStandardDeviation()) / 3.0;
         assertEquals(avgStd, calibrator.getEstimatedBiasStandardDeviationAverage(), 0.0);
-        final AngularSpeed avg1 = calibrator.getEstimatedBiasStandardDeviationAverageAsAngularSpeed();
+        final var avg1 = calibrator.getEstimatedBiasStandardDeviationAverageAsAngularSpeed();
         assertEquals(avgStd, avg1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avg1.getUnit());
-        final AngularSpeed avg2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var avg2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getEstimatedBiasStandardDeviationAverageAsAngularSpeed(avg2);
         assertEquals(avg1, avg2);
 
         assertEquals(std1.getNorm(), calibrator.getEstimatedBiasStandardDeviationNorm(), ABSOLUTE_ERROR);
-        final AngularSpeed norm1 = calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed();
+        final var norm1 = calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed();
         assertEquals(std1.getNorm(), norm1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, norm1.getUnit());
-        final AngularSpeed norm2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var norm2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(norm2);
         assertEquals(norm1, norm2);
     }
@@ -12041,10 +12003,10 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(21, covariance.getRows());
         assertEquals(21, covariance.getColumns());
 
-        for (int j = 0; j < 21; j++) {
-            final boolean colIsZero = j == 8 || j == 10 || j == 11;
-            for (int i = 0; i < 21; i++) {
-                final boolean rowIsZero = i == 8 || i == 10 || i == 11;
+        for (var j = 0; j < 21; j++) {
+            final var colIsZero = j == 8 || j == 10 || j == 11;
+            for (var i = 0; i < 21; i++) {
+                final var rowIsZero = i == 8 || i == 10 || i == 11;
                 if (colIsZero || rowIsZero) {
                     assertEquals(0.0, covariance.getElementAt(i, j), 0.0);
                 }
@@ -12056,8 +12018,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(21, covariance.getRows());
         assertEquals(21, covariance.getColumns());
 
-        for (int i = 0; i < 21; i++) {
-            assertNotEquals(covariance.getElementAt(i, i), 0.0);
+        for (var i = 0; i < 21; i++) {
+            assertNotEquals(0.0, covariance.getElementAt(i, i));
         }
     }
 
@@ -12065,10 +12027,10 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(21, covariance.getRows());
         assertEquals(21, covariance.getColumns());
 
-        for (int j = 0; j < 21; j++) {
-            final boolean colIsZero = j == 8 || j > 9;
-            for (int i = 0; i < 21; i++) {
-                final boolean rowIsZero = i == 8 || i > 9;
+        for (var j = 0; j < 21; j++) {
+            final var colIsZero = j == 8 || j > 9;
+            for (var i = 0; i < 21; i++) {
+                final var rowIsZero = i == 8 || i > 9;
                 if (colIsZero || rowIsZero) {
                     assertEquals(0.0, covariance.getElementAt(i, j), 0.0);
                 }
@@ -12080,10 +12042,10 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
         assertEquals(21, covariance.getRows());
         assertEquals(21, covariance.getColumns());
 
-        for (int j = 0; j < 21; j++) {
-            final boolean colIsZero = j > 11;
-            for (int i = 0; i < 21; i++) {
-                final boolean rowIsZero = i > 11;
+        for (var j = 0; j < 21; j++) {
+            final var colIsZero = j > 11;
+            for (var i = 0; i < 21; i++) {
+                final var rowIsZero = i > 11;
                 if (colIsZero || rowIsZero) {
                     assertEquals(0.0, covariance.getElementAt(i, j), 0.0);
                 }
@@ -12106,7 +12068,7 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     private static Matrix generateMa() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
+        final var result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 500e-6, -300e-6, 200e-6,
                 -150e-6, -600e-6, 250e-6,
@@ -12117,7 +12079,7 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     private static Matrix generateCommonAxisMg() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
+        final var result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 400e-6, -300e-6, 250e-6,
                 0.0, -300e-6, -150e-6,
@@ -12128,7 +12090,7 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     private static Matrix generateGeneralMg() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
+        final var result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 400e-6, -300e-6, 250e-6,
                 -300e-6, -300e-6, -150e-6,
@@ -12139,8 +12101,8 @@ public class PROSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyrosc
     }
 
     private static Matrix generateGg() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
-        final double tmp = DEG_TO_RAD / (3600 * 9.80665);
+        final var result = new Matrix(3, 3);
+        final var tmp = DEG_TO_RAD / (3600 * 9.80665);
         result.fromArray(new double[]{
                 0.9 * tmp, -1.1 * tmp, -0.6 * tmp,
                 -0.5 * tmp, 1.9 * tmp, -1.6 * tmp,

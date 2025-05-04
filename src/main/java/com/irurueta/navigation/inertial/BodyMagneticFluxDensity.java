@@ -49,17 +49,17 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
     /**
      * X component of magnetic flux density expressed in Teslas (T).
      */
-    private double mBx;
+    private double bx;
 
     /**
      * Y component of magnetic flux density expressed in Teslas (T).
      */
-    private double mBy;
+    private double by;
 
     /**
      * Z component of magnetic flux density expressed in Teslas (T).
      */
-    private double mBz;
+    private double bz;
 
     /**
      * Constructor.
@@ -114,7 +114,7 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
      * @return x component of magnetic flux density.
      */
     public double getBx() {
-        return mBx;
+        return bx;
     }
 
     /**
@@ -123,7 +123,7 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
      * @param bx x component of magnetic flux density.
      */
     public void setBx(final double bx) {
-        mBx = bx;
+        this.bx = bx;
     }
 
     /**
@@ -132,7 +132,7 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
      * @return x component of magnetic flux density.
      */
     public MagneticFluxDensity getBxAsMagneticFluxDensity() {
-        return new MagneticFluxDensity(mBx, MagneticFluxDensityUnit.TESLA);
+        return new MagneticFluxDensity(bx, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -141,7 +141,7 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
      * @param result instance where result will be stored.
      */
     public void getBxAsMagneticFluxDensity(final MagneticFluxDensity result) {
-        result.setValue(mBx);
+        result.setValue(bx);
         result.setUnit(MagneticFluxDensityUnit.TESLA);
     }
 
@@ -151,7 +151,7 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
      * @param bx x component of magnetic flux density.
      */
     public void setBx(final MagneticFluxDensity bx) {
-        mBx = convertMagneticFluxDensity(bx);
+        this.bx = convertMagneticFluxDensity(bx);
     }
 
     /**
@@ -160,7 +160,7 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
      * @return y component of magnetic flux density.
      */
     public double getBy() {
-        return mBy;
+        return by;
     }
 
     /**
@@ -169,7 +169,7 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
      * @param by y component of magnetic flux density.
      */
     public void setBy(final double by) {
-        mBy = by;
+        this.by = by;
     }
 
     /**
@@ -178,7 +178,7 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
      * @return y component of magnetic flux density.
      */
     public MagneticFluxDensity getByAsMagneticFluxDensity() {
-        return new MagneticFluxDensity(mBy, MagneticFluxDensityUnit.TESLA);
+        return new MagneticFluxDensity(by, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -187,7 +187,7 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
      * @param result instance where result will be stored.
      */
     public void getByAsMagneticFluxDensity(final MagneticFluxDensity result) {
-        result.setValue(mBy);
+        result.setValue(by);
         result.setUnit(MagneticFluxDensityUnit.TESLA);
     }
 
@@ -197,7 +197,7 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
      * @param by y component of magnetic flux density.
      */
     public void setBy(final MagneticFluxDensity by) {
-        mBy = convertMagneticFluxDensity(by);
+        this.by = convertMagneticFluxDensity(by);
     }
 
     /**
@@ -206,7 +206,7 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
      * @return z component of magnetic flux density.
      */
     public double getBz() {
-        return mBz;
+        return bz;
     }
 
     /**
@@ -215,7 +215,7 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
      * @param bz z component of magnetic flux density.
      */
     public void setBz(final double bz) {
-        mBz = bz;
+        this.bz = bz;
     }
 
     /**
@@ -224,7 +224,7 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
      * @return z component of magnetic flux density.
      */
     public MagneticFluxDensity getBzAsMagneticFluxDensity() {
-        return new MagneticFluxDensity(mBz, MagneticFluxDensityUnit.TESLA);
+        return new MagneticFluxDensity(bz, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -233,7 +233,7 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
      * @param result instance where result will be stored.
      */
     public void getBzAsMagneticFluxDensity(final MagneticFluxDensity result) {
-        result.setValue(mBz);
+        result.setValue(bz);
         result.setUnit(MagneticFluxDensityUnit.TESLA);
     }
 
@@ -243,7 +243,7 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
      * @param bz z component of magnetic flux density.
      */
     public void setBz(final MagneticFluxDensity bz) {
-        mBz = convertMagneticFluxDensity(bz);
+        this.bz = convertMagneticFluxDensity(bz);
     }
 
     /**
@@ -254,9 +254,9 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
      * @param bz z component of magnetic flux density.
      */
     public void setCoordinates(final double bx, final double by, final double bz) {
-        mBx = bx;
-        mBy = by;
-        mBz = bz;
+        this.bx = bx;
+        this.by = by;
+        this.bz = bz;
     }
 
     /**
@@ -277,7 +277,7 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
      * @return body coordinates of magnetic flux density as a triad.
      */
     public MagneticFluxDensityTriad getCoordinatesAsTriad() {
-        return new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA, mBx, mBy, mBz);
+        return new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA, bx, by, bz);
     }
 
     /**
@@ -286,7 +286,7 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
      * @param result instance where result will be stored.
      */
     public void getCoordinatesAsTriad(final MagneticFluxDensityTriad result) {
-        result.setValueCoordinatesAndUnit(mBx, mBy, mBz, MagneticFluxDensityUnit.TESLA);
+        result.setValueCoordinatesAndUnit(bx, by, bz, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -295,10 +295,10 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
      * @param triad triad containing body magnetic flux density values.
      */
     public void setCoordinates(final MagneticFluxDensityTriad triad) {
-        final double bx = convertMagneticFluxDensity(triad.getValueX(), triad.getUnit());
-        final double by = convertMagneticFluxDensity(triad.getValueY(), triad.getUnit());
-        final double bz = convertMagneticFluxDensity(triad.getValueZ(), triad.getUnit());
-        setCoordinates(bx, by, bz);
+        final var tmpBx = convertMagneticFluxDensity(triad.getValueX(), triad.getUnit());
+        final var tmpBy = convertMagneticFluxDensity(triad.getValueY(), triad.getUnit());
+        final var tmpBz = convertMagneticFluxDensity(triad.getValueZ(), triad.getUnit());
+        setCoordinates(tmpBx, tmpBy, tmpBz);
     }
 
     /**
@@ -308,7 +308,7 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
      * @return magnetic flux density magnitude.
      */
     public double getNorm() {
-        return Math.sqrt(mBx * mBx + mBy * mBy + mBz * mBz);
+        return Math.sqrt(bx * bx + by * by + bz * bz);
     }
 
     /**
@@ -336,9 +336,9 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
      * @param output destination instance where data will be copied to.
      */
     public void copyTo(final BodyMagneticFluxDensity output) {
-        output.mBx = mBx;
-        output.mBy = mBy;
-        output.mBz = mBz;
+        output.bx = bx;
+        output.by = by;
+        output.bz = bz;
     }
 
     /**
@@ -347,9 +347,9 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
      * @param input instance to copy data from.
      */
     public void copyFrom(final BodyMagneticFluxDensity input) {
-        mBx = input.mBx;
-        mBy = input.mBy;
-        mBz = input.mBz;
+        bx = input.bx;
+        by = input.by;
+        bz = input.bz;
     }
 
     /**
@@ -364,9 +364,9 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
             throw new IllegalArgumentException();
         }
 
-        result[0] = mBx;
-        result[1] = mBy;
-        result[2] = mBz;
+        result[0] = bx;
+        result[1] = by;
+        result[2] = bz;
     }
 
     /**
@@ -376,7 +376,7 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
      * order.
      */
     public double[] asArray() {
-        final double[] result = new double[COMPONENTS];
+        final var result = new double[COMPONENTS];
         asArray(result);
         return result;
     }
@@ -398,9 +398,9 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
             }
         }
 
-        result.setElementAtIndex(0, mBx);
-        result.setElementAtIndex(1, mBy);
-        result.setElementAtIndex(2, mBz);
+        result.setElementAtIndex(0, bx);
+        result.setElementAtIndex(1, by);
+        result.setElementAtIndex(2, bz);
     }
 
     /**
@@ -429,7 +429,7 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(mBx, mBy, mBz);
+        return Objects.hash(bx, by, bz);
     }
 
     /**
@@ -453,7 +453,7 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
         }
 
         //noinspection PatternVariableCanBeUsed
-        final BodyMagneticFluxDensity other = (BodyMagneticFluxDensity) obj;
+        final var other = (BodyMagneticFluxDensity) obj;
         return equals(other);
     }
 
@@ -483,8 +483,8 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
             return false;
         }
 
-        return Math.abs(mBx - other.mBx) <= threshold && Math.abs(mBy - other.mBy) <= threshold
-                && Math.abs(mBz - other.mBz) <= threshold;
+        return Math.abs(bx - other.bx) <= threshold && Math.abs(by - other.by) <= threshold
+                && Math.abs(bz - other.bz) <= threshold;
     }
 
     /**
@@ -495,7 +495,7 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final BodyMagneticFluxDensity result = (BodyMagneticFluxDensity) super.clone();
+        final var result = (BodyMagneticFluxDensity) super.clone();
         copyTo(result);
         return result;
     }

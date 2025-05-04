@@ -43,32 +43,32 @@ public class MagnetometerMeasurementsGenerator extends
     /**
      * Accumulated noise estimator for magnetic flux density measurements.
      */
-    private final AccumulatedMagneticFluxDensityTriadNoiseEstimator mAccumulatedEstimator =
+    private final AccumulatedMagneticFluxDensityTriadNoiseEstimator accumulatedEstimator =
             new AccumulatedMagneticFluxDensityTriadNoiseEstimator();
 
     /**
      * Accumulated average x-coordinate of magnetic flux density while body remains in a static interval and
      * expressed in Teslas (T).
      */
-    private double mAvgBx;
+    private double avgBx;
 
     /**
      * Accumulated average y-coordinate of magnetic flux density while body remains in a static interval and
      * expressed in Teslas (T).
      */
-    private double mAvgBy;
+    private double avgBy;
 
     /**
      * Accumulated average z-coordinate of magnetic flux density while body remains in a static interval and
      * expressed in Teslas (T).
      */
-    private double mAvgBz;
+    private double avgBz;
 
     /**
      * Contains standard deviation of magnetic flux density during initialization (i.e. base noise level)
      * expressed in Teslas (T).
      */
-    private double mStdBNorm;
+    private double stdBNorm;
 
     /**
      * Constructor.
@@ -95,7 +95,7 @@ public class MagnetometerMeasurementsGenerator extends
     public void reset() throws LockedException {
         super.reset();
 
-        mAccumulatedEstimator.reset();
+        accumulatedEstimator.reset();
     }
 
     /**
@@ -106,29 +106,29 @@ public class MagnetometerMeasurementsGenerator extends
      */
     @Override
     protected void postProcess(final BodyKinematicsAndMagneticFluxDensity sample) throws LockedException {
-        final BodyMagneticFluxDensity b = sample.getMagneticFluxDensity();
-        if (mStaticIntervalDetector.getStatus() == TriadStaticIntervalDetector.Status.STATIC_INTERVAL
-                || mStaticIntervalDetector.getStatus() == TriadStaticIntervalDetector.Status.INITIALIZING) {
+        final var b = sample.getMagneticFluxDensity();
+        if (staticIntervalDetector.getStatus() == TriadStaticIntervalDetector.Status.STATIC_INTERVAL
+                || staticIntervalDetector.getStatus() == TriadStaticIntervalDetector.Status.INITIALIZING) {
 
-            mAccumulatedEstimator.addTriad(b.getBx(), b.getBy(), b.getBz());
-            mAvgBx = mAccumulatedEstimator.getAvgX();
-            mAvgBy = mAccumulatedEstimator.getAvgY();
-            mAvgBz = mAccumulatedEstimator.getAvgZ();
+            accumulatedEstimator.addTriad(b.getBx(), b.getBy(), b.getBz());
+            avgBx = accumulatedEstimator.getAvgX();
+            avgBy = accumulatedEstimator.getAvgY();
+            avgBz = accumulatedEstimator.getAvgZ();
 
         } else {
-            mAccumulatedEstimator.reset();
+            accumulatedEstimator.reset();
         }
     }
 
     /**
      * Gets corresponding acceleration triad from provided input sample.
-     * This method must store the result into {@link #mTriad}.
+     * This method must store the result into {@link #triad}.
      *
      * @param sample input sample.
      */
     @Override
     protected void getAccelerationTriadFromInputSample(final BodyKinematicsAndMagneticFluxDensity sample) {
-        sample.getKinematics().getSpecificForceTriad(mTriad);
+        sample.getKinematics().getSpecificForceTriad(triad);
     }
 
     /**
@@ -160,12 +160,11 @@ public class MagnetometerMeasurementsGenerator extends
 
         if (!isStaticIntervalSkipped()) {
 
-            final StandardDeviationBodyMagneticFluxDensity measurement =
-                    new StandardDeviationBodyMagneticFluxDensity(
-                            new BodyMagneticFluxDensity(mAvgBx, mAvgBy, mAvgBz), mStdBNorm);
+            final var measurement = new StandardDeviationBodyMagneticFluxDensity(
+                    new BodyMagneticFluxDensity(avgBx, avgBy, avgBz), stdBNorm);
 
-            if (mListener != null) {
-                mListener.onGeneratedMeasurement(this, measurement);
+            if (listener != null) {
+                listener.onGeneratedMeasurement(this, measurement);
             }
         }
     }
@@ -183,7 +182,7 @@ public class MagnetometerMeasurementsGenerator extends
      */
     @Override
     protected void handleInitializationCompleted() {
-        mStdBNorm = mAccumulatedEstimator.getStandardDeviationNorm();
+        stdBNorm = accumulatedEstimator.getStandardDeviationNorm();
     }
 
     /**
@@ -192,7 +191,7 @@ public class MagnetometerMeasurementsGenerator extends
     @Override
     protected void handleInitializationFailed() {
         try {
-            mAccumulatedEstimator.reset();
+            accumulatedEstimator.reset();
         } catch (final LockedException ignore) {
             // no action needed
         }

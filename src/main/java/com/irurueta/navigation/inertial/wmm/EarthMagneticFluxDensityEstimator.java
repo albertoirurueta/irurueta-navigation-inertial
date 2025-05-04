@@ -60,15 +60,15 @@ public class EarthMagneticFluxDensityEstimator {
     public static void estimate(
             final double magnitude, final double declination, final double dip, final NEDMagneticFluxDensity result) {
 
-        final double cosDeclination = Math.cos(declination);
-        final double sinDeclination = Math.sin(declination);
+        final var cosDeclination = Math.cos(declination);
+        final var sinDeclination = Math.sin(declination);
 
-        final double cosDip = Math.cos(dip);
-        final double sinDip = Math.sin(dip);
+        final var cosDip = Math.cos(dip);
+        final var sinDip = Math.sin(dip);
 
-        final double bn = cosDeclination * cosDip * magnitude;
-        final double be = sinDeclination * cosDip * magnitude;
-        final double bd = sinDip * magnitude;
+        final var bn = cosDeclination * cosDip * magnitude;
+        final var be = sinDeclination * cosDip * magnitude;
+        final var bd = sinDip * magnitude;
 
         result.setCoordinates(bn, be, bd);
     }
@@ -96,7 +96,7 @@ public class EarthMagneticFluxDensityEstimator {
      * @return Earth magnetic flux density resolved around NED frame.
      */
     public static NEDMagneticFluxDensity estimate(final double magnitude, final double declination, final double dip) {
-        final NEDMagneticFluxDensity result = new NEDMagneticFluxDensity();
+        final var result = new NEDMagneticFluxDensity();
         estimate(magnitude, declination, dip, result);
         return result;
     }
@@ -120,8 +120,8 @@ public class EarthMagneticFluxDensityEstimator {
      * @return declination angle.
      */
     public static double getDeclination(final NEDMagneticFluxDensity b) {
-        final double bn = b.getBn();
-        final double be = b.getBe();
+        final var bn = b.getBn();
+        final var be = b.getBe();
 
         return Math.atan2(be, bn);
     }
@@ -153,13 +153,14 @@ public class EarthMagneticFluxDensityEstimator {
      * @param b a magnetic flux density resolved around NED frame.
      * @return dip angle.
      */
+    @SuppressWarnings("JavaExistingMethodCanBeUsed")
     public static double getDip(final NEDMagneticFluxDensity b) {
-        final double bn = b.getBn();
-        final double be = b.getBe();
-        final double bd = b.getBd();
+        final var bn = b.getBn();
+        final var be = b.getBe();
+        final var bd = b.getBd();
 
-        final double bn2 = bn * bn;
-        final double be2 = be * be;
+        final var bn2 = bn * bn;
+        final var be2 = be * be;
         return Math.atan(bd / Math.sqrt(bn2 + be2));
     }
 

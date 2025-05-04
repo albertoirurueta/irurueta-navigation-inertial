@@ -20,7 +20,6 @@ import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.frames.CoordinateTransformation;
-import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
@@ -38,17 +37,15 @@ import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedUnit;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrameGyroscopeCalibratorListener {
+class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrameGyroscopeCalibratorListener {
 
     private static final double TIME_INTERVAL_SECONDS = 0.02;
 
@@ -80,14 +77,14 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
 
     private static final int TIMES = 100;
 
-    private int mCalibrateStart;
-    private int mCalibrateEnd;
-    private int mCalibrateNextIteration;
-    private int mCalibrateProgressChange;
+    private int calibrateStart;
+    private int calibrateEnd;
+    private int calibrateNextIteration;
+    private int calibrateProgressChange;
 
     @Test
-    public void testConstructor1() throws WrongSizeException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testConstructor1() throws WrongSizeException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default values
         assertEquals(PROMedSRobustKnownFrameGyroscopeCalibrator.DEFAULT_STOP_THRESHOLD, calibrator.getStopThreshold(),
@@ -96,30 +93,30 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        final AngularSpeed bgx1 = calibrator.getInitialBiasAngularSpeedX();
+        final var bgx1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(0.0, bgx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgx1.getUnit());
-        final AngularSpeed bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(bgx2);
         assertEquals(bgx1, bgx2);
-        final AngularSpeed bgy1 = calibrator.getInitialBiasAngularSpeedY();
+        final var bgy1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(0.0, bgy1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgy1.getUnit());
-        final AngularSpeed bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(bgy2);
         assertEquals(bgy1, bgy2);
-        final AngularSpeed bgz1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var bgz1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(0.0, bgz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgz1.getUnit());
-        final AngularSpeed bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(bgz2);
         assertEquals(bgz1, bgz2);
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -131,24 +128,24 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix mg1 = calibrator.getInitialMg();
-        assertEquals(mg1, new Matrix(3, 3));
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg1 = calibrator.getInitialMg();
+        assertEquals(new Matrix(3, 3), mg1);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
-        assertEquals(gg1, new Matrix(3, 3));
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg1 = calibrator.getInitialGg();
+        assertEquals(new Matrix(3, 3), gg1);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertNull(calibrator.getMeasurements());
@@ -164,10 +161,11 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertFalse(calibrator.isRunning());
         assertTrue(calibrator.isLinearCalibratorUsed());
         assertFalse(calibrator.isPreliminarySolutionRefined());
-        Assert.assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 
                 0.0);
         assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(), 
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -225,8 +223,856 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testConstructor2() throws WrongSizeException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator(
+    void testConstructor2() throws WrongSizeException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator(this);
+
+        // check default values
+        assertEquals(PROMedSRobustKnownFrameGyroscopeCalibrator.DEFAULT_STOP_THRESHOLD, calibrator.getStopThreshold(),
+                0.0);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
+        assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
+        assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
+        final var bgx1 = calibrator.getInitialBiasAngularSpeedX();
+        assertEquals(0.0, bgx1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgx1.getUnit());
+        final var bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        calibrator.getInitialBiasAngularSpeedX(bgx2);
+        assertEquals(bgx1, bgx2);
+        final var bgy1 = calibrator.getInitialBiasAngularSpeedY();
+        assertEquals(0.0, bgy1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgy1.getUnit());
+        final var bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        calibrator.getInitialBiasAngularSpeedY(bgy2);
+        assertEquals(bgy1, bgy2);
+        final var bgz1 = calibrator.getInitialBiasAngularSpeedZ();
+        assertEquals(0.0, bgz1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgz1.getUnit());
+        final var bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        calibrator.getInitialBiasAngularSpeedZ(bgz2);
+        assertEquals(bgz1, bgz2);
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
+        assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
+        assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
+        final var initialBiasTriad2 = new AngularSpeedTriad();
+        calibrator.getInitialBiasAsTriad(initialBiasTriad2);
+        assertEquals(initialBiasTriad1, initialBiasTriad2);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
+        final var bias1 = new double[3];
+        assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
+        final var bias2 = new double[3];
+        calibrator.getInitialBias(bias2);
+        assertArrayEquals(bias1, bias2, 0.0);
+        final var biasMatrix1 = new Matrix(3, 1);
+        assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
+        final var biasMatrix2 = new Matrix(3, 1);
+        calibrator.getInitialBiasAsMatrix(biasMatrix2);
+        assertEquals(biasMatrix1, biasMatrix2);
+        final var mg1 = calibrator.getInitialMg();
+        assertEquals(new Matrix(3, 3), mg1);
+        final var mg2 = new Matrix(3, 3);
+        calibrator.getInitialMg(mg2);
+        assertEquals(mg1, mg2);
+        final var gg1 = calibrator.getInitialGg();
+        assertEquals(new Matrix(3, 3), gg1);
+        final var gg2 = new Matrix(3, 3);
+        calibrator.getInitialGg(gg2);
+        assertEquals(gg1, gg2);
+        assertNull(calibrator.getMeasurements());
+        assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_FRAME_BODY_KINEMATICS_MEASUREMENT,
+                calibrator.getMeasurementOrSequenceType());
+        assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
+        assertTrue(calibrator.isQualityScoresRequired());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS,
+                calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertFalse(calibrator.isReady());
+        assertFalse(calibrator.isRunning());
+        assertTrue(calibrator.isLinearCalibratorUsed());
+        assertFalse(calibrator.isPreliminarySolutionRefined());
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 
+                0.0);
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(), 
+                0.0);
+        assertNull(calibrator.getInliersData());
+        assertTrue(calibrator.isResultRefined());
+        assertTrue(calibrator.isCovarianceKept());
+        assertNull(calibrator.getQualityScores());
+        assertNull(calibrator.getEstimatedBiases());
+        assertFalse(calibrator.getEstimatedBiases(null));
+        assertNull(calibrator.getEstimatedBiasesAsMatrix());
+        assertFalse(calibrator.getEstimatedBiasesAsMatrix(null));
+        assertNull(calibrator.getEstimatedBiasX());
+        assertNull(calibrator.getEstimatedBiasY());
+        assertNull(calibrator.getEstimatedBiasZ());
+        assertNull(calibrator.getEstimatedBiasAngularSpeedX());
+        assertFalse(calibrator.getEstimatedBiasAngularSpeedX(null));
+        assertNull(calibrator.getEstimatedBiasAngularSpeedY());
+        assertFalse(calibrator.getEstimatedBiasAngularSpeedY(null));
+        assertNull(calibrator.getEstimatedBiasAngularSpeedZ());
+        assertFalse(calibrator.getEstimatedBiasAngularSpeedZ(null));
+        assertNull(calibrator.getEstimatedBiasAsTriad());
+        assertFalse(calibrator.getEstimatedBiasAsTriad(null));
+        assertNull(calibrator.getEstimatedMg());
+        assertNull(calibrator.getEstimatedSx());
+        assertNull(calibrator.getEstimatedSy());
+        assertNull(calibrator.getEstimatedSz());
+        assertNull(calibrator.getEstimatedMxy());
+        assertNull(calibrator.getEstimatedMxz());
+        assertNull(calibrator.getEstimatedMyx());
+        assertNull(calibrator.getEstimatedMyz());
+        assertNull(calibrator.getEstimatedMzx());
+        assertNull(calibrator.getEstimatedMzy());
+        assertNull(calibrator.getEstimatedGg());
+        assertNull(calibrator.getEstimatedCovariance());
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS, calibrator.getPreliminarySubsetSize());
+        assertNull(calibrator.getEstimatedBiasXVariance());
+        assertNull(calibrator.getEstimatedBiasXStandardDeviation());
+        assertNull(calibrator.getEstimatedBiasXStandardDeviationAsAngularSpeed());
+        assertFalse(calibrator.getEstimatedBiasXStandardDeviationAsAngularSpeed(null));
+        assertNull(calibrator.getEstimatedBiasYVariance());
+        assertNull(calibrator.getEstimatedBiasYStandardDeviation());
+        assertNull(calibrator.getEstimatedBiasYStandardDeviationAsAngularSpeed());
+        assertFalse(calibrator.getEstimatedBiasYStandardDeviationAsAngularSpeed(null));
+        assertNull(calibrator.getEstimatedBiasZVariance());
+        assertNull(calibrator.getEstimatedBiasZStandardDeviation());
+        assertNull(calibrator.getEstimatedBiasZStandardDeviationAsAngularSpeed());
+        assertFalse(calibrator.getEstimatedBiasZStandardDeviationAsAngularSpeed(null));
+        assertNull(calibrator.getEstimatedBiasStandardDeviation());
+        assertFalse(calibrator.getEstimatedBiasStandardDeviation(null));
+        assertNull(calibrator.getEstimatedBiasStandardDeviationAverage());
+        assertNull(calibrator.getEstimatedBiasStandardDeviationAverageAsAngularSpeed());
+        assertFalse(calibrator.getEstimatedBiasStandardDeviationAverageAsAngularSpeed(null));
+        assertNull(calibrator.getEstimatedBiasStandardDeviationNorm());
+        assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
+        assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+    }
+
+    @Test
+    void testConstructor3() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationFrameBodyKinematics>emptyList();
+
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator(measurements);
+
+        // check default values
+        assertEquals(PROMedSRobustKnownFrameGyroscopeCalibrator.DEFAULT_STOP_THRESHOLD, calibrator.getStopThreshold(),
+                0.0);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
+        assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
+        assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
+        final var bgx1 = calibrator.getInitialBiasAngularSpeedX();
+        assertEquals(0.0, bgx1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgx1.getUnit());
+        final var bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        calibrator.getInitialBiasAngularSpeedX(bgx2);
+        assertEquals(bgx1, bgx2);
+        final var bgy1 = calibrator.getInitialBiasAngularSpeedY();
+        assertEquals(0.0, bgy1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgy1.getUnit());
+        final var bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        calibrator.getInitialBiasAngularSpeedY(bgy2);
+        assertEquals(bgy1, bgy2);
+        final var bgz1 = calibrator.getInitialBiasAngularSpeedZ();
+        assertEquals(0.0, bgz1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgz1.getUnit());
+        final var bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        calibrator.getInitialBiasAngularSpeedZ(bgz2);
+        assertEquals(bgz1, bgz2);
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
+        assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
+        assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
+        final var initialBiasTriad2 = new AngularSpeedTriad();
+        calibrator.getInitialBiasAsTriad(initialBiasTriad2);
+        assertEquals(initialBiasTriad1, initialBiasTriad2);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
+        final var bias1 = new double[3];
+        assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
+        final var bias2 = new double[3];
+        calibrator.getInitialBias(bias2);
+        assertArrayEquals(bias1, bias2, 0.0);
+        final var biasMatrix1 = new Matrix(3, 1);
+        assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
+        final var biasMatrix2 = new Matrix(3, 1);
+        calibrator.getInitialBiasAsMatrix(biasMatrix2);
+        assertEquals(biasMatrix1, biasMatrix2);
+        final var mg1 = calibrator.getInitialMg();
+        assertEquals(new Matrix(3, 3), mg1);
+        final var mg2 = new Matrix(3, 3);
+        calibrator.getInitialMg(mg2);
+        assertEquals(mg1, mg2);
+        final var gg1 = calibrator.getInitialGg();
+        assertEquals(new Matrix(3, 3), gg1);
+        final var gg2 = new Matrix(3, 3);
+        calibrator.getInitialGg(gg2);
+        assertEquals(gg1, gg2);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_FRAME_BODY_KINEMATICS_MEASUREMENT,
+                calibrator.getMeasurementOrSequenceType());
+        assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
+        assertTrue(calibrator.isQualityScoresRequired());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertNull(calibrator.getListener());
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS,
+                calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertFalse(calibrator.isReady());
+        assertFalse(calibrator.isRunning());
+        assertTrue(calibrator.isLinearCalibratorUsed());
+        assertFalse(calibrator.isPreliminarySolutionRefined());
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
+        assertNull(calibrator.getInliersData());
+        assertTrue(calibrator.isResultRefined());
+        assertTrue(calibrator.isCovarianceKept());
+        assertNull(calibrator.getQualityScores());
+        assertNull(calibrator.getEstimatedBiases());
+        assertFalse(calibrator.getEstimatedBiases(null));
+        assertNull(calibrator.getEstimatedBiasesAsMatrix());
+        assertFalse(calibrator.getEstimatedBiasesAsMatrix(null));
+        assertNull(calibrator.getEstimatedBiasX());
+        assertNull(calibrator.getEstimatedBiasY());
+        assertNull(calibrator.getEstimatedBiasZ());
+        assertNull(calibrator.getEstimatedBiasAngularSpeedX());
+        assertFalse(calibrator.getEstimatedBiasAngularSpeedX(null));
+        assertNull(calibrator.getEstimatedBiasAngularSpeedY());
+        assertFalse(calibrator.getEstimatedBiasAngularSpeedY(null));
+        assertNull(calibrator.getEstimatedBiasAngularSpeedZ());
+        assertFalse(calibrator.getEstimatedBiasAngularSpeedZ(null));
+        assertNull(calibrator.getEstimatedBiasAsTriad());
+        assertFalse(calibrator.getEstimatedBiasAsTriad(null));
+        assertNull(calibrator.getEstimatedMg());
+        assertNull(calibrator.getEstimatedSx());
+        assertNull(calibrator.getEstimatedSy());
+        assertNull(calibrator.getEstimatedSz());
+        assertNull(calibrator.getEstimatedMxy());
+        assertNull(calibrator.getEstimatedMxz());
+        assertNull(calibrator.getEstimatedMyx());
+        assertNull(calibrator.getEstimatedMyz());
+        assertNull(calibrator.getEstimatedMzx());
+        assertNull(calibrator.getEstimatedMzy());
+        assertNull(calibrator.getEstimatedGg());
+        assertNull(calibrator.getEstimatedCovariance());
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS, calibrator.getPreliminarySubsetSize());
+        assertNull(calibrator.getEstimatedBiasXVariance());
+        assertNull(calibrator.getEstimatedBiasXStandardDeviation());
+        assertNull(calibrator.getEstimatedBiasXStandardDeviationAsAngularSpeed());
+        assertFalse(calibrator.getEstimatedBiasXStandardDeviationAsAngularSpeed(null));
+        assertNull(calibrator.getEstimatedBiasYVariance());
+        assertNull(calibrator.getEstimatedBiasYStandardDeviation());
+        assertNull(calibrator.getEstimatedBiasYStandardDeviationAsAngularSpeed());
+        assertFalse(calibrator.getEstimatedBiasYStandardDeviationAsAngularSpeed(null));
+        assertNull(calibrator.getEstimatedBiasZVariance());
+        assertNull(calibrator.getEstimatedBiasZStandardDeviation());
+        assertNull(calibrator.getEstimatedBiasZStandardDeviationAsAngularSpeed());
+        assertFalse(calibrator.getEstimatedBiasZStandardDeviationAsAngularSpeed(null));
+        assertNull(calibrator.getEstimatedBiasStandardDeviation());
+        assertFalse(calibrator.getEstimatedBiasStandardDeviation(null));
+        assertNull(calibrator.getEstimatedBiasStandardDeviationAverage());
+        assertNull(calibrator.getEstimatedBiasStandardDeviationAverageAsAngularSpeed());
+        assertFalse(calibrator.getEstimatedBiasStandardDeviationAverageAsAngularSpeed(null));
+        assertNull(calibrator.getEstimatedBiasStandardDeviationNorm());
+        assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
+        assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+    }
+
+    @Test
+    void testConstructor4() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationFrameBodyKinematics>emptyList();
+
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator(measurements, this);
+
+        // check default values
+        assertEquals(PROMedSRobustKnownFrameGyroscopeCalibrator.DEFAULT_STOP_THRESHOLD, calibrator.getStopThreshold(),
+                0.0);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
+        assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
+        assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
+        final var bgx1 = calibrator.getInitialBiasAngularSpeedX();
+        assertEquals(0.0, bgx1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgx1.getUnit());
+        final var bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        calibrator.getInitialBiasAngularSpeedX(bgx2);
+        assertEquals(bgx1, bgx2);
+        final var bgy1 = calibrator.getInitialBiasAngularSpeedY();
+        assertEquals(0.0, bgy1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgy1.getUnit());
+        final var bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        calibrator.getInitialBiasAngularSpeedY(bgy2);
+        assertEquals(bgy1, bgy2);
+        final var bgz1 = calibrator.getInitialBiasAngularSpeedZ();
+        assertEquals(0.0, bgz1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgz1.getUnit());
+        final var bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        calibrator.getInitialBiasAngularSpeedZ(bgz2);
+        assertEquals(bgz1, bgz2);
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
+        assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
+        assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
+        final var initialBiasTriad2 = new AngularSpeedTriad();
+        calibrator.getInitialBiasAsTriad(initialBiasTriad2);
+        assertEquals(initialBiasTriad1, initialBiasTriad2);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
+        final var bias1 = new double[3];
+        assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
+        final var bias2 = new double[3];
+        calibrator.getInitialBias(bias2);
+        assertArrayEquals(bias1, bias2, 0.0);
+        final var biasMatrix1 = new Matrix(3, 1);
+        assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
+        final var biasMatrix2 = new Matrix(3, 1);
+        calibrator.getInitialBiasAsMatrix(biasMatrix2);
+        assertEquals(biasMatrix1, biasMatrix2);
+        final var mg1 = calibrator.getInitialMg();
+        assertEquals(new Matrix(3, 3), mg1);
+        final var mg2 = new Matrix(3, 3);
+        calibrator.getInitialMg(mg2);
+        assertEquals(mg1, mg2);
+        final var gg1 = calibrator.getInitialGg();
+        assertEquals(new Matrix(3, 3), gg1);
+        final var gg2 = new Matrix(3, 3);
+        calibrator.getInitialGg(gg2);
+        assertEquals(gg1, gg2);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_FRAME_BODY_KINEMATICS_MEASUREMENT,
+                calibrator.getMeasurementOrSequenceType());
+        assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
+        assertTrue(calibrator.isQualityScoresRequired());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS,
+                calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertFalse(calibrator.isReady());
+        assertFalse(calibrator.isRunning());
+        assertTrue(calibrator.isLinearCalibratorUsed());
+        assertFalse(calibrator.isPreliminarySolutionRefined());
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
+        assertNull(calibrator.getInliersData());
+        assertTrue(calibrator.isResultRefined());
+        assertTrue(calibrator.isCovarianceKept());
+        assertNull(calibrator.getQualityScores());
+        assertNull(calibrator.getEstimatedBiases());
+        assertFalse(calibrator.getEstimatedBiases(null));
+        assertNull(calibrator.getEstimatedBiasesAsMatrix());
+        assertFalse(calibrator.getEstimatedBiasesAsMatrix(null));
+        assertNull(calibrator.getEstimatedBiasX());
+        assertNull(calibrator.getEstimatedBiasY());
+        assertNull(calibrator.getEstimatedBiasZ());
+        assertNull(calibrator.getEstimatedBiasAngularSpeedX());
+        assertFalse(calibrator.getEstimatedBiasAngularSpeedX(null));
+        assertNull(calibrator.getEstimatedBiasAngularSpeedY());
+        assertFalse(calibrator.getEstimatedBiasAngularSpeedY(null));
+        assertNull(calibrator.getEstimatedBiasAngularSpeedZ());
+        assertFalse(calibrator.getEstimatedBiasAngularSpeedZ(null));
+        assertNull(calibrator.getEstimatedBiasAsTriad());
+        assertFalse(calibrator.getEstimatedBiasAsTriad(null));
+        assertNull(calibrator.getEstimatedMg());
+        assertNull(calibrator.getEstimatedSx());
+        assertNull(calibrator.getEstimatedSy());
+        assertNull(calibrator.getEstimatedSz());
+        assertNull(calibrator.getEstimatedMxy());
+        assertNull(calibrator.getEstimatedMxz());
+        assertNull(calibrator.getEstimatedMyx());
+        assertNull(calibrator.getEstimatedMyz());
+        assertNull(calibrator.getEstimatedMzx());
+        assertNull(calibrator.getEstimatedMzy());
+        assertNull(calibrator.getEstimatedGg());
+        assertNull(calibrator.getEstimatedCovariance());
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS, calibrator.getPreliminarySubsetSize());
+        assertNull(calibrator.getEstimatedBiasXVariance());
+        assertNull(calibrator.getEstimatedBiasXStandardDeviation());
+        assertNull(calibrator.getEstimatedBiasXStandardDeviationAsAngularSpeed());
+        assertFalse(calibrator.getEstimatedBiasXStandardDeviationAsAngularSpeed(null));
+        assertNull(calibrator.getEstimatedBiasYVariance());
+        assertNull(calibrator.getEstimatedBiasYStandardDeviation());
+        assertNull(calibrator.getEstimatedBiasYStandardDeviationAsAngularSpeed());
+        assertFalse(calibrator.getEstimatedBiasYStandardDeviationAsAngularSpeed(null));
+        assertNull(calibrator.getEstimatedBiasZVariance());
+        assertNull(calibrator.getEstimatedBiasZStandardDeviation());
+        assertNull(calibrator.getEstimatedBiasZStandardDeviationAsAngularSpeed());
+        assertFalse(calibrator.getEstimatedBiasZStandardDeviationAsAngularSpeed(null));
+        assertNull(calibrator.getEstimatedBiasStandardDeviation());
+        assertFalse(calibrator.getEstimatedBiasStandardDeviation(null));
+        assertNull(calibrator.getEstimatedBiasStandardDeviationAverage());
+        assertNull(calibrator.getEstimatedBiasStandardDeviationAverageAsAngularSpeed());
+        assertFalse(calibrator.getEstimatedBiasStandardDeviationAverageAsAngularSpeed(null));
+        assertNull(calibrator.getEstimatedBiasStandardDeviationNorm());
+        assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
+        assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+    }
+
+    @Test
+    void testConstructor5() throws WrongSizeException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator(true);
+
+        // check default values
+        assertEquals(PROMedSRobustKnownFrameGyroscopeCalibrator.DEFAULT_STOP_THRESHOLD, calibrator.getStopThreshold(),
+                0.0);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
+        assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
+        assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
+        final var bgx1 = calibrator.getInitialBiasAngularSpeedX();
+        assertEquals(0.0, bgx1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgx1.getUnit());
+        final var bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        calibrator.getInitialBiasAngularSpeedX(bgx2);
+        assertEquals(bgx1, bgx2);
+        final var bgy1 = calibrator.getInitialBiasAngularSpeedY();
+        assertEquals(0.0, bgy1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgy1.getUnit());
+        final var bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        calibrator.getInitialBiasAngularSpeedY(bgy2);
+        assertEquals(bgy1, bgy2);
+        final var bgz1 = calibrator.getInitialBiasAngularSpeedZ();
+        assertEquals(0.0, bgz1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgz1.getUnit());
+        final var bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        calibrator.getInitialBiasAngularSpeedZ(bgz2);
+        assertEquals(bgz1, bgz2);
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
+        assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
+        assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
+        final var initialBiasTriad2 = new AngularSpeedTriad();
+        calibrator.getInitialBiasAsTriad(initialBiasTriad2);
+        assertEquals(initialBiasTriad1, initialBiasTriad2);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
+        final var bias1 = new double[3];
+        assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
+        final var bias2 = new double[3];
+        calibrator.getInitialBias(bias2);
+        assertArrayEquals(bias1, bias2, 0.0);
+        final var biasMatrix1 = new Matrix(3, 1);
+        assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
+        final var biasMatrix2 = new Matrix(3, 1);
+        calibrator.getInitialBiasAsMatrix(biasMatrix2);
+        assertEquals(biasMatrix1, biasMatrix2);
+        final var mg1 = calibrator.getInitialMg();
+        assertEquals(new Matrix(3, 3), mg1);
+        final var mg2 = new Matrix(3, 3);
+        calibrator.getInitialMg(mg2);
+        assertEquals(mg1, mg2);
+        final var gg1 = calibrator.getInitialGg();
+        assertEquals(new Matrix(3, 3), gg1);
+        final var gg2 = new Matrix(3, 3);
+        calibrator.getInitialGg(gg2);
+        assertEquals(gg1, gg2);
+        assertNull(calibrator.getMeasurements());
+        assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_FRAME_BODY_KINEMATICS_MEASUREMENT,
+                calibrator.getMeasurementOrSequenceType());
+        assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
+        assertTrue(calibrator.isQualityScoresRequired());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertNull(calibrator.getListener());
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS,
+                calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertFalse(calibrator.isReady());
+        assertFalse(calibrator.isRunning());
+        assertTrue(calibrator.isLinearCalibratorUsed());
+        assertFalse(calibrator.isPreliminarySolutionRefined());
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
+        assertNull(calibrator.getInliersData());
+        assertTrue(calibrator.isResultRefined());
+        assertTrue(calibrator.isCovarianceKept());
+        assertNull(calibrator.getQualityScores());
+        assertNull(calibrator.getEstimatedBiases());
+        assertFalse(calibrator.getEstimatedBiases(null));
+        assertNull(calibrator.getEstimatedBiasesAsMatrix());
+        assertFalse(calibrator.getEstimatedBiasesAsMatrix(null));
+        assertNull(calibrator.getEstimatedBiasX());
+        assertNull(calibrator.getEstimatedBiasY());
+        assertNull(calibrator.getEstimatedBiasZ());
+        assertNull(calibrator.getEstimatedBiasAngularSpeedX());
+        assertFalse(calibrator.getEstimatedBiasAngularSpeedX(null));
+        assertNull(calibrator.getEstimatedBiasAngularSpeedY());
+        assertFalse(calibrator.getEstimatedBiasAngularSpeedY(null));
+        assertNull(calibrator.getEstimatedBiasAngularSpeedZ());
+        assertFalse(calibrator.getEstimatedBiasAngularSpeedZ(null));
+        assertNull(calibrator.getEstimatedBiasAsTriad());
+        assertFalse(calibrator.getEstimatedBiasAsTriad(null));
+        assertNull(calibrator.getEstimatedMg());
+        assertNull(calibrator.getEstimatedSx());
+        assertNull(calibrator.getEstimatedSy());
+        assertNull(calibrator.getEstimatedSz());
+        assertNull(calibrator.getEstimatedMxy());
+        assertNull(calibrator.getEstimatedMxz());
+        assertNull(calibrator.getEstimatedMyx());
+        assertNull(calibrator.getEstimatedMyz());
+        assertNull(calibrator.getEstimatedMzx());
+        assertNull(calibrator.getEstimatedMzy());
+        assertNull(calibrator.getEstimatedGg());
+        assertNull(calibrator.getEstimatedCovariance());
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS, calibrator.getPreliminarySubsetSize());
+        assertNull(calibrator.getEstimatedBiasXVariance());
+        assertNull(calibrator.getEstimatedBiasXStandardDeviation());
+        assertNull(calibrator.getEstimatedBiasXStandardDeviationAsAngularSpeed());
+        assertFalse(calibrator.getEstimatedBiasXStandardDeviationAsAngularSpeed(null));
+        assertNull(calibrator.getEstimatedBiasYVariance());
+        assertNull(calibrator.getEstimatedBiasYStandardDeviation());
+        assertNull(calibrator.getEstimatedBiasYStandardDeviationAsAngularSpeed());
+        assertFalse(calibrator.getEstimatedBiasYStandardDeviationAsAngularSpeed(null));
+        assertNull(calibrator.getEstimatedBiasZVariance());
+        assertNull(calibrator.getEstimatedBiasZStandardDeviation());
+        assertNull(calibrator.getEstimatedBiasZStandardDeviationAsAngularSpeed());
+        assertFalse(calibrator.getEstimatedBiasZStandardDeviationAsAngularSpeed(null));
+        assertNull(calibrator.getEstimatedBiasStandardDeviation());
+        assertFalse(calibrator.getEstimatedBiasStandardDeviation(null));
+        assertNull(calibrator.getEstimatedBiasStandardDeviationAverage());
+        assertNull(calibrator.getEstimatedBiasStandardDeviationAverageAsAngularSpeed());
+        assertFalse(calibrator.getEstimatedBiasStandardDeviationAverageAsAngularSpeed(null));
+        assertNull(calibrator.getEstimatedBiasStandardDeviationNorm());
+        assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
+        assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+    }
+
+    @Test
+    void testConstructor6() throws WrongSizeException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator(true, this);
+
+        // check default values
+        assertEquals(PROMedSRobustKnownFrameGyroscopeCalibrator.DEFAULT_STOP_THRESHOLD, calibrator.getStopThreshold(),
+                0.0);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
+        assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
+        assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
+        final var bgx1 = calibrator.getInitialBiasAngularSpeedX();
+        assertEquals(0.0, bgx1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgx1.getUnit());
+        final var bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        calibrator.getInitialBiasAngularSpeedX(bgx2);
+        assertEquals(bgx1, bgx2);
+        final var bgy1 = calibrator.getInitialBiasAngularSpeedY();
+        assertEquals(0.0, bgy1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgy1.getUnit());
+        final var bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        calibrator.getInitialBiasAngularSpeedY(bgy2);
+        assertEquals(bgy1, bgy2);
+        final var bgz1 = calibrator.getInitialBiasAngularSpeedZ();
+        assertEquals(0.0, bgz1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgz1.getUnit());
+        final var bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        calibrator.getInitialBiasAngularSpeedZ(bgz2);
+        assertEquals(bgz1, bgz2);
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
+        assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
+        assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
+        final var initialBiasTriad2 = new AngularSpeedTriad();
+        calibrator.getInitialBiasAsTriad(initialBiasTriad2);
+        assertEquals(initialBiasTriad1, initialBiasTriad2);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
+        final var bias1 = new double[3];
+        assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
+        final var bias2 = new double[3];
+        calibrator.getInitialBias(bias2);
+        assertArrayEquals(bias1, bias2, 0.0);
+        final var biasMatrix1 = new Matrix(3, 1);
+        assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
+        final var biasMatrix2 = new Matrix(3, 1);
+        calibrator.getInitialBiasAsMatrix(biasMatrix2);
+        assertEquals(biasMatrix1, biasMatrix2);
+        final var mg1 = calibrator.getInitialMg();
+        assertEquals(new Matrix(3, 3), mg1);
+        final var mg2 = new Matrix(3, 3);
+        calibrator.getInitialMg(mg2);
+        assertEquals(mg1, mg2);
+        final var gg1 = calibrator.getInitialGg();
+        assertEquals(new Matrix(3, 3), gg1);
+        final var gg2 = new Matrix(3, 3);
+        calibrator.getInitialGg(gg2);
+        assertEquals(gg1, gg2);
+        assertNull(calibrator.getMeasurements());
+        assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_FRAME_BODY_KINEMATICS_MEASUREMENT,
+                calibrator.getMeasurementOrSequenceType());
+        assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
+        assertTrue(calibrator.isQualityScoresRequired());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS,
+                calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertFalse(calibrator.isReady());
+        assertFalse(calibrator.isRunning());
+        assertTrue(calibrator.isLinearCalibratorUsed());
+        assertFalse(calibrator.isPreliminarySolutionRefined());
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 
+                0.0);
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(), 
+                0.0);
+        assertNull(calibrator.getInliersData());
+        assertTrue(calibrator.isResultRefined());
+        assertTrue(calibrator.isCovarianceKept());
+        assertNull(calibrator.getQualityScores());
+        assertNull(calibrator.getEstimatedBiases());
+        assertFalse(calibrator.getEstimatedBiases(null));
+        assertNull(calibrator.getEstimatedBiasesAsMatrix());
+        assertFalse(calibrator.getEstimatedBiasesAsMatrix(null));
+        assertNull(calibrator.getEstimatedBiasX());
+        assertNull(calibrator.getEstimatedBiasY());
+        assertNull(calibrator.getEstimatedBiasZ());
+        assertNull(calibrator.getEstimatedBiasAngularSpeedX());
+        assertFalse(calibrator.getEstimatedBiasAngularSpeedX(null));
+        assertNull(calibrator.getEstimatedBiasAngularSpeedY());
+        assertFalse(calibrator.getEstimatedBiasAngularSpeedY(null));
+        assertNull(calibrator.getEstimatedBiasAngularSpeedZ());
+        assertFalse(calibrator.getEstimatedBiasAngularSpeedZ(null));
+        assertNull(calibrator.getEstimatedBiasAsTriad());
+        assertFalse(calibrator.getEstimatedBiasAsTriad(null));
+        assertNull(calibrator.getEstimatedMg());
+        assertNull(calibrator.getEstimatedSx());
+        assertNull(calibrator.getEstimatedSy());
+        assertNull(calibrator.getEstimatedSz());
+        assertNull(calibrator.getEstimatedMxy());
+        assertNull(calibrator.getEstimatedMxz());
+        assertNull(calibrator.getEstimatedMyx());
+        assertNull(calibrator.getEstimatedMyz());
+        assertNull(calibrator.getEstimatedMzx());
+        assertNull(calibrator.getEstimatedMzy());
+        assertNull(calibrator.getEstimatedGg());
+        assertNull(calibrator.getEstimatedCovariance());
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS, calibrator.getPreliminarySubsetSize());
+        assertNull(calibrator.getEstimatedBiasXVariance());
+        assertNull(calibrator.getEstimatedBiasXStandardDeviation());
+        assertNull(calibrator.getEstimatedBiasXStandardDeviationAsAngularSpeed());
+        assertFalse(calibrator.getEstimatedBiasXStandardDeviationAsAngularSpeed(null));
+        assertNull(calibrator.getEstimatedBiasYVariance());
+        assertNull(calibrator.getEstimatedBiasYStandardDeviation());
+        assertNull(calibrator.getEstimatedBiasYStandardDeviationAsAngularSpeed());
+        assertFalse(calibrator.getEstimatedBiasYStandardDeviationAsAngularSpeed(null));
+        assertNull(calibrator.getEstimatedBiasZVariance());
+        assertNull(calibrator.getEstimatedBiasZStandardDeviation());
+        assertNull(calibrator.getEstimatedBiasZStandardDeviationAsAngularSpeed());
+        assertFalse(calibrator.getEstimatedBiasZStandardDeviationAsAngularSpeed(null));
+        assertNull(calibrator.getEstimatedBiasStandardDeviation());
+        assertFalse(calibrator.getEstimatedBiasStandardDeviation(null));
+        assertNull(calibrator.getEstimatedBiasStandardDeviationAverage());
+        assertNull(calibrator.getEstimatedBiasStandardDeviationAverageAsAngularSpeed());
+        assertFalse(calibrator.getEstimatedBiasStandardDeviationAverageAsAngularSpeed(null));
+        assertNull(calibrator.getEstimatedBiasStandardDeviationNorm());
+        assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
+        assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+    }
+
+    @Test
+    void testConstructor7() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationFrameBodyKinematics>emptyList();
+
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator(measurements, true);
+
+        // check default values
+        assertEquals(PROMedSRobustKnownFrameGyroscopeCalibrator.DEFAULT_STOP_THRESHOLD, calibrator.getStopThreshold(),
+                0.0);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
+        assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
+        assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
+        final var bgx1 = calibrator.getInitialBiasAngularSpeedX();
+        assertEquals(0.0, bgx1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgx1.getUnit());
+        final var bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        calibrator.getInitialBiasAngularSpeedX(bgx2);
+        assertEquals(bgx1, bgx2);
+        final var bgy1 = calibrator.getInitialBiasAngularSpeedY();
+        assertEquals(0.0, bgy1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgy1.getUnit());
+        final var bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        calibrator.getInitialBiasAngularSpeedY(bgy2);
+        assertEquals(bgy1, bgy2);
+        final var bgz1 = calibrator.getInitialBiasAngularSpeedZ();
+        assertEquals(0.0, bgz1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgz1.getUnit());
+        final var bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        calibrator.getInitialBiasAngularSpeedZ(bgz2);
+        assertEquals(bgz1, bgz2);
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
+        assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
+        assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
+        final var initialBiasTriad2 = new AngularSpeedTriad();
+        calibrator.getInitialBiasAsTriad(initialBiasTriad2);
+        assertEquals(initialBiasTriad1, initialBiasTriad2);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
+        final var bias1 = new double[3];
+        assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
+        final var bias2 = new double[3];
+        calibrator.getInitialBias(bias2);
+        assertArrayEquals(bias1, bias2, 0.0);
+        final var biasMatrix1 = new Matrix(3, 1);
+        assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
+        final var biasMatrix2 = new Matrix(3, 1);
+        calibrator.getInitialBiasAsMatrix(biasMatrix2);
+        assertEquals(biasMatrix1, biasMatrix2);
+        final var mg1 = calibrator.getInitialMg();
+        assertEquals(new Matrix(3, 3), mg1);
+        final var mg2 = new Matrix(3, 3);
+        calibrator.getInitialMg(mg2);
+        assertEquals(mg1, mg2);
+        final var gg1 = calibrator.getInitialGg();
+        assertEquals(new Matrix(3, 3), gg1);
+        final var gg2 = new Matrix(3, 3);
+        calibrator.getInitialGg(gg2);
+        assertEquals(gg1, gg2);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_FRAME_BODY_KINEMATICS_MEASUREMENT,
+                calibrator.getMeasurementOrSequenceType());
+        assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
+        assertTrue(calibrator.isQualityScoresRequired());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertNull(calibrator.getListener());
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS,
+                calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertFalse(calibrator.isReady());
+        assertFalse(calibrator.isRunning());
+        assertTrue(calibrator.isLinearCalibratorUsed());
+        assertFalse(calibrator.isPreliminarySolutionRefined());
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 
+                0.0);
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(), 
+                0.0);
+        assertNull(calibrator.getInliersData());
+        assertTrue(calibrator.isResultRefined());
+        assertTrue(calibrator.isCovarianceKept());
+        assertNull(calibrator.getQualityScores());
+        assertNull(calibrator.getEstimatedBiases());
+        assertFalse(calibrator.getEstimatedBiases(null));
+        assertNull(calibrator.getEstimatedBiasesAsMatrix());
+        assertFalse(calibrator.getEstimatedBiasesAsMatrix(null));
+        assertNull(calibrator.getEstimatedBiasX());
+        assertNull(calibrator.getEstimatedBiasY());
+        assertNull(calibrator.getEstimatedBiasZ());
+        assertNull(calibrator.getEstimatedBiasAngularSpeedX());
+        assertFalse(calibrator.getEstimatedBiasAngularSpeedX(null));
+        assertNull(calibrator.getEstimatedBiasAngularSpeedY());
+        assertFalse(calibrator.getEstimatedBiasAngularSpeedY(null));
+        assertNull(calibrator.getEstimatedBiasAngularSpeedZ());
+        assertFalse(calibrator.getEstimatedBiasAngularSpeedZ(null));
+        assertNull(calibrator.getEstimatedBiasAsTriad());
+        assertFalse(calibrator.getEstimatedBiasAsTriad(null));
+        assertNull(calibrator.getEstimatedMg());
+        assertNull(calibrator.getEstimatedSx());
+        assertNull(calibrator.getEstimatedSy());
+        assertNull(calibrator.getEstimatedSz());
+        assertNull(calibrator.getEstimatedMxy());
+        assertNull(calibrator.getEstimatedMxz());
+        assertNull(calibrator.getEstimatedMyx());
+        assertNull(calibrator.getEstimatedMyz());
+        assertNull(calibrator.getEstimatedMzx());
+        assertNull(calibrator.getEstimatedMzy());
+        assertNull(calibrator.getEstimatedGg());
+        assertNull(calibrator.getEstimatedCovariance());
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS, calibrator.getPreliminarySubsetSize());
+        assertNull(calibrator.getEstimatedBiasXVariance());
+        assertNull(calibrator.getEstimatedBiasXStandardDeviation());
+        assertNull(calibrator.getEstimatedBiasXStandardDeviationAsAngularSpeed());
+        assertFalse(calibrator.getEstimatedBiasXStandardDeviationAsAngularSpeed(null));
+        assertNull(calibrator.getEstimatedBiasYVariance());
+        assertNull(calibrator.getEstimatedBiasYStandardDeviation());
+        assertNull(calibrator.getEstimatedBiasYStandardDeviationAsAngularSpeed());
+        assertFalse(calibrator.getEstimatedBiasYStandardDeviationAsAngularSpeed(null));
+        assertNull(calibrator.getEstimatedBiasZVariance());
+        assertNull(calibrator.getEstimatedBiasZStandardDeviation());
+        assertNull(calibrator.getEstimatedBiasZStandardDeviationAsAngularSpeed());
+        assertFalse(calibrator.getEstimatedBiasZStandardDeviationAsAngularSpeed(null));
+        assertNull(calibrator.getEstimatedBiasStandardDeviation());
+        assertFalse(calibrator.getEstimatedBiasStandardDeviation(null));
+        assertNull(calibrator.getEstimatedBiasStandardDeviationAverage());
+        assertNull(calibrator.getEstimatedBiasStandardDeviationAverageAsAngularSpeed());
+        assertFalse(calibrator.getEstimatedBiasStandardDeviationAverageAsAngularSpeed(null));
+        assertNull(calibrator.getEstimatedBiasStandardDeviationNorm());
+        assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
+        assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+    }
+
+    @Test
+    void testConstructor8() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationFrameBodyKinematics>emptyList();
+
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator(measurements, true, 
                 this);
 
         // check default values
@@ -236,30 +1082,30 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        final AngularSpeed bgx1 = calibrator.getInitialBiasAngularSpeedX();
+        final var bgx1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(0.0, bgx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgx1.getUnit());
-        final AngularSpeed bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(bgx2);
         assertEquals(bgx1, bgx2);
-        final AngularSpeed bgy1 = calibrator.getInitialBiasAngularSpeedY();
+        final var bgy1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(0.0, bgy1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgy1.getUnit());
-        final AngularSpeed bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(bgy2);
         assertEquals(bgy1, bgy2);
-        final AngularSpeed bgz1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var bgz1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(0.0, bgz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgz1.getUnit());
-        final AngularSpeed bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(bgz2);
         assertEquals(bgz1, bgz2);
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -271,866 +1117,24 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix mg1 = calibrator.getInitialMg();
-        assertEquals(mg1, new Matrix(3, 3));
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg1 = calibrator.getInitialMg();
+        assertEquals(new Matrix(3, 3), mg1);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
-        assertEquals(gg1, new Matrix(3, 3));
-        final Matrix gg2 = new Matrix(3, 3);
-        calibrator.getInitialGg(gg2);
-        assertEquals(gg1, gg2);
-        assertNull(calibrator.getMeasurements());
-        assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_FRAME_BODY_KINEMATICS_MEASUREMENT,
-                calibrator.getMeasurementOrSequenceType());
-        assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
-        assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertSame(this, calibrator.getListener());
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS,
-                calibrator.getMinimumRequiredMeasurementsOrSequences());
-        assertFalse(calibrator.isReady());
-        assertFalse(calibrator.isRunning());
-        assertTrue(calibrator.isLinearCalibratorUsed());
-        assertFalse(calibrator.isPreliminarySolutionRefined());
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(), 0.0);
-        assertNull(calibrator.getInliersData());
-        assertTrue(calibrator.isResultRefined());
-        assertTrue(calibrator.isCovarianceKept());
-        assertNull(calibrator.getQualityScores());
-        assertNull(calibrator.getEstimatedBiases());
-        assertFalse(calibrator.getEstimatedBiases(null));
-        assertNull(calibrator.getEstimatedBiasesAsMatrix());
-        assertFalse(calibrator.getEstimatedBiasesAsMatrix(null));
-        assertNull(calibrator.getEstimatedBiasX());
-        assertNull(calibrator.getEstimatedBiasY());
-        assertNull(calibrator.getEstimatedBiasZ());
-        assertNull(calibrator.getEstimatedBiasAngularSpeedX());
-        assertFalse(calibrator.getEstimatedBiasAngularSpeedX(null));
-        assertNull(calibrator.getEstimatedBiasAngularSpeedY());
-        assertFalse(calibrator.getEstimatedBiasAngularSpeedY(null));
-        assertNull(calibrator.getEstimatedBiasAngularSpeedZ());
-        assertFalse(calibrator.getEstimatedBiasAngularSpeedZ(null));
-        assertNull(calibrator.getEstimatedBiasAsTriad());
-        assertFalse(calibrator.getEstimatedBiasAsTriad(null));
-        assertNull(calibrator.getEstimatedMg());
-        assertNull(calibrator.getEstimatedSx());
-        assertNull(calibrator.getEstimatedSy());
-        assertNull(calibrator.getEstimatedSz());
-        assertNull(calibrator.getEstimatedMxy());
-        assertNull(calibrator.getEstimatedMxz());
-        assertNull(calibrator.getEstimatedMyx());
-        assertNull(calibrator.getEstimatedMyz());
-        assertNull(calibrator.getEstimatedMzx());
-        assertNull(calibrator.getEstimatedMzy());
-        assertNull(calibrator.getEstimatedGg());
-        assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS, calibrator.getPreliminarySubsetSize());
-        assertNull(calibrator.getEstimatedBiasXVariance());
-        assertNull(calibrator.getEstimatedBiasXStandardDeviation());
-        assertNull(calibrator.getEstimatedBiasXStandardDeviationAsAngularSpeed());
-        assertFalse(calibrator.getEstimatedBiasXStandardDeviationAsAngularSpeed(null));
-        assertNull(calibrator.getEstimatedBiasYVariance());
-        assertNull(calibrator.getEstimatedBiasYStandardDeviation());
-        assertNull(calibrator.getEstimatedBiasYStandardDeviationAsAngularSpeed());
-        assertFalse(calibrator.getEstimatedBiasYStandardDeviationAsAngularSpeed(null));
-        assertNull(calibrator.getEstimatedBiasZVariance());
-        assertNull(calibrator.getEstimatedBiasZStandardDeviation());
-        assertNull(calibrator.getEstimatedBiasZStandardDeviationAsAngularSpeed());
-        assertFalse(calibrator.getEstimatedBiasZStandardDeviationAsAngularSpeed(null));
-        assertNull(calibrator.getEstimatedBiasStandardDeviation());
-        assertFalse(calibrator.getEstimatedBiasStandardDeviation(null));
-        assertNull(calibrator.getEstimatedBiasStandardDeviationAverage());
-        assertNull(calibrator.getEstimatedBiasStandardDeviationAverageAsAngularSpeed());
-        assertFalse(calibrator.getEstimatedBiasStandardDeviationAverageAsAngularSpeed(null));
-        assertNull(calibrator.getEstimatedBiasStandardDeviationNorm());
-        assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
-        assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
-        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
-    }
-
-    @Test
-    public void testConstructor3() throws WrongSizeException {
-        final List<StandardDeviationFrameBodyKinematics> measurements = Collections.emptyList();
-
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator(
-                measurements);
-
-        // check default values
-        assertEquals(PROMedSRobustKnownFrameGyroscopeCalibrator.DEFAULT_STOP_THRESHOLD, calibrator.getStopThreshold(),
-                0.0);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
-        assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
-        assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        final AngularSpeed bgx1 = calibrator.getInitialBiasAngularSpeedX();
-        assertEquals(0.0, bgx1.getValue().doubleValue(), 0.0);
-        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgx1.getUnit());
-        final AngularSpeed bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
-        calibrator.getInitialBiasAngularSpeedX(bgx2);
-        assertEquals(bgx1, bgx2);
-        final AngularSpeed bgy1 = calibrator.getInitialBiasAngularSpeedY();
-        assertEquals(0.0, bgy1.getValue().doubleValue(), 0.0);
-        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgy1.getUnit());
-        final AngularSpeed bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
-        calibrator.getInitialBiasAngularSpeedY(bgy2);
-        assertEquals(bgy1, bgy2);
-        final AngularSpeed bgz1 = calibrator.getInitialBiasAngularSpeedZ();
-        assertEquals(0.0, bgz1.getValue().doubleValue(), 0.0);
-        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgz1.getUnit());
-        final AngularSpeed bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
-        calibrator.getInitialBiasAngularSpeedZ(bgz2);
-        assertEquals(bgz1, bgz2);
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
-        assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
-        assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
-        assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
-        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
-        calibrator.getInitialBiasAsTriad(initialBiasTriad2);
-        assertEquals(initialBiasTriad1, initialBiasTriad2);
-        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
-        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
-        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
-        assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
-        calibrator.getInitialBias(bias2);
-        assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
-        assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
-        calibrator.getInitialBiasAsMatrix(biasMatrix2);
-        assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix mg1 = calibrator.getInitialMg();
-        assertEquals(mg1, new Matrix(3, 3));
-        final Matrix mg2 = new Matrix(3, 3);
-        calibrator.getInitialMg(mg2);
-        assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
-        assertEquals(gg1, new Matrix(3, 3));
-        final Matrix gg2 = new Matrix(3, 3);
-        calibrator.getInitialGg(gg2);
-        assertEquals(gg1, gg2);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_FRAME_BODY_KINEMATICS_MEASUREMENT,
-                calibrator.getMeasurementOrSequenceType());
-        assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
-        assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertNull(calibrator.getListener());
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS,
-                calibrator.getMinimumRequiredMeasurementsOrSequences());
-        assertFalse(calibrator.isReady());
-        assertFalse(calibrator.isRunning());
-        assertTrue(calibrator.isLinearCalibratorUsed());
-        assertFalse(calibrator.isPreliminarySolutionRefined());
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(), 0.0);
-        assertNull(calibrator.getInliersData());
-        assertTrue(calibrator.isResultRefined());
-        assertTrue(calibrator.isCovarianceKept());
-        assertNull(calibrator.getQualityScores());
-        assertNull(calibrator.getEstimatedBiases());
-        assertFalse(calibrator.getEstimatedBiases(null));
-        assertNull(calibrator.getEstimatedBiasesAsMatrix());
-        assertFalse(calibrator.getEstimatedBiasesAsMatrix(null));
-        assertNull(calibrator.getEstimatedBiasX());
-        assertNull(calibrator.getEstimatedBiasY());
-        assertNull(calibrator.getEstimatedBiasZ());
-        assertNull(calibrator.getEstimatedBiasAngularSpeedX());
-        assertFalse(calibrator.getEstimatedBiasAngularSpeedX(null));
-        assertNull(calibrator.getEstimatedBiasAngularSpeedY());
-        assertFalse(calibrator.getEstimatedBiasAngularSpeedY(null));
-        assertNull(calibrator.getEstimatedBiasAngularSpeedZ());
-        assertFalse(calibrator.getEstimatedBiasAngularSpeedZ(null));
-        assertNull(calibrator.getEstimatedBiasAsTriad());
-        assertFalse(calibrator.getEstimatedBiasAsTriad(null));
-        assertNull(calibrator.getEstimatedMg());
-        assertNull(calibrator.getEstimatedSx());
-        assertNull(calibrator.getEstimatedSy());
-        assertNull(calibrator.getEstimatedSz());
-        assertNull(calibrator.getEstimatedMxy());
-        assertNull(calibrator.getEstimatedMxz());
-        assertNull(calibrator.getEstimatedMyx());
-        assertNull(calibrator.getEstimatedMyz());
-        assertNull(calibrator.getEstimatedMzx());
-        assertNull(calibrator.getEstimatedMzy());
-        assertNull(calibrator.getEstimatedGg());
-        assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS, calibrator.getPreliminarySubsetSize());
-        assertNull(calibrator.getEstimatedBiasXVariance());
-        assertNull(calibrator.getEstimatedBiasXStandardDeviation());
-        assertNull(calibrator.getEstimatedBiasXStandardDeviationAsAngularSpeed());
-        assertFalse(calibrator.getEstimatedBiasXStandardDeviationAsAngularSpeed(null));
-        assertNull(calibrator.getEstimatedBiasYVariance());
-        assertNull(calibrator.getEstimatedBiasYStandardDeviation());
-        assertNull(calibrator.getEstimatedBiasYStandardDeviationAsAngularSpeed());
-        assertFalse(calibrator.getEstimatedBiasYStandardDeviationAsAngularSpeed(null));
-        assertNull(calibrator.getEstimatedBiasZVariance());
-        assertNull(calibrator.getEstimatedBiasZStandardDeviation());
-        assertNull(calibrator.getEstimatedBiasZStandardDeviationAsAngularSpeed());
-        assertFalse(calibrator.getEstimatedBiasZStandardDeviationAsAngularSpeed(null));
-        assertNull(calibrator.getEstimatedBiasStandardDeviation());
-        assertFalse(calibrator.getEstimatedBiasStandardDeviation(null));
-        assertNull(calibrator.getEstimatedBiasStandardDeviationAverage());
-        assertNull(calibrator.getEstimatedBiasStandardDeviationAverageAsAngularSpeed());
-        assertFalse(calibrator.getEstimatedBiasStandardDeviationAverageAsAngularSpeed(null));
-        assertNull(calibrator.getEstimatedBiasStandardDeviationNorm());
-        assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
-        assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
-        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
-    }
-
-    @Test
-    public void testConstructor4() throws WrongSizeException {
-        final List<StandardDeviationFrameBodyKinematics> measurements = Collections.emptyList();
-
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator(
-                measurements, this);
-
-        // check default values
-        assertEquals(PROMedSRobustKnownFrameGyroscopeCalibrator.DEFAULT_STOP_THRESHOLD, calibrator.getStopThreshold(),
-                0.0);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
-        assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
-        assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        final AngularSpeed bgx1 = calibrator.getInitialBiasAngularSpeedX();
-        assertEquals(0.0, bgx1.getValue().doubleValue(), 0.0);
-        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgx1.getUnit());
-        final AngularSpeed bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
-        calibrator.getInitialBiasAngularSpeedX(bgx2);
-        assertEquals(bgx1, bgx2);
-        final AngularSpeed bgy1 = calibrator.getInitialBiasAngularSpeedY();
-        assertEquals(0.0, bgy1.getValue().doubleValue(), 0.0);
-        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgy1.getUnit());
-        final AngularSpeed bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
-        calibrator.getInitialBiasAngularSpeedY(bgy2);
-        assertEquals(bgy1, bgy2);
-        final AngularSpeed bgz1 = calibrator.getInitialBiasAngularSpeedZ();
-        assertEquals(0.0, bgz1.getValue().doubleValue(), 0.0);
-        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgz1.getUnit());
-        final AngularSpeed bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
-        calibrator.getInitialBiasAngularSpeedZ(bgz2);
-        assertEquals(bgz1, bgz2);
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
-        assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
-        assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
-        assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
-        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
-        calibrator.getInitialBiasAsTriad(initialBiasTriad2);
-        assertEquals(initialBiasTriad1, initialBiasTriad2);
-        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
-        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
-        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
-        assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
-        calibrator.getInitialBias(bias2);
-        assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
-        assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
-        calibrator.getInitialBiasAsMatrix(biasMatrix2);
-        assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix mg1 = calibrator.getInitialMg();
-        assertEquals(mg1, new Matrix(3, 3));
-        final Matrix mg2 = new Matrix(3, 3);
-        calibrator.getInitialMg(mg2);
-        assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
-        assertEquals(gg1, new Matrix(3, 3));
-        final Matrix gg2 = new Matrix(3, 3);
-        calibrator.getInitialGg(gg2);
-        assertEquals(gg1, gg2);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_FRAME_BODY_KINEMATICS_MEASUREMENT,
-                calibrator.getMeasurementOrSequenceType());
-        assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
-        assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertSame(this, calibrator.getListener());
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS,
-                calibrator.getMinimumRequiredMeasurementsOrSequences());
-        assertFalse(calibrator.isReady());
-        assertFalse(calibrator.isRunning());
-        assertTrue(calibrator.isLinearCalibratorUsed());
-        assertFalse(calibrator.isPreliminarySolutionRefined());
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(), 0.0);
-        assertNull(calibrator.getInliersData());
-        assertTrue(calibrator.isResultRefined());
-        assertTrue(calibrator.isCovarianceKept());
-        assertNull(calibrator.getQualityScores());
-        assertNull(calibrator.getEstimatedBiases());
-        assertFalse(calibrator.getEstimatedBiases(null));
-        assertNull(calibrator.getEstimatedBiasesAsMatrix());
-        assertFalse(calibrator.getEstimatedBiasesAsMatrix(null));
-        assertNull(calibrator.getEstimatedBiasX());
-        assertNull(calibrator.getEstimatedBiasY());
-        assertNull(calibrator.getEstimatedBiasZ());
-        assertNull(calibrator.getEstimatedBiasAngularSpeedX());
-        assertFalse(calibrator.getEstimatedBiasAngularSpeedX(null));
-        assertNull(calibrator.getEstimatedBiasAngularSpeedY());
-        assertFalse(calibrator.getEstimatedBiasAngularSpeedY(null));
-        assertNull(calibrator.getEstimatedBiasAngularSpeedZ());
-        assertFalse(calibrator.getEstimatedBiasAngularSpeedZ(null));
-        assertNull(calibrator.getEstimatedBiasAsTriad());
-        assertFalse(calibrator.getEstimatedBiasAsTriad(null));
-        assertNull(calibrator.getEstimatedMg());
-        assertNull(calibrator.getEstimatedSx());
-        assertNull(calibrator.getEstimatedSy());
-        assertNull(calibrator.getEstimatedSz());
-        assertNull(calibrator.getEstimatedMxy());
-        assertNull(calibrator.getEstimatedMxz());
-        assertNull(calibrator.getEstimatedMyx());
-        assertNull(calibrator.getEstimatedMyz());
-        assertNull(calibrator.getEstimatedMzx());
-        assertNull(calibrator.getEstimatedMzy());
-        assertNull(calibrator.getEstimatedGg());
-        assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS, calibrator.getPreliminarySubsetSize());
-        assertNull(calibrator.getEstimatedBiasXVariance());
-        assertNull(calibrator.getEstimatedBiasXStandardDeviation());
-        assertNull(calibrator.getEstimatedBiasXStandardDeviationAsAngularSpeed());
-        assertFalse(calibrator.getEstimatedBiasXStandardDeviationAsAngularSpeed(null));
-        assertNull(calibrator.getEstimatedBiasYVariance());
-        assertNull(calibrator.getEstimatedBiasYStandardDeviation());
-        assertNull(calibrator.getEstimatedBiasYStandardDeviationAsAngularSpeed());
-        assertFalse(calibrator.getEstimatedBiasYStandardDeviationAsAngularSpeed(null));
-        assertNull(calibrator.getEstimatedBiasZVariance());
-        assertNull(calibrator.getEstimatedBiasZStandardDeviation());
-        assertNull(calibrator.getEstimatedBiasZStandardDeviationAsAngularSpeed());
-        assertFalse(calibrator.getEstimatedBiasZStandardDeviationAsAngularSpeed(null));
-        assertNull(calibrator.getEstimatedBiasStandardDeviation());
-        assertFalse(calibrator.getEstimatedBiasStandardDeviation(null));
-        assertNull(calibrator.getEstimatedBiasStandardDeviationAverage());
-        assertNull(calibrator.getEstimatedBiasStandardDeviationAverageAsAngularSpeed());
-        assertFalse(calibrator.getEstimatedBiasStandardDeviationAverageAsAngularSpeed(null));
-        assertNull(calibrator.getEstimatedBiasStandardDeviationNorm());
-        assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
-        assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
-        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
-    }
-
-    @Test
-    public void testConstructor5() throws WrongSizeException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator(
-                true);
-
-        // check default values
-        assertEquals(PROMedSRobustKnownFrameGyroscopeCalibrator.DEFAULT_STOP_THRESHOLD,
-                calibrator.getStopThreshold(), 0.0);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
-        assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
-        assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        final AngularSpeed bgx1 = calibrator.getInitialBiasAngularSpeedX();
-        assertEquals(0.0, bgx1.getValue().doubleValue(), 0.0);
-        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgx1.getUnit());
-        final AngularSpeed bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
-        calibrator.getInitialBiasAngularSpeedX(bgx2);
-        assertEquals(bgx1, bgx2);
-        final AngularSpeed bgy1 = calibrator.getInitialBiasAngularSpeedY();
-        assertEquals(0.0, bgy1.getValue().doubleValue(), 0.0);
-        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgy1.getUnit());
-        final AngularSpeed bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
-        calibrator.getInitialBiasAngularSpeedY(bgy2);
-        assertEquals(bgy1, bgy2);
-        final AngularSpeed bgz1 = calibrator.getInitialBiasAngularSpeedZ();
-        assertEquals(0.0, bgz1.getValue().doubleValue(), 0.0);
-        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgz1.getUnit());
-        final AngularSpeed bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
-        calibrator.getInitialBiasAngularSpeedZ(bgz2);
-        assertEquals(bgz1, bgz2);
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
-        assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
-        assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
-        assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
-        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
-        calibrator.getInitialBiasAsTriad(initialBiasTriad2);
-        assertEquals(initialBiasTriad1, initialBiasTriad2);
-        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
-        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
-        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
-        assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
-        calibrator.getInitialBias(bias2);
-        assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
-        assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
-        calibrator.getInitialBiasAsMatrix(biasMatrix2);
-        assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix mg1 = calibrator.getInitialMg();
-        assertEquals(mg1, new Matrix(3, 3));
-        final Matrix mg2 = new Matrix(3, 3);
-        calibrator.getInitialMg(mg2);
-        assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
-        assertEquals(gg1, new Matrix(3, 3));
-        final Matrix gg2 = new Matrix(3, 3);
-        calibrator.getInitialGg(gg2);
-        assertEquals(gg1, gg2);
-        assertNull(calibrator.getMeasurements());
-        assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_FRAME_BODY_KINEMATICS_MEASUREMENT,
-                calibrator.getMeasurementOrSequenceType());
-        assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
-        assertTrue(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertNull(calibrator.getListener());
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS,
-                calibrator.getMinimumRequiredMeasurementsOrSequences());
-        assertFalse(calibrator.isReady());
-        assertFalse(calibrator.isRunning());
-        assertTrue(calibrator.isLinearCalibratorUsed());
-        assertFalse(calibrator.isPreliminarySolutionRefined());
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(), 0.0);
-        assertNull(calibrator.getInliersData());
-        assertTrue(calibrator.isResultRefined());
-        assertTrue(calibrator.isCovarianceKept());
-        assertNull(calibrator.getQualityScores());
-        assertNull(calibrator.getEstimatedBiases());
-        assertFalse(calibrator.getEstimatedBiases(null));
-        assertNull(calibrator.getEstimatedBiasesAsMatrix());
-        assertFalse(calibrator.getEstimatedBiasesAsMatrix(null));
-        assertNull(calibrator.getEstimatedBiasX());
-        assertNull(calibrator.getEstimatedBiasY());
-        assertNull(calibrator.getEstimatedBiasZ());
-        assertNull(calibrator.getEstimatedBiasAngularSpeedX());
-        assertFalse(calibrator.getEstimatedBiasAngularSpeedX(null));
-        assertNull(calibrator.getEstimatedBiasAngularSpeedY());
-        assertFalse(calibrator.getEstimatedBiasAngularSpeedY(null));
-        assertNull(calibrator.getEstimatedBiasAngularSpeedZ());
-        assertFalse(calibrator.getEstimatedBiasAngularSpeedZ(null));
-        assertNull(calibrator.getEstimatedBiasAsTriad());
-        assertFalse(calibrator.getEstimatedBiasAsTriad(null));
-        assertNull(calibrator.getEstimatedMg());
-        assertNull(calibrator.getEstimatedSx());
-        assertNull(calibrator.getEstimatedSy());
-        assertNull(calibrator.getEstimatedSz());
-        assertNull(calibrator.getEstimatedMxy());
-        assertNull(calibrator.getEstimatedMxz());
-        assertNull(calibrator.getEstimatedMyx());
-        assertNull(calibrator.getEstimatedMyz());
-        assertNull(calibrator.getEstimatedMzx());
-        assertNull(calibrator.getEstimatedMzy());
-        assertNull(calibrator.getEstimatedGg());
-        assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS, calibrator.getPreliminarySubsetSize());
-        assertNull(calibrator.getEstimatedBiasXVariance());
-        assertNull(calibrator.getEstimatedBiasXStandardDeviation());
-        assertNull(calibrator.getEstimatedBiasXStandardDeviationAsAngularSpeed());
-        assertFalse(calibrator.getEstimatedBiasXStandardDeviationAsAngularSpeed(null));
-        assertNull(calibrator.getEstimatedBiasYVariance());
-        assertNull(calibrator.getEstimatedBiasYStandardDeviation());
-        assertNull(calibrator.getEstimatedBiasYStandardDeviationAsAngularSpeed());
-        assertFalse(calibrator.getEstimatedBiasYStandardDeviationAsAngularSpeed(null));
-        assertNull(calibrator.getEstimatedBiasZVariance());
-        assertNull(calibrator.getEstimatedBiasZStandardDeviation());
-        assertNull(calibrator.getEstimatedBiasZStandardDeviationAsAngularSpeed());
-        assertFalse(calibrator.getEstimatedBiasZStandardDeviationAsAngularSpeed(null));
-        assertNull(calibrator.getEstimatedBiasStandardDeviation());
-        assertFalse(calibrator.getEstimatedBiasStandardDeviation(null));
-        assertNull(calibrator.getEstimatedBiasStandardDeviationAverage());
-        assertNull(calibrator.getEstimatedBiasStandardDeviationAverageAsAngularSpeed());
-        assertFalse(calibrator.getEstimatedBiasStandardDeviationAverageAsAngularSpeed(null));
-        assertNull(calibrator.getEstimatedBiasStandardDeviationNorm());
-        assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
-        assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
-        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
-    }
-
-    @Test
-    public void testConstructor6() throws WrongSizeException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator(
-                true, this);
-
-        // check default values
-        assertEquals(PROMedSRobustKnownFrameGyroscopeCalibrator.DEFAULT_STOP_THRESHOLD, calibrator.getStopThreshold(),
-                0.0);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
-        assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
-        assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        final AngularSpeed bgx1 = calibrator.getInitialBiasAngularSpeedX();
-        assertEquals(0.0, bgx1.getValue().doubleValue(), 0.0);
-        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgx1.getUnit());
-        final AngularSpeed bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
-        calibrator.getInitialBiasAngularSpeedX(bgx2);
-        assertEquals(bgx1, bgx2);
-        final AngularSpeed bgy1 = calibrator.getInitialBiasAngularSpeedY();
-        assertEquals(0.0, bgy1.getValue().doubleValue(), 0.0);
-        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgy1.getUnit());
-        final AngularSpeed bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
-        calibrator.getInitialBiasAngularSpeedY(bgy2);
-        assertEquals(bgy1, bgy2);
-        final AngularSpeed bgz1 = calibrator.getInitialBiasAngularSpeedZ();
-        assertEquals(0.0, bgz1.getValue().doubleValue(), 0.0);
-        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgz1.getUnit());
-        final AngularSpeed bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
-        calibrator.getInitialBiasAngularSpeedZ(bgz2);
-        assertEquals(bgz1, bgz2);
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
-        assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
-        assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
-        assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
-        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
-        calibrator.getInitialBiasAsTriad(initialBiasTriad2);
-        assertEquals(initialBiasTriad1, initialBiasTriad2);
-        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
-        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
-        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
-        assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
-        calibrator.getInitialBias(bias2);
-        assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
-        assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
-        calibrator.getInitialBiasAsMatrix(biasMatrix2);
-        assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix mg1 = calibrator.getInitialMg();
-        assertEquals(mg1, new Matrix(3, 3));
-        final Matrix mg2 = new Matrix(3, 3);
-        calibrator.getInitialMg(mg2);
-        assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
-        assertEquals(gg1, new Matrix(3, 3));
-        final Matrix gg2 = new Matrix(3, 3);
-        calibrator.getInitialGg(gg2);
-        assertEquals(gg1, gg2);
-        assertNull(calibrator.getMeasurements());
-        assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_FRAME_BODY_KINEMATICS_MEASUREMENT,
-                calibrator.getMeasurementOrSequenceType());
-        assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
-        assertTrue(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(this, calibrator.getListener());
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS,
-                calibrator.getMinimumRequiredMeasurementsOrSequences());
-        assertFalse(calibrator.isReady());
-        assertFalse(calibrator.isRunning());
-        assertTrue(calibrator.isLinearCalibratorUsed());
-        assertFalse(calibrator.isPreliminarySolutionRefined());
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(), 0.0);
-        assertNull(calibrator.getInliersData());
-        assertTrue(calibrator.isResultRefined());
-        assertTrue(calibrator.isCovarianceKept());
-        assertNull(calibrator.getQualityScores());
-        assertNull(calibrator.getEstimatedBiases());
-        assertFalse(calibrator.getEstimatedBiases(null));
-        assertNull(calibrator.getEstimatedBiasesAsMatrix());
-        assertFalse(calibrator.getEstimatedBiasesAsMatrix(null));
-        assertNull(calibrator.getEstimatedBiasX());
-        assertNull(calibrator.getEstimatedBiasY());
-        assertNull(calibrator.getEstimatedBiasZ());
-        assertNull(calibrator.getEstimatedBiasAngularSpeedX());
-        assertFalse(calibrator.getEstimatedBiasAngularSpeedX(null));
-        assertNull(calibrator.getEstimatedBiasAngularSpeedY());
-        assertFalse(calibrator.getEstimatedBiasAngularSpeedY(null));
-        assertNull(calibrator.getEstimatedBiasAngularSpeedZ());
-        assertFalse(calibrator.getEstimatedBiasAngularSpeedZ(null));
-        assertNull(calibrator.getEstimatedBiasAsTriad());
-        assertFalse(calibrator.getEstimatedBiasAsTriad(null));
-        assertNull(calibrator.getEstimatedMg());
-        assertNull(calibrator.getEstimatedSx());
-        assertNull(calibrator.getEstimatedSy());
-        assertNull(calibrator.getEstimatedSz());
-        assertNull(calibrator.getEstimatedMxy());
-        assertNull(calibrator.getEstimatedMxz());
-        assertNull(calibrator.getEstimatedMyx());
-        assertNull(calibrator.getEstimatedMyz());
-        assertNull(calibrator.getEstimatedMzx());
-        assertNull(calibrator.getEstimatedMzy());
-        assertNull(calibrator.getEstimatedGg());
-        assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS, calibrator.getPreliminarySubsetSize());
-        assertNull(calibrator.getEstimatedBiasXVariance());
-        assertNull(calibrator.getEstimatedBiasXStandardDeviation());
-        assertNull(calibrator.getEstimatedBiasXStandardDeviationAsAngularSpeed());
-        assertFalse(calibrator.getEstimatedBiasXStandardDeviationAsAngularSpeed(null));
-        assertNull(calibrator.getEstimatedBiasYVariance());
-        assertNull(calibrator.getEstimatedBiasYStandardDeviation());
-        assertNull(calibrator.getEstimatedBiasYStandardDeviationAsAngularSpeed());
-        assertFalse(calibrator.getEstimatedBiasYStandardDeviationAsAngularSpeed(null));
-        assertNull(calibrator.getEstimatedBiasZVariance());
-        assertNull(calibrator.getEstimatedBiasZStandardDeviation());
-        assertNull(calibrator.getEstimatedBiasZStandardDeviationAsAngularSpeed());
-        assertFalse(calibrator.getEstimatedBiasZStandardDeviationAsAngularSpeed(null));
-        assertNull(calibrator.getEstimatedBiasStandardDeviation());
-        assertFalse(calibrator.getEstimatedBiasStandardDeviation(null));
-        assertNull(calibrator.getEstimatedBiasStandardDeviationAverage());
-        assertNull(calibrator.getEstimatedBiasStandardDeviationAverageAsAngularSpeed());
-        assertFalse(calibrator.getEstimatedBiasStandardDeviationAverageAsAngularSpeed(null));
-        assertNull(calibrator.getEstimatedBiasStandardDeviationNorm());
-        assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
-        assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
-        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
-    }
-
-    @Test
-    public void testConstructor7() throws WrongSizeException {
-        final List<StandardDeviationFrameBodyKinematics> measurements = Collections.emptyList();
-
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator(
-                measurements, true);
-
-        // check default values
-        assertEquals(PROMedSRobustKnownFrameGyroscopeCalibrator.DEFAULT_STOP_THRESHOLD, calibrator.getStopThreshold(),
-                0.0);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
-        assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
-        assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        final AngularSpeed bgx1 = calibrator.getInitialBiasAngularSpeedX();
-        assertEquals(0.0, bgx1.getValue().doubleValue(), 0.0);
-        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgx1.getUnit());
-        final AngularSpeed bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
-        calibrator.getInitialBiasAngularSpeedX(bgx2);
-        assertEquals(bgx1, bgx2);
-        final AngularSpeed bgy1 = calibrator.getInitialBiasAngularSpeedY();
-        assertEquals(0.0, bgy1.getValue().doubleValue(), 0.0);
-        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgy1.getUnit());
-        final AngularSpeed bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
-        calibrator.getInitialBiasAngularSpeedY(bgy2);
-        assertEquals(bgy1, bgy2);
-        final AngularSpeed bgz1 = calibrator.getInitialBiasAngularSpeedZ();
-        assertEquals(0.0, bgz1.getValue().doubleValue(), 0.0);
-        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgz1.getUnit());
-        final AngularSpeed bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
-        calibrator.getInitialBiasAngularSpeedZ(bgz2);
-        assertEquals(bgz1, bgz2);
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
-        assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
-        assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
-        assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
-        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
-        calibrator.getInitialBiasAsTriad(initialBiasTriad2);
-        assertEquals(initialBiasTriad1, initialBiasTriad2);
-        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
-        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
-        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
-        assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
-        calibrator.getInitialBias(bias2);
-        assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
-        assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
-        calibrator.getInitialBiasAsMatrix(biasMatrix2);
-        assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix mg1 = calibrator.getInitialMg();
-        assertEquals(mg1, new Matrix(3, 3));
-        final Matrix mg2 = new Matrix(3, 3);
-        calibrator.getInitialMg(mg2);
-        assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
-        assertEquals(gg1, new Matrix(3, 3));
-        final Matrix gg2 = new Matrix(3, 3);
-        calibrator.getInitialGg(gg2);
-        assertEquals(gg1, gg2);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_FRAME_BODY_KINEMATICS_MEASUREMENT,
-                calibrator.getMeasurementOrSequenceType());
-        assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
-        assertTrue(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertNull(calibrator.getListener());
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS,
-                calibrator.getMinimumRequiredMeasurementsOrSequences());
-        assertFalse(calibrator.isReady());
-        assertFalse(calibrator.isRunning());
-        assertTrue(calibrator.isLinearCalibratorUsed());
-        assertFalse(calibrator.isPreliminarySolutionRefined());
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(), 0.0);
-        assertNull(calibrator.getInliersData());
-        assertTrue(calibrator.isResultRefined());
-        assertTrue(calibrator.isCovarianceKept());
-        assertNull(calibrator.getQualityScores());
-        assertNull(calibrator.getEstimatedBiases());
-        assertFalse(calibrator.getEstimatedBiases(null));
-        assertNull(calibrator.getEstimatedBiasesAsMatrix());
-        assertFalse(calibrator.getEstimatedBiasesAsMatrix(null));
-        assertNull(calibrator.getEstimatedBiasX());
-        assertNull(calibrator.getEstimatedBiasY());
-        assertNull(calibrator.getEstimatedBiasZ());
-        assertNull(calibrator.getEstimatedBiasAngularSpeedX());
-        assertFalse(calibrator.getEstimatedBiasAngularSpeedX(null));
-        assertNull(calibrator.getEstimatedBiasAngularSpeedY());
-        assertFalse(calibrator.getEstimatedBiasAngularSpeedY(null));
-        assertNull(calibrator.getEstimatedBiasAngularSpeedZ());
-        assertFalse(calibrator.getEstimatedBiasAngularSpeedZ(null));
-        assertNull(calibrator.getEstimatedBiasAsTriad());
-        assertFalse(calibrator.getEstimatedBiasAsTriad(null));
-        assertNull(calibrator.getEstimatedMg());
-        assertNull(calibrator.getEstimatedSx());
-        assertNull(calibrator.getEstimatedSy());
-        assertNull(calibrator.getEstimatedSz());
-        assertNull(calibrator.getEstimatedMxy());
-        assertNull(calibrator.getEstimatedMxz());
-        assertNull(calibrator.getEstimatedMyx());
-        assertNull(calibrator.getEstimatedMyz());
-        assertNull(calibrator.getEstimatedMzx());
-        assertNull(calibrator.getEstimatedMzy());
-        assertNull(calibrator.getEstimatedGg());
-        assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS, calibrator.getPreliminarySubsetSize());
-        assertNull(calibrator.getEstimatedBiasXVariance());
-        assertNull(calibrator.getEstimatedBiasXStandardDeviation());
-        assertNull(calibrator.getEstimatedBiasXStandardDeviationAsAngularSpeed());
-        assertFalse(calibrator.getEstimatedBiasXStandardDeviationAsAngularSpeed(null));
-        assertNull(calibrator.getEstimatedBiasYVariance());
-        assertNull(calibrator.getEstimatedBiasYStandardDeviation());
-        assertNull(calibrator.getEstimatedBiasYStandardDeviationAsAngularSpeed());
-        assertFalse(calibrator.getEstimatedBiasYStandardDeviationAsAngularSpeed(null));
-        assertNull(calibrator.getEstimatedBiasZVariance());
-        assertNull(calibrator.getEstimatedBiasZStandardDeviation());
-        assertNull(calibrator.getEstimatedBiasZStandardDeviationAsAngularSpeed());
-        assertFalse(calibrator.getEstimatedBiasZStandardDeviationAsAngularSpeed(null));
-        assertNull(calibrator.getEstimatedBiasStandardDeviation());
-        assertFalse(calibrator.getEstimatedBiasStandardDeviation(null));
-        assertNull(calibrator.getEstimatedBiasStandardDeviationAverage());
-        assertNull(calibrator.getEstimatedBiasStandardDeviationAverageAsAngularSpeed());
-        assertFalse(calibrator.getEstimatedBiasStandardDeviationAverageAsAngularSpeed(null));
-        assertNull(calibrator.getEstimatedBiasStandardDeviationNorm());
-        assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
-        assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
-        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
-    }
-
-    @Test
-    public void testConstructor8() throws WrongSizeException {
-        final List<StandardDeviationFrameBodyKinematics> measurements = Collections.emptyList();
-
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator(
-                measurements, true, this);
-
-        // check default values
-        assertEquals(PROMedSRobustKnownFrameGyroscopeCalibrator.DEFAULT_STOP_THRESHOLD, calibrator.getStopThreshold(),
-                0.0);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
-        assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
-        assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        final AngularSpeed bgx1 = calibrator.getInitialBiasAngularSpeedX();
-        assertEquals(0.0, bgx1.getValue().doubleValue(), 0.0);
-        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgx1.getUnit());
-        final AngularSpeed bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
-        calibrator.getInitialBiasAngularSpeedX(bgx2);
-        assertEquals(bgx1, bgx2);
-        final AngularSpeed bgy1 = calibrator.getInitialBiasAngularSpeedY();
-        assertEquals(0.0, bgy1.getValue().doubleValue(), 0.0);
-        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgy1.getUnit());
-        final AngularSpeed bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
-        calibrator.getInitialBiasAngularSpeedY(bgy2);
-        assertEquals(bgy1, bgy2);
-        final AngularSpeed bgz1 = calibrator.getInitialBiasAngularSpeedZ();
-        assertEquals(0.0, bgz1.getValue().doubleValue(), 0.0);
-        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgz1.getUnit());
-        final AngularSpeed bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
-        calibrator.getInitialBiasAngularSpeedZ(bgz2);
-        assertEquals(bgz1, bgz2);
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
-        assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
-        assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
-        assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
-        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
-        calibrator.getInitialBiasAsTriad(initialBiasTriad2);
-        assertEquals(initialBiasTriad1, initialBiasTriad2);
-        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
-        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
-        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
-        assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
-        calibrator.getInitialBias(bias2);
-        assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
-        assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
-        calibrator.getInitialBiasAsMatrix(biasMatrix2);
-        assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix mg1 = calibrator.getInitialMg();
-        assertEquals(mg1, new Matrix(3, 3));
-        final Matrix mg2 = new Matrix(3, 3);
-        calibrator.getInitialMg(mg2);
-        assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
-        assertEquals(gg1, new Matrix(3, 3));
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg1 = calibrator.getInitialGg();
+        assertEquals(new Matrix(3, 3), gg1);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -1146,9 +1150,11 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertFalse(calibrator.isRunning());
         assertTrue(calibrator.isLinearCalibratorUsed());
         assertFalse(calibrator.isPreliminarySolutionRefined());
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 
+                0.0);
         assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(), 
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -1206,8 +1212,8 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testConstructor9() throws WrongSizeException {
-        final double[] qualityScores = new double[PROMedSRobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS];
+    void testConstructor9() throws WrongSizeException {
+        final var qualityScores = new double[PROMedSRobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS];
         PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator(
                 qualityScores);
 
@@ -1218,30 +1224,30 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        final AngularSpeed bgx1 = calibrator.getInitialBiasAngularSpeedX();
+        final var bgx1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(0.0, bgx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgx1.getUnit());
-        final AngularSpeed bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(bgx2);
         assertEquals(bgx1, bgx2);
-        final AngularSpeed bgy1 = calibrator.getInitialBiasAngularSpeedY();
+        final var bgy1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(0.0, bgy1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgy1.getUnit());
-        final AngularSpeed bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(bgy2);
         assertEquals(bgy1, bgy2);
-        final AngularSpeed bgz1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var bgz1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(0.0, bgz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgz1.getUnit());
-        final AngularSpeed bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(bgz2);
         assertEquals(bgz1, bgz2);
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -1253,24 +1259,24 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix mg1 = calibrator.getInitialMg();
-        assertEquals(mg1, new Matrix(3, 3));
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg1 = calibrator.getInitialMg();
+        assertEquals(new Matrix(3, 3), mg1);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
-        assertEquals(gg1, new Matrix(3, 3));
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg1 = calibrator.getInitialGg();
+        assertEquals(new Matrix(3, 3), gg1);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertNull(calibrator.getMeasurements());
@@ -1286,9 +1292,11 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertFalse(calibrator.isRunning());
         assertTrue(calibrator.isLinearCalibratorUsed());
         assertFalse(calibrator.isPreliminarySolutionRefined());
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 
+                0.0);
         assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(), 
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -1350,11 +1358,9 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testConstructor10() throws WrongSizeException {
-        final double[] qualityScores = new double[PROMedSRobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS];
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator(
-                qualityScores,
-                this);
+    void testConstructor10() throws WrongSizeException {
+        final var qualityScores = new double[PROMedSRobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS];
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator(qualityScores, this);
 
         // check default values
         assertEquals(PROMedSRobustKnownFrameGyroscopeCalibrator.DEFAULT_STOP_THRESHOLD, calibrator.getStopThreshold(),
@@ -1363,30 +1369,30 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        final AngularSpeed bgx1 = calibrator.getInitialBiasAngularSpeedX();
+        final var bgx1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(0.0, bgx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgx1.getUnit());
-        final AngularSpeed bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(bgx2);
         assertEquals(bgx1, bgx2);
-        final AngularSpeed bgy1 = calibrator.getInitialBiasAngularSpeedY();
+        final var bgy1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(0.0, bgy1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgy1.getUnit());
-        final AngularSpeed bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(bgy2);
         assertEquals(bgy1, bgy2);
-        final AngularSpeed bgz1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var bgz1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(0.0, bgz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgz1.getUnit());
-        final AngularSpeed bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(bgz2);
         assertEquals(bgz1, bgz2);
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -1398,24 +1404,24 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix mg1 = calibrator.getInitialMg();
-        assertEquals(mg1, new Matrix(3, 3));
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg1 = calibrator.getInitialMg();
+        assertEquals(new Matrix(3, 3), mg1);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
-        assertEquals(gg1, new Matrix(3, 3));
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg1 = calibrator.getInitialGg();
+        assertEquals(new Matrix(3, 3), gg1);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertNull(calibrator.getMeasurements());
@@ -1431,9 +1437,11 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertFalse(calibrator.isRunning());
         assertTrue(calibrator.isLinearCalibratorUsed());
         assertFalse(calibrator.isPreliminarySolutionRefined());
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 
+                0.0);
         assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(), 
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -1495,12 +1503,11 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testConstructor11() throws WrongSizeException {
-        final double[] qualityScores = new double[PROMedSRobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS];
-        final List<StandardDeviationFrameBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor11() throws WrongSizeException {
+        final var qualityScores = new double[PROMedSRobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS];
+        final var measurements = Collections.<StandardDeviationFrameBodyKinematics>emptyList();
 
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator(
-                qualityScores, measurements);
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator(qualityScores, measurements);
 
         // check default values
         assertEquals(PROMedSRobustKnownFrameGyroscopeCalibrator.DEFAULT_STOP_THRESHOLD, calibrator.getStopThreshold(),
@@ -1509,30 +1516,30 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        final AngularSpeed bgx1 = calibrator.getInitialBiasAngularSpeedX();
+        final var bgx1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(0.0, bgx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgx1.getUnit());
-        final AngularSpeed bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(bgx2);
         assertEquals(bgx1, bgx2);
-        final AngularSpeed bgy1 = calibrator.getInitialBiasAngularSpeedY();
+        final var bgy1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(0.0, bgy1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgy1.getUnit());
-        final AngularSpeed bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(bgy2);
         assertEquals(bgy1, bgy2);
-        final AngularSpeed bgz1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var bgz1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(0.0, bgz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgz1.getUnit());
-        final AngularSpeed bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(bgz2);
         assertEquals(bgz1, bgz2);
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -1544,24 +1551,24 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix mg1 = calibrator.getInitialMg();
-        assertEquals(mg1, new Matrix(3, 3));
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg1 = calibrator.getInitialMg();
+        assertEquals(new Matrix(3, 3), mg1);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
-        assertEquals(gg1, new Matrix(3, 3));
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg1 = calibrator.getInitialGg();
+        assertEquals(new Matrix(3, 3), gg1);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -1577,9 +1584,11 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertFalse(calibrator.isRunning());
         assertTrue(calibrator.isLinearCalibratorUsed());
         assertFalse(calibrator.isPreliminarySolutionRefined());
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 
+                0.0);
         assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(), 
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -1641,12 +1650,12 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testConstructor12() throws WrongSizeException {
-        final double[] qualityScores = new double[PROMedSRobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS];
-        final List<StandardDeviationFrameBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor12() throws WrongSizeException {
+        final var qualityScores = new double[PROMedSRobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS];
+        final var measurements = Collections.<StandardDeviationFrameBodyKinematics>emptyList();
 
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator(
-                qualityScores, measurements, this);
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator(qualityScores, measurements,
+                this);
 
         // check default values
         assertEquals(PROMedSRobustKnownFrameGyroscopeCalibrator.DEFAULT_STOP_THRESHOLD, calibrator.getStopThreshold(),
@@ -1655,30 +1664,30 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        final AngularSpeed bgx1 = calibrator.getInitialBiasAngularSpeedX();
+        final var bgx1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(0.0, bgx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgx1.getUnit());
-        final AngularSpeed bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(bgx2);
         assertEquals(bgx1, bgx2);
-        final AngularSpeed bgy1 = calibrator.getInitialBiasAngularSpeedY();
+        final var bgy1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(0.0, bgy1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgy1.getUnit());
-        final AngularSpeed bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(bgy2);
         assertEquals(bgy1, bgy2);
-        final AngularSpeed bgz1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var bgz1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(0.0, bgz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgz1.getUnit());
-        final AngularSpeed bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(bgz2);
         assertEquals(bgz1, bgz2);
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -1690,24 +1699,24 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix mg1 = calibrator.getInitialMg();
-        assertEquals(mg1, new Matrix(3, 3));
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg1 = calibrator.getInitialMg();
+        assertEquals(new Matrix(3, 3), mg1);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
-        assertEquals(gg1, new Matrix(3, 3));
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg1 = calibrator.getInitialGg();
+        assertEquals(new Matrix(3, 3), gg1);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -1723,9 +1732,11 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertFalse(calibrator.isRunning());
         assertTrue(calibrator.isLinearCalibratorUsed());
         assertFalse(calibrator.isPreliminarySolutionRefined());
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 
+                0.0);
         assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(), 
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -1787,10 +1798,9 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testConstructor13() throws WrongSizeException {
-        final double[] qualityScores = new double[PROMedSRobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS];
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator(
-                qualityScores, true);
+    void testConstructor13() throws WrongSizeException {
+        final var qualityScores = new double[PROMedSRobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS];
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator(qualityScores, true);
 
         // check default values
         assertEquals(PROMedSRobustKnownFrameGyroscopeCalibrator.DEFAULT_STOP_THRESHOLD, calibrator.getStopThreshold(),
@@ -1799,30 +1809,30 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        final AngularSpeed bgx1 = calibrator.getInitialBiasAngularSpeedX();
+        final var bgx1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(0.0, bgx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgx1.getUnit());
-        final AngularSpeed bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(bgx2);
         assertEquals(bgx1, bgx2);
-        final AngularSpeed bgy1 = calibrator.getInitialBiasAngularSpeedY();
+        final var bgy1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(0.0, bgy1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgy1.getUnit());
-        final AngularSpeed bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(bgy2);
         assertEquals(bgy1, bgy2);
-        final AngularSpeed bgz1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var bgz1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(0.0, bgz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgz1.getUnit());
-        final AngularSpeed bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(bgz2);
         assertEquals(bgz1, bgz2);
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -1834,24 +1844,24 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix mg1 = calibrator.getInitialMg();
-        assertEquals(mg1, new Matrix(3, 3));
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg1 = calibrator.getInitialMg();
+        assertEquals(new Matrix(3, 3), mg1);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
-        assertEquals(gg1, new Matrix(3, 3));
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg1 = calibrator.getInitialGg();
+        assertEquals(new Matrix(3, 3), gg1);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertNull(calibrator.getMeasurements());
@@ -1867,9 +1877,11 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertFalse(calibrator.isRunning());
         assertTrue(calibrator.isLinearCalibratorUsed());
         assertFalse(calibrator.isPreliminarySolutionRefined());
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 
+                0.0);
         assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(), 
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -1931,11 +1943,11 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testConstructor14() throws WrongSizeException {
-        final double[] qualityScores = new double[PROMedSRobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS];
+    void testConstructor14() throws WrongSizeException {
+        final var qualityScores = new double[PROMedSRobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS];
 
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator(
-                qualityScores, true, this);
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator(qualityScores, true,
+                this);
 
         // check default values
         assertEquals(PROMedSRobustKnownFrameGyroscopeCalibrator.DEFAULT_STOP_THRESHOLD, calibrator.getStopThreshold(),
@@ -1944,30 +1956,30 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        final AngularSpeed bgx1 = calibrator.getInitialBiasAngularSpeedX();
+        final var bgx1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(0.0, bgx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgx1.getUnit());
-        final AngularSpeed bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(bgx2);
         assertEquals(bgx1, bgx2);
-        final AngularSpeed bgy1 = calibrator.getInitialBiasAngularSpeedY();
+        final var bgy1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(0.0, bgy1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgy1.getUnit());
-        final AngularSpeed bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(bgy2);
         assertEquals(bgy1, bgy2);
-        final AngularSpeed bgz1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var bgz1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(0.0, bgz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgz1.getUnit());
-        final AngularSpeed bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(bgz2);
         assertEquals(bgz1, bgz2);
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -1979,24 +1991,24 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix mg1 = calibrator.getInitialMg();
-        assertEquals(mg1, new Matrix(3, 3));
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg1 = calibrator.getInitialMg();
+        assertEquals(new Matrix(3, 3), mg1);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
-        assertEquals(gg1, new Matrix(3, 3));
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg1 = calibrator.getInitialGg();
+        assertEquals(new Matrix(3, 3), gg1);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertNull(calibrator.getMeasurements());
@@ -2012,9 +2024,11 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertFalse(calibrator.isRunning());
         assertTrue(calibrator.isLinearCalibratorUsed());
         assertFalse(calibrator.isPreliminarySolutionRefined());
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 
+                0.0);
         assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(), 
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -2076,12 +2090,12 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testConstructor15() throws WrongSizeException {
-        final double[] qualityScores = new double[PROMedSRobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS];
-        final List<StandardDeviationFrameBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor15() throws WrongSizeException {
+        final var qualityScores = new double[PROMedSRobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS];
+        final var measurements = Collections.<StandardDeviationFrameBodyKinematics>emptyList();
 
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator(
-                qualityScores, measurements, true);
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator(qualityScores, measurements,
+                true);
 
         // check default values
         assertEquals(PROMedSRobustKnownFrameGyroscopeCalibrator.DEFAULT_STOP_THRESHOLD, calibrator.getStopThreshold(),
@@ -2090,30 +2104,30 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        final AngularSpeed bgx1 = calibrator.getInitialBiasAngularSpeedX();
+        final var bgx1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(0.0, bgx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgx1.getUnit());
-        final AngularSpeed bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(bgx2);
         assertEquals(bgx1, bgx2);
-        final AngularSpeed bgy1 = calibrator.getInitialBiasAngularSpeedY();
+        final var bgy1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(0.0, bgy1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgy1.getUnit());
-        final AngularSpeed bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(bgy2);
         assertEquals(bgy1, bgy2);
-        final AngularSpeed bgz1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var bgz1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(0.0, bgz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgz1.getUnit());
-        final AngularSpeed bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(bgz2);
         assertEquals(bgz1, bgz2);
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -2125,24 +2139,24 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix mg1 = calibrator.getInitialMg();
-        assertEquals(mg1, new Matrix(3, 3));
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg1 = calibrator.getInitialMg();
+        assertEquals(new Matrix(3, 3), mg1);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
-        assertEquals(gg1, new Matrix(3, 3));
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg1 = calibrator.getInitialGg();
+        assertEquals(new Matrix(3, 3), gg1);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -2158,9 +2172,11 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertFalse(calibrator.isRunning());
         assertTrue(calibrator.isLinearCalibratorUsed());
         assertFalse(calibrator.isPreliminarySolutionRefined());
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 
+                0.0);
         assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(), 
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -2222,12 +2238,12 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testConstructor16() throws WrongSizeException {
-        final double[] qualityScores = new double[PROMedSRobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS];
-        final List<StandardDeviationFrameBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor16() throws WrongSizeException {
+        final var qualityScores = new double[PROMedSRobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS];
+        final var measurements = Collections.<StandardDeviationFrameBodyKinematics>emptyList();
 
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator(
-                qualityScores, measurements, true, this);
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator(qualityScores, measurements,
+                true, this);
 
         // check default values
         assertEquals(PROMedSRobustKnownFrameGyroscopeCalibrator.DEFAULT_STOP_THRESHOLD, calibrator.getStopThreshold(),
@@ -2236,30 +2252,30 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        final AngularSpeed bgx1 = calibrator.getInitialBiasAngularSpeedX();
+        final var bgx1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(0.0, bgx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgx1.getUnit());
-        final AngularSpeed bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(bgx2);
         assertEquals(bgx1, bgx2);
-        final AngularSpeed bgy1 = calibrator.getInitialBiasAngularSpeedY();
+        final var bgy1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(0.0, bgy1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgy1.getUnit());
-        final AngularSpeed bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(bgy2);
         assertEquals(bgy1, bgy2);
-        final AngularSpeed bgz1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var bgz1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(0.0, bgz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgz1.getUnit());
-        final AngularSpeed bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(bgz2);
         assertEquals(bgz1, bgz2);
-        final AngularSpeedTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasTriad1.getUnit());
-        final AngularSpeedTriad initialBiasTriad2 = new AngularSpeedTriad();
+        final var initialBiasTriad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -2271,24 +2287,24 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix mg1 = calibrator.getInitialMg();
-        assertEquals(mg1, new Matrix(3, 3));
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg1 = calibrator.getInitialMg();
+        assertEquals(new Matrix(3, 3), mg1);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
-        assertEquals(gg1, new Matrix(3, 3));
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg1 = calibrator.getInitialGg();
+        assertEquals(new Matrix(3, 3), gg1);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -2304,9 +2320,11 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertFalse(calibrator.isRunning());
         assertTrue(calibrator.isLinearCalibratorUsed());
         assertFalse(calibrator.isPreliminarySolutionRefined());
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 0.0);
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(), 
+                0.0);
         assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownFrameGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(), 
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -2368,8 +2386,8 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testGetSetStopThreshold() throws LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testGetSetStopThreshold() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default value
         assertEquals(PROMedSRobustKnownFrameGyroscopeCalibrator.DEFAULT_STOP_THRESHOLD, calibrator.getStopThreshold(),
@@ -2386,15 +2404,15 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testGetSetInitialBiasX() throws LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testGetSetInitialBiasX() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
 
         // set new value
-        final Matrix bg = generateBg();
-        final double biasX = bg.getElementAtIndex(0);
+        final var bg = generateBg();
+        final var biasX = bg.getElementAtIndex(0);
 
         calibrator.setInitialBiasX(biasX);
 
@@ -2403,15 +2421,15 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testGetSetInitialBiasY() throws LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testGetSetInitialBiasY() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
 
         // set new value
-        final Matrix bg = generateBg();
-        final double biasY = bg.getElementAtIndex(1);
+        final var bg = generateBg();
+        final var biasY = bg.getElementAtIndex(1);
 
         calibrator.setInitialBiasY(biasY);
 
@@ -2420,15 +2438,15 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testGetSetInitialBiasZ() throws LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testGetSetInitialBiasZ() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
 
         // set new value
-        final Matrix bg = generateBg();
-        final double biasZ = bg.getElementAtIndex(2);
+        final var bg = generateBg();
+        final var biasZ = bg.getElementAtIndex(2);
 
         calibrator.setInitialBiasZ(biasZ);
 
@@ -2437,24 +2455,24 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testGetSetInitialBiasAngularSpeedX() throws LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testGetSetInitialBiasAngularSpeedX() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default value
-        final AngularSpeed bx1 = calibrator.getInitialBiasAngularSpeedX();
+        final var bx1 = calibrator.getInitialBiasAngularSpeedX();
         assertEquals(0.0, bx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bx1.getUnit());
 
         // set new value
-        final Matrix bg = generateBg();
-        final double biasX = bg.getElementAtIndex(0);
-        final AngularSpeed bx2 = new AngularSpeed(biasX, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bg = generateBg();
+        final var biasX = bg.getElementAtIndex(0);
+        final var bx2 = new AngularSpeed(biasX, AngularSpeedUnit.RADIANS_PER_SECOND);
 
         calibrator.setInitialBiasX(bx2);
 
         // check
-        final AngularSpeed bx3 = calibrator.getInitialBiasAngularSpeedX();
-        final AngularSpeed bx4 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bx3 = calibrator.getInitialBiasAngularSpeedX();
+        final var bx4 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedX(bx4);
 
         assertEquals(bx2, bx3);
@@ -2462,24 +2480,24 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testGetSetInitialBiasAngularSpeedY() throws LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testGetSetInitialBiasAngularSpeedY() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default value
-        final AngularSpeed by1 = calibrator.getInitialBiasAngularSpeedY();
+        final var by1 = calibrator.getInitialBiasAngularSpeedY();
         assertEquals(0.0, by1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, by1.getUnit());
 
         // set new value
-        final Matrix bg = generateBg();
-        final double biasY = bg.getElementAtIndex(1);
-        final AngularSpeed by2 = new AngularSpeed(biasY, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bg = generateBg();
+        final var biasY = bg.getElementAtIndex(1);
+        final var by2 = new AngularSpeed(biasY, AngularSpeedUnit.RADIANS_PER_SECOND);
 
         calibrator.setInitialBiasY(by2);
 
         // check
-        final AngularSpeed by3 = calibrator.getInitialBiasAngularSpeedY();
-        final AngularSpeed by4 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var by3 = calibrator.getInitialBiasAngularSpeedY();
+        final var by4 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedY(by4);
 
         assertEquals(by2, by3);
@@ -2487,24 +2505,24 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testGetSetInitialBiasAngularSpeedZ() throws LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testGetSetInitialBiasAngularSpeedZ() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default value
-        final AngularSpeed bz1 = calibrator.getInitialBiasAngularSpeedZ();
+        final var bz1 = calibrator.getInitialBiasAngularSpeedZ();
         assertEquals(0.0, bz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bz1.getUnit());
 
         // set new value
-        final Matrix bg = generateBg();
-        final double biasZ = bg.getElementAtIndex(2);
-        final AngularSpeed bz2 = new AngularSpeed(biasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bg = generateBg();
+        final var biasZ = bg.getElementAtIndex(2);
+        final var bz2 = new AngularSpeed(biasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
 
         calibrator.setInitialBiasZ(bz2);
 
         // check
-        final AngularSpeed bz3 = calibrator.getInitialBiasAngularSpeedZ();
-        final AngularSpeed bz4 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bz3 = calibrator.getInitialBiasAngularSpeedZ();
+        final var bz4 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getInitialBiasAngularSpeedZ(bz4);
 
         assertEquals(bz2, bz3);
@@ -2512,8 +2530,8 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testSetInitialBias1() throws LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testSetInitialBias1() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check initial values
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
@@ -2521,10 +2539,10 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
 
         // set new values
-        final Matrix bg = generateBg();
-        final double biasX = bg.getElementAtIndex(0);
-        final double biasY = bg.getElementAtIndex(1);
-        final double biasZ = bg.getElementAtIndex(2);
+        final var bg = generateBg();
+        final var biasX = bg.getElementAtIndex(0);
+        final var biasY = bg.getElementAtIndex(1);
+        final var biasZ = bg.getElementAtIndex(2);
 
         calibrator.setInitialBias(biasX, biasY, biasZ);
 
@@ -2535,8 +2553,8 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testSetInitialBias2() throws LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testSetInitialBias2() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check initial values
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
@@ -2544,14 +2562,14 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
 
         // set new values
-        final Matrix bg = generateBg();
-        final double biasX = bg.getElementAtIndex(0);
-        final double biasY = bg.getElementAtIndex(1);
-        final double biasZ = bg.getElementAtIndex(2);
+        final var bg = generateBg();
+        final var biasX = bg.getElementAtIndex(0);
+        final var biasY = bg.getElementAtIndex(1);
+        final var biasZ = bg.getElementAtIndex(2);
 
-        final AngularSpeed bx = new AngularSpeed(biasX, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed by = new AngularSpeed(biasY, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed bz = new AngularSpeed(biasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bx = new AngularSpeed(biasX, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var by = new AngularSpeed(biasY, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bz = new AngularSpeed(biasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
 
         calibrator.setInitialBias(bx, by, bz);
 
@@ -2562,15 +2580,15 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testGetSetInitialSx() throws WrongSizeException, LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testGetSetInitialSx() throws WrongSizeException, LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
 
         // set new value
-        final Matrix mg = generateMg();
-        final double initialSx = mg.getElementAt(0, 0);
+        final var mg = generateMg();
+        final var initialSx = mg.getElementAt(0, 0);
 
         calibrator.setInitialSx(initialSx);
 
@@ -2579,15 +2597,15 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testGetSetInitialSy() throws WrongSizeException, LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testGetSetInitialSy() throws WrongSizeException, LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialSy(), 0.0);
 
         // set new value
-        final Matrix mg = generateMg();
-        final double initialSy = mg.getElementAt(1, 1);
+        final var mg = generateMg();
+        final var initialSy = mg.getElementAt(1, 1);
 
         calibrator.setInitialSy(initialSy);
 
@@ -2596,15 +2614,15 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testGetSetInitialSz() throws WrongSizeException, LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testGetSetInitialSz() throws WrongSizeException, LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialSz(), 0.0);
 
         // set new value
-        final Matrix mg = generateMg();
-        final double initialSz = mg.getElementAt(2, 2);
+        final var mg = generateMg();
+        final var initialSz = mg.getElementAt(2, 2);
 
         calibrator.setInitialSz(initialSz);
 
@@ -2613,15 +2631,15 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testGetSetInitialMxy() throws WrongSizeException, LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testGetSetInitialMxy() throws WrongSizeException, LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
 
         // set new value
-        final Matrix mg = generateMg();
-        final double initialMxy = mg.getElementAt(0, 1);
+        final var mg = generateMg();
+        final var initialMxy = mg.getElementAt(0, 1);
 
         calibrator.setInitialMxy(initialMxy);
 
@@ -2630,15 +2648,15 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testGetSetInitialMxz() throws WrongSizeException, LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testGetSetInitialMxz() throws WrongSizeException, LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
 
         // set new value
-        final Matrix mg = generateMg();
-        final double initialMxz = mg.getElementAt(0, 2);
+        final var mg = generateMg();
+        final var initialMxz = mg.getElementAt(0, 2);
 
         calibrator.setInitialMxz(initialMxz);
 
@@ -2647,15 +2665,15 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testGetSetInitialMyx() throws WrongSizeException, LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testGetSetInitialMyx() throws WrongSizeException, LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
 
         // set new value
-        final Matrix mg = generateMg();
-        final double initialMyx = mg.getElementAt(1, 0);
+        final var mg = generateMg();
+        final var initialMyx = mg.getElementAt(1, 0);
 
         calibrator.setInitialMyx(initialMyx);
 
@@ -2664,15 +2682,15 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testGetSetInitialMyz() throws WrongSizeException, LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testGetSetInitialMyz() throws WrongSizeException, LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
 
         // set new value
-        final Matrix mg = generateMg();
-        final double initialMyz = mg.getElementAt(1, 2);
+        final var mg = generateMg();
+        final var initialMyz = mg.getElementAt(1, 2);
 
         calibrator.setInitialMyz(initialMyz);
 
@@ -2681,15 +2699,15 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testGetSetInitialMzx() throws WrongSizeException, LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testGetSetInitialMzx() throws WrongSizeException, LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
 
         // set new value
-        final Matrix mg = generateMg();
-        final double initialMzx = mg.getElementAt(2, 0);
+        final var mg = generateMg();
+        final var initialMzx = mg.getElementAt(2, 0);
 
         calibrator.setInitialMzx(initialMzx);
 
@@ -2698,15 +2716,15 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testGetSetInitialMzy() throws WrongSizeException, LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testGetSetInitialMzy() throws WrongSizeException, LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         // set new value
-        final Matrix mg = generateMg();
-        final double initialMzy = mg.getElementAt(2, 1);
+        final var mg = generateMg();
+        final var initialMzy = mg.getElementAt(2, 1);
 
         calibrator.setInitialMzy(initialMzy);
 
@@ -2715,8 +2733,8 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testSetInitialScalingFactors() throws WrongSizeException, LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testSetInitialScalingFactors() throws WrongSizeException, LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -2724,10 +2742,10 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertEquals(0.0, calibrator.getInitialSz(), 0.0);
 
         // set new value
-        final Matrix mg = generateMg();
-        final double initialSx = mg.getElementAt(0, 0);
-        final double initialSy = mg.getElementAt(1, 1);
-        final double initialSz = mg.getElementAt(2, 2);
+        final var mg = generateMg();
+        final var initialSx = mg.getElementAt(0, 0);
+        final var initialSy = mg.getElementAt(1, 1);
+        final var initialSz = mg.getElementAt(2, 2);
 
         calibrator.setInitialScalingFactors(initialSx, initialSy, initialSz);
 
@@ -2738,8 +2756,8 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testSetInitialCrossCouplingErrors() throws WrongSizeException, LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testSetInitialCrossCouplingErrors() throws WrongSizeException, LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
@@ -2750,16 +2768,16 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         // set new values
-        final Matrix mg = generateMg();
-        final double initialMxy = mg.getElementAt(0, 1);
-        final double initialMxz = mg.getElementAt(0, 2);
-        final double initialMyx = mg.getElementAt(1, 0);
-        final double initialMyz = mg.getElementAt(1, 2);
-        final double initialMzx = mg.getElementAt(2, 0);
-        final double initialMzy = mg.getElementAt(2, 1);
+        final var mg = generateMg();
+        final var initialMxy = mg.getElementAt(0, 1);
+        final var initialMxz = mg.getElementAt(0, 2);
+        final var initialMyx = mg.getElementAt(1, 0);
+        final var initialMyz = mg.getElementAt(1, 2);
+        final var initialMzx = mg.getElementAt(2, 0);
+        final var initialMzy = mg.getElementAt(2, 1);
 
-        calibrator.setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx, initialMyz, initialMzx,
-                initialMzy);
+        calibrator.setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx, 
+                initialMyz, initialMzx, initialMzy);
 
         // check
         assertEquals(initialMxy, calibrator.getInitialMxy(), 0.0);
@@ -2771,8 +2789,8 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testSetInitialScalingFactorsAndCrossCouplingErrors() throws WrongSizeException, LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testSetInitialScalingFactorsAndCrossCouplingErrors() throws WrongSizeException, LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -2786,16 +2804,16 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         // set new values
-        final Matrix mg = generateMg();
-        final double initialSx = mg.getElementAt(0, 0);
-        final double initialSy = mg.getElementAt(1, 1);
-        final double initialSz = mg.getElementAt(2, 2);
-        final double initialMxy = mg.getElementAt(0, 1);
-        final double initialMxz = mg.getElementAt(0, 2);
-        final double initialMyx = mg.getElementAt(1, 0);
-        final double initialMyz = mg.getElementAt(1, 2);
-        final double initialMzx = mg.getElementAt(2, 0);
-        final double initialMzy = mg.getElementAt(2, 1);
+        final var mg = generateMg();
+        final var initialSx = mg.getElementAt(0, 0);
+        final var initialSy = mg.getElementAt(1, 1);
+        final var initialSz = mg.getElementAt(2, 2);
+        final var initialMxy = mg.getElementAt(0, 1);
+        final var initialMxz = mg.getElementAt(0, 2);
+        final var initialMyx = mg.getElementAt(1, 0);
+        final var initialMyz = mg.getElementAt(1, 2);
+        final var initialMzx = mg.getElementAt(2, 0);
+        final var initialMzy = mg.getElementAt(2, 1);
 
         calibrator.setInitialScalingFactorsAndCrossCouplingErrors(initialSx, initialSy, initialSz, initialMxy,
                 initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
@@ -2813,22 +2831,22 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testGetSetInitialBias() throws LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testGetSetInitialBias() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default value
-        final double[] bias1 = calibrator.getInitialBias();
+        final var bias1 = calibrator.getInitialBias();
         assertArrayEquals(new double[3], bias1, 0.0);
 
         // set new value
-        final Matrix bg = generateBg();
-        final double[] bias2 = bg.getBuffer();
+        final var bg = generateBg();
+        final var bias2 = bg.getBuffer();
 
         calibrator.setInitialBias(bias2);
 
         // check
-        final double[] bias3 = calibrator.getInitialBias();
-        final double[] bias4 = new double[3];
+        final var bias3 = calibrator.getInitialBias();
+        final var bias4 = new double[3];
         calibrator.getInitialBias(bias4);
 
         assertArrayEquals(bias2, bias3, 0.0);
@@ -2839,22 +2857,22 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testGetSetInitialBiasAsMatrix() throws WrongSizeException, LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testGetSetInitialBiasAsMatrix() throws WrongSizeException, LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default value
-        final Matrix bias1 = calibrator.getInitialBiasAsMatrix();
+        final var bias1 = calibrator.getInitialBiasAsMatrix();
 
-        assertEquals(bias1, new Matrix(3, 1));
+        assertEquals(new Matrix(3, 1), bias1);
 
         // set new value
-        final Matrix bias2 = generateBg();
+        final var bias2 = generateBg();
 
         calibrator.setInitialBias(bias2);
 
         // check
-        final Matrix bias3 = calibrator.getInitialBiasAsMatrix();
-        final Matrix bias4 = new Matrix(3, 1);
+        final var bias3 = calibrator.getInitialBiasAsMatrix();
+        final var bias4 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bias4);
 
         assertEquals(bias2, bias3);
@@ -2872,31 +2890,31 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testGetSetInitialBiasAsTriad() throws LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testGetSetInitialBiasAsTriad() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default values
-        final AngularSpeedTriad triad1 = calibrator.getInitialBiasAsTriad();
+        final var triad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, triad1.getValueX(), 0.0);
         assertEquals(0.0, triad1.getValueY(), 0.0);
         assertEquals(0.0, triad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, triad1.getUnit());
-        final AngularSpeedTriad triad2 = new AngularSpeedTriad();
+        final var triad2 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(triad2);
         assertEquals(triad1, triad2);
 
         // set new values
-        final Matrix bg = generateBg();
-        final double initialBiasX = bg.getElementAtIndex(0);
-        final double initialBiasY = bg.getElementAtIndex(1);
-        final double initialBiasZ = bg.getElementAtIndex(2);
+        final var bg = generateBg();
+        final var initialBiasX = bg.getElementAtIndex(0);
+        final var initialBiasY = bg.getElementAtIndex(1);
+        final var initialBiasZ = bg.getElementAtIndex(2);
 
-        final AngularSpeedTriad triad3 = new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND,
+        final var triad3 = new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND, 
                 initialBiasX, initialBiasY, initialBiasZ);
         calibrator.setInitialBias(triad3);
 
-        final AngularSpeedTriad triad4 = calibrator.getInitialBiasAsTriad();
-        final AngularSpeedTriad triad5 = new AngularSpeedTriad();
+        final var triad4 = calibrator.getInitialBiasAsTriad();
+        final var triad5 = new AngularSpeedTriad();
         calibrator.getInitialBiasAsTriad(triad5);
 
         assertEquals(triad3, triad4);
@@ -2904,20 +2922,20 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testGetSetInitialMg() throws WrongSizeException, LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testGetSetInitialMg() throws WrongSizeException, LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default value
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(new Matrix(3, 3), mg1);
 
         // set new value
-        final Matrix mg2 = generateMg();
+        final var mg2 = generateMg();
         calibrator.setInitialMg(mg2);
 
         // check
-        final Matrix mg3 = calibrator.getInitialMg();
-        final Matrix mg4 = new Matrix(3, 3);
+        final var mg3 = calibrator.getInitialMg();
+        final var mg4 = new Matrix(3, 3);
         calibrator.getInitialMg(mg4);
 
         assertEquals(mg2, mg3);
@@ -2935,20 +2953,20 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testGetSetInitialGg() throws WrongSizeException, LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testGetSetInitialGg() throws WrongSizeException, LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default value
-        final Matrix gg1 = calibrator.getInitialGg();
-        assertEquals(gg1, new Matrix(3, 3));
+        final var gg1 = calibrator.getInitialGg();
+        assertEquals(new Matrix(3, 3), gg1);
 
         // set new value
-        final Matrix gg2 = generateGg();
+        final var gg2 = generateGg();
         calibrator.setInitialGg(gg2);
 
         // check
-        final Matrix gg3 = calibrator.getInitialGg();
-        final Matrix gg4 = new Matrix(3, 3);
+        final var gg3 = calibrator.getInitialGg();
+        final var gg4 = new Matrix(3, 3);
         calibrator.getInitialGg(gg4);
 
         assertEquals(gg2, gg3);
@@ -2966,14 +2984,14 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testGetSetMeasurements() throws LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testGetSetMeasurements() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default value
         assertNull(calibrator.getMeasurements());
 
         // set new value
-        final List<StandardDeviationFrameBodyKinematics> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationFrameBodyKinematics>emptyList();
 
         calibrator.setMeasurements(measurements);
 
@@ -2982,8 +3000,8 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testIsSetCommonAxisUsed() throws LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testIsSetCommonAxisUsed() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default value
         assertFalse(calibrator.isCommonAxisUsed());
@@ -2996,8 +3014,8 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testGetSetListener() throws LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testGetSetListener() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default value
         assertNull(calibrator.getListener());
@@ -3010,8 +3028,8 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testIsSetLinearCalibratorUsed() throws LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testIsSetLinearCalibratorUsed() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default value
         assertTrue(calibrator.isLinearCalibratorUsed());
@@ -3024,8 +3042,8 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testIsSetPreliminarySolutionRefined() throws LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testIsSetPreliminarySolutionRefined() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default value
         assertFalse(calibrator.isPreliminarySolutionRefined());
@@ -3038,8 +3056,8 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testGetSetProgressDelta() throws LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testGetSetProgressDelta() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default value
         assertEquals(PROMedSRobustKnownFrameGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
@@ -3057,8 +3075,8 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testGetSetConfidence() throws LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testGetSetConfidence() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default value
         assertEquals(PROMedSRobustKnownFrameGyroscopeCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 0.0);
@@ -3075,8 +3093,8 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testGetSetMaxIterations() throws LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testGetSetMaxIterations() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default value
         assertEquals(PROMedSRobustKnownFrameGyroscopeCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations());
@@ -3091,8 +3109,8 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testIsSetResultRefined() throws LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testIsSetResultRefined() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default value
         assertTrue(calibrator.isResultRefined());
@@ -3105,8 +3123,8 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testIsSetCovarianceKept() throws LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testIsSetCovarianceKept() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default value
         assertTrue(calibrator.isCovarianceKept());
@@ -3119,14 +3137,14 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testGetSetQualityScores() throws LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testGetSetQualityScores() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default value
         assertNull(calibrator.getQualityScores());
 
         // set new value
-        final double[] qualityScores = new double[PROMedSRobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS];
+        final var qualityScores = new double[PROMedSRobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS];
         calibrator.setQualityScores(qualityScores);
 
         // check
@@ -3137,8 +3155,8 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testGetSetPreliminarySubsetSize() throws LockedException {
-        final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
+    void testGetSetPreliminarySubsetSize() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator();
 
         // check default value
         assertEquals(PROMedSRobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS,
@@ -3155,58 +3173,56 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testCalibrateGeneralNoNoiseInlier() throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException, LockedException, CalibrationException, NotReadyException {
+    void testCalibrateGeneralNoNoiseInlier() throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException,
+            LockedException, CalibrationException, NotReadyException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Matrix ba = generateBa();
-            final Matrix bg = generateBg();
-            final Matrix ma = generateMaGeneral();
-            final Matrix mg = generateMg();
-            final Matrix gg = generateGg();
-            final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-            final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-            final double accelQuantLevel = 0.0;
-            final double gyroQuantLevel = 0.0;
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var ba = generateBa();
+            final var bg = generateBg();
+            final var ma = generateMaGeneral();
+            final var mg = generateMg();
+            final var gg = generateGg();
+            final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+            final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+            final var accelQuantLevel = 0.0;
+            final var gyroQuantLevel = 0.0;
 
-            final IMUErrors errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
+            final var errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
                     accelQuantLevel, gyroQuantLevel);
-            final IMUErrors errorsInlier = new IMUErrors(ba, bg, ma, mg, gg, 0.0,
-                    0.0, accelQuantLevel, gyroQuantLevel);
+            final var errorsInlier = new IMUErrors(ba, bg, ma, mg, gg, 0.0, 0.0,
+                    accelQuantLevel, gyroQuantLevel);
+            
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+            final var sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
+            final var specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
+            final var angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
 
-            final double sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
-            final double specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
-            final double angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
+            final var errorRandomizer = new GaussianRandomizer(0.0, angularRateStandardDeviation);
 
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(random, 0.0,
-                    angularRateStandardDeviation);
-
-            final List<StandardDeviationFrameBodyKinematics> measurements = new ArrayList<>();
-            final double[] qualityScores = new double[MEASUREMENT_NUMBER];
+            final var measurements = new ArrayList<StandardDeviationFrameBodyKinematics>();
+            final var qualityScores = new double[MEASUREMENT_NUMBER];
+            final var random = new Random();
             double error;
-            for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
-                final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw,
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            for (var i = 0; i < MEASUREMENT_NUMBER; i++) {
+                final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+                final var nedFrame = new NEDFrame(nedPosition, nedC);
+                final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
                 // compute ground-truth kinematics that should be generated at provided
                 // position, velocity and orientation
-                final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
-                        TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
+                final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS,
+                        ecefFrame, ecefFrame);
 
                 // apply known calibration parameters to distort ground-truth and generate a
                 // measured kinematics sample
@@ -3223,41 +3239,39 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
                     error = 0.0;
                 }
 
-                final StandardDeviationFrameBodyKinematics measurement = new StandardDeviationFrameBodyKinematics(
-                        measuredKinematics, ecefFrame, ecefFrame, TIME_INTERVAL_SECONDS, specificForceStandardDeviation,
-                        angularRateStandardDeviation);
+                final var measurement = new StandardDeviationFrameBodyKinematics(measuredKinematics, ecefFrame,
+                        ecefFrame, TIME_INTERVAL_SECONDS, specificForceStandardDeviation, angularRateStandardDeviation);
                 measurements.add(measurement);
 
                 qualityScores[i] = 1.0 / (1.0 + error);
             }
 
-            final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator =
-                    new PROMedSRobustKnownFrameGyroscopeCalibrator(qualityScores, measurements, false,
-                            this);
+            final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator(qualityScores, measurements,
+                    false, this);
             calibrator.setStopThreshold(THRESHOLD);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
-            assertEquals(0, mCalibrateNextIteration);
-            assertEquals(0, mCalibrateProgressChange);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
+            assertEquals(0, calibrateNextIteration);
+            assertEquals(0, calibrateProgressChange);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
-            assertTrue(mCalibrateNextIteration > 0);
-            assertTrue(mCalibrateProgressChange >= 0);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
+            assertTrue(calibrateNextIteration > 0);
+            assertTrue(calibrateProgressChange >= 0);
 
-            final Matrix estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
-            final Matrix estimatedMg = calibrator.getEstimatedMg();
-            final Matrix estimatedGg = calibrator.getEstimatedGg();
+            final var estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
+            final var estimatedMg = calibrator.getEstimatedMg();
+            final var estimatedGg = calibrator.getEstimatedGg();
 
             if (!bg.equals(estimatedBg, LARGE_ABSOLUTE_ERROR)) {
                 continue;
@@ -3274,7 +3288,7 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
+            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
             break;
@@ -3284,58 +3298,56 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testCalibrateCommonAxisNoNoiseInlier() throws WrongSizeException,
+    void testCalibrateCommonAxisNoNoiseInlier() throws WrongSizeException,
             InvalidSourceAndDestinationFrameTypeException, LockedException, CalibrationException, NotReadyException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Matrix ba = generateBa();
-            final Matrix bg = generateBg();
-            final Matrix ma = generateMaCommonAxis();
-            final Matrix mg = generateMg();
-            final Matrix gg = generateGg();
-            final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-            final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-            final double accelQuantLevel = 0.0;
-            final double gyroQuantLevel = 0.0;
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var ba = generateBa();
+            final var bg = generateBg();
+            final var ma = generateMaCommonAxis();
+            final var mg = generateMg();
+            final var gg = generateGg();
+            final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+            final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+            final var accelQuantLevel = 0.0;
+            final var gyroQuantLevel = 0.0;
 
-            final IMUErrors errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
+            final var errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
                     accelQuantLevel, gyroQuantLevel);
-            final IMUErrors errorsInlier = new IMUErrors(ba, bg, ma, mg, gg, 0.0,
-                    0.0, accelQuantLevel, gyroQuantLevel);
+            final var errorsInlier = new IMUErrors(ba, bg, ma, mg, gg, 0.0, 0.0,
+                    accelQuantLevel, gyroQuantLevel);
 
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
-            final double specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
-            final double angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
+            final var sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
+            final var specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
+            final var angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
 
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(random, 0.0,
-                    angularRateStandardDeviation);
+            final var errorRandomizer = new GaussianRandomizer(0.0, angularRateStandardDeviation);
 
-            final List<StandardDeviationFrameBodyKinematics> measurements = new ArrayList<>();
-            final double[] qualityScores = new double[MEASUREMENT_NUMBER];
+            final var measurements = new ArrayList<StandardDeviationFrameBodyKinematics>();
+            final var qualityScores = new double[MEASUREMENT_NUMBER];
+            final var random = new Random();
             double error;
-            for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
-                final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw,
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            for (var i = 0; i < MEASUREMENT_NUMBER; i++) {
+                final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+                final var nedFrame = new NEDFrame(nedPosition, nedC);
+                final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
                 // compute ground-truth kinematics that should be generated at provided
                 // position, velocity and orientation
-                final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
-                        TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
+                final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS,
+                        ecefFrame, ecefFrame);
 
                 // apply known calibration parameters to distort ground-truth and generate a
                 // measured kinematics sample
@@ -3352,41 +3364,39 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
                     error = 0.0;
                 }
 
-                final StandardDeviationFrameBodyKinematics measurement = new StandardDeviationFrameBodyKinematics(
-                        measuredKinematics, ecefFrame, ecefFrame, TIME_INTERVAL_SECONDS, specificForceStandardDeviation,
-                        angularRateStandardDeviation);
+                final var measurement = new StandardDeviationFrameBodyKinematics(measuredKinematics, ecefFrame,
+                        ecefFrame, TIME_INTERVAL_SECONDS, specificForceStandardDeviation, angularRateStandardDeviation);
                 measurements.add(measurement);
 
                 qualityScores[i] = 1.0 / (1.0 + error);
             }
 
-            final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator =
-                    new PROMedSRobustKnownFrameGyroscopeCalibrator(qualityScores, measurements, true,
-                            this);
+            final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator(qualityScores, measurements,
+                    true, this);
             calibrator.setStopThreshold(THRESHOLD);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
-            assertEquals(0, mCalibrateNextIteration);
-            assertEquals(0, mCalibrateProgressChange);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
+            assertEquals(0, calibrateNextIteration);
+            assertEquals(0, calibrateProgressChange);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
-            assertTrue(mCalibrateNextIteration > 0);
-            assertTrue(mCalibrateProgressChange >= 0);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
+            assertTrue(calibrateNextIteration > 0);
+            assertTrue(calibrateProgressChange >= 0);
 
-            final Matrix estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
-            final Matrix estimatedMg = calibrator.getEstimatedMg();
-            final Matrix estimatedGg = calibrator.getEstimatedGg();
+            final var estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
+            final var estimatedMg = calibrator.getEstimatedMg();
+            final var estimatedGg = calibrator.getEstimatedGg();
 
             if (!bg.equals(estimatedBg, LARGE_ABSOLUTE_ERROR)) {
                 continue;
@@ -3406,7 +3416,7 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
+            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
             break;
@@ -3416,58 +3426,57 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testCalibrateGeneralWithInlierNoise() throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException, LockedException, CalibrationException, NotReadyException {
+    void testCalibrateGeneralWithInlierNoise() throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException,
+            LockedException, CalibrationException, NotReadyException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Matrix ba = generateBa();
-            final Matrix bg = generateBg();
-            final Matrix ma = generateMaGeneral();
-            final Matrix mg = generateMg();
-            final Matrix gg = generateGg();
-            final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-            final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-            final double accelQuantLevel = 0.0;
-            final double gyroQuantLevel = 0.0;
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var ba = generateBa();
+            final var bg = generateBg();
+            final var ma = generateMaGeneral();
+            final var mg = generateMg();
+            final var gg = generateGg();
+            final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+            final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+            final var accelQuantLevel = 0.0;
+            final var gyroQuantLevel = 0.0;
 
-            final IMUErrors errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg,
+            final var errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg,
                     OUTLIER_ERROR_FACTOR * accelNoiseRootPSD,
                     OUTLIER_ERROR_FACTOR * gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
-            final IMUErrors errorsInlier = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
+            final var errorsInlier = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
                     accelQuantLevel, gyroQuantLevel);
 
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
-            final double specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
-            final double angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
+            final var sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
+            final var specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
+            final var angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
 
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(random, 0.0, angularRateStandardDeviation);
+            final var errorRandomizer = new GaussianRandomizer(0.0, angularRateStandardDeviation);
 
-            final List<StandardDeviationFrameBodyKinematics> measurements = new ArrayList<>();
-            final double[] qualityScores = new double[MEASUREMENT_NUMBER];
+            final var measurements = new ArrayList<StandardDeviationFrameBodyKinematics>();
+            final var qualityScores = new double[MEASUREMENT_NUMBER];
+            final var random = new Random();
             double error;
-            for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
-                final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw,
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            for (var i = 0; i < MEASUREMENT_NUMBER; i++) {
+                final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+                final var nedFrame = new NEDFrame(nedPosition, nedC);
+                final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
                 // compute ground-truth kinematics that should be generated at provided
                 // position, velocity and orientation
-                final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
-                        TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
+                final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS,
+                        ecefFrame, ecefFrame);
 
                 // apply known calibration parameters to distort ground-truth and generate a
                 // measured kinematics sample
@@ -3484,41 +3493,39 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
                     error = 0.0;
                 }
 
-                final StandardDeviationFrameBodyKinematics measurement = new StandardDeviationFrameBodyKinematics(
-                        measuredKinematics, ecefFrame, ecefFrame, TIME_INTERVAL_SECONDS, specificForceStandardDeviation,
-                        angularRateStandardDeviation);
+                final var measurement = new StandardDeviationFrameBodyKinematics(measuredKinematics, ecefFrame,
+                        ecefFrame, TIME_INTERVAL_SECONDS, specificForceStandardDeviation, angularRateStandardDeviation);
                 measurements.add(measurement);
 
                 qualityScores[i] = 1.0 / (1.0 + error);
             }
 
-            final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator =
-                    new PROMedSRobustKnownFrameGyroscopeCalibrator(qualityScores, measurements, false,
-                            this);
+            final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator(qualityScores, measurements,
+                    false, this);
             calibrator.setStopThreshold(LARGE_THRESHOLD);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
-            assertEquals(0, mCalibrateNextIteration);
-            assertEquals(0, mCalibrateProgressChange);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
+            assertEquals(0, calibrateNextIteration);
+            assertEquals(0, calibrateProgressChange);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
-            assertTrue(mCalibrateNextIteration > 0);
-            assertTrue(mCalibrateProgressChange >= 0);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
+            assertTrue(calibrateNextIteration > 0);
+            assertTrue(calibrateProgressChange >= 0);
 
-            final Matrix estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
-            final Matrix estimatedMg = calibrator.getEstimatedMg();
-            final Matrix estimatedGg = calibrator.getEstimatedGg();
+            final var estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
+            final var estimatedMg = calibrator.getEstimatedMg();
+            final var estimatedGg = calibrator.getEstimatedGg();
 
             if (!bg.equals(estimatedBg, LARGE_ABSOLUTE_ERROR)) {
                 continue;
@@ -3535,7 +3542,7 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
+            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
             break;
@@ -3545,58 +3552,57 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testCalibrateCommonAxisWithInlierNoise() throws WrongSizeException,
+    void testCalibrateCommonAxisWithInlierNoise() throws WrongSizeException,
             InvalidSourceAndDestinationFrameTypeException, LockedException, CalibrationException, NotReadyException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Matrix ba = generateBa();
-            final Matrix bg = generateBg();
-            final Matrix ma = generateMaCommonAxis();
-            final Matrix mg = generateMg();
-            final Matrix gg = generateGg();
-            final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-            final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-            final double accelQuantLevel = 0.0;
-            final double gyroQuantLevel = 0.0;
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var ba = generateBa();
+            final var bg = generateBg();
+            final var ma = generateMaCommonAxis();
+            final var mg = generateMg();
+            final var gg = generateGg();
+            final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+            final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+            final var accelQuantLevel = 0.0;
+            final var gyroQuantLevel = 0.0;
 
-            final IMUErrors errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg,
+            final var errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg,
                     OUTLIER_ERROR_FACTOR * accelNoiseRootPSD,
                     OUTLIER_ERROR_FACTOR * gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
-            final IMUErrors errorsInlier = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
+            final var errorsInlier = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
                     accelQuantLevel, gyroQuantLevel);
 
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
-            final double specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
-            final double angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
+            final var sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
+            final var specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
+            final var angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
 
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(random, 0.0,
-                    angularRateStandardDeviation);
+            final var errorRandomizer = new GaussianRandomizer(0.0, angularRateStandardDeviation);
 
-            final List<StandardDeviationFrameBodyKinematics> measurements = new ArrayList<>();
-            final double[] qualityScores = new double[MEASUREMENT_NUMBER];
+            final var measurements = new ArrayList<StandardDeviationFrameBodyKinematics>();
+            final var qualityScores = new double[MEASUREMENT_NUMBER];
+            final var random = new Random();
             double error;
-            for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
-                final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw,
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            for (var i = 0; i < MEASUREMENT_NUMBER; i++) {
+                final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+                final var nedFrame = new NEDFrame(nedPosition, nedC);
+                final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
                 // compute ground-truth kinematics that should be generated at provided
                 // position, velocity and orientation
-                final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
-                        TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
+                final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS,
+                        ecefFrame, ecefFrame);
 
                 // apply known calibration parameters to distort ground-truth and generate a
                 // measured kinematics sample
@@ -3613,41 +3619,39 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
                     error = 0.0;
                 }
 
-                final StandardDeviationFrameBodyKinematics measurement = new StandardDeviationFrameBodyKinematics(
-                        measuredKinematics, ecefFrame, ecefFrame, TIME_INTERVAL_SECONDS, specificForceStandardDeviation,
-                        angularRateStandardDeviation);
+                final var measurement = new StandardDeviationFrameBodyKinematics(measuredKinematics, ecefFrame,
+                        ecefFrame, TIME_INTERVAL_SECONDS, specificForceStandardDeviation, angularRateStandardDeviation);
                 measurements.add(measurement);
 
                 qualityScores[i] = 1.0 / (1.0 + error);
             }
 
-            final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator =
-                    new PROMedSRobustKnownFrameGyroscopeCalibrator(qualityScores, measurements, true,
-                            this);
+            final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator(qualityScores, measurements,
+                    true, this);
             calibrator.setStopThreshold(LARGE_THRESHOLD);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
-            assertEquals(0, mCalibrateNextIteration);
-            assertEquals(0, mCalibrateProgressChange);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
+            assertEquals(0, calibrateNextIteration);
+            assertEquals(0, calibrateProgressChange);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
-            assertTrue(mCalibrateNextIteration > 0);
-            assertTrue(mCalibrateProgressChange >= 0);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
+            assertTrue(calibrateNextIteration > 0);
+            assertTrue(calibrateProgressChange >= 0);
 
-            final Matrix estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
-            final Matrix estimatedMg = calibrator.getEstimatedMg();
-            final Matrix estimatedGg = calibrator.getEstimatedGg();
+            final var estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
+            final var estimatedMg = calibrator.getEstimatedMg();
+            final var estimatedGg = calibrator.getEstimatedGg();
 
             if (!bg.equals(estimatedBg, LARGE_ABSOLUTE_ERROR)) {
                 continue;
@@ -3664,7 +3668,7 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
+            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
             break;
@@ -3674,58 +3678,56 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testCalibrateGeneralNoRefinement() throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException, LockedException, CalibrationException, NotReadyException {
+    void testCalibrateGeneralNoRefinement() throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException,
+            LockedException, CalibrationException, NotReadyException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Matrix ba = generateBa();
-            final Matrix bg = generateBg();
-            final Matrix ma = generateMaGeneral();
-            final Matrix mg = generateMg();
-            final Matrix gg = generateGg();
-            final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-            final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-            final double accelQuantLevel = 0.0;
-            final double gyroQuantLevel = 0.0;
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var ba = generateBa();
+            final var bg = generateBg();
+            final var ma = generateMaGeneral();
+            final var mg = generateMg();
+            final var gg = generateGg();
+            final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+            final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+            final var accelQuantLevel = 0.0;
+            final var gyroQuantLevel = 0.0;
 
-            final IMUErrors errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
+            final var errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
                     accelQuantLevel, gyroQuantLevel);
-            final IMUErrors errorsInlier = new IMUErrors(ba, bg, ma, mg, gg, 0.0,
-                    0.0, accelQuantLevel, gyroQuantLevel);
+            final var errorsInlier = new IMUErrors(ba, bg, ma, mg, gg, 0.0, 0.0,
+                    accelQuantLevel, gyroQuantLevel);
 
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
-            final double specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
-            final double angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
+            final var sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
+            final var specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
+            final var angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
 
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(random, 0.0,
-                    angularRateStandardDeviation);
+            final var errorRandomizer = new GaussianRandomizer(0.0, angularRateStandardDeviation);
 
-            final List<StandardDeviationFrameBodyKinematics> measurements = new ArrayList<>();
-            final double[] qualityScores = new double[MEASUREMENT_NUMBER];
+            final var measurements = new ArrayList<StandardDeviationFrameBodyKinematics>();
+            final var qualityScores = new double[MEASUREMENT_NUMBER];
+            final var random = new Random();
             double error;
-            for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
-                final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw,
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            for (var i = 0; i < MEASUREMENT_NUMBER; i++) {
+                final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+                final var nedFrame = new NEDFrame(nedPosition, nedC);
+                final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
                 // compute ground-truth kinematics that should be generated at provided
                 // position, velocity and orientation
-                final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
-                        TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
+                final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS,
+                        ecefFrame, ecefFrame);
 
                 // apply known calibration parameters to distort ground-truth and generate a
                 // measured kinematics sample
@@ -3742,17 +3744,15 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
                     error = 0.0;
                 }
 
-                final StandardDeviationFrameBodyKinematics measurement = new StandardDeviationFrameBodyKinematics(
-                        measuredKinematics, ecefFrame, ecefFrame, TIME_INTERVAL_SECONDS, specificForceStandardDeviation,
-                        angularRateStandardDeviation);
+                final var measurement = new StandardDeviationFrameBodyKinematics(measuredKinematics, ecefFrame,
+                        ecefFrame, TIME_INTERVAL_SECONDS, specificForceStandardDeviation, angularRateStandardDeviation);
                 measurements.add(measurement);
 
                 qualityScores[i] = 1.0 / (1.0 + error);
             }
 
-            final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator =
-                    new PROMedSRobustKnownFrameGyroscopeCalibrator(qualityScores, measurements, false,
-                            this);
+            final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator(qualityScores, measurements,
+                    false, this);
             calibrator.setStopThreshold(THRESHOLD);
             calibrator.setResultRefined(false);
             calibrator.setPreliminarySolutionRefined(false);
@@ -3761,24 +3761,24 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
-            assertEquals(0, mCalibrateNextIteration);
-            assertEquals(0, mCalibrateProgressChange);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
+            assertEquals(0, calibrateNextIteration);
+            assertEquals(0, calibrateProgressChange);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
-            assertTrue(mCalibrateNextIteration > 0);
-            assertTrue(mCalibrateProgressChange >= 0);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
+            assertTrue(calibrateNextIteration > 0);
+            assertTrue(calibrateProgressChange >= 0);
 
-            final Matrix estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
-            final Matrix estimatedMg = calibrator.getEstimatedMg();
-            final Matrix estimatedGg = calibrator.getEstimatedGg();
+            final var estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
+            final var estimatedMg = calibrator.getEstimatedMg();
+            final var estimatedGg = calibrator.getEstimatedGg();
 
             if (!bg.equals(estimatedBg, LARGE_ABSOLUTE_ERROR)) {
                 continue;
@@ -3804,58 +3804,56 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     @Test
-    public void testCalibrateGeneralNonLinearWithInitialValue() throws WrongSizeException,
+    void testCalibrateGeneralNonLinearWithInitialValue() throws WrongSizeException,
             InvalidSourceAndDestinationFrameTypeException, LockedException, CalibrationException, NotReadyException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Matrix ba = generateBa();
-            final Matrix bg = generateBg();
-            final Matrix ma = generateMaGeneral();
-            final Matrix mg = generateMg();
-            final Matrix gg = generateGg();
-            final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-            final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-            final double accelQuantLevel = 0.0;
-            final double gyroQuantLevel = 0.0;
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var ba = generateBa();
+            final var bg = generateBg();
+            final var ma = generateMaGeneral();
+            final var mg = generateMg();
+            final var gg = generateGg();
+            final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+            final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+            final var accelQuantLevel = 0.0;
+            final var gyroQuantLevel = 0.0;
 
-            final IMUErrors errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
+            final var errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
                     accelQuantLevel, gyroQuantLevel);
-            final IMUErrors errorsInlier = new IMUErrors(ba, bg, ma, mg, gg, 0.0,
-                    0.0, accelQuantLevel, gyroQuantLevel);
+            final var errorsInlier = new IMUErrors(ba, bg, ma, mg, gg, 0.0, 0.0,
+                    accelQuantLevel, gyroQuantLevel);
 
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
-            final double specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
-            final double angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
+            final var sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
+            final var specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
+            final var angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
 
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(random, 0.0,
-                    angularRateStandardDeviation);
+            final var errorRandomizer = new GaussianRandomizer(0.0, angularRateStandardDeviation);
 
-            final List<StandardDeviationFrameBodyKinematics> measurements = new ArrayList<>();
-            final double[] qualityScores = new double[MEASUREMENT_NUMBER];
+            final var measurements = new ArrayList<StandardDeviationFrameBodyKinematics>();
+            final var qualityScores = new double[MEASUREMENT_NUMBER];
+            final var random = new Random();
             double error;
-            for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
-                final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw,
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            for (var i = 0; i < MEASUREMENT_NUMBER; i++) {
+                final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+                final var nedFrame = new NEDFrame(nedPosition, nedC);
+                final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
                 // compute ground-truth kinematics that should be generated at provided
                 // position, velocity and orientation
-                final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
-                        TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
+                final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS,
+                        ecefFrame, ecefFrame);
 
                 // apply known calibration parameters to distort ground-truth and generate a
                 // measured kinematics sample
@@ -3872,17 +3870,15 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
                     error = 0.0;
                 }
 
-                final StandardDeviationFrameBodyKinematics measurement = new StandardDeviationFrameBodyKinematics(
-                        measuredKinematics, ecefFrame, ecefFrame, TIME_INTERVAL_SECONDS, specificForceStandardDeviation,
-                        angularRateStandardDeviation);
+                final var measurement = new StandardDeviationFrameBodyKinematics(measuredKinematics, ecefFrame,
+                        ecefFrame, TIME_INTERVAL_SECONDS, specificForceStandardDeviation, angularRateStandardDeviation);
                 measurements.add(measurement);
 
                 qualityScores[i] = 1.0 / (1.0 + error);
             }
 
-            final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator =
-                    new PROMedSRobustKnownFrameGyroscopeCalibrator(qualityScores, measurements, false,
-                            this);
+            final var calibrator = new PROMedSRobustKnownFrameGyroscopeCalibrator(qualityScores, measurements,
+                    false, this);
             calibrator.setStopThreshold(THRESHOLD);
             calibrator.setInitialBias(bg);
             calibrator.setInitialMg(mg);
@@ -3893,24 +3889,24 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
-            assertEquals(0, mCalibrateNextIteration);
-            assertEquals(0, mCalibrateProgressChange);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
+            assertEquals(0, calibrateNextIteration);
+            assertEquals(0, calibrateProgressChange);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
-            assertTrue(mCalibrateNextIteration > 0);
-            assertTrue(mCalibrateProgressChange >= 0);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
+            assertTrue(calibrateNextIteration > 0);
+            assertTrue(calibrateProgressChange >= 0);
 
-            final Matrix estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
-            final Matrix estimatedMg = calibrator.getEstimatedMg();
-            final Matrix estimatedGg = calibrator.getEstimatedGg();
+            final var estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
+            final var estimatedMg = calibrator.getEstimatedMg();
+            final var estimatedGg = calibrator.getEstimatedGg();
 
             if (!bg.equals(estimatedBg, LARGE_ABSOLUTE_ERROR)) {
                 continue;
@@ -3927,7 +3923,7 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
+            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
             break;
@@ -3939,32 +3935,32 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     @Override
     public void onCalibrateStart(final RobustKnownFrameGyroscopeCalibrator calibrator) {
         checkLocked((PROMedSRobustKnownFrameGyroscopeCalibrator) calibrator);
-        mCalibrateStart++;
+        calibrateStart++;
     }
 
     @Override
     public void onCalibrateEnd(final RobustKnownFrameGyroscopeCalibrator calibrator) {
         checkLocked((PROMedSRobustKnownFrameGyroscopeCalibrator) calibrator);
-        mCalibrateEnd++;
+        calibrateEnd++;
     }
 
     @Override
     public void onCalibrateNextIteration(final RobustKnownFrameGyroscopeCalibrator calibrator, final int iteration) {
         checkLocked((PROMedSRobustKnownFrameGyroscopeCalibrator) calibrator);
-        mCalibrateNextIteration++;
+        calibrateNextIteration++;
     }
 
     @Override
     public void onCalibrateProgressChange(final RobustKnownFrameGyroscopeCalibrator calibrator, final float progress) {
         checkLocked((PROMedSRobustKnownFrameGyroscopeCalibrator) calibrator);
-        mCalibrateProgressChange++;
+        calibrateProgressChange++;
     }
 
     private void reset() {
-        mCalibrateStart = 0;
-        mCalibrateEnd = 0;
-        mCalibrateNextIteration = 0;
-        mCalibrateProgressChange = 0;
+        calibrateStart = 0;
+        calibrateEnd = 0;
+        calibrateNextIteration = 0;
+        calibrateProgressChange = 0;
     }
 
     private void checkLocked(final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator) {
@@ -4021,14 +4017,14 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
             final PROMedSRobustKnownFrameGyroscopeCalibrator calibrator, final boolean checkCovariance)
             throws WrongSizeException {
 
-        final double[] estimatedBiases = calibrator.getEstimatedBiases();
+        final var estimatedBiases = calibrator.getEstimatedBiases();
         assertArrayEquals(estimatedBiases, bg.getBuffer(), 0.0);
 
-        final double[] estimatedBiases2 = new double[3];
+        final var estimatedBiases2 = new double[3];
         calibrator.getEstimatedBiases(estimatedBiases2);
         assertArrayEquals(estimatedBiases, estimatedBiases2, 0.0);
 
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getEstimatedBiasesAsMatrix(bg2);
 
         assertEquals(bg, bg2);
@@ -4037,22 +4033,22 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertEquals(bg.getElementAtIndex(1), calibrator.getEstimatedBiasY(), 0.0);
         assertEquals(bg.getElementAtIndex(2), calibrator.getEstimatedBiasZ(), 0.0);
 
-        final AngularSpeed bgx1 = calibrator.getEstimatedBiasAngularSpeedX();
-        final AngularSpeed bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bgx1 = calibrator.getEstimatedBiasAngularSpeedX();
+        final var bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getEstimatedBiasAngularSpeedX(bgx2);
         assertEquals(bgx1, bgx2);
         assertEquals(bgx1.getValue().doubleValue(), calibrator.getEstimatedBiasX(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgx1.getUnit());
 
-        final AngularSpeed bgy1 = calibrator.getEstimatedBiasAngularSpeedY();
-        final AngularSpeed bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bgy1 = calibrator.getEstimatedBiasAngularSpeedY();
+        final var bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getEstimatedBiasAngularSpeedY(bgy2);
         assertEquals(bgy1, bgy2);
         assertEquals(bgy1.getValue().doubleValue(), calibrator.getEstimatedBiasY(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgy1.getUnit());
 
-        final AngularSpeed bgz1 = calibrator.getEstimatedBiasAngularSpeedZ();
-        final AngularSpeed bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bgz1 = calibrator.getEstimatedBiasAngularSpeedZ();
+        final var bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getEstimatedBiasAngularSpeedZ(bgz2);
         assertEquals(bgz1, bgz2);
         assertEquals(bgz1.getValue().doubleValue(), calibrator.getEstimatedBiasZ(), 0.0);
@@ -4080,52 +4076,52 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
 
         assertNotNull(calibrator.getEstimatedBiasXVariance());
         assertNotNull(calibrator.getEstimatedBiasXStandardDeviation());
-        final AngularSpeed stdBx1 = calibrator.getEstimatedBiasXStandardDeviationAsAngularSpeed();
+        final var stdBx1 = calibrator.getEstimatedBiasXStandardDeviationAsAngularSpeed();
         assertNotNull(stdBx1);
-        final AngularSpeed stdBx2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var stdBx2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         assertTrue(calibrator.getEstimatedBiasXStandardDeviationAsAngularSpeed(stdBx2));
         assertEquals(stdBx1, stdBx2);
 
         assertNotNull(calibrator.getEstimatedBiasYVariance());
         assertNotNull(calibrator.getEstimatedBiasYStandardDeviation());
-        final AngularSpeed stdBy1 = calibrator.getEstimatedBiasYStandardDeviationAsAngularSpeed();
+        final var stdBy1 = calibrator.getEstimatedBiasYStandardDeviationAsAngularSpeed();
         assertNotNull(stdBy1);
-        final AngularSpeed stdBy2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var stdBy2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         assertTrue(calibrator.getEstimatedBiasYStandardDeviationAsAngularSpeed(stdBy2));
         assertEquals(stdBy1, stdBy2);
 
         assertNotNull(calibrator.getEstimatedBiasZVariance());
         assertNotNull(calibrator.getEstimatedBiasZStandardDeviation());
-        final AngularSpeed stdBz1 = calibrator.getEstimatedBiasZStandardDeviationAsAngularSpeed();
+        final var stdBz1 = calibrator.getEstimatedBiasZStandardDeviationAsAngularSpeed();
         assertNotNull(stdBz1);
-        final AngularSpeed stdBz2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var stdBz2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         assertTrue(calibrator.getEstimatedBiasZStandardDeviationAsAngularSpeed(stdBz2));
         assertEquals(stdBz1, stdBz2);
 
-        final AngularSpeedTriad std1 = calibrator.getEstimatedBiasStandardDeviation();
+        final var std1 = calibrator.getEstimatedBiasStandardDeviation();
         assertEquals(std1.getValueX(), calibrator.getEstimatedBiasXStandardDeviation(), 0.0);
         assertEquals(std1.getValueY(), calibrator.getEstimatedBiasYStandardDeviation(), 0.0);
         assertEquals(std1.getValueZ(), calibrator.getEstimatedBiasZStandardDeviation(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, std1.getUnit());
-        final AngularSpeedTriad std2 = new AngularSpeedTriad();
+        final var std2 = new AngularSpeedTriad();
         calibrator.getEstimatedBiasStandardDeviation(std2);
 
-        final double avgStd = (calibrator.getEstimatedBiasXStandardDeviation() +
-                calibrator.getEstimatedBiasYStandardDeviation() +
-                calibrator.getEstimatedBiasZStandardDeviation()) / 3.0;
+        final var avgStd = (calibrator.getEstimatedBiasXStandardDeviation()
+                + calibrator.getEstimatedBiasYStandardDeviation()
+                + calibrator.getEstimatedBiasZStandardDeviation()) / 3.0;
         assertEquals(avgStd, calibrator.getEstimatedBiasStandardDeviationAverage(), 0.0);
-        final AngularSpeed avg1 = calibrator.getEstimatedBiasStandardDeviationAverageAsAngularSpeed();
+        final var avg1 = calibrator.getEstimatedBiasStandardDeviationAverageAsAngularSpeed();
         assertEquals(avgStd, avg1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avg1.getUnit());
-        final AngularSpeed avg2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var avg2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getEstimatedBiasStandardDeviationAverageAsAngularSpeed(avg2);
         assertEquals(avg1, avg2);
 
         assertEquals(std1.getNorm(), calibrator.getEstimatedBiasStandardDeviationNorm(), ABSOLUTE_ERROR);
-        final AngularSpeed norm1 = calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed();
+        final var norm1 = calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed();
         assertEquals(norm1.getValue().doubleValue(), std1.getNorm(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, norm1.getUnit());
-        final AngularSpeed norm2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var norm2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(norm2);
         assertEquals(norm1, norm2);
     }
@@ -4134,10 +4130,10 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertEquals(21, covariance.getRows());
         assertEquals(21, covariance.getColumns());
 
-        for (int j = 0; j < 18; j++) {
-            final boolean colIsZero = j == 8 || j == 10 || j == 11;
-            for (int i = 0; i < 18; i++) {
-                final boolean rowIsZero = i == 8 || i == 10 || i == 11;
+        for (var j = 0; j < 18; j++) {
+            final var colIsZero = j == 8 || j == 10 || j == 11;
+            for (var i = 0; i < 18; i++) {
+                final var rowIsZero = i == 8 || i == 10 || i == 11;
                 if (colIsZero || rowIsZero) {
                     assertEquals(0.0, covariance.getElementAt(i, j), 0.0);
                 }
@@ -4149,8 +4145,8 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
         assertEquals(21, covariance.getRows());
         assertEquals(21, covariance.getColumns());
 
-        for (int i = 0; i < 21; i++) {
-            assertNotEquals(covariance.getElementAt(i, i), 0.0);
+        for (var i = 0; i < 21; i++) {
+            assertNotEquals(0.0, covariance.getElementAt(i, i));
         }
     }
 
@@ -4169,7 +4165,7 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     private static Matrix generateMaGeneral() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
+        final var result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 500e-6, -300e-6, 200e-6,
                 -150e-6, -600e-6, 250e-6,
@@ -4180,7 +4176,7 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     private static Matrix generateMaCommonAxis() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
+        final var result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 500e-6, -300e-6, 200e-6,
                 0.0, -600e-6, 250e-6,
@@ -4191,7 +4187,7 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     private static Matrix generateMg() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
+        final var result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 400e-6, -300e-6, 250e-6,
                 0.0, -300e-6, -150e-6,
@@ -4202,8 +4198,8 @@ public class PROMedSRobustKnownFrameGyroscopeCalibratorTest implements RobustKno
     }
 
     private static Matrix generateGg() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
-        final double tmp = DEG_TO_RAD / (3600 * 9.80665);
+        final var result = new Matrix(3, 3);
+        final var tmp = DEG_TO_RAD / (3600 * 9.80665);
         result.fromArray(new double[]{
                 0.9 * tmp, -1.1 * tmp, -0.6 * tmp,
                 -0.5 * tmp, 1.9 * tmp, -1.6 * tmp,

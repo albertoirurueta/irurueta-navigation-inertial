@@ -32,7 +32,6 @@ import com.irurueta.navigation.inertial.calibration.CalibrationException;
 import com.irurueta.navigation.inertial.calibration.MagneticFluxDensityTriad;
 import com.irurueta.navigation.inertial.calibration.StandardDeviationBodyMagneticFluxDensity;
 import com.irurueta.navigation.inertial.estimators.BodyMagneticFluxDensityEstimator;
-import com.irurueta.navigation.inertial.wmm.NEDMagneticFluxDensity;
 import com.irurueta.navigation.inertial.wmm.WMMEarthMagneticFluxDensityEstimator;
 import com.irurueta.navigation.inertial.wmm.WorldMagneticModel;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
@@ -40,7 +39,7 @@ import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.MagneticFluxDensity;
 import com.irurueta.units.MagneticFluxDensityUnit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,11 +48,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest implements
+class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest implements
         RobustKnownPositionAndInstantMagnetometerCalibratorListener {
 
     private static final double MIN_HARD_IRON = -1e-5;
@@ -104,15 +102,14 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         END_TIMESTAMP_MILLIS = END_CALENDAR.getTimeInMillis();
     }
 
-    private int mCalibrateStart;
-    private int mCalibrateEnd;
-    private int mCalibrateNextIteration;
-    private int mCalibrateProgressChange;
+    private int calibrateStart;
+    private int calibrateEnd;
+    private int calibrateNextIteration;
+    private int calibrateProgressChange;
 
     @Test
-    public void testConstructor1() throws WrongSizeException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testConstructor1() throws WrongSizeException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default values
         assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -130,20 +127,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(new double[3], b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
-        assertEquals(bm1, new Matrix(3, 1));
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
+        assertEquals(new Matrix(3, 1), bm1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -156,17 +153,17 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(0.0, bTriad1.getValueX(), 0.0);
         assertEquals(0.0, bTriad1.getValueY(), 0.0);
         assertEquals(0.0, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -247,17 +244,16 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
-    public void testConstructor2() throws WrongSizeException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(this);
+    void testConstructor2() throws WrongSizeException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(this);
 
         // check default values
-        assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+        assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 
                 calibrator.getThreshold(), 0.0);
         assertEquals(0.0, calibrator.getInitialHardIronX(), 0.0);
         assertEquals(0.0, calibrator.getInitialHardIronY(), 0.0);
@@ -272,20 +268,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(new double[3], b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(new Matrix(3, 1), bm1);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -298,17 +294,17 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(0.0, bTriad1.getValueX(), 0.0);
         assertEquals(0.0, bTriad1.getValueY(), 0.0);
         assertEquals(0.0, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -331,7 +327,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
                 calibrator.getProgressDelta(), 0.0f);
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS, 
                 calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
@@ -389,18 +385,17 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
-    public void testConstructor3() throws WrongSizeException {
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(measurements);
+    void testConstructor3() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(measurements);
 
         // check default values
-        assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+        assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 
                 calibrator.getThreshold(), 0.0);
         assertEquals(0.0, calibrator.getInitialHardIronX(), 0.0);
         assertEquals(0.0, calibrator.getInitialHardIronY(), 0.0);
@@ -415,20 +410,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(new double[3], b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(new Matrix(3, 1), bm1);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -441,17 +436,17 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(0.0, bTriad1.getValueX(), 0.0);
         assertEquals(0.0, bTriad1.getValueY(), 0.0);
         assertEquals(0.0, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -470,7 +465,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA, 
                 calibrator.getProgressDelta(), 0.0f);
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
@@ -532,17 +527,16 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
-    public void testConstructor4() throws WrongSizeException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(true);
+    void testConstructor4() throws WrongSizeException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(true);
 
         // check default values
-        assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+        assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 
                 calibrator.getThreshold(), 0.0);
         assertEquals(0.0, calibrator.getInitialHardIronX(), 0.0);
         assertEquals(0.0, calibrator.getInitialHardIronY(), 0.0);
@@ -557,20 +551,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(new double[3], b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(new Matrix(3, 1), bm1);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -583,17 +577,17 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(0.0, bTriad1.getValueX(), 0.0);
         assertEquals(0.0, bTriad1.getValueY(), 0.0);
         assertEquals(0.0, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -674,18 +668,17 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
-    public void testConstructor5() throws WrongSizeException {
-        final WorldMagneticModel magneticModel = new WorldMagneticModel();
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(magneticModel);
+    void testConstructor5() throws WrongSizeException {
+        final var magneticModel = new WorldMagneticModel();
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(magneticModel);
 
         // check default values
-        assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+        assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 
                 calibrator.getThreshold(), 0.0);
         assertEquals(0.0, calibrator.getInitialHardIronX(), 0.0);
         assertEquals(0.0, calibrator.getInitialHardIronY(), 0.0);
@@ -700,20 +693,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(new double[3], b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(new Matrix(3, 1), bm1);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -726,17 +719,17 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(0.0, bTriad1.getValueX(), 0.0);
         assertEquals(0.0, bTriad1.getValueY(), 0.0);
         assertEquals(0.0, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -817,21 +810,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
-    public void testConstructor6() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+    void testConstructor6() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(hardIron);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(hardIron);
 
         // check default values
         assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -849,20 +841,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -875,17 +867,17 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -966,7 +958,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -975,16 +967,15 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testConstructor7() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+    void testConstructor7() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(bm);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(bm);
 
         // check default values
         assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -1002,20 +993,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -1028,17 +1019,17 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -1119,7 +1110,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -1132,31 +1123,30 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testConstructor8() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
-        final Matrix mm = generateSoftIronGeneral();
+    void testConstructor8() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double sx = mm.getElementAt(0, 0);
-        final double sy = mm.getElementAt(1, 1);
-        final double sz = mm.getElementAt(2, 2);
-        final double mxy = mm.getElementAt(0, 1);
-        final double mxz = mm.getElementAt(0, 2);
-        final double myx = mm.getElementAt(1, 0);
-        final double myz = mm.getElementAt(1, 2);
-        final double mzx = mm.getElementAt(2, 0);
-        final double mzy = mm.getElementAt(2, 1);
+        final var sx = mm.getElementAt(0, 0);
+        final var sy = mm.getElementAt(1, 1);
+        final var sz = mm.getElementAt(2, 2);
+        final var mxy = mm.getElementAt(0, 1);
+        final var mxz = mm.getElementAt(0, 2);
+        final var myx = mm.getElementAt(1, 0);
+        final var myz = mm.getElementAt(1, 2);
+        final var mzx = mm.getElementAt(2, 0);
+        final var mzy = mm.getElementAt(2, 1);
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(bm, mm);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(bm, mm);
 
         // check default values
-        assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+        assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 
                 calibrator.getThreshold(), 0.0);
         assertEquals(bmx, calibrator.getInitialHardIronX(), 0.0);
         assertEquals(bmy, calibrator.getInitialHardIronY(), 0.0);
@@ -1171,20 +1161,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -1197,17 +1187,17 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(mm1, mm);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -1288,7 +1278,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -1307,16 +1297,15 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testConstructor9() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor9() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var nedPosition = createPosition(randomizer);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition);
 
         // check default values
         assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -1334,20 +1323,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(new double[3], b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(new Matrix(3, 1), bm1);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -1360,23 +1349,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(0.0, bTriad1.getValueX(), 0.0);
         assertEquals(0.0, bTriad1.getValueY(), 0.0);
         assertEquals(0.0, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
         assertSame(nedPosition, calibrator.getNedPosition());
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
+        final var ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertEquals(ecefPosition, ecefPosition1);
         assertNotNull(calibrator.getYear());
@@ -1453,22 +1442,21 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
-    public void testConstructor10() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor10() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var nedPosition = createPosition(randomizer);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements);
 
         // check default values
         assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -1486,20 +1474,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(new double[3], b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(new Matrix(3, 1), bm1);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -1512,23 +1500,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(0.0, bTriad1.getValueX(), 0.0);
         assertEquals(0.0, bTriad1.getValueY(), 0.0);
         assertEquals(0.0, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
         assertSame(nedPosition, calibrator.getNedPosition());
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
+        final var ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertEquals(ecefPosition, ecefPosition1);
         assertNotNull(calibrator.getYear());
@@ -1605,22 +1593,22 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
-    public void testConstructor11() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor11() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var nedPosition = createPosition(randomizer);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements, this);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                this);
 
         // check default values
         assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -1638,20 +1626,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(new double[3], b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(new Matrix(3, 1), bm1);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -1664,23 +1652,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(0.0, bTriad1.getValueX(), 0.0);
         assertEquals(0.0, bTriad1.getValueY(), 0.0);
         assertEquals(0.0, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
         assertSame(nedPosition, calibrator.getNedPosition());
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
+        final var ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertEquals(ecefPosition, ecefPosition1);
         assertNotNull(calibrator.getYear());
@@ -1757,23 +1745,22 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
-    public void testConstructor12() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor12() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var nedPosition = createPosition(randomizer);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
-                        true);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                true);
 
         // check default values
         assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -1791,20 +1778,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(new double[3], b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(new Matrix(3, 1), bm1);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -1817,23 +1804,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(0.0, bTriad1.getValueX(), 0.0);
         assertEquals(0.0, bTriad1.getValueY(), 0.0);
         assertEquals(0.0, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
-        assertEquals(mm1, new Matrix(3, 3));
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm1 = calibrator.getInitialMm();
+        assertEquals(new Matrix(3, 3), mm1);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
         assertSame(nedPosition, calibrator.getNedPosition());
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
+        final var ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertEquals(ecefPosition, ecefPosition1);
         assertNotNull(calibrator.getYear());
@@ -1910,23 +1897,22 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
-    public void testConstructor13() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor13() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var nedPosition = createPosition(randomizer);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
-                        true, this);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                true, this);
 
         // check default values
         assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -1944,20 +1930,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(new double[3], b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(new Matrix(3, 1), bm1);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -1970,23 +1956,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(0.0, bTriad1.getValueX(), 0.0);
         assertEquals(0.0, bTriad1.getValueY(), 0.0);
         assertEquals(0.0, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
         assertSame(nedPosition, calibrator.getNedPosition());
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
+        final var ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertEquals(ecefPosition, ecefPosition1);
         assertNotNull(calibrator.getYear());
@@ -2063,28 +2049,28 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
-    public void testConstructor14() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor14() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var nedPosition = createPosition(randomizer);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements, hardIron);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                hardIron);
 
         // check default values
         assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -2102,20 +2088,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -2128,23 +2114,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
         assertSame(nedPosition, calibrator.getNedPosition());
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
+        final var ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertEquals(ecefPosition, ecefPosition1);
         assertNotNull(calibrator.getYear());
@@ -2221,7 +2207,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -2230,24 +2216,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testConstructor15() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor15() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var nedPosition = createPosition(randomizer);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements, hardIron,
-                        this);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements, 
+                hardIron, this);
 
         // check default values
         assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -2265,20 +2250,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -2291,23 +2276,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
         assertSame(nedPosition, calibrator.getNedPosition());
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
+        final var ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertEquals(ecefPosition, ecefPosition1);
         assertNotNull(calibrator.getYear());
@@ -2384,7 +2369,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -2393,24 +2378,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testConstructor16() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor16() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var nedPosition = createPosition(randomizer);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
-                        true, hardIron);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                true, hardIron);
 
         // check default values
         assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -2428,20 +2412,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -2454,23 +2438,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
         assertSame(nedPosition, calibrator.getNedPosition());
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
+        final var ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertEquals(ecefPosition, ecefPosition1);
         assertNotNull(calibrator.getYear());
@@ -2485,7 +2469,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA, 
                 calibrator.getProgressDelta(), 0.0f);
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
@@ -2547,7 +2531,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -2556,24 +2540,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testConstructor17() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor17() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var nedPosition = createPosition(randomizer);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
-                        true, hardIron, this);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                true, hardIron, this);
 
         // check default values
         assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -2591,20 +2574,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -2617,23 +2600,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
         assertSame(nedPosition, calibrator.getNedPosition());
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
+        final var ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertEquals(ecefPosition, ecefPosition1);
         assertNotNull(calibrator.getYear());
@@ -2710,7 +2693,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -2719,23 +2702,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testConstructor18() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor18() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var nedPosition = createPosition(randomizer);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements, bm);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements, 
+                bm);
 
         // check default values
         assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -2753,20 +2736,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -2779,23 +2762,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
         assertSame(nedPosition, calibrator.getNedPosition());
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
+        final var ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertEquals(ecefPosition, ecefPosition1);
         assertNotNull(calibrator.getYear());
@@ -2810,7 +2793,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA, 
                 calibrator.getProgressDelta(), 0.0f);
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
@@ -2872,7 +2855,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -2885,23 +2868,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testConstructor19() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor19() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var nedPosition = createPosition(randomizer);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements, bm, this);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements, 
+                bm, this);
 
         // check default values
         assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -2919,20 +2902,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -2945,23 +2928,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
         assertSame(nedPosition, calibrator.getNedPosition());
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
+        final var ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertEquals(ecefPosition, ecefPosition1);
         assertNotNull(calibrator.getYear());
@@ -2971,7 +2954,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertFalse(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
         assertEquals(13, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -3038,7 +3021,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -3051,27 +3034,26 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testConstructor20() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor20() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var nedPosition = createPosition(randomizer);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
-                        true, bm);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                true, bm);
 
         // check default values
-        assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+        assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 
                 calibrator.getThreshold(), 0.0);
         assertEquals(bmx, calibrator.getInitialHardIronX(), 0.0);
         assertEquals(bmy, calibrator.getInitialHardIronY(), 0.0);
@@ -3086,20 +3068,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -3112,23 +3094,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
         assertSame(nedPosition, calibrator.getNedPosition());
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
+        final var ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertEquals(ecefPosition, ecefPosition1);
         assertNotNull(calibrator.getYear());
@@ -3205,7 +3187,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -3218,27 +3200,26 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testConstructor21() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor21() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var nedPosition = createPosition(randomizer);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
-                        true, bm, this);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                true, bm, this);
 
         // check default values
-        assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+        assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 
                 calibrator.getThreshold(), 0.0);
         assertEquals(bmx, calibrator.getInitialHardIronX(), 0.0);
         assertEquals(bmy, calibrator.getInitialHardIronY(), 0.0);
@@ -3253,20 +3234,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -3279,23 +3260,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
         assertSame(nedPosition, calibrator.getNedPosition());
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
+        final var ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertEquals(ecefPosition, ecefPosition1);
         assertNotNull(calibrator.getYear());
@@ -3372,7 +3353,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -3385,36 +3366,36 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testConstructor22() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor22() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var nedPosition = createPosition(randomizer);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final Matrix mm = generateSoftIronGeneral();
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double sx = mm.getElementAt(0, 0);
-        final double sy = mm.getElementAt(1, 1);
-        final double sz = mm.getElementAt(2, 2);
-        final double mxy = mm.getElementAt(0, 1);
-        final double mxz = mm.getElementAt(0, 2);
-        final double myx = mm.getElementAt(1, 0);
-        final double myz = mm.getElementAt(1, 2);
-        final double mzx = mm.getElementAt(2, 0);
-        final double mzy = mm.getElementAt(2, 1);
+        final var sx = mm.getElementAt(0, 0);
+        final var sy = mm.getElementAt(1, 1);
+        final var sz = mm.getElementAt(2, 2);
+        final var mxy = mm.getElementAt(0, 1);
+        final var mxz = mm.getElementAt(0, 2);
+        final var myx = mm.getElementAt(1, 0);
+        final var myz = mm.getElementAt(1, 2);
+        final var mzx = mm.getElementAt(2, 0);
+        final var mzy = mm.getElementAt(2, 1);
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements, bm, mm);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements, 
+                bm, mm);
 
         // check default values
         assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -3432,20 +3413,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -3458,23 +3439,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(mm1, mm);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
         assertSame(nedPosition, calibrator.getNedPosition());
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
+        final var ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertEquals(ecefPosition, ecefPosition1);
         assertNotNull(calibrator.getYear());
@@ -3489,7 +3470,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA, 
                 calibrator.getProgressDelta(), 0.0f);
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
@@ -3551,7 +3532,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -3570,40 +3551,39 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testConstructor23() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor23() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var nedPosition = createPosition(randomizer);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final Matrix mm = generateSoftIronGeneral();
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double sx = mm.getElementAt(0, 0);
-        final double sy = mm.getElementAt(1, 1);
-        final double sz = mm.getElementAt(2, 2);
-        final double mxy = mm.getElementAt(0, 1);
-        final double mxz = mm.getElementAt(0, 2);
-        final double myx = mm.getElementAt(1, 0);
-        final double myz = mm.getElementAt(1, 2);
-        final double mzx = mm.getElementAt(2, 0);
-        final double mzy = mm.getElementAt(2, 1);
+        final var sx = mm.getElementAt(0, 0);
+        final var sy = mm.getElementAt(1, 1);
+        final var sz = mm.getElementAt(2, 2);
+        final var mxy = mm.getElementAt(0, 1);
+        final var mxz = mm.getElementAt(0, 2);
+        final var myx = mm.getElementAt(1, 0);
+        final var myz = mm.getElementAt(1, 2);
+        final var mzx = mm.getElementAt(2, 0);
+        final var mzy = mm.getElementAt(2, 1);
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements, bm, mm,
-                        this);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements, 
+                bm, mm, this);
 
         // check default values
-        assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+        assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 
                 calibrator.getThreshold(), 0.0);
         assertEquals(bmx, calibrator.getInitialHardIronX(), 0.0);
         assertEquals(bmy, calibrator.getInitialHardIronY(), 0.0);
@@ -3618,20 +3598,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -3644,23 +3624,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(mm1, mm);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
         assertSame(nedPosition, calibrator.getNedPosition());
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
+        final var ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertEquals(ecefPosition, ecefPosition1);
         assertNotNull(calibrator.getYear());
@@ -3737,7 +3717,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -3756,40 +3736,39 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testConstructor24() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor24() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var nedPosition = createPosition(randomizer);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final Matrix mm = generateSoftIronGeneral();
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double sx = mm.getElementAt(0, 0);
-        final double sy = mm.getElementAt(1, 1);
-        final double sz = mm.getElementAt(2, 2);
-        final double mxy = mm.getElementAt(0, 1);
-        final double mxz = mm.getElementAt(0, 2);
-        final double myx = mm.getElementAt(1, 0);
-        final double myz = mm.getElementAt(1, 2);
-        final double mzx = mm.getElementAt(2, 0);
-        final double mzy = mm.getElementAt(2, 1);
+        final var sx = mm.getElementAt(0, 0);
+        final var sy = mm.getElementAt(1, 1);
+        final var sz = mm.getElementAt(2, 2);
+        final var mxy = mm.getElementAt(0, 1);
+        final var mxz = mm.getElementAt(0, 2);
+        final var myx = mm.getElementAt(1, 0);
+        final var myz = mm.getElementAt(1, 2);
+        final var mzx = mm.getElementAt(2, 0);
+        final var mzy = mm.getElementAt(2, 1);
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
-                        true, bm, mm);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                true, bm, mm);
 
         // check default values
-        assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+        assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 
                 calibrator.getThreshold(), 0.0);
         assertEquals(bmx, calibrator.getInitialHardIronX(), 0.0);
         assertEquals(bmy, calibrator.getInitialHardIronY(), 0.0);
@@ -3804,20 +3783,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -3830,23 +3809,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(mm1, mm);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
         assertSame(nedPosition, calibrator.getNedPosition());
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
+        final var ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertEquals(ecefPosition, ecefPosition1);
         assertNotNull(calibrator.getYear());
@@ -3861,7 +3840,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA, 
                 calibrator.getProgressDelta(), 0.0f);
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
@@ -3923,7 +3902,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -3942,40 +3921,39 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testConstructor25() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor25() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var nedPosition = createPosition(randomizer);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final Matrix mm = generateSoftIronGeneral();
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double sx = mm.getElementAt(0, 0);
-        final double sy = mm.getElementAt(1, 1);
-        final double sz = mm.getElementAt(2, 2);
-        final double mxy = mm.getElementAt(0, 1);
-        final double mxz = mm.getElementAt(0, 2);
-        final double myx = mm.getElementAt(1, 0);
-        final double myz = mm.getElementAt(1, 2);
-        final double mzx = mm.getElementAt(2, 0);
-        final double mzy = mm.getElementAt(2, 1);
+        final var sx = mm.getElementAt(0, 0);
+        final var sy = mm.getElementAt(1, 1);
+        final var sz = mm.getElementAt(2, 2);
+        final var mxy = mm.getElementAt(0, 1);
+        final var mxz = mm.getElementAt(0, 2);
+        final var myx = mm.getElementAt(1, 0);
+        final var myz = mm.getElementAt(1, 2);
+        final var mzx = mm.getElementAt(2, 0);
+        final var mzy = mm.getElementAt(2, 1);
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
-                        true, bm, mm, this);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                true, bm, mm, this);
 
         // check default values
-        assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+        assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 
                 calibrator.getThreshold(), 0.0);
         assertEquals(bmx, calibrator.getInitialHardIronX(), 0.0);
         assertEquals(bmy, calibrator.getInitialHardIronY(), 0.0);
@@ -3990,20 +3968,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -4016,23 +3994,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(mm1, mm);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
         assertSame(nedPosition, calibrator.getNedPosition());
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
+        final var ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertEquals(ecefPosition, ecefPosition1);
         assertNotNull(calibrator.getYear());
@@ -4109,7 +4087,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -4128,19 +4106,18 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testConstructor26() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor26() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var nedPosition = createPosition(randomizer);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition);
 
         // check default values
-        assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+        assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 
                 calibrator.getThreshold(), 0.0);
         assertEquals(0.0, calibrator.getInitialHardIronX(), 0.0);
         assertEquals(0.0, calibrator.getInitialHardIronY(), 0.0);
@@ -4155,20 +4132,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(new double[3], b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(new Matrix(3, 1), bm1);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -4181,23 +4158,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(0.0, bTriad1.getValueX(), 0.0);
         assertEquals(0.0, bTriad1.getValueY(), 0.0);
         assertEquals(0.0, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
+        final var ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertTrue(ecefPosition1.equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertNotNull(calibrator.getYear());
@@ -4274,25 +4251,24 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
-    public void testConstructor27() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor27() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var nedPosition = createPosition(randomizer);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements);
 
         // check default values
-        assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+        assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 
                 calibrator.getThreshold(), 0.0);
         assertEquals(0.0, calibrator.getInitialHardIronX(), 0.0);
         assertEquals(0.0, calibrator.getInitialHardIronY(), 0.0);
@@ -4307,20 +4283,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(new double[3], b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(new Matrix(3, 1), bm1);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -4333,23 +4309,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(0.0, bTriad1.getValueX(), 0.0);
         assertEquals(0.0, bTriad1.getValueY(), 0.0);
         assertEquals(0.0, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
+        final var ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertTrue(ecefPosition1.equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertNotNull(calibrator.getYear());
@@ -4426,25 +4402,25 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
-    public void testConstructor28() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor28() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var nedPosition = createPosition(randomizer);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements, this);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements, 
+                this);
 
         // check default values
-        assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+        assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 
                 calibrator.getThreshold(), 0.0);
         assertEquals(0.0, calibrator.getInitialHardIronX(), 0.0);
         assertEquals(0.0, calibrator.getInitialHardIronY(), 0.0);
@@ -4459,20 +4435,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(new double[3], b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(new Matrix(3, 1), bm1);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -4485,23 +4461,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(0.0, bTriad1.getValueX(), 0.0);
         assertEquals(0.0, bTriad1.getValueY(), 0.0);
         assertEquals(0.0, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
+        final var ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertTrue(ecefPosition1.equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertNotNull(calibrator.getYear());
@@ -4578,24 +4554,22 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
-    public void testConstructor29() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor29() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var nedPosition = createPosition(randomizer);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
-                        true);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                true);
 
         // check default values
         assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -4613,20 +4587,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(new double[3], b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(new Matrix(3, 1), bm1);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -4639,23 +4613,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(0.0, bTriad1.getValueX(), 0.0);
         assertEquals(0.0, bTriad1.getValueY(), 0.0);
         assertEquals(0.0, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
+        final var ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertTrue(ecefPosition1.equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertNotNull(calibrator.getYear());
@@ -4732,23 +4706,22 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
-    public void testConstructor30() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor30() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var nedPosition = createPosition(randomizer);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
-                        true, this);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                true, this);
 
         // check default values
         assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -4766,20 +4739,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(new double[3], b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(new Matrix(3, 1), bm1);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -4792,23 +4765,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(0.0, bTriad1.getValueX(), 0.0);
         assertEquals(0.0, bTriad1.getValueY(), 0.0);
         assertEquals(0.0, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
+        final var ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertTrue(ecefPosition1.equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertNotNull(calibrator.getYear());
@@ -4885,28 +4858,28 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
-    public void testConstructor31() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor31() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var nedPosition = createPosition(randomizer);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements, hardIron);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                hardIron);
 
         // check default values
         assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -4924,20 +4897,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -4950,23 +4923,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
+        final var ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertTrue(ecefPosition1.equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertNotNull(calibrator.getYear());
@@ -5043,7 +5016,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -5052,24 +5025,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testConstructor32() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor32() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var nedPosition = createPosition(randomizer);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements, hardIron,
-                        this);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                hardIron, this);
 
         // check default values
         assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -5087,20 +5059,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -5113,23 +5085,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
+        final var ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertTrue(ecefPosition1.equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertNotNull(calibrator.getYear());
@@ -5206,7 +5178,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -5215,24 +5187,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testConstructor33() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor33() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var nedPosition = createPosition(randomizer);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
-                        true, hardIron);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                true, hardIron);
 
         // check default values
         assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -5250,20 +5221,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -5276,23 +5247,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
+        final var ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertTrue(ecefPosition1.equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertNotNull(calibrator.getYear());
@@ -5369,7 +5340,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -5378,24 +5349,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testConstructor34() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor34() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var nedPosition = createPosition(randomizer);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
-                        true, hardIron, this);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                true, hardIron, this);
 
         // check default values
         assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -5413,20 +5383,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -5439,23 +5409,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
+        final var ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertTrue(ecefPosition1.equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertNotNull(calibrator.getYear());
@@ -5532,7 +5502,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -5541,23 +5511,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testConstructor35() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor35() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var nedPosition = createPosition(randomizer);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements, bm);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                bm);
 
         // check default values
         assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -5575,20 +5545,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -5601,23 +5571,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
+        final var ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertTrue(ecefPosition1.equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertNotNull(calibrator.getYear());
@@ -5694,7 +5664,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -5707,24 +5677,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testConstructor36() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor36() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var nedPosition = createPosition(randomizer);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements, bm,
-                        this);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                bm, this);
 
         // check default values
         assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -5742,20 +5711,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -5768,23 +5737,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
+        final var ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertTrue(ecefPosition1.equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertNotNull(calibrator.getYear());
@@ -5861,7 +5830,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -5874,24 +5843,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testConstructor37() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor37() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var nedPosition = createPosition(randomizer);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
-                        true, bm);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                true, bm);
 
         // check default values
         assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -5909,20 +5877,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -5935,23 +5903,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
+        final var ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertTrue(ecefPosition1.equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertNotNull(calibrator.getYear());
@@ -6028,7 +5996,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -6041,24 +6009,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testConstructor38() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor38() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var nedPosition = createPosition(randomizer);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
-                        true, bm, this);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                true, bm, this);
 
         // check default values
         assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -6076,20 +6043,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -6102,23 +6069,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
+        final var ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertTrue(ecefPosition1.equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertNotNull(calibrator.getYear());
@@ -6195,7 +6162,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -6208,36 +6175,36 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testConstructor39() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor39() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var nedPosition = createPosition(randomizer);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final Matrix mm = generateSoftIronGeneral();
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double sx = mm.getElementAt(0, 0);
-        final double sy = mm.getElementAt(1, 1);
-        final double sz = mm.getElementAt(2, 2);
-        final double mxy = mm.getElementAt(0, 1);
-        final double mxz = mm.getElementAt(0, 2);
-        final double myx = mm.getElementAt(1, 0);
-        final double myz = mm.getElementAt(1, 2);
-        final double mzx = mm.getElementAt(2, 0);
-        final double mzy = mm.getElementAt(2, 1);
+        final var sx = mm.getElementAt(0, 0);
+        final var sy = mm.getElementAt(1, 1);
+        final var sz = mm.getElementAt(2, 2);
+        final var mxy = mm.getElementAt(0, 1);
+        final var mxz = mm.getElementAt(0, 2);
+        final var myx = mm.getElementAt(1, 0);
+        final var myz = mm.getElementAt(1, 2);
+        final var mzx = mm.getElementAt(2, 0);
+        final var mzy = mm.getElementAt(2, 1);
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements, bm, mm);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                bm, mm);
 
         // check default values
         assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -6255,20 +6222,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -6281,23 +6248,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(mm1, mm);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
+        final var ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertTrue(ecefPosition1.equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertNotNull(calibrator.getYear());
@@ -6374,7 +6341,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -6393,37 +6360,36 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testConstructor40() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor40() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var nedPosition = createPosition(randomizer);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final Matrix mm = generateSoftIronGeneral();
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double sx = mm.getElementAt(0, 0);
-        final double sy = mm.getElementAt(1, 1);
-        final double sz = mm.getElementAt(2, 2);
-        final double mxy = mm.getElementAt(0, 1);
-        final double mxz = mm.getElementAt(0, 2);
-        final double myx = mm.getElementAt(1, 0);
-        final double myz = mm.getElementAt(1, 2);
-        final double mzx = mm.getElementAt(2, 0);
-        final double mzy = mm.getElementAt(2, 1);
+        final var sx = mm.getElementAt(0, 0);
+        final var sy = mm.getElementAt(1, 1);
+        final var sz = mm.getElementAt(2, 2);
+        final var mxy = mm.getElementAt(0, 1);
+        final var mxz = mm.getElementAt(0, 2);
+        final var myx = mm.getElementAt(1, 0);
+        final var myz = mm.getElementAt(1, 2);
+        final var mzx = mm.getElementAt(2, 0);
+        final var mzy = mm.getElementAt(2, 1);
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements, bm, mm,
-                        this);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                bm, mm, this);
 
         // check default values
         assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -6441,20 +6407,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -6467,23 +6433,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(mm1, mm);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
+        final var ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertTrue(ecefPosition1.equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertNotNull(calibrator.getYear());
@@ -6560,7 +6526,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -6579,37 +6545,36 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testConstructor41() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor41() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var nedPosition = createPosition(randomizer);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final Matrix mm = generateSoftIronGeneral();
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double sx = mm.getElementAt(0, 0);
-        final double sy = mm.getElementAt(1, 1);
-        final double sz = mm.getElementAt(2, 2);
-        final double mxy = mm.getElementAt(0, 1);
-        final double mxz = mm.getElementAt(0, 2);
-        final double myx = mm.getElementAt(1, 0);
-        final double myz = mm.getElementAt(1, 2);
-        final double mzx = mm.getElementAt(2, 0);
-        final double mzy = mm.getElementAt(2, 1);
+        final var sx = mm.getElementAt(0, 0);
+        final var sy = mm.getElementAt(1, 1);
+        final var sz = mm.getElementAt(2, 2);
+        final var mxy = mm.getElementAt(0, 1);
+        final var mxz = mm.getElementAt(0, 2);
+        final var myx = mm.getElementAt(1, 0);
+        final var myz = mm.getElementAt(1, 2);
+        final var mzx = mm.getElementAt(2, 0);
+        final var mzy = mm.getElementAt(2, 1);
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
-                        true, bm, mm);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                true, bm, mm);
 
         // check default values
         assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -6627,20 +6592,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -6653,23 +6618,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(mm1, mm);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
+        final var ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertTrue(ecefPosition1.equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertNotNull(calibrator.getYear());
@@ -6746,7 +6711,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -6765,37 +6730,36 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testConstructor42() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor42() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var nedPosition = createPosition(randomizer);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final Matrix mm = generateSoftIronGeneral();
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double sx = mm.getElementAt(0, 0);
-        final double sy = mm.getElementAt(1, 1);
-        final double sz = mm.getElementAt(2, 2);
-        final double mxy = mm.getElementAt(0, 1);
-        final double mxz = mm.getElementAt(0, 2);
-        final double myx = mm.getElementAt(1, 0);
-        final double myz = mm.getElementAt(1, 2);
-        final double mzx = mm.getElementAt(2, 0);
-        final double mzy = mm.getElementAt(2, 1);
+        final var sx = mm.getElementAt(0, 0);
+        final var sy = mm.getElementAt(1, 1);
+        final var sz = mm.getElementAt(2, 2);
+        final var mxy = mm.getElementAt(0, 1);
+        final var mxz = mm.getElementAt(0, 2);
+        final var myx = mm.getElementAt(1, 0);
+        final var myz = mm.getElementAt(1, 2);
+        final var mzx = mm.getElementAt(2, 0);
+        final var mzy = mm.getElementAt(2, 1);
 
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
-                        true, bm, mm, this);
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                true, bm, mm, this);
 
         // check default values
         assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -6813,20 +6777,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getInitialHardIron();
+        final var b1 = calibrator.getInitialHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
+        final var bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
@@ -6839,23 +6803,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
+        final var bTriad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(mm1, mm);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
+        final var ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertTrue(ecefPosition1.equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertNotNull(calibrator.getYear());
@@ -6932,7 +6896,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -6951,15 +6915,14 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testGetSetThreshold() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testGetSetThreshold() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
                 calibrator.getThreshold(), 0.0);
 
-        // set new value
+        // set a new value
         calibrator.setThreshold(THRESHOLD);
 
         // check
@@ -6970,17 +6933,16 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testGetSetInitialHardIronX() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testGetSetInitialHardIronX() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialHardIronX(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] mb = generateHardIron(randomizer);
-        final double hardIronX = mb[0];
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var mb = generateHardIron(randomizer);
+        final var hardIronX = mb[0];
 
         calibrator.setInitialHardIronX(hardIronX);
 
@@ -6989,17 +6951,16 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testGetSetInitialHardIronY() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testGetSetInitialHardIronY() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialHardIronY(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] mb = generateHardIron(randomizer);
-        final double hardIronY = mb[1];
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var mb = generateHardIron(randomizer);
+        final var hardIronY = mb[1];
 
         calibrator.setInitialHardIronY(hardIronY);
 
@@ -7008,17 +6969,16 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testGetSetInitialHardIronZ() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testGetSetInitialHardIronZ() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialHardIronZ(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] mb = generateHardIron(randomizer);
-        final double hardIronZ = mb[2];
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var mb = generateHardIron(randomizer);
+        final var hardIronZ = mb[2];
 
         calibrator.setInitialHardIronZ(hardIronZ);
 
@@ -7027,26 +6987,25 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testGetSetInitialHardIronXAsMagneticFluxDensity() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testGetSetInitialHardIronXAsMagneticFluxDensity() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
-        final MagneticFluxDensity b1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        final var b1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(0.0, b1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b1.getUnit());
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] mb = generateHardIron(randomizer);
-        final double hardIronX = mb[0];
-        final MagneticFluxDensity b2 = new MagneticFluxDensity(hardIronX, MagneticFluxDensityUnit.TESLA);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var mb = generateHardIron(randomizer);
+        final var hardIronX = mb[0];
+        final var b2 = new MagneticFluxDensity(hardIronX, MagneticFluxDensityUnit.TESLA);
 
         calibrator.setInitialHardIronX(b2);
 
         // check
-        final MagneticFluxDensity b3 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        final MagneticFluxDensity b4 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var b3 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
+        final var b4 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(b4);
 
         assertEquals(b2, b3);
@@ -7054,26 +7013,25 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testGetSetInitialHardIronYAsMagneticFluxDensity() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testGetSetInitialHardIronYAsMagneticFluxDensity() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
-        final MagneticFluxDensity b1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
+        final var b1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
         assertEquals(0.0, b1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b1.getUnit());
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] mb = generateHardIron(randomizer);
-        final double hardIronY = mb[1];
-        final MagneticFluxDensity b2 = new MagneticFluxDensity(hardIronY, MagneticFluxDensityUnit.TESLA);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var mb = generateHardIron(randomizer);
+        final var hardIronY = mb[1];
+        final var b2 = new MagneticFluxDensity(hardIronY, MagneticFluxDensityUnit.TESLA);
 
         calibrator.setInitialHardIronY(b2);
 
         // check
-        final MagneticFluxDensity b3 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        final MagneticFluxDensity b4 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var b3 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
+        final var b4 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronYAsMagneticFluxDensity(b4);
 
         assertEquals(b2, b3);
@@ -7081,26 +7039,25 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testGetSetInitialHardIronZAsMagneticFluxDensity() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testGetSetInitialHardIronZAsMagneticFluxDensity() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
-        final MagneticFluxDensity b1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
+        final var b1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
         assertEquals(0.0, b1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b1.getUnit());
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] mb = generateHardIron(randomizer);
-        final double hardIronZ = mb[2];
-        final MagneticFluxDensity b2 = new MagneticFluxDensity(hardIronZ, MagneticFluxDensityUnit.TESLA);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var mb = generateHardIron(randomizer);
+        final var hardIronZ = mb[2];
+        final var b2 = new MagneticFluxDensity(hardIronZ, MagneticFluxDensityUnit.TESLA);
 
         calibrator.setInitialHardIronZ(b2);
 
         // check
-        final MagneticFluxDensity b3 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        final MagneticFluxDensity b4 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var b3 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
+        final var b4 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronZAsMagneticFluxDensity(b4);
 
         assertEquals(b2, b3);
@@ -7108,21 +7065,20 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testSetInitialHardIron1() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testSetInitialHardIron1() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getInitialHardIronX(), 0.0);
         assertEquals(0.0, calibrator.getInitialHardIronY(), 0.0);
         assertEquals(0.0, calibrator.getInitialHardIronZ(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] mb = generateHardIron(randomizer);
-        final double hardIronX = mb[0];
-        final double hardIronY = mb[1];
-        final double hardIronZ = mb[2];
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var mb = generateHardIron(randomizer);
+        final var hardIronX = mb[0];
+        final var hardIronY = mb[1];
+        final var hardIronZ = mb[2];
 
         calibrator.setInitialHardIron(hardIronX, hardIronY, hardIronZ);
 
@@ -7133,23 +7089,22 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testSetInitialHardIron2() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testSetInitialHardIron2() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
-        final MagneticFluxDensity def = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var def = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
 
         // check default value
         assertEquals(def, calibrator.getInitialHardIronXAsMagneticFluxDensity());
         assertEquals(def, calibrator.getInitialHardIronYAsMagneticFluxDensity());
         assertEquals(def, calibrator.getInitialHardIronZAsMagneticFluxDensity());
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] mb = generateHardIron(randomizer);
-        final MagneticFluxDensity hardIronX = new MagneticFluxDensity(mb[0], MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity hardIronY = new MagneticFluxDensity(mb[1], MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity hardIronZ = new MagneticFluxDensity(mb[2], MagneticFluxDensityUnit.TESLA);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var mb = generateHardIron(randomizer);
+        final var hardIronX = new MagneticFluxDensity(mb[0], MagneticFluxDensityUnit.TESLA);
+        final var hardIronY = new MagneticFluxDensity(mb[1], MagneticFluxDensityUnit.TESLA);
+        final var hardIronZ = new MagneticFluxDensity(mb[2], MagneticFluxDensityUnit.TESLA);
 
         calibrator.setInitialHardIron(hardIronX, hardIronY, hardIronZ);
 
@@ -7160,33 +7115,31 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testGetSetInitialHardIronAsTriad() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testGetSetInitialHardIronAsTriad() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default values
-        final MagneticFluxDensityTriad triad1 = calibrator.getInitialHardIronAsTriad();
+        final var triad1 = calibrator.getInitialHardIronAsTriad();
         assertEquals(0.0, triad1.getValueX(), 0.0);
         assertEquals(0.0, triad1.getValueY(), 0.0);
         assertEquals(0.0, triad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, triad1.getUnit());
-        final MagneticFluxDensityTriad triad2 = new MagneticFluxDensityTriad();
+        final var triad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(triad2);
         assertEquals(triad1, triad2);
 
         // set new values
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] mb = generateHardIron(randomizer);
-        final double hardIronX = mb[0];
-        final double hardIronY = mb[1];
-        final double hardIronZ = mb[2];
+        final var randomizer = new UniformRandomizer();
+        final var mb = generateHardIron(randomizer);
+        final var hardIronX = mb[0];
+        final var hardIronY = mb[1];
+        final var hardIronZ = mb[2];
 
-        final MagneticFluxDensityTriad triad3 = new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA,
-                hardIronX, hardIronY, hardIronZ);
+        final var triad3 = new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA, hardIronX, hardIronY, hardIronZ);
         calibrator.setInitialHardIron(triad3);
 
-        final MagneticFluxDensityTriad triad4 = calibrator.getInitialHardIronAsTriad();
-        final MagneticFluxDensityTriad triad5 = new MagneticFluxDensityTriad();
+        final var triad4 = calibrator.getInitialHardIronAsTriad();
+        final var triad5 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(triad5);
 
         assertEquals(triad3, triad4);
@@ -7194,18 +7147,17 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testGetSetInitialSx() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testGetSetInitialSx() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
 
-        // set new value
-        final Matrix mm = generateSoftIronGeneral();
+        // set a new value
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double sx = mm.getElementAt(0, 0);
+        final var sx = mm.getElementAt(0, 0);
 
         calibrator.setInitialSx(sx);
 
@@ -7214,18 +7166,17 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testGetSetInitialSy() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testGetSetInitialSy() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialSy(), 0.0);
 
-        // set new value
-        final Matrix mm = generateSoftIronGeneral();
+        // set a new value
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double sy = mm.getElementAt(1, 1);
+        final var sy = mm.getElementAt(1, 1);
 
         calibrator.setInitialSy(sy);
 
@@ -7234,18 +7185,17 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testGetSetInitialSz() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testGetSetInitialSz() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialSz(), 0.0);
 
-        // set new value
-        final Matrix mm = generateSoftIronGeneral();
+        // set a new value
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double sz = mm.getElementAt(2, 2);
+        final var sz = mm.getElementAt(2, 2);
 
         calibrator.setInitialSz(sz);
 
@@ -7254,18 +7204,17 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testGetSetInitialMxy() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testGetSetInitialMxy() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
 
-        // set new value
-        final Matrix mm = generateSoftIronGeneral();
+        // set a new value
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double mxy = mm.getElementAt(0, 1);
+        final var mxy = mm.getElementAt(0, 1);
 
         calibrator.setInitialMxy(mxy);
 
@@ -7274,18 +7223,17 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testGetSetInitialMxz() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testGetSetInitialMxz() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
 
-        // set new value
-        final Matrix mm = generateSoftIronGeneral();
+        // set a new value
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double mxz = mm.getElementAt(0, 2);
+        final var mxz = mm.getElementAt(0, 2);
 
         calibrator.setInitialMxz(mxz);
 
@@ -7294,18 +7242,17 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testGetSetInitialMyx() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testGetSetInitialMyx() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
 
-        // set new value
-        final Matrix mm = generateSoftIronGeneral();
+        // set a new value
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double myx = mm.getElementAt(1, 0);
+        final var myx = mm.getElementAt(1, 0);
 
         calibrator.setInitialMyx(myx);
 
@@ -7314,18 +7261,17 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testGetSetInitialMyz() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testGetSetInitialMyz() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
 
-        // set new value
-        final Matrix mm = generateSoftIronGeneral();
+        // set a new value
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double myz = mm.getElementAt(1, 2);
+        final var myz = mm.getElementAt(1, 2);
 
         calibrator.setInitialMyz(myz);
 
@@ -7334,18 +7280,17 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testGetSetInitialMzx() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testGetSetInitialMzx() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
 
-        // set new value
-        final Matrix mm = generateSoftIronGeneral();
+        // set a new value
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double mzx = mm.getElementAt(2, 0);
+        final var mzx = mm.getElementAt(2, 0);
 
         calibrator.setInitialMzx(mzx);
 
@@ -7354,18 +7299,17 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testGetSetInitialMzy() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testGetSetInitialMzy() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        // set new value
-        final Matrix mm = generateSoftIronGeneral();
+        // set a new value
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double mzy = mm.getElementAt(2, 1);
+        final var mzy = mm.getElementAt(2, 1);
 
         calibrator.setInitialMzy(mzy);
 
@@ -7374,9 +7318,8 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testSetInitialScalingFactors() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testSetInitialScalingFactors() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -7384,12 +7327,12 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getInitialSz(), 0.0);
 
         // set new values
-        final Matrix mm = generateSoftIronGeneral();
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double sx = mm.getElementAt(0, 0);
-        final double sy = mm.getElementAt(1, 1);
-        final double sz = mm.getElementAt(2, 2);
+        final var sx = mm.getElementAt(0, 0);
+        final var sy = mm.getElementAt(1, 1);
+        final var sz = mm.getElementAt(2, 2);
 
         calibrator.setInitialScalingFactors(sx, sy, sz);
 
@@ -7400,9 +7343,8 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testSetInitialCrossCouplingErrors() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testSetInitialCrossCouplingErrors() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
@@ -7412,16 +7354,16 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        // set new value
-        final Matrix mm = generateSoftIronGeneral();
+        // set a new value
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double mxy = mm.getElementAt(0, 1);
-        final double mxz = mm.getElementAt(0, 2);
-        final double myx = mm.getElementAt(1, 0);
-        final double myz = mm.getElementAt(1, 2);
-        final double mzx = mm.getElementAt(2, 0);
-        final double mzy = mm.getElementAt(2, 1);
+        final var mxy = mm.getElementAt(0, 1);
+        final var mxz = mm.getElementAt(0, 2);
+        final var myx = mm.getElementAt(1, 0);
+        final var myz = mm.getElementAt(1, 2);
+        final var mzx = mm.getElementAt(2, 0);
+        final var mzy = mm.getElementAt(2, 1);
 
         calibrator.setInitialCrossCouplingErrors(mxy, mxz, myx, myz, mzx, mzy);
 
@@ -7435,9 +7377,8 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testSetInitialScalingFactorsAndCrossCouplingErrors() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testSetInitialScalingFactorsAndCrossCouplingErrors() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -7450,19 +7391,19 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        // set new value
-        final Matrix mm = generateSoftIronGeneral();
+        // set a new value
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double sx = mm.getElementAt(0, 0);
-        final double sy = mm.getElementAt(1, 1);
-        final double sz = mm.getElementAt(2, 2);
-        final double mxy = mm.getElementAt(0, 1);
-        final double mxz = mm.getElementAt(0, 2);
-        final double myx = mm.getElementAt(1, 0);
-        final double myz = mm.getElementAt(1, 2);
-        final double mzx = mm.getElementAt(2, 0);
-        final double mzy = mm.getElementAt(2, 1);
+        final var sx = mm.getElementAt(0, 0);
+        final var sy = mm.getElementAt(1, 1);
+        final var sz = mm.getElementAt(2, 2);
+        final var mxy = mm.getElementAt(0, 1);
+        final var mxz = mm.getElementAt(0, 2);
+        final var myx = mm.getElementAt(1, 0);
+        final var myz = mm.getElementAt(1, 2);
+        final var mzx = mm.getElementAt(2, 0);
+        final var mzy = mm.getElementAt(2, 1);
 
         calibrator.setInitialScalingFactorsAndCrossCouplingErrors(sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy);
 
@@ -7479,24 +7420,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testGetInitialHardIronAsArray() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testGetInitialHardIronAsArray() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         assertArrayEquals(new double[3], calibrator.getInitialHardIron(), 0.0);
-        final double[] result1 = new double[3];
+        final var result1 = new double[3];
         calibrator.getInitialHardIron(result1);
-        assertArrayEquals(result1, new double[3], 0.0);
+        assertArrayEquals(new double[3], result1, 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] bm = generateHardIron(randomizer);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var bm = generateHardIron(randomizer);
         calibrator.setInitialHardIron(bm);
 
         // check
         assertArrayEquals(bm, calibrator.getInitialHardIron(), 0.0);
-        final double[] result2 = new double[3];
+        final var result2 = new double[3];
         calibrator.getInitialHardIron(result2);
         assertArrayEquals(result2, bm, 0.0);
 
@@ -7506,25 +7446,24 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testGetInitialHardIronAsMatrix() throws LockedException, WrongSizeException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testGetInitialHardIronAsMatrix() throws LockedException, WrongSizeException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         assertEquals(new Matrix(3, 1), calibrator.getInitialHardIronAsMatrix());
-        final Matrix result1 = new Matrix(3, 1);
+        final var result1 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(result1);
         assertEquals(new Matrix(3, 1), result1);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] bm = generateHardIron(randomizer);
-        final Matrix b = Matrix.newFromArray(bm);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var bm = generateHardIron(randomizer);
+        final var b = Matrix.newFromArray(bm);
         calibrator.setInitialHardIron(b);
 
         // check
         assertEquals(calibrator.getInitialHardIronAsMatrix(), b);
-        final Matrix result2 = new Matrix(3, 1);
+        final var result2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(result2);
         assertEquals(result2, b);
 
@@ -7540,40 +7479,38 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testGetSetInitialMm() throws WrongSizeException, LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testGetSetInitialMm() throws WrongSizeException, LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         assertEquals(new Matrix(3, 3), calibrator.getInitialMm());
-        final Matrix result1 = new Matrix(3, 3);
+        final var result1 = new Matrix(3, 3);
         calibrator.getInitialMm(result1);
 
-        // set new value
-        final Matrix mm = generateSoftIronGeneral();
+        // set a new value
+        final var mm = generateSoftIronGeneral();
         calibrator.setInitialMm(mm);
 
         // check
         assertEquals(mm, calibrator.getInitialMm());
-        final Matrix result2 = new Matrix(3, 3);
+        final var result2 = new Matrix(3, 3);
         calibrator.getInitialMm(result2);
         assertEquals(mm, result2);
     }
 
     @Test
-    public void testGetSetNedPosition() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testGetSetNedPosition() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         assertNull(calibrator.getNedPosition());
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var nedPosition = createPosition(randomizer);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
         calibrator.setPosition(nedPosition);
@@ -7584,20 +7521,19 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testGetSetEcefPosition() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testGetSetEcefPosition() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         assertNull(calibrator.getEcefPosition());
         assertFalse(calibrator.getEcefPosition(null));
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var nedPosition = createPosition(randomizer);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
         calibrator.setPosition(ecefPosition);
@@ -7605,25 +7541,24 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         // check
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition2 = new ECEFPosition();
+        final var ecefPosition2 = new ECEFPosition();
         calibrator.getEcefPosition(ecefPosition2);
         assertTrue(ecefPosition2.equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
     }
 
     @Test
-    public void testGetSetYear() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testGetSetYear() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         assertNotNull(calibrator.getYear());
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        long timestamp = createTimestamp(randomizer);
-        final GregorianCalendar calendar = new GregorianCalendar();
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var timestamp = createTimestamp(randomizer);
+        final var calendar = new GregorianCalendar();
         calendar.setTimeInMillis(timestamp);
-        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final var year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
 
         calibrator.setYear(year);
 
@@ -7632,20 +7567,19 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testSetTime1() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testSetTime1() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         assertNotNull(calibrator.getYear());
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        long timestamp = createTimestamp(randomizer);
-        final Date date = new Date(timestamp);
-        final GregorianCalendar calendar = new GregorianCalendar();
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var timestamp = createTimestamp(randomizer);
+        final var date = new Date(timestamp);
+        final var calendar = new GregorianCalendar();
         calendar.setTimeInMillis(timestamp);
-        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final var year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
 
         calibrator.setTime(date);
 
@@ -7654,20 +7588,19 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testSetTime2() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testSetTime2() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         assertNotNull(calibrator.getYear());
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        long timestamp = createTimestamp(randomizer);
-        final Date date = new Date(timestamp);
-        final GregorianCalendar calendar = new GregorianCalendar();
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var timestamp = createTimestamp(randomizer);
+        final var date = new Date(timestamp);
+        final var calendar = new GregorianCalendar();
         calendar.setTimeInMillis(timestamp);
-        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final var year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
 
         calibrator.setTime(date.getTime());
 
@@ -7676,19 +7609,18 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testSetTime3() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testSetTime3() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         assertNotNull(calibrator.getYear());
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        long timestamp = createTimestamp(randomizer);
-        final GregorianCalendar calendar = new GregorianCalendar();
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var timestamp = createTimestamp(randomizer);
+        final var calendar = new GregorianCalendar();
         calendar.setTimeInMillis(timestamp);
-        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final var year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
 
         calibrator.setTime(calendar);
 
@@ -7697,15 +7629,14 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testGetSetMeasurements() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testGetSetMeasurements() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         assertNull(calibrator.getMeasurements());
 
-        // set new value
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        // set a new value
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
         calibrator.setMeasurements(measurements);
 
         // check
@@ -7713,14 +7644,13 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testIsSetCommonAxisUsed() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testIsSetCommonAxisUsed() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         assertFalse(calibrator.isCommonAxisUsed());
 
-        // set new value
+        // set a new value
         calibrator.setCommonAxisUsed(true);
 
         // check
@@ -7728,14 +7658,13 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testGetSetListener() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testGetSetListener() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         assertNull(calibrator.getListener());
 
-        // set new value
+        // set a new value
         calibrator.setListener(this);
 
         // check
@@ -7743,15 +7672,14 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testGetMinimumRequiredMeasurements() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testGetMinimumRequiredMeasurements() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         assertEquals(13, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isCommonAxisUsed());
 
-        // set new value
+        // set a new value
         calibrator.setCommonAxisUsed(true);
 
         // check
@@ -7760,30 +7688,29 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testIsReady() throws LockedException, IOException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testIsReady() throws LockedException, IOException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // initially there are no measurements
         assertFalse(calibrator.isReady());
         assertNull(calibrator.getMeasurements());
 
         // set not enough measurements
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements1 = Collections.emptyList();
+        final var measurements1 = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
         calibrator.setMeasurements(measurements1);
 
         // check
         assertFalse(calibrator.isReady());
 
         // set enough measurements
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition position = createPosition(randomizer);
-        final Date timestamp = new Date(createTimestamp(randomizer));
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix softIron = generateSoftIronGeneral();
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements2 = generateMeasures(hardIron, softIron,
-                calibrator.getMinimumRequiredMeasurements(), wmmEstimator, randomizer, position, timestamp);
+        final var randomizer = new UniformRandomizer();
+        final var position = createPosition(randomizer);
+        final var timestamp = new Date(createTimestamp(randomizer));
+        final var hardIron = generateHardIron(randomizer);
+        final var softIron = generateSoftIronGeneral();
+        final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final var measurements2 = generateMeasures(hardIron, softIron, calibrator.getMinimumRequiredMeasurements(),
+                wmmEstimator, randomizer, position, timestamp);
         calibrator.setMeasurements(measurements2);
 
         // check
@@ -7803,15 +7730,14 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testGetSetMagneticModel() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testGetSetMagneticModel() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         assertNull(calibrator.getMagneticModel());
 
-        // set new value
-        final WorldMagneticModel magneticModel = new WorldMagneticModel();
+        // set a new value
+        final var magneticModel = new WorldMagneticModel();
         calibrator.setMagneticModel(magneticModel);
 
         // check
@@ -7819,14 +7745,13 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testGetSetProgressDelta() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testGetSetProgressDelta() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         assertEquals(0.05f, calibrator.getProgressDelta(), 0.0);
 
-        // set new value
+        // set a new value
         calibrator.setProgressDelta(0.01f);
 
         // check
@@ -7838,14 +7763,13 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testGetSetConfidence() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testGetSetConfidence() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         assertEquals(0.99, calibrator.getConfidence(), 0.0);
 
-        // set new value
+        // set a new value
         calibrator.setConfidence(0.5);
 
         // check
@@ -7857,14 +7781,13 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testGetSetMaxIterations() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testGetSetMaxIterations() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         assertEquals(5000, calibrator.getMaxIterations());
 
-        // set new value
+        // set a new value
         calibrator.setMaxIterations(100);
 
         assertEquals(100, calibrator.getMaxIterations());
@@ -7874,14 +7797,13 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testIsSetResultRefined() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testIsSetResultRefined() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         assertTrue(calibrator.isResultRefined());
 
-        // set new value
+        // set a new value
         calibrator.setResultRefined(false);
 
         // check
@@ -7889,14 +7811,13 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testIsSetCovarianceKept() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testIsSetCovarianceKept() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         assertTrue(calibrator.isCovarianceKept());
 
-        // set new value
+        // set a new value
         calibrator.setCovarianceKept(false);
 
         // check
@@ -7904,14 +7825,13 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testGetSetQualityScores() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testGetSetQualityScores() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         assertNull(calibrator.getQualityScores());
 
-        // set new value
+        // set a new value
         calibrator.setQualityScores(new double[3]);
 
         // check
@@ -7919,15 +7839,14 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testGetSetPreliminarySubsetSize() throws LockedException {
-        final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
+    void testGetSetPreliminarySubsetSize() throws LockedException {
+        final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         assertEquals(MSACRobustKnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
                 calibrator.getPreliminarySubsetSize());
 
-        // set new value
+        // set a new value
         calibrator.setPreliminarySubsetSize(11);
 
         // check
@@ -7938,27 +7857,27 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testCalibrateGeneralNoNoiseInlier() throws IOException, LockedException, WrongSizeException,
+    void testCalibrateGeneralNoNoiseInlier() throws IOException, LockedException, WrongSizeException,
             CalibrationException, NotReadyException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
-            final double[] hardIron = generateHardIron(randomizer);
-            final Matrix bm = Matrix.newFromArray(hardIron);
-            final Matrix mm = generateSoftIronGeneral();
+            final var hardIron = generateHardIron(randomizer);
+            final var bm = Matrix.newFromArray(hardIron);
+            final var mm = generateSoftIronGeneral();
             assertNotNull(mm);
 
-            final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
+            final var noiseRandomizer = new GaussianRandomizer(0.0, 
                     OUTLIER_ERROR_FACTOR * MAGNETOMETER_NOISE_STD);
 
-            final NEDPosition position = createPosition(randomizer);
-            final Date timestamp = new Date(createTimestamp(randomizer));
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements = new ArrayList<>();
-            for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
-                final CoordinateTransformation cnb = generateBodyC(randomizer);
+            final var position = createPosition(randomizer);
+            final var timestamp = new Date(createTimestamp(randomizer));
+            final var measurements = new ArrayList<StandardDeviationBodyMagneticFluxDensity>();
+            for (var i = 0; i < MEASUREMENT_NUMBER; i++) {
+                final var cnb = generateBodyC(randomizer);
 
                 final StandardDeviationBodyMagneticFluxDensity b;
                 if (randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE) {
@@ -7971,9 +7890,8 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
                 measurements.add(b);
             }
 
-            final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                    new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(position, measurements,
-                            false, bm, mm, this);
+            final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(position, measurements,
+                    false, bm, mm, this);
             calibrator.setTime(timestamp);
             calibrator.setThreshold(THRESHOLD);
 
@@ -7981,23 +7899,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
-            assertEquals(0, mCalibrateNextIteration);
-            assertEquals(0, mCalibrateProgressChange);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
+            assertEquals(0, calibrateNextIteration);
+            assertEquals(0, calibrateProgressChange);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
-            assertTrue(mCalibrateNextIteration > 0);
-            assertTrue(mCalibrateProgressChange >= 0);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
+            assertTrue(calibrateNextIteration > 0);
+            assertTrue(calibrateProgressChange >= 0);
 
-            final Matrix estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
-            final Matrix estimatedMm = calibrator.getEstimatedMm();
+            final var estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
+            final var estimatedMm = calibrator.getEstimatedMm();
 
             if (!bm.equals(estimatedHardIron, ABSOLUTE_ERROR)) {
                 continue;
@@ -8011,7 +7929,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
             assertEstimatedResult(estimatedHardIron, estimatedMm, calibrator, true);
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
+            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
             break;
@@ -8021,27 +7939,27 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testCalibrateCommonAxisNoNoiseInlier() throws IOException, LockedException, CalibrationException,
+    void testCalibrateCommonAxisNoNoiseInlier() throws IOException, LockedException, CalibrationException,
             NotReadyException, WrongSizeException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
-            final double[] hardIron = generateHardIron(randomizer);
-            final Matrix bm = Matrix.newFromArray(hardIron);
-            final Matrix mm = generateSoftIronCommonAxis();
+            final var hardIron = generateHardIron(randomizer);
+            final var bm = Matrix.newFromArray(hardIron);
+            final var mm = generateSoftIronCommonAxis();
             assertNotNull(mm);
 
-            final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
+            final var noiseRandomizer = new GaussianRandomizer(0.0,
                     OUTLIER_ERROR_FACTOR * MAGNETOMETER_NOISE_STD);
 
-            final NEDPosition position = createPosition(randomizer);
-            final Date timestamp = new Date(createTimestamp(randomizer));
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements = new ArrayList<>();
-            for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
-                final CoordinateTransformation cnb = generateBodyC(randomizer);
+            final var position = createPosition(randomizer);
+            final var timestamp = new Date(createTimestamp(randomizer));
+            final var measurements = new ArrayList<StandardDeviationBodyMagneticFluxDensity>();
+            for (var i = 0; i < MEASUREMENT_NUMBER; i++) {
+                final var cnb = generateBodyC(randomizer);
 
                 final StandardDeviationBodyMagneticFluxDensity b;
                 if (randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE) {
@@ -8054,9 +7972,8 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
                 measurements.add(b);
             }
 
-            final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                    new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(position, measurements,
-                            true, bm, mm, this);
+            final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(position, measurements,
+                    true, bm, mm, this);
             calibrator.setTime(timestamp);
             calibrator.setThreshold(THRESHOLD);
 
@@ -8064,23 +7981,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
-            assertEquals(0, mCalibrateNextIteration);
-            assertEquals(0, mCalibrateProgressChange);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
+            assertEquals(0, calibrateNextIteration);
+            assertEquals(0, calibrateProgressChange);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
-            assertTrue(mCalibrateNextIteration > 0);
-            assertTrue(mCalibrateProgressChange >= 0);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
+            assertTrue(calibrateNextIteration > 0);
+            assertTrue(calibrateProgressChange >= 0);
 
-            final Matrix estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
-            final Matrix estimatedMm = calibrator.getEstimatedMm();
+            final var estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
+            final var estimatedMm = calibrator.getEstimatedMm();
 
             if (!bm.equals(estimatedHardIron, ABSOLUTE_ERROR)) {
                 continue;
@@ -8093,7 +8010,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
 
             assertEstimatedResult(estimatedHardIron, estimatedMm, calibrator, false);
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
+            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
             break;
@@ -8103,29 +8020,28 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testCalibrateGeneralWithInlierNoise() throws IOException, LockedException, NotReadyException,
+    void testCalibrateGeneralWithInlierNoise() throws IOException, LockedException, NotReadyException,
             WrongSizeException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
-            final double[] hardIron = generateHardIron(randomizer);
-            final Matrix bm = Matrix.newFromArray(hardIron);
-            final Matrix mm = generateSoftIronGeneral();
+            final var hardIron = generateHardIron(randomizer);
+            final var bm = Matrix.newFromArray(hardIron);
+            final var mm = generateSoftIronGeneral();
             assertNotNull(mm);
 
-            final GaussianRandomizer inlierNoiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
-                    MAGNETOMETER_NOISE_STD);
-            final GaussianRandomizer outlierNoiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
+            final var inlierNoiseRandomizer = new GaussianRandomizer(0.0, MAGNETOMETER_NOISE_STD);
+            final var outlierNoiseRandomizer = new GaussianRandomizer(0.0,
                     OUTLIER_ERROR_FACTOR * MAGNETOMETER_NOISE_STD);
 
-            final NEDPosition position = createPosition(randomizer);
-            final Date timestamp = new Date(createTimestamp(randomizer));
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements = new ArrayList<>();
-            for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
-                final CoordinateTransformation cnb = generateBodyC(randomizer);
+            final var position = createPosition(randomizer);
+            final var timestamp = new Date(createTimestamp(randomizer));
+            final var measurements = new ArrayList<StandardDeviationBodyMagneticFluxDensity>();
+            for (var i = 0; i < MEASUREMENT_NUMBER; i++) {
+                final var cnb = generateBodyC(randomizer);
 
                 final StandardDeviationBodyMagneticFluxDensity b;
                 if (randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE) {
@@ -8138,9 +8054,8 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
                 measurements.add(b);
             }
 
-            final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                    new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(position, measurements,
-                            false, bm, mm, this);
+            final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(position, measurements,
+                    false, bm, mm, this);
             calibrator.setTime(timestamp);
             calibrator.setThreshold(THRESHOLD);
 
@@ -8148,10 +8063,10 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
-            assertEquals(0, mCalibrateNextIteration);
-            assertEquals(0, mCalibrateProgressChange);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
+            assertEquals(0, calibrateNextIteration);
+            assertEquals(0, calibrateProgressChange);
 
             try {
                 calibrator.calibrate();
@@ -8162,13 +8077,13 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
-            assertTrue(mCalibrateNextIteration > 0);
-            assertTrue(mCalibrateProgressChange >= 0);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
+            assertTrue(calibrateNextIteration > 0);
+            assertTrue(calibrateProgressChange >= 0);
 
-            final Matrix estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
-            final Matrix estimatedMm = calibrator.getEstimatedMm();
+            final var estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
+            final var estimatedMm = calibrator.getEstimatedMm();
 
             if (!bm.equals(estimatedHardIron, LARGE_ABSOLUTE_ERROR)) {
                 continue;
@@ -8184,7 +8099,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
+            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
             break;
@@ -8194,29 +8109,28 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testCalibrateCommonAxisWithInlierNoise() throws IOException, LockedException, CalibrationException,
+    void testCalibrateCommonAxisWithInlierNoise() throws IOException, LockedException, CalibrationException,
             NotReadyException, WrongSizeException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
-            final double[] hardIron = generateHardIron(randomizer);
-            final Matrix bm = Matrix.newFromArray(hardIron);
-            final Matrix mm = generateSoftIronCommonAxis();
+            final var hardIron = generateHardIron(randomizer);
+            final var bm = Matrix.newFromArray(hardIron);
+            final var mm = generateSoftIronCommonAxis();
             assertNotNull(mm);
 
-            final GaussianRandomizer inlierNoiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
-                    MAGNETOMETER_NOISE_STD);
-            final GaussianRandomizer outlierNoiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
+            final var inlierNoiseRandomizer = new GaussianRandomizer(0.0, MAGNETOMETER_NOISE_STD);
+            final var outlierNoiseRandomizer = new GaussianRandomizer(0.0,
                     OUTLIER_ERROR_FACTOR * MAGNETOMETER_NOISE_STD);
 
-            final NEDPosition position = createPosition(randomizer);
-            final Date timestamp = new Date(createTimestamp(randomizer));
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements = new ArrayList<>();
-            for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
-                final CoordinateTransformation cnb = generateBodyC(randomizer);
+            final var position = createPosition(randomizer);
+            final var timestamp = new Date(createTimestamp(randomizer));
+            final var measurements = new ArrayList<StandardDeviationBodyMagneticFluxDensity>();
+            for (var i = 0; i < MEASUREMENT_NUMBER; i++) {
+                final var cnb = generateBodyC(randomizer);
 
                 final StandardDeviationBodyMagneticFluxDensity b;
                 if (randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE) {
@@ -8229,9 +8143,8 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
                 measurements.add(b);
             }
 
-            final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                    new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(position, measurements,
-                            true, bm, mm, this);
+            final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(position, measurements,
+                    true, bm, mm, this);
             calibrator.setTime(timestamp);
             calibrator.setThreshold(THRESHOLD);
 
@@ -8239,23 +8152,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
-            assertEquals(0, mCalibrateNextIteration);
-            assertEquals(0, mCalibrateProgressChange);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
+            assertEquals(0, calibrateNextIteration);
+            assertEquals(0, calibrateProgressChange);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
-            assertTrue(mCalibrateNextIteration > 0);
-            assertTrue(mCalibrateProgressChange >= 0);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
+            assertTrue(calibrateNextIteration > 0);
+            assertTrue(calibrateProgressChange >= 0);
 
-            final Matrix estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
-            final Matrix estimatedMm = calibrator.getEstimatedMm();
+            final var estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
+            final var estimatedMm = calibrator.getEstimatedMm();
 
             if (!bm.equals(estimatedHardIron, LARGE_ABSOLUTE_ERROR)) {
                 continue;
@@ -8271,7 +8184,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
+            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
             break;
@@ -8281,27 +8194,27 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     @Test
-    public void testCalibrateGeneralNoRefinement() throws IOException, LockedException, CalibrationException,
+    void testCalibrateGeneralNoRefinement() throws IOException, LockedException, CalibrationException,
             NotReadyException, WrongSizeException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
-            final double[] hardIron = generateHardIron(randomizer);
-            final Matrix bm = Matrix.newFromArray(hardIron);
-            final Matrix mm = generateSoftIronGeneral();
+            final var hardIron = generateHardIron(randomizer);
+            final var bm = Matrix.newFromArray(hardIron);
+            final var mm = generateSoftIronGeneral();
             assertNotNull(mm);
 
-            final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
+            final var noiseRandomizer = new GaussianRandomizer(0.0,
                     OUTLIER_ERROR_FACTOR * MAGNETOMETER_NOISE_STD);
 
-            final NEDPosition position = createPosition(randomizer);
-            final Date timestamp = new Date(createTimestamp(randomizer));
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements = new ArrayList<>();
-            for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
-                final CoordinateTransformation cnb = generateBodyC(randomizer);
+            final var position = createPosition(randomizer);
+            final var timestamp = new Date(createTimestamp(randomizer));
+            final var measurements = new ArrayList<StandardDeviationBodyMagneticFluxDensity>();
+            for (var i = 0; i < MEASUREMENT_NUMBER; i++) {
+                final var cnb = generateBodyC(randomizer);
 
                 final StandardDeviationBodyMagneticFluxDensity b;
                 if (randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE) {
@@ -8314,9 +8227,8 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
                 measurements.add(b);
             }
 
-            final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                    new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(position, measurements,
-                            false, bm, mm, this);
+            final var calibrator = new MSACRobustKnownPositionAndInstantMagnetometerCalibrator(position, measurements,
+                    false, bm, mm, this);
             calibrator.setTime(timestamp);
             calibrator.setThreshold(THRESHOLD);
             calibrator.setResultRefined(false);
@@ -8325,23 +8237,23 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
-            assertEquals(0, mCalibrateNextIteration);
-            assertEquals(0, mCalibrateProgressChange);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
+            assertEquals(0, calibrateNextIteration);
+            assertEquals(0, calibrateProgressChange);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
-            assertTrue(mCalibrateNextIteration > 0);
-            assertTrue(mCalibrateProgressChange >= 0);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
+            assertTrue(calibrateNextIteration > 0);
+            assertTrue(calibrateProgressChange >= 0);
 
-            final Matrix estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
-            final Matrix estimatedMm = calibrator.getEstimatedMm();
+            final var estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
+            final var estimatedMm = calibrator.getEstimatedMm();
 
             if (!bm.equals(estimatedHardIron, ABSOLUTE_ERROR)) {
                 continue;
@@ -8357,7 +8269,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() >= 0.0);
-            assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
+            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
             break;
@@ -8369,34 +8281,34 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     @Override
     public void onCalibrateStart(final RobustKnownPositionAndInstantMagnetometerCalibrator calibrator) {
         checkLocked((MSACRobustKnownPositionAndInstantMagnetometerCalibrator) calibrator);
-        mCalibrateStart++;
+        calibrateStart++;
     }
 
     @Override
     public void onCalibrateEnd(final RobustKnownPositionAndInstantMagnetometerCalibrator calibrator) {
         checkLocked((MSACRobustKnownPositionAndInstantMagnetometerCalibrator) calibrator);
-        mCalibrateEnd++;
+        calibrateEnd++;
     }
 
     @Override
     public void onCalibrateNextIteration(
             final RobustKnownPositionAndInstantMagnetometerCalibrator calibrator, final int iteration) {
         checkLocked((MSACRobustKnownPositionAndInstantMagnetometerCalibrator) calibrator);
-        mCalibrateNextIteration++;
+        calibrateNextIteration++;
     }
 
     @Override
     public void onCalibrateProgressChange(
             final RobustKnownPositionAndInstantMagnetometerCalibrator calibrator, final float progress) {
         checkLocked((MSACRobustKnownPositionAndInstantMagnetometerCalibrator) calibrator);
-        mCalibrateProgressChange++;
+        calibrateProgressChange++;
     }
 
     private void reset() {
-        mCalibrateStart = 0;
-        mCalibrateEnd = 0;
-        mCalibrateNextIteration = 0;
-        mCalibrateProgressChange = 0;
+        calibrateStart = 0;
+        calibrateEnd = 0;
+        calibrateNextIteration = 0;
+        calibrateProgressChange = 0;
     }
 
     private static void checkLocked(final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator) {
@@ -8456,14 +8368,14 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
             final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator, final boolean checkCovariance)
             throws WrongSizeException {
 
-        final double[] estimatedHardIron = calibrator.getEstimatedHardIron();
+        final var estimatedHardIron = calibrator.getEstimatedHardIron();
         assertArrayEquals(hardIron.getBuffer(), estimatedHardIron, 0.0);
 
-        final double[] estimatedHardIron2 = new double[3];
+        final var estimatedHardIron2 = new double[3];
         assertTrue(calibrator.getEstimatedHardIron(estimatedHardIron2));
         assertArrayEquals(estimatedHardIron, estimatedHardIron2, 0.0);
 
-        final Matrix hardIron2 = new Matrix(3, 1);
+        final var hardIron2 = new Matrix(3, 1);
         assertTrue(calibrator.getEstimatedHardIronAsMatrix(hardIron2));
 
         assertEquals(hardIron, hardIron2);
@@ -8472,31 +8384,31 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(hardIron.getElementAtIndex(1), calibrator.getEstimatedHardIronY(), 0.0);
         assertEquals(hardIron.getElementAtIndex(2), calibrator.getEstimatedHardIronZ(), 0.0);
 
-        final MagneticFluxDensity bx1 = calibrator.getEstimatedHardIronXAsMagneticFluxDensity();
+        final var bx1 = calibrator.getEstimatedHardIronXAsMagneticFluxDensity();
         assertEquals(calibrator.getEstimatedHardIronX(), bx1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bx1.getUnit());
-        final MagneticFluxDensity bx2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var bx2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         calibrator.getEstimatedHardIronXAsMagneticFluxDensity(bx2);
         assertEquals(bx1, bx2);
-        final MagneticFluxDensity by1 = calibrator.getEstimatedHardIronYAsMagneticFluxDensity();
+        final var by1 = calibrator.getEstimatedHardIronYAsMagneticFluxDensity();
         assertEquals(calibrator.getEstimatedHardIronY(), by1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, by1.getUnit());
-        final MagneticFluxDensity by2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var by2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         calibrator.getEstimatedHardIronYAsMagneticFluxDensity(by2);
         assertEquals(by1, by2);
-        final MagneticFluxDensity bz1 = calibrator.getEstimatedHardIronZAsMagneticFluxDensity();
+        final var bz1 = calibrator.getEstimatedHardIronZAsMagneticFluxDensity();
         assertEquals(bz1.getValue().doubleValue(), calibrator.getEstimatedHardIronZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bz1.getUnit());
-        final MagneticFluxDensity bz2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var bz2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         calibrator.getEstimatedHardIronZAsMagneticFluxDensity(bz2);
         assertEquals(bz1, bz2);
 
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getEstimatedHardIronAsTriad();
+        final var bTriad1 = calibrator.getEstimatedHardIronAsTriad();
         assertEquals(bTriad1.getValueX(), calibrator.getEstimatedHardIronX(), 0.0);
         assertEquals(bTriad1.getValueY(), calibrator.getEstimatedHardIronY(), 0.0);
         assertEquals(bTriad1.getValueZ(), calibrator.getEstimatedHardIronZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getEstimatedHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
 
@@ -8515,11 +8427,11 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         }
 
         assertNotNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
-        final MagneticFluxDensity b1 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        final var b1 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertNotNull(b1);
         assertEquals(calibrator.getGroundTruthMagneticFluxDensityNorm(), b1.getValue());
         assertEquals(MagneticFluxDensityUnit.TESLA, b1.getUnit());
-        final MagneticFluxDensity b2 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b2 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b2));
         assertEquals(b1, b2);
     }
@@ -8527,52 +8439,52 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     private static void assertCovariance(final MSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator) {
         assertNotNull(calibrator.getEstimatedHardIronXVariance());
         assertNotNull(calibrator.getEstimatedHardIronXStandardDeviation());
-        final MagneticFluxDensity stdBx1 = calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity();
+        final var stdBx1 = calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity();
         assertNotNull(stdBx1);
-        final MagneticFluxDensity stdBx2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var stdBx2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         assertTrue(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity(stdBx2));
         assertEquals(stdBx1, stdBx2);
 
         assertNotNull(calibrator.getEstimatedHardIronYVariance());
         assertNotNull(calibrator.getEstimatedHardIronYStandardDeviation());
-        final MagneticFluxDensity stdBy1 = calibrator.getEstimatedHardIronYStandardDeviationAsMagneticFluxDensity();
+        final var stdBy1 = calibrator.getEstimatedHardIronYStandardDeviationAsMagneticFluxDensity();
         assertNotNull(stdBy1);
-        final MagneticFluxDensity stdBy2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var stdBy2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         assertTrue(calibrator.getEstimatedHardIronYStandardDeviationAsMagneticFluxDensity(stdBy2));
         assertEquals(stdBy1, stdBy2);
 
         assertNotNull(calibrator.getEstimatedHardIronZVariance());
         assertNotNull(calibrator.getEstimatedHardIronZStandardDeviation());
-        final MagneticFluxDensity stdBz1 = calibrator.getEstimatedHardIronZStandardDeviationAsMagneticFluxDensity();
+        final var stdBz1 = calibrator.getEstimatedHardIronZStandardDeviationAsMagneticFluxDensity();
         assertNotNull(stdBz1);
-        final MagneticFluxDensity stdBz2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var stdBz2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         assertTrue(calibrator.getEstimatedHardIronZStandardDeviationAsMagneticFluxDensity(stdBz2));
         assertEquals(stdBz1, stdBz2);
 
-        final MagneticFluxDensityTriad std1 = calibrator.getEstimatedHardIronStandardDeviation();
+        final var std1 = calibrator.getEstimatedHardIronStandardDeviation();
         assertEquals(std1.getValueX(), calibrator.getEstimatedHardIronXStandardDeviation(), 0.0);
         assertEquals(std1.getValueY(), calibrator.getEstimatedHardIronYStandardDeviation(), 0.0);
         assertEquals(std1.getValueZ(), calibrator.getEstimatedHardIronZStandardDeviation(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, std1.getUnit());
-        final MagneticFluxDensityTriad std2 = new MagneticFluxDensityTriad();
+        final var std2 = new MagneticFluxDensityTriad();
         assertTrue(calibrator.getEstimatedHardIronStandardDeviation(std2));
 
-        final double avgStd = (calibrator.getEstimatedHardIronXStandardDeviation() +
-                calibrator.getEstimatedHardIronYStandardDeviation() +
-                calibrator.getEstimatedHardIronZStandardDeviation()) / 3.0;
+        final var avgStd = (calibrator.getEstimatedHardIronXStandardDeviation()
+                + calibrator.getEstimatedHardIronYStandardDeviation()
+                + calibrator.getEstimatedHardIronZStandardDeviation()) / 3.0;
         assertEquals(avgStd, calibrator.getEstimatedHardIronStandardDeviationAverage(), 0.0);
-        final MagneticFluxDensity avg1 = calibrator.getEstimatedHardIronStandardDeviationAverageAsMagneticFluxDensity();
+        final var avg1 = calibrator.getEstimatedHardIronStandardDeviationAverageAsMagneticFluxDensity();
         assertEquals(avgStd, avg1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, avg1.getUnit());
-        final MagneticFluxDensity avg2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var avg2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getEstimatedHardIronStandardDeviationAverageAsMagneticFluxDensity(avg2);
         assertEquals(avg1, avg2);
 
         assertEquals(std1.getNorm(), calibrator.getEstimatedHardIronStandardDeviationNorm(), ABSOLUTE_ERROR);
-        final MagneticFluxDensity norm1 = calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity();
+        final var norm1 = calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity();
         assertEquals(std1.getNorm(), norm1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(MagneticFluxDensityUnit.TESLA, norm1.getUnit());
-        final MagneticFluxDensity norm2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var norm2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(norm2);
         assertEquals(norm1, norm2);
     }
@@ -8581,10 +8493,10 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(12, covariance.getRows());
         assertEquals(12, covariance.getColumns());
 
-        for (int j = 0; j < 12; j++) {
-            final boolean colIsZero = j == 8 || j == 10 || j == 11;
-            for (int i = 0; i < 12; i++) {
-                final boolean rowIsZero = i == 8 || i == 10 || i == 11;
+        for (var j = 0; j < 12; j++) {
+            final var colIsZero = j == 8 || j == 10 || j == 11;
+            for (var i = 0; i < 12; i++) {
+                final var rowIsZero = i == 8 || i == 10 || i == 11;
                 if (colIsZero || rowIsZero) {
                     assertEquals(0.0, covariance.getElementAt(i, j), 0.0);
                 }
@@ -8596,8 +8508,8 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
         assertEquals(12, covariance.getRows());
         assertEquals(12, covariance.getColumns());
 
-        for (int i = 0; i < 12; i++) {
-            assertNotEquals(covariance.getElementAt(i, i), 0.0);
+        for (var i = 0; i < 12; i++) {
+            assertNotEquals(0.0, covariance.getElementAt(i, i));
         }
     }
 
@@ -8606,9 +8518,9 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
             final WMMEarthMagneticFluxDensityEstimator wmmEstimator, final UniformRandomizer randomizer,
             final NEDPosition position, final Date timestamp) {
 
-        final List<StandardDeviationBodyMagneticFluxDensity> result = new ArrayList<>();
-        for (int i = 0; i < numberOfMeasurements; i++) {
-            final CoordinateTransformation cnb = generateBodyC(randomizer);
+        final var result = new ArrayList<StandardDeviationBodyMagneticFluxDensity>();
+        for (var i = 0; i < numberOfMeasurements; i++) {
+            final var cnb = generateBodyC(randomizer);
             result.add(generateMeasure(hardIron, softIron, wmmEstimator, null, position, timestamp,
                     cnb));
         }
@@ -8620,11 +8532,10 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
             final GaussianRandomizer noiseRandomizer, final NEDPosition position, final Date timestamp,
             final CoordinateTransformation cnb) {
 
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
+        final var earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity truthMagnetic = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
-        final BodyMagneticFluxDensity measuredMagnetic = generateMeasuredMagneticFluxDensity(truthMagnetic, hardIron,
-                softIron);
+        final var truthMagnetic = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final var measuredMagnetic = generateMeasuredMagneticFluxDensity(truthMagnetic, hardIron, softIron);
 
         if (noiseRandomizer != null) {
             measuredMagnetic.setBx(measuredMagnetic.getBx() + noiseRandomizer.nextDouble());
@@ -8632,15 +8543,14 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
             measuredMagnetic.setBz(measuredMagnetic.getBz() + noiseRandomizer.nextDouble());
         }
 
-        final double std = noiseRandomizer != null ? noiseRandomizer.getStandardDeviation() : MAGNETOMETER_NOISE_STD;
+        final var std = noiseRandomizer != null ? noiseRandomizer.getStandardDeviation() : MAGNETOMETER_NOISE_STD;
         return new StandardDeviationBodyMagneticFluxDensity(measuredMagnetic, std);
     }
 
     private static CoordinateTransformation generateBodyC(final UniformRandomizer randomizer) {
-
-        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         return new CoordinateTransformation(roll, pitch, yaw1, FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
     }
@@ -8651,7 +8561,7 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     private static double[] generateHardIron(final UniformRandomizer randomizer) {
-        final double[] result = new double[BodyMagneticFluxDensity.COMPONENTS];
+        final var result = new double[BodyMagneticFluxDensity.COMPONENTS];
         randomizer.fill(result, MIN_HARD_IRON, MAX_HARD_IRON);
         return result;
     }
@@ -8667,11 +8577,11 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     private static Matrix generateSoftIronCommonAxis() {
-        final Matrix mm = generateSoftIronGeneral();
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        for (int col = 0; col < mm.getColumns(); col++) {
-            for (int row = 0; row < mm.getRows(); row++) {
+        for (var col = 0; col < mm.getColumns(); col++) {
+            for (var row = 0; row < mm.getRows(); row++) {
                 if (row > col) {
                     mm.setElementAt(row, col, 0.0);
                 }
@@ -8681,9 +8591,9 @@ public class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest impleme
     }
 
     private static NEDPosition createPosition(final UniformRandomizer randomizer) {
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT_METERS, MAX_HEIGHT_METERS);
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT_METERS, MAX_HEIGHT_METERS);
 
         return new NEDPosition(latitude, longitude, height);
     }

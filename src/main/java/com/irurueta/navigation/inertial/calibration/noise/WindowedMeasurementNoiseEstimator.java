@@ -71,61 +71,61 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * Window size must always be larger than allowed minimum value and must
      * have and odd value.
      */
-    private int mWindowSize = DEFAULT_WINDOW_SIZE;
+    private int windowSize = DEFAULT_WINDOW_SIZE;
 
     /**
      * Time interval expressed in seconds (s) between consecutive measurements.
      */
-    private double mTimeInterval = DEFAULT_TIME_INTERVAL_SECONDS;
+    private double timeInterval = DEFAULT_TIME_INTERVAL_SECONDS;
 
     /**
      * Keeps the window of measurements expressed in their default units.
      * (m/s^2 for acceleration, rad/s for angular speed or T for magnetic flux density).
      */
-    private double[] mWindowedMeasurements = new double[DEFAULT_WINDOW_SIZE];
+    private double[] windowedMeasurements = new double[DEFAULT_WINDOW_SIZE];
 
     /**
      * Listener to handle events raised by this estimator.
      */
-    private L mListener;
+    private L listener;
 
     /**
      * Contains estimated average of measurement expressed in its default unit
      * (m/s^2 for acceleration, rad/s for angular speed or T for magnetic flux density).
      */
-    private double mAvg;
+    private double avg;
 
     /**
      * Contains estimated variance of measurement expressed in its default squared unit
      * (m^2/s^4 for acceleration, rad^2/s^2 for angular speed or T^2 for magnetic
      * flux density).
      */
-    private double mVariance;
+    private double variance;
 
     /**
      * Indicates position of first element in window.
      */
-    private int mFirstCursor;
+    private int firstCursor;
 
     /**
      * Indicates position of last element in window.
      */
-    private int mLastCursor;
+    private int lastCursor;
 
     /**
      * Number of processed measurement samples.
      */
-    private int mNumberOfProcessedSamples;
+    private int numberOfProcessedSamples;
 
     /**
      * Number of added measurement samples.
      */
-    private int mNumberOfAddedSamples;
+    private int numberOfAddedSamples;
 
     /**
      * Indicates whether estimator is running or not.
      */
-    private boolean mRunning;
+    private boolean running;
 
     /**
      * Constructor.
@@ -139,7 +139,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * @param listener listener to handle events raised by this estimator.
      */
     protected WindowedMeasurementNoiseEstimator(final L listener) {
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -150,7 +150,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * @return length of number of samples to keep within the window.
      */
     public int getWindowSize() {
-        return mWindowSize;
+        return windowSize;
     }
 
     /**
@@ -163,7 +163,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * @throws LockedException          if estimator is currently running.
      */
     public void setWindowSize(final int windowSize) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
@@ -177,8 +177,8 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
             throw new IllegalArgumentException();
         }
 
-        mWindowSize = windowSize;
-        mWindowedMeasurements = new double[windowSize];
+        this.windowSize = windowSize;
+        windowedMeasurements = new double[windowSize];
         reset();
     }
 
@@ -189,7 +189,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * @return time interval between accelerometer triad samples.
      */
     public double getTimeInterval() {
-        return mTimeInterval;
+        return timeInterval;
     }
 
     /**
@@ -201,7 +201,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * @throws LockedException          if estimator is currently running.
      */
     public void setTimeInterval(final double timeInterval) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
@@ -209,7 +209,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
             throw new IllegalArgumentException();
         }
 
-        mTimeInterval = timeInterval;
+        this.timeInterval = timeInterval;
     }
 
     /**
@@ -218,7 +218,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * @return time interval between accelerometer triad samples.
      */
     public Time getTimeIntervalAsTime() {
-        return new Time(mTimeInterval, TimeUnit.SECOND);
+        return new Time(timeInterval, TimeUnit.SECOND);
     }
 
     /**
@@ -227,7 +227,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * @param result instance where time interval will be stored.
      */
     public void getTimeIntervalAsTime(final Time result) {
-        result.setValue(mTimeInterval);
+        result.setValue(timeInterval);
         result.setUnit(TimeUnit.SECOND);
     }
 
@@ -248,7 +248,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * @return listener to handle events raised by this estimator.
      */
     public L getListener() {
-        return mListener;
+        return listener;
     }
 
     /**
@@ -258,11 +258,11 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * @throws LockedException if this estimator is running.
      */
     public void setListener(final L listener) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -272,10 +272,10 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * @return first provided measurement value or null if not available.
      */
     public Double getFirstWindowedMeasurementValue() {
-        if (mNumberOfAddedSamples == 0) {
+        if (numberOfAddedSamples == 0) {
             return null;
         } else {
-            return mWindowedMeasurements[mFirstCursor % mWindowSize];
+            return windowedMeasurements[firstCursor % windowSize];
         }
     }
 
@@ -286,10 +286,10 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * @return last provided measurement value or null if not available.
      */
     public Double getLastWindowedMeasurementValue() {
-        if (mNumberOfAddedSamples == 0) {
+        if (numberOfAddedSamples == 0) {
             return null;
         } else {
-            return mWindowedMeasurements[(mLastCursor - 1 + mWindowSize) % mWindowSize];
+            return windowedMeasurements[(lastCursor - 1 + windowSize) % windowSize];
         }
     }
 
@@ -299,7 +299,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * @return first provided measurement within the window or null if not available.
      */
     public M getFirstWindowedMeasurement() {
-        final Double value = getFirstWindowedMeasurementValue();
+        final var value = getFirstWindowedMeasurementValue();
         return value != null ? createMeasurement(value, getDefaultUnit()) : null;
     }
 
@@ -310,7 +310,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * @return true if result was updated, false if first measurement is not available.
      */
     public boolean getFirstWindowedMeasurement(final M result) {
-        final Double value = getFirstWindowedMeasurementValue();
+        final var value = getFirstWindowedMeasurementValue();
         if (value != null) {
             result.setValue(value);
             result.setUnit(getDefaultUnit());
@@ -326,7 +326,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * @return last provided measurement within the window or null if not available.
      */
     public M getLastWindowedMeasurement() {
-        final Double value = getLastWindowedMeasurementValue();
+        final var value = getLastWindowedMeasurementValue();
         return value != null ? createMeasurement(value, getDefaultUnit()) : null;
     }
 
@@ -337,7 +337,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * @return true if result was updated, false if last measurement is not available.
      */
     public boolean getLastWindowedMeasurement(final M result) {
-        final Double value = getLastWindowedMeasurementValue();
+        final var value = getLastWindowedMeasurementValue();
         if (value != null) {
             result.setValue(value);
             result.setUnit(getDefaultUnit());
@@ -354,7 +354,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * @return average of measurement in current window.
      */
     public double getAvg() {
-        return mAvg;
+        return avg;
     }
 
     /**
@@ -363,7 +363,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * @return average of measurement in current window
      */
     public M getAvgAsMeasurement() {
-        return createMeasurement(mAvg, getDefaultUnit());
+        return createMeasurement(avg, getDefaultUnit());
     }
 
     /**
@@ -372,7 +372,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * @param result instance where average of measurement will be stored.
      */
     public void getAvgAsMeasurement(final M result) {
-        result.setValue(mAvg);
+        result.setValue(avg);
         result.setUnit(getDefaultUnit());
     }
 
@@ -384,7 +384,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * @return estimated variance of measurement within current window.
      */
     public double getVariance() {
-        return mVariance;
+        return variance;
     }
 
     /**
@@ -395,7 +395,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * @return estimated standard of measurement.
      */
     public double getStandardDeviation() {
-        return Math.sqrt(mVariance);
+        return Math.sqrt(variance);
     }
 
     /**
@@ -426,7 +426,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * @return measurement noise PSD.
      */
     public double getPsd() {
-        return mVariance * mTimeInterval;
+        return variance * timeInterval;
     }
 
     /**
@@ -446,7 +446,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * @return number of samples that have been processed so far.
      */
     public int getNumberOfProcessedSamples() {
-        return mNumberOfProcessedSamples;
+        return numberOfProcessedSamples;
     }
 
     /**
@@ -455,7 +455,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * @return number of samples that have been added so far.
      */
     public int getNumberOfAddedSamples() {
-        return mNumberOfAddedSamples;
+        return numberOfAddedSamples;
     }
 
     /**
@@ -464,7 +464,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * @return number of samples within the window.
      */
     public int getNumberOfSamplesInWindow() {
-        return Math.min(mNumberOfAddedSamples, mWindowSize);
+        return Math.min(numberOfAddedSamples, windowSize);
     }
 
     /**
@@ -473,7 +473,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * @return true if window is filled, false otherwise.
      */
     public boolean isWindowFilled() {
-        return getNumberOfSamplesInWindow() == mWindowSize;
+        return getNumberOfSamplesInWindow() == windowSize;
     }
 
     /**
@@ -482,7 +482,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * @return true if estimator is running, false otherwise.
      */
     public boolean isRunning() {
-        return mRunning;
+        return running;
     }
 
     /**
@@ -546,25 +546,25 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * @throws LockedException if estimator is currently running.
      */
     public boolean reset() throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        if (mNumberOfProcessedSamples == 0) {
+        if (numberOfProcessedSamples == 0) {
             return false;
         }
 
-        Arrays.fill(mWindowedMeasurements, 0.0);
-        mFirstCursor = 0;
-        mLastCursor = 0;
-        mAvg = 0.0;
-        mVariance = 0.0;
-        mNumberOfProcessedSamples = 0;
-        mNumberOfAddedSamples = 0;
+        Arrays.fill(windowedMeasurements, 0.0);
+        firstCursor = 0;
+        lastCursor = 0;
+        avg = 0.0;
+        variance = 0.0;
+        numberOfProcessedSamples = 0;
+        numberOfAddedSamples = 0;
 
-        if (mListener != null) {
+        if (listener != null) {
             //noinspection unchecked
-            mListener.onReset((E) this);
+            listener.onReset((E) this);
         }
 
         return true;
@@ -602,40 +602,40 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * @throws LockedException if estimator is currently running.
      */
     private void internalAdd(final double value, final boolean process) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mRunning = true;
+        running = true;
 
-        if (mNumberOfAddedSamples == 0 && mListener != null) {
+        if (numberOfAddedSamples == 0 && listener != null) {
             //noinspection unchecked
-            mListener.onStart((E) this);
+            listener.onStart((E) this);
         }
 
-        final boolean wasFilled = isWindowFilled();
+        final var wasFilled = isWindowFilled();
         if (wasFilled) {
             // increase first cursor
-            mFirstCursor = (mFirstCursor + 1) % mWindowSize;
+            firstCursor = (firstCursor + 1) % windowSize;
         }
-        mWindowedMeasurements[mLastCursor] = value;
-        mLastCursor = (mLastCursor + 1) % mWindowSize;
-        mNumberOfAddedSamples++;
+        windowedMeasurements[lastCursor] = value;
+        lastCursor = (lastCursor + 1) % windowSize;
+        numberOfAddedSamples++;
 
         // process window
         if (process) {
             processWindow();
         }
 
-        mRunning = false;
+        running = false;
 
-        if (mListener != null) {
+        if (listener != null) {
             //noinspection unchecked
-            mListener.onMeasurementAdded((E) this);
+            listener.onMeasurementAdded((E) this);
 
             if (!wasFilled && isWindowFilled()) {
                 //noinspection unchecked
-                mListener.onWindowFilled((E) this);
+                listener.onWindowFilled((E) this);
             }
         }
     }
@@ -644,36 +644,36 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * Processes current windowed samples.
      */
     private void processWindow() {
-        mNumberOfProcessedSamples++;
+        numberOfProcessedSamples++;
 
-        final int n = getNumberOfSamplesInWindow();
+        final var n = getNumberOfSamplesInWindow();
 
-        final int endPos = Math.min(n, mWindowSize);
+        final var endPos = Math.min(n, windowSize);
 
         // compute averages
-        double avg = 0.0;
-        for (int i = 0; i < endPos; i++) {
-            final double value = mWindowedMeasurements[i];
-            avg += value;
+        var localAverage = 0.0;
+        for (var i = 0; i < endPos; i++) {
+            final var value = windowedMeasurements[i];
+            localAverage += value;
         }
 
-        avg /= mWindowSize;
+        localAverage /= windowSize;
 
         // compute variances
-        double variance = 0.0;
-        for (int i = 0; i < endPos; i++) {
-            final double value = mWindowedMeasurements[i];
-            final double diff = value - avg;
-            final double diff2 = diff * diff;
+        var localVariance = 0.0;
+        for (var i = 0; i < endPos; i++) {
+            final var value = windowedMeasurements[i];
+            final var diff = value - localAverage;
+            final var diff2 = diff * diff;
 
-            variance += diff2;
+            localVariance += diff2;
         }
 
-        final int m = mWindowSize - 1;
+        final var m = windowSize - 1;
 
-        variance /= m;
+        localVariance /= m;
 
-        mAvg = avg;
-        mVariance = variance;
+        this.avg = localAverage;
+        this.variance = localVariance;
     }
 }

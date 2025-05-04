@@ -160,18 +160,18 @@ public class NEDGravityEstimator {
      */
     public static void estimateGravity(final double latitude, final double height, final NEDGravity result) {
         // Calculate surface gravity using the Somigliana model (2.134)
-        final double sinsqL = Math.pow(Math.sin(latitude), 2.0);
-        final double e2 = EARTH_ECCENTRICITY * EARTH_ECCENTRICITY;
-        final double g0 = 9.7803253359 * (1.0 + 0.001931853 * sinsqL) / Math.sqrt(1.0 - e2 * sinsqL);
+        final var sinsqL = Math.pow(Math.sin(latitude), 2.0);
+        final var e2 = EARTH_ECCENTRICITY * EARTH_ECCENTRICITY;
+        final var g0 = 9.7803253359 * (1.0 + 0.001931853 * sinsqL) / Math.sqrt(1.0 - e2 * sinsqL);
 
         // Calculate north gravity using (2.140)
-        final double gn = -8.08E-9 * height * Math.sin(2.0 * latitude);
+        final var gn = -8.08E-9 * height * Math.sin(2.0 * latitude);
 
         // Calculate down gravity using (2.139)
-        final double omegaIe2 = EARTH_ROTATION_RATE * EARTH_ROTATION_RATE;
-        final double r02 = EARTH_EQUATORIAL_RADIUS_WGS84 * EARTH_EQUATORIAL_RADIUS_WGS84;
-        final double height2 = height * height;
-        final double gd = g0 * (1.0 - (2.0 / EARTH_EQUATORIAL_RADIUS_WGS84) * (1.0 + EARTH_FLATTENING_WGS84 *
+        final var omegaIe2 = EARTH_ROTATION_RATE * EARTH_ROTATION_RATE;
+        final var r02 = EARTH_EQUATORIAL_RADIUS_WGS84 * EARTH_EQUATORIAL_RADIUS_WGS84;
+        final var height2 = height * height;
+        final var gd = g0 * (1.0 - (2.0 / EARTH_EQUATORIAL_RADIUS_WGS84) * (1.0 + EARTH_FLATTENING_WGS84 *
                 (1.0 - 2.0 * sinsqL) + (omegaIe2 * r02 * EARTH_POLAR_RADIUS_WGS84 / EARTH_GRAVITATIONAL_CONSTANT)) *
                 height + (3.0 * height2 / r02));
 
@@ -187,7 +187,7 @@ public class NEDGravityEstimator {
      * @return a new gravity instance containing estimated acceleration due to gravity.
      */
     public static NEDGravity estimateGravityAndReturnNew(final double latitude, final double height) {
-        final NEDGravity result = new NEDGravity();
+        final var result = new NEDGravity();
         estimateGravity(latitude, height, result);
         return result;
     }
@@ -251,7 +251,7 @@ public class NEDGravityEstimator {
      * @return a new gravity instance containing estimated acceleration due to gravity.
      */
     public static NEDGravity estimateGravityAndReturnNew(final NEDPosition position) {
-        final NEDGravity result = new NEDGravity();
+        final var result = new NEDGravity();
         estimateGravity(position, result);
         return result;
     }

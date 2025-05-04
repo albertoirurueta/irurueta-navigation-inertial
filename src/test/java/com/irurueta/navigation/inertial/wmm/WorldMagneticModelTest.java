@@ -15,16 +15,16 @@
  */
 package com.irurueta.navigation.inertial.wmm;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class WorldMagneticModelTest {
+class WorldMagneticModelTest {
 
     @Test
-    public void testConstructor() {
-        final WorldMagneticModel model = new WorldMagneticModel();
+    void testConstructor() {
+        final var model = new WorldMagneticModel();
 
         assertEquals(12, WorldMagneticModel.MAX_ORDER);
         assertEquals(5.0, WorldMagneticModel.LIFESPAN, 0.0);

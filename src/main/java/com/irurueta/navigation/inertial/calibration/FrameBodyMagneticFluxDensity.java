@@ -44,18 +44,18 @@ public class FrameBodyMagneticFluxDensity implements Serializable, Cloneable {
     /**
      * Current body magnetic flux density. Contains magnetometer measurements.
      */
-    private BodyMagneticFluxDensity mMagneticFluxDensity;
+    private BodyMagneticFluxDensity magneticFluxDensity;
 
     /**
      * Contains current body position, velocity (which will typically be zero)
      * and orientation resolved around ECEF axes.
      */
-    private ECEFFrame mFrame;
+    private ECEFFrame frame;
 
     /**
      * Contains year expressed in decimal format.
      */
-    private double mYear;
+    private double year;
 
     /**
      * Constructor.
@@ -69,7 +69,7 @@ public class FrameBodyMagneticFluxDensity implements Serializable, Cloneable {
      * @param magneticFluxDensity current body magnetic flux density.
      */
     public FrameBodyMagneticFluxDensity(final BodyMagneticFluxDensity magneticFluxDensity) {
-        mMagneticFluxDensity = magneticFluxDensity;
+        this.magneticFluxDensity = magneticFluxDensity;
     }
 
     /**
@@ -78,7 +78,7 @@ public class FrameBodyMagneticFluxDensity implements Serializable, Cloneable {
      * @param frame current ECEF frame associated to measurement.
      */
     public FrameBodyMagneticFluxDensity(final ECEFFrame frame) {
-        mFrame = frame;
+        this.frame = frame;
     }
 
     /**
@@ -99,7 +99,7 @@ public class FrameBodyMagneticFluxDensity implements Serializable, Cloneable {
      */
     public FrameBodyMagneticFluxDensity(final BodyMagneticFluxDensity magneticFluxDensity, final ECEFFrame frame) {
         this(magneticFluxDensity);
-        mFrame = frame;
+        this.frame = frame;
     }
 
     /**
@@ -121,7 +121,7 @@ public class FrameBodyMagneticFluxDensity implements Serializable, Cloneable {
      * @param year time expressed as decimal year.
      */
     public FrameBodyMagneticFluxDensity(final double year) {
-        mYear = year;
+        this.year = year;
     }
 
     /**
@@ -131,8 +131,8 @@ public class FrameBodyMagneticFluxDensity implements Serializable, Cloneable {
      * @param year                time expressed as decimal year.
      */
     public FrameBodyMagneticFluxDensity(final BodyMagneticFluxDensity magneticFluxDensity, final double year) {
-        mMagneticFluxDensity = magneticFluxDensity;
-        mYear = year;
+        this.magneticFluxDensity = magneticFluxDensity;
+        this.year = year;
     }
 
     /**
@@ -142,8 +142,8 @@ public class FrameBodyMagneticFluxDensity implements Serializable, Cloneable {
      * @param year  time expressed as decimal year.
      */
     public FrameBodyMagneticFluxDensity(final ECEFFrame frame, final double year) {
-        mFrame = frame;
-        mYear = year;
+        this.frame = frame;
+        this.year = year;
     }
 
     /**
@@ -155,7 +155,7 @@ public class FrameBodyMagneticFluxDensity implements Serializable, Cloneable {
      */
     public FrameBodyMagneticFluxDensity(final NEDFrame frame, final double year) {
         setNedFrame(frame);
-        mYear = year;
+        this.year = year;
     }
 
     /**
@@ -168,8 +168,8 @@ public class FrameBodyMagneticFluxDensity implements Serializable, Cloneable {
     public FrameBodyMagneticFluxDensity(
             final BodyMagneticFluxDensity magneticFluxDensity, final ECEFFrame frame, final double year) {
         this(magneticFluxDensity);
-        mFrame = frame;
-        mYear = year;
+        this.frame = frame;
+        this.year = year;
     }
 
     /**
@@ -185,7 +185,7 @@ public class FrameBodyMagneticFluxDensity implements Serializable, Cloneable {
             final BodyMagneticFluxDensity magneticFluxDensity, final NEDFrame frame, final double year) {
         this(magneticFluxDensity);
         setNedFrame(frame);
-        mYear = year;
+        this.year = year;
     }
 
     /**
@@ -339,7 +339,7 @@ public class FrameBodyMagneticFluxDensity implements Serializable, Cloneable {
      * @return current body magnetic flux density.
      */
     public BodyMagneticFluxDensity getMagneticFluxDensity() {
-        return mMagneticFluxDensity;
+        return magneticFluxDensity;
     }
 
     /**
@@ -349,7 +349,7 @@ public class FrameBodyMagneticFluxDensity implements Serializable, Cloneable {
      * @param magneticFluxDensity current body magnetic flux density.
      */
     public void setMagneticFluxDensity(final BodyMagneticFluxDensity magneticFluxDensity) {
-        mMagneticFluxDensity = magneticFluxDensity;
+        this.magneticFluxDensity = magneticFluxDensity;
     }
 
     /**
@@ -363,7 +363,7 @@ public class FrameBodyMagneticFluxDensity implements Serializable, Cloneable {
      * measurement or null if not available.
      */
     public ECEFFrame getFrame() {
-        return mFrame;
+        return frame;
     }
 
     /**
@@ -376,7 +376,7 @@ public class FrameBodyMagneticFluxDensity implements Serializable, Cloneable {
      * @param frame current ECEF frame.
      */
     public void setFrame(final ECEFFrame frame) {
-        mFrame = frame;
+        this.frame = frame;
     }
 
     /**
@@ -390,7 +390,7 @@ public class FrameBodyMagneticFluxDensity implements Serializable, Cloneable {
      * measurement or null if not available.
      */
     public NEDFrame getNedFrame() {
-        return mFrame != null ? ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(mFrame) : null;
+        return frame != null ? ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(frame) : null;
     }
 
     /**
@@ -404,8 +404,8 @@ public class FrameBodyMagneticFluxDensity implements Serializable, Cloneable {
      * @return true if result instance was updated, false otherwise.
      */
     public boolean getNedFrame(final NEDFrame result) {
-        if (mFrame != null) {
-            ECEFtoNEDFrameConverter.convertECEFtoNED(mFrame, result);
+        if (frame != null) {
+            ECEFtoNEDFrameConverter.convertECEFtoNED(frame, result);
             return true;
         } else {
             return false;
@@ -427,13 +427,13 @@ public class FrameBodyMagneticFluxDensity implements Serializable, Cloneable {
      */
     public void setNedFrame(final NEDFrame nedFrame) {
         if (nedFrame != null) {
-            if (mFrame != null) {
-                NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
+            if (frame != null) {
+                NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
             } else {
-                mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+                frame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
             }
         } else {
-            mFrame = null;
+            frame = null;
         }
     }
 
@@ -443,7 +443,7 @@ public class FrameBodyMagneticFluxDensity implements Serializable, Cloneable {
      * @return year expressed in decimal format.
      */
     public double getYear() {
-        return mYear;
+        return year;
     }
 
     /**
@@ -452,7 +452,7 @@ public class FrameBodyMagneticFluxDensity implements Serializable, Cloneable {
      * @param year year expressed in decimal format.
      */
     public void setYear(final double year) {
-        mYear = year;
+        this.year = year;
     }
 
     /**
@@ -461,7 +461,7 @@ public class FrameBodyMagneticFluxDensity implements Serializable, Cloneable {
      * @param date a date instance containing a timestamp.
      */
     public void setTime(final Date date) {
-        mYear = convertTime(date);
+        year = convertTime(date);
     }
 
     /**
@@ -470,7 +470,7 @@ public class FrameBodyMagneticFluxDensity implements Serializable, Cloneable {
      * @param calendar a calendar instance containing a timestamp.
      */
     public void setTime(final GregorianCalendar calendar) {
-        mYear = convertTime(calendar);
+        year = convertTime(calendar);
     }
 
     /**
@@ -481,7 +481,7 @@ public class FrameBodyMagneticFluxDensity implements Serializable, Cloneable {
      * @return converted value expressed in decimal years.
      */
     public static double convertTime(final Date date) {
-        final GregorianCalendar calendar = new GregorianCalendar();
+        final var calendar = new GregorianCalendar();
         calendar.setTime(date);
         return convertTime(calendar);
     }
@@ -504,27 +504,27 @@ public class FrameBodyMagneticFluxDensity implements Serializable, Cloneable {
      * @param input instance to copy dara from.
      */
     public void copyFrom(final FrameBodyMagneticFluxDensity input) {
-        if (input.mMagneticFluxDensity != null) {
-            if (mMagneticFluxDensity == null) {
-                mMagneticFluxDensity = new BodyMagneticFluxDensity(input.mMagneticFluxDensity);
+        if (input.magneticFluxDensity != null) {
+            if (magneticFluxDensity == null) {
+                magneticFluxDensity = new BodyMagneticFluxDensity(input.magneticFluxDensity);
             } else {
-                mMagneticFluxDensity.copyFrom(input.mMagneticFluxDensity);
+                magneticFluxDensity.copyFrom(input.magneticFluxDensity);
             }
         } else {
-            mMagneticFluxDensity = null;
+            magneticFluxDensity = null;
         }
 
-        if (input.mFrame != null) {
-            if (mFrame == null) {
-                mFrame = new ECEFFrame(input.mFrame);
+        if (input.frame != null) {
+            if (frame == null) {
+                frame = new ECEFFrame(input.frame);
             } else {
-                mFrame.copyFrom(input.mFrame);
+                frame.copyFrom(input.frame);
             }
         } else {
-            mFrame = null;
+            frame = null;
         }
 
-        mYear = input.mYear;
+        year = input.year;
     }
 
     /**
@@ -544,7 +544,7 @@ public class FrameBodyMagneticFluxDensity implements Serializable, Cloneable {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(mMagneticFluxDensity, mFrame, mYear);
+        return Objects.hash(magneticFluxDensity, frame, year);
     }
 
     /**
@@ -572,11 +572,11 @@ public class FrameBodyMagneticFluxDensity implements Serializable, Cloneable {
             return false;
         }
 
-        return ((other.mMagneticFluxDensity == null && mMagneticFluxDensity == null)
-                || (mMagneticFluxDensity != null && mMagneticFluxDensity.equals(other.mMagneticFluxDensity, threshold)))
-                && ((other.mFrame == null && mFrame == null)
-                || (mFrame != null && mFrame.equals(other.mFrame, threshold)))
-                && Math.abs(other.mYear - mYear) <= threshold;
+        return ((other.magneticFluxDensity == null && magneticFluxDensity == null)
+                || (magneticFluxDensity != null && magneticFluxDensity.equals(other.magneticFluxDensity, threshold)))
+                && ((other.frame == null && frame == null)
+                || (frame != null && frame.equals(other.frame, threshold)))
+                && Math.abs(other.year - year) <= threshold;
     }
 
     /**
@@ -594,7 +594,7 @@ public class FrameBodyMagneticFluxDensity implements Serializable, Cloneable {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        final FrameBodyMagneticFluxDensity other = (FrameBodyMagneticFluxDensity) obj;
+        final var other = (FrameBodyMagneticFluxDensity) obj;
         return equals(other);
     }
 
@@ -606,7 +606,7 @@ public class FrameBodyMagneticFluxDensity implements Serializable, Cloneable {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final FrameBodyMagneticFluxDensity result = (FrameBodyMagneticFluxDensity) super.clone();
+        final var result = (FrameBodyMagneticFluxDensity) super.clone();
         copyTo(result);
         return result;
     }

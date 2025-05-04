@@ -25,7 +25,6 @@ import com.irurueta.navigation.frames.ECEFPosition;
 import com.irurueta.navigation.frames.ECEFVelocity;
 import com.irurueta.navigation.geodesic.Constants;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.inertial.ECEFGravity;
 import com.irurueta.units.Speed;
 import com.irurueta.units.SpeedConverter;
 import com.irurueta.units.SpeedUnit;
@@ -1525,12 +1524,12 @@ public class ECEFKinematicsEstimator {
         if (timeInterval > 0.0) {
             try {
                 // From (2.145) determine the Earth rotation over the update interval
-                final double alpha = EARTH_ROTATION_RATE * timeInterval;
-                final Matrix cEarth = CoordinateTransformation.eciToEcefMatrixFromAngle(alpha);
+                final var alpha = EARTH_ROTATION_RATE * timeInterval;
+                final var cEarth = CoordinateTransformation.eciToEcefMatrixFromAngle(alpha);
 
-                final Matrix cBe = c.getMatrix();
+                final var cBe = c.getMatrix();
                 cBe.transpose();
-                final Matrix oldCbe = oldC.getMatrix();
+                final var oldCbe = oldC.getMatrix();
 
                 // cOldNew = cBe' * cEarth * oldCbe
                 cEarth.multiply(oldCbe);
@@ -1538,41 +1537,41 @@ public class ECEFKinematicsEstimator {
                 cBe.multiply(cEarth);
 
                 // Calculate the approximate angular rate with respect an inertial frame
-                double alphaX = 0.5 * (cBe.getElementAt(1, 2) - cBe.getElementAt(2, 1));
-                double alphaY = 0.5 * (cBe.getElementAt(2, 0) - cBe.getElementAt(0, 2));
-                double alphaZ = 0.5 * (cBe.getElementAt(0, 1) - cBe.getElementAt(1, 0));
+                var alphaX = 0.5 * (cBe.getElementAt(1, 2) - cBe.getElementAt(2, 1));
+                var alphaY = 0.5 * (cBe.getElementAt(2, 0) - cBe.getElementAt(0, 2));
+                var alphaZ = 0.5 * (cBe.getElementAt(0, 1) - cBe.getElementAt(1, 0));
 
                 // Calculate and apply the scaling factor
-                final double temp = Math.acos(0.5 * (Utils.trace(cBe) - 1.0));
+                final var temp = Math.acos(0.5 * (Utils.trace(cBe) - 1.0));
                 if (temp > SCALING_THRESHOLD) {
                     // scaling is 1 if temp is less than this
-                    final double scale = temp / Math.sin(temp);
+                    final var scale = temp / Math.sin(temp);
                     alphaX *= scale;
                     alphaY *= scale;
                     alphaZ *= scale;
                 }
 
                 // Calculate the angular rate
-                final double angularRateX = alphaX / timeInterval;
-                final double angularRateY = alphaY / timeInterval;
-                final double angularRateZ = alphaZ / timeInterval;
+                final var angularRateX = alphaX / timeInterval;
+                final var angularRateY = alphaY / timeInterval;
+                final var angularRateZ = alphaZ / timeInterval;
 
                 // Calculate the specific force resolved about ECEF-frame axes
                 // Frame (5.36)
-                final Matrix vEbe = new Matrix(ROWS, 1);
+                final var vEbe = new Matrix(ROWS, 1);
                 vEbe.setElementAtIndex(0, vx);
                 vEbe.setElementAtIndex(1, vy);
                 vEbe.setElementAtIndex(2, vz);
 
-                final Matrix oldVebe = new Matrix(ROWS, 1);
+                final var oldVebe = new Matrix(ROWS, 1);
                 oldVebe.setElementAtIndex(0, oldVx);
                 oldVebe.setElementAtIndex(1, oldVy);
                 oldVebe.setElementAtIndex(2, oldVz);
 
-                final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(x, y, z);
-                final Matrix g = gravity.asMatrix();
+                final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(x, y, z);
+                final var g = gravity.asMatrix();
 
-                final Matrix earthRotationSkew = Utils.skewMatrix(new double[]{0.0, 0.0, EARTH_ROTATION_RATE});
+                final var earthRotationSkew = Utils.skewMatrix(new double[]{0.0, 0.0, EARTH_ROTATION_RATE});
                 earthRotationSkew.multiplyByScalar(2.0);
                 // 2.0 * earthRotationSkew * oldVebe
                 earthRotationSkew.multiply(oldVebe);
@@ -1589,25 +1588,25 @@ public class ECEFKinematicsEstimator {
 
                 // Calculate the average body-to-ECEF-frame coordinate transformation
                 // matrix over the update interval using (5,84) and (5.85)
-                final double alphaNorm = Math.sqrt(alphaX * alphaX + alphaY * alphaY + alphaZ * alphaZ);
-                final Matrix alphaSkew1 = Utils.skewMatrix(new double[]{alphaX, alphaY, alphaZ});
+                final var alphaNorm = Math.sqrt(alphaX * alphaX + alphaY * alphaY + alphaZ * alphaZ);
+                final var alphaSkew1 = Utils.skewMatrix(new double[]{alphaX, alphaY, alphaZ});
 
                 if (alphaNorm > ALPHA_THRESHOLD) {
-                    final double alphaNorm2 = alphaNorm * alphaNorm;
-                    final double value1 = (1.0 - Math.cos(alphaNorm)) / alphaNorm2;
-                    final double value2 = (1.0 - Math.sin(alphaNorm) / alphaNorm) / alphaNorm2;
-                    final Matrix tmp1 = alphaSkew1.multiplyByScalarAndReturnNew(value1);
-                    final Matrix tmp2 = alphaSkew1.multiplyByScalarAndReturnNew(value2);
+                    final var alphaNorm2 = alphaNorm * alphaNorm;
+                    final var value1 = (1.0 - Math.cos(alphaNorm)) / alphaNorm2;
+                    final var value2 = (1.0 - Math.sin(alphaNorm) / alphaNorm) / alphaNorm2;
+                    final var tmp1 = alphaSkew1.multiplyByScalarAndReturnNew(value1);
+                    final var tmp2 = alphaSkew1.multiplyByScalarAndReturnNew(value2);
                     tmp2.multiply(alphaSkew1);
 
-                    final Matrix tmp3 = Matrix.identity(ROWS, ROWS);
+                    final var tmp3 = Matrix.identity(ROWS, ROWS);
                     tmp3.add(tmp1);
                     tmp3.add(tmp2);
 
                     oldCbe.multiply(tmp3);
                 }
 
-                final Matrix alphaSkew2 = Utils.skewMatrix(new double[]{0.0, 0.0, alpha});
+                final var alphaSkew2 = Utils.skewMatrix(new double[]{0.0, 0.0, alpha});
                 alphaSkew2.multiplyByScalar(0.5);
                 // 0.5 * alphaSkew2 * oldCbe
                 alphaSkew2.multiply(oldCbe);
@@ -1617,12 +1616,12 @@ public class ECEFKinematicsEstimator {
                 // oldCbe now contains the average body-to-ECEF-frame coordinate transformation
 
                 // Transform specific force to body-frame resolving axes using (5.81)
-                Matrix invAveCbe = Utils.inverse(oldCbe);
+                final var invAveCbe = Utils.inverse(oldCbe);
                 invAveCbe.multiply(vEbe);
 
-                final double specificForceX = invAveCbe.getElementAtIndex(0);
-                final double specificForceY = invAveCbe.getElementAtIndex(1);
-                final double specificForceZ = invAveCbe.getElementAtIndex(2);
+                final var specificForceX = invAveCbe.getElementAtIndex(0);
+                final var specificForceY = invAveCbe.getElementAtIndex(1);
+                final var specificForceZ = invAveCbe.getElementAtIndex(2);
 
                 // save result data
                 result.setSpecificForceCoordinates(specificForceX, specificForceY, specificForceZ);
@@ -2401,7 +2400,7 @@ public class ECEFKinematicsEstimator {
             final double vx, final double vy, final double vz,
             final double oldVx, final double oldVy, final double oldVz,
             final double x, final double y, final double z) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, x, y, z, result);
         return result;
     }
@@ -2445,7 +2444,7 @@ public class ECEFKinematicsEstimator {
             final double vx, final double vy, final double vz,
             final double oldVx, final double oldVy, final double oldVz,
             final double x, final double y, final double z) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, x, y, z, result);
         return result;
     }
@@ -2472,7 +2471,7 @@ public class ECEFKinematicsEstimator {
             final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
             final ECEFVelocity velocity, final ECEFVelocity oldVelocity,
             final double x, final double y, final double z) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, x, y, z, result);
         return result;
     }
@@ -2499,7 +2498,7 @@ public class ECEFKinematicsEstimator {
             final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
             final ECEFVelocity velocity, final ECEFVelocity oldVelocity,
             final double x, final double y, final double z) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, x, y, z, result);
         return result;
     }
@@ -2531,7 +2530,7 @@ public class ECEFKinematicsEstimator {
             final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
             final double vx, final double vy, final double vz,
             final double oldVx, final double oldVy, final double oldVz, final ECEFPosition position) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, position, result);
         return result;
     }
@@ -2563,7 +2562,7 @@ public class ECEFKinematicsEstimator {
             final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
             final double vx, final double vy, final double vz,
             final double oldVx, final double oldVy, final double oldVz, final ECEFPosition position) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, position, result);
         return result;
     }
@@ -2584,7 +2583,7 @@ public class ECEFKinematicsEstimator {
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
             final ECEFVelocity velocity, final ECEFVelocity oldVelocity, final ECEFPosition position) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, position, result);
         return result;
     }
@@ -2605,7 +2604,7 @@ public class ECEFKinematicsEstimator {
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
             final ECEFVelocity velocity, final ECEFVelocity oldVelocity, final ECEFPosition position) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, position, result);
         return result;
     }
@@ -2633,7 +2632,7 @@ public class ECEFKinematicsEstimator {
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final double timeInterval, final ECEFFrame frame, final CoordinateTransformation oldC,
             final double oldVx, final double oldVy, final double oldVz) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, frame, oldC, oldVx, oldVy, oldVz, result);
         return result;
     }
@@ -2661,7 +2660,7 @@ public class ECEFKinematicsEstimator {
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final Time timeInterval, final ECEFFrame frame, final CoordinateTransformation oldC,
             final double oldVx, final double oldVy, final double oldVz) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, frame, oldC, oldVx, oldVy, oldVz, result);
         return result;
     }
@@ -2681,7 +2680,7 @@ public class ECEFKinematicsEstimator {
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final double timeInterval, final ECEFFrame frame, final CoordinateTransformation oldC,
             final ECEFVelocity oldVelocity) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, frame, oldC, oldVelocity, result);
         return result;
     }
@@ -2701,7 +2700,7 @@ public class ECEFKinematicsEstimator {
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final Time timeInterval, final ECEFFrame frame, final CoordinateTransformation oldC,
             final ECEFVelocity oldVelocity) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, frame, oldC, oldVelocity, result);
         return result;
     }
@@ -2720,7 +2719,7 @@ public class ECEFKinematicsEstimator {
      */
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final double timeInterval, final ECEFFrame frame, final ECEFFrame oldFrame) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, frame, oldFrame, result);
         return result;
     }
@@ -2739,7 +2738,7 @@ public class ECEFKinematicsEstimator {
      */
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final Time timeInterval, final ECEFFrame frame, final ECEFFrame oldFrame) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, frame, oldFrame, result);
         return result;
     }
@@ -2776,7 +2775,7 @@ public class ECEFKinematicsEstimator {
             final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
             final Speed vx, final Speed vy, final Speed vz, final Speed oldVx, final Speed oldVy, final Speed oldVz,
             final double x, final double y, final double z) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, x, y, z, result);
         return result;
     }
@@ -2813,7 +2812,7 @@ public class ECEFKinematicsEstimator {
             final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
             final Speed vx, final Speed vy, final Speed vz, final Speed oldVx, final Speed oldVy, final Speed oldVz,
             final double x, final double y, final double z) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, x, y, z, result);
         return result;
     }
@@ -2845,7 +2844,7 @@ public class ECEFKinematicsEstimator {
             final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
             final Speed vx, final Speed vy, final Speed vz, final Speed oldVx, final Speed oldVy, final Speed oldVz,
             final ECEFPosition position) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, position, result);
         return result;
     }
@@ -2877,7 +2876,7 @@ public class ECEFKinematicsEstimator {
             final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
             final Speed vx, final Speed vy, final Speed vz,
             final Speed oldVx, final Speed oldVy, final Speed oldVz, final ECEFPosition position) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, position, result);
         return result;
     }
@@ -2902,7 +2901,7 @@ public class ECEFKinematicsEstimator {
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final double timeInterval, final ECEFFrame frame, final CoordinateTransformation oldC,
             final Speed oldVx, final Speed oldVy, final Speed oldVz) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, frame, oldC, oldVx, oldVy, oldVz, result);
         return result;
     }
@@ -2927,7 +2926,7 @@ public class ECEFKinematicsEstimator {
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final Time timeInterval, final ECEFFrame frame, final CoordinateTransformation oldC,
             final Speed oldVx, final Speed oldVy, final Speed oldVz) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, frame, oldC, oldVx, oldVy, oldVz, result);
         return result;
     }
@@ -3025,7 +3024,7 @@ public class ECEFKinematicsEstimator {
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
             final ECEFVelocity velocity, final ECEFVelocity oldVelocity, final Point3D position) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, position, result);
         return result;
     }
@@ -3047,7 +3046,7 @@ public class ECEFKinematicsEstimator {
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
             final ECEFVelocity velocity, final ECEFVelocity oldVelocity, final Point3D position) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, position, result);
         return result;
     }

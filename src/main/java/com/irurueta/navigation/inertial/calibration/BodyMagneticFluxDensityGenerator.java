@@ -21,7 +21,6 @@ import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Generates body magnetic flux density instances from true body magnetic
@@ -55,7 +54,7 @@ public class BodyMagneticFluxDensityGenerator {
     public static Collection<BodyMagneticFluxDensity> generate(
             final Collection<BodyMagneticFluxDensity> trueMagneticFluxDensities, final double[] magnetometerHardIron,
             final Matrix magnetometerSoftIron) {
-        final List<BodyMagneticFluxDensity> result = new ArrayList<>();
+        final var result = new ArrayList<BodyMagneticFluxDensity>();
         generate(trueMagneticFluxDensities, magnetometerHardIron, magnetometerSoftIron, result);
         return result;
     }
@@ -79,14 +78,14 @@ public class BodyMagneticFluxDensityGenerator {
             final Collection<BodyMagneticFluxDensity> trueMagneticFluxDensities, final double[] magnetometerHardIron,
             final Matrix magnetometerSoftIron, final Collection<BodyMagneticFluxDensity> result) {
         try {
-            final Matrix mBtrue = new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1);
-            final Matrix identity = Matrix.identity(
+            final var mBtrue = new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1);
+            final var identity = Matrix.identity(
                     BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
-            final Matrix tmp33 = new Matrix(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
-            final Matrix tmp31 = new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1);
+            final var tmp33 = new Matrix(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
+            final var tmp31 = new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1);
 
-            for (final BodyMagneticFluxDensity b : trueMagneticFluxDensities) {
-                final BodyMagneticFluxDensity r = new BodyMagneticFluxDensity();
+            for (final var b : trueMagneticFluxDensities) {
+                final var r = new BodyMagneticFluxDensity();
 
                 internalGenerate(b, magnetometerHardIron, magnetometerSoftIron, r, mBtrue, identity, tmp33, tmp31);
 
@@ -113,7 +112,7 @@ public class BodyMagneticFluxDensityGenerator {
     public static BodyMagneticFluxDensity generate(
             final BodyMagneticFluxDensity trueMagneticFluxDensity, final double[] magnetometerHardIron,
             final Matrix magnetometerSoftIron) {
-        final BodyMagneticFluxDensity result = new BodyMagneticFluxDensity();
+        final var result = new BodyMagneticFluxDensity();
         generate(trueMagneticFluxDensity, magnetometerHardIron, magnetometerSoftIron, result);
         return result;
     }
@@ -136,11 +135,11 @@ public class BodyMagneticFluxDensityGenerator {
             final BodyMagneticFluxDensity trueMagneticFluxDensity, final double[] magnetometerHardIron,
             final Matrix magnetometerSoftIron, final BodyMagneticFluxDensity result) {
         try {
-            final Matrix mBtrue = new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1);
-            final Matrix identity = Matrix.identity(
+            final var mBtrue = new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1);
+            final var identity = Matrix.identity(
                     BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
-            final Matrix tmp33 = new Matrix(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
-            final Matrix tmp31 = new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1);
+            final var tmp33 = new Matrix(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
+            final var tmp31 = new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1);
             internalGenerate(trueMagneticFluxDensity, magnetometerHardIron, magnetometerSoftIron, result, mBtrue,
                     identity, tmp33, tmp31);
         } catch (final WrongSizeException ignore) {
@@ -174,8 +173,8 @@ public class BodyMagneticFluxDensityGenerator {
         if (magnetometerHardIron.length != BodyMagneticFluxDensity.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        if (magnetometerSoftIron.getRows() != BodyMagneticFluxDensity.COMPONENTS ||
-                magnetometerSoftIron.getColumns() != BodyMagneticFluxDensity.COMPONENTS) {
+        if (magnetometerSoftIron.getRows() != BodyMagneticFluxDensity.COMPONENTS
+                || magnetometerSoftIron.getColumns() != BodyMagneticFluxDensity.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
@@ -187,7 +186,7 @@ public class BodyMagneticFluxDensityGenerator {
         tmp33.add(magnetometerSoftIron);
 
         tmp33.multiply(mBtrue, tmp31);
-        for (int i = 0; i < BodyMagneticFluxDensity.COMPONENTS; i++) {
+        for (var i = 0; i < BodyMagneticFluxDensity.COMPONENTS; i++) {
             tmp31.setElementAtIndex(i, tmp31.getElementAtIndex(i) + magnetometerHardIron[i]);
         }
 

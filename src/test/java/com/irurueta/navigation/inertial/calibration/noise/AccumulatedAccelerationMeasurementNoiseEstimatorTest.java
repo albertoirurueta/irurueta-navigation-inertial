@@ -27,13 +27,13 @@ import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationUnit;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeUnit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class AccumulatedAccelerationMeasurementNoiseEstimatorTest implements
+class AccumulatedAccelerationMeasurementNoiseEstimatorTest implements
         AccumulatedAccelerationMeasurementNoiseEstimatorListener {
 
     private static final double MIN_ACCELEROMETER_VALUE = -2.0 * 9.81;
@@ -46,41 +46,40 @@ public class AccumulatedAccelerationMeasurementNoiseEstimatorTest implements
 
     private static final int N_SAMPLES = 1000;
 
-    private int mStart;
-    private int mMeasurementAdded;
-    private int mReset;
+    private int start;
+    private int measurementAdded;
+    private int reset;
 
     @Test
-    public void testConstructor1() {
-        final AccumulatedAccelerationMeasurementNoiseEstimator estimator =
-                new AccumulatedAccelerationMeasurementNoiseEstimator();
+    void testConstructor1() {
+        final var estimator = new AccumulatedAccelerationMeasurementNoiseEstimator();
 
         // check default values
-        assertEquals(AccumulatedAccelerationMeasurementNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
+        assertEquals(AccumulatedAccelerationMeasurementNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS, 
                 estimator.getTimeInterval(), 0.0);
-        final Time time1 = estimator.getTimeIntervalAsTime();
+        final var time1 = estimator.getTimeIntervalAsTime();
         assertEquals(AccumulatedAccelerationMeasurementNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
                 time1.getValue().doubleValue(), 0.0);
         assertEquals(TimeUnit.SECOND, time1.getUnit());
-        final Time time2 = new Time(0.0, TimeUnit.HOUR);
+        final var time2 = new Time(0.0, TimeUnit.HOUR);
         estimator.getTimeIntervalAsTime(time2);
         assertEquals(time1, time2);
         assertNull(estimator.getListener());
         assertNull(estimator.getLastMeasurement());
         assertFalse(estimator.getLastMeasurement(null));
         assertEquals(0.0, estimator.getAvg(), 0.0);
-        final Acceleration avg1 = estimator.getAvgAsMeasurement();
+        final var avg1 = estimator.getAvgAsMeasurement();
         assertEquals(0.0, avg1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, avg1.getUnit());
-        final Acceleration avg2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var avg2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgAsMeasurement(avg2);
         assertEquals(avg1, avg2);
         assertEquals(0.0, estimator.getVariance(), 0.0);
         assertEquals(0.0, estimator.getStandardDeviation(), 0.0);
-        final Acceleration std1 = estimator.getStandardDeviationAsMeasurement();
+        final var std1 = estimator.getStandardDeviationAsMeasurement();
         assertEquals(0.0, std1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, std1.getUnit());
-        final Acceleration std2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var std2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationAsMeasurement(std2);
         assertEquals(std1, std2);
         assertEquals(0.0, estimator.getPsd(), 0.0);
@@ -91,36 +90,35 @@ public class AccumulatedAccelerationMeasurementNoiseEstimatorTest implements
     }
 
     @Test
-    public void testConstructor2() {
-        final AccumulatedAccelerationMeasurementNoiseEstimator estimator =
-                new AccumulatedAccelerationMeasurementNoiseEstimator(this);
+    void testConstructor2() {
+        final var estimator = new AccumulatedAccelerationMeasurementNoiseEstimator(this);
 
         // check default values
         assertEquals(AccumulatedAccelerationMeasurementNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
                 estimator.getTimeInterval(), 0.0);
-        final Time time1 = estimator.getTimeIntervalAsTime();
+        final var time1 = estimator.getTimeIntervalAsTime();
         assertEquals(AccumulatedAccelerationMeasurementNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
                 time1.getValue().doubleValue(), 0.0);
         assertEquals(TimeUnit.SECOND, time1.getUnit());
-        final Time time2 = new Time(0.0, TimeUnit.HOUR);
+        final var time2 = new Time(0.0, TimeUnit.HOUR);
         estimator.getTimeIntervalAsTime(time2);
         assertEquals(time1, time2);
         assertSame(this, estimator.getListener());
         assertNull(estimator.getLastMeasurement());
         assertFalse(estimator.getLastMeasurement(null));
         assertEquals(0.0, estimator.getAvg(), 0.0);
-        final Acceleration avg1 = estimator.getAvgAsMeasurement();
+        final var avg1 = estimator.getAvgAsMeasurement();
         assertEquals(0.0, avg1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, avg1.getUnit());
-        final Acceleration avg2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var avg2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgAsMeasurement(avg2);
         assertEquals(avg1, avg2);
         assertEquals(0.0, estimator.getVariance(), 0.0);
         assertEquals(0.0, estimator.getStandardDeviation(), 0.0);
-        final Acceleration std1 = estimator.getStandardDeviationAsMeasurement();
+        final var std1 = estimator.getStandardDeviationAsMeasurement();
         assertEquals(0.0, std1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, std1.getUnit());
-        final Acceleration std2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var std2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationAsMeasurement(std2);
         assertEquals(std1, std2);
         assertEquals(0.0, estimator.getPsd(), 0.0);
@@ -131,15 +129,14 @@ public class AccumulatedAccelerationMeasurementNoiseEstimatorTest implements
     }
 
     @Test
-    public void testGetSetTimeInterval() throws LockedException {
-        final AccumulatedAccelerationMeasurementNoiseEstimator estimator =
-                new AccumulatedAccelerationMeasurementNoiseEstimator();
+    void testGetSetTimeInterval() throws LockedException {
+        final var estimator = new AccumulatedAccelerationMeasurementNoiseEstimator();
 
         // check default value
         assertEquals(AccumulatedAccelerationMeasurementNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
                 estimator.getTimeInterval(), 0.0);
 
-        // set new value
+        // set a new value
         estimator.setTimeInterval(1.0);
 
         // check
@@ -150,23 +147,22 @@ public class AccumulatedAccelerationMeasurementNoiseEstimatorTest implements
     }
 
     @Test
-    public void testGetSetTimeIntervalAsTime() throws LockedException {
-        final AccumulatedAccelerationMeasurementNoiseEstimator estimator =
-                new AccumulatedAccelerationMeasurementNoiseEstimator();
+    void testGetSetTimeIntervalAsTime() throws LockedException {
+        final var estimator = new AccumulatedAccelerationMeasurementNoiseEstimator();
 
         // check default value
-        final Time time1 = estimator.getTimeIntervalAsTime();
+        final var time1 = estimator.getTimeIntervalAsTime();
         assertEquals(AccumulatedAccelerationMeasurementNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
                 time1.getValue().doubleValue(), 0.0);
         assertEquals(TimeUnit.SECOND, time1.getUnit());
 
-        // set new value
-        final Time time2 = new Time(500, TimeUnit.MILLISECOND);
+        // set a new value
+        final var time2 = new Time(500, TimeUnit.MILLISECOND);
         estimator.setTimeInterval(time2);
 
         // check
-        final Time time3 = estimator.getTimeIntervalAsTime();
-        final Time time4 = new Time(0.0, TimeUnit.SECOND);
+        final var time3 = estimator.getTimeIntervalAsTime();
+        final var time4 = new Time(0.0, TimeUnit.SECOND);
         estimator.getTimeIntervalAsTime(time4);
 
         assertTrue(time2.equals(time3, ABSOLUTE_ERROR));
@@ -174,14 +170,13 @@ public class AccumulatedAccelerationMeasurementNoiseEstimatorTest implements
     }
 
     @Test
-    public void testGetSetListener() throws LockedException {
-        final AccumulatedAccelerationMeasurementNoiseEstimator estimator =
-                new AccumulatedAccelerationMeasurementNoiseEstimator();
+    void testGetSetListener() throws LockedException {
+        final var estimator = new AccumulatedAccelerationMeasurementNoiseEstimator();
 
         // check default value
         assertNull(estimator.getListener());
 
-        // set new value
+        // set a new value
         estimator.setListener(this);
 
         // check
@@ -189,50 +184,49 @@ public class AccumulatedAccelerationMeasurementNoiseEstimatorTest implements
     }
 
     @Test
-    public void testAddTriadAndReset1() throws LockedException, WrongSizeException {
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = getAccelNoiseRootPsd();
-        final double gyroNoiseRootPSD = getGyroNoiseRootPsd();
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+    void testAddTriadAndReset1() throws LockedException, WrongSizeException {
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = getAccelNoiseRootPsd();
+        final var gyroNoiseRootPSD = getGyroNoiseRootPsd();
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
+        
+        final var randomizer = new UniformRandomizer();
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var omegaX = 0.0;
+        final var omegaY = 0.0;
+        final var omegaZ = 0.0;
 
-        final Random random = new Random();
-        final UniformRandomizer randomizer = new UniformRandomizer(random);
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double omegaX = 0.0;
-        final double omegaY = 0.0;
-        final double omegaZ = 0.0;
+        final var trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
-
-        final AccumulatedAccelerationMeasurementNoiseEstimator estimator =
-                new AccumulatedAccelerationMeasurementNoiseEstimator(this);
+        final var estimator = new AccumulatedAccelerationMeasurementNoiseEstimator(this);
 
         reset();
-        assertEquals(0, mStart);
-        assertEquals(0, mMeasurementAdded);
-        assertEquals(0, mReset);
+        assertEquals(0, start);
+        assertEquals(0, measurementAdded);
+        assertEquals(0, reset);
         assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertNull(estimator.getLastMeasurement());
         assertFalse(estimator.getLastMeasurement(null));
         assertFalse(estimator.isRunning());
 
-        final AccelerationTriad triad = new AccelerationTriad();
-        final BodyKinematics kinematics = new BodyKinematics();
-        final double timeInterval = estimator.getTimeInterval();
-        final Acceleration lastMeasurement = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var triad = new AccelerationTriad();
+        final var kinematics = new BodyKinematics();
+        final var timeInterval = estimator.getTimeInterval();
+        final var lastMeasurement = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         double value;
-        double avg = 0.0;
-        double v = 0.0;
+        var avg = 0.0;
+        var v = 0.0;
+        final var random = new Random();
         for (int i = 0, j = 1; i < N_SAMPLES; i++, j++) {
             if (estimator.getLastMeasurement(lastMeasurement)) {
                 assertEquals(lastMeasurement, estimator.getLastMeasurement());
@@ -253,46 +247,46 @@ public class AccumulatedAccelerationMeasurementNoiseEstimatorTest implements
 
             avg = avg * (double) i / (double) j + value / j;
 
-            final double diff = value - avg;
+            final var diff = value - avg;
 
-            final double diff2 = diff * diff;
+            final var diff2 = diff * diff;
 
             v = v * (double) i / (double) j + diff2 / j;
         }
 
         assertEquals(N_SAMPLES, estimator.getNumberOfProcessedSamples());
         assertFalse(estimator.isRunning());
-        assertEquals(1, mStart);
-        assertEquals(N_SAMPLES, mMeasurementAdded);
-        assertEquals(0, mReset);
+        assertEquals(1, start);
+        assertEquals(N_SAMPLES, measurementAdded);
+        assertEquals(0, reset);
 
         assertEquals(avg, estimator.getAvg(), ABSOLUTE_ERROR);
 
-        final Acceleration avg1 = estimator.getAvgAsMeasurement();
+        final var avg1 = estimator.getAvgAsMeasurement();
         assertEquals(avg, avg1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, avg1.getUnit());
-        final Acceleration avg2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var avg2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgAsMeasurement(avg2);
         assertEquals(avg1, avg2);
 
         assertEquals(v, estimator.getVariance(), ABSOLUTE_ERROR);
 
-        final double std = Math.sqrt(v);
+        final var std = Math.sqrt(v);
 
         assertEquals(std, estimator.getStandardDeviation(), ABSOLUTE_ERROR);
 
-        final Acceleration std1 = estimator.getStandardDeviationAsMeasurement();
+        final var std1 = estimator.getStandardDeviationAsMeasurement();
         assertEquals(std, std1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, std1.getUnit());
-        final Acceleration std2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var std2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationAsMeasurement(std2);
         assertEquals(std1, std2);
 
-        final double psd = timeInterval * v;
+        final var psd = timeInterval * v;
 
         assertEquals(psd, estimator.getPsd(), ABSOLUTE_ERROR);
 
-        final double rootPsd = Math.sqrt(psd);
+        final var rootPsd = Math.sqrt(psd);
 
         assertEquals(rootPsd, estimator.getRootPsd(), ABSOLUTE_ERROR);
         assertEquals(estimator.getRootPsd(), estimator.getAccelerometerBaseNoiseLevelRootPsd(), 0.0);
@@ -300,7 +294,7 @@ public class AccumulatedAccelerationMeasurementNoiseEstimatorTest implements
         // reset
         assertTrue(estimator.reset());
 
-        assertEquals(1, mReset);
+        assertEquals(1, reset);
 
         assertNull(estimator.getLastMeasurement());
         assertFalse(estimator.getLastMeasurement(null));
@@ -315,50 +309,49 @@ public class AccumulatedAccelerationMeasurementNoiseEstimatorTest implements
     }
 
     @Test
-    public void testAddTriadAndReset2() throws LockedException, WrongSizeException {
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = getAccelNoiseRootPsd();
-        final double gyroNoiseRootPSD = getGyroNoiseRootPsd();
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+    void testAddTriadAndReset2() throws LockedException, WrongSizeException {
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = getAccelNoiseRootPsd();
+        final var gyroNoiseRootPSD = getGyroNoiseRootPsd();
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final Random random = new Random();
-        final UniformRandomizer randomizer = new UniformRandomizer(random);
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double omegaX = 0.0;
-        final double omegaY = 0.0;
-        final double omegaZ = 0.0;
+        final var randomizer = new UniformRandomizer();
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var omegaX = 0.0;
+        final var omegaY = 0.0;
+        final var omegaZ = 0.0;
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
+        final var trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final AccumulatedAccelerationMeasurementNoiseEstimator estimator =
-                new AccumulatedAccelerationMeasurementNoiseEstimator(this);
+        final var estimator = new AccumulatedAccelerationMeasurementNoiseEstimator(this);
 
         reset();
-        assertEquals(0, mStart);
-        assertEquals(0, mMeasurementAdded);
-        assertEquals(0, mReset);
+        assertEquals(0, start);
+        assertEquals(0, measurementAdded);
+        assertEquals(0, reset);
         assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertNull(estimator.getLastMeasurement());
         assertFalse(estimator.getLastMeasurement(null));
         assertFalse(estimator.isRunning());
 
-        final AccelerationTriad triad = new AccelerationTriad();
-        final BodyKinematics kinematics = new BodyKinematics();
-        final double timeInterval = estimator.getTimeInterval();
-        final Acceleration lastMeasurement = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var triad = new AccelerationTriad();
+        final var kinematics = new BodyKinematics();
+        final var timeInterval = estimator.getTimeInterval();
+        final var lastMeasurement = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         double value;
-        double avg = 0.0;
-        double v = 0.0;
+        var avg = 0.0;
+        var v = 0.0;
+        final var random = new Random();
         for (int i = 0, j = 1; i < N_SAMPLES; i++, j++) {
             if (estimator.getLastMeasurement(lastMeasurement)) {
                 assertEquals(lastMeasurement, estimator.getLastMeasurement());
@@ -379,46 +372,46 @@ public class AccumulatedAccelerationMeasurementNoiseEstimatorTest implements
 
             avg = avg * (double) i / (double) j + value / j;
 
-            final double diff = value - avg;
+            final var diff = value - avg;
 
-            final double diff2 = diff * diff;
+            final var diff2 = diff * diff;
 
             v = v * (double) i / (double) j + diff2 / j;
         }
 
         assertEquals(N_SAMPLES, estimator.getNumberOfProcessedSamples());
         assertFalse(estimator.isRunning());
-        assertEquals(1, mStart);
-        assertEquals(N_SAMPLES, mMeasurementAdded);
-        assertEquals(0, mReset);
+        assertEquals(1, start);
+        assertEquals(N_SAMPLES, measurementAdded);
+        assertEquals(0, reset);
 
         assertEquals(avg, estimator.getAvg(), ABSOLUTE_ERROR);
 
-        final Acceleration avg1 = estimator.getAvgAsMeasurement();
+        final var avg1 = estimator.getAvgAsMeasurement();
         assertEquals(avg, avg1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, avg1.getUnit());
-        final Acceleration avg2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var avg2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgAsMeasurement(avg2);
         assertEquals(avg1, avg2);
 
         assertEquals(v, estimator.getVariance(), ABSOLUTE_ERROR);
 
-        final double std = Math.sqrt(v);
+        final var std = Math.sqrt(v);
 
         assertEquals(std, estimator.getStandardDeviation(), ABSOLUTE_ERROR);
 
-        final Acceleration std1 = estimator.getStandardDeviationAsMeasurement();
+        final var std1 = estimator.getStandardDeviationAsMeasurement();
         assertEquals(std, std1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, std1.getUnit());
-        final Acceleration std2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var std2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationAsMeasurement(std2);
         assertEquals(std1, std2);
 
-        final double psd = timeInterval * v;
+        final var psd = timeInterval * v;
 
         assertEquals(psd, estimator.getPsd(), ABSOLUTE_ERROR);
 
-        final double rootPsd = Math.sqrt(psd);
+        final var rootPsd = Math.sqrt(psd);
 
         assertEquals(rootPsd, estimator.getRootPsd(), ABSOLUTE_ERROR);
         assertEquals(estimator.getRootPsd(), estimator.getAccelerometerBaseNoiseLevelRootPsd(), 0.0);
@@ -426,7 +419,7 @@ public class AccumulatedAccelerationMeasurementNoiseEstimatorTest implements
         // reset
         assertTrue(estimator.reset());
 
-        assertEquals(1, mReset);
+        assertEquals(1, reset);
 
         assertNull(estimator.getLastMeasurement());
         assertFalse(estimator.getLastMeasurement(null));
@@ -443,23 +436,23 @@ public class AccumulatedAccelerationMeasurementNoiseEstimatorTest implements
     @Override
     public void onStart(final AccumulatedAccelerationMeasurementNoiseEstimator estimator) {
         checkLocked(estimator);
-        mStart++;
+        start++;
     }
 
     @Override
     public void onMeasurementAdded(final AccumulatedAccelerationMeasurementNoiseEstimator estimator) {
-        mMeasurementAdded++;
+        measurementAdded++;
     }
 
     @Override
     public void onReset(final AccumulatedAccelerationMeasurementNoiseEstimator estimator) {
-        mReset++;
+        reset++;
     }
 
     private void reset() {
-        mStart = 0;
-        mMeasurementAdded = 0;
-        mReset = 0;
+        start = 0;
+        measurementAdded = 0;
+        reset = 0;
     }
 
     private void checkLocked(final AccumulatedAccelerationMeasurementNoiseEstimator estimator) {
@@ -468,7 +461,7 @@ public class AccumulatedAccelerationMeasurementNoiseEstimatorTest implements
         assertThrows(LockedException.class, () -> estimator.setTimeInterval(new Time(0.0, TimeUnit.SECOND)));
         assertThrows(LockedException.class, () -> estimator.setListener(this));
         assertThrows(LockedException.class, () -> estimator.addMeasurement(0.0));
-        final Acceleration a = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var a = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         assertThrows(LockedException.class, () -> estimator.addMeasurement(a));
         assertThrows(LockedException.class, estimator::reset);
     }
@@ -488,7 +481,7 @@ public class AccumulatedAccelerationMeasurementNoiseEstimatorTest implements
     }
 
     private static Matrix generateMa() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
+        final var result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 500e-6, -300e-6, 200e-6,
                 -150e-6, -600e-6, 250e-6,
@@ -499,7 +492,7 @@ public class AccumulatedAccelerationMeasurementNoiseEstimatorTest implements
     }
 
     private static Matrix generateMg() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
+        final var result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 400e-6, -300e-6, 250e-6,
                 0.0, -300e-6, -150e-6,
@@ -510,8 +503,8 @@ public class AccumulatedAccelerationMeasurementNoiseEstimatorTest implements
     }
 
     private static Matrix generateGg() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
-        final double tmp = DEG_TO_RAD / (3600 * 9.80665);
+        final var result = new Matrix(3, 3);
+        final var tmp = DEG_TO_RAD / (3600 * 9.80665);
         result.fromArray(new double[]{
                 0.9 * tmp, -1.1 * tmp, -0.6 * tmp,
                 -0.5 * tmp, 1.9 * tmp, -1.6 * tmp,

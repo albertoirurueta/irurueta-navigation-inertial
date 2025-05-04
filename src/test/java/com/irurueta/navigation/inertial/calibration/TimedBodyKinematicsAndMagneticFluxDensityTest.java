@@ -21,15 +21,13 @@ import com.irurueta.navigation.inertial.SerializationHelper;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeUnit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class TimedBodyKinematicsAndMagneticFluxDensityTest {
+class TimedBodyKinematicsAndMagneticFluxDensityTest {
 
     private static final double MIN_SPECIFIC_FORCE = -9.81;
     private static final double MAX_SPECIFIC_FORCE = 9.81;
@@ -48,303 +46,295 @@ public class TimedBodyKinematicsAndMagneticFluxDensityTest {
     private static final double THRESHOLD = 1e-6;
 
     @Test
-    public void testConstructor1() {
-        final TimedBodyKinematicsAndMagneticFluxDensity tkb = new TimedBodyKinematicsAndMagneticFluxDensity();
+    void testConstructor1() {
+        final var tkb = new TimedBodyKinematicsAndMagneticFluxDensity();
 
         // check default values
         assertNull(tkb.getKinematics());
         assertNull(tkb.getMagneticFluxDensity());
         assertEquals(0.0, tkb.getTimestampSeconds(), 0.0);
-        final Time time1 = tkb.getTimestamp();
+        final var time1 = tkb.getTimestamp();
         assertEquals(0.0, time1.getValue().doubleValue(), 0.0);
         assertEquals(TimeUnit.SECOND, time1.getUnit());
-        final Time time2 = new Time(0.0, TimeUnit.HOUR);
+        final var time2 = new Time(0.0, TimeUnit.HOUR);
         tkb.getTimestamp(time2);
         assertEquals(time1, time2);
 
-        final TimedBodyKinematics tk = tkb.getTimedKinematics();
+        final var tk = tkb.getTimedKinematics();
         assertNull(tk.getKinematics());
         assertEquals(0.0, tk.getTimestampSeconds(), 0.0);
     }
 
     @Test
-    public void testConstructor2() {
-        final BodyKinematics kinematics = new BodyKinematics();
-        final TimedBodyKinematicsAndMagneticFluxDensity tkb = new TimedBodyKinematicsAndMagneticFluxDensity(kinematics);
+    void testConstructor2() {
+        final var kinematics = new BodyKinematics();
+        final var tkb = new TimedBodyKinematicsAndMagneticFluxDensity(kinematics);
 
         // check default values
         assertSame(tkb.getKinematics(), kinematics);
         assertNull(tkb.getMagneticFluxDensity());
         assertEquals(0.0, tkb.getTimestampSeconds(), 0.0);
-        final Time time1 = tkb.getTimestamp();
+        final var time1 = tkb.getTimestamp();
         assertEquals(0.0, time1.getValue().doubleValue(), 0.0);
         assertEquals(TimeUnit.SECOND, time1.getUnit());
-        final Time time2 = new Time(0.0, TimeUnit.HOUR);
+        final var time2 = new Time(0.0, TimeUnit.HOUR);
         tkb.getTimestamp(time2);
         assertEquals(time1, time2);
 
-        final TimedBodyKinematics tk = tkb.getTimedKinematics();
+        final var tk = tkb.getTimedKinematics();
         assertSame(kinematics, tk.getKinematics());
         assertEquals(0.0, tk.getTimestampSeconds(), 0.0);
     }
 
     @Test
-    public void testConstructor3() {
-        final BodyMagneticFluxDensity b = new BodyMagneticFluxDensity();
-        final TimedBodyKinematicsAndMagneticFluxDensity tkb = new TimedBodyKinematicsAndMagneticFluxDensity(b);
+    void testConstructor3() {
+        final var b = new BodyMagneticFluxDensity();
+        final var tkb = new TimedBodyKinematicsAndMagneticFluxDensity(b);
 
         // check default values
         assertNull(tkb.getKinematics());
         assertSame(tkb.getMagneticFluxDensity(), b);
         assertEquals(0.0, tkb.getTimestampSeconds(), 0.0);
-        final Time time1 = tkb.getTimestamp();
+        final var time1 = tkb.getTimestamp();
         assertEquals(0.0, time1.getValue().doubleValue(), 0.0);
         assertEquals(TimeUnit.SECOND, time1.getUnit());
-        final Time time2 = new Time(0.0, TimeUnit.HOUR);
+        final var time2 = new Time(0.0, TimeUnit.HOUR);
         tkb.getTimestamp(time2);
         assertEquals(time1, time2);
 
-        final TimedBodyKinematics tk = tkb.getTimedKinematics();
+        final var tk = tkb.getTimedKinematics();
         assertNull(tk.getKinematics());
         assertEquals(0.0, tk.getTimestampSeconds(), 0.0);
     }
 
     @Test
-    public void testConstructor4() {
-        final BodyKinematics kinematics = new BodyKinematics();
-        final BodyMagneticFluxDensity b = new BodyMagneticFluxDensity();
-        final TimedBodyKinematicsAndMagneticFluxDensity tkb = new TimedBodyKinematicsAndMagneticFluxDensity(kinematics,
-                b);
+    void testConstructor4() {
+        final var kinematics = new BodyKinematics();
+        final var b = new BodyMagneticFluxDensity();
+        final var tkb = new TimedBodyKinematicsAndMagneticFluxDensity(kinematics, b);
 
         // check default values
         assertSame(kinematics, tkb.getKinematics());
         assertSame(b, tkb.getMagneticFluxDensity());
         assertEquals(0.0, tkb.getTimestampSeconds(), 0.0);
-        final Time time1 = tkb.getTimestamp();
+        final var time1 = tkb.getTimestamp();
         assertEquals(0.0, time1.getValue().doubleValue(), 0.0);
         assertEquals(TimeUnit.SECOND, time1.getUnit());
-        final Time time2 = new Time(0.0, TimeUnit.HOUR);
+        final var time2 = new Time(0.0, TimeUnit.HOUR);
         tkb.getTimestamp(time2);
         assertEquals(time1, time2);
 
-        final TimedBodyKinematics tk = tkb.getTimedKinematics();
+        final var tk = tkb.getTimedKinematics();
         assertSame(kinematics, tk.getKinematics());
         assertEquals(0.0, tk.getTimestampSeconds(), 0.0);
     }
 
     @Test
-    public void testConstructor5() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+    void testConstructor5() {
+        final var randomizer = new UniformRandomizer();
+        final var timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
 
-        final TimedBodyKinematicsAndMagneticFluxDensity tkb = new TimedBodyKinematicsAndMagneticFluxDensity(
-                timestampSeconds);
-
-        // check default values
-        assertNull(tkb.getKinematics());
-        assertNull(tkb.getMagneticFluxDensity());
-        assertEquals(timestampSeconds, tkb.getTimestampSeconds(), 0.0);
-        final Time time1 = tkb.getTimestamp();
-        assertEquals(timestampSeconds, time1.getValue().doubleValue(), 0.0);
-        assertEquals(TimeUnit.SECOND, time1.getUnit());
-        final Time time2 = new Time(0.0, TimeUnit.HOUR);
-        tkb.getTimestamp(time2);
-        assertEquals(time1, time2);
-
-        final TimedBodyKinematics tk = tkb.getTimedKinematics();
-        assertNull(tk.getKinematics());
-        assertEquals(timestampSeconds, tk.getTimestampSeconds(), 0.0);
-    }
-
-    @Test
-    public void testConstructor6() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
-        final Time time = new Time(timestampSeconds, TimeUnit.SECOND);
-
-        final TimedBodyKinematicsAndMagneticFluxDensity tkb = new TimedBodyKinematicsAndMagneticFluxDensity(time);
+        final var tkb = new TimedBodyKinematicsAndMagneticFluxDensity(timestampSeconds);
 
         // check default values
         assertNull(tkb.getKinematics());
         assertNull(tkb.getMagneticFluxDensity());
         assertEquals(timestampSeconds, tkb.getTimestampSeconds(), 0.0);
-        final Time time1 = tkb.getTimestamp();
+        final var time1 = tkb.getTimestamp();
         assertEquals(timestampSeconds, time1.getValue().doubleValue(), 0.0);
         assertEquals(TimeUnit.SECOND, time1.getUnit());
-        final Time time2 = new Time(0.0, TimeUnit.HOUR);
+        final var time2 = new Time(0.0, TimeUnit.HOUR);
         tkb.getTimestamp(time2);
         assertEquals(time1, time2);
 
-        final TimedBodyKinematics tk = tkb.getTimedKinematics();
+        final var tk = tkb.getTimedKinematics();
         assertNull(tk.getKinematics());
         assertEquals(timestampSeconds, tk.getTimestampSeconds(), 0.0);
     }
 
     @Test
-    public void testConstructor7() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+    void testConstructor6() {
+        final var randomizer = new UniformRandomizer();
+        final var timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+        final var time = new Time(timestampSeconds, TimeUnit.SECOND);
 
-        final BodyKinematics kinematics = new BodyKinematics();
-        final TimedBodyKinematicsAndMagneticFluxDensity tkb = new TimedBodyKinematicsAndMagneticFluxDensity(kinematics,
-                timestampSeconds);
+        final var tkb = new TimedBodyKinematicsAndMagneticFluxDensity(time);
+
+        // check default values
+        assertNull(tkb.getKinematics());
+        assertNull(tkb.getMagneticFluxDensity());
+        assertEquals(timestampSeconds, tkb.getTimestampSeconds(), 0.0);
+        final var time1 = tkb.getTimestamp();
+        assertEquals(timestampSeconds, time1.getValue().doubleValue(), 0.0);
+        assertEquals(TimeUnit.SECOND, time1.getUnit());
+        final var time2 = new Time(0.0, TimeUnit.HOUR);
+        tkb.getTimestamp(time2);
+        assertEquals(time1, time2);
+
+        final var tk = tkb.getTimedKinematics();
+        assertNull(tk.getKinematics());
+        assertEquals(timestampSeconds, tk.getTimestampSeconds(), 0.0);
+    }
+
+    @Test
+    void testConstructor7() {
+        final var randomizer = new UniformRandomizer();
+        final var timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+
+        final var kinematics = new BodyKinematics();
+        final var tkb = new TimedBodyKinematicsAndMagneticFluxDensity(kinematics, timestampSeconds);
 
         // check default values
         assertSame(kinematics, tkb.getKinematics());
         assertNull(tkb.getMagneticFluxDensity());
         assertEquals(timestampSeconds, tkb.getTimestampSeconds(), 0.0);
-        final Time time1 = tkb.getTimestamp();
+        final var time1 = tkb.getTimestamp();
         assertEquals(timestampSeconds, time1.getValue().doubleValue(), 0.0);
         assertEquals(TimeUnit.SECOND, time1.getUnit());
-        final Time time2 = new Time(0.0, TimeUnit.HOUR);
+        final var time2 = new Time(0.0, TimeUnit.HOUR);
         tkb.getTimestamp(time2);
         assertEquals(time1, time2);
 
-        final TimedBodyKinematics tk = tkb.getTimedKinematics();
+        final var tk = tkb.getTimedKinematics();
         assertSame(kinematics, tk.getKinematics());
         assertEquals(timestampSeconds, tk.getTimestampSeconds(), 0.0);
     }
 
     @Test
-    public void testConstructor8() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
-        final Time time = new Time(timestampSeconds, TimeUnit.SECOND);
+    void testConstructor8() {
+        final var randomizer = new UniformRandomizer();
+        final var timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+        final var time = new Time(timestampSeconds, TimeUnit.SECOND);
 
-        final BodyKinematics kinematics = new BodyKinematics();
-        final TimedBodyKinematicsAndMagneticFluxDensity tkb = new TimedBodyKinematicsAndMagneticFluxDensity(kinematics,
-                time);
+        final var kinematics = new BodyKinematics();
+        final var tkb = new TimedBodyKinematicsAndMagneticFluxDensity(kinematics, time);
 
         // check default values
         assertSame(kinematics, tkb.getKinematics());
         assertNull(tkb.getMagneticFluxDensity());
         assertEquals(timestampSeconds, tkb.getTimestampSeconds(), 0.0);
-        final Time time1 = tkb.getTimestamp();
+        final var time1 = tkb.getTimestamp();
         assertEquals(timestampSeconds, time1.getValue().doubleValue(), 0.0);
         assertEquals(TimeUnit.SECOND, time1.getUnit());
-        final Time time2 = new Time(0.0, TimeUnit.HOUR);
+        final var time2 = new Time(0.0, TimeUnit.HOUR);
         tkb.getTimestamp(time2);
         assertEquals(time1, time2);
 
-        final TimedBodyKinematics tk = tkb.getTimedKinematics();
+        final var tk = tkb.getTimedKinematics();
         assertSame(kinematics, tk.getKinematics());
         assertEquals(timestampSeconds, tk.getTimestampSeconds(), 0.0);
     }
 
     @Test
-    public void testConstructor9() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+    void testConstructor9() {
+        final var randomizer = new UniformRandomizer();
+        final var timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
 
-        final BodyMagneticFluxDensity b = new BodyMagneticFluxDensity();
-        final TimedBodyKinematicsAndMagneticFluxDensity tkb = new TimedBodyKinematicsAndMagneticFluxDensity(b,
-                timestampSeconds);
+        final var b = new BodyMagneticFluxDensity();
+        final var tkb = new TimedBodyKinematicsAndMagneticFluxDensity(b, timestampSeconds);
 
         // check default values
         assertNull(tkb.getKinematics());
         assertSame(b, tkb.getMagneticFluxDensity());
         assertEquals(timestampSeconds, tkb.getTimestampSeconds(), 0.0);
-        final Time time1 = tkb.getTimestamp();
+        final var time1 = tkb.getTimestamp();
         assertEquals(timestampSeconds, time1.getValue().doubleValue(), 0.0);
         assertEquals(TimeUnit.SECOND, time1.getUnit());
-        final Time time2 = new Time(0.0, TimeUnit.HOUR);
+        final var time2 = new Time(0.0, TimeUnit.HOUR);
         tkb.getTimestamp(time2);
         assertEquals(time1, time2);
 
-        final TimedBodyKinematics tk = tkb.getTimedKinematics();
+        final var tk = tkb.getTimedKinematics();
         assertNull(tk.getKinematics());
         assertEquals(timestampSeconds, tk.getTimestampSeconds(), 0.0);
     }
 
     @Test
-    public void testConstructor10() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
-        final Time time = new Time(timestampSeconds, TimeUnit.SECOND);
+    void testConstructor10() {
+        final var randomizer = new UniformRandomizer();
+        final var timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+        final var time = new Time(timestampSeconds, TimeUnit.SECOND);
 
-        final BodyMagneticFluxDensity b = new BodyMagneticFluxDensity();
-        final TimedBodyKinematicsAndMagneticFluxDensity tkb = new TimedBodyKinematicsAndMagneticFluxDensity(b, time);
+        final var b = new BodyMagneticFluxDensity();
+        final var tkb = new TimedBodyKinematicsAndMagneticFluxDensity(b, time);
 
         // check default values
         assertNull(tkb.getKinematics());
         assertSame(b, tkb.getMagneticFluxDensity());
         assertEquals(timestampSeconds, tkb.getTimestampSeconds(), 0.0);
-        final Time time1 = tkb.getTimestamp();
+        final var time1 = tkb.getTimestamp();
         assertEquals(timestampSeconds, time1.getValue().doubleValue(), 0.0);
         assertEquals(TimeUnit.SECOND, time1.getUnit());
-        final Time time2 = new Time(0.0, TimeUnit.HOUR);
+        final var time2 = new Time(0.0, TimeUnit.HOUR);
         tkb.getTimestamp(time2);
         assertEquals(time1, time2);
 
-        final TimedBodyKinematics tk = tkb.getTimedKinematics();
+        final var tk = tkb.getTimedKinematics();
         assertNull(tk.getKinematics());
         assertEquals(timestampSeconds, tk.getTimestampSeconds(), 0.0);
     }
 
     @Test
-    public void testConstructor11() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+    void testConstructor11() {
+        final var randomizer = new UniformRandomizer();
+        final var timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
 
-        final BodyKinematics kinematics = new BodyKinematics();
-        final BodyMagneticFluxDensity b = new BodyMagneticFluxDensity();
-        final TimedBodyKinematicsAndMagneticFluxDensity tkb = new TimedBodyKinematicsAndMagneticFluxDensity(kinematics,
-                b, timestampSeconds);
-
-        // check default values
-        assertSame(kinematics, tkb.getKinematics());
-        assertSame(b, tkb.getMagneticFluxDensity());
-        assertEquals(timestampSeconds, tkb.getTimestampSeconds(), 0.0);
-        final Time time1 = tkb.getTimestamp();
-        assertEquals(timestampSeconds, time1.getValue().doubleValue(), 0.0);
-        assertEquals(TimeUnit.SECOND, time1.getUnit());
-        final Time time2 = new Time(0.0, TimeUnit.HOUR);
-        tkb.getTimestamp(time2);
-        assertEquals(time1, time2);
-
-        final TimedBodyKinematics tk = tkb.getTimedKinematics();
-        assertSame(kinematics, tk.getKinematics());
-        assertEquals(timestampSeconds, tk.getTimestampSeconds(), 0.0);
-    }
-
-    @Test
-    public void testConstructor12() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
-        final Time time = new Time(timestampSeconds, TimeUnit.SECOND);
-
-        final BodyKinematics kinematics = new BodyKinematics();
-        final BodyMagneticFluxDensity b = new BodyMagneticFluxDensity();
-        final TimedBodyKinematicsAndMagneticFluxDensity tkb = new TimedBodyKinematicsAndMagneticFluxDensity(kinematics,
-                b, time);
+        final var kinematics = new BodyKinematics();
+        final var b = new BodyMagneticFluxDensity();
+        final var tkb = new TimedBodyKinematicsAndMagneticFluxDensity(kinematics, b, timestampSeconds);
 
         // check default values
         assertSame(kinematics, tkb.getKinematics());
         assertSame(b, tkb.getMagneticFluxDensity());
         assertEquals(timestampSeconds, tkb.getTimestampSeconds(), 0.0);
-        final Time time1 = tkb.getTimestamp();
+        final var time1 = tkb.getTimestamp();
         assertEquals(timestampSeconds, time1.getValue().doubleValue(), 0.0);
         assertEquals(TimeUnit.SECOND, time1.getUnit());
-        final Time time2 = new Time(0.0, TimeUnit.HOUR);
+        final var time2 = new Time(0.0, TimeUnit.HOUR);
         tkb.getTimestamp(time2);
         assertEquals(time1, time2);
 
-        final TimedBodyKinematics tk = tkb.getTimedKinematics();
+        final var tk = tkb.getTimedKinematics();
         assertSame(kinematics, tk.getKinematics());
         assertEquals(timestampSeconds, tk.getTimestampSeconds(), 0.0);
     }
 
     @Test
-    public void testConstructor13() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+    void testConstructor12() {
+        final var randomizer = new UniformRandomizer();
+        final var timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+        final var time = new Time(timestampSeconds, TimeUnit.SECOND);
 
-        final BodyKinematics kinematics = createKinematics();
-        final BodyMagneticFluxDensity b = createMagneticFlux();
-        final TimedBodyKinematicsAndMagneticFluxDensity tkb1 = new TimedBodyKinematicsAndMagneticFluxDensity(kinematics,
-                b, timestampSeconds);
+        final var kinematics = new BodyKinematics();
+        final var b = new BodyMagneticFluxDensity();
+        final var tkb = new TimedBodyKinematicsAndMagneticFluxDensity(kinematics, b, time);
 
-        final TimedBodyKinematicsAndMagneticFluxDensity tkb2 = new TimedBodyKinematicsAndMagneticFluxDensity(tkb1);
+        // check default values
+        assertSame(kinematics, tkb.getKinematics());
+        assertSame(b, tkb.getMagneticFluxDensity());
+        assertEquals(timestampSeconds, tkb.getTimestampSeconds(), 0.0);
+        final var time1 = tkb.getTimestamp();
+        assertEquals(timestampSeconds, time1.getValue().doubleValue(), 0.0);
+        assertEquals(TimeUnit.SECOND, time1.getUnit());
+        final var time2 = new Time(0.0, TimeUnit.HOUR);
+        tkb.getTimestamp(time2);
+        assertEquals(time1, time2);
+
+        final var tk = tkb.getTimedKinematics();
+        assertSame(kinematics, tk.getKinematics());
+        assertEquals(timestampSeconds, tk.getTimestampSeconds(), 0.0);
+    }
+
+    @Test
+    void testConstructor13() {
+        final var randomizer = new UniformRandomizer();
+        final var timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+
+        final var kinematics = createKinematics();
+        final var b = createMagneticFlux();
+        final var tkb1 = new TimedBodyKinematicsAndMagneticFluxDensity(kinematics, b, timestampSeconds);
+
+        final var tkb2 = new TimedBodyKinematicsAndMagneticFluxDensity(tkb1);
 
         assertEquals(tkb1, tkb2);
         assertEquals(tkb1.getKinematics(), tkb2.getKinematics());
@@ -355,14 +345,14 @@ public class TimedBodyKinematicsAndMagneticFluxDensityTest {
     }
 
     @Test
-    public void testGetSetKinematics() {
-        final TimedBodyKinematicsAndMagneticFluxDensity tkb = new TimedBodyKinematicsAndMagneticFluxDensity();
+    void testGetSetKinematics() {
+        final var tkb = new TimedBodyKinematicsAndMagneticFluxDensity();
 
         // check default value
         assertNull(tkb.getKinematics());
 
-        // set new value
-        final BodyKinematics kinematics = new BodyKinematics();
+        // set a new value
+        final var kinematics = new BodyKinematics();
         tkb.setKinematics(kinematics);
 
         // check
@@ -370,14 +360,14 @@ public class TimedBodyKinematicsAndMagneticFluxDensityTest {
     }
 
     @Test
-    public void testGetSetMagneticFluxDensity() {
-        final TimedBodyKinematicsAndMagneticFluxDensity tkb = new TimedBodyKinematicsAndMagneticFluxDensity();
+    void testGetSetMagneticFluxDensity() {
+        final var tkb = new TimedBodyKinematicsAndMagneticFluxDensity();
 
         // check default value
         assertNull(tkb.getMagneticFluxDensity());
 
-        // set new value
-        final BodyMagneticFluxDensity b = new BodyMagneticFluxDensity();
+        // set a new value
+        final var b = new BodyMagneticFluxDensity();
         tkb.setMagneticFluxDensity(b);
 
         // check
@@ -385,15 +375,15 @@ public class TimedBodyKinematicsAndMagneticFluxDensityTest {
     }
 
     @Test
-    public void testGetSetTimestampSeconds() {
-        final TimedBodyKinematicsAndMagneticFluxDensity tkb = new TimedBodyKinematicsAndMagneticFluxDensity();
+    void testGetSetTimestampSeconds() {
+        final var tkb = new TimedBodyKinematicsAndMagneticFluxDensity();
 
         // check default value
         assertEquals(0.0, tkb.getTimestampSeconds(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
 
         tkb.setTimestampSeconds(timestampSeconds);
 
@@ -402,24 +392,24 @@ public class TimedBodyKinematicsAndMagneticFluxDensityTest {
     }
 
     @Test
-    public void testGetSetTimestamp() {
-        final TimedBodyKinematicsAndMagneticFluxDensity tkb = new TimedBodyKinematicsAndMagneticFluxDensity();
+    void testGetSetTimestamp() {
+        final var tkb = new TimedBodyKinematicsAndMagneticFluxDensity();
 
         // check default value
-        final Time time1 = tkb.getTimestamp();
+        final var time1 = tkb.getTimestamp();
 
         assertEquals(0.0, time1.getValue().doubleValue(), 0.0);
         assertEquals(TimeUnit.SECOND, time1.getUnit());
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
 
-        final Time time2 = new Time(timestampSeconds, TimeUnit.SECOND);
+        final var time2 = new Time(timestampSeconds, TimeUnit.SECOND);
         tkb.setTimestamp(time2);
 
-        final Time time3 = tkb.getTimestamp();
-        final Time time4 = new Time(0.0, TimeUnit.HOUR);
+        final var time3 = tkb.getTimestamp();
+        final var time4 = new Time(0.0, TimeUnit.HOUR);
         tkb.getTimestamp(time4);
 
         // check
@@ -428,25 +418,25 @@ public class TimedBodyKinematicsAndMagneticFluxDensityTest {
     }
 
     @Test
-    public void testGetSetTimedKinematics() {
-        final TimedBodyKinematicsAndMagneticFluxDensity tkb = new TimedBodyKinematicsAndMagneticFluxDensity();
+    void testGetSetTimedKinematics() {
+        final var tkb = new TimedBodyKinematicsAndMagneticFluxDensity();
 
         // check default value
-        final TimedBodyKinematics tk1 = tkb.getTimedKinematics();
+        final var tk1 = tkb.getTimedKinematics();
         assertNull(tk1.getKinematics());
         assertEquals(0.0, tk1.getTimestampSeconds(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
 
-        final BodyKinematics kinematics = createKinematics();
-        final TimedBodyKinematics tk2 = new TimedBodyKinematics(kinematics, timestampSeconds);
+        final var kinematics = createKinematics();
+        final var tk2 = new TimedBodyKinematics(kinematics, timestampSeconds);
         tkb.setTimedKinematics(tk2);
 
         // check
-        final TimedBodyKinematics tk3 = tkb.getTimedKinematics();
-        final TimedBodyKinematics tk4 = new TimedBodyKinematics();
+        final var tk3 = tkb.getTimedKinematics();
+        final var tk4 = new TimedBodyKinematics();
         tkb.getTimedKinematics(tk4);
         assertEquals(tk2, tk3);
         assertNotSame(tk2, tk3);
@@ -455,16 +445,15 @@ public class TimedBodyKinematicsAndMagneticFluxDensityTest {
     }
 
     @Test
-    public void testCopyFrom() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+    void testCopyFrom() {
+        final var randomizer = new UniformRandomizer();
+        final var timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
 
-        final BodyKinematics kinematics = createKinematics();
-        final BodyMagneticFluxDensity b = createMagneticFlux();
-        final TimedBodyKinematicsAndMagneticFluxDensity tkb1 = new TimedBodyKinematicsAndMagneticFluxDensity(
-                kinematics, b, timestampSeconds);
+        final var kinematics = createKinematics();
+        final var b = createMagneticFlux();
+        final var tkb1 = new TimedBodyKinematicsAndMagneticFluxDensity(kinematics, b, timestampSeconds);
 
-        final TimedBodyKinematicsAndMagneticFluxDensity tkb2 = new TimedBodyKinematicsAndMagneticFluxDensity();
+        final var tkb2 = new TimedBodyKinematicsAndMagneticFluxDensity();
 
         tkb2.copyFrom(tkb1);
 
@@ -478,16 +467,15 @@ public class TimedBodyKinematicsAndMagneticFluxDensityTest {
     }
 
     @Test
-    public void testCopyTo() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+    void testCopyTo() {
+        final var randomizer = new UniformRandomizer();
+        final var timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
 
-        final BodyKinematics kinematics = createKinematics();
-        final BodyMagneticFluxDensity b = createMagneticFlux();
-        final TimedBodyKinematicsAndMagneticFluxDensity tkb1 = new TimedBodyKinematicsAndMagneticFluxDensity(kinematics,
-                b, timestampSeconds);
+        final var kinematics = createKinematics();
+        final var b = createMagneticFlux();
+        final var tkb1 = new TimedBodyKinematicsAndMagneticFluxDensity(kinematics, b, timestampSeconds);
 
-        final TimedBodyKinematicsAndMagneticFluxDensity tkb2 = new TimedBodyKinematicsAndMagneticFluxDensity();
+        final var tkb2 = new TimedBodyKinematicsAndMagneticFluxDensity();
 
         tkb1.copyTo(tkb2);
 
@@ -501,50 +489,44 @@ public class TimedBodyKinematicsAndMagneticFluxDensityTest {
     }
 
     @Test
-    public void testHashCode() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timestampSeconds1 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
-        final double timestampSeconds2 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+    void testHashCode() {
+        final var randomizer = new UniformRandomizer();
+        final var timestampSeconds1 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+        final var timestampSeconds2 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
 
-        final BodyKinematics kinematics1 = createKinematics();
-        final BodyMagneticFluxDensity b1 = createMagneticFlux();
+        final var kinematics1 = createKinematics();
+        final var b1 = createMagneticFlux();
 
-        final BodyKinematics kinematics2 = createKinematics();
-        final BodyMagneticFluxDensity b2 = createMagneticFlux();
+        final var kinematics2 = createKinematics();
+        final var b2 = createMagneticFlux();
 
-        final TimedBodyKinematicsAndMagneticFluxDensity tkb1 = new TimedBodyKinematicsAndMagneticFluxDensity(
-                kinematics1, b1, timestampSeconds1);
+        final var tkb1 = new TimedBodyKinematicsAndMagneticFluxDensity(kinematics1, b1, timestampSeconds1);
 
-        final TimedBodyKinematicsAndMagneticFluxDensity tkb2 = new TimedBodyKinematicsAndMagneticFluxDensity(
-                kinematics1, b1, timestampSeconds1);
+        final var tkb2 = new TimedBodyKinematicsAndMagneticFluxDensity(kinematics1, b1, timestampSeconds1);
 
-        final TimedBodyKinematicsAndMagneticFluxDensity tkb3 = new TimedBodyKinematicsAndMagneticFluxDensity(
-                kinematics2, b2, timestampSeconds2);
+        final var tkb3 = new TimedBodyKinematicsAndMagneticFluxDensity(kinematics2, b2, timestampSeconds2);
 
         assertEquals(tkb1.hashCode(), tkb2.hashCode());
         assertNotEquals(tkb1.hashCode(), tkb3.hashCode());
     }
 
     @Test
-    public void testEquals() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timestampSeconds1 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
-        final double timestampSeconds2 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+    void testEquals() {
+        final var randomizer = new UniformRandomizer();
+        final var timestampSeconds1 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+        final var timestampSeconds2 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
 
-        final BodyKinematics kinematics1 = createKinematics();
-        final BodyMagneticFluxDensity b1 = createMagneticFlux();
+        final var kinematics1 = createKinematics();
+        final var b1 = createMagneticFlux();
 
-        final BodyKinematics kinematics2 = createKinematics();
-        final BodyMagneticFluxDensity b2 = createMagneticFlux();
+        final var kinematics2 = createKinematics();
+        final var b2 = createMagneticFlux();
 
-        final TimedBodyKinematicsAndMagneticFluxDensity tkb1 = new TimedBodyKinematicsAndMagneticFluxDensity(
-                kinematics1, b1, timestampSeconds1);
+        final var tkb1 = new TimedBodyKinematicsAndMagneticFluxDensity(kinematics1, b1, timestampSeconds1);
 
-        final TimedBodyKinematicsAndMagneticFluxDensity tkb2 = new TimedBodyKinematicsAndMagneticFluxDensity(
-                kinematics1, b1, timestampSeconds1);
+        final var tkb2 = new TimedBodyKinematicsAndMagneticFluxDensity(kinematics1, b1, timestampSeconds1);
 
-        final TimedBodyKinematicsAndMagneticFluxDensity tkb3 = new TimedBodyKinematicsAndMagneticFluxDensity(
-                kinematics2, b2, timestampSeconds2);
+        final var tkb3 = new TimedBodyKinematicsAndMagneticFluxDensity(kinematics2, b2, timestampSeconds2);
 
         //noinspection EqualsWithItself
         assertEquals(tkb1, tkb1);
@@ -552,31 +534,28 @@ public class TimedBodyKinematicsAndMagneticFluxDensityTest {
         assertTrue(tkb1.equals(tkb1));
         assertTrue(tkb1.equals(tkb2));
         assertFalse(tkb1.equals(tkb3));
-        assertNotEquals(tkb1, null);
+        assertNotEquals(null, tkb1);
         assertFalse(tkb1.equals(null));
-        assertNotEquals(tkb1, new Object());
+        assertNotEquals(new Object(), tkb1);
     }
 
     @Test
-    public void testEqualsWithThreshold() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timestampSeconds1 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
-        final double timestampSeconds2 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+    void testEqualsWithThreshold() {
+        final var randomizer = new UniformRandomizer();
+        final var timestampSeconds1 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+        final var timestampSeconds2 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
 
-        final BodyKinematics kinematics1 = createKinematics();
-        final BodyMagneticFluxDensity b1 = createMagneticFlux();
+        final var kinematics1 = createKinematics();
+        final var b1 = createMagneticFlux();
 
-        final BodyKinematics kinematics2 = createKinematics();
-        final BodyMagneticFluxDensity b2 = createMagneticFlux();
+        final var kinematics2 = createKinematics();
+        final var b2 = createMagneticFlux();
 
-        final TimedBodyKinematicsAndMagneticFluxDensity tkb1 = new TimedBodyKinematicsAndMagneticFluxDensity(
-                kinematics1, b1, timestampSeconds1);
+        final var tkb1 = new TimedBodyKinematicsAndMagneticFluxDensity(kinematics1, b1, timestampSeconds1);
 
-        final TimedBodyKinematicsAndMagneticFluxDensity tkb2 = new TimedBodyKinematicsAndMagneticFluxDensity(
-                kinematics1, b1, timestampSeconds1);
+        final var tkb2 = new TimedBodyKinematicsAndMagneticFluxDensity(kinematics1, b1, timestampSeconds1);
 
-        final TimedBodyKinematicsAndMagneticFluxDensity tkb3 = new TimedBodyKinematicsAndMagneticFluxDensity(
-                kinematics2, b2, timestampSeconds2);
+        final var tkb3 = new TimedBodyKinematicsAndMagneticFluxDensity(kinematics2, b2, timestampSeconds2);
 
         assertTrue(tkb1.equals(tkb1, THRESHOLD));
         assertTrue(tkb1.equals(tkb2, THRESHOLD));
@@ -585,68 +564,66 @@ public class TimedBodyKinematicsAndMagneticFluxDensityTest {
     }
 
     @Test
-    public void testClone() throws CloneNotSupportedException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+    void testClone() throws CloneNotSupportedException {
+        final var randomizer = new UniformRandomizer();
+        final var timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
 
-        final BodyKinematics kinematics = createKinematics();
-        final BodyMagneticFluxDensity b = createMagneticFlux();
+        final var kinematics = createKinematics();
+        final var b = createMagneticFlux();
 
-        final TimedBodyKinematicsAndMagneticFluxDensity tkb1 = new TimedBodyKinematicsAndMagneticFluxDensity(kinematics,
-                b, timestampSeconds);
+        final var tkb1 = new TimedBodyKinematicsAndMagneticFluxDensity(kinematics, b, timestampSeconds);
 
-        final Object tkb2 = tkb1.clone();
+        final var tkb2 = tkb1.clone();
 
         // check
         assertEquals(tkb1, tkb2);
     }
 
     @Test
-    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+    void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final var randomizer = new UniformRandomizer();
+        final var timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
 
-        final BodyKinematics kinematics = createKinematics();
-        final BodyMagneticFluxDensity b = createMagneticFlux();
+        final var kinematics = createKinematics();
+        final var b = createMagneticFlux();
 
-        final TimedBodyKinematicsAndMagneticFluxDensity tkb1 = new TimedBodyKinematicsAndMagneticFluxDensity(kinematics,
-                b, timestampSeconds);
+        final var tkb1 = new TimedBodyKinematicsAndMagneticFluxDensity(kinematics, b, timestampSeconds);
 
-        final byte[] bytes = SerializationHelper.serialize(tkb1);
-        final TimedBodyKinematicsAndMagneticFluxDensity tkb2 = SerializationHelper.deserialize(bytes);
+        final var bytes = SerializationHelper.serialize(tkb1);
+        final var tkb2 = SerializationHelper.deserialize(bytes);
 
         assertEquals(tkb1, tkb2);
         assertNotSame(tkb1, tkb2);
     }
 
     @Test
-    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
-        final Field field = TimedBodyKinematicsAndMagneticFluxDensity.class.getDeclaredField("serialVersionUID");
+    void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final var field = TimedBodyKinematicsAndMagneticFluxDensity.class.getDeclaredField("serialVersionUID");
         field.setAccessible(true);
 
         assertEquals(0L, field.get(null));
     }
 
     private static BodyKinematics createKinematics() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var randomizer = new UniformRandomizer();
+        final var fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
 
-        final double angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
 
         return new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
     }
 
 
     private static BodyMagneticFluxDensity createMagneticFlux() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final var randomizer = new UniformRandomizer();
 
-        final double bx = randomizer.nextDouble(MIN_MAGNETIC_FLUX_VALUE, MAX_MAGNETIC_FLUX_VALUE);
-        final double by = randomizer.nextDouble(MIN_MAGNETIC_FLUX_VALUE, MAX_MAGNETIC_FLUX_VALUE);
-        final double bz = randomizer.nextDouble(MIN_MAGNETIC_FLUX_VALUE, MAX_MAGNETIC_FLUX_VALUE);
+        final var bx = randomizer.nextDouble(MIN_MAGNETIC_FLUX_VALUE, MAX_MAGNETIC_FLUX_VALUE);
+        final var by = randomizer.nextDouble(MIN_MAGNETIC_FLUX_VALUE, MAX_MAGNETIC_FLUX_VALUE);
+        final var bz = randomizer.nextDouble(MIN_MAGNETIC_FLUX_VALUE, MAX_MAGNETIC_FLUX_VALUE);
 
         return new BodyMagneticFluxDensity(bx, by, bz);
     }

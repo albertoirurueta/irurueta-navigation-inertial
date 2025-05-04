@@ -22,31 +22,24 @@ import com.irurueta.algebra.Utils;
 import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.geometry.InhomogeneousPoint3D;
 import com.irurueta.geometry.InvalidRotationMatrixException;
-import com.irurueta.geometry.Point3D;
 import com.irurueta.geometry.Quaternion;
 import com.irurueta.navigation.frames.CoordinateTransformation;
-import com.irurueta.navigation.frames.ECEFFrame;
-import com.irurueta.navigation.frames.ECIFrame;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
 import com.irurueta.navigation.frames.converters.ECEFtoECIFrameConverter;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.inertial.ECIGravitation;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.Speed;
 import com.irurueta.units.SpeedUnit;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeUnit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import java.util.Random;
+import static org.junit.jupiter.api.Assertions.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-public class ECIKinematicsEstimatorTest {
+class ECIKinematicsEstimatorTest {
 
     private static final double TIME_INTERVAL_SECONDS = 0.02;
 
@@ -80,86 +73,87 @@ public class ECIKinematicsEstimatorTest {
     private static final double LARGE_ABSOLUTE_ERROR = 1e-1;
 
     @Test
-    public void testEstimate() throws InvalidSourceAndDestinationFrameTypeException, InvalidRotationMatrixException {
+    void testEstimate() throws InvalidSourceAndDestinationFrameTypeException, InvalidRotationMatrixException {
 
-        final NEDFrame oldNedFrame = createOldNedFrame();
-        final ECEFFrame oldEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
-        final ECIFrame oldEciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var oldNedFrame = createOldNedFrame();
+        final var oldEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
+        final var oldEciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS, 
                 oldEcefFrame);
 
-        final NEDFrame newNedFrame = createNewNedFrame(oldNedFrame);
-        final ECEFFrame newEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(newNedFrame);
-        final ECIFrame newEciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS, newEcefFrame);
+        final var newNedFrame = createNewNedFrame(oldNedFrame);
+        final var newEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(newNedFrame);
+        final var newEciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS, 
+                newEcefFrame);
 
-        final CoordinateTransformation c = newEciFrame.getCoordinateTransformation();
-        final CoordinateTransformation oldC = oldEciFrame.getCoordinateTransformation();
+        final var c = newEciFrame.getCoordinateTransformation();
+        final var oldC = oldEciFrame.getCoordinateTransformation();
 
-        final double vx = newEciFrame.getVx();
-        final double vy = newEciFrame.getVy();
-        final double vz = newEciFrame.getVz();
+        final var vx = newEciFrame.getVx();
+        final var vy = newEciFrame.getVy();
+        final var vz = newEciFrame.getVz();
 
-        final double oldVx = oldEciFrame.getVx();
-        final double oldVy = oldEciFrame.getVy();
-        final double oldVz = oldEciFrame.getVz();
+        final var oldVx = oldEciFrame.getVx();
+        final var oldVy = oldEciFrame.getVy();
+        final var oldVz = oldEciFrame.getVz();
 
-        final double x = newEciFrame.getX();
-        final double y = newEciFrame.getY();
-        final double z = newEciFrame.getZ();
+        final var x = newEciFrame.getX();
+        final var y = newEciFrame.getY();
+        final var z = newEciFrame.getZ();
 
-        final ECIKinematicsEstimator estimator = new ECIKinematicsEstimator();
+        final var estimator = new ECIKinematicsEstimator();
 
-        final BodyKinematics k1 = new BodyKinematics();
+        final var k1 = new BodyKinematics();
         estimator.estimate(TIME_INTERVAL_SECONDS, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, x, y, z, k1);
 
-        final Time timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
-        final BodyKinematics k2 = new BodyKinematics();
+        final var timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
+        final var k2 = new BodyKinematics();
         estimator.estimate(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, x, y, z, k2);
 
-        final BodyKinematics k3 = new BodyKinematics();
+        final var k3 = new BodyKinematics();
         estimator.estimate(TIME_INTERVAL_SECONDS, newEciFrame, oldC, oldVx, oldVy, oldVz, k3);
 
-        final BodyKinematics k4 = new BodyKinematics();
+        final var k4 = new BodyKinematics();
         estimator.estimate(timeInterval, newEciFrame, oldC, oldVx, oldVy, oldVz, k4);
 
-        final BodyKinematics k5 = new BodyKinematics();
+        final var k5 = new BodyKinematics();
         estimator.estimate(TIME_INTERVAL_SECONDS, newEciFrame, oldEciFrame, k5);
 
-        final BodyKinematics k6 = new BodyKinematics();
+        final var k6 = new BodyKinematics();
         estimator.estimate(timeInterval, newEciFrame, oldEciFrame, k6);
 
-        final Speed speedX = new Speed(vx, SpeedUnit.METERS_PER_SECOND);
-        final Speed speedY = new Speed(vy, SpeedUnit.METERS_PER_SECOND);
-        final Speed speedZ = new Speed(vz, SpeedUnit.METERS_PER_SECOND);
+        final var speedX = new Speed(vx, SpeedUnit.METERS_PER_SECOND);
+        final var speedY = new Speed(vy, SpeedUnit.METERS_PER_SECOND);
+        final var speedZ = new Speed(vz, SpeedUnit.METERS_PER_SECOND);
 
-        final Speed oldSpeedX = new Speed(oldVx, SpeedUnit.METERS_PER_SECOND);
-        final Speed oldSpeedY = new Speed(oldVy, SpeedUnit.METERS_PER_SECOND);
-        final Speed oldSpeedZ = new Speed(oldVz, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedX = new Speed(oldVx, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedY = new Speed(oldVy, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedZ = new Speed(oldVz, SpeedUnit.METERS_PER_SECOND);
 
-        final BodyKinematics k7 = new BodyKinematics();
+        final var k7 = new BodyKinematics();
         estimator.estimate(TIME_INTERVAL_SECONDS, c, oldC, speedX, speedY, speedZ, oldSpeedX, oldSpeedY, oldSpeedZ,
                 x, y, z, k7);
 
-        final BodyKinematics k8 = new BodyKinematics();
+        final var k8 = new BodyKinematics();
         estimator.estimate(timeInterval, c, oldC, speedX, speedY, speedZ, oldSpeedX, oldSpeedY, oldSpeedZ, x, y, z, k8);
 
-        final BodyKinematics k9 = new BodyKinematics();
+        final var k9 = new BodyKinematics();
         estimator.estimate(TIME_INTERVAL_SECONDS, newEciFrame, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, k9);
 
-        final BodyKinematics k10 = new BodyKinematics();
+        final var k10 = new BodyKinematics();
         estimator.estimate(timeInterval, newEciFrame, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, k10);
 
-        final Point3D position = new InhomogeneousPoint3D(x, y, z);
-        final BodyKinematics k11 = new BodyKinematics();
+        final var position = new InhomogeneousPoint3D(x, y, z);
+        final var k11 = new BodyKinematics();
         estimator.estimate(TIME_INTERVAL_SECONDS, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, position, k11);
 
-        final BodyKinematics k12 = new BodyKinematics();
+        final var k12 = new BodyKinematics();
         estimator.estimate(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, position, k12);
 
-        final BodyKinematics k13 = new BodyKinematics();
+        final var k13 = new BodyKinematics();
         estimator.estimate(TIME_INTERVAL_SECONDS, c, oldC, speedX, speedY, speedZ, oldSpeedX, oldSpeedY, oldSpeedZ,
                 position, k13);
 
-        final BodyKinematics k14 = new BodyKinematics();
+        final var k14 = new BodyKinematics();
         estimator.estimate(timeInterval, c, oldC, speedX, speedY, speedZ, oldSpeedX, oldSpeedY, oldSpeedZ, position,
                 k14);
 
@@ -179,83 +173,81 @@ public class ECIKinematicsEstimatorTest {
     }
 
     @Test
-    public void testEstimateAndReturnNew() throws InvalidSourceAndDestinationFrameTypeException,
+    void testEstimateAndReturnNew() throws InvalidSourceAndDestinationFrameTypeException,
             InvalidRotationMatrixException {
 
-        final NEDFrame oldNedFrame = createOldNedFrame();
-        final ECEFFrame oldEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
-        final ECIFrame oldEciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var oldNedFrame = createOldNedFrame();
+        final var oldEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
+        final var oldEciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
                 oldEcefFrame);
 
-        final NEDFrame newNedFrame = createNewNedFrame(oldNedFrame);
-        final ECEFFrame newEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(newNedFrame);
-        final ECIFrame newEciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var newNedFrame = createNewNedFrame(oldNedFrame);
+        final var newEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(newNedFrame);
+        final var newEciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
                 newEcefFrame);
 
-        final CoordinateTransformation c = newEciFrame.getCoordinateTransformation();
-        final CoordinateTransformation oldC = oldEciFrame.getCoordinateTransformation();
+        final var c = newEciFrame.getCoordinateTransformation();
+        final var oldC = oldEciFrame.getCoordinateTransformation();
 
-        final double vx = newEciFrame.getVx();
-        final double vy = newEciFrame.getVy();
-        final double vz = newEciFrame.getVz();
+        final var vx = newEciFrame.getVx();
+        final var vy = newEciFrame.getVy();
+        final var vz = newEciFrame.getVz();
 
-        final double oldVx = oldEciFrame.getVx();
-        final double oldVy = oldEciFrame.getVy();
-        final double oldVz = oldEciFrame.getVz();
+        final var oldVx = oldEciFrame.getVx();
+        final var oldVy = oldEciFrame.getVy();
+        final var oldVz = oldEciFrame.getVz();
 
-        final double x = newEciFrame.getX();
-        final double y = newEciFrame.getY();
-        final double z = newEciFrame.getZ();
+        final var x = newEciFrame.getX();
+        final var y = newEciFrame.getY();
+        final var z = newEciFrame.getZ();
 
-        final ECIKinematicsEstimator estimator = new ECIKinematicsEstimator();
+        final var estimator = new ECIKinematicsEstimator();
 
-        final BodyKinematics k1 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS, c, oldC, vx, vy, vz,
-                oldVx, oldVy, oldVz, x, y, z);
-
-        final Time timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
-        final BodyKinematics k2 = estimator.estimateAndReturnNew(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,
+        final var k1 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,
                 x, y, z);
 
-        final BodyKinematics k3 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS, newEciFrame, oldC,
-                oldVx, oldVy, oldVz);
+        final var timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
+        final var k2 = estimator.estimateAndReturnNew(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, x, y, z);
 
-        final BodyKinematics k4 = estimator.estimateAndReturnNew(timeInterval, newEciFrame, oldC, oldVx, oldVy, oldVz);
+        final var k3 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS, newEciFrame, oldC, oldVx, oldVy, oldVz);
 
-        final BodyKinematics k5 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS, newEciFrame, oldEciFrame);
+        final var k4 = estimator.estimateAndReturnNew(timeInterval, newEciFrame, oldC, oldVx, oldVy, oldVz);
 
-        final BodyKinematics k6 = estimator.estimateAndReturnNew(timeInterval, newEciFrame, oldEciFrame);
+        final var k5 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS, newEciFrame, oldEciFrame);
 
-        final Speed speedX = new Speed(vx, SpeedUnit.METERS_PER_SECOND);
-        final Speed speedY = new Speed(vy, SpeedUnit.METERS_PER_SECOND);
-        final Speed speedZ = new Speed(vz, SpeedUnit.METERS_PER_SECOND);
+        final var k6 = estimator.estimateAndReturnNew(timeInterval, newEciFrame, oldEciFrame);
 
-        final Speed oldSpeedX = new Speed(oldVx, SpeedUnit.METERS_PER_SECOND);
-        final Speed oldSpeedY = new Speed(oldVy, SpeedUnit.METERS_PER_SECOND);
-        final Speed oldSpeedZ = new Speed(oldVz, SpeedUnit.METERS_PER_SECOND);
+        final var speedX = new Speed(vx, SpeedUnit.METERS_PER_SECOND);
+        final var speedY = new Speed(vy, SpeedUnit.METERS_PER_SECOND);
+        final var speedZ = new Speed(vz, SpeedUnit.METERS_PER_SECOND);
 
-        final BodyKinematics k7 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS, c, oldC, speedX, speedY, speedZ,
+        final var oldSpeedX = new Speed(oldVx, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedY = new Speed(oldVy, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedZ = new Speed(oldVz, SpeedUnit.METERS_PER_SECOND);
+
+        final var k7 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS, c, oldC, speedX, speedY, speedZ,
                 oldSpeedX, oldSpeedY, oldSpeedZ, x, y, z);
 
-        final BodyKinematics k8 = estimator.estimateAndReturnNew(timeInterval, c, oldC, speedX, speedY, speedZ,
+        final var k8 = estimator.estimateAndReturnNew(timeInterval, c, oldC, speedX, speedY, speedZ,
                 oldSpeedX, oldSpeedY, oldSpeedZ, x, y, z);
 
-        final BodyKinematics k9 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS, newEciFrame, oldC,
+        final var k9 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS, newEciFrame, oldC,
                 oldSpeedX, oldSpeedY, oldSpeedZ);
 
-        final BodyKinematics k10 = estimator.estimateAndReturnNew(timeInterval, newEciFrame, oldC,
+        final var k10 = estimator.estimateAndReturnNew(timeInterval, newEciFrame, oldC,
                 oldSpeedX, oldSpeedY, oldSpeedZ);
 
-        final Point3D position = new InhomogeneousPoint3D(x, y, z);
-        final BodyKinematics k11 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS, c, oldC, vx, vy, vz,
-                oldVx, oldVy, oldVz, position);
+        final var position = new InhomogeneousPoint3D(x, y, z);
+        final var k11 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,
+                position);
 
-        final BodyKinematics k12 = estimator.estimateAndReturnNew(timeInterval, c, oldC, vx, vy, vz,
-                oldVx, oldVy, oldVz, position);
+        final var k12 = estimator.estimateAndReturnNew(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,
+                position);
 
-        final BodyKinematics k13 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS, c, oldC,
-                speedX, speedY, speedZ, oldSpeedX, oldSpeedY, oldSpeedZ, position);
+        final var k13 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS, c, oldC, speedX, speedY, speedZ,
+                oldSpeedX, oldSpeedY, oldSpeedZ, position);
 
-        final BodyKinematics k14 = estimator.estimateAndReturnNew(timeInterval, c, oldC, speedX, speedY, speedZ,
+        final var k14 = estimator.estimateAndReturnNew(timeInterval, c, oldC, speedX, speedY, speedZ,
                 oldSpeedX, oldSpeedY, oldSpeedZ, position);
 
         assertEquals(k1, k2);
@@ -274,92 +266,92 @@ public class ECIKinematicsEstimatorTest {
     }
 
     @Test
-    public void testEstimateKinematics() throws InvalidSourceAndDestinationFrameTypeException,
-            InvalidRotationMatrixException, WrongSizeException, RankDeficientMatrixException, DecomposerException {
+    void testEstimateKinematics() throws InvalidSourceAndDestinationFrameTypeException, InvalidRotationMatrixException,
+            WrongSizeException, RankDeficientMatrixException, DecomposerException {
 
-        final NEDFrame oldNedFrame = createOldNedFrame();
-        final ECEFFrame oldEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
-        final ECIFrame oldEciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var oldNedFrame = createOldNedFrame();
+        final var oldEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
+        final var oldEciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
                 oldEcefFrame);
 
-        final NEDFrame newNedFrame = createNewNedFrame(oldNedFrame);
-        final ECEFFrame newEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(newNedFrame);
-        final ECIFrame newEciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var newNedFrame = createNewNedFrame(oldNedFrame);
+        final var newEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(newNedFrame);
+        final var newEciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
                 newEcefFrame);
 
-        final CoordinateTransformation c = newEciFrame.getCoordinateTransformation();
-        final CoordinateTransformation oldC = oldEciFrame.getCoordinateTransformation();
+        final var c = newEciFrame.getCoordinateTransformation();
+        final var oldC = oldEciFrame.getCoordinateTransformation();
 
-        final double vx = newEciFrame.getVx();
-        final double vy = newEciFrame.getVy();
-        final double vz = newEciFrame.getVz();
+        final var vx = newEciFrame.getVx();
+        final var vy = newEciFrame.getVy();
+        final var vz = newEciFrame.getVz();
 
-        final double oldVx = oldEciFrame.getVx();
-        final double oldVy = oldEciFrame.getVy();
-        final double oldVz = oldEciFrame.getVz();
+        final var oldVx = oldEciFrame.getVx();
+        final var oldVy = oldEciFrame.getVy();
+        final var oldVz = oldEciFrame.getVz();
 
-        final double x = newEciFrame.getX();
-        final double y = newEciFrame.getY();
-        final double z = newEciFrame.getZ();
+        final var x = newEciFrame.getX();
+        final var y = newEciFrame.getY();
+        final var z = newEciFrame.getZ();
 
-        final BodyKinematics k1 = new BodyKinematics();
+        final var k1 = new BodyKinematics();
         ECIKinematicsEstimator.estimateKinematics(TIME_INTERVAL_SECONDS, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,
                 x, y, z, k1);
 
-        final Time timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
-        final BodyKinematics k2 = new BodyKinematics();
+        final var timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
+        final var k2 = new BodyKinematics();
         ECIKinematicsEstimator.estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, x, y, z, k2);
 
-        final BodyKinematics k3 = new BodyKinematics();
+        final var k3 = new BodyKinematics();
         ECIKinematicsEstimator.estimateKinematics(TIME_INTERVAL_SECONDS, newEciFrame, oldC, oldVx, oldVy, oldVz, k3);
 
-        final BodyKinematics k4 = new BodyKinematics();
+        final var k4 = new BodyKinematics();
         ECIKinematicsEstimator.estimateKinematics(timeInterval, newEciFrame, oldC, oldVx, oldVy, oldVz, k4);
 
-        final BodyKinematics k5 = new BodyKinematics();
+        final var k5 = new BodyKinematics();
         ECIKinematicsEstimator.estimateKinematics(TIME_INTERVAL_SECONDS, newEciFrame, oldEciFrame, k5);
 
-        final BodyKinematics k6 = new BodyKinematics();
+        final var k6 = new BodyKinematics();
         ECIKinematicsEstimator.estimateKinematics(timeInterval, newEciFrame, oldEciFrame, k6);
 
-        final Speed speedX = new Speed(vx, SpeedUnit.METERS_PER_SECOND);
-        final Speed speedY = new Speed(vy, SpeedUnit.METERS_PER_SECOND);
-        final Speed speedZ = new Speed(vz, SpeedUnit.METERS_PER_SECOND);
+        final var speedX = new Speed(vx, SpeedUnit.METERS_PER_SECOND);
+        final var speedY = new Speed(vy, SpeedUnit.METERS_PER_SECOND);
+        final var speedZ = new Speed(vz, SpeedUnit.METERS_PER_SECOND);
 
-        final Speed oldSpeedX = new Speed(oldVx, SpeedUnit.METERS_PER_SECOND);
-        final Speed oldSpeedY = new Speed(oldVy, SpeedUnit.METERS_PER_SECOND);
-        final Speed oldSpeedZ = new Speed(oldVz, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedX = new Speed(oldVx, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedY = new Speed(oldVy, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedZ = new Speed(oldVz, SpeedUnit.METERS_PER_SECOND);
 
-        final BodyKinematics k7 = new BodyKinematics();
+        final var k7 = new BodyKinematics();
         ECIKinematicsEstimator.estimateKinematics(TIME_INTERVAL_SECONDS, c, oldC, speedX, speedY, speedZ,
                 oldSpeedX, oldSpeedY, oldSpeedZ, x, y, z, k7);
 
-        final BodyKinematics k8 = new BodyKinematics();
+        final var k8 = new BodyKinematics();
         ECIKinematicsEstimator.estimateKinematics(timeInterval, c, oldC, speedX, speedY, speedZ,
                 oldSpeedX, oldSpeedY, oldSpeedZ, x, y, z, k8);
 
-        final BodyKinematics k9 = new BodyKinematics();
+        final var k9 = new BodyKinematics();
         ECIKinematicsEstimator.estimateKinematics(TIME_INTERVAL_SECONDS, newEciFrame, oldC,
                 oldSpeedX, oldSpeedY, oldSpeedZ, k9);
 
-        final BodyKinematics k10 = new BodyKinematics();
+        final var k10 = new BodyKinematics();
         ECIKinematicsEstimator.estimateKinematics(timeInterval, newEciFrame, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
                 k10);
 
-        final Point3D position = new InhomogeneousPoint3D(x, y, z);
-        final BodyKinematics k11 = new BodyKinematics();
+        final var position = new InhomogeneousPoint3D(x, y, z);
+        final var k11 = new BodyKinematics();
         ECIKinematicsEstimator.estimateKinematics(TIME_INTERVAL_SECONDS, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,
                 position, k11);
 
-        final BodyKinematics k12 = new BodyKinematics();
+        final var k12 = new BodyKinematics();
         ECIKinematicsEstimator.estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, position,
                 k12);
 
-        final BodyKinematics k13 = new BodyKinematics();
+        final var k13 = new BodyKinematics();
         ECIKinematicsEstimator.estimateKinematics(TIME_INTERVAL_SECONDS, c, oldC, speedX, speedY, speedZ, oldSpeedX,
                 oldSpeedY, oldSpeedZ, position, k13);
 
-        final BodyKinematics k14 = new BodyKinematics();
+        final var k14 = new BodyKinematics();
         ECIKinematicsEstimator.estimateKinematics(timeInterval, c, oldC, speedX, speedY, speedZ,
                 oldSpeedX, oldSpeedY, oldSpeedZ, position, k14);
 
@@ -377,91 +369,90 @@ public class ECIKinematicsEstimatorTest {
         assertEquals(k1, k13);
         assertEquals(k1, k14);
 
-        final BodyKinematics k = estimateKinematics(TIME_INTERVAL_SECONDS, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,
-                x, y, z);
+        final var k = estimateKinematics(TIME_INTERVAL_SECONDS, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, x, y, z);
 
         assertTrue(k1.equals(k, ABSOLUTE_ERROR));
     }
 
     @Test
-    public void testEstimateKinematicsAndReturnNew() throws InvalidSourceAndDestinationFrameTypeException,
+    void testEstimateKinematicsAndReturnNew() throws InvalidSourceAndDestinationFrameTypeException,
             InvalidRotationMatrixException, WrongSizeException, RankDeficientMatrixException, DecomposerException {
 
-        final NEDFrame oldNedFrame = createOldNedFrame();
-        final ECEFFrame oldEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
-        final ECIFrame oldEciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var oldNedFrame = createOldNedFrame();
+        final var oldEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
+        final var oldEciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
                 oldEcefFrame);
 
-        final NEDFrame newNedFrame = createNewNedFrame(oldNedFrame);
-        final ECEFFrame newEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(newNedFrame);
-        final ECIFrame newEciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var newNedFrame = createNewNedFrame(oldNedFrame);
+        final var newEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(newNedFrame);
+        final var newEciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
                 newEcefFrame);
 
-        final CoordinateTransformation c = newEciFrame.getCoordinateTransformation();
-        final CoordinateTransformation oldC = oldEciFrame.getCoordinateTransformation();
+        final var c = newEciFrame.getCoordinateTransformation();
+        final var oldC = oldEciFrame.getCoordinateTransformation();
 
-        final double vx = newEciFrame.getVx();
-        final double vy = newEciFrame.getVy();
-        final double vz = newEciFrame.getVz();
+        final var vx = newEciFrame.getVx();
+        final var vy = newEciFrame.getVy();
+        final var vz = newEciFrame.getVz();
 
-        final double oldVx = oldEciFrame.getVx();
-        final double oldVy = oldEciFrame.getVy();
-        final double oldVz = oldEciFrame.getVz();
+        final var oldVx = oldEciFrame.getVx();
+        final var oldVy = oldEciFrame.getVy();
+        final var oldVz = oldEciFrame.getVz();
 
-        final double x = newEciFrame.getX();
-        final double y = newEciFrame.getY();
-        final double z = newEciFrame.getZ();
+        final var x = newEciFrame.getX();
+        final var y = newEciFrame.getY();
+        final var z = newEciFrame.getZ();
 
-        final BodyKinematics k1 = ECIKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, c, oldC,
+        final var k1 = ECIKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, c, oldC,
                 vx, vy, vz, oldVx, oldVy, oldVz, x, y, z);
 
-        final Time timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
-        final BodyKinematics k2 = ECIKinematicsEstimator.estimateKinematicsAndReturnNew(timeInterval, c, oldC,
+        final var timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
+        final var k2 = ECIKinematicsEstimator.estimateKinematicsAndReturnNew(timeInterval, c, oldC,
                 vx, vy, vz, oldVx, oldVy, oldVz, x, y, z);
 
-        final BodyKinematics k3 = ECIKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS,
-                newEciFrame, oldC, oldVx, oldVy, oldVz);
-
-        final BodyKinematics k4 = ECIKinematicsEstimator.estimateKinematicsAndReturnNew(timeInterval, newEciFrame, oldC,
+        final var k3 = ECIKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, newEciFrame, oldC,
                 oldVx, oldVy, oldVz);
 
-        final BodyKinematics k5 = ECIKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS,
-                newEciFrame, oldEciFrame);
+        final var k4 = ECIKinematicsEstimator.estimateKinematicsAndReturnNew(timeInterval, newEciFrame, oldC,
+                oldVx, oldVy, oldVz);
 
-        final BodyKinematics k6 = ECIKinematicsEstimator.estimateKinematicsAndReturnNew(timeInterval, newEciFrame,
+        final var k5 = ECIKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, newEciFrame,
                 oldEciFrame);
 
-        final Speed speedX = new Speed(vx, SpeedUnit.METERS_PER_SECOND);
-        final Speed speedY = new Speed(vy, SpeedUnit.METERS_PER_SECOND);
-        final Speed speedZ = new Speed(vz, SpeedUnit.METERS_PER_SECOND);
+        final var k6 = ECIKinematicsEstimator.estimateKinematicsAndReturnNew(timeInterval, newEciFrame,
+                oldEciFrame);
 
-        final Speed oldSpeedX = new Speed(oldVx, SpeedUnit.METERS_PER_SECOND);
-        final Speed oldSpeedY = new Speed(oldVy, SpeedUnit.METERS_PER_SECOND);
-        final Speed oldSpeedZ = new Speed(oldVz, SpeedUnit.METERS_PER_SECOND);
+        final var speedX = new Speed(vx, SpeedUnit.METERS_PER_SECOND);
+        final var speedY = new Speed(vy, SpeedUnit.METERS_PER_SECOND);
+        final var speedZ = new Speed(vz, SpeedUnit.METERS_PER_SECOND);
 
-        final BodyKinematics k7 = ECIKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, c, oldC,
+        final var oldSpeedX = new Speed(oldVx, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedY = new Speed(oldVy, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedZ = new Speed(oldVz, SpeedUnit.METERS_PER_SECOND);
+
+        final var k7 = ECIKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, c, oldC,
                 speedX, speedY, speedZ, oldSpeedX, oldSpeedY, oldSpeedZ, x, y, z);
 
-        final BodyKinematics k8 = ECIKinematicsEstimator.estimateKinematicsAndReturnNew(timeInterval, c, oldC,
+        final var k8 = ECIKinematicsEstimator.estimateKinematicsAndReturnNew(timeInterval, c, oldC,
                 speedX, speedY, speedZ, oldSpeedX, oldSpeedY, oldSpeedZ, x, y, z);
 
-        final BodyKinematics k9 = ECIKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS,
-                newEciFrame, oldC, oldSpeedX, oldSpeedY, oldSpeedZ);
+        final var k9 = ECIKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, newEciFrame, oldC,
+                oldSpeedX, oldSpeedY, oldSpeedZ);
 
-        final BodyKinematics k10 = ECIKinematicsEstimator.estimateKinematicsAndReturnNew(timeInterval, newEciFrame,
-                oldC, oldSpeedX, oldSpeedY, oldSpeedZ);
+        final var k10 = ECIKinematicsEstimator.estimateKinematicsAndReturnNew(timeInterval, newEciFrame, oldC,
+                oldSpeedX, oldSpeedY, oldSpeedZ);
 
-        final Point3D position = new InhomogeneousPoint3D(x, y, z);
-        final BodyKinematics k11 = ECIKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, c, oldC,
+        final var position = new InhomogeneousPoint3D(x, y, z);
+        final var k11 = ECIKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, c, oldC,
                 vx, vy, vz, oldVx, oldVy, oldVz, position);
 
-        final BodyKinematics k12 = ECIKinematicsEstimator.estimateKinematicsAndReturnNew(timeInterval, c, oldC,
-                vx, vy, vz, oldVx, oldVy, oldVz, position);
+        final var k12 = ECIKinematicsEstimator.estimateKinematicsAndReturnNew(timeInterval, c, oldC, vx, vy, vz,
+                oldVx, oldVy, oldVz, position);
 
-        final BodyKinematics k13 = ECIKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, c, oldC,
+        final var k13 = ECIKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, c, oldC,
                 speedX, speedY, speedZ, oldSpeedX, oldSpeedY, oldSpeedZ, position);
 
-        final BodyKinematics k14 = ECIKinematicsEstimator.estimateKinematicsAndReturnNew(timeInterval, c, oldC,
+        final var k14 = ECIKinematicsEstimator.estimateKinematicsAndReturnNew(timeInterval, c, oldC,
                 speedX, speedY, speedZ, oldSpeedX, oldSpeedY, oldSpeedZ, position);
 
         assertEquals(k1, k2);
@@ -478,145 +469,144 @@ public class ECIKinematicsEstimatorTest {
         assertEquals(k1, k13);
         assertEquals(k1, k14);
 
-        final BodyKinematics k = estimateKinematics(TIME_INTERVAL_SECONDS, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,
-                x, y, z);
+        final var k = estimateKinematics(TIME_INTERVAL_SECONDS, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, x, y, z);
 
         assertTrue(k1.equals(k, ABSOLUTE_ERROR));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testEstimateKinematicsWhenNegativeIntervalThrowsIllegalArgumentException()
+    @Test
+    void testEstimateKinematicsWhenNegativeIntervalThrowsIllegalArgumentException()
             throws InvalidSourceAndDestinationFrameTypeException, InvalidRotationMatrixException {
 
-        final NEDFrame oldNedFrame = createOldNedFrame();
-        final ECEFFrame oldEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
-        final ECIFrame oldEciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var oldNedFrame = createOldNedFrame();
+        final var oldEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
+        final var oldEciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
                 oldEcefFrame);
 
-        final NEDFrame newNedFrame = createNewNedFrame(oldNedFrame);
-        final ECEFFrame newEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(newNedFrame);
-        final ECIFrame newEciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var newNedFrame = createNewNedFrame(oldNedFrame);
+        final var newEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(newNedFrame);
+        final var newEciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
                 newEcefFrame);
 
-        final CoordinateTransformation c = newEciFrame.getCoordinateTransformation();
-        final CoordinateTransformation oldC = oldEciFrame.getCoordinateTransformation();
+        final var c = newEciFrame.getCoordinateTransformation();
+        final var oldC = oldEciFrame.getCoordinateTransformation();
 
-        final double vx = newEciFrame.getVx();
-        final double vy = newEciFrame.getVy();
-        final double vz = newEciFrame.getVz();
+        final var vx = newEciFrame.getVx();
+        final var vy = newEciFrame.getVy();
+        final var vz = newEciFrame.getVz();
 
-        final double oldVx = oldEciFrame.getVx();
-        final double oldVy = oldEciFrame.getVy();
-        final double oldVz = oldEciFrame.getVz();
+        final var oldVx = oldEciFrame.getVx();
+        final var oldVy = oldEciFrame.getVy();
+        final var oldVz = oldEciFrame.getVz();
 
-        final double x = newEciFrame.getX();
-        final double y = newEciFrame.getY();
-        final double z = newEciFrame.getZ();
+        final var x = newEciFrame.getX();
+        final var y = newEciFrame.getY();
+        final var z = newEciFrame.getZ();
 
-        ECIKinematicsEstimator.estimateKinematicsAndReturnNew(-1.0, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,
-                x, y, z);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testEstimateKinematicsWhenInvalidCoordinateTransformationThrowsIllegalArgumentException()
-            throws InvalidSourceAndDestinationFrameTypeException, InvalidRotationMatrixException {
-
-        final NEDFrame oldNedFrame = createOldNedFrame();
-        final ECEFFrame oldEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
-        final ECIFrame oldEciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
-                oldEcefFrame);
-
-        final NEDFrame newNedFrame = createNewNedFrame(oldNedFrame);
-        final ECEFFrame newEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(newNedFrame);
-        final ECIFrame newEciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
-                newEcefFrame);
-
-        final CoordinateTransformation c = newEciFrame.getCoordinateTransformation();
-        final CoordinateTransformation oldC = oldEciFrame.getCoordinateTransformation();
-
-        final double vx = newEciFrame.getVx();
-        final double vy = newEciFrame.getVy();
-        final double vz = newEciFrame.getVz();
-
-        final double oldVx = oldEciFrame.getVx();
-        final double oldVy = oldEciFrame.getVy();
-        final double oldVz = oldEciFrame.getVz();
-
-        final double x = newEciFrame.getX();
-        final double y = newEciFrame.getY();
-        final double z = newEciFrame.getZ();
-
-        c.setDestinationType(FrameType.BODY_FRAME);
-        ECIKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, c, oldC, vx, vy, vz,
-                oldVx, oldVy, oldVz, x, y, z);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testEstimateKinematicsWhenInvalidOldCoordinateTransformationThrowsIllegalArgumentException()
-            throws InvalidSourceAndDestinationFrameTypeException, InvalidRotationMatrixException {
-
-        final NEDFrame oldNedFrame = createOldNedFrame();
-        final ECEFFrame oldEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
-        final ECIFrame oldEciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
-                oldEcefFrame);
-
-        final NEDFrame newNedFrame = createNewNedFrame(oldNedFrame);
-        final ECEFFrame newEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(newNedFrame);
-        final ECIFrame newEciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
-                newEcefFrame);
-
-        final CoordinateTransformation c = newEciFrame.getCoordinateTransformation();
-        final CoordinateTransformation oldC = oldEciFrame.getCoordinateTransformation();
-
-        final double vx = newEciFrame.getVx();
-        final double vy = newEciFrame.getVy();
-        final double vz = newEciFrame.getVz();
-
-        final double oldVx = oldEciFrame.getVx();
-        final double oldVy = oldEciFrame.getVy();
-        final double oldVz = oldEciFrame.getVz();
-
-        final double x = newEciFrame.getX();
-        final double y = newEciFrame.getY();
-        final double z = newEciFrame.getZ();
-
-        oldC.setDestinationType(FrameType.BODY_FRAME);
-        ECIKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, c, oldC, vx, vy, vz,
-                oldVx, oldVy, oldVz, x, y, z);
+        assertThrows(IllegalArgumentException.class, () -> ECIKinematicsEstimator.estimateKinematicsAndReturnNew(
+                -1.0, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, x, y, z));
     }
 
     @Test
-    public void testEstimateKinematicsWhenZeroTimeIntervalReturnsZeroValues()
+    void testEstimateKinematicsWhenInvalidCoordinateTransformationThrowsIllegalArgumentException()
+            throws InvalidSourceAndDestinationFrameTypeException, InvalidRotationMatrixException {
+
+        final var oldNedFrame = createOldNedFrame();
+        final var oldEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
+        final var oldEciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
+                oldEcefFrame);
+
+        final var newNedFrame = createNewNedFrame(oldNedFrame);
+        final var newEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(newNedFrame);
+        final var newEciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
+                newEcefFrame);
+
+        final var c = newEciFrame.getCoordinateTransformation();
+        final var oldC = oldEciFrame.getCoordinateTransformation();
+
+        final var vx = newEciFrame.getVx();
+        final var vy = newEciFrame.getVy();
+        final var vz = newEciFrame.getVz();
+
+        final var oldVx = oldEciFrame.getVx();
+        final var oldVy = oldEciFrame.getVy();
+        final var oldVz = oldEciFrame.getVz();
+
+        final var x = newEciFrame.getX();
+        final var y = newEciFrame.getY();
+        final var z = newEciFrame.getZ();
+
+        c.setDestinationType(FrameType.BODY_FRAME);
+        assertThrows(IllegalArgumentException.class, () -> ECIKinematicsEstimator.estimateKinematicsAndReturnNew(
+                TIME_INTERVAL_SECONDS, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, x, y, z));
+    }
+
+    @Test
+    void testEstimateKinematicsWhenInvalidOldCoordinateTransformationThrowsIllegalArgumentException()
+            throws InvalidSourceAndDestinationFrameTypeException, InvalidRotationMatrixException {
+
+        final var oldNedFrame = createOldNedFrame();
+        final var oldEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
+        final var oldEciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
+                oldEcefFrame);
+
+        final var newNedFrame = createNewNedFrame(oldNedFrame);
+        final var newEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(newNedFrame);
+        final var newEciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
+                newEcefFrame);
+
+        final var c = newEciFrame.getCoordinateTransformation();
+        final var oldC = oldEciFrame.getCoordinateTransformation();
+
+        final var vx = newEciFrame.getVx();
+        final var vy = newEciFrame.getVy();
+        final var vz = newEciFrame.getVz();
+
+        final var oldVx = oldEciFrame.getVx();
+        final var oldVy = oldEciFrame.getVy();
+        final var oldVz = oldEciFrame.getVz();
+
+        final var x = newEciFrame.getX();
+        final var y = newEciFrame.getY();
+        final var z = newEciFrame.getZ();
+
+        oldC.setDestinationType(FrameType.BODY_FRAME);
+        assertThrows(IllegalArgumentException.class, () -> ECIKinematicsEstimator.estimateKinematicsAndReturnNew(
+                TIME_INTERVAL_SECONDS, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, x, y, z));
+    }
+
+    @Test
+    void testEstimateKinematicsWhenZeroTimeIntervalReturnsZeroValues() 
             throws InvalidSourceAndDestinationFrameTypeException, InvalidRotationMatrixException, WrongSizeException,
             RankDeficientMatrixException, DecomposerException {
 
-        final NEDFrame oldNedFrame = createOldNedFrame();
-        final ECEFFrame oldEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
-        final ECIFrame oldEciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var oldNedFrame = createOldNedFrame();
+        final var oldEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
+        final var oldEciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS, 
                 oldEcefFrame);
 
-        final NEDFrame newNedFrame = createNewNedFrame(oldNedFrame);
-        final ECEFFrame newEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(newNedFrame);
-        final ECIFrame newEciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var newNedFrame = createNewNedFrame(oldNedFrame);
+        final var newEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(newNedFrame);
+        final var newEciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS, 
                 newEcefFrame);
 
-        final CoordinateTransformation c = newEciFrame.getCoordinateTransformation();
-        final CoordinateTransformation oldC = oldEciFrame.getCoordinateTransformation();
+        final var c = newEciFrame.getCoordinateTransformation();
+        final var oldC = oldEciFrame.getCoordinateTransformation();
 
-        final double vx = newEciFrame.getVx();
-        final double vy = newEciFrame.getVy();
-        final double vz = newEciFrame.getVz();
+        final var vx = newEciFrame.getVx();
+        final var vy = newEciFrame.getVy();
+        final var vz = newEciFrame.getVz();
 
-        final double oldVx = oldEciFrame.getVx();
-        final double oldVy = oldEciFrame.getVy();
-        final double oldVz = oldEciFrame.getVz();
+        final var oldVx = oldEciFrame.getVx();
+        final var oldVy = oldEciFrame.getVy();
+        final var oldVz = oldEciFrame.getVz();
 
-        final double x = newEciFrame.getX();
-        final double y = newEciFrame.getY();
-        final double z = newEciFrame.getZ();
+        final var x = newEciFrame.getX();
+        final var y = newEciFrame.getY();
+        final var z = newEciFrame.getZ();
 
-        final BodyKinematics k = ECIKinematicsEstimator.estimateKinematicsAndReturnNew(0.0, c, oldC,
-                vx, vy, vz, oldVx, oldVy, oldVz, x, y, z);
+        final var k = ECIKinematicsEstimator.estimateKinematicsAndReturnNew(0.0, c, oldC, vx, vy, vz, 
+                oldVx, oldVy, oldVz, x, y, z);
 
         assertEquals(0.0, k.getFx(), 0.0);
         assertEquals(0.0, k.getFy(), 0.0);
@@ -626,38 +616,37 @@ public class ECIKinematicsEstimatorTest {
         assertEquals(0.0, k.getAngularRateY(), 0.0);
         assertEquals(0.0, k.getAngularRateZ(), 0.0);
 
-        final BodyKinematics k2 = estimateKinematics(0.0, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, x, y, z);
+        final var k2 = estimateKinematics(0.0, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, x, y, z);
 
         assertTrue(k2.equals(k, 0.0));
     }
 
     @Test
-    public void testCompareKinematics() throws InvalidSourceAndDestinationFrameTypeException,
-            InvalidRotationMatrixException {
-        final NEDFrame oldNedFrame = createOldNedFrame();
-        final ECEFFrame oldEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
-        final ECIFrame oldEciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
+    void testCompareKinematics() throws InvalidSourceAndDestinationFrameTypeException, InvalidRotationMatrixException {
+        final var oldNedFrame = createOldNedFrame();
+        final var oldEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
+        final var oldEciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS, 
                 oldEcefFrame);
 
-        final NEDFrame newNedFrame = createNewNedFrame(oldNedFrame);
-        final ECEFFrame newEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(newNedFrame);
-        final ECIFrame newEciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var newNedFrame = createNewNedFrame(oldNedFrame);
+        final var newEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(newNedFrame);
+        final var newEciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS, 
                 newEcefFrame);
 
-        final BodyKinematics nedK = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS,
-                newNedFrame, oldNedFrame);
-        final BodyKinematics ecefK = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS,
-                newEcefFrame, oldEcefFrame);
-        final BodyKinematics eciK = ECIKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS,
-                newEciFrame, oldEciFrame);
+        final var nedK = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, newNedFrame,
+                oldNedFrame);
+        final var ecefK = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, newEcefFrame,
+                oldEcefFrame);
+        final var eciK = ECIKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, newEciFrame,
+                oldEciFrame);
 
-        final double nedSpecificForceNorm = nedK.getSpecificForceNorm();
-        final double ecefSpecificForceNorm = ecefK.getSpecificForceNorm();
-        final double eciSpecificForceNorm = eciK.getSpecificForceNorm();
+        final var nedSpecificForceNorm = nedK.getSpecificForceNorm();
+        final var ecefSpecificForceNorm = ecefK.getSpecificForceNorm();
+        final var eciSpecificForceNorm = eciK.getSpecificForceNorm();
 
-        final double nedAngularRateNorm = nedK.getAngularRateNorm();
-        final double ecefAngularRateNorm = ecefK.getAngularRateNorm();
-        final double eciAngularRateNorm = eciK.getAngularRateNorm();
+        final var nedAngularRateNorm = nedK.getAngularRateNorm();
+        final var ecefAngularRateNorm = ecefK.getAngularRateNorm();
+        final var eciAngularRateNorm = eciK.getAngularRateNorm();
 
         assertEquals(ecefSpecificForceNorm, nedSpecificForceNorm, LARGE_ABSOLUTE_ERROR);
         assertEquals(eciSpecificForceNorm, nedSpecificForceNorm, LARGE_ABSOLUTE_ERROR);
@@ -686,79 +675,77 @@ public class ECIKinematicsEstimatorTest {
     private static NEDFrame createOldNedFrame() throws InvalidSourceAndDestinationFrameTypeException,
             InvalidRotationMatrixException {
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final var randomizer = new UniformRandomizer();
 
-        final double vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final Quaternion q = new Quaternion(roll, pitch, yaw);
+        final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var q = new Quaternion(roll, pitch, yaw);
 
-        final Matrix m = q.asInhomogeneousMatrix();
-        final CoordinateTransformation c = new CoordinateTransformation(m, FrameType.BODY_FRAME,
-                FrameType.LOCAL_NAVIGATION_FRAME);
+        final var m = q.asInhomogeneousMatrix();
+        final var c = new CoordinateTransformation(m, FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
 
-        final double latitude = Math.toRadians(LATITUDE_DEGREES);
-        final double longitude = Math.toRadians(LONGITUDE_DEGREES);
+        final var latitude = Math.toRadians(LATITUDE_DEGREES);
+        final var longitude = Math.toRadians(LONGITUDE_DEGREES);
         return new NEDFrame(latitude, longitude, HEIGHT, vn, ve, vd, c);
     }
 
     private static NEDFrame createNewNedFrame(final NEDFrame oldFrame) throws InvalidRotationMatrixException,
             InvalidSourceAndDestinationFrameTypeException {
 
-        final double oldLatitude = oldFrame.getLatitude();
-        final double oldLongitude = oldFrame.getLongitude();
-        final double oldHeight = oldFrame.getHeight();
+        final var oldLatitude = oldFrame.getLatitude();
+        final var oldLongitude = oldFrame.getLongitude();
+        final var oldHeight = oldFrame.getHeight();
 
-        final double oldVn = oldFrame.getVn();
-        final double oldVe = oldFrame.getVe();
-        final double oldVd = oldFrame.getVd();
+        final var oldVn = oldFrame.getVn();
+        final var oldVe = oldFrame.getVe();
+        final var oldVd = oldFrame.getVd();
 
-        final CoordinateTransformation oldC = oldFrame.getCoordinateTransformation();
+        final var oldC = oldFrame.getCoordinateTransformation();
 
-        final double oldRoll = oldC.getRollEulerAngle();
-        final double oldPitch = oldC.getPitchEulerAngle();
-        final double oldYaw = oldC.getYawEulerAngle();
+        final var oldRoll = oldC.getRollEulerAngle();
+        final var oldPitch = oldC.getPitchEulerAngle();
+        final var oldYaw = oldC.getYawEulerAngle();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final var randomizer = new UniformRandomizer();
 
-        final double latitudeVariation = Math.toRadians(randomizer.nextDouble(MIN_POSITION_VARIATION_DEGREES,
+        final var latitudeVariation = Math.toRadians(randomizer.nextDouble(MIN_POSITION_VARIATION_DEGREES,
                 MAX_POSITION_VARIATION_DEGREES));
-        final double longitudeVariation = Math.toRadians(randomizer.nextDouble(MIN_POSITION_VARIATION_DEGREES,
+        final var longitudeVariation = Math.toRadians(randomizer.nextDouble(MIN_POSITION_VARIATION_DEGREES,
                 MAX_POSITION_VARIATION_DEGREES));
-        final double heightVariation = randomizer.nextDouble(MIN_HEIGHT_VARIATION, MAX_HEIGHT_VARIATION);
+        final var heightVariation = randomizer.nextDouble(MIN_HEIGHT_VARIATION, MAX_HEIGHT_VARIATION);
 
-        final double vnVariation = randomizer.nextDouble(MIN_VELOCITY_VARIATION, MAX_VELOCITY_VARIATION);
-        final double veVariation = randomizer.nextDouble(MIN_VELOCITY_VARIATION, MAX_VELOCITY_VARIATION);
-        final double vdVariation = randomizer.nextDouble(MIN_VELOCITY_VARIATION, MAX_VELOCITY_VARIATION);
+        final var vnVariation = randomizer.nextDouble(MIN_VELOCITY_VARIATION, MAX_VELOCITY_VARIATION);
+        final var veVariation = randomizer.nextDouble(MIN_VELOCITY_VARIATION, MAX_VELOCITY_VARIATION);
+        final var vdVariation = randomizer.nextDouble(MIN_VELOCITY_VARIATION, MAX_VELOCITY_VARIATION);
 
-        final double rollVariation = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
+        final var rollVariation = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES, 
                 MAX_ANGLE_VARIATION_DEGREES));
-        final double pitchVariation = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
+        final var pitchVariation = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
                 MAX_ANGLE_VARIATION_DEGREES));
-        final double yawVariation = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
+        final var yawVariation = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_VARIATION_DEGREES,
                 MAX_ANGLE_VARIATION_DEGREES));
 
-        final double latitude = oldLatitude + latitudeVariation;
-        final double longitude = oldLongitude + longitudeVariation;
-        final double height = oldHeight + heightVariation;
+        final var latitude = oldLatitude + latitudeVariation;
+        final var longitude = oldLongitude + longitudeVariation;
+        final var height = oldHeight + heightVariation;
 
-        final double vn = oldVn + vnVariation;
-        final double ve = oldVe + veVariation;
-        final double vd = oldVd + vdVariation;
+        final var vn = oldVn + vnVariation;
+        final var ve = oldVe + veVariation;
+        final var vd = oldVd + vdVariation;
 
-        final double roll = oldRoll + rollVariation;
-        final double pitch = oldPitch + pitchVariation;
-        final double yaw = oldYaw + yawVariation;
+        final var roll = oldRoll + rollVariation;
+        final var pitch = oldPitch + pitchVariation;
+        final var yaw = oldYaw + yawVariation;
 
-        final Quaternion q = new Quaternion(roll, pitch, yaw);
+        final var q = new Quaternion(roll, pitch, yaw);
 
-        final Matrix m = q.asInhomogeneousMatrix();
-        final CoordinateTransformation c = new CoordinateTransformation(m, FrameType.BODY_FRAME,
-                FrameType.LOCAL_NAVIGATION_FRAME);
+        final var m = q.asInhomogeneousMatrix();
+        final var c = new CoordinateTransformation(m, FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
 
         return new NEDFrame(latitude, longitude, height, vn, ve, vd, c);
     }
@@ -770,13 +757,13 @@ public class ECIKinematicsEstimatorTest {
             throws WrongSizeException, RankDeficientMatrixException, DecomposerException {
 
         if (timeInterval > 0.0) {
-            // Obtain coordinate transformation matrix from the old attitude to the new
-            final Matrix cBi = c.getMatrix();
-            final Matrix oldCbi = oldC.getMatrix();
-            final Matrix cOldNew = cBi.transposeAndReturnNew().multiplyAndReturnNew(oldCbi);
+            // Get coordinate transformation matrix from the old attitude to the new
+            final var cBi = c.getMatrix();
+            final var oldCbi = oldC.getMatrix();
+            final var cOldNew = cBi.transposeAndReturnNew().multiplyAndReturnNew(oldCbi);
 
             // Calculate the approximate angular rate
-            final Matrix alphaIbb = new Matrix(3, 1);
+            final var alphaIbb = new Matrix(3, 1);
             alphaIbb.setElementAtIndex(0, 0.5 * (cOldNew.getElementAt(1, 2)
                     - cOldNew.getElementAt(2, 1)));
             alphaIbb.setElementAtIndex(1, 0.5 * (cOldNew.getElementAt(2, 0)
@@ -785,40 +772,40 @@ public class ECIKinematicsEstimatorTest {
                     - cOldNew.getElementAt(1, 0)));
 
             // Calculate and apply the scaling factor
-            final double temp = Math.acos(0.5 * (Utils.trace(cOldNew) - 1.0));
+            final var temp = Math.acos(0.5 * (Utils.trace(cOldNew) - 1.0));
             if (temp > SCALING_THRESHOLD) {
                 // scaling is 1 if temp is less than this
                 alphaIbb.multiplyByScalar(temp / Math.sin(temp));
             }
 
             // Calculate the angular rate
-            final Matrix omegaIbb = alphaIbb.multiplyByScalarAndReturnNew(1.0 / timeInterval);
+            final var omegaIbb = alphaIbb.multiplyByScalarAndReturnNew(1.0 / timeInterval);
 
             // Calculate the specific force resolved about ECI-frame axes
             // From (5.18) and (5.20)
-            final Matrix vIbi = new Matrix(3, 1);
+            final var vIbi = new Matrix(3, 1);
             vIbi.setElementAtIndex(0, vx);
             vIbi.setElementAtIndex(1, vy);
             vIbi.setElementAtIndex(2, vz);
 
-            final Matrix oldVibi = new Matrix(3, 1);
+            final var oldVibi = new Matrix(3, 1);
             oldVibi.setElementAtIndex(0, oldVx);
             oldVibi.setElementAtIndex(1, oldVy);
             oldVibi.setElementAtIndex(2, oldVz);
 
-            final ECIGravitation gravitation = ECIGravitationEstimator.estimateGravitationAndReturnNew(x, y, z);
-            final Matrix g = gravitation.asMatrix();
+            final var gravitation = ECIGravitationEstimator.estimateGravitationAndReturnNew(x, y, z);
+            final var g = gravitation.asMatrix();
 
-            final Matrix fIbi = vIbi.subtractAndReturnNew(oldVibi).multiplyByScalarAndReturnNew(1.0 / timeInterval)
+            final var fIbi = vIbi.subtractAndReturnNew(oldVibi).multiplyByScalarAndReturnNew(1.0 / timeInterval)
                     .subtractAndReturnNew(g);
 
-            // Calculate the average body-to-ECI-frame coordinate transformation
+            // Calculate the average body to ECI frame coordinate transformation
             // matrix over the update interval using (5.84)
-            final double magAlpha = Utils.normF(alphaIbb);
-            final Matrix skewAlpha = Utils.skewMatrix(alphaIbb);
+            final var magAlpha = Utils.normF(alphaIbb);
+            final var skewAlpha = Utils.skewMatrix(alphaIbb);
             final Matrix aveCbi;
             if (magAlpha > ALPHA_THRESHOLD) {
-                final double magAlpha2 = Math.pow(magAlpha, 2.0);
+                final var magAlpha2 = Math.pow(magAlpha, 2.0);
                 aveCbi = oldCbi.multiplyAndReturnNew(Matrix.identity(3, 3)
                         .addAndReturnNew(skewAlpha.multiplyByScalarAndReturnNew(
                                 (1.0 - Math.cos(magAlpha)) / magAlpha2)).addAndReturnNew(
@@ -830,19 +817,19 @@ public class ECIKinematicsEstimatorTest {
             }
 
             // Transform specific force to body-frame resolving axes using (5.81)
-            final Matrix fIbb = Utils.inverse(aveCbi).multiplyAndReturnNew(fIbi);
+            final var fIbb = Utils.inverse(aveCbi).multiplyAndReturnNew(fIbi);
 
-            final double fx = fIbb.getElementAtIndex(0);
-            final double fy = fIbb.getElementAtIndex(1);
-            final double fz = fIbb.getElementAtIndex(2);
+            final var fx = fIbb.getElementAtIndex(0);
+            final var fy = fIbb.getElementAtIndex(1);
+            final var fz = fIbb.getElementAtIndex(2);
 
-            final double angularRateX = omegaIbb.getElementAtIndex(0);
-            final double angularRateY = omegaIbb.getElementAtIndex(1);
-            final double angularRateZ = omegaIbb.getElementAtIndex(2);
+            final var angularRateX = omegaIbb.getElementAtIndex(0);
+            final var angularRateY = omegaIbb.getElementAtIndex(1);
+            final var angularRateZ = omegaIbb.getElementAtIndex(2);
 
             return new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
         } else {
-            // If time interval is zero, set angular rate and specific force to zer
+            // If a time interval is zero, set an angular rate and specific force to zer
             return new BodyKinematics();
         }
     }

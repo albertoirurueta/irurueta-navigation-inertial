@@ -16,7 +16,6 @@
 package com.irurueta.navigation.inertial.calibration;
 
 import com.irurueta.navigation.frames.CoordinateTransformation;
-import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
@@ -30,15 +29,13 @@ import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedUnit;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeUnit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class StandardDeviationFrameBodyKinematicsTest {
+class StandardDeviationFrameBodyKinematicsTest {
 
     private static final double MIN_SPECIFIC_FORCE = -9.81;
     private static final double MAX_SPECIFIC_FORCE = 9.81;
@@ -67,9 +64,9 @@ public class StandardDeviationFrameBodyKinematicsTest {
     private static final double THRESHOLD = 1e-6;
 
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         // test empty constructor
-        StandardDeviationFrameBodyKinematics frameBodyKinematics = new StandardDeviationFrameBodyKinematics();
+        var frameBodyKinematics = new StandardDeviationFrameBodyKinematics();
 
         // check default values
         assertNull(frameBodyKinematics.getKinematics());
@@ -81,24 +78,24 @@ public class StandardDeviationFrameBodyKinematicsTest {
         assertFalse(frameBodyKinematics.getPreviousNedFrame(null));
         assertEquals(0.0, frameBodyKinematics.getTimeInterval(), 0.0);
         assertEquals(new Time(0.0, TimeUnit.SECOND), frameBodyKinematics.getTimeIntervalAsTime());
-        Time timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
+        var timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
         assertEquals(new Time(0.0, TimeUnit.SECOND), timeInterval);
         assertEquals(0.0, frameBodyKinematics.getSpecificForceStandardDeviation(), 0.0);
-        Acceleration acceleration1 = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        var acceleration1 = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         assertEquals(acceleration1, frameBodyKinematics.getSpecificForceStandardDeviationAsAcceleration());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         frameBodyKinematics.getSpecificForceStandardDeviationAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         assertEquals(0.0, frameBodyKinematics.getAngularRateStandardDeviation(), 0.0);
-        AngularSpeed angularSpeed1 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        var angularSpeed1 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         assertEquals(angularSpeed1, frameBodyKinematics.getAngularRateStandardDeviationAsAngularSpeed());
-        AngularSpeed angularSpeed2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        var angularSpeed2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         frameBodyKinematics.getAngularRateStandardDeviationAsAngularSpeed(angularSpeed2);
         assertEquals(angularSpeed1, angularSpeed2);
 
         // test constructor with kinematics
-        final BodyKinematics kinematics = new BodyKinematics();
+        final var kinematics = new BodyKinematics();
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(kinematics);
 
         // check default values
@@ -128,15 +125,15 @@ public class StandardDeviationFrameBodyKinematicsTest {
         assertEquals(angularSpeed1, angularSpeed2);
 
         // test constructor with ECEF frame
-        final NEDFrame nedFrame = new NEDFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var nedFrame = new NEDFrame();
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(ecefFrame);
 
         // check default values
         assertNull(frameBodyKinematics.getKinematics());
         assertSame(ecefFrame, frameBodyKinematics.getFrame());
         assertEquals(nedFrame, frameBodyKinematics.getNedFrame());
-        NEDFrame nedFrame2 = new NEDFrame();
+        var nedFrame2 = new NEDFrame();
         assertTrue(frameBodyKinematics.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
         assertNull(frameBodyKinematics.getPreviousFrame());
@@ -146,7 +143,7 @@ public class StandardDeviationFrameBodyKinematicsTest {
         assertEquals(new Time(0.0, TimeUnit.SECOND), frameBodyKinematics.getTimeIntervalAsTime());
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
-        assertEquals(timeInterval, new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), timeInterval);
         assertEquals(0.0, frameBodyKinematics.getSpecificForceStandardDeviation(), 0.0);
         acceleration1 = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         assertEquals(acceleration1, frameBodyKinematics.getSpecificForceStandardDeviationAsAcceleration());
@@ -192,8 +189,8 @@ public class StandardDeviationFrameBodyKinematicsTest {
         assertEquals(angularSpeed1, angularSpeed2);
 
         // test constructor with time interval seconds
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timeIntervalSeconds = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var randomizer = new UniformRandomizer();
+        final var timeIntervalSeconds = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
 
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(timeIntervalSeconds);
 
@@ -226,8 +223,8 @@ public class StandardDeviationFrameBodyKinematicsTest {
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new StandardDeviationFrameBodyKinematics(-1.0));
 
-        // test constructor with time interval
-        final Time timeInterval2 = new Time(timeIntervalSeconds, TimeUnit.SECOND);
+        // test constructor with a time interval
+        final var timeInterval2 = new Time(timeIntervalSeconds, TimeUnit.SECOND);
 
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(timeInterval2);
 
@@ -258,12 +255,12 @@ public class StandardDeviationFrameBodyKinematicsTest {
         assertEquals(angularSpeed1, angularSpeed2);
 
         // Force IllegalArgumentException
-        final Time wrongTimeInterval = new Time(-1.0, TimeUnit.SECOND);
+        final var wrongTimeInterval = new Time(-1.0, TimeUnit.SECOND);
         assertThrows(IllegalArgumentException.class, () -> new StandardDeviationFrameBodyKinematics(wrongTimeInterval));
 
         // test constructor with current and previous ECEF frame
-        final NEDFrame previousNedFrame = new NEDFrame();
-        final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
+        final var previousNedFrame = new NEDFrame();
+        final var previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
 
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(ecefFrame, previousEcefFrame);
 
@@ -331,7 +328,7 @@ public class StandardDeviationFrameBodyKinematicsTest {
         assertEquals(angularSpeed1, angularSpeed2);
 
         // test constructor with current and previous ECEF frame and time interval seconds
-        frameBodyKinematics = new StandardDeviationFrameBodyKinematics(ecefFrame, previousEcefFrame,
+        frameBodyKinematics = new StandardDeviationFrameBodyKinematics(ecefFrame, previousEcefFrame, 
                 timeIntervalSeconds);
 
         // check default values
@@ -402,7 +399,7 @@ public class StandardDeviationFrameBodyKinematicsTest {
         assertEquals(angularSpeed1, angularSpeed2);
 
         // Force IllegalArgumentException
-        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationFrameBodyKinematics(ecefFrame,
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationFrameBodyKinematics(ecefFrame, 
                 previousEcefFrame, wrongTimeInterval));
 
         // test constructor with current and previous NED frame and time interval seconds
@@ -527,7 +524,7 @@ public class StandardDeviationFrameBodyKinematicsTest {
         assertEquals(new Time(0.0, TimeUnit.SECOND), frameBodyKinematics.getTimeIntervalAsTime());
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
-        assertEquals(timeInterval, new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), timeInterval);
         assertEquals(0.0, frameBodyKinematics.getSpecificForceStandardDeviation(), 0.0);
         acceleration1 = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         assertEquals(frameBodyKinematics.getSpecificForceStandardDeviationAsAcceleration(), acceleration1);
@@ -593,7 +590,7 @@ public class StandardDeviationFrameBodyKinematicsTest {
         assertEquals(new Time(0.0, TimeUnit.SECOND), frameBodyKinematics.getTimeIntervalAsTime());
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
-        assertEquals(timeInterval, new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), timeInterval);
         assertEquals(0.0, frameBodyKinematics.getSpecificForceStandardDeviation(), 0.0);
         acceleration1 = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         assertEquals(acceleration1, frameBodyKinematics.getSpecificForceStandardDeviationAsAcceleration());
@@ -643,7 +640,7 @@ public class StandardDeviationFrameBodyKinematicsTest {
         assertEquals(angularSpeed1, angularSpeed2);
 
         // Force IllegalArgumentException
-        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationFrameBodyKinematics(kinematics,
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationFrameBodyKinematics(kinematics, 
                 ecefFrame, previousEcefFrame, -1.0));
 
         // test constructor with body kinematics, current and previous ECEF frame and
@@ -682,7 +679,7 @@ public class StandardDeviationFrameBodyKinematicsTest {
         assertEquals(angularSpeed1, angularSpeed2);
 
         // Force IllegalArgumentException
-        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationFrameBodyKinematics(kinematics,
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationFrameBodyKinematics(kinematics, 
                 ecefFrame, previousEcefFrame, wrongTimeInterval));
 
         // test constructor with body kinematics, current and previous NED frame and
@@ -726,7 +723,7 @@ public class StandardDeviationFrameBodyKinematicsTest {
 
         // test constructor with body kinematics, current and previous NED frame and
         // time interval seconds
-        frameBodyKinematics = new StandardDeviationFrameBodyKinematics(kinematics, nedFrame, previousNedFrame,
+        frameBodyKinematics = new StandardDeviationFrameBodyKinematics(kinematics, nedFrame, previousNedFrame, 
                 timeInterval2);
 
         // check default values
@@ -760,12 +757,12 @@ public class StandardDeviationFrameBodyKinematicsTest {
         assertEquals(angularSpeed1, angularSpeed2);
 
         // Force IllegalArgumentException
-        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationFrameBodyKinematics(kinematics,
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationFrameBodyKinematics(kinematics, 
                 nedFrame, previousNedFrame, wrongTimeInterval));
 
         // test constructor with specific force and angular rate standard deviations
-        final double specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-        final double angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final var specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final var angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
 
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(specificForceStandardDeviation,
                 angularRateStandardDeviation);
@@ -858,7 +855,7 @@ public class StandardDeviationFrameBodyKinematicsTest {
         assertEquals(new Time(0.0, TimeUnit.SECOND), frameBodyKinematics.getTimeIntervalAsTime());
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
-        assertEquals(timeInterval, new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), timeInterval);
         assertEquals(specificForceStandardDeviation, frameBodyKinematics.getSpecificForceStandardDeviation(), 0.0);
         acceleration1 = new Acceleration(specificForceStandardDeviation, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         assertEquals(acceleration1, frameBodyKinematics.getSpecificForceStandardDeviationAsAcceleration());
@@ -917,9 +914,9 @@ public class StandardDeviationFrameBodyKinematicsTest {
         assertThrows(IllegalArgumentException.class, () -> new StandardDeviationFrameBodyKinematics(nedFrame,
                 specificForceStandardDeviation, -1.0));
 
-        // test constructor with time interval, specific force and angular rate
+        // test constructor with a time interval, specific force and angular rate
         // standard deviations
-        frameBodyKinematics = new StandardDeviationFrameBodyKinematics(timeIntervalSeconds,
+        frameBodyKinematics = new StandardDeviationFrameBodyKinematics(timeIntervalSeconds, 
                 specificForceStandardDeviation, angularRateStandardDeviation);
 
         // check default values
@@ -956,7 +953,7 @@ public class StandardDeviationFrameBodyKinematicsTest {
         assertThrows(IllegalArgumentException.class, () -> new StandardDeviationFrameBodyKinematics(timeIntervalSeconds,
                 specificForceStandardDeviation, -1.0));
 
-        // test constructor with time interval, specific force and angular rate
+        // test constructor with a time interval, specific force and angular rate
         // standard deviations
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(timeInterval2, specificForceStandardDeviation,
                 angularRateStandardDeviation);
@@ -1523,7 +1520,8 @@ public class StandardDeviationFrameBodyKinematicsTest {
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
         assertEquals(new Time(timeIntervalSeconds, TimeUnit.SECOND), timeInterval);
-        assertEquals(specificForceStandardDeviation, frameBodyKinematics.getSpecificForceStandardDeviation(), 0.0);
+        assertEquals(specificForceStandardDeviation, frameBodyKinematics.getSpecificForceStandardDeviation(), 
+                0.0);
         acceleration1 = new Acceleration(specificForceStandardDeviation, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         assertEquals(acceleration1, frameBodyKinematics.getSpecificForceStandardDeviationAsAcceleration());
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
@@ -1538,10 +1536,10 @@ public class StandardDeviationFrameBodyKinematicsTest {
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new StandardDeviationFrameBodyKinematics(kinematics,
-                nedFrame, previousNedFrame, -1.0, specificForceStandardDeviation,
+                nedFrame, previousNedFrame, -1.0, specificForceStandardDeviation, 
                 angularRateStandardDeviation));
         assertThrows(IllegalArgumentException.class, () -> new StandardDeviationFrameBodyKinematics(kinematics,
-                nedFrame, previousNedFrame, timeIntervalSeconds, -1.0,
+                nedFrame, previousNedFrame, timeIntervalSeconds, -1.0, 
                 angularRateStandardDeviation));
         assertThrows(IllegalArgumentException.class, () -> new StandardDeviationFrameBodyKinematics(kinematics,
                 nedFrame, previousNedFrame, timeIntervalSeconds, specificForceStandardDeviation,
@@ -1594,9 +1592,9 @@ public class StandardDeviationFrameBodyKinematicsTest {
                 -1.0));
 
         // test constructor with specific force and angular rate standard deviations
-        final Acceleration specificForceStandardDeviation1 = new Acceleration(specificForceStandardDeviation,
+        final var specificForceStandardDeviation1 = new Acceleration(specificForceStandardDeviation,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final AngularSpeed angularRateStandardDeviation1 = new AngularSpeed(angularRateStandardDeviation,
+        final var angularRateStandardDeviation1 = new AngularSpeed(angularRateStandardDeviation, 
                 AngularSpeedUnit.RADIANS_PER_SECOND);
 
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(specificForceStandardDeviation1,
@@ -1629,8 +1627,8 @@ public class StandardDeviationFrameBodyKinematicsTest {
         assertEquals(angularSpeed1, angularSpeed2);
 
         // Force IllegalArgumentException
-        final Acceleration wrongAcceleration = new Acceleration(-1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final AngularSpeed wrongAngularRate = new AngularSpeed(-1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var wrongAcceleration = new Acceleration(-1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var wrongAngularRate = new AngularSpeed(-1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
 
         assertThrows(IllegalArgumentException.class, () -> new StandardDeviationFrameBodyKinematics(wrongAcceleration,
                 angularRateStandardDeviation1));
@@ -1694,7 +1692,8 @@ public class StandardDeviationFrameBodyKinematicsTest {
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
         assertEquals(new Time(0.0, TimeUnit.SECOND), timeInterval);
-        assertEquals(specificForceStandardDeviation, frameBodyKinematics.getSpecificForceStandardDeviation(), 0.0);
+        assertEquals(specificForceStandardDeviation, frameBodyKinematics.getSpecificForceStandardDeviation(), 
+                0.0);
         acceleration1 = new Acceleration(specificForceStandardDeviation, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         assertEquals(acceleration1, frameBodyKinematics.getSpecificForceStandardDeviationAsAcceleration());
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
@@ -1752,9 +1751,9 @@ public class StandardDeviationFrameBodyKinematicsTest {
         assertThrows(IllegalArgumentException.class, () -> new StandardDeviationFrameBodyKinematics(nedFrame,
                 specificForceStandardDeviation1, wrongAngularRate));
 
-        // test constructor with time interval, specific force and angular rate
+        // test constructor with a time interval, specific force and angular rate
         // standard deviations
-        frameBodyKinematics = new StandardDeviationFrameBodyKinematics(timeIntervalSeconds,
+        frameBodyKinematics = new StandardDeviationFrameBodyKinematics(timeIntervalSeconds, 
                 specificForceStandardDeviation1, angularRateStandardDeviation1);
 
         // check default values
@@ -1791,7 +1790,7 @@ public class StandardDeviationFrameBodyKinematicsTest {
         assertThrows(IllegalArgumentException.class, () -> new StandardDeviationFrameBodyKinematics(
                 timeIntervalSeconds, specificForceStandardDeviation1, wrongAngularRate));
 
-        // test constructor with time interval, specific force and angular rate
+        // test constructor with a time interval, specific force and angular rate
         // standard deviations
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(timeInterval2, specificForceStandardDeviation1,
                 angularRateStandardDeviation1);
@@ -2087,7 +2086,7 @@ public class StandardDeviationFrameBodyKinematicsTest {
 
         // test constructor with body kinematics and ECEF frame,
         // specific force and angular rate standard deviations
-        frameBodyKinematics = new StandardDeviationFrameBodyKinematics(kinematics, ecefFrame,
+        frameBodyKinematics = new StandardDeviationFrameBodyKinematics(kinematics, ecefFrame, 
                 specificForceStandardDeviation1, angularRateStandardDeviation1);
 
         // check default values
@@ -2126,7 +2125,7 @@ public class StandardDeviationFrameBodyKinematicsTest {
 
         // test constructor with body kinematics and NED frame,
         // specific force and angular rate standard deviations
-        frameBodyKinematics = new StandardDeviationFrameBodyKinematics(kinematics, nedFrame,
+        frameBodyKinematics = new StandardDeviationFrameBodyKinematics(kinematics, nedFrame, 
                 specificForceStandardDeviation1, angularRateStandardDeviation1);
 
         // check default values
@@ -2184,7 +2183,7 @@ public class StandardDeviationFrameBodyKinematicsTest {
         assertEquals(new Time(0.0, TimeUnit.SECOND), frameBodyKinematics.getTimeIntervalAsTime());
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
-        assertEquals(timeInterval, new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), timeInterval);
         assertEquals(specificForceStandardDeviation, frameBodyKinematics.getSpecificForceStandardDeviation(), 0.0);
         acceleration1 = new Acceleration(specificForceStandardDeviation, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         assertEquals(acceleration1, frameBodyKinematics.getSpecificForceStandardDeviationAsAcceleration());
@@ -2355,7 +2354,8 @@ public class StandardDeviationFrameBodyKinematicsTest {
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
         assertEquals(new Time(timeIntervalSeconds, TimeUnit.SECOND), timeInterval);
-        assertEquals(specificForceStandardDeviation, frameBodyKinematics.getSpecificForceStandardDeviation(), 0.0);
+        assertEquals(specificForceStandardDeviation, frameBodyKinematics.getSpecificForceStandardDeviation(), 
+                0.0);
         acceleration1 = new Acceleration(specificForceStandardDeviation, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         assertEquals(acceleration1, frameBodyKinematics.getSpecificForceStandardDeviationAsAcceleration());
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
@@ -2399,7 +2399,8 @@ public class StandardDeviationFrameBodyKinematicsTest {
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
         assertEquals(new Time(timeIntervalSeconds, TimeUnit.SECOND), timeInterval);
-        assertEquals(specificForceStandardDeviation, frameBodyKinematics.getSpecificForceStandardDeviation(), 0.0);
+        assertEquals(specificForceStandardDeviation, frameBodyKinematics.getSpecificForceStandardDeviation(), 
+                0.0);
         acceleration1 = new Acceleration(specificForceStandardDeviation, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         assertEquals(acceleration1, frameBodyKinematics.getSpecificForceStandardDeviationAsAcceleration());
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
@@ -2425,7 +2426,7 @@ public class StandardDeviationFrameBodyKinematicsTest {
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(kinematics, nedFrame, previousNedFrame,
                 timeIntervalSeconds, specificForceStandardDeviation, angularRateStandardDeviation);
 
-        final StandardDeviationFrameBodyKinematics frameBodyKinematics2 = new StandardDeviationFrameBodyKinematics(
+        final var frameBodyKinematics2 = new StandardDeviationFrameBodyKinematics(
                 frameBodyKinematics);
 
         assertEquals(kinematics, frameBodyKinematics2.getKinematics());
@@ -2441,7 +2442,8 @@ public class StandardDeviationFrameBodyKinematicsTest {
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics2.getTimeIntervalAsTime(timeInterval);
         assertEquals(new Time(timeIntervalSeconds, TimeUnit.SECOND), timeInterval);
-        assertEquals(specificForceStandardDeviation, frameBodyKinematics2.getSpecificForceStandardDeviation(), 0.0);
+        assertEquals(specificForceStandardDeviation, frameBodyKinematics2.getSpecificForceStandardDeviation(), 
+                0.0);
         acceleration1 = new Acceleration(specificForceStandardDeviation, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         assertEquals(acceleration1, frameBodyKinematics2.getSpecificForceStandardDeviationAsAcceleration());
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
@@ -2456,42 +2458,42 @@ public class StandardDeviationFrameBodyKinematicsTest {
     }
 
     @Test
-    public void testGetSetSpecificForceStandardDeviation() {
-        final StandardDeviationFrameBodyKinematics frameBodyKinematics = new StandardDeviationFrameBodyKinematics();
+    void testGetSetSpecificForceStandardDeviation() {
+        final var frameBodyKinematics = new StandardDeviationFrameBodyKinematics();
 
         // check default value
         assertEquals(0.0, frameBodyKinematics.getSpecificForceStandardDeviation(), 0.0);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final var randomizer = new UniformRandomizer();
+        final var specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
 
         frameBodyKinematics.setSpecificForceStandardDeviation(specificForceStandardDeviation);
 
         // check
-        assertEquals(specificForceStandardDeviation, frameBodyKinematics.getSpecificForceStandardDeviation(), 0.0);
+        assertEquals(specificForceStandardDeviation, frameBodyKinematics.getSpecificForceStandardDeviation(),
+                0.0);
     }
 
     @Test
-    public void testGetSetSpecificForceStandardDeviationAsAcceleration() {
-        final StandardDeviationFrameBodyKinematics frameBodyKinematics = new StandardDeviationFrameBodyKinematics();
+    void testGetSetSpecificForceStandardDeviationAsAcceleration() {
+        final var frameBodyKinematics = new StandardDeviationFrameBodyKinematics();
 
         // check default value
-        Acceleration value1 = frameBodyKinematics.getSpecificForceStandardDeviationAsAcceleration();
+        final var value1 = frameBodyKinematics.getSpecificForceStandardDeviationAsAcceleration();
         assertEquals(0.0, value1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, value1.getUnit());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-        final Acceleration value2 = new Acceleration(specificForceStandardDeviation,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final var value2 = new Acceleration(specificForceStandardDeviation, AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
         frameBodyKinematics.setSpecificForceStandardDeviation(value2);
 
         // check
-        final Acceleration value3 = frameBodyKinematics.getSpecificForceStandardDeviationAsAcceleration();
-        final Acceleration value4 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var value3 = frameBodyKinematics.getSpecificForceStandardDeviationAsAcceleration();
+        final var value4 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         frameBodyKinematics.getSpecificForceStandardDeviationAsAcceleration(value4);
 
         assertEquals(value2, value3);
@@ -2499,15 +2501,15 @@ public class StandardDeviationFrameBodyKinematicsTest {
     }
 
     @Test
-    public void testGetSetAngularRateStandardDeviation() {
-        final StandardDeviationFrameBodyKinematics frameBodyKinematics = new StandardDeviationFrameBodyKinematics();
+    void testGetSetAngularRateStandardDeviation() {
+        final var frameBodyKinematics = new StandardDeviationFrameBodyKinematics();
 
         // check default value
         assertEquals(0.0, frameBodyKinematics.getAngularRateStandardDeviation(), 0.0);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final var randomizer = new UniformRandomizer();
+        final var angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
 
         frameBodyKinematics.setAngularRateStandardDeviation(angularRateStandardDeviation);
 
@@ -2516,8 +2518,8 @@ public class StandardDeviationFrameBodyKinematicsTest {
     }
 
     @Test
-    public void testGetSetAngularRateStandardDeviationAsAngularSpeed() {
-        final StandardDeviationFrameBodyKinematics frameBodyKinematics = new StandardDeviationFrameBodyKinematics();
+    void testGetSetAngularRateStandardDeviationAsAngularSpeed() {
+        final var frameBodyKinematics = new StandardDeviationFrameBodyKinematics();
 
         // check default value
         AngularSpeed value1 = frameBodyKinematics.getAngularRateStandardDeviationAsAngularSpeed();
@@ -2525,15 +2527,15 @@ public class StandardDeviationFrameBodyKinematicsTest {
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, value1.getUnit());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
-        final AngularSpeed value2 = new AngularSpeed(angularRateStandardDeviation, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final var value2 = new AngularSpeed(angularRateStandardDeviation, AngularSpeedUnit.RADIANS_PER_SECOND);
 
         frameBodyKinematics.setAngularRateStandardDeviation(value2);
 
         // check
-        final AngularSpeed value3 = frameBodyKinematics.getAngularRateStandardDeviationAsAngularSpeed();
-        final AngularSpeed value4 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var value3 = frameBodyKinematics.getAngularRateStandardDeviationAsAngularSpeed();
+        final var value4 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         frameBodyKinematics.getAngularRateStandardDeviationAsAngularSpeed(value4);
 
         assertEquals(value2, value3);
@@ -2541,14 +2543,14 @@ public class StandardDeviationFrameBodyKinematicsTest {
     }
 
     @Test
-    public void testGetSetKinematics() {
-        final StandardDeviationFrameBodyKinematics frameBodyKinematics = new StandardDeviationFrameBodyKinematics();
+    void testGetSetKinematics() {
+        final var frameBodyKinematics = new StandardDeviationFrameBodyKinematics();
 
         // check default value
         assertNull(frameBodyKinematics.getKinematics());
 
         // set new value
-        final BodyKinematics bodyKinematics = new BodyKinematics();
+        final var bodyKinematics = new BodyKinematics();
         frameBodyKinematics.setKinematics(bodyKinematics);
 
         // check
@@ -2556,104 +2558,103 @@ public class StandardDeviationFrameBodyKinematicsTest {
     }
 
     @Test
-    public void testGetSetFrame() {
-        final StandardDeviationFrameBodyKinematics frameBodyKinematics = new StandardDeviationFrameBodyKinematics();
+    void testGetSetFrame() {
+        final var frameBodyKinematics = new StandardDeviationFrameBodyKinematics();
 
         // check default value
         assertNull(frameBodyKinematics.getFrame());
         assertNull(frameBodyKinematics.getNedFrame());
 
         // set new value
-        final NEDFrame nedFrame = new NEDFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var nedFrame = new NEDFrame();
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
         frameBodyKinematics.setFrame(ecefFrame);
 
         // check
         assertSame(ecefFrame, frameBodyKinematics.getFrame());
         assertEquals(nedFrame, frameBodyKinematics.getNedFrame());
-        final NEDFrame nedFrame2 = new NEDFrame();
+        final var nedFrame2 = new NEDFrame();
         frameBodyKinematics.getNedFrame(nedFrame2);
         assertEquals(nedFrame, nedFrame2);
     }
 
     @Test
-    public void testGetSetNedFrame() {
-        final StandardDeviationFrameBodyKinematics frameBodyKinematics = new StandardDeviationFrameBodyKinematics();
+    void testGetSetNedFrame() {
+        final var frameBodyKinematics = new StandardDeviationFrameBodyKinematics();
 
         // check default value
         assertNull(frameBodyKinematics.getNedFrame());
         assertFalse(frameBodyKinematics.getNedFrame(null));
 
         // set new value
-        final NEDFrame nedFrame = new NEDFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var nedFrame = new NEDFrame();
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
         frameBodyKinematics.setNedFrame(nedFrame);
 
         // check
         assertEquals(ecefFrame, frameBodyKinematics.getFrame());
         assertEquals(nedFrame, frameBodyKinematics.getNedFrame());
-        final NEDFrame nedFrame2 = new NEDFrame();
+        final var nedFrame2 = new NEDFrame();
         frameBodyKinematics.getNedFrame(nedFrame2);
         assertEquals(nedFrame, nedFrame2);
     }
 
     @Test
-    public void testGetSetPreviousFrame() {
-        final StandardDeviationFrameBodyKinematics frameBodyKinematics = new StandardDeviationFrameBodyKinematics();
+    void testGetSetPreviousFrame() {
+        final var frameBodyKinematics = new StandardDeviationFrameBodyKinematics();
 
         // check default value
         assertNull(frameBodyKinematics.getPreviousFrame());
         assertNull(frameBodyKinematics.getPreviousNedFrame());
 
         // set new value
-        final NEDFrame nedFrame = new NEDFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var nedFrame = new NEDFrame();
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
         frameBodyKinematics.setPreviousFrame(ecefFrame);
 
         // check
         assertSame(ecefFrame, frameBodyKinematics.getPreviousFrame());
         assertEquals(nedFrame, frameBodyKinematics.getPreviousNedFrame());
-        final NEDFrame nedFrame2 = new NEDFrame();
+        final var nedFrame2 = new NEDFrame();
         frameBodyKinematics.getPreviousNedFrame(nedFrame2);
         assertEquals(nedFrame, nedFrame2);
     }
 
     @Test
-    public void testGetSetPreviousNedFrame() {
-        final StandardDeviationFrameBodyKinematics frameBodyKinematics =
-                new StandardDeviationFrameBodyKinematics();
+    void testGetSetPreviousNedFrame() {
+        final var frameBodyKinematics = new StandardDeviationFrameBodyKinematics();
 
         // check default value
         assertNull(frameBodyKinematics.getPreviousNedFrame());
         assertFalse(frameBodyKinematics.getPreviousNedFrame(null));
 
         // set new value
-        final NEDFrame nedFrame = new NEDFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var nedFrame = new NEDFrame();
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
         frameBodyKinematics.setPreviousNedFrame(nedFrame);
 
         // check
         assertEquals(ecefFrame, frameBodyKinematics.getPreviousFrame());
         assertEquals(nedFrame, frameBodyKinematics.getPreviousNedFrame());
-        final NEDFrame nedFrame2 = new NEDFrame();
+        final var nedFrame2 = new NEDFrame();
         frameBodyKinematics.getPreviousNedFrame(nedFrame2);
         assertEquals(nedFrame, nedFrame2);
     }
 
     @Test
-    public void testGetSetTimeInterval() {
-        final StandardDeviationFrameBodyKinematics frameBodyKinematics = new StandardDeviationFrameBodyKinematics();
+    void testGetSetTimeInterval() {
+        final var frameBodyKinematics = new StandardDeviationFrameBodyKinematics();
 
         // check default value
         assertEquals(0.0, frameBodyKinematics.getTimeInterval(), 0.0);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var randomizer = new UniformRandomizer();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
         frameBodyKinematics.setTimeInterval(timeInterval);
 
         // check
@@ -2664,23 +2665,23 @@ public class StandardDeviationFrameBodyKinematicsTest {
     }
 
     @Test
-    public void testGetSetTimeIntervalAsTime() {
-        final StandardDeviationFrameBodyKinematics frameBodyKinematics = new StandardDeviationFrameBodyKinematics();
+    void testGetSetTimeIntervalAsTime() {
+        final var frameBodyKinematics = new StandardDeviationFrameBodyKinematics();
 
         // check default value
-        final Time timeInterval1 = frameBodyKinematics.getTimeIntervalAsTime();
+        final var timeInterval1 = frameBodyKinematics.getTimeIntervalAsTime();
         assertEquals(0.0, timeInterval1.getValue().doubleValue(), 0.0);
         assertEquals(TimeUnit.SECOND, timeInterval1.getUnit());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Time timeInterval2 = new Time(randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL),
+        final var randomizer = new UniformRandomizer();
+        final var timeInterval2 = new Time(randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL),
                 TimeUnit.SECOND);
         frameBodyKinematics.setTimeInterval(timeInterval2);
 
         // check
-        final Time timeInterval3 = frameBodyKinematics.getTimeIntervalAsTime();
-        final Time timeInterval4 = new Time(0.0, TimeUnit.MILLISECOND);
+        final var timeInterval3 = frameBodyKinematics.getTimeIntervalAsTime();
+        final var timeInterval4 = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval4);
 
         assertEquals(timeInterval2, timeInterval3);
@@ -2688,26 +2689,25 @@ public class StandardDeviationFrameBodyKinematicsTest {
     }
 
     @Test
-    public void testCopyFromWhenBodyKinematicsAndFrameAreAvailableAtSourceAndDestinationIsEmpty()
+    void testCopyFromWhenBodyKinematicsAndFrameAreAvailableAtSourceAndDestinationIsEmpty()
             throws InvalidSourceAndDestinationFrameTypeException {
-        final BodyKinematics kinematics = createBodyKinematics();
+        final var kinematics = createBodyKinematics();
 
-        final NEDFrame nedFrame = createNedFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var nedFrame = createNedFrame();
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
-        final NEDFrame previousNedFrame = createNedFrame();
-        final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
+        final var previousNedFrame = createNedFrame();
+        final var previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var randomizer = new UniformRandomizer();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
 
-        final double specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-        final double angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final var specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final var angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
 
-        final StandardDeviationFrameBodyKinematics frameBodyKinematics1 = new StandardDeviationFrameBodyKinematics(
-                kinematics, ecefFrame, previousEcefFrame, timeInterval, specificForceStandardDeviation,
-                angularRateStandardDeviation);
-        final StandardDeviationFrameBodyKinematics frameBodyKinematics2 = new StandardDeviationFrameBodyKinematics();
+        final var frameBodyKinematics1 = new StandardDeviationFrameBodyKinematics(kinematics, ecefFrame,
+                previousEcefFrame, timeInterval, specificForceStandardDeviation, angularRateStandardDeviation);
+        final var frameBodyKinematics2 = new StandardDeviationFrameBodyKinematics();
 
         frameBodyKinematics2.copyFrom(frameBodyKinematics1);
 
@@ -2719,25 +2719,24 @@ public class StandardDeviationFrameBodyKinematicsTest {
     }
 
     @Test
-    public void testCopyFromWhenEmptySourceAndDestinationHasKinematicsCurrentAndPreviousFrameAndTimeInterval()
+    void testCopyFromWhenEmptySourceAndDestinationHasKinematicsCurrentAndPreviousFrameAndTimeInterval()
             throws InvalidSourceAndDestinationFrameTypeException {
-        final BodyKinematics kinematics = createBodyKinematics();
-        final NEDFrame nedFrame = createNedFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var kinematics = createBodyKinematics();
+        final var nedFrame = createNedFrame();
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
-        final NEDFrame previousNedFrame = createNedFrame();
-        final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
+        final var previousNedFrame = createNedFrame();
+        final var previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var randomizer = new UniformRandomizer();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
 
-        final double specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-        final double angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final var specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final var angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
 
-        final StandardDeviationFrameBodyKinematics frameBodyKinematics1 = new StandardDeviationFrameBodyKinematics();
-        final StandardDeviationFrameBodyKinematics frameBodyKinematics2 = new StandardDeviationFrameBodyKinematics(
-                kinematics, ecefFrame, previousEcefFrame, timeInterval, specificForceStandardDeviation,
-                angularRateStandardDeviation);
+        final var frameBodyKinematics1 = new StandardDeviationFrameBodyKinematics();
+        final var frameBodyKinematics2 = new StandardDeviationFrameBodyKinematics(kinematics, ecefFrame,
+                previousEcefFrame, timeInterval, specificForceStandardDeviation, angularRateStandardDeviation);
 
         frameBodyKinematics2.copyFrom(frameBodyKinematics1);
 
@@ -2749,34 +2748,32 @@ public class StandardDeviationFrameBodyKinematicsTest {
     }
 
     @Test
-    public void testCopyFromWhenSourceAndDestinationHaveKinematicsCurrentAndPreviousFrameAndTimeInterval()
+    void testCopyFromWhenSourceAndDestinationHaveKinematicsCurrentAndPreviousFrameAndTimeInterval()
             throws InvalidSourceAndDestinationFrameTypeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final var randomizer = new UniformRandomizer();
 
-        final BodyKinematics kinematics1 = createBodyKinematics();
-        final NEDFrame nedFrame1 = createNedFrame();
-        final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
-        final NEDFrame previousNedFrame1 = createNedFrame();
-        final ECEFFrame previousEcefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame1);
-        final double timeInterval1 = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final double specificForceStandardDeviation1 = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-        final double angularRateStandardDeviation1 = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final var kinematics1 = createBodyKinematics();
+        final var nedFrame1 = createNedFrame();
+        final var ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
+        final var previousNedFrame1 = createNedFrame();
+        final var previousEcefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame1);
+        final var timeInterval1 = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var specificForceStandardDeviation1 = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final var angularRateStandardDeviation1 = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
 
-        final BodyKinematics kinematics2 = createBodyKinematics();
-        final NEDFrame nedFrame2 = createNedFrame();
-        final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
-        final NEDFrame previousNedFrame2 = createNedFrame();
-        final ECEFFrame previousEcefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame2);
-        final double timeInterval2 = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final double specificForceStandardDeviation2 = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-        final double angularRateStandardDeviation2 = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final var kinematics2 = createBodyKinematics();
+        final var nedFrame2 = createNedFrame();
+        final var ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
+        final var previousNedFrame2 = createNedFrame();
+        final var previousEcefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame2);
+        final var timeInterval2 = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var specificForceStandardDeviation2 = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final var angularRateStandardDeviation2 = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
 
-        final StandardDeviationFrameBodyKinematics frameBodyKinematics1 = new StandardDeviationFrameBodyKinematics(
-                kinematics1, ecefFrame1, previousEcefFrame1, timeInterval1, specificForceStandardDeviation1,
-                angularRateStandardDeviation1);
-        final StandardDeviationFrameBodyKinematics frameBodyKinematics2 = new StandardDeviationFrameBodyKinematics(
-                kinematics2, ecefFrame2, previousEcefFrame2, timeInterval2, specificForceStandardDeviation2,
-                angularRateStandardDeviation2);
+        final var frameBodyKinematics1 = new StandardDeviationFrameBodyKinematics(kinematics1, ecefFrame1,
+                previousEcefFrame1, timeInterval1, specificForceStandardDeviation1, angularRateStandardDeviation1);
+        final var frameBodyKinematics2 = new StandardDeviationFrameBodyKinematics(kinematics2, ecefFrame2,
+                previousEcefFrame2, timeInterval2, specificForceStandardDeviation2, angularRateStandardDeviation2);
 
         frameBodyKinematics2.copyFrom(frameBodyKinematics1);
 
@@ -2788,33 +2785,31 @@ public class StandardDeviationFrameBodyKinematicsTest {
     }
 
     @Test
-    public void testCopyTo() throws InvalidSourceAndDestinationFrameTypeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testCopyTo() throws InvalidSourceAndDestinationFrameTypeException {
+        final var randomizer = new UniformRandomizer();
 
-        final BodyKinematics kinematics1 = createBodyKinematics();
-        final NEDFrame nedFrame1 = createNedFrame();
-        final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
-        final NEDFrame previousNedFrame1 = createNedFrame();
-        final ECEFFrame previousEcefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame1);
-        final double timeInterval1 = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final double specificForceStandardDeviation1 = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-        final double angularRateStandardDeviation1 = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final var kinematics1 = createBodyKinematics();
+        final var nedFrame1 = createNedFrame();
+        final var ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
+        final var previousNedFrame1 = createNedFrame();
+        final var previousEcefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame1);
+        final var timeInterval1 = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var specificForceStandardDeviation1 = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final var angularRateStandardDeviation1 = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
 
-        final BodyKinematics kinematics2 = createBodyKinematics();
-        final NEDFrame nedFrame2 = createNedFrame();
-        final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
-        final NEDFrame previousNedFrame2 = createNedFrame();
-        final ECEFFrame previousEcefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame2);
-        final double timeInterval2 = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final double specificForceStandardDeviation2 = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-        final double angularRateStandardDeviation2 = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final var kinematics2 = createBodyKinematics();
+        final var nedFrame2 = createNedFrame();
+        final var ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
+        final var previousNedFrame2 = createNedFrame();
+        final var previousEcefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame2);
+        final var timeInterval2 = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var specificForceStandardDeviation2 = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final var angularRateStandardDeviation2 = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
 
-        final StandardDeviationFrameBodyKinematics frameBodyKinematics1 = new StandardDeviationFrameBodyKinematics(
-                kinematics1, ecefFrame1, previousEcefFrame1, timeInterval1, specificForceStandardDeviation1,
-                angularRateStandardDeviation1);
-        final StandardDeviationFrameBodyKinematics frameBodyKinematics2 = new StandardDeviationFrameBodyKinematics(
-                kinematics2, ecefFrame2, previousEcefFrame2, timeInterval2, specificForceStandardDeviation2,
-                angularRateStandardDeviation2);
+        final var frameBodyKinematics1 = new StandardDeviationFrameBodyKinematics(kinematics1, ecefFrame1,
+                previousEcefFrame1, timeInterval1, specificForceStandardDeviation1, angularRateStandardDeviation1);
+        final var frameBodyKinematics2 = new StandardDeviationFrameBodyKinematics(kinematics2, ecefFrame2,
+                previousEcefFrame2, timeInterval2, specificForceStandardDeviation2, angularRateStandardDeviation2);
 
         frameBodyKinematics1.copyTo(frameBodyKinematics2);
 
@@ -2828,79 +2823,73 @@ public class StandardDeviationFrameBodyKinematicsTest {
     }
 
     @Test
-    public void testHashCode() throws InvalidSourceAndDestinationFrameTypeException {
-        final BodyKinematics kinematics = createBodyKinematics();
-        final NEDFrame nedFrame = createNedFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
-        final NEDFrame previousNedFrame = createNedFrame();
-        final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
+    void testHashCode() throws InvalidSourceAndDestinationFrameTypeException {
+        final var kinematics = createBodyKinematics();
+        final var nedFrame = createNedFrame();
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var previousNedFrame = createNedFrame();
+        final var previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final double specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-        final double angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final var randomizer = new UniformRandomizer();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final var angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
 
-        final StandardDeviationFrameBodyKinematics frameBodyKinematics1 = new StandardDeviationFrameBodyKinematics(
-                kinematics, ecefFrame, previousEcefFrame, timeInterval, specificForceStandardDeviation,
-                angularRateStandardDeviation);
-        final StandardDeviationFrameBodyKinematics frameBodyKinematics2 = new StandardDeviationFrameBodyKinematics(
-                kinematics, ecefFrame, previousEcefFrame, timeInterval, specificForceStandardDeviation,
-                angularRateStandardDeviation);
-        final StandardDeviationFrameBodyKinematics frameBodyKinematics3 = new StandardDeviationFrameBodyKinematics();
+        final var frameBodyKinematics1 = new StandardDeviationFrameBodyKinematics(kinematics, ecefFrame,
+                previousEcefFrame, timeInterval, specificForceStandardDeviation, angularRateStandardDeviation);
+        final var frameBodyKinematics2 = new StandardDeviationFrameBodyKinematics(kinematics, ecefFrame,
+                previousEcefFrame, timeInterval, specificForceStandardDeviation, angularRateStandardDeviation);
+        final var frameBodyKinematics3 = new StandardDeviationFrameBodyKinematics();
 
         assertEquals(frameBodyKinematics1.hashCode(), frameBodyKinematics2.hashCode());
         assertNotEquals(frameBodyKinematics1.hashCode(), frameBodyKinematics3.hashCode());
     }
 
     @Test
-    public void testEquals() throws InvalidSourceAndDestinationFrameTypeException {
-        final BodyKinematics kinematics = createBodyKinematics();
-        final NEDFrame nedFrame = createNedFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
-        final NEDFrame previousNedFrame = createNedFrame();
-        final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
+    void testEquals() throws InvalidSourceAndDestinationFrameTypeException {
+        final var kinematics = createBodyKinematics();
+        final var nedFrame = createNedFrame();
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var previousNedFrame = createNedFrame();
+        final var previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final double specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-        final double angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final var randomizer = new UniformRandomizer();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final var angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
 
-        final StandardDeviationFrameBodyKinematics frameBodyKinematics1 = new StandardDeviationFrameBodyKinematics(
-                kinematics, ecefFrame, previousEcefFrame, timeInterval, specificForceStandardDeviation,
-                angularRateStandardDeviation);
-        final StandardDeviationFrameBodyKinematics frameBodyKinematics2 = new StandardDeviationFrameBodyKinematics(
-                kinematics, ecefFrame, previousEcefFrame, timeInterval, specificForceStandardDeviation,
-                angularRateStandardDeviation);
-        final StandardDeviationFrameBodyKinematics frameBodyKinematics3 = new StandardDeviationFrameBodyKinematics();
+        final var frameBodyKinematics1 = new StandardDeviationFrameBodyKinematics(kinematics, ecefFrame,
+                previousEcefFrame, timeInterval, specificForceStandardDeviation, angularRateStandardDeviation);
+        final var frameBodyKinematics2 = new StandardDeviationFrameBodyKinematics(kinematics, ecefFrame,
+                previousEcefFrame, timeInterval, specificForceStandardDeviation, angularRateStandardDeviation);
+        final var frameBodyKinematics3 = new StandardDeviationFrameBodyKinematics();
 
         //noinspection EqualsWithItself
         assertEquals(frameBodyKinematics1, frameBodyKinematics1);
         assertTrue(frameBodyKinematics1.equals(frameBodyKinematics2));
         assertFalse(frameBodyKinematics1.equals(frameBodyKinematics3));
-        assertNotEquals(frameBodyKinematics1, null);
-        assertNotEquals(frameBodyKinematics1, new Object());
+        assertNotEquals(null, frameBodyKinematics1);
+        assertNotEquals(new Object(), frameBodyKinematics1);
     }
 
     @Test
-    public void testEqualsWithThreshold() throws InvalidSourceAndDestinationFrameTypeException {
-        final BodyKinematics kinematics = createBodyKinematics();
-        final NEDFrame nedFrame = createNedFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
-        final NEDFrame previousNedFrame = createNedFrame();
-        final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
+    void testEqualsWithThreshold() throws InvalidSourceAndDestinationFrameTypeException {
+        final var kinematics = createBodyKinematics();
+        final var nedFrame = createNedFrame();
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var previousNedFrame = createNedFrame();
+        final var previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final double specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-        final double angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final var randomizer = new UniformRandomizer();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final var angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
 
-        final StandardDeviationFrameBodyKinematics frameBodyKinematics1 = new StandardDeviationFrameBodyKinematics(
-                kinematics, ecefFrame, previousEcefFrame, timeInterval, specificForceStandardDeviation,
-                angularRateStandardDeviation);
-        final StandardDeviationFrameBodyKinematics frameBodyKinematics2 = new StandardDeviationFrameBodyKinematics(
-                kinematics, ecefFrame, previousEcefFrame, timeInterval, specificForceStandardDeviation,
-                angularRateStandardDeviation);
-        final StandardDeviationFrameBodyKinematics frameBodyKinematics3 = new StandardDeviationFrameBodyKinematics();
+        final var frameBodyKinematics1 = new StandardDeviationFrameBodyKinematics(kinematics, ecefFrame,
+                previousEcefFrame, timeInterval, specificForceStandardDeviation, angularRateStandardDeviation);
+        final var frameBodyKinematics2 = new StandardDeviationFrameBodyKinematics(kinematics, ecefFrame,
+                previousEcefFrame, timeInterval, specificForceStandardDeviation, angularRateStandardDeviation);
+        final var frameBodyKinematics3 = new StandardDeviationFrameBodyKinematics();
 
         assertTrue(frameBodyKinematics1.equals(frameBodyKinematics1, THRESHOLD));
         assertTrue(frameBodyKinematics1.equals(frameBodyKinematics2, THRESHOLD));
@@ -2909,90 +2898,88 @@ public class StandardDeviationFrameBodyKinematicsTest {
     }
 
     @Test
-    public void testClone() throws InvalidSourceAndDestinationFrameTypeException, CloneNotSupportedException {
-        final BodyKinematics kinematics = createBodyKinematics();
-        final NEDFrame nedFrame = createNedFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
-        final NEDFrame previousNedFrame = createNedFrame();
-        final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
+    void testClone() throws InvalidSourceAndDestinationFrameTypeException, CloneNotSupportedException {
+        final var kinematics = createBodyKinematics();
+        final var nedFrame = createNedFrame();
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var previousNedFrame = createNedFrame();
+        final var previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final double specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-        final double angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final var randomizer = new UniformRandomizer();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final var angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
 
-        final StandardDeviationFrameBodyKinematics frameBodyKinematics1 = new StandardDeviationFrameBodyKinematics(
-                kinematics, ecefFrame, previousEcefFrame, timeInterval, specificForceStandardDeviation,
-                angularRateStandardDeviation);
+        final var frameBodyKinematics1 = new StandardDeviationFrameBodyKinematics(kinematics, ecefFrame,
+                previousEcefFrame, timeInterval, specificForceStandardDeviation, angularRateStandardDeviation);
 
-        final Object frameBodyKinematics2 = frameBodyKinematics1.clone();
+        final var frameBodyKinematics2 = frameBodyKinematics1.clone();
 
         // check
         assertEquals(frameBodyKinematics1, frameBodyKinematics2);
     }
 
     @Test
-    public void testSerializeDeserialize() throws InvalidSourceAndDestinationFrameTypeException, IOException,
+    void testSerializeDeserialize() throws InvalidSourceAndDestinationFrameTypeException, IOException,
             ClassNotFoundException {
-        final BodyKinematics kinematics = createBodyKinematics();
-        final NEDFrame nedFrame = createNedFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
-        final NEDFrame previousNedFrame = createNedFrame();
-        final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
+        final var kinematics = createBodyKinematics();
+        final var nedFrame = createNedFrame();
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var previousNedFrame = createNedFrame();
+        final var previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final double specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-        final double angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final var randomizer = new UniformRandomizer();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final var angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
 
-        final StandardDeviationFrameBodyKinematics frameBodyKinematics1 = new StandardDeviationFrameBodyKinematics(
-                kinematics, ecefFrame, previousEcefFrame, timeInterval, specificForceStandardDeviation,
-                angularRateStandardDeviation);
+        final var frameBodyKinematics1 = new StandardDeviationFrameBodyKinematics(kinematics, ecefFrame,
+                previousEcefFrame, timeInterval, specificForceStandardDeviation, angularRateStandardDeviation);
 
-        final byte[] bytes = SerializationHelper.serialize(frameBodyKinematics1);
-        final StandardDeviationFrameBodyKinematics frameBodyKinematics2 = SerializationHelper.deserialize(bytes);
+        final var bytes = SerializationHelper.serialize(frameBodyKinematics1);
+        final var frameBodyKinematics2 = SerializationHelper.deserialize(bytes);
 
         assertEquals(frameBodyKinematics1, frameBodyKinematics2);
         assertNotSame(frameBodyKinematics1, frameBodyKinematics2);
     }
 
     @Test
-    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
-        final Field field = StandardDeviationFrameBodyKinematics.class.getDeclaredField("serialVersionUID");
+    void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final var field = StandardDeviationFrameBodyKinematics.class.getDeclaredField("serialVersionUID");
         field.setAccessible(true);
 
         assertEquals(0L, field.get(null));
     }
 
     private static BodyKinematics createBodyKinematics() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var randomizer = new UniformRandomizer();
+        final var fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
 
-        final double angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
 
         return new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
     }
 
     private static NEDFrame createNedFrame() throws InvalidSourceAndDestinationFrameTypeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final var randomizer = new UniformRandomizer();
 
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-        final double vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-        final double roll = Math.toDegrees(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch = Math.toDegrees(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw = Math.toDegrees(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var roll = Math.toDegrees(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var pitch = Math.toDegrees(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var yaw = Math.toDegrees(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-        final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+        final var c = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
                 FrameType.LOCAL_NAVIGATION_FRAME);
 
         return new NEDFrame(latitude, longitude, height, vn, ve, vd, c);

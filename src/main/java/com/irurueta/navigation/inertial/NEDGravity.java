@@ -50,12 +50,12 @@ public class NEDGravity implements Serializable, Cloneable {
     /**
      * Acceleration due to gravity through north-axis of NED frame and expressed in meters per squared second (m/s^2).
      */
-    private double mGn;
+    private double gn;
 
     /**
      * Acceleration due to gravity through down-axis of NED frame and expressed in meters per squared second (m/s^2).
      */
-    private double mGd;
+    private double gd;
 
     /**
      * Constructor.
@@ -101,7 +101,7 @@ public class NEDGravity implements Serializable, Cloneable {
      * (m/s^2).
      */
     public double getGn() {
-        return mGn;
+        return gn;
     }
 
     /**
@@ -111,7 +111,7 @@ public class NEDGravity implements Serializable, Cloneable {
      *           (m/s^2).
      */
     public void setGn(final double gn) {
-        mGn = gn;
+        this.gn = gn;
     }
 
     /**
@@ -131,7 +131,7 @@ public class NEDGravity implements Serializable, Cloneable {
      * (m/s^2).
      */
     public double getGd() {
-        return mGd;
+        return gd;
     }
 
     /**
@@ -141,7 +141,7 @@ public class NEDGravity implements Serializable, Cloneable {
      *           (m/s^2).
      */
     public void setGd(final double gd) {
-        mGd = gd;
+        this.gd = gd;
     }
 
     /**
@@ -151,8 +151,8 @@ public class NEDGravity implements Serializable, Cloneable {
      * @param gd acceleration due to gravity through down-axis of NED frame.
      */
     public void setCoordinates(final double gn, final double gd) {
-        mGn = gn;
-        mGd = gd;
+        this.gn = gn;
+        this.gd = gd;
     }
 
     /**
@@ -161,7 +161,7 @@ public class NEDGravity implements Serializable, Cloneable {
      * @param result instance where acceleration due to gravity through NED north-axis will be stored.
      */
     public void getGnAsAcceleration(final Acceleration result) {
-        result.setValue(mGn);
+        result.setValue(gn);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -171,7 +171,7 @@ public class NEDGravity implements Serializable, Cloneable {
      * @return acceleration due to gravity through NED north-axis.
      */
     public Acceleration getGnAsAcceleration() {
-        return new Acceleration(mGn, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(gn, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -180,7 +180,7 @@ public class NEDGravity implements Serializable, Cloneable {
      * @param gravityN acceleration due to gravity through NED north-axis.
      */
     public void setGn(final Acceleration gravityN) {
-        mGn = AccelerationConverter.convert(gravityN.getValue().doubleValue(), gravityN.getUnit(),
+        gn = AccelerationConverter.convert(gravityN.getValue().doubleValue(), gravityN.getUnit(),
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -209,7 +209,7 @@ public class NEDGravity implements Serializable, Cloneable {
      * @param result instance where acceleration due to gravity through NED down-axis will be stored.
      */
     public void getGdAsAcceleration(final Acceleration result) {
-        result.setValue(mGd);
+        result.setValue(gd);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -219,7 +219,7 @@ public class NEDGravity implements Serializable, Cloneable {
      * @return acceleration due to gravity through NED down-axis.
      */
     public Acceleration getGdAsAcceleration() {
-        return new Acceleration(mGd, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(gd, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -228,7 +228,7 @@ public class NEDGravity implements Serializable, Cloneable {
      * @param gravityD acceleration due to gravity through NED down-axis.
      */
     public void setGd(final Acceleration gravityD) {
-        mGd = AccelerationConverter.convert(gravityD.getValue().doubleValue(), gravityD.getUnit(),
+        gd = AccelerationConverter.convert(gravityD.getValue().doubleValue(), gravityD.getUnit(),
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -249,7 +249,7 @@ public class NEDGravity implements Serializable, Cloneable {
      * @return gravity norm.
      */
     public double getNorm() {
-        return Math.sqrt(mGn * mGn + mGd * mGd);
+        return Math.sqrt(gn * gn + gd * gd);
     }
 
     /**
@@ -277,8 +277,8 @@ public class NEDGravity implements Serializable, Cloneable {
      * @param output destination instance where data will be copied to.
      */
     public void copyTo(final NEDGravity output) {
-        output.mGn = mGn;
-        output.mGd = mGd;
+        output.gn = gn;
+        output.gd = gd;
     }
 
     /**
@@ -287,8 +287,8 @@ public class NEDGravity implements Serializable, Cloneable {
      * @param input instance to copy data from.
      */
     public void copyFrom(final NEDGravity input) {
-        mGn = input.mGn;
-        mGd = input.mGd;
+        gn = input.gn;
+        gd = input.gd;
     }
 
     /**
@@ -303,9 +303,9 @@ public class NEDGravity implements Serializable, Cloneable {
             throw new IllegalArgumentException();
         }
 
-        result[0] = mGn;
+        result[0] = gn;
         result[1] = GRAVITY_EAST;
-        result[2] = mGd;
+        result[2] = gd;
     }
 
     /**
@@ -314,7 +314,7 @@ public class NEDGravity implements Serializable, Cloneable {
      * @return array containing gravity coordinates in n,e,d order.
      */
     public double[] asArray() {
-        final double[] result = new double[COMPONENTS];
+        final var result = new double[COMPONENTS];
         asArray(result);
         return result;
     }
@@ -336,9 +336,9 @@ public class NEDGravity implements Serializable, Cloneable {
             }
         }
 
-        result.setElementAtIndex(0, mGn);
+        result.setElementAtIndex(0, gn);
         result.setElementAtIndex(1, GRAVITY_EAST);
-        result.setElementAtIndex(2, mGd);
+        result.setElementAtIndex(2, gd);
     }
 
     /**
@@ -366,7 +366,7 @@ public class NEDGravity implements Serializable, Cloneable {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(mGn, mGd);
+        return Objects.hash(gn, gd);
     }
 
     /**
@@ -389,7 +389,7 @@ public class NEDGravity implements Serializable, Cloneable {
         }
 
         //noinspection PatternVariableCanBeUsed
-        final NEDGravity other = (NEDGravity) obj;
+        final var other = (NEDGravity) obj;
         return equals(other);
     }
 
@@ -417,8 +417,7 @@ public class NEDGravity implements Serializable, Cloneable {
             return false;
         }
 
-        return Math.abs(mGn - other.mGn) <= threshold
-                && Math.abs(mGd - other.mGd) <= threshold;
+        return Math.abs(gn - other.gn) <= threshold && Math.abs(gd - other.gd) <= threshold;
     }
 
     /**
@@ -429,7 +428,7 @@ public class NEDGravity implements Serializable, Cloneable {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final NEDGravity result = (NEDGravity) super.clone();
+        final var result = (NEDGravity) super.clone();
         copyTo(result);
         return result;
     }

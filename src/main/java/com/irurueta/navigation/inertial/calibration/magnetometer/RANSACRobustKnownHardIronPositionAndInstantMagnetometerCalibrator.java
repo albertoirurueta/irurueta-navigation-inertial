@@ -91,17 +91,17 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      * The threshold refers to the amount of error on distance between estimated position and
      * distances provided for each sample.
      */
-    private double mThreshold = DEFAULT_THRESHOLD;
+    private double threshold = DEFAULT_THRESHOLD;
 
     /**
      * Indicates whether inliers must be computed and kept.
      */
-    private boolean mComputeAndKeepInliers = DEFAULT_COMPUTE_AND_KEEP_INLIERS;
+    private boolean computeAndKeepInliers = DEFAULT_COMPUTE_AND_KEEP_INLIERS;
 
     /**
      * Indicates whether residuals must be computed and kept.
      */
-    private boolean mComputeAndKeepResiduals = DEFAULT_COMPUTE_AND_KEEP_RESIDUALS;
+    private boolean computeAndKeepResiduals = DEFAULT_COMPUTE_AND_KEEP_RESIDUALS;
 
     /**
      * Constructor.
@@ -917,7 +917,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      * @return threshold to determine whether samples are inliers or not.
      */
     public double getThreshold() {
-        return mThreshold;
+        return threshold;
     }
 
     /**
@@ -930,13 +930,13 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      * @throws LockedException          if calibrator is currently running.
      */
     public void setThreshold(final double threshold) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (threshold <= MIN_THRESHOLD) {
             throw new IllegalArgumentException();
         }
-        mThreshold = threshold;
+        this.threshold = threshold;
     }
 
     /**
@@ -946,7 +946,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      * only need to be computed but not kept.
      */
     public boolean isComputeAndKeepInliersEnabled() {
-        return mComputeAndKeepInliers;
+        return computeAndKeepInliers;
     }
 
     /**
@@ -957,10 +957,10 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      * @throws LockedException if calibrator is currently running.
      */
     public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliers) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mComputeAndKeepInliers = computeAndKeepInliers;
+        this.computeAndKeepInliers = computeAndKeepInliers;
     }
 
     /**
@@ -970,7 +970,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      * only need to be computed but not kept.
      */
     public boolean isComputeAndKeepResiduals() {
-        return mComputeAndKeepResiduals;
+        return computeAndKeepResiduals;
     }
 
     /**
@@ -981,10 +981,10 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      * @throws LockedException if calibrator is currently running.
      */
     public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResiduals) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mComputeAndKeepResiduals = computeAndKeepResiduals;
+        this.computeAndKeepResiduals = computeAndKeepResiduals;
     }
 
     /**
@@ -998,98 +998,94 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
     @SuppressWarnings("DuplicatedCode")
     @Override
     public void calibrate() throws LockedException, NotReadyException, CalibrationException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (!isReady()) {
             throw new NotReadyException();
         }
 
-        final RANSACRobustEstimator<Matrix> innerEstimator =
-                new RANSACRobustEstimator<>(new RANSACRobustEstimatorListener<>() {
-                    @Override
-                    public double getThreshold() {
-                        return mThreshold;
-                    }
-
-                    @Override
-                    public int getTotalSamples() {
-                        return mMeasurements.size();
-                    }
-
-                    @Override
-                    public int getSubsetSize() {
-                        return mPreliminarySubsetSize;
-                    }
-
-                    @Override
-                    public void estimatePreliminarSolutions(final int[] samplesIndices, final List<Matrix> solutions) {
-                        computePreliminarySolutions(samplesIndices, solutions);
-                    }
-
-                    @Override
-                    public double computeResidual(final Matrix currentEstimation, final int i) {
-                        return computeError(mMeasurements.get(i), currentEstimation);
-                    }
-
-                    @Override
-                    public boolean isReady() {
-                        return RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator.super.isReady();
-                    }
-
-                    @Override
-                    public void onEstimateStart(final RobustEstimator<Matrix> estimator) {
-                        // no action needed
-                    }
-
-                    @Override
-                    public void onEstimateEnd(final RobustEstimator<Matrix> estimator) {
-                        // no action needed
-                    }
-
-                    @Override
-                    public void onEstimateNextIteration(final RobustEstimator<Matrix> estimator, final int iteration) {
-                        if (mListener != null) {
-                            mListener.onCalibrateNextIteration(
-                                    RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator.this,
-                                    iteration);
-                        }
-                    }
-
-                    @Override
-                    public void onEstimateProgressChange(
-                            final RobustEstimator<Matrix> estimator, final float progress) {
-                        if (mListener != null) {
-                            mListener.onCalibrateProgressChange(
-                                    RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator.this,
-                                    progress);
-                        }
-                    }
-                });
-
-        try {
-            mRunning = true;
-
-            if (mListener != null) {
-                mListener.onCalibrateStart(this);
+        final var innerEstimator = new RANSACRobustEstimator<>(new RANSACRobustEstimatorListener<Matrix>() {
+            @Override
+            public double getThreshold() {
+                return threshold;
             }
 
-            mInliersData = null;
+            @Override
+            public int getTotalSamples() {
+                return measurements.size();
+            }
+
+            @Override
+            public int getSubsetSize() {
+                return preliminarySubsetSize;
+            }
+
+            @Override
+            public void estimatePreliminarSolutions(final int[] samplesIndices, final List<Matrix> solutions) {
+                computePreliminarySolutions(samplesIndices, solutions);
+            }
+
+            @Override
+            public double computeResidual(final Matrix currentEstimation, final int i) {
+                return computeError(measurements.get(i), currentEstimation);
+            }
+
+            @Override
+            public boolean isReady() {
+                return RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator.super.isReady();
+            }
+
+            @Override
+            public void onEstimateStart(final RobustEstimator<Matrix> estimator) {
+                // no action needed
+            }
+
+            @Override
+            public void onEstimateEnd(final RobustEstimator<Matrix> estimator) {
+                // no action needed
+            }
+
+            @Override
+            public void onEstimateNextIteration(final RobustEstimator<Matrix> estimator, final int iteration) {
+                if (listener != null) {
+                    listener.onCalibrateNextIteration(
+                            RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator.this, iteration);
+                }
+            }
+
+            @Override
+            public void onEstimateProgressChange(final RobustEstimator<Matrix> estimator, final float progress) {
+                if (listener != null) {
+                    listener.onCalibrateProgressChange(
+                            RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator.this, progress);
+                }
+            }
+        });
+
+        try {
+            running = true;
+
+            if (listener != null) {
+                listener.onCalibrateStart(this);
+            }
+
+            inliersData = null;
 
             initialize();
 
-            innerEstimator.setComputeAndKeepInliersEnabled(mComputeAndKeepInliers || mRefineResult);
-            innerEstimator.setComputeAndKeepResidualsEnabled(mComputeAndKeepResiduals || mRefineResult);
-            innerEstimator.setConfidence(mConfidence);
-            innerEstimator.setMaxIterations(mMaxIterations);
-            innerEstimator.setProgressDelta(mProgressDelta);
-            final Matrix preliminaryResult = innerEstimator.estimate();
-            mInliersData = innerEstimator.getInliersData();
+            innerEstimator.setComputeAndKeepInliersEnabled(computeAndKeepInliers || refineResult);
+            innerEstimator.setComputeAndKeepResidualsEnabled(computeAndKeepResiduals || refineResult);
+            innerEstimator.setConfidence(confidence);
+            innerEstimator.setMaxIterations(maxIterations);
+            innerEstimator.setProgressDelta(progressDelta);
+            final var preliminaryResult = innerEstimator.estimate();
+            inliersData = innerEstimator.getInliersData();
 
             attemptRefine(preliminaryResult);
 
-            if (mListener != null) {
-                mListener.onCalibrateEnd(this);
+            if (listener != null) {
+                listener.onCalibrateEnd(this);
             }
 
         } catch (final com.irurueta.numerical.LockedException e) {
@@ -1099,7 +1095,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
         } catch (final RobustEstimatorException | IOException e) {
             throw new CalibrationException(e);
         } finally {
-            mRunning = false;
+            running = false;
         }
     }
 

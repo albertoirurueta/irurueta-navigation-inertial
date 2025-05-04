@@ -17,11 +17,8 @@ package com.irurueta.navigation.inertial.calibration.gyroscope;
 
 import com.irurueta.geometry.Quaternion;
 import com.irurueta.geometry.RotationException;
-import com.irurueta.navigation.inertial.BodyKinematics;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsSequence;
 import com.irurueta.navigation.inertial.calibration.StandardDeviationTimedBodyKinematics;
-
-import java.util.List;
 
 /**
  * Class in charge of performing integration steps of rotations.
@@ -66,19 +63,19 @@ public class QuaternionIntegrator {
         }
 
 
-        final List<StandardDeviationTimedBodyKinematics> sortedMeasurements = sequence.getSortedItems();
-        final QuaternionStepIntegrator stepIntegrator = QuaternionStepIntegrator.create(type);
+        final var sortedMeasurements = sequence.getSortedItems();
+        final var stepIntegrator = QuaternionStepIntegrator.create(type);
 
-        boolean first = true;
-        double previousTimestamp = 0.0;
-        double previousWx = 0.0;
-        double previousWy = 0.0;
-        double previousWz = 0.0;
+        var first = true;
+        var previousTimestamp = 0.0;
+        var previousWx = 0.0;
+        var previousWy = 0.0;
+        var previousWz = 0.0;
         double currentWx;
         double currentWy;
         double currentWz;
-        for (final StandardDeviationTimedBodyKinematics measurement : sortedMeasurements) {
-            final BodyKinematics kinematics = measurement.getKinematics();
+        for (final var measurement : sortedMeasurements) {
+            final var kinematics = measurement.getKinematics();
 
             currentWx = kinematics.getAngularRateX();
             currentWy = kinematics.getAngularRateY();
@@ -96,13 +93,13 @@ public class QuaternionIntegrator {
                 continue;
             }
 
-            final double timestamp = measurement.getTimestampSeconds();
+            final var timestamp = measurement.getTimestampSeconds();
 
 
-            final double dt = timestamp - previousTimestamp;
+            final var dt = timestamp - previousTimestamp;
 
-            stepIntegrator.integrate(result, previousWx, previousWy, previousWz,
-                    currentWx, currentWy, currentWz, dt, result);
+            stepIntegrator.integrate(result, previousWx, previousWy, previousWz, currentWx, currentWy, currentWz, dt,
+                    result);
 
             // prepare data for next iteration
 
@@ -145,7 +142,7 @@ public class QuaternionIntegrator {
     public static Quaternion integrateGyroSequenceAndReturnNew(
             final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence,
             final Quaternion initialAttitude, final QuaternionStepIntegratorType type) throws RotationException {
-        final Quaternion result = new Quaternion();
+        final var result = new Quaternion();
         integrateGyroSequence(sequence, initialAttitude, type, result);
         return result;
     }
@@ -162,7 +159,7 @@ public class QuaternionIntegrator {
     public static Quaternion integrateGyroSequenceAndReturnNew(
             final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence,
             final QuaternionStepIntegratorType type) throws RotationException {
-        final Quaternion result = new Quaternion();
+        final var result = new Quaternion();
         integrateGyroSequence(sequence, type, result);
         return result;
     }

@@ -77,105 +77,105 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * Length of number of samples to keep within the window being processed.
      * Window size must always be larger than allowed minimum value.
      */
-    private int mWindowSize = DEFAULT_WINDOW_SIZE;
+    private int windowSize = DEFAULT_WINDOW_SIZE;
 
     /**
      * Time interval expressed in seconds (s) between consecutive accelerometer
      * samples.
      */
-    private double mTimeInterval = DEFAULT_TIME_INTERVAL_SECONDS;
+    private double timeInterval = DEFAULT_TIME_INTERVAL_SECONDS;
 
     /**
      * Keeps the list of body kinematics samples that remain within the window.
      */
-    private final LinkedList<BodyKinematics> mWindowedSamples = new LinkedList<>();
+    private final LinkedList<BodyKinematics> windowedSamples = new LinkedList<>();
 
     /**
      * Listener to handle events raised by this estimator.
      */
-    private WindowedBodyKinematicsNoiseEstimatorListener mListener;
+    private WindowedBodyKinematicsNoiseEstimatorListener listener;
 
     /**
      * Estimated average of x coordinate of specific force expressed in
      * meters per squared second (m/s^2).
      */
-    private double mAvgSpecificForceX;
+    private double avgSpecificForceX;
 
     /**
      * Estimated average of y coordinate of specific force expressed in
      * meters per squared second (m/s^2).
      */
-    private double mAvgSpecificForceY;
+    private double avgSpecificForceY;
 
     /**
      * Estimated average of z coordinate of specific force expressed in
      * meters per squared second (m/s^2).
      */
-    private double mAvgSpecificForceZ;
+    private double avgSpecificForceZ;
 
     /**
      * Estimated average of x coordinate of angular rate expressed in
      * radians per second (rad/s).
      */
-    private double mAvgAngularRateX;
+    private double avgAngularRateX;
 
     /**
      * Estimated average of y coordinate of angular rate expressed in
      * radians per second (rad/s).
      */
-    private double mAvgAngularRateY;
+    private double avgAngularRateY;
 
     /**
      * Estimated average of z coordinate of angular rate expressed in
      * radians per second (rad/s).
      */
-    private double mAvgAngularRateZ;
+    private double avgAngularRateZ;
 
     /**
      * Estimated variance of x coordinate of specific force expressed
      * in (m^2/s^4).
      */
-    private double mVarianceSpecificForceX;
+    private double varianceSpecificForceX;
 
     /**
      * Estimated variance of y coordinate of specific force expressed
      * in (m^2/s^4).
      */
-    private double mVarianceSpecificForceY;
+    private double varianceSpecificForceY;
 
     /**
      * Estimated variance of z coordinate of specific force expressed
      * in (m^2/s^4).
      */
-    private double mVarianceSpecificForceZ;
+    private double varianceSpecificForceZ;
 
     /**
      * Estimated variance of x coordinate of angular rate expressed
      * in (rad^2/s^2).
      */
-    private double mVarianceAngularRateX;
+    private double varianceAngularRateX;
 
     /**
      * Estimated variance of y coordinate of angular rate expressed
      * in (rad^2/s^2).
      */
-    private double mVarianceAngularRateY;
+    private double varianceAngularRateY;
 
     /**
      * Estimated variance of z coordinate of angular rate expressed
      * in (rad^2/s^2).
      */
-    private double mVarianceAngularRateZ;
+    private double varianceAngularRateZ;
 
     /**
      * Number of processed acceleration triad samples.
      */
-    private int mNumberOfProcessedSamples;
+    private int numberOfProcessedSamples;
 
     /**
      * Indicates whether estimator is running or not.
      */
-    private boolean mRunning;
+    private boolean running;
 
     /**
      * Constructor.
@@ -189,7 +189,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @param listener listener to handle events raised by this estimator.
      */
     public WindowedBodyKinematicsNoiseEstimator(final WindowedBodyKinematicsNoiseEstimatorListener listener) {
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -199,7 +199,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return length of number of samples to keep within the window.
      */
     public int getWindowSize() {
-        return mWindowSize;
+        return windowSize;
     }
 
     /**
@@ -212,7 +212,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @throws LockedException          if estimator is currently running.
      */
     public void setWindowSize(final int windowSize) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
@@ -221,7 +221,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
             throw new IllegalArgumentException();
         }
 
-        mWindowSize = windowSize;
+        this.windowSize = windowSize;
         reset();
     }
 
@@ -232,7 +232,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return time interval between accelerometer triad samples.
      */
     public double getTimeInterval() {
-        return mTimeInterval;
+        return timeInterval;
     }
 
     /**
@@ -244,7 +244,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @throws LockedException          if estimator is currently running.
      */
     public void setTimeInterval(final double timeInterval) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
@@ -252,7 +252,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
             throw new IllegalArgumentException();
         }
 
-        mTimeInterval = timeInterval;
+        this.timeInterval = timeInterval;
     }
 
     /**
@@ -261,7 +261,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return time interval between accelerometer triad samples.
      */
     public Time getTimeIntervalAsTime() {
-        return new Time(mTimeInterval, TimeUnit.SECOND);
+        return new Time(timeInterval, TimeUnit.SECOND);
     }
 
     /**
@@ -270,7 +270,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @param result instance where time interval will be stored.
      */
     public void getTimeIntervalAsTime(final Time result) {
-        result.setValue(mTimeInterval);
+        result.setValue(timeInterval);
         result.setUnit(TimeUnit.SECOND);
     }
 
@@ -281,8 +281,8 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @throws LockedException if estimator is currently running.
      */
     public void setTimeInterval(final Time timeInterval) throws LockedException {
-        setTimeInterval(TimeConverter.convert(timeInterval.getValue().doubleValue(),
-                timeInterval.getUnit(), TimeUnit.SECOND));
+        setTimeInterval(TimeConverter.convert(timeInterval.getValue().doubleValue(), timeInterval.getUnit(),
+                TimeUnit.SECOND));
     }
 
     /**
@@ -291,7 +291,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return listener to handle events raised by this estimator.
      */
     public WindowedBodyKinematicsNoiseEstimatorListener getListener() {
-        return mListener;
+        return listener;
     }
 
     /**
@@ -301,11 +301,11 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @throws LockedException if this estimator is running.
      */
     public void setListener(final WindowedBodyKinematicsNoiseEstimatorListener listener) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -315,7 +315,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * available.
      */
     public BodyKinematics getFirstWindowedBodyKinematics() {
-        return mWindowedSamples.isEmpty() ? null : mWindowedSamples.getFirst();
+        return windowedSamples.isEmpty() ? null : windowedSamples.getFirst();
     }
 
     /**
@@ -325,10 +325,10 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return true if result instance was updated, false otherwise.
      */
     public boolean getFirstWindowedBodyKinematics(final BodyKinematics result) {
-        if (mWindowedSamples.isEmpty()) {
+        if (windowedSamples.isEmpty()) {
             return false;
         } else {
-            result.copyFrom(mWindowedSamples.getFirst());
+            result.copyFrom(windowedSamples.getFirst());
             return true;
         }
     }
@@ -340,7 +340,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * available.
      */
     public BodyKinematics getLastWindowedBodyKinematics() {
-        return mWindowedSamples.isEmpty() ? null : mWindowedSamples.getLast();
+        return windowedSamples.isEmpty() ? null : windowedSamples.getLast();
     }
 
     /**
@@ -350,10 +350,10 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return true if result instance was updated, false otherwise.
      */
     public boolean getLastWindowedBodyKinematics(final BodyKinematics result) {
-        if (mWindowedSamples.isEmpty()) {
+        if (windowedSamples.isEmpty()) {
             return false;
         } else {
-            result.copyFrom(mWindowedSamples.getLast());
+            result.copyFrom(windowedSamples.getLast());
             return true;
         }
     }
@@ -367,7 +367,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return average of x coordinate of sensed specific force.
      */
     public double getAvgSpecificForceX() {
-        return mAvgSpecificForceX;
+        return avgSpecificForceX;
     }
 
     /**
@@ -378,7 +378,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return average of x coordinate of sensed specific force.
      */
     public Acceleration getAvgSpecificForceXAsMeasurement() {
-        return new Acceleration(mAvgSpecificForceX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(avgSpecificForceX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -390,7 +390,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      *               will be stored.
      */
     public void getAvgSpecificForceXAsMeasurement(final Acceleration result) {
-        result.setValue(mAvgSpecificForceX);
+        result.setValue(avgSpecificForceX);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -403,7 +403,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return average of y coordinate of sensed specific force.
      */
     public double getAvgSpecificForceY() {
-        return mAvgSpecificForceY;
+        return avgSpecificForceY;
     }
 
     /**
@@ -414,7 +414,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return average of y coordinate of sensed specific force.
      */
     public Acceleration getAvgSpecificForceYAsMeasurement() {
-        return new Acceleration(mAvgSpecificForceY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(avgSpecificForceY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -426,7 +426,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      *               will be stored.
      */
     public void getAvgSpecificForceYAsMeasurement(final Acceleration result) {
-        result.setValue(mAvgSpecificForceY);
+        result.setValue(avgSpecificForceY);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -439,7 +439,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return average of z coordinate of sensed specific force.
      */
     public double getAvgSpecificForceZ() {
-        return mAvgSpecificForceZ;
+        return avgSpecificForceZ;
     }
 
     /**
@@ -450,7 +450,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return average of z coordinate of sensed specific force.
      */
     public Acceleration getAvgSpecificForceZAsMeasurement() {
-        return new Acceleration(mAvgSpecificForceZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(avgSpecificForceZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -462,7 +462,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      *               will be stored.
      */
     public void getAvgSpecificForceZAsMeasurement(final Acceleration result) {
-        result.setValue(mAvgSpecificForceZ);
+        result.setValue(avgSpecificForceZ);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -474,7 +474,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      */
     public AccelerationTriad getAvgSpecificForceAsTriad() {
         return new AccelerationTriad(AccelerationUnit.METERS_PER_SQUARED_SECOND,
-                mAvgSpecificForceX, mAvgSpecificForceY, mAvgSpecificForceZ);
+                avgSpecificForceX, avgSpecificForceY, avgSpecificForceZ);
     }
 
     /**
@@ -484,7 +484,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @param result instance where average accelerometer triad will be stored.
      */
     public void getAvgSpecificForceAsTriad(final AccelerationTriad result) {
-        result.setValueCoordinatesAndUnit(mAvgSpecificForceX, mAvgSpecificForceY, mAvgSpecificForceZ,
+        result.setValueCoordinatesAndUnit(avgSpecificForceX, avgSpecificForceY, avgSpecificForceZ,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -495,8 +495,8 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return norm of estimated average acceleration.
      */
     public double getAvgSpecificForceNorm() {
-        return Math.sqrt(mAvgSpecificForceX * mAvgSpecificForceX + mAvgSpecificForceY * mAvgSpecificForceY
-                + mAvgSpecificForceZ * mAvgSpecificForceZ);
+        return Math.sqrt(avgSpecificForceX * avgSpecificForceX + avgSpecificForceY * avgSpecificForceY
+                + avgSpecificForceZ * avgSpecificForceZ);
     }
 
     /**
@@ -527,7 +527,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return average of x coordinate of sensed angular rate.
      */
     public double getAvgAngularRateX() {
-        return mAvgAngularRateX;
+        return avgAngularRateX;
     }
 
     /**
@@ -538,7 +538,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return average of x coordinate of sensed angular rate.
      */
     public AngularSpeed getAvgAngularRateXAsMeasurement() {
-        return new AngularSpeed(mAvgAngularRateX, AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(avgAngularRateX, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -550,7 +550,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      *               will be stored.
      */
     public void getAvgAngularRateXAsMeasurement(final AngularSpeed result) {
-        result.setValue(mAvgAngularRateX);
+        result.setValue(avgAngularRateX);
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -563,7 +563,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return average of y coordinate of sensed angular rate.
      */
     public double getAvgAngularRateY() {
-        return mAvgAngularRateY;
+        return avgAngularRateY;
     }
 
     /**
@@ -574,7 +574,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return average of y coordinate of sensed angular rate.
      */
     public AngularSpeed getAvgAngularRateYAsMeasurement() {
-        return new AngularSpeed(mAvgAngularRateY, AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(avgAngularRateY, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -586,7 +586,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      *               will be stored.
      */
     public void getAvgAngularRateYAsMeasurement(final AngularSpeed result) {
-        result.setValue(mAvgAngularRateY);
+        result.setValue(avgAngularRateY);
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -599,7 +599,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return average of z coordinate of sensed angular rate.
      */
     public double getAvgAngularRateZ() {
-        return mAvgAngularRateZ;
+        return avgAngularRateZ;
     }
 
     /**
@@ -610,7 +610,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return average of z coordinate of sensed angular rate.
      */
     public AngularSpeed getAvgAngularRateZAsMeasurement() {
-        return new AngularSpeed(mAvgAngularRateZ, AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(avgAngularRateZ, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -622,7 +622,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      *               will be stored.
      */
     public void getAvgAngularRateZAsMeasurement(final AngularSpeed result) {
-        result.setValue(mAvgAngularRateZ);
+        result.setValue(avgAngularRateZ);
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -634,7 +634,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      */
     public AngularSpeedTriad getAvgAngularRateTriad() {
         return new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND,
-                mAvgAngularRateX, mAvgAngularRateY, mAvgAngularRateZ);
+                avgAngularRateX, avgAngularRateY, avgAngularRateZ);
     }
 
     /**
@@ -644,7 +644,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @param result instance where average angular speed triad will be stored.
      */
     public void getAvgAngularRateTriad(final AngularSpeedTriad result) {
-        result.setValueCoordinatesAndUnit(mAvgAngularRateX, mAvgAngularRateY, mAvgAngularRateZ,
+        result.setValueCoordinatesAndUnit(avgAngularRateX, avgAngularRateY, avgAngularRateZ,
                 AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -655,9 +655,9 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return norm of estimated average angular speed.
      */
     public double getAvgAngularRateNorm() {
-        return Math.sqrt(mAvgAngularRateX * mAvgAngularRateX
-                + mAvgAngularRateY * mAvgAngularRateY
-                + mAvgAngularRateZ * mAvgAngularRateZ);
+        return Math.sqrt(avgAngularRateX * avgAngularRateX
+                + avgAngularRateY * avgAngularRateY
+                + avgAngularRateZ * avgAngularRateZ);
     }
 
     /**
@@ -687,7 +687,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return estimated average of body kinematics.
      */
     public BodyKinematics getAvgBodyKinematics() {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         getAvgBodyKinematics(result);
         return result;
     }
@@ -709,7 +709,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return estimated variance of x coordinate of sensed specific force.
      */
     public double getVarianceSpecificForceX() {
-        return mVarianceSpecificForceX;
+        return varianceSpecificForceX;
     }
 
     /**
@@ -719,7 +719,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return estimated variance of y coordinate of sensed specific force.
      */
     public double getVarianceSpecificForceY() {
-        return mVarianceSpecificForceY;
+        return varianceSpecificForceY;
     }
 
     /**
@@ -729,7 +729,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return estimated variance of z coordinate of sensed specific force.
      */
     public double getVarianceSpecificForceZ() {
-        return mVarianceSpecificForceZ;
+        return varianceSpecificForceZ;
     }
 
     /**
@@ -739,7 +739,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return estimated variance of x coordinate of sensed angular rate.
      */
     public double getVarianceAngularRateX() {
-        return mVarianceAngularRateX;
+        return varianceAngularRateX;
     }
 
     /**
@@ -749,7 +749,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return estimated variance of y coordinate of sensed angular rate.
      */
     public double getVarianceAngularRateY() {
-        return mVarianceAngularRateY;
+        return varianceAngularRateY;
     }
 
     /**
@@ -759,7 +759,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return estimated variance of z coordinate of sensed angular rate.
      */
     public double getVarianceAngularRateZ() {
-        return mVarianceAngularRateZ;
+        return varianceAngularRateZ;
     }
 
     /**
@@ -770,7 +770,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * force.
      */
     public double getStandardDeviationSpecificForceX() {
-        return Math.sqrt(mVarianceSpecificForceX);
+        return Math.sqrt(varianceSpecificForceX);
     }
 
     /**
@@ -804,7 +804,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * force.
      */
     public double getStandardDeviationSpecificForceY() {
-        return Math.sqrt(mVarianceSpecificForceY);
+        return Math.sqrt(varianceSpecificForceY);
     }
 
     /**
@@ -838,7 +838,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * force.
      */
     public double getStandardDeviationSpecificForceZ() {
-        return Math.sqrt(mVarianceSpecificForceZ);
+        return Math.sqrt(varianceSpecificForceZ);
     }
 
     /**
@@ -897,9 +897,9 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * measurements.
      */
     public double getStandardDeviationSpecificForceNorm() {
-        final double fx = getStandardDeviationSpecificForceX();
-        final double fy = getStandardDeviationSpecificForceY();
-        final double fz = getStandardDeviationSpecificForceZ();
+        final var fx = getStandardDeviationSpecificForceX();
+        final var fy = getStandardDeviationSpecificForceY();
+        final var fz = getStandardDeviationSpecificForceZ();
         return Math.sqrt(fx * fx + fy * fy + fz * fz);
     }
 
@@ -918,8 +918,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @param result instance where norm of estimated standard deviation will be
      *               stored.
      */
-    public void getStandardDeviationSpecificForceNormAsMeasurement(
-            final Acceleration result) {
+    public void getStandardDeviationSpecificForceNormAsMeasurement(final Acceleration result) {
         result.setValue(getStandardDeviationSpecificForceNorm());
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
@@ -931,9 +930,9 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return average of estimated standard deviation coordinates.
      */
     public double getAverageStandardDeviationSpecificForce() {
-        final double fx = getStandardDeviationSpecificForceX();
-        final double fy = getStandardDeviationSpecificForceY();
-        final double fz = getStandardDeviationSpecificForceZ();
+        final var fx = getStandardDeviationSpecificForceX();
+        final var fy = getStandardDeviationSpecificForceY();
+        final var fz = getStandardDeviationSpecificForceZ();
         return (fx + fy + fz) / 3.0;
     }
 
@@ -954,8 +953,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @param result instance where average of estimated standard deviation coordinates
      *               will be stored.
      */
-    public void getAverageStandardDeviationSpecificForceAsMeasurement(
-            final Acceleration result) {
+    public void getAverageStandardDeviationSpecificForceAsMeasurement(final Acceleration result) {
         result.setValue(getAverageStandardDeviationSpecificForce());
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
@@ -967,7 +965,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return estimated standard deviation of x coordinate of gyroscope.
      */
     public double getStandardDeviationAngularRateX() {
-        return Math.sqrt(mVarianceAngularRateX);
+        return Math.sqrt(varianceAngularRateX);
     }
 
     /**
@@ -996,7 +994,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return estimated standard deviation of y coordinate of gyroscope.
      */
     public double getStandardDeviationAngularRateY() {
-        return Math.sqrt(mVarianceAngularRateY);
+        return Math.sqrt(varianceAngularRateY);
     }
 
     /**
@@ -1025,7 +1023,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return estimated standard deviation of z coordinate of gyroscope.
      */
     public double getStandardDeviationAngularRateZ() {
-        return Math.sqrt(mVarianceAngularRateZ);
+        return Math.sqrt(varianceAngularRateZ);
     }
 
     /**
@@ -1080,9 +1078,9 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * measurements.
      */
     public double getStandardDeviationAngularSpeedNorm() {
-        final double wx = getStandardDeviationAngularRateX();
-        final double wy = getStandardDeviationAngularRateY();
-        final double wz = getStandardDeviationAngularRateZ();
+        final var wx = getStandardDeviationAngularRateX();
+        final var wy = getStandardDeviationAngularRateY();
+        final var wz = getStandardDeviationAngularRateZ();
         return Math.sqrt(wx * wx + wy * wy + wz * wz);
     }
 
@@ -1113,9 +1111,9 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return average of estimated standard deviation coordinates.
      */
     public double getAverageStandardDeviationAngularSpeed() {
-        final double wx = getStandardDeviationAngularRateX();
-        final double wy = getStandardDeviationAngularRateY();
-        final double wz = getStandardDeviationAngularRateZ();
+        final var wx = getStandardDeviationAngularRateX();
+        final var wy = getStandardDeviationAngularRateY();
+        final var wz = getStandardDeviationAngularRateZ();
         return (wx + wy + wz) / 3.0;
     }
 
@@ -1178,7 +1176,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return accelerometer noise PSD on x axis.
      */
     public double getSpecificForcePsdX() {
-        return mVarianceSpecificForceX * mTimeInterval;
+        return varianceSpecificForceX * timeInterval;
     }
 
     /**
@@ -1188,7 +1186,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return accelerometer noise PSD on y axis.
      */
     public double getSpecificForcePsdY() {
-        return mVarianceSpecificForceY * mTimeInterval;
+        return varianceSpecificForceY * timeInterval;
     }
 
     /**
@@ -1198,7 +1196,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return accelerometer noise PSD on z axis.
      */
     public double getSpecificForcePsdZ() {
-        return mVarianceSpecificForceZ * mTimeInterval;
+        return varianceSpecificForceZ * timeInterval;
     }
 
     /**
@@ -1208,7 +1206,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return gyroscope noise PSD on x axis.
      */
     public double getAngularRatePsdX() {
-        return mVarianceAngularRateX * mTimeInterval;
+        return varianceAngularRateX * timeInterval;
     }
 
     /**
@@ -1218,7 +1216,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return gyroscope noise PSD on y axis.
      */
     public double getAngularRatePsdY() {
-        return mVarianceAngularRateY * mTimeInterval;
+        return varianceAngularRateY * timeInterval;
     }
 
     /**
@@ -1228,7 +1226,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return gyroscope noise PSD on z axis.
      */
     public double getAngularRatePsdZ() {
-        return mVarianceAngularRateZ * mTimeInterval;
+        return varianceAngularRateZ * timeInterval;
     }
 
     /**
@@ -1337,7 +1335,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return number of samples that have been processed so far.
      */
     public int getNumberOfProcessedSamples() {
-        return mNumberOfProcessedSamples;
+        return numberOfProcessedSamples;
     }
 
     /**
@@ -1346,7 +1344,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return number of samples within the window.
      */
     public int getNumberOfSamplesInWindow() {
-        return mWindowedSamples.size();
+        return windowedSamples.size();
     }
 
     /**
@@ -1355,7 +1353,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return true if estimator is running, false otherwise.
      */
     public boolean isRunning() {
-        return mRunning;
+        return running;
     }
 
     /**
@@ -1364,7 +1362,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @return true if window is filled, false otherwise.
      */
     public boolean isWindowFilled() {
-        return getNumberOfSamplesInWindow() == mWindowSize;
+        return getNumberOfSamplesInWindow() == windowSize;
     }
 
     /**
@@ -1500,31 +1498,31 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @throws LockedException if estimator is currently running.
      */
     public boolean reset() throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        if (mNumberOfProcessedSamples == 0) {
+        if (numberOfProcessedSamples == 0) {
             return false;
         }
 
-        mWindowedSamples.clear();
-        mAvgSpecificForceX = 0.0;
-        mAvgSpecificForceY = 0.0;
-        mAvgSpecificForceZ = 0.0;
-        mAvgAngularRateX = 0.0;
-        mAvgAngularRateY = 0.0;
-        mAvgAngularRateZ = 0.0;
-        mVarianceSpecificForceX = 0.0;
-        mVarianceSpecificForceY = 0.0;
-        mVarianceSpecificForceZ = 0.0;
-        mVarianceAngularRateX = 0.0;
-        mVarianceAngularRateY = 0.0;
-        mVarianceAngularRateZ = 0.0;
-        mNumberOfProcessedSamples = 0;
+        windowedSamples.clear();
+        avgSpecificForceX = 0.0;
+        avgSpecificForceY = 0.0;
+        avgSpecificForceZ = 0.0;
+        avgAngularRateX = 0.0;
+        avgAngularRateY = 0.0;
+        avgAngularRateZ = 0.0;
+        varianceSpecificForceX = 0.0;
+        varianceSpecificForceY = 0.0;
+        varianceSpecificForceZ = 0.0;
+        varianceAngularRateX = 0.0;
+        varianceAngularRateY = 0.0;
+        varianceAngularRateZ = 0.0;
+        numberOfProcessedSamples = 0;
 
-        if (mListener != null) {
-            mListener.onReset(this);
+        if (listener != null) {
+            listener.onReset(this);
         }
 
         return true;
@@ -1540,34 +1538,34 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * @throws LockedException if estimator is currently running.
      */
     private boolean internalAdd(final BodyKinematics kinematics, boolean process) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mRunning = true;
+        running = true;
 
-        if (mWindowedSamples.isEmpty() && mListener != null) {
-            mListener.onStart(this);
+        if (windowedSamples.isEmpty() && listener != null) {
+            listener.onStart(this);
         }
 
-        final boolean wasFilled = isWindowFilled();
+        final var wasFilled = isWindowFilled();
         if (wasFilled) {
             // remove first sample
-            mWindowedSamples.removeFirst();
+            windowedSamples.removeFirst();
         }
 
-        mWindowedSamples.addLast(new BodyKinematics(kinematics));
+        windowedSamples.addLast(new BodyKinematics(kinematics));
 
         // process window
-        final boolean result = process && processWindow();
+        final var result = process && processWindow();
 
-        mRunning = false;
+        running = false;
 
-        if (mListener != null) {
-            mListener.onBodyKinematicsAdded(this);
+        if (listener != null) {
+            listener.onBodyKinematicsAdded(this);
 
             if (!wasFilled && isWindowFilled()) {
-                mListener.onWindowFilled(this);
+                listener.onWindowFilled(this);
             }
         }
 
@@ -1581,27 +1579,27 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
      * process current window.
      */
     private boolean processWindow() {
-        mNumberOfProcessedSamples++;
+        numberOfProcessedSamples++;
 
-        final int n = mWindowedSamples.size();
+        final var n = windowedSamples.size();
         if (n <= 1) {
             return false;
         }
 
         // compute averages
-        double avgFx = 0.0;
-        double avgFy = 0.0;
-        double avgFz = 0.0;
-        double avgWx = 0.0;
-        double avgWy = 0.0;
-        double avgWz = 0.0;
-        for (final BodyKinematics kinematics : mWindowedSamples) {
-            final double fx = kinematics.getFx();
-            final double fy = kinematics.getFy();
-            final double fz = kinematics.getFz();
-            final double wx = kinematics.getAngularRateX();
-            final double wy = kinematics.getAngularRateY();
-            final double wz = kinematics.getAngularRateZ();
+        var avgFx = 0.0;
+        var avgFy = 0.0;
+        var avgFz = 0.0;
+        var avgWx = 0.0;
+        var avgWy = 0.0;
+        var avgWz = 0.0;
+        for (final var kinematics : windowedSamples) {
+            final var fx = kinematics.getFx();
+            final var fy = kinematics.getFy();
+            final var fz = kinematics.getFz();
+            final var wx = kinematics.getAngularRateX();
+            final var wy = kinematics.getAngularRateY();
+            final var wz = kinematics.getAngularRateZ();
 
             avgFx += fx;
             avgFy += fy;
@@ -1619,33 +1617,33 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
         avgWz /= n;
 
         // compute variances
-        double varFx = 0.0;
-        double varFy = 0.0;
-        double varFz = 0.0;
-        double varWx = 0.0;
-        double varWy = 0.0;
-        double varWz = 0.0;
-        for (final BodyKinematics kinematics : mWindowedSamples) {
-            final double fx = kinematics.getFx();
-            final double fy = kinematics.getFy();
-            final double fz = kinematics.getFz();
-            final double wx = kinematics.getAngularRateX();
-            final double wy = kinematics.getAngularRateY();
-            final double wz = kinematics.getAngularRateZ();
+        var varFx = 0.0;
+        var varFy = 0.0;
+        var varFz = 0.0;
+        var varWx = 0.0;
+        var varWy = 0.0;
+        var varWz = 0.0;
+        for (final var kinematics : windowedSamples) {
+            final var fx = kinematics.getFx();
+            final var fy = kinematics.getFy();
+            final var fz = kinematics.getFz();
+            final var wx = kinematics.getAngularRateX();
+            final var wy = kinematics.getAngularRateY();
+            final var wz = kinematics.getAngularRateZ();
 
-            final double diffFx = fx - avgFx;
-            final double diffFy = fy - avgFy;
-            final double diffFz = fz - avgFz;
-            final double diffWx = wx - avgWx;
-            final double diffWy = wy - avgWy;
-            final double diffWz = wz - avgWz;
+            final var diffFx = fx - avgFx;
+            final var diffFy = fy - avgFy;
+            final var diffFz = fz - avgFz;
+            final var diffWx = wx - avgWx;
+            final var diffWy = wy - avgWy;
+            final var diffWz = wz - avgWz;
 
-            final double diffFx2 = diffFx * diffFx;
-            final double diffFy2 = diffFy * diffFy;
-            final double diffFz2 = diffFz * diffFz;
-            final double diffWx2 = diffWx * diffWx;
-            final double diffWy2 = diffWy * diffWy;
-            final double diffWz2 = diffWz * diffWz;
+            final var diffFx2 = diffFx * diffFx;
+            final var diffFy2 = diffFy * diffFy;
+            final var diffFz2 = diffFz * diffFz;
+            final var diffWx2 = diffWx * diffWx;
+            final var diffWy2 = diffWy * diffWy;
+            final var diffWz2 = diffWz * diffWz;
 
             varFx += diffFx2;
             varFy += diffFy2;
@@ -1655,7 +1653,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
             varWz += diffWz2;
         }
 
-        final int nMinusOne = n - 1;
+        final var nMinusOne = n - 1;
 
         varFx /= nMinusOne;
         varFy /= nMinusOne;
@@ -1664,19 +1662,19 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
         varWy /= nMinusOne;
         varWz /= nMinusOne;
 
-        mAvgSpecificForceX = avgFx;
-        mAvgSpecificForceY = avgFy;
-        mAvgSpecificForceZ = avgFz;
-        mAvgAngularRateX = avgWx;
-        mAvgAngularRateY = avgWy;
-        mAvgAngularRateZ = avgWz;
+        avgSpecificForceX = avgFx;
+        avgSpecificForceY = avgFy;
+        avgSpecificForceZ = avgFz;
+        avgAngularRateX = avgWx;
+        avgAngularRateY = avgWy;
+        avgAngularRateZ = avgWz;
 
-        mVarianceSpecificForceX = varFx;
-        mVarianceSpecificForceY = varFy;
-        mVarianceSpecificForceZ = varFz;
-        mVarianceAngularRateX = varWx;
-        mVarianceAngularRateY = varWy;
-        mVarianceAngularRateZ = varWz;
+        varianceSpecificForceX = varFx;
+        varianceSpecificForceY = varFy;
+        varianceSpecificForceZ = varFz;
+        varianceAngularRateX = varWx;
+        varianceAngularRateY = varWy;
+        varianceAngularRateZ = varWz;
 
         return true;
     }

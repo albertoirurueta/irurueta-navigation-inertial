@@ -21,15 +21,13 @@ import com.irurueta.navigation.frames.ECEFPosition;
 import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.inertial.calibration.StandardDeviationBodyKinematics;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
-import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class RobustTurntableGyroscopeCalibratorTest implements
-        RobustTurntableGyroscopeCalibratorListener {
+class RobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyroscopeCalibratorListener {
 
     private static final double ROTATION_RATE = Math.PI / 2.0;
 
@@ -38,54 +36,52 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     private static final double ABSOLUTE_ERROR = 1e-6;
 
     @Test
-    public void testCreate1() {
+    void testCreate1() {
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
 
         // LMedS
         calibrator = RobustTurntableGyroscopeCalibrator.create(RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
 
         // MSAC
         calibrator = RobustTurntableGyroscopeCalibrator.create(RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
 
         // PROSAC
         calibrator = RobustTurntableGyroscopeCalibrator.create(RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
 
         // PROMedS
         calibrator = RobustTurntableGyroscopeCalibrator.create(RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
     }
 
     @Test
-    public void testCreate2() throws WrongSizeException {
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate2() throws WrongSizeException {
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                initialBias, initialMg, initialGg, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -95,11 +91,11 @@ public class RobustTurntableGyroscopeCalibratorTest implements
         assertEquals(initialGg, calibrator.getInitialGg());
 
         // LMedS
-        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL,
-                measurements, initialBias, initialMg, initialGg, RobustEstimatorMethod.LMEDS);
+        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                initialBias, initialMg, initialGg, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -113,7 +109,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -127,7 +123,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -141,7 +137,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -152,20 +148,19 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate3() throws WrongSizeException {
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate3() throws WrongSizeException {
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, this,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                initialBias, initialMg, initialGg, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -180,7 +175,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -195,7 +190,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -210,7 +205,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -225,7 +220,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -237,20 +232,19 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate4() throws WrongSizeException {
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate4() throws WrongSizeException {
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                initialBias, initialMg, initialGg, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -264,7 +258,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -278,7 +272,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -292,7 +286,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -306,7 +300,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -317,20 +311,19 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate5() throws WrongSizeException {
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate5() throws WrongSizeException {
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, this,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                initialBias, initialMg, initialGg, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -345,7 +338,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -360,7 +353,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -375,7 +368,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -390,7 +383,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -402,22 +395,21 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate6() throws WrongSizeException {
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final double[] accelerometerBias = new double[3];
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate6() throws WrongSizeException {
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new double[3];
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -433,7 +425,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -449,7 +441,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -461,12 +453,11 @@ public class RobustTurntableGyroscopeCalibratorTest implements
         assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
 
         // PROSAC
-        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL,
-                measurements, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -478,12 +469,11 @@ public class RobustTurntableGyroscopeCalibratorTest implements
         assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
 
         // PROMedS
-        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL,
-                measurements, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
-                RobustEstimatorMethod.PROMEDS);
+        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -496,22 +486,22 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate7() throws WrongSizeException {
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final double[] accelerometerBias = new double[3];
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate7() throws WrongSizeException {
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new double[3];
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa, this, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, this, 
+                RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -529,7 +519,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -547,7 +537,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -565,7 +555,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -583,7 +573,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -597,22 +587,21 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate8() throws WrongSizeException {
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate8() throws WrongSizeException {
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -628,7 +617,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -644,7 +633,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -660,7 +649,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -672,12 +661,11 @@ public class RobustTurntableGyroscopeCalibratorTest implements
         assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
 
         // PROMedS
-        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL,
-                measurements, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
-                RobustEstimatorMethod.PROMEDS);
+        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -690,22 +678,22 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate9() throws WrongSizeException {
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate9() throws WrongSizeException {
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa, this, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, this,
+                RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -719,11 +707,11 @@ public class RobustTurntableGyroscopeCalibratorTest implements
 
         // LMedS
         calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, this,
+                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, this, 
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -741,7 +729,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -759,7 +747,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -777,7 +765,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -786,27 +774,219 @@ public class RobustTurntableGyroscopeCalibratorTest implements
         assertEquals(initialMg, calibrator.getInitialMg());
         assertEquals(initialGg, calibrator.getInitialGg());
         assertEquals(accelerometerBias, calibrator.getAccelerometerBiasAsMatrix());
-        assertEquals(calibrator.getAccelerometerMa(), accelerometerMa);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
-    public void testCreate10() throws WrongSizeException {
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate10() throws WrongSizeException {
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, false, false,
-                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertSame(position, calibrator.getEcefPosition());
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+
+        // LMedS
+        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertSame(position, calibrator.getEcefPosition());
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+
+        // MSAC
+        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertSame(position, calibrator.getEcefPosition());
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+
+        // PROSAC
+        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertSame(position, calibrator.getEcefPosition());
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+
+        // PROMedS
+        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertSame(position, calibrator.getEcefPosition());
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+    }
+
+    @Test
+    void testCreate11() throws WrongSizeException {
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+
+        // RANSAC
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                this, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertSame(position, calibrator.getEcefPosition());
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+        assertSame(this, calibrator.getListener());
+
+        // LMedS
+        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                this, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertSame(position, calibrator.getEcefPosition());
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+
+        // MSAC
+        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                this, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertSame(position, calibrator.getEcefPosition());
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+        assertSame(this, calibrator.getListener());
+
+        // PROSAC
+        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                this, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertSame(position, calibrator.getEcefPosition());
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+        assertSame(this, calibrator.getListener());
+
+        // PROMedS
+        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                this, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertSame(position, calibrator.getEcefPosition());
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+        assertSame(this, calibrator.getListener());
+    }
+
+    @Test
+    void testCreate12() throws WrongSizeException {
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
+
+        // RANSAC
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -825,7 +1005,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -844,7 +1024,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -863,7 +1043,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -882,7 +1062,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -897,23 +1077,22 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate11() throws WrongSizeException {
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate13() throws WrongSizeException {
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, false, false,
-                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, this,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -933,7 +1112,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -953,7 +1132,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -973,7 +1152,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -993,7 +1172,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -1009,729 +1188,508 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate12() throws WrongSizeException {
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate14() throws WrongSizeException {
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, false, false,
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertSame(position, calibrator.getEcefPosition());
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+
+        // LMedS
+        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertSame(position, calibrator.getEcefPosition());
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+
+        // MSAC
+        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertSame(position, calibrator.getEcefPosition());
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+
+        // PROSAC
+        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertSame(position, calibrator.getEcefPosition());
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+
+        // PROMedS
+        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertSame(position, calibrator.getEcefPosition());
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+    }
+
+    @Test
+    void testCreate15() throws WrongSizeException {
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+
+        // RANSAC
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg, this,
+                RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertSame(position, calibrator.getEcefPosition());
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+        assertSame(this, calibrator.getListener());
+
+        // LMedS
+        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg, this,
+                RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertSame(position, calibrator.getEcefPosition());
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+        assertSame(this, calibrator.getListener());
+
+        // MSAC
+        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg, this,
+                RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertSame(position, calibrator.getEcefPosition());
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+        assertSame(this, calibrator.getListener());
+
+        // PROSAC
+        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg, this,
+                RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertSame(position, calibrator.getEcefPosition());
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+        assertSame(this, calibrator.getListener());
+
+        // PROMedS
+        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg, this,
+                RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertSame(position, calibrator.getEcefPosition());
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+        assertSame(this, calibrator.getListener());
+    }
+
+    @Test
+    void testCreate16() throws WrongSizeException {
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new double[3];
+        final var accelerometerMa = new Matrix(3, 3);
+
+        // RANSAC
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertSame(position, calibrator.getEcefPosition());
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+        assertArrayEquals(accelerometerBias, calibrator.getAccelerometerBias(), 0.0);
+        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
+
+        // LMedS
+        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertSame(position, calibrator.getEcefPosition());
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+        assertArrayEquals(accelerometerBias, calibrator.getAccelerometerBias(), 0.0);
+        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
+
+        // MSAC
+        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertSame(position, calibrator.getEcefPosition());
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+        assertArrayEquals(accelerometerBias, calibrator.getAccelerometerBias(), 0.0);
+        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
+
+        // PROSAC
+        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertSame(position, calibrator.getEcefPosition());
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+        assertArrayEquals(accelerometerBias, calibrator.getAccelerometerBias(), 0.0);
+        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
+
+        // PROMedS
+        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertSame(position, calibrator.getEcefPosition());
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+        assertArrayEquals(accelerometerBias, calibrator.getAccelerometerBias(), 0.0);
+        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
+    }
+
+    @Test
+    void testCreate17() throws WrongSizeException {
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new double[3];
+        final var accelerometerMa = new Matrix(3, 3);
+
+        // RANSAC
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertSame(position, calibrator.getEcefPosition());
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+        assertArrayEquals(accelerometerBias, calibrator.getAccelerometerBias(), 0.0);
+        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
+        assertSame(this, calibrator.getListener());
+
+        // LMedS
+        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg, 
+                accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertSame(position, calibrator.getEcefPosition());
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+        assertArrayEquals(accelerometerBias, calibrator.getAccelerometerBias(), 0.0);
+        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
+        assertSame(this, calibrator.getListener());
+
+        // MSAC
+        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertSame(position, calibrator.getEcefPosition());
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+        assertArrayEquals(accelerometerBias, calibrator.getAccelerometerBias(), 0.0);
+        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
+        assertSame(this, calibrator.getListener());
+
+        // PROSAC
+        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertSame(position, calibrator.getEcefPosition());
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+        assertArrayEquals(accelerometerBias, calibrator.getAccelerometerBias(), 0.0);
+        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
+        assertSame(this, calibrator.getListener());
+
+        // PROMedS
+        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertSame(position, calibrator.getEcefPosition());
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+        assertArrayEquals(accelerometerBias, calibrator.getAccelerometerBias(), 0.0);
+        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
+        assertSame(this, calibrator.getListener());
+    }
+
+    @Test
+    void testCreate18() throws WrongSizeException {
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+
+        // RANSAC
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
                 initialBias, initialMg, initialGg, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
-        assertSame(position, calibrator.getEcefPosition());
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
         assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
         assertEquals(initialGg, calibrator.getInitialGg());
 
         // LMedS
         calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                false, false, initialBias, initialMg, initialGg,
-                RobustEstimatorMethod.LMEDS);
+                initialBias, initialMg, initialGg, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
-        assertSame(position, calibrator.getEcefPosition());
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
         assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
         assertEquals(initialGg, calibrator.getInitialGg());
 
         // MSAC
         calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                false, false, initialBias, initialMg, initialGg,
-                RobustEstimatorMethod.MSAC);
+                initialBias, initialMg, initialGg, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
-        assertSame(position, calibrator.getEcefPosition());
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
         assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
         assertEquals(initialGg, calibrator.getInitialGg());
 
         // PROSAC
         calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                false, false, initialBias, initialMg, initialGg,
-                RobustEstimatorMethod.PROSAC);
+                initialBias, initialMg, initialGg, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
-        assertSame(position, calibrator.getEcefPosition());
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
         assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
         assertEquals(initialGg, calibrator.getInitialGg());
 
         // PROMedS
         calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                false, false, initialBias, initialMg, initialGg,
-                RobustEstimatorMethod.PROMEDS);
+                initialBias, initialMg, initialGg, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
-        assertSame(position, calibrator.getEcefPosition());
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
         assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
         assertEquals(initialGg, calibrator.getInitialGg());
     }
 
     @Test
-    public void testCreate13() throws WrongSizeException {
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate19() throws WrongSizeException {
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, false, false,
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
                 initialBias, initialMg, initialGg, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
-        assertSame(position, calibrator.getEcefPosition());
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertSame(this, calibrator.getListener());
-
-        // LMedS
-        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                false, false, initialBias, initialMg, initialGg, this,
-                RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
-        assertSame(position, calibrator.getEcefPosition());
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertSame(this, calibrator.getListener());
-
-        // MSAC
-        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                false, false, initialBias, initialMg, initialGg, this,
-                RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
-        assertSame(position, calibrator.getEcefPosition());
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertSame(this, calibrator.getListener());
-
-        // PROSAC
-        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                false, false, initialBias, initialMg, initialGg, this,
-                RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
-        assertSame(position, calibrator.getEcefPosition());
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertSame(this, calibrator.getListener());
-
-        // PROMedS
-        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                false, false, initialBias, initialMg, initialGg, this,
-                RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
-        assertSame(position, calibrator.getEcefPosition());
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertSame(this, calibrator.getListener());
-    }
-
-    @Test
-    public void testCreate14() throws WrongSizeException {
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final double[] accelerometerBias = new double[3];
-        final Matrix accelerometerMa = new Matrix(3, 3);
-
-        // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, false, false,
-                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
-        assertSame(position, calibrator.getEcefPosition());
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertArrayEquals(accelerometerBias, calibrator.getAccelerometerBias(), 0.0);
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-
-        // LMedS
-        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                false, false, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
-        assertSame(position, calibrator.getEcefPosition());
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertArrayEquals(accelerometerBias, calibrator.getAccelerometerBias(), 0.0);
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-
-        // MSAC
-        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                false, false, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
-        assertSame(position, calibrator.getEcefPosition());
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertArrayEquals(accelerometerBias, calibrator.getAccelerometerBias(), 0.0);
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-
-        // PROSAC
-        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                false, false, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
-        assertSame(position, calibrator.getEcefPosition());
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertArrayEquals(accelerometerBias, calibrator.getAccelerometerBias(), 0.0);
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-
-        // PROMedS
-        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                false, false, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
-        assertSame(position, calibrator.getEcefPosition());
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertArrayEquals(accelerometerBias, calibrator.getAccelerometerBias(), 0.0);
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-    }
-
-    @Test
-    public void testCreate15() throws WrongSizeException {
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final double[] accelerometerBias = new double[3];
-        final Matrix accelerometerMa = new Matrix(3, 3);
-
-        // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, false, false,
-                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, this,
-                RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
-        assertSame(position, calibrator.getEcefPosition());
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertArrayEquals(accelerometerBias, calibrator.getAccelerometerBias(), 0.0);
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-        assertSame(this, calibrator.getListener());
-
-        // LMedS
-        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                false, false, initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa, this, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
-        assertSame(position, calibrator.getEcefPosition());
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertArrayEquals(accelerometerBias, calibrator.getAccelerometerBias(), 0.0);
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-        assertSame(this, calibrator.getListener());
-
-        // MSAC
-        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                false, false, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
-        assertSame(position, calibrator.getEcefPosition());
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertArrayEquals(accelerometerBias, calibrator.getAccelerometerBias(), 0.0);
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-        assertSame(this, calibrator.getListener());
-
-        // PROSAC
-        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                false, false, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
-        assertSame(position, calibrator.getEcefPosition());
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertArrayEquals(accelerometerBias, calibrator.getAccelerometerBias(), 0.0);
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-        assertSame(this, calibrator.getListener());
-
-        // PROMedS
-        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                false, false, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
-        assertSame(position, calibrator.getEcefPosition());
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertArrayEquals(accelerometerBias, calibrator.getAccelerometerBias(), 0.0);
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-        assertSame(this, calibrator.getListener());
-    }
-
-    @Test
-    public void testCreate16() throws WrongSizeException {
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
-
-        // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, false, false,
-                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
-        assertSame(position, calibrator.getEcefPosition());
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertEquals(accelerometerBias, calibrator.getAccelerometerBiasAsMatrix());
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-
-        // LMedS
-        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                false, false, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
-        assertSame(position, calibrator.getEcefPosition());
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertEquals(accelerometerBias, calibrator.getAccelerometerBiasAsMatrix());
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-
-        // MSAC
-        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                false, false, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
-        assertSame(position, calibrator.getEcefPosition());
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertEquals(accelerometerBias, calibrator.getAccelerometerBiasAsMatrix());
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-
-        // PROSAC
-        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                false, false, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
-        assertSame(position, calibrator.getEcefPosition());
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertEquals(accelerometerBias, calibrator.getAccelerometerBiasAsMatrix());
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-
-        // PROMedS
-        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                false, false, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
-        assertSame(position, calibrator.getEcefPosition());
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertEquals(accelerometerBias, calibrator.getAccelerometerBiasAsMatrix());
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-    }
-
-    @Test
-    public void testCreate17() throws WrongSizeException {
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
-
-        // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, false, false,
-                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, this,
-                RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
-        assertSame(position, calibrator.getEcefPosition());
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertEquals(accelerometerBias, calibrator.getAccelerometerBiasAsMatrix());
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-        assertSame(this, calibrator.getListener());
-
-        // LMedS
-        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                false, false, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
-        assertSame(position, calibrator.getEcefPosition());
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertEquals(accelerometerBias, calibrator.getAccelerometerBiasAsMatrix());
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-        assertSame(this, calibrator.getListener());
-
-        // MSAC
-        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                false, false, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
-        assertSame(position, calibrator.getEcefPosition());
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertEquals(accelerometerBias, calibrator.getAccelerometerBiasAsMatrix());
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-        assertSame(this, calibrator.getListener());
-
-        // PROSAC
-        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                false, false, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
-        assertSame(position, calibrator.getEcefPosition());
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertEquals(accelerometerBias, calibrator.getAccelerometerBiasAsMatrix());
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-        assertSame(this, calibrator.getListener());
-
-        // PROMedS
-        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                false, false, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
-        assertSame(position, calibrator.getEcefPosition());
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertEquals(accelerometerBias, calibrator.getAccelerometerBiasAsMatrix());
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-        assertSame(this, calibrator.getListener());
-    }
-
-    @Test
-    public void testCreate18() throws WrongSizeException {
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-
-        // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg,
-                RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
-        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-
-        // LMedS
-        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                initialBias, initialMg, initialGg, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
-        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-
-        // MSAC
-        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                initialBias, initialMg, initialGg, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
-        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-
-        // PROSAC
-        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                initialBias, initialMg, initialGg, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
-        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-
-        // PROMedS
-        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                initialBias, initialMg, initialGg, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
-        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-    }
-
-    @Test
-    public void testCreate19() throws WrongSizeException {
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-
-        // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, this,
-                RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -1746,7 +1704,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -1761,7 +1719,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -1776,7 +1734,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -1791,7 +1749,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -1803,20 +1761,19 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate20() throws WrongSizeException {
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate20() throws WrongSizeException {
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                initialBias, initialMg, initialGg, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -1830,7 +1787,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -1844,7 +1801,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -1858,7 +1815,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -1872,7 +1829,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -1883,20 +1840,19 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate21() throws WrongSizeException {
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate21() throws WrongSizeException {
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, this,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                initialBias, initialMg, initialGg, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -1911,7 +1867,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -1926,7 +1882,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -1941,7 +1897,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -1956,7 +1912,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -1968,22 +1924,21 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate22() throws WrongSizeException {
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final double[] accelerometerBias = new double[3];
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate22() throws WrongSizeException {
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new double[3];
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -1999,7 +1954,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2015,7 +1970,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2031,7 +1986,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2047,7 +2002,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2060,22 +2015,22 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate23() throws WrongSizeException {
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final double[] accelerometerBias = new double[3];
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate23() throws WrongSizeException {
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new double[3];
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa, this, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, this,
+                RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2093,7 +2048,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2111,7 +2066,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2129,7 +2084,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2147,7 +2102,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2161,22 +2116,21 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate24() throws WrongSizeException {
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate24() throws WrongSizeException {
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2192,7 +2146,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2208,7 +2162,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2224,7 +2178,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2240,7 +2194,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2253,22 +2207,22 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate25() throws WrongSizeException {
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate25() throws WrongSizeException {
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa, this, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, this,
+                RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2286,7 +2240,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2304,7 +2258,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2322,7 +2276,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2340,7 +2294,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2354,22 +2308,215 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate26() throws WrongSizeException {
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate26() throws WrongSizeException {
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, false, false,
-                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+
+        // LMedS
+        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+
+        // MSAC
+        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+
+        // PROSAC
+        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+
+        // PROMedS
+        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+    }
+
+    @Test
+    void testCreate27() throws WrongSizeException {
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+
+        // RANSAC
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                this, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+        assertSame(this, calibrator.getListener());
+
+        // LMedS
+        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                this, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+        assertSame(this, calibrator.getListener());
+
+        // MSAC
+        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                this, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+        assertSame(this, calibrator.getListener());
+
+        // PROSAC
+        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                this, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+        assertSame(this, calibrator.getListener());
+
+        // PROMedS
+        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                this, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
+        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
+        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
+        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+        assertSame(this, calibrator.getListener());
+    }
+
+    @Test
+    void testCreate28() throws WrongSizeException {
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
+
+        // RANSAC
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2388,7 +2535,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2407,7 +2554,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2426,7 +2573,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2445,7 +2592,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2460,23 +2607,22 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate27() throws WrongSizeException {
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate29() throws WrongSizeException {
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, false, false,
-                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, this,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2496,7 +2642,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2516,7 +2662,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2536,7 +2682,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2556,7 +2702,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2572,20 +2718,20 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate28() throws WrongSizeException {
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate30() throws WrongSizeException {
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, false, false,
-                initialBias, initialMg, initialGg, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2602,7 +2748,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2619,7 +2765,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2636,7 +2782,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2653,7 +2799,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2666,20 +2812,20 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate29() throws WrongSizeException {
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate31() throws WrongSizeException {
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, false, false,
-                initialBias, initialMg, initialGg, this, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg, this,
+                RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2697,7 +2843,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2715,7 +2861,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2733,7 +2879,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2751,7 +2897,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2765,22 +2911,22 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate30() throws WrongSizeException {
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final double[] accelerometerBias = new double[3];
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate32() throws WrongSizeException {
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new double[3];
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, false, false,
-                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2799,7 +2945,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2818,7 +2964,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2837,7 +2983,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2856,7 +3002,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2871,23 +3017,22 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate31() throws WrongSizeException {
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final double[] accelerometerBias = new double[3];
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate33() throws WrongSizeException {
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new double[3];
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, false, false,
-                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, this,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                false, false, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2907,7 +3052,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2927,7 +3072,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2947,7 +3092,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2967,7 +3112,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -2983,280 +3128,60 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate32() throws WrongSizeException {
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate34() {
+        final var qualityScores = new double[10];
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, false, false,
-                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
-        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertEquals(accelerometerBias, calibrator.getAccelerometerBiasAsMatrix());
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-
-        // LMedS
-        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                false, false, initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
-        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertEquals(accelerometerBias, calibrator.getAccelerometerBiasAsMatrix());
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-
-        // MSAC
-        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                false, false, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
-        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertEquals(accelerometerBias, calibrator.getAccelerometerBiasAsMatrix());
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-
-        // PROSAC
-        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                false, false, initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
-        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertEquals(accelerometerBias, calibrator.getAccelerometerBiasAsMatrix());
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-
-        // PROMedS
-        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                false, false, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
-        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertEquals(accelerometerBias, calibrator.getAccelerometerBiasAsMatrix());
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-    }
-
-    @Test
-    public void testCreate33() throws WrongSizeException {
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
-
-        // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, false, false,
-                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, this,
-                RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
-        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertEquals(accelerometerBias, calibrator.getAccelerometerBiasAsMatrix());
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-        assertSame(this, calibrator.getListener());
-
-        // LMedS
-        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                false, false, initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa, this, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
-        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertEquals(accelerometerBias, calibrator.getAccelerometerBiasAsMatrix());
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-        assertSame(this, calibrator.getListener());
-
-        // MSAC
-        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                false, false, initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa, this, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
-        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertEquals(accelerometerBias, calibrator.getAccelerometerBiasAsMatrix());
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-        assertSame(this, calibrator.getListener());
-
-        // PROSAC
-        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                false, false, initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa, this, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
-        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertEquals(accelerometerBias, calibrator.getAccelerometerBiasAsMatrix());
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-        assertSame(this, calibrator.getListener());
-
-        // PROMedS
-        calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
-                false, false, initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa, this, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
-        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertEquals(accelerometerBias, calibrator.getAccelerometerBiasAsMatrix());
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-        assertSame(this, calibrator.getListener());
-    }
-
-    @Test
-    public void testCreate34() {
-        final double[] qualityScores = new double[10];
-
-        // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
 
         // LMedS
         calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
 
         // MSAC
         calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
         calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
         calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
-    public void testCreate35() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate35() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                position, ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE,
+                TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3271,7 +3196,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 measurements, initialBias, initialMg, initialGg, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3286,7 +3211,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 measurements, initialBias, initialMg, initialGg, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3301,7 +3226,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 measurements, initialBias, initialMg, initialGg, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3316,7 +3241,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 measurements, initialBias, initialMg, initialGg, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3328,21 +3253,21 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate36() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate36() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                position, ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, this,
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE,
+                TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, this,
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3358,7 +3283,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 measurements, initialBias, initialMg, initialGg, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3374,7 +3299,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 measurements, initialBias, initialMg, initialGg, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3390,7 +3315,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 measurements, initialBias, initialMg, initialGg, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3406,7 +3331,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 measurements, initialBias, initialMg, initialGg, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3419,21 +3344,20 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate37() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate37() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                position, ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE,
+                TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3448,7 +3372,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 measurements, initialBias, initialMg, initialGg, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3463,7 +3387,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 measurements, initialBias, initialMg, initialGg, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3478,7 +3402,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 measurements, initialBias, initialMg, initialGg, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3493,7 +3417,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 measurements, initialBias, initialMg, initialGg, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3505,21 +3429,21 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate38() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate38() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                position, ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, this,
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE,
+                TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, this,
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3535,7 +3459,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 measurements, initialBias, initialMg, initialGg, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3551,7 +3475,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 measurements, initialBias, initialMg, initialGg, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3568,7 +3492,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 measurements, initialBias, initialMg, initialGg, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3584,7 +3508,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 measurements, initialBias, initialMg, initialGg, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3597,23 +3521,23 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate39() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final double[] accelerometerBias = new double[3];
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate39() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new double[3];
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                position, ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE,
+                TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
+                RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3631,7 +3555,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3649,7 +3573,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3667,7 +3591,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3685,7 +3609,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3699,23 +3623,23 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate40() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final double[] accelerometerBias = new double[3];
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate40() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new double[3];
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                position, ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE,
+                TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
+                this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3734,7 +3658,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3753,7 +3677,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3772,7 +3696,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3791,7 +3715,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3806,23 +3730,23 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate41() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate41() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                position, ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE,
+                TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
+                RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3840,7 +3764,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3858,7 +3782,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3876,7 +3800,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3894,7 +3818,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3908,23 +3832,23 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate42() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate42() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                position, ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE,
+                TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
+                this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3943,7 +3867,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3962,7 +3886,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -3981,7 +3905,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4000,7 +3924,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4015,21 +3939,21 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate43() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate43() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                position, ROTATION_RATE, TIME_INTERVAL, measurements, true,
-                true, initialBias, initialMg, initialGg, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE,
+                TIME_INTERVAL, measurements, true, true, initialBias,
+                initialMg, initialGg, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4047,7 +3971,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4065,7 +3989,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4083,7 +4007,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4101,7 +4025,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4115,21 +4039,21 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate44() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate44() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                position, ROTATION_RATE, TIME_INTERVAL, measurements, true,
-                true, initialBias, initialMg, initialGg, this, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE,
+                TIME_INTERVAL, measurements, true, true, initialBias,
+                initialMg, initialGg, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4148,7 +4072,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4167,7 +4091,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4186,7 +4110,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4205,7 +4129,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4220,24 +4144,23 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate45() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate45() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                position, ROTATION_RATE, TIME_INTERVAL, measurements, false,
-                false, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE,
+                TIME_INTERVAL, measurements, false, false, initialBias,
+                initialMg, initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4257,7 +4180,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4277,7 +4200,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4297,7 +4220,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4317,7 +4240,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4333,24 +4256,23 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate46() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate46() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                position, ROTATION_RATE, TIME_INTERVAL, measurements, false,
-                false, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, this,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE,
+                TIME_INTERVAL, measurements, false, false, initialBias,
+                initialMg, initialGg, accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4371,7 +4293,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4392,7 +4314,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4413,7 +4335,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4434,7 +4356,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4451,21 +4373,21 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate47() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate47() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                position, ROTATION_RATE, TIME_INTERVAL, measurements, false,
-                false, initialBias, initialMg, initialGg, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE,
+                TIME_INTERVAL, measurements, false, false, initialBias,
+                initialMg, initialGg, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4483,7 +4405,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4501,7 +4423,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4519,7 +4441,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4537,7 +4459,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4551,22 +4473,21 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate48() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate48() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                position, ROTATION_RATE, TIME_INTERVAL, measurements, false,
-                false, initialBias, initialMg, initialGg, this,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE,
+                TIME_INTERVAL, measurements, false, false, initialBias,
+                initialMg, initialGg, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4585,7 +4506,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4604,7 +4525,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4623,7 +4544,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4642,7 +4563,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4657,24 +4578,23 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate49() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final double[] accelerometerBias = new double[3];
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate49() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new double[3];
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                position, ROTATION_RATE, TIME_INTERVAL, measurements, false,
-                false, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE,
+                TIME_INTERVAL, measurements, false, false, initialBias,
+                initialMg, initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4694,7 +4614,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4714,7 +4634,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4734,7 +4654,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4754,7 +4674,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4770,24 +4690,23 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate50() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final double[] accelerometerBias = new double[3];
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate50() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new double[3];
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                position, ROTATION_RATE, TIME_INTERVAL, measurements, false,
-                false, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
-                this, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE,
+                TIME_INTERVAL, measurements, false, false, initialBias,
+                initialMg, initialGg, accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4808,7 +4727,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4829,7 +4748,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4850,7 +4769,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4871,7 +4790,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -4888,137 +4807,23 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate51() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate51() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                position, ROTATION_RATE, TIME_INTERVAL, measurements, false,
-                false, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE,
+                TIME_INTERVAL, measurements, false, false, initialBias,
+                initialMg, initialGg, accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
-        assertNull(calibrator.getQualityScores());
-        assertSame(position, calibrator.getEcefPosition());
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertEquals(accelerometerBias, calibrator.getAccelerometerBiasAsMatrix());
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-
-        // LMedS
-        calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE, TIME_INTERVAL,
-                measurements, false, false, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
-        assertNull(calibrator.getQualityScores());
-        assertSame(position, calibrator.getEcefPosition());
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertEquals(accelerometerBias, calibrator.getAccelerometerBiasAsMatrix());
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-
-        // MSAC
-        calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE, TIME_INTERVAL,
-                measurements, false, false, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
-        assertNull(calibrator.getQualityScores());
-        assertSame(position, calibrator.getEcefPosition());
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertEquals(accelerometerBias, calibrator.getAccelerometerBiasAsMatrix());
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-
-        // PROSAC
-        calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE, TIME_INTERVAL,
-                measurements, false, false, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
-        assertSame(qualityScores, calibrator.getQualityScores());
-        assertSame(position, calibrator.getEcefPosition());
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertEquals(accelerometerBias, calibrator.getAccelerometerBiasAsMatrix());
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-
-        // PROMedS
-        calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE, TIME_INTERVAL,
-                measurements, false, false, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
-        assertSame(qualityScores, calibrator.getQualityScores());
-        assertSame(position, calibrator.getEcefPosition());
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertEquals(accelerometerBias, calibrator.getAccelerometerBiasAsMatrix());
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-    }
-
-    @Test
-    public void testCreate52() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
-
-        // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                position, ROTATION_RATE, TIME_INTERVAL, measurements, false,
-                false, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
-                this, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5039,7 +4844,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5060,7 +4865,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5081,7 +4886,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(position, calibrator.getEcefPosition());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5102,7 +4907,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
         assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
@@ -5118,21 +4923,20 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate53() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate52() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                position, ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE,
+                TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5147,7 +4951,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 measurements, initialBias, initialMg, initialGg, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5162,7 +4966,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 measurements, initialBias, initialMg, initialGg, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5177,7 +4981,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 measurements, initialBias, initialMg, initialGg, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5192,7 +4996,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 measurements, initialBias, initialMg, initialGg, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5204,21 +5008,21 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate54() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate53() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                position, ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, this,
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE,
+                TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, this,
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5234,7 +5038,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 measurements, initialBias, initialMg, initialGg, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5250,7 +5054,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 measurements, initialBias, initialMg, initialGg, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5266,7 +5070,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 measurements, initialBias, initialMg, initialGg, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5282,7 +5086,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 measurements, initialBias, initialMg, initialGg, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5295,21 +5099,20 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate55() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate54() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                position, ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE,
+                TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5324,7 +5127,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 measurements, initialBias, initialMg, initialGg, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5339,7 +5142,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 measurements, initialBias, initialMg, initialGg, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5354,7 +5157,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 measurements, initialBias, initialMg, initialGg, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5369,7 +5172,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 measurements, initialBias, initialMg, initialGg, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5381,21 +5184,21 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate56() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate55() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                position, ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, this,
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE,
+                TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, this,
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5411,7 +5214,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 measurements, initialBias, initialMg, initialGg, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5427,7 +5230,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 measurements, initialBias, initialMg, initialGg, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5443,7 +5246,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 measurements, initialBias, initialMg, initialGg, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5459,7 +5262,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 measurements, initialBias, initialMg, initialGg, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5472,23 +5275,23 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate57() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final double[] accelerometerBias = new double[3];
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate56() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new double[3];
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                position, ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE,
+                TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
+                RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5506,7 +5309,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5524,7 +5327,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5542,7 +5345,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5560,7 +5363,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5574,23 +5377,23 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate58() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final double[] accelerometerBias = new double[3];
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate57() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new double[3];
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                position, ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE,
+                TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
+                this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5609,7 +5412,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5628,7 +5431,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5647,7 +5450,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5666,7 +5469,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(calibrator.getQualityScores(), qualityScores);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5681,23 +5484,23 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate59() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate58() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                position, ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE,
+                TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
+                RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5715,7 +5518,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5733,7 +5536,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5751,7 +5554,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5769,7 +5572,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5783,23 +5586,23 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate60() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate59() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                position, ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE,
+                TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
+                this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5818,7 +5621,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5837,7 +5640,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5856,7 +5659,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5875,7 +5678,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5890,21 +5693,21 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate61() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate60() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                position, ROTATION_RATE, TIME_INTERVAL, measurements, true,
-                true, initialBias, initialMg, initialGg, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE,
+                TIME_INTERVAL, measurements, true, true, initialBias,
+                initialMg, initialGg, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5922,7 +5725,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5940,7 +5743,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5958,7 +5761,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(calibrator.getQualityScores(), qualityScores);
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5976,7 +5779,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -5990,22 +5793,21 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate62() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate61() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                position, ROTATION_RATE, TIME_INTERVAL, measurements, true,
-                true, initialBias, initialMg, initialGg, this,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE,
+                TIME_INTERVAL, measurements, true, true, initialBias,
+                initialMg, initialGg, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6024,7 +5826,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6043,7 +5845,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6062,7 +5864,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6081,7 +5883,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6096,24 +5898,23 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate63() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate62() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                position, ROTATION_RATE, TIME_INTERVAL, measurements, false,
-                false, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE,
+                TIME_INTERVAL, measurements, false, false, initialBias,
+                initialMg, initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6133,7 +5934,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6153,7 +5954,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6173,7 +5974,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6193,7 +5994,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6209,24 +6010,23 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate64() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate63() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                position, ROTATION_RATE, TIME_INTERVAL, measurements, false,
-                false, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
-                this, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE,
+                TIME_INTERVAL, measurements, false, false, initialBias,
+                initialMg, initialGg, accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6247,7 +6047,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6268,7 +6068,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6289,7 +6089,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6310,7 +6110,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6327,21 +6127,21 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate65() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate64() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                position, ROTATION_RATE, TIME_INTERVAL, measurements, false,
-                false, initialBias, initialMg, initialGg, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE,
+                TIME_INTERVAL, measurements, false, false, initialBias,
+                initialMg, initialGg, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6359,7 +6159,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6377,7 +6177,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6395,7 +6195,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6413,7 +6213,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6427,22 +6227,21 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate66() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate65() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                position, ROTATION_RATE, TIME_INTERVAL, measurements, false,
-                false, initialBias, initialMg, initialGg, this,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE,
+                TIME_INTERVAL, measurements, false, false, initialBias,
+                initialMg, initialGg, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6461,7 +6260,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6480,7 +6279,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6499,7 +6298,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6518,7 +6317,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6533,24 +6332,23 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate67() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final double[] accelerometerBias = new double[3];
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate66() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new double[3];
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                position, ROTATION_RATE, TIME_INTERVAL, measurements, false,
-                false, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE,
+                TIME_INTERVAL, measurements, false, false, initialBias,
+                initialMg, initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6570,7 +6368,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6590,7 +6388,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6610,7 +6408,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6630,7 +6428,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6646,24 +6444,23 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate68() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final double[] accelerometerBias = new double[3];
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate67() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new double[3];
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                position, ROTATION_RATE, TIME_INTERVAL, measurements, false,
-                false, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
-                this, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE,
+                TIME_INTERVAL, measurements, false, false, initialBias,
+                initialMg, initialGg, accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6684,7 +6481,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6705,7 +6502,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6726,7 +6523,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6747,7 +6544,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6764,24 +6561,23 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate69() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate68() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                position, ROTATION_RATE, TIME_INTERVAL, measurements, false,
-                false, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE,
+                TIME_INTERVAL, measurements, false, false, initialBias,
+                initialMg, initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6801,7 +6597,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6821,7 +6617,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6841,7 +6637,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6861,7 +6657,7 @@ public class RobustTurntableGyroscopeCalibratorTest implements
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustTurntableGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
         assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
@@ -6877,141 +6673,23 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreate70() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
-
-        // RANSAC
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores,
-                position, ROTATION_RATE, TIME_INTERVAL, measurements, false,
-                false, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
-                this, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustTurntableGyroscopeCalibrator);
-        assertNull(calibrator.getQualityScores());
-        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertEquals(accelerometerBias, calibrator.getAccelerometerBiasAsMatrix());
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-        assertSame(this, calibrator.getListener());
-
-        // LMedS
-        calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE, TIME_INTERVAL,
-                measurements, false, false, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustTurntableGyroscopeCalibrator);
-        assertNull(calibrator.getQualityScores());
-        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertEquals(accelerometerBias, calibrator.getAccelerometerBiasAsMatrix());
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-        assertSame(this, calibrator.getListener());
-
-        // MSAC
-        calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE, TIME_INTERVAL,
-                measurements, false, false, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustTurntableGyroscopeCalibrator);
-        assertNull(calibrator.getQualityScores());
-        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertEquals(accelerometerBias, calibrator.getAccelerometerBiasAsMatrix());
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-        assertSame(this, calibrator.getListener());
-
-        // PROSAC
-        calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE, TIME_INTERVAL,
-                measurements, false, false, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustTurntableGyroscopeCalibrator);
-        assertSame(qualityScores, calibrator.getQualityScores());
-        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertEquals(accelerometerBias, calibrator.getAccelerometerBiasAsMatrix());
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-        assertSame(this, calibrator.getListener());
-
-        // PROMedS
-        calibrator = RobustTurntableGyroscopeCalibrator.create(qualityScores, position, ROTATION_RATE, TIME_INTERVAL,
-                measurements, false, false, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustTurntableGyroscopeCalibrator);
-        assertSame(qualityScores, calibrator.getQualityScores());
-        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertEquals(accelerometerBias, calibrator.getAccelerometerBiasAsMatrix());
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-        assertSame(this, calibrator.getListener());
-    }
-
-    @Test
-    public void testCreateWithDefaultMethod1() {
-        final RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create();
+    void testCreateWithDefaultMethod1() {
+        final var calibrator = RobustTurntableGyroscopeCalibrator.create();
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
     }
 
     @Test
-    public void testCreateWithDefaultMethod2() throws WrongSizeException {
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreateWithDefaultMethod2() throws WrongSizeException {
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
-        final RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg);
+        final var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL,
+                measurements, initialBias, initialMg, initialGg);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -7025,15 +6703,15 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreateWithDefaultMethod3() throws WrongSizeException {
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreateWithDefaultMethod3() throws WrongSizeException {
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
-        final RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, this);
+        final var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL,
+                measurements, initialBias, initialMg, initialGg, this);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -7048,15 +6726,15 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreateWithDefaultMethod4() throws WrongSizeException {
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreateWithDefaultMethod4() throws WrongSizeException {
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
-        final RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg);
+        final var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL,
+                measurements, initialBias, initialMg, initialGg);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -7070,15 +6748,15 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreateWithDefaultMethod5() throws WrongSizeException {
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreateWithDefaultMethod5() throws WrongSizeException {
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
-        final RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, this);
+        final var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL,
+                measurements, initialBias, initialMg, initialGg, this);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -7093,18 +6771,17 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreateWithDefaultMethod6() throws WrongSizeException {
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final double[] accelerometerBias = new double[3];
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreateWithDefaultMethod6() throws WrongSizeException {
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new double[3];
+        final var accelerometerMa = new Matrix(3, 3);
 
-        final RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa);
+        final var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL,
+                measurements, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -7120,18 +6797,17 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreateWithDefaultMethod7() throws WrongSizeException {
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final double[] accelerometerBias = new double[3];
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreateWithDefaultMethod7() throws WrongSizeException {
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new double[3];
+        final var accelerometerMa = new Matrix(3, 3);
 
-        final RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa, this);
+        final var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL,
+                measurements, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, this);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -7148,18 +6824,17 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreateWithDefaultMethod8() throws WrongSizeException {
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreateWithDefaultMethod8() throws WrongSizeException {
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
-        final RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa);
+        final var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL,
+                measurements, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -7175,18 +6850,17 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreateWithDefaultMethod9() throws WrongSizeException {
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreateWithDefaultMethod9() throws WrongSizeException {
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa, this);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, this);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -7203,16 +6877,15 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreateWithDefaultMethod10() throws WrongSizeException {
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreateWithDefaultMethod10() throws WrongSizeException {
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, true, true,
-                initialBias, initialMg, initialGg);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                true, true, initialBias, initialMg, initialGg);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -7228,16 +6901,15 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreateWithDefaultMethod11() throws WrongSizeException {
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreateWithDefaultMethod11() throws WrongSizeException {
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
-        RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, true, true,
-                initialBias, initialMg, initialGg, this);
+        var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL, measurements,
+                true, true, initialBias, initialMg, initialGg, this);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -7254,18 +6926,18 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreateWithDefaultMethod12() throws WrongSizeException {
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreateWithDefaultMethod12() throws WrongSizeException {
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
-        final RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, false, false,
-                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.LMEDS);
+        final var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL,
+                measurements, false, false, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa, RobustEstimatorMethod.LMEDS);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -7283,18 +6955,18 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreateWithDefaultMethod13() throws WrongSizeException {
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreateWithDefaultMethod13() throws WrongSizeException {
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
-        final RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, false, false,
-                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, this);
+        final var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL,
+                measurements, false, false, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa, this);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -7313,16 +6985,16 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreateWithDefaultMethod14() throws WrongSizeException {
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreateWithDefaultMethod14() throws WrongSizeException {
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
-        final RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, false, false,
-                initialBias, initialMg, initialGg);
+        final var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL,
+                measurements, false, false, initialBias, initialMg,
+                initialGg);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -7338,16 +7010,16 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreateWithDefaultMethod15() throws WrongSizeException {
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreateWithDefaultMethod15() throws WrongSizeException {
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
-        final RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, false, false,
-                initialBias, initialMg, initialGg, this);
+        final var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL,
+                measurements, false, false, initialBias, initialMg, initialGg,
+                this);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -7364,18 +7036,18 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreateWithDefaultMethod16() throws WrongSizeException {
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final double[] accelerometerBias = new double[3];
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreateWithDefaultMethod16() throws WrongSizeException {
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new double[3];
+        final var accelerometerMa = new Matrix(3, 3);
 
-        final RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, false, false,
-                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa);
+        final var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL,
+                measurements, false, false, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -7393,18 +7065,18 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreateWithDefaultMethod17() throws WrongSizeException {
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final double[] accelerometerBias = new double[3];
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreateWithDefaultMethod17() throws WrongSizeException {
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new double[3];
+        final var accelerometerMa = new Matrix(3, 3);
 
-        final RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, false, false,
-                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, this);
+        final var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL,
+                measurements, false, false, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa, this);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -7423,47 +7095,18 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreateWithDefaultMethod18() throws WrongSizeException {
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreateWithDefaultMethod18() throws WrongSizeException {
+        final var position = new ECEFPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
-        final RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, false, false,
-                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa);
-
-        // check
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertSame(position, calibrator.getEcefPosition());
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertEquals(accelerometerBias, calibrator.getAccelerometerBiasAsMatrix());
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-    }
-
-    @Test
-    public void testCreateWithDefaultMethod19() throws WrongSizeException {
-        final ECEFPosition position = new ECEFPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
-
-        final RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, false, false,
-                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, this);
+        final var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL,
+                measurements, false, false, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -7478,19 +7121,18 @@ public class RobustTurntableGyroscopeCalibratorTest implements
         assertEquals(initialGg, calibrator.getInitialGg());
         assertEquals(accelerometerBias, calibrator.getAccelerometerBiasAsMatrix());
         assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-        assertSame(this, calibrator.getListener());
     }
 
     @Test
-    public void testCreateWithDefaultMethod20() throws WrongSizeException {
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreateWithDefaultMethod19() throws WrongSizeException {
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
-        final RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg);
+        final var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL,
+                measurements, initialBias, initialMg, initialGg);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -7504,15 +7146,15 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreateWithDefaultMethod21() throws WrongSizeException {
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreateWithDefaultMethod20() throws WrongSizeException {
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
-        final RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, this);
+        final var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL,
+                measurements, initialBias, initialMg, initialGg, this);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -7527,15 +7169,15 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreateWithDefaultMethod22() throws WrongSizeException {
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreateWithDefaultMethod21() throws WrongSizeException {
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
-        final RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg);
+        final var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL,
+                measurements, initialBias, initialMg, initialGg);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -7549,15 +7191,15 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreateWithDefaultMethod23() throws WrongSizeException {
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreateWithDefaultMethod22() throws WrongSizeException {
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
-        final RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, this);
+        final var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL,
+                measurements, initialBias, initialMg, initialGg, this);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -7572,18 +7214,17 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreateWithDefaultMethod24() throws WrongSizeException {
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final double[] accelerometerBias = new double[3];
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreateWithDefaultMethod23() throws WrongSizeException {
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new double[3];
+        final var accelerometerMa = new Matrix(3, 3);
 
-        final RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa);
+        final var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL,
+                measurements, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -7599,18 +7240,17 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreateWithDefaultMethod25() throws WrongSizeException {
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final double[] accelerometerBias = new double[3];
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreateWithDefaultMethod24() throws WrongSizeException {
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new double[3];
+        final var accelerometerMa = new Matrix(3, 3);
 
-        final RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa, this);
+        final var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL,
+                measurements, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, this);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -7627,18 +7267,17 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreateWithDefaultMethod26() throws WrongSizeException {
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreateWithDefaultMethod25() throws WrongSizeException {
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
-        final RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa);
+        final var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL,
+                measurements, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -7654,18 +7293,17 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreateWithDefaultMethod27() throws WrongSizeException {
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreateWithDefaultMethod26() throws WrongSizeException {
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
-        final RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa, this);
+        final var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL,
+                measurements, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, this);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -7682,16 +7320,15 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreateWithDefaultMethod28() throws WrongSizeException {
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreateWithDefaultMethod27() throws WrongSizeException {
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
-        final RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, true, true,
-                initialBias, initialMg, initialGg);
+        final var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL,
+                measurements, true, true, initialBias, initialMg, initialGg);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -7707,16 +7344,16 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreateWithDefaultMethod29() throws WrongSizeException {
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreateWithDefaultMethod28() throws WrongSizeException {
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
-        final RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, true, true,
-                initialBias, initialMg, initialGg, this);
+        final var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL,
+                measurements, true, true, initialBias, initialMg, initialGg,
+                this);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -7733,18 +7370,18 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreateWithDefaultMethod30() throws WrongSizeException {
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreateWithDefaultMethod29() throws WrongSizeException {
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
-        final RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, false, false,
-                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa);
+        final var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL,
+                measurements, false, false, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -7762,18 +7399,18 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreateWithDefaultMethod31() throws WrongSizeException {
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreateWithDefaultMethod30() throws WrongSizeException {
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
-        final RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, false, false,
-                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, this);
+        final var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL,
+                measurements, false, false, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa, this);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -7792,16 +7429,16 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreateWithDefaultMethod32() throws WrongSizeException {
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreateWithDefaultMethod31() throws WrongSizeException {
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
-        final RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, false, false,
-                initialBias, initialMg, initialGg);
+        final var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL,
+                measurements, false, false, initialBias, initialMg,
+                initialGg);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -7817,16 +7454,16 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreateWithDefaultMethod33() throws WrongSizeException {
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreateWithDefaultMethod32() throws WrongSizeException {
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
-        final RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, false, false,
-                initialBias, initialMg, initialGg, this);
+        final var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL,
+                measurements, false, false, initialBias, initialMg, initialGg,
+                this);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -7843,18 +7480,18 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreateWithDefaultMethod34() throws WrongSizeException {
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final double[] accelerometerBias = new double[3];
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreateWithDefaultMethod33() throws WrongSizeException {
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new double[3];
+        final var accelerometerMa = new Matrix(3, 3);
 
-        final RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, false, false,
-                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa);
+        final var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL,
+                measurements, false, false, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -7872,18 +7509,18 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     }
 
     @Test
-    public void testCreateWithDefaultMethod35() throws WrongSizeException {
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final double[] accelerometerBias = new double[3];
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreateWithDefaultMethod34() throws WrongSizeException {
+        final var position = new NEDPosition();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new double[3];
+        final var accelerometerMa = new Matrix(3, 3);
 
-        final RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, false, false,
-                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, this);
+        final var calibrator = RobustTurntableGyroscopeCalibrator.create(position, ROTATION_RATE, TIME_INTERVAL,
+                measurements, false, false, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa, this);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -7897,65 +7534,6 @@ public class RobustTurntableGyroscopeCalibratorTest implements
         assertEquals(initialMg, calibrator.getInitialMg());
         assertEquals(initialGg, calibrator.getInitialGg());
         assertArrayEquals(accelerometerBias, calibrator.getAccelerometerBias(), 0.0);
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-        assertSame(this, calibrator.getListener());
-    }
-
-    @Test
-    public void testCreateWithDefaultMethod36() throws WrongSizeException {
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
-
-        final RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, false, false,
-                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa);
-
-        // check
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertEquals(accelerometerBias, calibrator.getAccelerometerBiasAsMatrix());
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-    }
-
-    @Test
-    public void testCreateWithDefaultMethod37() throws WrongSizeException {
-        final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
-
-        final RobustTurntableGyroscopeCalibrator calibrator = RobustTurntableGyroscopeCalibrator.create(position,
-                ROTATION_RATE, TIME_INTERVAL, measurements, false, false,
-                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, this);
-
-        // check
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertTrue(calibrator.getNedPosition().equals(position, ABSOLUTE_ERROR));
-        assertEquals(ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        assertEquals(TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertEquals(accelerometerBias, calibrator.getAccelerometerBiasAsMatrix());
         assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
         assertSame(this, calibrator.getListener());
     }

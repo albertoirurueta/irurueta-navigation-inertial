@@ -51,12 +51,12 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
     /**
      * Listener to handle generated events.
      */
-    private AccelerometerAndGyroscopeMeasurementsGeneratorListener mListener;
+    private AccelerometerAndGyroscopeMeasurementsGeneratorListener listener;
 
     /**
      * Listener for internal accelerometer measurements generator.
      */
-    private final AccelerometerMeasurementsGeneratorListener mAccelerometerListener =
+    private final AccelerometerMeasurementsGeneratorListener accelerometerListener =
             new AccelerometerMeasurementsGeneratorListener() {
                 @Override
                 public void onInitializationStarted(final AccelerometerMeasurementsGenerator generator) {
@@ -73,9 +73,8 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
                 public void onError(
                         final AccelerometerMeasurementsGenerator generator,
                         final TriadStaticIntervalDetector.ErrorReason reason) {
-                    if (mListener != null) {
-                        mListener.onError(
-                                AccelerometerAndGyroscopeMeasurementsGenerator.this, reason);
+                    if (listener != null) {
+                        listener.onError(AccelerometerAndGyroscopeMeasurementsGenerator.this, reason);
                     }
                 }
 
@@ -103,8 +102,8 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
                 public void onGeneratedMeasurement(
                         final AccelerometerMeasurementsGenerator generator,
                         final StandardDeviationBodyKinematics measurement) {
-                    if (mListener != null) {
-                        mListener.onGeneratedAccelerometerMeasurement(
+                    if (listener != null) {
+                        listener.onGeneratedAccelerometerMeasurement(
                                 AccelerometerAndGyroscopeMeasurementsGenerator.this, measurement);
                     }
                 }
@@ -118,21 +117,20 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
     /**
      * Listener for internal gyroscope measurements generator.
      */
-    private final GyroscopeMeasurementsGeneratorListener mGyroscopeListener =
+    private final GyroscopeMeasurementsGeneratorListener gyroscopeListener =
             new GyroscopeMeasurementsGeneratorListener() {
                 @Override
                 public void onInitializationStarted(final GyroscopeMeasurementsGenerator generator) {
-                    if (mListener != null) {
-                        mListener.onInitializationStarted(
-                                AccelerometerAndGyroscopeMeasurementsGenerator.this);
+                    if (listener != null) {
+                        listener.onInitializationStarted(AccelerometerAndGyroscopeMeasurementsGenerator.this);
                     }
                 }
 
                 @Override
                 public void onInitializationCompleted(
                         final GyroscopeMeasurementsGenerator generator, final double baseNoiseLevel) {
-                    if (mListener != null) {
-                        mListener.onInitializationCompleted(
+                    if (listener != null) {
+                        listener.onInitializationCompleted(
                                 AccelerometerAndGyroscopeMeasurementsGenerator.this, baseNoiseLevel);
                     }
                 }
@@ -146,32 +144,32 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
 
                 @Override
                 public void onStaticIntervalDetected(final GyroscopeMeasurementsGenerator generator) {
-                    if (mListener != null) {
-                        mListener.onStaticIntervalDetected(
+                    if (listener != null) {
+                        listener.onStaticIntervalDetected(
                                 AccelerometerAndGyroscopeMeasurementsGenerator.this);
                     }
                 }
 
                 @Override
                 public void onDynamicIntervalDetected(final GyroscopeMeasurementsGenerator generator) {
-                    if (mListener != null) {
-                        mListener.onDynamicIntervalDetected(
+                    if (listener != null) {
+                        listener.onDynamicIntervalDetected(
                                 AccelerometerAndGyroscopeMeasurementsGenerator.this);
                     }
                 }
 
                 @Override
                 public void onStaticIntervalSkipped(final GyroscopeMeasurementsGenerator generator) {
-                    if (mListener != null) {
-                        mListener.onStaticIntervalSkipped(
+                    if (listener != null) {
+                        listener.onStaticIntervalSkipped(
                                 AccelerometerAndGyroscopeMeasurementsGenerator.this);
                     }
                 }
 
                 @Override
                 public void onDynamicIntervalSkipped(final GyroscopeMeasurementsGenerator generator) {
-                    if (mListener != null) {
-                        mListener.onDynamicIntervalSkipped(
+                    if (listener != null) {
+                        listener.onDynamicIntervalSkipped(
                                 AccelerometerAndGyroscopeMeasurementsGenerator.this);
                     }
                 }
@@ -180,8 +178,8 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
                 public void onGeneratedMeasurement(
                         final GyroscopeMeasurementsGenerator generator,
                         final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> measurement) {
-                    if (mListener != null) {
-                        mListener.onGeneratedGyroscopeMeasurement(
+                    if (listener != null) {
+                        listener.onGeneratedGyroscopeMeasurement(
                                 AccelerometerAndGyroscopeMeasurementsGenerator.this, measurement);
                     }
                 }
@@ -195,19 +193,19 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
     /**
      * Internal accelerometer measurements generator.
      */
-    private final AccelerometerMeasurementsGenerator mAccelerometerMeasurementsGenerator =
-            new AccelerometerMeasurementsGenerator(mAccelerometerListener);
+    private final AccelerometerMeasurementsGenerator accelerometerMeasurementsGenerator =
+            new AccelerometerMeasurementsGenerator(accelerometerListener);
 
     /**
      * Internal gyroscope measurements generator.
      */
-    private final GyroscopeMeasurementsGenerator mGyroscopeMeasurementsGenerator =
-            new GyroscopeMeasurementsGenerator(mGyroscopeListener);
+    private final GyroscopeMeasurementsGenerator gyroscopeMeasurementsGenerator =
+            new GyroscopeMeasurementsGenerator(gyroscopeListener);
 
     /**
      * Indicates whether generator is running or not.
      */
-    private boolean mRunning;
+    private boolean running;
 
     /**
      * Constructor.
@@ -223,7 +221,7 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
     public AccelerometerAndGyroscopeMeasurementsGenerator(
             final AccelerometerAndGyroscopeMeasurementsGeneratorListener listener) {
         this();
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -232,7 +230,7 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @return time interval between input samples.
      */
     public double getTimeInterval() {
-        return mAccelerometerMeasurementsGenerator.getTimeInterval();
+        return accelerometerMeasurementsGenerator.getTimeInterval();
     }
 
     /**
@@ -243,7 +241,7 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @throws LockedException          if generator is currently running.
      */
     public void setTimeInterval(final double timeInterval) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
@@ -251,8 +249,8 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
             throw new IllegalArgumentException();
         }
 
-        mAccelerometerMeasurementsGenerator.setTimeInterval(timeInterval);
-        mGyroscopeMeasurementsGenerator.setTimeInterval(timeInterval);
+        accelerometerMeasurementsGenerator.setTimeInterval(timeInterval);
+        gyroscopeMeasurementsGenerator.setTimeInterval(timeInterval);
     }
 
     /**
@@ -282,8 +280,8 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @throws LockedException          if estimator is currently running.
      */
     public void setTimeInterval(final Time timeInterval) throws LockedException {
-        setTimeInterval(TimeConverter.convert(timeInterval.getValue().doubleValue(),
-                timeInterval.getUnit(), TimeUnit.SECOND));
+        setTimeInterval(TimeConverter.convert(timeInterval.getValue().doubleValue(), timeInterval.getUnit(),
+                TimeUnit.SECOND));
     }
 
     /**
@@ -293,7 +291,7 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @return minimum number of samples required in a static interval to be taken into account.
      */
     public int getMinStaticSamples() {
-        return mAccelerometerMeasurementsGenerator.getMinStaticSamples();
+        return accelerometerMeasurementsGenerator.getMinStaticSamples();
     }
 
     /**
@@ -306,12 +304,12 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @throws IllegalArgumentException if provided value is less than 2.
      */
     public void setMinStaticSamples(final int minStaticSamples) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mAccelerometerMeasurementsGenerator.setMinStaticSamples(minStaticSamples);
-        mGyroscopeMeasurementsGenerator.setMinStaticSamples(minStaticSamples);
+        accelerometerMeasurementsGenerator.setMinStaticSamples(minStaticSamples);
+        gyroscopeMeasurementsGenerator.setMinStaticSamples(minStaticSamples);
     }
 
     /**
@@ -320,7 +318,7 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @return maximum number of samples allowed in dynamic intervals.
      */
     public int getMaxDynamicSamples() {
-        return mAccelerometerMeasurementsGenerator.getMaxDynamicSamples();
+        return accelerometerMeasurementsGenerator.getMaxDynamicSamples();
     }
 
     /**
@@ -331,12 +329,12 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @throws IllegalArgumentException if provided value is less than 2.
      */
     public void setMaxDynamicSamples(final int maxDynamicSamples) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mAccelerometerMeasurementsGenerator.setMaxDynamicSamples(maxDynamicSamples);
-        mGyroscopeMeasurementsGenerator.setMaxDynamicSamples(maxDynamicSamples);
+        accelerometerMeasurementsGenerator.setMaxDynamicSamples(maxDynamicSamples);
+        gyroscopeMeasurementsGenerator.setMaxDynamicSamples(maxDynamicSamples);
     }
 
     /**
@@ -345,7 +343,7 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @return listener to handle generated events.
      */
     public AccelerometerAndGyroscopeMeasurementsGeneratorListener getListener() {
-        return mListener;
+        return listener;
     }
 
     /**
@@ -356,11 +354,11 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      */
     public void setListener(final AccelerometerAndGyroscopeMeasurementsGeneratorListener listener)
             throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -370,7 +368,7 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @return length of number of samples to keep within the window.
      */
     public int getWindowSize() {
-        return mAccelerometerMeasurementsGenerator.getWindowSize();
+        return accelerometerMeasurementsGenerator.getWindowSize();
     }
 
     /**
@@ -384,12 +382,12 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @throws IllegalArgumentException if provided value is not valid.
      */
     public void setWindowSize(final int windowSize) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mAccelerometerMeasurementsGenerator.setWindowSize(windowSize);
-        mGyroscopeMeasurementsGenerator.setWindowSize(windowSize);
+        accelerometerMeasurementsGenerator.setWindowSize(windowSize);
+        gyroscopeMeasurementsGenerator.setWindowSize(windowSize);
     }
 
     /**
@@ -399,7 +397,7 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @return number of samples to be processed initially.
      */
     public int getInitialStaticSamples() {
-        return mAccelerometerMeasurementsGenerator.getInitialStaticSamples();
+        return accelerometerMeasurementsGenerator.getInitialStaticSamples();
     }
 
     /**
@@ -412,12 +410,12 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      *                                  {@link TriadStaticIntervalDetector#MINIMUM_INITIAL_STATIC_SAMPLES}
      */
     public void setInitialStaticSamples(final int initialStaticSamples) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mAccelerometerMeasurementsGenerator.setInitialStaticSamples(initialStaticSamples);
-        mGyroscopeMeasurementsGenerator.setInitialStaticSamples(initialStaticSamples);
+        accelerometerMeasurementsGenerator.setInitialStaticSamples(initialStaticSamples);
+        gyroscopeMeasurementsGenerator.setInitialStaticSamples(initialStaticSamples);
     }
 
     /**
@@ -428,7 +426,7 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @return factor to be applied to detected base noise level.
      */
     public double getThresholdFactor() {
-        return mAccelerometerMeasurementsGenerator.getThresholdFactor();
+        return accelerometerMeasurementsGenerator.getThresholdFactor();
     }
 
     /**
@@ -441,12 +439,12 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @throws IllegalArgumentException if provided value is zero or negative.
      */
     public void setThresholdFactor(final double thresholdFactor) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mAccelerometerMeasurementsGenerator.setThresholdFactor(thresholdFactor);
-        mGyroscopeMeasurementsGenerator.setThresholdFactor(thresholdFactor);
+        accelerometerMeasurementsGenerator.setThresholdFactor(thresholdFactor);
+        gyroscopeMeasurementsGenerator.setThresholdFactor(thresholdFactor);
     }
 
     /**
@@ -458,7 +456,7 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @return factor to determine that a sudden movement has occurred.
      */
     public double getInstantaneousNoiseLevelFactor() {
-        return mAccelerometerMeasurementsGenerator.getInstantaneousNoiseLevelFactor();
+        return accelerometerMeasurementsGenerator.getInstantaneousNoiseLevelFactor();
     }
 
     /**
@@ -474,12 +472,12 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @throws IllegalArgumentException if provided value is zero or negative.
      */
     public void setInstantaneousNoiseLevelFactor(final double instantaneousNoiseLevelFactor) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mAccelerometerMeasurementsGenerator.setInstantaneousNoiseLevelFactor(instantaneousNoiseLevelFactor);
-        mGyroscopeMeasurementsGenerator.setInstantaneousNoiseLevelFactor(instantaneousNoiseLevelFactor);
+        accelerometerMeasurementsGenerator.setInstantaneousNoiseLevelFactor(instantaneousNoiseLevelFactor);
+        gyroscopeMeasurementsGenerator.setInstantaneousNoiseLevelFactor(instantaneousNoiseLevelFactor);
     }
 
     /**
@@ -493,7 +491,7 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * been excessive motion.
      */
     public double getBaseNoiseLevelAbsoluteThreshold() {
-        return mAccelerometerMeasurementsGenerator.getBaseNoiseLevelAbsoluteThreshold();
+        return accelerometerMeasurementsGenerator.getBaseNoiseLevelAbsoluteThreshold();
     }
 
     /**
@@ -511,12 +509,12 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      */
     public void setBaseNoiseLevelAbsoluteThreshold(final double baseNoiseLevelAbsoluteThreshold)
             throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mAccelerometerMeasurementsGenerator.setBaseNoiseLevelAbsoluteThreshold(baseNoiseLevelAbsoluteThreshold);
-        mGyroscopeMeasurementsGenerator.setBaseNoiseLevelAbsoluteThreshold(baseNoiseLevelAbsoluteThreshold);
+        accelerometerMeasurementsGenerator.setBaseNoiseLevelAbsoluteThreshold(baseNoiseLevelAbsoluteThreshold);
+        gyroscopeMeasurementsGenerator.setBaseNoiseLevelAbsoluteThreshold(baseNoiseLevelAbsoluteThreshold);
     }
 
     /**
@@ -529,7 +527,7 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * excessive motion.
      */
     public Acceleration getBaseNoiseLevelAbsoluteThresholdAsMeasurement() {
-        return mAccelerometerMeasurementsGenerator.getBaseNoiseLevelAbsoluteThresholdAsMeasurement();
+        return accelerometerMeasurementsGenerator.getBaseNoiseLevelAbsoluteThresholdAsMeasurement();
     }
 
     /**
@@ -541,7 +539,7 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @param result instance where result will be stored.
      */
     public void getBaseNoiseLevelAbsoluteThresholdAsMeasurement(final Acceleration result) {
-        mAccelerometerMeasurementsGenerator.getBaseNoiseLevelAbsoluteThresholdAsMeasurement(result);
+        accelerometerMeasurementsGenerator.getBaseNoiseLevelAbsoluteThresholdAsMeasurement(result);
     }
 
     /**
@@ -558,12 +556,12 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      */
     public void setBaseNoiseLevelAbsoluteThreshold(
             final Acceleration baseNoiseLevelAbsoluteThreshold) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mAccelerometerMeasurementsGenerator.setBaseNoiseLevelAbsoluteThreshold(baseNoiseLevelAbsoluteThreshold);
-        mGyroscopeMeasurementsGenerator.setBaseNoiseLevelAbsoluteThreshold(baseNoiseLevelAbsoluteThreshold);
+        accelerometerMeasurementsGenerator.setBaseNoiseLevelAbsoluteThreshold(baseNoiseLevelAbsoluteThreshold);
+        gyroscopeMeasurementsGenerator.setBaseNoiseLevelAbsoluteThreshold(baseNoiseLevelAbsoluteThreshold);
     }
 
     /**
@@ -572,7 +570,7 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @return internal status of this generator.
      */
     public TriadStaticIntervalDetector.Status getStatus() {
-        return mAccelerometerMeasurementsGenerator.getStatus();
+        return accelerometerMeasurementsGenerator.getStatus();
     }
 
     /**
@@ -584,7 +582,7 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @return accelerometer base noise level.
      */
     public double getAccelerometerBaseNoiseLevel() {
-        return mAccelerometerMeasurementsGenerator.getAccelerometerBaseNoiseLevel();
+        return accelerometerMeasurementsGenerator.getAccelerometerBaseNoiseLevel();
     }
 
     /**
@@ -596,7 +594,7 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @return measurement base noise level.
      */
     public Acceleration getAccelerometerBaseNoiseLevelAsMeasurement() {
-        return mAccelerometerMeasurementsGenerator.getAccelerometerBaseNoiseLevelAsMeasurement();
+        return accelerometerMeasurementsGenerator.getAccelerometerBaseNoiseLevelAsMeasurement();
     }
 
     /**
@@ -606,7 +604,7 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @param result instance where result will be stored.
      */
     public void getAccelerometerBaseNoiseLevelAsMeasurement(final Acceleration result) {
-        mAccelerometerMeasurementsGenerator.getAccelerometerBaseNoiseLevelAsMeasurement(result);
+        accelerometerMeasurementsGenerator.getAccelerometerBaseNoiseLevelAsMeasurement(result);
     }
 
     /**
@@ -616,7 +614,7 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @return accelerometer base noise level PSD.
      */
     public double getAccelerometerBaseNoiseLevelPsd() {
-        return mAccelerometerMeasurementsGenerator.getAccelerometerBaseNoiseLevelPsd();
+        return accelerometerMeasurementsGenerator.getAccelerometerBaseNoiseLevelPsd();
     }
 
     /**
@@ -627,7 +625,7 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      */
     @Override
     public double getAccelerometerBaseNoiseLevelRootPsd() {
-        return mAccelerometerMeasurementsGenerator.getAccelerometerBaseNoiseLevelRootPsd();
+        return accelerometerMeasurementsGenerator.getAccelerometerBaseNoiseLevelRootPsd();
     }
 
     /**
@@ -637,7 +635,7 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @return threshold to determine static/dynamic period changes.
      */
     public double getThreshold() {
-        return mAccelerometerMeasurementsGenerator.getThreshold();
+        return accelerometerMeasurementsGenerator.getThreshold();
     }
 
     /**
@@ -646,7 +644,7 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @return threshold to determine static/dynamic period changes.
      */
     public Acceleration getThresholdAsMeasurement() {
-        return mAccelerometerMeasurementsGenerator.getThresholdAsMeasurement();
+        return accelerometerMeasurementsGenerator.getThresholdAsMeasurement();
     }
 
     /**
@@ -655,7 +653,7 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @param result instance where result will be stored.
      */
     public void getThresholdAsMeasurement(final Acceleration result) {
-        mAccelerometerMeasurementsGenerator.getThresholdAsMeasurement(result);
+        accelerometerMeasurementsGenerator.getThresholdAsMeasurement(result);
     }
 
     /**
@@ -664,7 +662,7 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @return number of samples that have been processed in a static period so far.
      */
     public int getProcessedStaticSamples() {
-        return mAccelerometerMeasurementsGenerator.getProcessedStaticSamples();
+        return accelerometerMeasurementsGenerator.getProcessedStaticSamples();
     }
 
     /**
@@ -673,7 +671,7 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @return number of samples that have been processed in a dynamic period so far.
      */
     public int getProcessedDynamicSamples() {
-        return mAccelerometerMeasurementsGenerator.getProcessedDynamicSamples();
+        return accelerometerMeasurementsGenerator.getProcessedDynamicSamples();
     }
 
     /**
@@ -682,7 +680,7 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @return true if last static interval must be skipped.
      */
     public boolean isStaticIntervalSkipped() {
-        return mAccelerometerMeasurementsGenerator.isStaticIntervalSkipped();
+        return accelerometerMeasurementsGenerator.isStaticIntervalSkipped();
     }
 
     /**
@@ -691,7 +689,7 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @return true if last dynamic interval must be skipped.
      */
     public boolean isDynamicIntervalSkipped() {
-        return mAccelerometerMeasurementsGenerator.isDynamicIntervalSkipped();
+        return accelerometerMeasurementsGenerator.isDynamicIntervalSkipped();
     }
 
     /**
@@ -700,7 +698,7 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @return true if generator is running, false otherwise.
      */
     public boolean isRunning() {
-        return mRunning;
+        return running;
     }
 
     /**
@@ -713,16 +711,16 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @throws LockedException if generator is busy processing a previous sample.
      */
     public boolean process(final TimedBodyKinematics sample) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
         try {
-            mRunning = true;
-            return mAccelerometerMeasurementsGenerator.process(sample.getKinematics())
-                    && mGyroscopeMeasurementsGenerator.process(sample);
+            running = true;
+            return accelerometerMeasurementsGenerator.process(sample.getKinematics())
+                    && gyroscopeMeasurementsGenerator.process(sample);
         } finally {
-            mRunning = false;
+            running = false;
         }
     }
 
@@ -732,15 +730,15 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @throws LockedException if generator is busy.
      */
     public void reset() throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mAccelerometerMeasurementsGenerator.reset();
-        mGyroscopeMeasurementsGenerator.reset();
+        accelerometerMeasurementsGenerator.reset();
+        gyroscopeMeasurementsGenerator.reset();
 
-        if (mListener != null) {
-            mListener.onReset(this);
+        if (listener != null) {
+            listener.onReset(this);
         }
     }
 
@@ -750,7 +748,7 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @return estimated average angular rate during initialization phase.
      */
     public AngularSpeedTriad getInitialAvgAngularSpeedTriad() {
-        return mGyroscopeMeasurementsGenerator.getInitialAvgAngularSpeedTriad();
+        return gyroscopeMeasurementsGenerator.getInitialAvgAngularSpeedTriad();
     }
 
     /**
@@ -759,7 +757,7 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @param result instance where result will be stored.
      */
     public void getInitialAvgAngularSpeedTriad(final AngularSpeedTriad result) {
-        mGyroscopeMeasurementsGenerator.getInitialAvgAngularSpeedTriad(result);
+        gyroscopeMeasurementsGenerator.getInitialAvgAngularSpeedTriad(result);
     }
 
     /**
@@ -768,7 +766,7 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @return estimated standard deviation of angular rate during initialization phase.
      */
     public AngularSpeedTriad getInitialAngularSpeedTriadStandardDeviation() {
-        return mGyroscopeMeasurementsGenerator.getInitialAngularSpeedTriadStandardDeviation();
+        return gyroscopeMeasurementsGenerator.getInitialAngularSpeedTriadStandardDeviation();
     }
 
     /**
@@ -777,7 +775,7 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @param result instance where result will be stored.
      */
     public void getInitialAngularSpeedTriadStandardDeviation(final AngularSpeedTriad result) {
-        mGyroscopeMeasurementsGenerator.getInitialAngularSpeedTriadStandardDeviation(result);
+        gyroscopeMeasurementsGenerator.getInitialAngularSpeedTriadStandardDeviation(result);
     }
 
     /**
@@ -789,7 +787,7 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @return gyroscope base noise level.
      */
     public double getGyroscopeBaseNoiseLevel() {
-        return mGyroscopeMeasurementsGenerator.getGyroscopeBaseNoiseLevel();
+        return gyroscopeMeasurementsGenerator.getGyroscopeBaseNoiseLevel();
     }
 
     /**
@@ -801,7 +799,7 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @return gyroscope base noise level.
      */
     public AngularSpeed getGyroscopeBaseNoiseLevelAsMeasurement() {
-        return mGyroscopeMeasurementsGenerator.getGyroscopeBaseNoiseLevelAsMeasurement();
+        return gyroscopeMeasurementsGenerator.getGyroscopeBaseNoiseLevelAsMeasurement();
     }
 
     /**
@@ -813,7 +811,7 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @param result instance where result will be stored.
      */
     public void getGyroscopeBaseNoiseLevelAsMeasurement(final AngularSpeed result) {
-        mGyroscopeMeasurementsGenerator.getGyroscopeBaseNoiseLevelAsMeasurement(result);
+        gyroscopeMeasurementsGenerator.getGyroscopeBaseNoiseLevelAsMeasurement(result);
     }
 
     /**
@@ -823,7 +821,7 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      * @return gyroscope base noise level PSD.
      */
     public double getGyroscopeBaseNoiseLevelPsd() {
-        return mGyroscopeMeasurementsGenerator.getGyroscopeBaseNoiseLevelPsd();
+        return gyroscopeMeasurementsGenerator.getGyroscopeBaseNoiseLevelPsd();
     }
 
     /**
@@ -834,6 +832,6 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
      */
     @Override
     public double getGyroscopeBaseNoiseLevelRootPsd() {
-        return mGyroscopeMeasurementsGenerator.getGyroscopeBaseNoiseLevelRootPsd();
+        return gyroscopeMeasurementsGenerator.getGyroscopeBaseNoiseLevelRootPsd();
     }
 }

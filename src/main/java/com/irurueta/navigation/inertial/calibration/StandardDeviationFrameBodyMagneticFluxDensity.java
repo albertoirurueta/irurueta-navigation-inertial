@@ -42,7 +42,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends FrameBodyMagn
      * Standard deviation of measured magnetic flux density expressed in Teslas
      * (T).
      */
-    private double mMagneticFluxDensityStandardDeviation;
+    private double magneticFluxDensityStandardDeviation;
 
     /**
      * Constructor.
@@ -688,7 +688,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends FrameBodyMagn
      * @return standard deviation of measured magnetic flux density.
      */
     public double getMagneticFluxDensityStandardDeviation() {
-        return mMagneticFluxDensityStandardDeviation;
+        return magneticFluxDensityStandardDeviation;
     }
 
     /**
@@ -705,7 +705,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends FrameBodyMagn
             throw new IllegalArgumentException();
         }
 
-        mMagneticFluxDensityStandardDeviation = magneticFluxDensityStandardDeviation;
+        this.magneticFluxDensityStandardDeviation = magneticFluxDensityStandardDeviation;
     }
 
     /**
@@ -716,7 +716,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends FrameBodyMagn
     public void copyFrom(final StandardDeviationFrameBodyMagneticFluxDensity input) {
         super.copyFrom(input);
 
-        mMagneticFluxDensityStandardDeviation = input.mMagneticFluxDensityStandardDeviation;
+        magneticFluxDensityStandardDeviation = input.magneticFluxDensityStandardDeviation;
     }
 
     /**
@@ -727,7 +727,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends FrameBodyMagn
     public void copyTo(final StandardDeviationFrameBodyMagneticFluxDensity output) {
         super.copyTo(output);
 
-        output.mMagneticFluxDensityStandardDeviation = mMagneticFluxDensityStandardDeviation;
+        output.magneticFluxDensityStandardDeviation = magneticFluxDensityStandardDeviation;
     }
 
     /**
@@ -738,7 +738,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends FrameBodyMagn
      */
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), mMagneticFluxDensityStandardDeviation);
+        return Objects.hash(super.hashCode(), magneticFluxDensityStandardDeviation);
     }
 
     /**
@@ -760,11 +760,10 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends FrameBodyMagn
      * @return true if both instances are considered to be equal (up to provided
      * threshold), false otherwise.
      */
-    public boolean equals(
-            final StandardDeviationFrameBodyMagneticFluxDensity other, final double threshold) {
-        return super.equals(other, threshold) &&
-                Math.abs(mMagneticFluxDensityStandardDeviation
-                        - other.mMagneticFluxDensityStandardDeviation) <= threshold;
+    public boolean equals(final StandardDeviationFrameBodyMagneticFluxDensity other, final double threshold) {
+        return super.equals(other, threshold)
+                && Math.abs(magneticFluxDensityStandardDeviation
+                - other.magneticFluxDensityStandardDeviation) <= threshold;
     }
 
     /**
@@ -804,7 +803,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends FrameBodyMagn
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        final StandardDeviationFrameBodyMagneticFluxDensity other = (StandardDeviationFrameBodyMagneticFluxDensity) obj;
+        final var other = (StandardDeviationFrameBodyMagneticFluxDensity) obj;
         return equals(other);
     }
 
@@ -816,8 +815,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends FrameBodyMagn
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final StandardDeviationFrameBodyMagneticFluxDensity result =
-                (StandardDeviationFrameBodyMagneticFluxDensity) super.clone();
+        final var result = (StandardDeviationFrameBodyMagneticFluxDensity) super.clone();
         copyTo(result);
         return result;
     }

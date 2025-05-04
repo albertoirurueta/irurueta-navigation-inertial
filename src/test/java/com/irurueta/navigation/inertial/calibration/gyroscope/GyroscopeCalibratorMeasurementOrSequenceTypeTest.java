@@ -15,14 +15,14 @@
  */
 package com.irurueta.navigation.inertial.calibration.gyroscope;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class GyroscopeCalibratorMeasurementOrSequenceTypeTest {
+class GyroscopeCalibratorMeasurementOrSequenceTypeTest {
 
     @Test
-    public void testValues() {
+    void testValues() {
         assertEquals(4, GyroscopeCalibratorMeasurementOrSequenceType.values().length);
     }
 }

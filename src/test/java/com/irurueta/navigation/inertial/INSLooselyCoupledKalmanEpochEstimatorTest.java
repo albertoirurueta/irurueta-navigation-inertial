@@ -19,7 +19,6 @@ import com.irurueta.algebra.AlgebraException;
 import com.irurueta.algebra.Matrix;
 import com.irurueta.algebra.Utils;
 import com.irurueta.geometry.InhomogeneousPoint3D;
-import com.irurueta.geometry.Point3D;
 import com.irurueta.navigation.frames.CoordinateTransformation;
 import com.irurueta.navigation.frames.ECEFPosition;
 import com.irurueta.navigation.frames.ECEFVelocity;
@@ -36,14 +35,12 @@ import com.irurueta.units.Angle;
 import com.irurueta.units.AngleUnit;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeUnit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import java.util.Random;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-public class INSLooselyCoupledKalmanEpochEstimatorTest {
+class INSLooselyCoupledKalmanEpochEstimatorTest {
 
     private static final double MIN_LATITUDE_DEGREES = -90.0;
     private static final double MAX_LATITUDE_DEGREES = 90.0;
@@ -70,441 +67,423 @@ public class INSLooselyCoupledKalmanEpochEstimatorTest {
     private static final double ABSOLUTE_ERROR = 1e-6;
 
     @Test
-    public void testEstimate() throws AlgebraException {
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testEstimate() throws AlgebraException {
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final double userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES,
-                    MAX_LATITUDE_DEGREES));
-            final double userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES,
+            final var userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, 
                     MAX_LONGITUDE_DEGREES));
-            final double userHeight = randomizer.nextDouble(MIN_HEIGHT_METERS, MAX_HEIGHT_METERS);
+            final var userHeight = randomizer.nextDouble(MIN_HEIGHT_METERS, MAX_HEIGHT_METERS);
 
-            final double userVn = randomizer.nextDouble(MIN_SPEED_VALUE, MAX_SPEED_VALUE);
-            final double userVe = randomizer.nextDouble(MIN_SPEED_VALUE, MAX_SPEED_VALUE);
-            final double userVd = randomizer.nextDouble(MIN_SPEED_VALUE, MAX_SPEED_VALUE);
+            final var userVn = randomizer.nextDouble(MIN_SPEED_VALUE, MAX_SPEED_VALUE);
+            final var userVe = randomizer.nextDouble(MIN_SPEED_VALUE, MAX_SPEED_VALUE);
+            final var userVd = randomizer.nextDouble(MIN_SPEED_VALUE, MAX_SPEED_VALUE);
 
-            final NEDPosition userNedPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
-            final NEDVelocity userNedVelocity = new NEDVelocity(userVn, userVe, userVd);
+            final var userNedPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
+            final var userNedVelocity = new NEDVelocity(userVn, userVe, userVd);
 
-            final ECEFPosition userEcefPosition = new ECEFPosition();
-            final ECEFVelocity userEcefVelocity = new ECEFVelocity();
+            final var userEcefPosition = new ECEFPosition();
+            final var userEcefVelocity = new ECEFVelocity();
             NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(userNedPosition, userNedVelocity, userEcefPosition,
                     userEcefVelocity);
 
-            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-            final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+            final var c = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME, 
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
 
-            final ECEFPosition previousPosition = new ECEFPosition(
+            final var previousPosition = new ECEFPosition(
                     userEcefPosition.getX() + TIME_INTERVAL_SECONDS * userEcefVelocity.getVx(),
                     userEcefPosition.getY() + TIME_INTERVAL_SECONDS * userEcefVelocity.getVy(),
                     userEcefPosition.getZ() + TIME_INTERVAL_SECONDS * userEcefVelocity.getVz());
 
-            final double accelerationBiasX = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-            final double accelerationBiasY = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-            final double accelerationBiasZ = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-            final double gyroBiasX = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-            final double gyroBiasY = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-            final double gyroBiasZ = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-            final Matrix covariance = Matrix.identity(INSLooselyCoupledKalmanState.NUM_PARAMS,
+            final var accelerationBiasX = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+            final var accelerationBiasY = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+            final var accelerationBiasZ = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+            final var gyroBiasX = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+            final var gyroBiasY = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+            final var gyroBiasZ = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+            final var covariance = Matrix.identity(INSLooselyCoupledKalmanState.NUM_PARAMS, 
                     INSLooselyCoupledKalmanState.NUM_PARAMS);
 
-            final INSLooselyCoupledKalmanState previousState = new INSLooselyCoupledKalmanState(c, userEcefVelocity,
-                    previousPosition, accelerationBiasX, accelerationBiasY, accelerationBiasZ,
-                    gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
+            final var previousState = new INSLooselyCoupledKalmanState(c, userEcefVelocity, previousPosition, 
+                    accelerationBiasX, accelerationBiasY, accelerationBiasZ, gyroBiasX, gyroBiasY, gyroBiasZ, 
+                    covariance);
 
-            final BodyKinematics bodyKinematics = new BodyKinematics();
+            final var bodyKinematics = new BodyKinematics();
 
-            final double gyroNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-            final double accelerometerNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-            final double accelerometerBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-            final double gyroBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-            final double positionNoiseSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-            final double velocityNoiseSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-            final INSLooselyCoupledKalmanConfig config = new INSLooselyCoupledKalmanConfig(gyroNoisePSD,
-                    accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD, positionNoiseSD, velocityNoiseSD);
+            final var gyroNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+            final var accelerometerNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+            final var accelerometerBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+            final var gyroBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+            final var positionNoiseSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+            final var velocityNoiseSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+            final var config = new INSLooselyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD, 
+                    accelerometerBiasPSD, gyroBiasPSD, positionNoiseSD, velocityNoiseSD);
 
-            final INSLooselyCoupledKalmanState newState1 = INSLooselyCoupledKalmanEpochEstimator.estimate(
-                    userEcefPosition, userEcefVelocity, TIME_INTERVAL_SECONDS, previousState, bodyKinematics, config);
+            final var newState1 = INSLooselyCoupledKalmanEpochEstimator.estimate(userEcefPosition, userEcefVelocity,
+                    TIME_INTERVAL_SECONDS, previousState, bodyKinematics, config);
 
-            final INSLooselyCoupledKalmanState newState2 = new INSLooselyCoupledKalmanState();
+            final var newState2 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(userEcefPosition, userEcefVelocity, TIME_INTERVAL_SECONDS,
                     previousState, bodyKinematics, config, newState2);
 
-            final NEDPosition previousNedPosition = new NEDPosition();
-            final NEDVelocity previousNedVelocity = new NEDVelocity();
+            final var previousNedPosition = new NEDPosition();
+            final var previousNedVelocity = new NEDVelocity();
             ECEFtoNEDPositionVelocityConverter.convertECEFtoNED(previousPosition, userEcefVelocity, previousNedPosition,
                     previousNedVelocity);
-            final double previousLatitude = previousNedPosition.getLatitude();
+            final var previousLatitude = previousNedPosition.getLatitude();
 
-            final INSLooselyCoupledKalmanState newState3 = INSLooselyCoupledKalmanEpochEstimator.estimate(
-                    userEcefPosition, userEcefVelocity, TIME_INTERVAL_SECONDS, previousState, bodyKinematics,
-                    previousLatitude, config);
+            final var newState3 = INSLooselyCoupledKalmanEpochEstimator.estimate(userEcefPosition, userEcefVelocity,
+                    TIME_INTERVAL_SECONDS, previousState, bodyKinematics, previousLatitude, config);
 
-            final INSLooselyCoupledKalmanState newState4 = new INSLooselyCoupledKalmanState();
+            final var newState4 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(userEcefPosition, userEcefVelocity, TIME_INTERVAL_SECONDS,
                     previousState, bodyKinematics, previousLatitude, config, newState4);
 
-            final double fx = bodyKinematics.getFx();
-            final double fy = bodyKinematics.getFy();
-            final double fz = bodyKinematics.getFz();
+            final var fx = bodyKinematics.getFx();
+            final var fy = bodyKinematics.getFy();
+            final var fz = bodyKinematics.getFz();
 
-            final INSLooselyCoupledKalmanState newState5 = INSLooselyCoupledKalmanEpochEstimator.estimate(
-                    userEcefPosition, userEcefVelocity, TIME_INTERVAL_SECONDS, previousState, fx, fy, fz, config);
+            final var newState5 = INSLooselyCoupledKalmanEpochEstimator.estimate(userEcefPosition, userEcefVelocity,
+                    TIME_INTERVAL_SECONDS, previousState, fx, fy, fz, config);
 
-            final INSLooselyCoupledKalmanState newState6 = new INSLooselyCoupledKalmanState();
+            final var newState6 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(userEcefPosition, userEcefVelocity, TIME_INTERVAL_SECONDS,
                     previousState, fx, fy, fz, config, newState6);
 
-            final INSLooselyCoupledKalmanState newState7 = INSLooselyCoupledKalmanEpochEstimator.estimate(
-                    userEcefPosition, userEcefVelocity, TIME_INTERVAL_SECONDS, previousState, fx, fy, fz,
-                    previousLatitude, config);
+            final var newState7 = INSLooselyCoupledKalmanEpochEstimator.estimate(userEcefPosition, userEcefVelocity,
+                    TIME_INTERVAL_SECONDS, previousState, fx, fy, fz, previousLatitude, config);
 
-            final INSLooselyCoupledKalmanState newState8 = new INSLooselyCoupledKalmanState();
+            final var newState8 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(userEcefPosition, userEcefVelocity, TIME_INTERVAL_SECONDS,
                     previousState, fx, fy, fz, previousLatitude, config, newState8);
 
-            final double x = userEcefPosition.getX();
-            final double y = userEcefPosition.getY();
-            final double z = userEcefPosition.getZ();
-            final double vx = userEcefVelocity.getVx();
-            final double vy = userEcefVelocity.getVy();
-            final double vz = userEcefVelocity.getVz();
-            final INSLooselyCoupledKalmanState newState9 = INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z,
-                    vx, vy, vz, TIME_INTERVAL_SECONDS, previousState, bodyKinematics, config);
+            final var x = userEcefPosition.getX();
+            final var y = userEcefPosition.getY();
+            final var z = userEcefPosition.getZ();
+            final var vx = userEcefVelocity.getVx();
+            final var vy = userEcefVelocity.getVy();
+            final var vz = userEcefVelocity.getVz();
+            final var newState9 = INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z, vx, vy, vz, 
+                    TIME_INTERVAL_SECONDS, previousState, bodyKinematics, config);
 
-            final INSLooselyCoupledKalmanState newState10 = new INSLooselyCoupledKalmanState();
+            final var newState10 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z, vx, vy, vz, TIME_INTERVAL_SECONDS, previousState,
                     bodyKinematics, config, newState10);
 
-            final INSLooselyCoupledKalmanState newState11 = INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z,
-                    vx, vy, vz, TIME_INTERVAL_SECONDS, previousState, bodyKinematics, previousLatitude, config);
+            final var newState11 = INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z, vx, vy, vz, 
+                    TIME_INTERVAL_SECONDS, previousState, bodyKinematics, previousLatitude, config);
 
-            final INSLooselyCoupledKalmanState newState12 = new INSLooselyCoupledKalmanState();
+            final var newState12 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z, vx, vy, vz, TIME_INTERVAL_SECONDS, previousState,
                     bodyKinematics, previousLatitude, config, newState12);
 
-            final INSLooselyCoupledKalmanState newState13 = INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z,
-                    vx, vy, vz, TIME_INTERVAL_SECONDS, previousState, fx, fy, fz, config);
+            final var newState13 = INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z, vx, vy, vz, 
+                    TIME_INTERVAL_SECONDS, previousState, fx, fy, fz, config);
 
-            final INSLooselyCoupledKalmanState newState14 = new INSLooselyCoupledKalmanState();
+            final var newState14 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z, vx, vy, vz, TIME_INTERVAL_SECONDS, previousState,
                     fx, fy, fz, config, newState14);
 
-            final INSLooselyCoupledKalmanState newState15 = INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z,
-                    vx, vy, vz, TIME_INTERVAL_SECONDS, previousState, fx, fy, fz, previousLatitude, config);
+            final var newState15 = INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z, vx, vy, vz, 
+                    TIME_INTERVAL_SECONDS, previousState, fx, fy, fz, previousLatitude, config);
 
-            final INSLooselyCoupledKalmanState newState16 = new INSLooselyCoupledKalmanState();
+            final var newState16 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z, vx, vy, vz, TIME_INTERVAL_SECONDS, previousState,
                     fx, fy, fz, previousLatitude, config, newState16);
 
-            final Time propagationInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
-            final INSLooselyCoupledKalmanState newState17 = INSLooselyCoupledKalmanEpochEstimator.estimate(
-                    userEcefPosition, userEcefVelocity, propagationInterval, previousState, bodyKinematics, config);
+            final var propagationInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
+            final var newState17 = INSLooselyCoupledKalmanEpochEstimator.estimate(userEcefPosition, userEcefVelocity,
+                    propagationInterval, previousState, bodyKinematics, config);
 
-            final INSLooselyCoupledKalmanState newState18 = new INSLooselyCoupledKalmanState();
+            final var newState18 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(userEcefPosition, userEcefVelocity, propagationInterval,
                     previousState, bodyKinematics, config, newState18);
 
-            final INSLooselyCoupledKalmanState newState19 = INSLooselyCoupledKalmanEpochEstimator.estimate(
-                    userEcefPosition, userEcefVelocity, propagationInterval, previousState, bodyKinematics,
-                    previousLatitude, config);
+            final var newState19 = INSLooselyCoupledKalmanEpochEstimator.estimate(userEcefPosition, userEcefVelocity,
+                    propagationInterval, previousState, bodyKinematics, previousLatitude, config);
 
-            final INSLooselyCoupledKalmanState newState20 = new INSLooselyCoupledKalmanState();
+            final var newState20 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(userEcefPosition, userEcefVelocity, propagationInterval,
                     previousState, bodyKinematics, previousLatitude, config, newState20);
 
-            final INSLooselyCoupledKalmanState newState21 = INSLooselyCoupledKalmanEpochEstimator.estimate(
-                    userEcefPosition, userEcefVelocity, propagationInterval, previousState, fx, fy, fz, config);
+            final var newState21 = INSLooselyCoupledKalmanEpochEstimator.estimate(userEcefPosition, userEcefVelocity,
+                    propagationInterval, previousState, fx, fy, fz, config);
 
-            final INSLooselyCoupledKalmanState newState22 = new INSLooselyCoupledKalmanState();
+            final var newState22 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(userEcefPosition, userEcefVelocity, propagationInterval,
                     previousState, fx, fy, fz, config, newState22);
 
-            final INSLooselyCoupledKalmanState newState23 = INSLooselyCoupledKalmanEpochEstimator.estimate(
-                    userEcefPosition, userEcefVelocity, propagationInterval, previousState, fx, fy, fz,
-                    previousLatitude, config);
+            final var newState23 = INSLooselyCoupledKalmanEpochEstimator.estimate(userEcefPosition, userEcefVelocity,
+                    propagationInterval, previousState, fx, fy, fz, previousLatitude, config);
 
-            final INSLooselyCoupledKalmanState newState24 = new INSLooselyCoupledKalmanState();
+            final var newState24 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(userEcefPosition, userEcefVelocity, propagationInterval,
                     previousState, fx, fy, fz, previousLatitude, config, newState24);
 
-            final INSLooselyCoupledKalmanState newState25 = INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z,
-                    vx, vy, vz, propagationInterval, previousState, bodyKinematics, config);
+            final var newState25 = INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z, vx, vy, vz, 
+                    propagationInterval, previousState, bodyKinematics, config);
 
-            final INSLooselyCoupledKalmanState newState26 = new INSLooselyCoupledKalmanState();
+            final var newState26 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,
                     bodyKinematics, config, newState26);
 
-            final INSLooselyCoupledKalmanState newState27 = INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z,
-                    vx, vy, vz, propagationInterval, previousState, bodyKinematics, previousLatitude, config);
+            final var newState27 = INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z, vx, vy, vz, 
+                    propagationInterval, previousState, bodyKinematics, previousLatitude, config);
 
-            final INSLooselyCoupledKalmanState newState28 = new INSLooselyCoupledKalmanState();
+            final var newState28 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,
                     bodyKinematics, previousLatitude, config, newState28);
 
-            final INSLooselyCoupledKalmanState newState29 = INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z,
-                    vx, vy, vz, propagationInterval, previousState, fx, fy, fz, config);
+            final var newState29 = INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z, vx, vy, vz, 
+                    propagationInterval, previousState, fx, fy, fz, config);
 
-            final INSLooselyCoupledKalmanState newState30 = new INSLooselyCoupledKalmanState();
+            final var newState30 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,
                     fx, fy, fz, config, newState30);
 
-            final INSLooselyCoupledKalmanState newState31 = INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z,
-                    vx, vy, vz, propagationInterval, previousState, fx, fy, fz, previousLatitude, config);
+            final var newState31 = INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z, vx, vy, vz, 
+                    propagationInterval, previousState, fx, fy, fz, previousLatitude, config);
 
-            final INSLooselyCoupledKalmanState newState32 = new INSLooselyCoupledKalmanState();
+            final var newState32 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,
                     fx, fy, fz, previousLatitude, config, newState32);
 
-            final Point3D userPosition = new InhomogeneousPoint3D(x, y, z);
-            final INSLooselyCoupledKalmanState newState33 = INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition,
-                    userEcefVelocity, TIME_INTERVAL_SECONDS, previousState, bodyKinematics, config);
+            final var userPosition = new InhomogeneousPoint3D(x, y, z);
+            final var newState33 = INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition, userEcefVelocity, 
+                    TIME_INTERVAL_SECONDS, previousState, bodyKinematics, config);
 
-            final INSLooselyCoupledKalmanState newState34 = new INSLooselyCoupledKalmanState();
+            final var newState34 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition, userEcefVelocity, TIME_INTERVAL_SECONDS,
                     previousState, bodyKinematics, config, newState34);
 
-            final INSLooselyCoupledKalmanState newState35 = INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition,
-                    userEcefVelocity, TIME_INTERVAL_SECONDS, previousState, bodyKinematics, previousLatitude, config);
+            final var newState35 = INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition, userEcefVelocity, 
+                    TIME_INTERVAL_SECONDS, previousState, bodyKinematics, previousLatitude, config);
 
-            final INSLooselyCoupledKalmanState newState36 = new INSLooselyCoupledKalmanState();
+            final var newState36 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition, userEcefVelocity, TIME_INTERVAL_SECONDS,
                     previousState, bodyKinematics, previousLatitude, config, newState36);
 
-            final INSLooselyCoupledKalmanState newState37 = INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition,
-                    userEcefVelocity, TIME_INTERVAL_SECONDS, previousState, fx, fy, fz, config);
+            final var newState37 = INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition, userEcefVelocity, 
+                    TIME_INTERVAL_SECONDS, previousState, fx, fy, fz, config);
 
-            final INSLooselyCoupledKalmanState newState38 = new INSLooselyCoupledKalmanState();
+            final var newState38 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition, userEcefVelocity, TIME_INTERVAL_SECONDS,
                     previousState, fx, fy, fz, config, newState38);
 
-            final INSLooselyCoupledKalmanState newState39 = INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition,
-                    userEcefVelocity, TIME_INTERVAL_SECONDS, previousState, fx, fy, fz, previousLatitude, config);
+            final var newState39 = INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition, userEcefVelocity, 
+                    TIME_INTERVAL_SECONDS, previousState, fx, fy, fz, previousLatitude, config);
 
-            final INSLooselyCoupledKalmanState newState40 = new INSLooselyCoupledKalmanState();
+            final var newState40 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition, userEcefVelocity, TIME_INTERVAL_SECONDS,
                     previousState, fx, fy, fz, previousLatitude, config, newState40);
 
-            final INSLooselyCoupledKalmanState newState41 = INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition,
-                    userEcefVelocity, propagationInterval, previousState, bodyKinematics, config);
+            final var newState41 = INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition, userEcefVelocity, 
+                    propagationInterval, previousState, bodyKinematics, config);
 
-            final INSLooselyCoupledKalmanState newState42 = new INSLooselyCoupledKalmanState();
+            final var newState42 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition, userEcefVelocity, propagationInterval,
                     previousState, bodyKinematics, config, newState42);
 
-            final INSLooselyCoupledKalmanState newState43 = INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition,
-                    userEcefVelocity, propagationInterval, previousState, bodyKinematics, previousLatitude, config);
+            final var newState43 = INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition, userEcefVelocity, 
+                    propagationInterval, previousState, bodyKinematics, previousLatitude, config);
 
-            final INSLooselyCoupledKalmanState newState44 = new INSLooselyCoupledKalmanState();
+            final var newState44 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition, userEcefVelocity, propagationInterval,
                     previousState, bodyKinematics, previousLatitude, config, newState44);
 
-            final INSLooselyCoupledKalmanState newState45 = INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition,
-                    userEcefVelocity, propagationInterval, previousState, fx, fy, fz, config);
+            final var newState45 = INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition, userEcefVelocity, 
+                    propagationInterval, previousState, fx, fy, fz, config);
 
-            final INSLooselyCoupledKalmanState newState46 = new INSLooselyCoupledKalmanState();
+            final var newState46 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition, userEcefVelocity, propagationInterval,
                     previousState, fx, fy, fz, config, newState46);
 
-            final INSLooselyCoupledKalmanState newState47 = INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition,
-                    userEcefVelocity, propagationInterval, previousState, fx, fy, fz, previousLatitude, config);
+            final var newState47 = INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition, userEcefVelocity, 
+                    propagationInterval, previousState, fx, fy, fz, previousLatitude, config);
 
-            final INSLooselyCoupledKalmanState newState48 = new INSLooselyCoupledKalmanState();
+            final var newState48 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition, userEcefVelocity, propagationInterval,
                     previousState, fx, fy, fz, previousLatitude, config, newState48);
 
-            final ECEFPositionAndVelocity positionAndVelocity = new ECEFPositionAndVelocity(userEcefPosition,
-                    userEcefVelocity);
-            final INSLooselyCoupledKalmanState newState49 = INSLooselyCoupledKalmanEpochEstimator.estimate(
-                    positionAndVelocity, TIME_INTERVAL_SECONDS, previousState, bodyKinematics, config);
+            final var positionAndVelocity = new ECEFPositionAndVelocity(userEcefPosition, userEcefVelocity);
+            final var newState49 = INSLooselyCoupledKalmanEpochEstimator.estimate(positionAndVelocity, 
+                    TIME_INTERVAL_SECONDS, previousState, bodyKinematics, config);
 
-            final INSLooselyCoupledKalmanState newState50 = new INSLooselyCoupledKalmanState();
+            final var newState50 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(positionAndVelocity, TIME_INTERVAL_SECONDS, previousState,
                     bodyKinematics, config, newState50);
 
-            final INSLooselyCoupledKalmanState newState51 = INSLooselyCoupledKalmanEpochEstimator.estimate(
-                    positionAndVelocity, TIME_INTERVAL_SECONDS, previousState, bodyKinematics, previousLatitude,
-                    config);
+            final var newState51 = INSLooselyCoupledKalmanEpochEstimator.estimate(positionAndVelocity, 
+                    TIME_INTERVAL_SECONDS, previousState, bodyKinematics, previousLatitude, config);
 
-            final INSLooselyCoupledKalmanState newState52 = new INSLooselyCoupledKalmanState();
+            final var newState52 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(positionAndVelocity, TIME_INTERVAL_SECONDS, previousState,
                     bodyKinematics, previousLatitude, config, newState52);
 
-            final INSLooselyCoupledKalmanState newState53 = INSLooselyCoupledKalmanEpochEstimator.estimate(
-                    positionAndVelocity, TIME_INTERVAL_SECONDS, previousState, fx, fy, fz, config);
+            final var newState53 = INSLooselyCoupledKalmanEpochEstimator.estimate(positionAndVelocity, 
+                    TIME_INTERVAL_SECONDS, previousState, fx, fy, fz, config);
 
-            final INSLooselyCoupledKalmanState newState54 = new INSLooselyCoupledKalmanState();
+            final var newState54 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(positionAndVelocity, TIME_INTERVAL_SECONDS, previousState,
                     fx, fy, fz, config, newState54);
 
-            final INSLooselyCoupledKalmanState newState55 = INSLooselyCoupledKalmanEpochEstimator.estimate(
-                    positionAndVelocity, TIME_INTERVAL_SECONDS, previousState, fx, fy, fz, previousLatitude, config);
+            final var newState55 = INSLooselyCoupledKalmanEpochEstimator.estimate(positionAndVelocity, 
+                    TIME_INTERVAL_SECONDS, previousState, fx, fy, fz, previousLatitude, config);
 
-            final INSLooselyCoupledKalmanState newState56 = new INSLooselyCoupledKalmanState();
+            final var newState56 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(positionAndVelocity, TIME_INTERVAL_SECONDS, previousState,
                     fx, fy, fz, previousLatitude, config, newState56);
 
-            final INSLooselyCoupledKalmanState newState57 = INSLooselyCoupledKalmanEpochEstimator.estimate(
-                    positionAndVelocity, propagationInterval, previousState, bodyKinematics, config);
+            final var newState57 = INSLooselyCoupledKalmanEpochEstimator.estimate(positionAndVelocity, 
+                    propagationInterval, previousState, bodyKinematics, config);
 
-            final INSLooselyCoupledKalmanState newState58 = new INSLooselyCoupledKalmanState();
+            final var newState58 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(positionAndVelocity, propagationInterval, previousState,
                     bodyKinematics, config, newState58);
 
-            final INSLooselyCoupledKalmanState newState59 = INSLooselyCoupledKalmanEpochEstimator.estimate(
-                    positionAndVelocity, propagationInterval, previousState, bodyKinematics, previousLatitude, config);
+            final var newState59 = INSLooselyCoupledKalmanEpochEstimator.estimate(positionAndVelocity, 
+                    propagationInterval, previousState, bodyKinematics, previousLatitude, config);
 
-            final INSLooselyCoupledKalmanState newState60 = new INSLooselyCoupledKalmanState();
+            final var newState60 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(positionAndVelocity, propagationInterval, previousState,
                     bodyKinematics, previousLatitude, config, newState60);
 
-            final INSLooselyCoupledKalmanState newState61 = INSLooselyCoupledKalmanEpochEstimator.estimate(
-                    positionAndVelocity, propagationInterval, previousState, fx, fy, fz, config);
+            final var newState61 = INSLooselyCoupledKalmanEpochEstimator.estimate(positionAndVelocity, 
+                    propagationInterval, previousState, fx, fy, fz, config);
 
-            final INSLooselyCoupledKalmanState newState62 = new INSLooselyCoupledKalmanState();
+            final var newState62 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(positionAndVelocity, propagationInterval, previousState,
                     fx, fy, fz, config, newState62);
 
-            final INSLooselyCoupledKalmanState newState63 = INSLooselyCoupledKalmanEpochEstimator.estimate(
-                    positionAndVelocity, propagationInterval, previousState, fx, fy, fz, previousLatitude, config);
+            final var newState63 = INSLooselyCoupledKalmanEpochEstimator.estimate(positionAndVelocity, 
+                    propagationInterval, previousState, fx, fy, fz, previousLatitude, config);
 
-            final INSLooselyCoupledKalmanState newState64 = new INSLooselyCoupledKalmanState();
+            final var newState64 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(positionAndVelocity, propagationInterval, previousState,
                     fx, fy, fz, previousLatitude, config, newState64);
 
-            final Angle previousLatitudeAngle = new Angle(previousLatitude, AngleUnit.RADIANS);
-            final INSLooselyCoupledKalmanState newState65 = INSLooselyCoupledKalmanEpochEstimator.estimate(
-                    userEcefPosition, userEcefVelocity, TIME_INTERVAL_SECONDS, previousState, bodyKinematics,
-                    previousLatitudeAngle, config);
+            final var previousLatitudeAngle = new Angle(previousLatitude, AngleUnit.RADIANS);
+            final var newState65 = INSLooselyCoupledKalmanEpochEstimator.estimate(userEcefPosition, userEcefVelocity,
+                    TIME_INTERVAL_SECONDS, previousState, bodyKinematics, previousLatitudeAngle, config);
 
-            final INSLooselyCoupledKalmanState newState66 = new INSLooselyCoupledKalmanState();
+            final var newState66 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(userEcefPosition, userEcefVelocity, TIME_INTERVAL_SECONDS,
                     previousState, bodyKinematics, previousLatitudeAngle, config, newState66);
 
-            final INSLooselyCoupledKalmanState newState67 = INSLooselyCoupledKalmanEpochEstimator.estimate(
-                    userEcefPosition, userEcefVelocity, TIME_INTERVAL_SECONDS, previousState, fx, fy, fz,
-                    previousLatitudeAngle, config);
+            final var newState67 = INSLooselyCoupledKalmanEpochEstimator.estimate(userEcefPosition, userEcefVelocity,
+                    TIME_INTERVAL_SECONDS, previousState, fx, fy, fz, previousLatitudeAngle, config);
 
-            final INSLooselyCoupledKalmanState newState68 = new INSLooselyCoupledKalmanState();
+            final var newState68 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(userEcefPosition, userEcefVelocity, TIME_INTERVAL_SECONDS,
                     previousState, fx, fy, fz, previousLatitudeAngle, config, newState68);
 
-            final INSLooselyCoupledKalmanState newState69 = INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z,
-                    vx, vy, vz, TIME_INTERVAL_SECONDS, previousState, bodyKinematics, previousLatitudeAngle, config);
+            final var newState69 = INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z, vx, vy, vz, 
+                    TIME_INTERVAL_SECONDS, previousState, bodyKinematics, previousLatitudeAngle, config);
 
-            final INSLooselyCoupledKalmanState newState70 = new INSLooselyCoupledKalmanState();
+            final var newState70 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z, vx, vy, vz, TIME_INTERVAL_SECONDS, previousState,
                     bodyKinematics, previousLatitudeAngle, config, newState70);
 
-            final INSLooselyCoupledKalmanState newState71 = INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z,
-                    vx, vy, vz, TIME_INTERVAL_SECONDS, previousState, fx, fy, fz, previousLatitudeAngle, config);
+            final var newState71 = INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z, vx, vy, vz, 
+                    TIME_INTERVAL_SECONDS, previousState, fx, fy, fz, previousLatitudeAngle, config);
 
-            final INSLooselyCoupledKalmanState newState72 = new INSLooselyCoupledKalmanState();
-            INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z, vx, vy, vz, TIME_INTERVAL_SECONDS, previousState,
+            final var newState72 = new INSLooselyCoupledKalmanState();
+            INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z, vx, vy, vz, TIME_INTERVAL_SECONDS, previousState, 
                     fx, fy, fz, previousLatitudeAngle, config, newState72);
 
-            final INSLooselyCoupledKalmanState newState73 = INSLooselyCoupledKalmanEpochEstimator.estimate(
-                    userEcefPosition, userEcefVelocity, propagationInterval, previousState, bodyKinematics,
-                    previousLatitudeAngle, config);
+            final var newState73 = INSLooselyCoupledKalmanEpochEstimator.estimate(userEcefPosition, userEcefVelocity,
+                    propagationInterval, previousState, bodyKinematics, previousLatitudeAngle, config);
 
-            final INSLooselyCoupledKalmanState newState74 = INSLooselyCoupledKalmanEpochEstimator.estimate(
-                    userEcefPosition, userEcefVelocity, TIME_INTERVAL_SECONDS, previousState, bodyKinematics,
-                    previousLatitudeAngle, config);
+            final var newState74 = INSLooselyCoupledKalmanEpochEstimator.estimate(userEcefPosition, userEcefVelocity,
+                    TIME_INTERVAL_SECONDS, previousState, bodyKinematics, previousLatitudeAngle, config);
 
-            final INSLooselyCoupledKalmanState newState75 = new INSLooselyCoupledKalmanState();
+            final var newState75 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(userEcefPosition, userEcefVelocity, propagationInterval,
                     previousState, bodyKinematics, previousLatitudeAngle, config, newState75);
 
-            final INSLooselyCoupledKalmanState newState76 = INSLooselyCoupledKalmanEpochEstimator.estimate(
-                    userEcefPosition, userEcefVelocity, propagationInterval, previousState, fx, fy, fz,
-                    previousLatitudeAngle, config);
+            final var newState76 = INSLooselyCoupledKalmanEpochEstimator.estimate(userEcefPosition, userEcefVelocity,
+                    propagationInterval, previousState, fx, fy, fz, previousLatitudeAngle, config);
 
-            final INSLooselyCoupledKalmanState newState77 = new INSLooselyCoupledKalmanState();
+            final var newState77 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(userEcefPosition, userEcefVelocity, propagationInterval,
                     previousState, fx, fy, fz, previousLatitudeAngle, config, newState77);
 
-            final INSLooselyCoupledKalmanState newState78 = INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z,
-                    vx, vy, vz, propagationInterval, previousState, bodyKinematics, previousLatitudeAngle, config);
+            final var newState78 = INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z, vx, vy, vz, 
+                    propagationInterval, previousState, bodyKinematics, previousLatitudeAngle, config);
 
-            final INSLooselyCoupledKalmanState newState79 = new INSLooselyCoupledKalmanState();
+            final var newState79 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,
                     bodyKinematics, previousLatitudeAngle, config, newState79);
 
-            final INSLooselyCoupledKalmanState newState80 = INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z,
-                    vx, vy, vz, propagationInterval, previousState, fx, fy, fz, previousLatitudeAngle, config);
+            final var newState80 = INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z, vx, vy, vz, 
+                    propagationInterval, previousState, fx, fy, fz, previousLatitudeAngle, config);
 
-            final INSLooselyCoupledKalmanState newState81 = new INSLooselyCoupledKalmanState();
+            final var newState81 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,
                     fx, fy, fz, previousLatitudeAngle, config, newState81);
 
-            final INSLooselyCoupledKalmanState newState82 = INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition,
-                    userEcefVelocity, TIME_INTERVAL_SECONDS, previousState, bodyKinematics, previousLatitudeAngle,
-                    config);
+            final var newState82 = INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition, userEcefVelocity, 
+                    TIME_INTERVAL_SECONDS, previousState, bodyKinematics, previousLatitudeAngle, config);
 
-            final INSLooselyCoupledKalmanState newState83 = new INSLooselyCoupledKalmanState();
+            final var newState83 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition, userEcefVelocity, TIME_INTERVAL_SECONDS,
                     previousState, bodyKinematics, previousLatitudeAngle, config, newState83);
 
-            final INSLooselyCoupledKalmanState newState84 = INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition,
-                    userEcefVelocity, TIME_INTERVAL_SECONDS, previousState, fx, fy, fz, previousLatitudeAngle, config);
+            final var newState84 = INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition, userEcefVelocity, 
+                    TIME_INTERVAL_SECONDS, previousState, fx, fy, fz, previousLatitudeAngle, config);
 
-            final INSLooselyCoupledKalmanState newState85 = new INSLooselyCoupledKalmanState();
+            final var newState85 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition, userEcefVelocity, TIME_INTERVAL_SECONDS,
                     previousState, fx, fy, fz, previousLatitudeAngle, config, newState85);
 
-            final INSLooselyCoupledKalmanState newState86 = INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition,
-                    userEcefVelocity, propagationInterval, previousState, bodyKinematics, previousLatitudeAngle,
-                    config);
+            final var newState86 = INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition, userEcefVelocity, 
+                    propagationInterval, previousState, bodyKinematics, previousLatitudeAngle, config);
 
-            final INSLooselyCoupledKalmanState newState87 = INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition,
-                    userEcefVelocity, TIME_INTERVAL_SECONDS, previousState, bodyKinematics, previousLatitudeAngle,
-                    config);
+            final var newState87 = INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition, userEcefVelocity, 
+                    TIME_INTERVAL_SECONDS, previousState, bodyKinematics, previousLatitudeAngle, config);
 
-            final INSLooselyCoupledKalmanState newState88 = new INSLooselyCoupledKalmanState();
+            final var newState88 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition, userEcefVelocity, propagationInterval,
                     previousState, bodyKinematics, previousLatitudeAngle, config, newState88);
 
-            final INSLooselyCoupledKalmanState newState89 = INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition,
-                    userEcefVelocity, propagationInterval, previousState, fx, fy, fz, previousLatitudeAngle, config);
+            final var newState89 = INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition, userEcefVelocity, 
+                    propagationInterval, previousState, fx, fy, fz, previousLatitudeAngle, config);
 
-            final INSLooselyCoupledKalmanState newState90 = new INSLooselyCoupledKalmanState();
+            final var newState90 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition, userEcefVelocity, propagationInterval,
                     previousState, fx, fy, fz, previousLatitudeAngle, config, newState90);
 
-            final INSLooselyCoupledKalmanState newState91 = INSLooselyCoupledKalmanEpochEstimator.estimate(
-                    positionAndVelocity, TIME_INTERVAL_SECONDS, previousState, bodyKinematics, previousLatitudeAngle,
-                    config);
+            final var newState91 = INSLooselyCoupledKalmanEpochEstimator.estimate(positionAndVelocity, 
+                    TIME_INTERVAL_SECONDS, previousState, bodyKinematics, previousLatitudeAngle, config);
 
-            final INSLooselyCoupledKalmanState newState92 = new INSLooselyCoupledKalmanState();
+            final var newState92 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(positionAndVelocity, TIME_INTERVAL_SECONDS, previousState,
                     bodyKinematics, previousLatitudeAngle, config, newState92);
 
-            final INSLooselyCoupledKalmanState newState93 = INSLooselyCoupledKalmanEpochEstimator.estimate(
-                    positionAndVelocity, TIME_INTERVAL_SECONDS, previousState, fx, fy, fz, previousLatitudeAngle,
-                    config);
+            final var newState93 = INSLooselyCoupledKalmanEpochEstimator.estimate(positionAndVelocity, 
+                    TIME_INTERVAL_SECONDS, previousState, fx, fy, fz, previousLatitudeAngle, config);
 
-            final INSLooselyCoupledKalmanState newState94 = new INSLooselyCoupledKalmanState();
+            final var newState94 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(positionAndVelocity, TIME_INTERVAL_SECONDS, previousState,
                     fx, fy, fz, previousLatitudeAngle, config, newState94);
 
-            final INSLooselyCoupledKalmanState newState95 = INSLooselyCoupledKalmanEpochEstimator.estimate(
-                    positionAndVelocity, propagationInterval, previousState, bodyKinematics, previousLatitudeAngle,
-                    config);
+            final var newState95 = INSLooselyCoupledKalmanEpochEstimator.estimate(positionAndVelocity, 
+                    propagationInterval, previousState, bodyKinematics, previousLatitudeAngle, config);
 
-            final INSLooselyCoupledKalmanState newState96 = new INSLooselyCoupledKalmanState();
+            final var newState96 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(positionAndVelocity, propagationInterval, previousState,
                     bodyKinematics, previousLatitudeAngle, config, newState96);
 
-            final INSLooselyCoupledKalmanState newState97 = INSLooselyCoupledKalmanEpochEstimator.estimate(
-                    positionAndVelocity, propagationInterval, previousState, fx, fy, fz, previousLatitudeAngle, config);
+            final var newState97 = INSLooselyCoupledKalmanEpochEstimator.estimate(positionAndVelocity, 
+                    propagationInterval, previousState, fx, fy, fz, previousLatitudeAngle, config);
 
-            final INSLooselyCoupledKalmanState newState98 = new INSLooselyCoupledKalmanState();
+            final var newState98 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(positionAndVelocity, propagationInterval, previousState,
                     fx, fy, fz, previousLatitudeAngle, config, newState98);
 
@@ -606,8 +585,7 @@ public class INSLooselyCoupledKalmanEpochEstimatorTest {
             assertEquals(newState1, newState97);
             assertEquals(newState1, newState98);
 
-            final INSLooselyCoupledKalmanState newState = estimate(x, y, z, vx, vy, vz, previousState, fx, fy, fz,
-                    previousLatitude, config);
+            final var newState = estimate(x, y, z, vx, vy, vz, previousState, fx, fy, fz, previousLatitude, config);
 
             if (!newState.equals(newState1, ABSOLUTE_ERROR)) {
                 continue;
@@ -626,21 +604,21 @@ public class INSLooselyCoupledKalmanEpochEstimatorTest {
             final INSLooselyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
             final double previousLatitude, final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
 
-        final Matrix omegaIe = Utils.skewMatrix(new double[]{0.0, 0.0, Constants.EARTH_ROTATION_RATE});
+        final var omegaIe = Utils.skewMatrix(new double[]{0.0, 0.0, Constants.EARTH_ROTATION_RATE});
 
         // SYSTEM PROPAGATION PHASE
 
         // 1. Determine transition matrix using (14.50) (first-order approx)
-        final Matrix phiMatrix = Matrix.identity(15, 15);
+        final var phiMatrix = Matrix.identity(15, 15);
         phiMatrix.setSubmatrix(0, 0, 2, 2,
                 phiMatrix.getSubmatrix(0, 0, 2, 2)
                         .subtractAndReturnNew(omegaIe.multiplyByScalarAndReturnNew(TIME_INTERVAL_SECONDS)));
 
-        final Matrix estCbeOld = previousState.getBodyToEcefCoordinateTransformationMatrix();
+        final var estCbeOld = previousState.getBodyToEcefCoordinateTransformationMatrix();
         phiMatrix.setSubmatrix(0, 12, 2, 14,
                 estCbeOld.multiplyByScalarAndReturnNew(TIME_INTERVAL_SECONDS));
 
-        final Matrix measFibb = Matrix.newFromArray(new double[]{fx, fy, fz});
+        final var measFibb = Matrix.newFromArray(new double[]{fx, fy, fz});
         phiMatrix.setSubmatrix(3, 0, 5, 2,
                 Utils.skewMatrix(estCbeOld.multiplyAndReturnNew(measFibb))
                         .multiplyByScalarAndReturnNew(-TIME_INTERVAL_SECONDS));
@@ -649,29 +627,29 @@ public class INSLooselyCoupledKalmanEpochEstimatorTest {
                 phiMatrix.getSubmatrix(3, 3, 5, 5)
                         .subtractAndReturnNew(omegaIe.multiplyByScalarAndReturnNew(2.0 * TIME_INTERVAL_SECONDS)));
 
-        final double sinPrevLat = Math.sin(previousLatitude);
-        final double cosPrevLat = Math.cos(previousLatitude);
-        final double sinPrevLat2 = sinPrevLat * sinPrevLat;
-        final double cosPrevLat2 = cosPrevLat * cosPrevLat;
+        final var sinPrevLat = Math.sin(previousLatitude);
+        final var cosPrevLat = Math.cos(previousLatitude);
+        final var sinPrevLat2 = sinPrevLat * sinPrevLat;
+        final var cosPrevLat2 = cosPrevLat * cosPrevLat;
 
-        final double geocentricRadius = Constants.EARTH_EQUATORIAL_RADIUS_WGS84
+        final var geocentricRadius = Constants.EARTH_EQUATORIAL_RADIUS_WGS84
                 / Math.sqrt(1.0 - Math.pow(Constants.EARTH_ECCENTRICITY * sinPrevLat, 2.0))
                 * Math.sqrt(cosPrevLat2
                 + Math.pow(1.0 - Constants.EARTH_ECCENTRICITY * Constants.EARTH_ECCENTRICITY, 2.0)
                 * sinPrevLat2);
 
-        final double prevX = previousState.getX();
-        final double prevY = previousState.getY();
-        final double prevZ = previousState.getZ();
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(prevX, prevY, prevZ);
-        final Matrix g = gravity.asMatrix();
+        final var prevX = previousState.getX();
+        final var prevY = previousState.getY();
+        final var prevZ = previousState.getZ();
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(prevX, prevY, prevZ);
+        final var g = gravity.asMatrix();
 
-        final Matrix estRebeOld = Matrix.newFromArray(new double[]{prevX, prevY, prevZ});
+        final var estRebeOld = Matrix.newFromArray(new double[]{prevX, prevY, prevZ});
 
-        final Matrix gScaled = g.multiplyByScalarAndReturnNew(-2.0 * TIME_INTERVAL_SECONDS / geocentricRadius);
-        final Matrix estRebeOldTrans = estRebeOld.transposeAndReturnNew();
-        final double previousPositionNorm = Math.sqrt(prevX * prevX + prevY * prevY + prevZ * prevZ);
-        final Matrix estRebeOldTransScaled = estRebeOldTrans.multiplyByScalarAndReturnNew(1.0 / previousPositionNorm);
+        final var gScaled = g.multiplyByScalarAndReturnNew(-2.0 * TIME_INTERVAL_SECONDS / geocentricRadius);
+        final var estRebeOldTrans = estRebeOld.transposeAndReturnNew();
+        final var previousPositionNorm = Math.sqrt(prevX * prevX + prevY * prevY + prevZ * prevZ);
+        final var estRebeOldTransScaled = estRebeOldTrans.multiplyByScalarAndReturnNew(1.0 / previousPositionNorm);
         phiMatrix.setSubmatrix(3, 6, 5, 8,
                 gScaled.multiplyAndReturnNew(estRebeOldTransScaled));
 
@@ -682,7 +660,7 @@ public class INSLooselyCoupledKalmanEpochEstimatorTest {
                 Matrix.identity(3, 3).multiplyByScalarAndReturnNew(TIME_INTERVAL_SECONDS));
 
         // 2. Determine approximate system noise covariance matrix using (14.82)
-        final Matrix qPrimeMatrix = new Matrix(15, 15);
+        final var qPrimeMatrix = new Matrix(15, 15);
         qPrimeMatrix.setSubmatrix(0, 0, 2, 2,
                 Matrix.identity(3, 3).multiplyByScalarAndReturnNew(
                         config.getGyroNoisePSD() * TIME_INTERVAL_SECONDS));
@@ -697,29 +675,29 @@ public class INSLooselyCoupledKalmanEpochEstimatorTest {
                         config.getGyroBiasPSD() * TIME_INTERVAL_SECONDS));
 
         // 3. Propagate state estimates using (3.14) noting that all states are zero
-        final Matrix xEstPropagated = new Matrix(15, 1);
+        final var xEstPropagated = new Matrix(15, 1);
 
         // 4. Propagate state estimation error covariance matrix using (3.46)
-        final Matrix pMatrixOld = previousState.getCovariance();
-        final Matrix phiTrans = phiMatrix.transposeAndReturnNew();
-        final Matrix halfQ = qPrimeMatrix.multiplyByScalarAndReturnNew(0.5);
-        final Matrix tmp1 = pMatrixOld.addAndReturnNew(halfQ);
-        final Matrix pMatrixPropagated = phiMatrix.multiplyAndReturnNew(tmp1);
+        final var pMatrixOld = previousState.getCovariance();
+        final var phiTrans = phiMatrix.transposeAndReturnNew();
+        final var halfQ = qPrimeMatrix.multiplyByScalarAndReturnNew(0.5);
+        final var tmp1 = pMatrixOld.addAndReturnNew(halfQ);
+        final var pMatrixPropagated = phiMatrix.multiplyAndReturnNew(tmp1);
         pMatrixPropagated.multiply(phiTrans);
         pMatrixPropagated.add(halfQ);
 
         // MEASUREMENT UPDATE PHASE
 
-        // 5. Set-up measurement matrix using (14.115)
-        final Matrix hMatrix = new Matrix(6, 15);
+        // 5. Set up a measurement matrix using (14.115)
+        final var hMatrix = new Matrix(6, 15);
         hMatrix.setSubmatrix(0, 6, 2, 8,
                 Matrix.identity(3, 3).multiplyByScalarAndReturnNew(-1.0));
         hMatrix.setSubmatrix(3, 3, 5, 5,
                 Matrix.identity(3, 3).multiplyByScalarAndReturnNew(-1.0));
 
-        // 6. Set-up measurement noise covariance matrix assuming all components of
+        // 6. Set up a measurement noise covariance matrix assuming all components of
         // GNSS position and velocity are independent and have equal variance
-        final Matrix rMatrix = new Matrix(6, 6);
+        final var rMatrix = new Matrix(6, 6);
         rMatrix.setSubmatrix(0, 0, 2, 2,
                 Matrix.identity(3, 3).multiplyByScalarAndReturnNew(
                         Math.pow(config.getPositionNoiseSD(), 2.0)));
@@ -732,23 +710,22 @@ public class INSLooselyCoupledKalmanEpochEstimatorTest {
                         Math.pow(config.getVelocityNoiseSD(), 2.0)));
 
         // 7. Calculate Kalman gain using (3.21)
-        final Matrix tmp2 = hMatrix.multiplyAndReturnNew(pMatrixPropagated).multiplyAndReturnNew(
+        final var tmp2 = hMatrix.multiplyAndReturnNew(pMatrixPropagated).multiplyAndReturnNew(
                 hMatrix.transposeAndReturnNew());
         tmp2.add(rMatrix);
-        final Matrix kMatrix = pMatrixPropagated.multiplyAndReturnNew(hMatrix.transposeAndReturnNew())
+        final var kMatrix = pMatrixPropagated.multiplyAndReturnNew(hMatrix.transposeAndReturnNew())
                 .multiplyAndReturnNew(Utils.inverse(tmp2));
 
-        // 8. Formulate measurement innovations using (14.102), noting that zero
-        // lever arm is assumed here
-        final Matrix deltaZ = new Matrix(6, 1);
+        // 8. Formulate measurement innovations using (14.102), noting that zero-lever arm is assumed here
+        final var deltaZ = new Matrix(6, 1);
 
-        final double prevVx = previousState.getVx();
-        final double prevVy = previousState.getVy();
-        final double prevVz = previousState.getVz();
-        final Matrix estVebeOld = Matrix.newFromArray(new double[]{prevVx, prevVy, prevVz});
+        final var prevVx = previousState.getVx();
+        final var prevVy = previousState.getVy();
+        final var prevVz = previousState.getVz();
+        final var estVebeOld = Matrix.newFromArray(new double[]{prevVx, prevVy, prevVz});
 
-        final Matrix gnssRebe = Matrix.newFromArray(new double[]{x, y, z});
-        final Matrix gnssVebe = Matrix.newFromArray(new double[]{vx, vy, vz});
+        final var gnssRebe = Matrix.newFromArray(new double[]{x, y, z});
+        final var gnssVebe = Matrix.newFromArray(new double[]{vx, vy, vz});
 
         deltaZ.setSubmatrix(0, 0, 2, 0,
                 gnssRebe.subtractAndReturnNew(estRebeOld));
@@ -756,27 +733,27 @@ public class INSLooselyCoupledKalmanEpochEstimatorTest {
                 gnssVebe.subtractAndReturnNew(estVebeOld));
 
         // 9. Update state estimates using (3.24)
-        final Matrix xEstNew = xEstPropagated.addAndReturnNew(kMatrix.multiplyAndReturnNew(deltaZ));
+        final var xEstNew = xEstPropagated.addAndReturnNew(kMatrix.multiplyAndReturnNew(deltaZ));
 
         // 10. Update state estimation error covariance matrix using (3.25)
-        final Matrix pMatrixNew = (Matrix.identity(15, 15)
+        final var pMatrixNew = (Matrix.identity(15, 15)
                 .subtractAndReturnNew(kMatrix.multiplyAndReturnNew(hMatrix)))
                 .multiplyAndReturnNew(pMatrixPropagated);
 
         // CLOSED-LOOP CORRECTION
 
         // Correct attitude, velocity, and position using (14.7-9)
-        final Matrix estCbeNew = (Matrix.identity(3, 3).subtractAndReturnNew(
+        final var estCbeNew = (Matrix.identity(3, 3).subtractAndReturnNew(
                 Utils.skewMatrix(
                         xEstNew.getSubmatrix(0, 0, 2, 0))))
                 .multiplyAndReturnNew(estCbeOld);
-        final Matrix estVebeNew = estVebeOld.subtractAndReturnNew(
+        final var estVebeNew = estVebeOld.subtractAndReturnNew(
                 xEstNew.getSubmatrix(3, 0, 5, 0));
-        final Matrix estRebeNew = estRebeOld.subtractAndReturnNew(
+        final var estRebeNew = estRebeOld.subtractAndReturnNew(
                 xEstNew.getSubmatrix(6, 0, 8, 0));
 
         // Update IMU bias estimates
-        final Matrix estIMUbiasOld = Matrix.newFromArray(new double[]{
+        final var estIMUbiasOld = Matrix.newFromArray(new double[]{
                 previousState.getAccelerationBiasX(),
                 previousState.getAccelerationBiasY(),
                 previousState.getAccelerationBiasZ(),
@@ -784,7 +761,7 @@ public class INSLooselyCoupledKalmanEpochEstimatorTest {
                 previousState.getGyroBiasY(),
                 previousState.getGyroBiasZ()
         });
-        final Matrix estIMUbiasNew = estIMUbiasOld.addAndReturnNew(
+        final var estIMUbiasNew = estIMUbiasOld.addAndReturnNew(
                 xEstNew.getSubmatrix(9, 0, 14, 0));
 
         return new INSLooselyCoupledKalmanState(estCbeNew,

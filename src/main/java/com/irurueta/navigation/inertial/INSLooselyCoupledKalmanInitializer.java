@@ -58,33 +58,33 @@ public class INSLooselyCoupledKalmanInitializer {
             }
         }
 
-        final double initAttUnc = config.getInitialAttitudeUncertainty();
-        final double initVelUnc = config.getInitialVelocityUncertainty();
-        final double initPosUnc = config.getInitialPositionUncertainty();
-        final double initBaUnc = config.getInitialAccelerationBiasUncertainty();
-        final double initBgUnc = config.getInitialGyroscopeBiasUncertainty();
+        final var initAttUnc = config.getInitialAttitudeUncertainty();
+        final var initVelUnc = config.getInitialVelocityUncertainty();
+        final var initPosUnc = config.getInitialPositionUncertainty();
+        final var initBaUnc = config.getInitialAccelerationBiasUncertainty();
+        final var initBgUnc = config.getInitialGyroscopeBiasUncertainty();
 
-        final double initAttUnc2 = initAttUnc * initAttUnc;
-        final double initVelUnc2 = initVelUnc * initVelUnc;
-        final double initPosUnc2 = initPosUnc * initPosUnc;
-        final double initBaUnc2 = initBaUnc * initBaUnc;
-        final double initBgUnc2 = initBgUnc * initBgUnc;
+        final var initAttUnc2 = initAttUnc * initAttUnc;
+        final var initVelUnc2 = initVelUnc * initVelUnc;
+        final var initPosUnc2 = initPosUnc * initPosUnc;
+        final var initBaUnc2 = initBaUnc * initBaUnc;
+        final var initBgUnc2 = initBgUnc * initBgUnc;
 
         result.initialize(0.0);
 
-        for (int i = 0; i < 3; i++) {
+        for (var i = 0; i < 3; i++) {
             result.setElementAt(i, i, initAttUnc2);
         }
-        for (int i = 3; i < 6; i++) {
+        for (var i = 3; i < 6; i++) {
             result.setElementAt(i, i, initVelUnc2);
         }
-        for (int i = 6; i < 9; i++) {
+        for (var i = 6; i < 9; i++) {
             result.setElementAt(i, i, initPosUnc2);
         }
-        for (int i = 9; i < 12; i++) {
+        for (var i = 9; i < 12; i++) {
             result.setElementAt(i, i, initBaUnc2);
         }
-        for (int i = 12; i < 15; i++) {
+        for (var i = 12; i < 15; i++) {
             result.setElementAt(i, i, initBgUnc2);
         }
     }

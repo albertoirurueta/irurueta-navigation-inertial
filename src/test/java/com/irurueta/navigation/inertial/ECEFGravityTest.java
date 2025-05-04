@@ -17,19 +17,16 @@ package com.irurueta.navigation.inertial;
 
 import com.irurueta.algebra.Matrix;
 import com.irurueta.algebra.WrongSizeException;
-import com.irurueta.navigation.inertial.calibration.AccelerationTriad;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationUnit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class ECEFGravityTest {
+class ECEFGravityTest {
 
     private static final double MIN_VALUE = 9.80;
     private static final double MAX_VALUE = 9.82;
@@ -37,9 +34,9 @@ public class ECEFGravityTest {
     private static final double THRESHOLD = 1e-6;
 
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         // test empty constructor
-        ECEFGravity gravity = new ECEFGravity();
+        var gravity = new ECEFGravity();
 
         // check default values
         assertEquals(0.0, gravity.getGx(), 0.0);
@@ -52,11 +49,11 @@ public class ECEFGravityTest {
         assertEquals(0.0, gravity.getNormAsAcceleration().getValue().doubleValue(), 0.0);
 
         // test constructor with gravity coordinates
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double g = Math.sqrt(gx * gx + gy * gy + gz * gz);
+        final var randomizer = new UniformRandomizer();
+        final var gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var g = Math.sqrt(gx * gx + gy * gy + gz * gz);
 
         gravity = new ECEFGravity(gx, gy, gz);
 
@@ -71,9 +68,9 @@ public class ECEFGravityTest {
         assertEquals(g, gravity.getNormAsAcceleration().getValue().doubleValue(), 0.0);
 
         // test constructor with acceleration coordinates
-        final Acceleration gravityX = new Acceleration(gx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration gravityY = new Acceleration(gy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration gravityZ = new Acceleration(gz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var gravityX = new Acceleration(gx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var gravityY = new Acceleration(gy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var gravityZ = new Acceleration(gz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
         gravity = new ECEFGravity(gravityX, gravityY, gravityZ);
 
@@ -88,7 +85,7 @@ public class ECEFGravityTest {
         assertEquals(g, gravity.getNormAsAcceleration().getValue().doubleValue(), 0.0);
 
         // test constructor from another gravity
-        final ECEFGravity gravity2 = new ECEFGravity(gravity);
+        final var gravity2 = new ECEFGravity(gravity);
 
         // check default values
         assertEquals(gx, gravity2.getGx(), 0.0);
@@ -102,15 +99,15 @@ public class ECEFGravityTest {
     }
 
     @Test
-    public void testGetSetGx() {
-        final ECEFGravity gravity = new ECEFGravity();
+    void testGetSetGx() {
+        final var gravity = new ECEFGravity();
 
         // check default value
         assertEquals(0.0, gravity.getGx(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
         gravity.setGx(gx);
 
@@ -119,15 +116,15 @@ public class ECEFGravityTest {
     }
 
     @Test
-    public void testGetSetGy() {
-        final ECEFGravity gravity = new ECEFGravity();
+    void testGetSetGy() {
+        final var gravity = new ECEFGravity();
 
         // check default value
         assertEquals(0.0, gravity.getGy(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var gy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
         gravity.setGy(gy);
 
@@ -136,15 +133,15 @@ public class ECEFGravityTest {
     }
 
     @Test
-    public void testGetSetGz() {
-        final ECEFGravity gravity = new ECEFGravity();
+    void testGetSetGz() {
+        final var gravity = new ECEFGravity();
 
         // check default value
         assertEquals(0.0, gravity.getGz(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var gz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
         gravity.setGz(gz);
 
@@ -153,8 +150,8 @@ public class ECEFGravityTest {
     }
 
     @Test
-    public void testSetCoordinates() {
-        final ECEFGravity gravity = new ECEFGravity();
+    void testSetCoordinates() {
+        final var gravity = new ECEFGravity();
 
         // check default values
         assertEquals(0.0, gravity.getGx(), 0.0);
@@ -162,10 +159,10 @@ public class ECEFGravityTest {
         assertEquals(0.0, gravity.getGz(), 0.0);
 
         // set new values
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var randomizer = new UniformRandomizer();
+        final var gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
         gravity.setCoordinates(gx, gy, gz);
 
@@ -176,25 +173,25 @@ public class ECEFGravityTest {
     }
 
     @Test
-    public void testGetSetGxAsAcceleration() {
-        final ECEFGravity gravity = new ECEFGravity();
+    void testGetSetGxAsAcceleration() {
+        final var gravity = new ECEFGravity();
 
         // check default value
         assertEquals(0.0, gravity.getGxAsAcceleration().getValue().doubleValue(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final Acceleration gravityX1 = new Acceleration(gx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gravityX1 = new Acceleration(gx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
         gravity.setGx(gravityX1);
 
         // check
         assertEquals(gx, gravity.getGxAsAcceleration().getValue().doubleValue(), 0.0);
 
-        final Acceleration gravityX2 = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var gravityX2 = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         gravity.getGxAsAcceleration(gravityX2);
-        final Acceleration gravityX3 = gravity.getGxAsAcceleration();
+        final var gravityX3 = gravity.getGxAsAcceleration();
         assertEquals(gx, gravityX2.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, gravityX2.getUnit());
         assertEquals(gravityX1, gravityX2);
@@ -202,25 +199,25 @@ public class ECEFGravityTest {
     }
 
     @Test
-    public void testGetSetGyAsAcceleration() {
-        final ECEFGravity gravity = new ECEFGravity();
+    void testGetSetGyAsAcceleration() {
+        final var gravity = new ECEFGravity();
 
         // check default value
         assertEquals(0.0, gravity.getGyAsAcceleration().getValue().doubleValue(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final Acceleration gravityY1 = new Acceleration(gy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var gy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gravityY1 = new Acceleration(gy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
         gravity.setGy(gravityY1);
 
         // check
         assertEquals(gy, gravity.getGyAsAcceleration().getValue().doubleValue(), 0.0);
 
-        final Acceleration gravityY2 = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var gravityY2 = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         gravity.getGyAsAcceleration(gravityY2);
-        final Acceleration gravityY3 = gravity.getGyAsAcceleration();
+        final var gravityY3 = gravity.getGyAsAcceleration();
         assertEquals(gy, gravityY2.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, gravityY2.getUnit());
         assertEquals(gravityY1, gravityY2);
@@ -228,25 +225,25 @@ public class ECEFGravityTest {
     }
 
     @Test
-    public void testGetSetGzAsAcceleration() {
-        final ECEFGravity gravity = new ECEFGravity();
+    void testGetSetGzAsAcceleration() {
+        final var gravity = new ECEFGravity();
 
         // check default value
         assertEquals(0.0, gravity.getGzAsAcceleration().getValue().doubleValue(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final Acceleration gravityZ1 = new Acceleration(gz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var gz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gravityZ1 = new Acceleration(gz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
         gravity.setGz(gravityZ1);
 
         // check
         assertEquals(gz, gravity.getGzAsAcceleration().getValue().doubleValue(), 0.0);
 
-        final Acceleration gravityZ2 = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var gravityZ2 = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         gravity.getGzAsAcceleration(gravityZ2);
-        final Acceleration gravityZ3 = gravity.getGzAsAcceleration();
+        final var gravityZ3 = gravity.getGzAsAcceleration();
         assertEquals(gz, gravityZ2.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, gravityZ2.getUnit());
         assertEquals(gravityZ1, gravityZ2);
@@ -254,8 +251,8 @@ public class ECEFGravityTest {
     }
 
     @Test
-    public void testSetCoordinatesFromAccelerations() {
-        final ECEFGravity gravity = new ECEFGravity();
+    void testSetCoordinatesFromAccelerations() {
+        final var gravity = new ECEFGravity();
 
         // check default values
         assertEquals(0.0, gravity.getGxAsAcceleration().getValue().doubleValue(), 0.0);
@@ -263,13 +260,13 @@ public class ECEFGravityTest {
         assertEquals(0.0, gravity.getGzAsAcceleration().getValue().doubleValue(), 0.0);
 
         // set new values
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final Acceleration gravityX1 = new Acceleration(gx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration gravityY1 = new Acceleration(gy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration gravityZ1 = new Acceleration(gz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gravityX1 = new Acceleration(gx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var gravityY1 = new Acceleration(gy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var gravityZ1 = new Acceleration(gz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
         gravity.setCoordinates(gravityX1, gravityY1, gravityZ1);
 
@@ -280,20 +277,20 @@ public class ECEFGravityTest {
     }
 
     @Test
-    public void testGetNorm() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double g = Math.sqrt(gx * gx + gy * gy + gz * gz);
+    void testGetNorm() {
+        final var randomizer = new UniformRandomizer();
+        final var gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var g = Math.sqrt(gx * gx + gy * gy + gz * gz);
 
-        final ECEFGravity gravity = new ECEFGravity(gx, gy, gz);
+        final var gravity = new ECEFGravity(gx, gy, gz);
 
         assertEquals(g, gravity.getNorm(), 0.0);
 
-        final Acceleration norm1 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var norm1 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         gravity.getNormAsAcceleration(norm1);
-        final Acceleration norm2 = gravity.getNormAsAcceleration();
+        final var norm2 = gravity.getNormAsAcceleration();
 
         assertEquals(g, norm1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, norm1.getUnit());
@@ -301,14 +298,14 @@ public class ECEFGravityTest {
     }
 
     @Test
-    public void testCopyTo() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+    void testCopyTo() {
+        final var randomizer = new UniformRandomizer();
+        final var gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final ECEFGravity gravity1 = new ECEFGravity(gx, gy, gz);
-        final ECEFGravity gravity2 = new ECEFGravity();
+        final var gravity1 = new ECEFGravity(gx, gy, gz);
+        final var gravity2 = new ECEFGravity();
 
         gravity1.copyTo(gravity2);
 
@@ -319,14 +316,14 @@ public class ECEFGravityTest {
     }
 
     @Test
-    public void testCopyFrom() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+    void testCopyFrom() {
+        final var randomizer = new UniformRandomizer();
+        final var gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final ECEFGravity gravity1 = new ECEFGravity(gx, gy, gz);
-        final ECEFGravity gravity2 = new ECEFGravity();
+        final var gravity1 = new ECEFGravity(gx, gy, gz);
+        final var gravity2 = new ECEFGravity();
 
         gravity2.copyFrom(gravity1);
 
@@ -337,16 +334,16 @@ public class ECEFGravityTest {
     }
 
     @Test
-    public void testAsArray() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+    void testAsArray() {
+        final var randomizer = new UniformRandomizer();
+        final var gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final ECEFGravity gravity = new ECEFGravity(gx, gy, gz);
+        final var gravity = new ECEFGravity(gx, gy, gz);
 
-        final double[] array1 = gravity.asArray();
-        final double[] array2 = new double[ECEFGravity.COMPONENTS];
+        final var array1 = gravity.asArray();
+        final var array2 = new double[ECEFGravity.COMPONENTS];
         gravity.asArray(array2);
 
         // check
@@ -360,18 +357,18 @@ public class ECEFGravityTest {
     }
 
     @Test
-    public void testAsMatrix() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+    void testAsMatrix() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final ECEFGravity gravity = new ECEFGravity(gx, gy, gz);
+        final var gravity = new ECEFGravity(gx, gy, gz);
 
-        final Matrix matrix1 = gravity.asMatrix();
-        final Matrix matrix2 = new Matrix(1, 1);
+        final var matrix1 = gravity.asMatrix();
+        final var matrix2 = new Matrix(1, 1);
         gravity.asMatrix(matrix2);
-        final Matrix matrix3 = new Matrix(ECEFGravity.COMPONENTS, 1);
+        final var matrix3 = new Matrix(ECEFGravity.COMPONENTS, 1);
         gravity.asMatrix(matrix3);
 
         // check
@@ -383,30 +380,30 @@ public class ECEFGravityTest {
     }
 
     @Test
-    public void testHashCode() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+    void testHashCode() {
+        final var randomizer = new UniformRandomizer();
+        final var gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final ECEFGravity gravity1 = new ECEFGravity(gx, gy, gz);
-        final ECEFGravity gravity2 = new ECEFGravity(gx, gy, gz);
-        final ECEFGravity gravity3 = new ECEFGravity();
+        final var gravity1 = new ECEFGravity(gx, gy, gz);
+        final var gravity2 = new ECEFGravity(gx, gy, gz);
+        final var gravity3 = new ECEFGravity();
 
         assertEquals(gravity1.hashCode(), gravity2.hashCode());
         assertNotEquals(gravity1.hashCode(), gravity3.hashCode());
     }
 
     @Test
-    public void testEquals() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+    void testEquals() {
+        final var randomizer = new UniformRandomizer();
+        final var gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final ECEFGravity gravity1 = new ECEFGravity(gx, gy, gz);
-        final ECEFGravity gravity2 = new ECEFGravity(gx, gy, gz);
-        final ECEFGravity gravity3 = new ECEFGravity();
+        final var gravity1 = new ECEFGravity(gx, gy, gz);
+        final var gravity2 = new ECEFGravity(gx, gy, gz);
+        final var gravity3 = new ECEFGravity();
 
         //noinspection EqualsWithItself
         assertEquals(gravity1, gravity1);
@@ -414,21 +411,21 @@ public class ECEFGravityTest {
         assertTrue(gravity1.equals(gravity1));
         assertTrue(gravity1.equals(gravity2));
         assertFalse(gravity1.equals(gravity3));
-        assertNotEquals(gravity1, null);
+        assertNotEquals(null, gravity1);
         assertFalse(gravity1.equals(null));
-        assertNotEquals(gravity1, new Object());
+        assertNotEquals(new Object(), gravity1);
     }
 
     @Test
-    public void testEqualsWithThreshold() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+    void testEqualsWithThreshold() {
+        final var randomizer = new UniformRandomizer();
+        final var gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final ECEFGravity gravity1 = new ECEFGravity(gx, gy, gz);
-        final ECEFGravity gravity2 = new ECEFGravity(gx, gy, gz);
-        final ECEFGravity gravity3 = new ECEFGravity();
+        final var gravity1 = new ECEFGravity(gx, gy, gz);
+        final var gravity2 = new ECEFGravity(gx, gy, gz);
+        final var gravity3 = new ECEFGravity();
 
         assertTrue(gravity1.equals(gravity1, THRESHOLD));
         assertTrue(gravity1.equals(gravity2, THRESHOLD));
@@ -437,39 +434,39 @@ public class ECEFGravityTest {
     }
 
     @Test
-    public void testClone() throws CloneNotSupportedException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+    void testClone() throws CloneNotSupportedException {
+        final var randomizer = new UniformRandomizer();
+        final var gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final ECEFGravity gravity1 = new ECEFGravity(gx, gy, gz);
+        final var gravity1 = new ECEFGravity(gx, gy, gz);
 
-        final Object gravity2 = gravity1.clone();
+        final var gravity2 = gravity1.clone();
 
         // check
         assertEquals(gravity1, gravity2);
     }
 
     @Test
-    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+    void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final var randomizer = new UniformRandomizer();
+        final var gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final ECEFGravity gravity1 = new ECEFGravity(gx, gy, gz);
+        final var gravity1 = new ECEFGravity(gx, gy, gz);
 
-        final byte[] bytes = SerializationHelper.serialize(gravity1);
-        final ECEFGravity gravity2 = SerializationHelper.deserialize(bytes);
+        final var bytes = SerializationHelper.serialize(gravity1);
+        final var gravity2 = SerializationHelper.deserialize(bytes);
 
         assertEquals(gravity1, gravity2);
         assertNotSame(gravity1, gravity2);
     }
 
     @Test
-    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
-        final Field field = ECEFGravity.class.getDeclaredField("serialVersionUID");
+    void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final var field = ECEFGravity.class.getDeclaredField("serialVersionUID");
         field.setAccessible(true);
 
         assertEquals(0L, field.get(null));

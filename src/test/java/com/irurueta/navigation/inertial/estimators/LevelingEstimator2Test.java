@@ -18,15 +18,12 @@ package com.irurueta.navigation.inertial.estimators;
 import com.irurueta.navigation.frames.CoordinateTransformation;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.NEDPosition;
-import com.irurueta.navigation.inertial.BodyKinematics;
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import java.util.Random;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import static org.junit.Assert.assertTrue;
-
-public class LevelingEstimator2Test {
+class LevelingEstimator2Test {
 
     private static final double MIN_LATITUDE_DEGREES = -90.0;
     private static final double MAX_LATITUDE_DEGREES = 90.0;
@@ -45,28 +42,27 @@ public class LevelingEstimator2Test {
     private static final double ABSOLUTE_ERROR = 1e-4;
 
     @Test
-    public void testGetAttitude1() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+    void testGetAttitude1() {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
         // body attitude
-        final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         // attitude is expressed as rotation from local navigation frame
         // to body frame, since angles are measured on the device body
-        final CoordinateTransformation bodyC = new CoordinateTransformation(roll1, pitch1, yaw1,
-                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
-        final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
+        final var bodyC = new CoordinateTransformation(roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
+                FrameType.BODY_FRAME);
+        final var nedC = bodyC.inverseAndReturnNew();
 
         // obtain expected kinematics measure
-        final BodyKinematics kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC,
-                nedC, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude, height);
+        final var kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC, nedC,
+                0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude, height);
 
-        final CoordinateTransformation bodyC2 = new CoordinateTransformation(FrameType.BODY_FRAME,
-                FrameType.BODY_FRAME);
+        final var bodyC2 = new CoordinateTransformation(FrameType.BODY_FRAME, FrameType.BODY_FRAME);
 
         LevelingEstimator2.getAttitude(latitude, height, kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),
                 kinematics.getAngularRateX(), kinematics.getAngularRateY(), kinematics.getAngularRateZ(), bodyC2);
@@ -75,31 +71,29 @@ public class LevelingEstimator2Test {
     }
 
     @Test
-    public void testGetAttitude2() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+    void testGetAttitude2() {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
 
         // body attitude
-        final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         // attitude is expressed as rotation from local navigation frame
         // to body frame, since angles are measured on the device body
-        final CoordinateTransformation bodyC = new CoordinateTransformation(roll1, pitch1, yaw1,
-                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
-        final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
+        final var bodyC = new CoordinateTransformation(roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
+                FrameType.BODY_FRAME);
+        final var nedC = bodyC.inverseAndReturnNew();
 
         // obtain expected kinematics measure
-        final BodyKinematics kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                nedC, nedC, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude,
-                height);
+        final var kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC, nedC,
+                0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude, height);
 
-        final CoordinateTransformation bodyC2 = new CoordinateTransformation(FrameType.BODY_FRAME,
-                FrameType.BODY_FRAME);
+        final var bodyC2 = new CoordinateTransformation(FrameType.BODY_FRAME, FrameType.BODY_FRAME);
 
         LevelingEstimator2.getAttitude(nedPosition, kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),
                 kinematics.getAngularRateX(), kinematics.getAngularRateY(), kinematics.getAngularRateZ(), bodyC2);
@@ -108,29 +102,27 @@ public class LevelingEstimator2Test {
     }
 
     @Test
-    public void testGetAttitude3() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+    void testGetAttitude3() {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
         // body attitude
-        final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         // attitude is expressed as rotation from local navigation frame
         // to body frame, since angles are measured on the device body
-        final CoordinateTransformation bodyC = new CoordinateTransformation(roll1, pitch1, yaw1,
-                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
-        final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
+        final var bodyC = new CoordinateTransformation(roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
+                FrameType.BODY_FRAME);
+        final var nedC = bodyC.inverseAndReturnNew();
 
         // obtain expected kinematics measure
-        final BodyKinematics kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                nedC, nedC, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude,
-                height);
+        final var kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC, nedC,
+                0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude, height);
 
-        final CoordinateTransformation bodyC2 = new CoordinateTransformation(FrameType.BODY_FRAME,
-                FrameType.BODY_FRAME);
+        final var bodyC2 = new CoordinateTransformation(FrameType.BODY_FRAME, FrameType.BODY_FRAME);
 
         LevelingEstimator2.getAttitude(latitude, height, kinematics, bodyC2);
 
@@ -138,30 +130,29 @@ public class LevelingEstimator2Test {
     }
 
     @Test
-    public void testGetAttitude4() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+    void testGetAttitude4() {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
 
         // body attitude
-        final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         // attitude is expressed as rotation from local navigation frame
         // to body frame, since angles are measured on the device body
-        final CoordinateTransformation bodyC = new CoordinateTransformation(roll1, pitch1, yaw1,
-                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
-        final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
+        final var bodyC = new CoordinateTransformation(roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
+                FrameType.BODY_FRAME);
+        final var nedC = bodyC.inverseAndReturnNew();
 
         // obtain expected kinematics measure
-        final BodyKinematics kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC,
-                nedC, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude, height);
+        final var kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC, nedC,
+                0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude, height);
 
-        final CoordinateTransformation bodyC2 = new CoordinateTransformation(FrameType.BODY_FRAME,
-                FrameType.BODY_FRAME);
+        final var bodyC2 = new CoordinateTransformation(FrameType.BODY_FRAME, FrameType.BODY_FRAME);
 
         LevelingEstimator2.getAttitude(nedPosition, kinematics, bodyC2);
 
@@ -169,58 +160,27 @@ public class LevelingEstimator2Test {
     }
 
     @Test
-    public void testGetAttitude5() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+    void testGetAttitude5() {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
         // body attitude
-        final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         // attitude is expressed as rotation from local navigation frame
         // to body frame, since angles are measured on the device body
-        final CoordinateTransformation bodyC = new CoordinateTransformation(roll1, pitch1, yaw1,
-                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
-        final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
+        final var bodyC = new CoordinateTransformation(roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
+                FrameType.BODY_FRAME);
+        final var nedC = bodyC.inverseAndReturnNew();
 
         // obtain expected kinematics measure
-        final BodyKinematics kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                nedC, nedC, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude,
-                height);
+        final var kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC, nedC,
+                0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude, height);
 
-        final CoordinateTransformation bodyC2 = LevelingEstimator2.getAttitude(latitude, height, kinematics.getFx(),
-                kinematics.getFy(), kinematics.getFz(), kinematics.getAngularRateX(), kinematics.getAngularRateY(),
-                kinematics.getAngularRateZ());
-
-        assertTrue(bodyC.equals(bodyC2, ABSOLUTE_ERROR));
-    }
-
-    @Test
-    public void testGetAttitude6() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-
-        // body attitude
-        final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-
-        // attitude is expressed as rotation from local navigation frame
-        // to body frame, since angles are measured on the device body
-        final CoordinateTransformation bodyC = new CoordinateTransformation(roll1, pitch1, yaw1,
-                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
-        final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
-
-        // obtain expected kinematics measure
-        final BodyKinematics kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC,
-                nedC, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude, height);
-
-        final CoordinateTransformation bodyC2 = LevelingEstimator2.getAttitude(nedPosition,
+        final var bodyC2 = LevelingEstimator2.getAttitude(latitude, height,
                 kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),
                 kinematics.getAngularRateX(), kinematics.getAngularRateY(), kinematics.getAngularRateZ());
 
@@ -228,56 +188,85 @@ public class LevelingEstimator2Test {
     }
 
     @Test
-    public void testGetAttitude7() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+    void testGetAttitude6() {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
 
         // body attitude
-        final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         // attitude is expressed as rotation from local navigation frame
         // to body frame, since angles are measured on the device body
-        final CoordinateTransformation bodyC = new CoordinateTransformation(roll1, pitch1, yaw1,
-                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
-        final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
+        final var bodyC = new CoordinateTransformation(roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
+                FrameType.BODY_FRAME);
+        final var nedC = bodyC.inverseAndReturnNew();
 
         // obtain expected kinematics measure
-        final BodyKinematics kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                nedC, nedC, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude,
-                height);
+        final var kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC, nedC,
+                0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude, height);
 
-        final CoordinateTransformation bodyC2 = LevelingEstimator2.getAttitude(latitude, height, kinematics);
+        final var bodyC2 = LevelingEstimator2.getAttitude(nedPosition,
+                kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),
+                kinematics.getAngularRateX(), kinematics.getAngularRateY(), kinematics.getAngularRateZ());
 
         assertTrue(bodyC.equals(bodyC2, ABSOLUTE_ERROR));
     }
 
     @Test
-    public void testGetAttitude8() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+    void testGetAttitude7() {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
         // body attitude
-        final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         // attitude is expressed as rotation from local navigation frame
         // to body frame, since angles are measured on the device body
-        final CoordinateTransformation bodyC = new CoordinateTransformation(roll1, pitch1, yaw1,
-                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
-        final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
+        final var bodyC = new CoordinateTransformation(roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
+                FrameType.BODY_FRAME);
+        final var nedC = bodyC.inverseAndReturnNew();
 
         // obtain expected kinematics measure
-        final BodyKinematics kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC,
-                nedC, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude, height);
+        final var kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC, nedC,
+                0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude, height);
 
-        final CoordinateTransformation bodyC2 = LevelingEstimator2.getAttitude(nedPosition, kinematics);
+        final var bodyC2 = LevelingEstimator2.getAttitude(latitude, height, kinematics);
+
+        assertTrue(bodyC.equals(bodyC2, ABSOLUTE_ERROR));
+    }
+
+    @Test
+    void testGetAttitude8() {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+
+        // body attitude
+        final var roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+
+        // attitude is expressed as rotation from local navigation frame
+        // to body frame, since angles are measured on the device body
+        final var bodyC = new CoordinateTransformation(roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
+                FrameType.BODY_FRAME);
+        final var nedC = bodyC.inverseAndReturnNew();
+
+        // obtain expected kinematics measure
+        final var kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC, nedC,
+                0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude, height);
+
+        final var bodyC2 = LevelingEstimator2.getAttitude(nedPosition, kinematics);
 
         assertTrue(bodyC.equals(bodyC2, ABSOLUTE_ERROR));
     }

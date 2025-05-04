@@ -43,60 +43,60 @@ public class RungeKuttaQuaternionStepIntegrator extends QuaternionStepIntegrator
     /**
      * Angular speed at initial timestamp t0 to be reused.
      */
-    private Matrix mOmega0;
+    private Matrix omega0;
 
     /**
      * Angular speed at end timestamp t1 to be reused.
      */
-    private Matrix mOmega1;
+    private Matrix omega1;
 
     /**
      * Angular speed at mid-point timestamp between t0 and t1 to be reused.
      */
-    private Matrix mOmega01;
+    private Matrix omega01;
 
     /**
      * Initial attitude to be reused.
      */
-    private Matrix mQuat;
+    private Matrix quat;
 
     /**
      * Instance where result of integration is stored in matrix form being reused.
      */
-    private Matrix mQuatResult;
+    private Matrix quatResult;
 
     /**
      * Temporal quaternion used to compute additional slopes that is being reused.
      */
-    private Matrix mTmpQ;
+    private Matrix tmpQ;
 
     /**
      * First Runge-Kutta coefficient. Quaternion derivative at initial timestamp t0 to be
      * reused.
      */
-    private Matrix mK1;
+    private Matrix k1;
 
     /**
      * Second Runge-Kutta coefficient. Quaternion derivative at mid-point timestamp
      * between t0 and t1 to be reused.
      */
-    private Matrix mK2;
+    private Matrix k2;
 
     /**
      * Third Runge-Kutta coefficient to be reused.
      */
-    private Matrix mK3;
+    private Matrix k3;
 
     /**
      * Fourth Runge-Kutta coefficient. Quaternion derivative at end timestamp t1 to be
      * reused.
      */
-    private Matrix mK4;
+    private Matrix k4;
 
     /**
      * Skew antisymmetric matrix used for quaternion time derivative computation to be reused.
      */
-    private Matrix mOmegaSkew;
+    private Matrix omegaSkew;
 
     /**
      * Constructor.
@@ -104,17 +104,17 @@ public class RungeKuttaQuaternionStepIntegrator extends QuaternionStepIntegrator
      */
     public RungeKuttaQuaternionStepIntegrator() {
         try {
-            mOmega0 = new Matrix(Rotation3D.INHOM_COORDS, 1);
-            mOmega1 = new Matrix(Rotation3D.INHOM_COORDS, 1);
-            mOmega01 = new Matrix(Rotation3D.INHOM_COORDS, 1);
-            mQuat = new Matrix(Quaternion.N_PARAMS, 1);
-            mQuatResult = new Matrix(Quaternion.N_PARAMS, 1);
-            mTmpQ = new Matrix(Quaternion.N_PARAMS, 1);
-            mK1 = new Matrix(Quaternion.N_PARAMS, 1);
-            mK2 = new Matrix(Quaternion.N_PARAMS, 1);
-            mK3 = new Matrix(Quaternion.N_PARAMS, 1);
-            mK4 = new Matrix(Quaternion.N_PARAMS, 1);
-            mOmegaSkew = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
+            omega0 = new Matrix(Rotation3D.INHOM_COORDS, 1);
+            omega1 = new Matrix(Rotation3D.INHOM_COORDS, 1);
+            omega01 = new Matrix(Rotation3D.INHOM_COORDS, 1);
+            quat = new Matrix(Quaternion.N_PARAMS, 1);
+            quatResult = new Matrix(Quaternion.N_PARAMS, 1);
+            tmpQ = new Matrix(Quaternion.N_PARAMS, 1);
+            k1 = new Matrix(Quaternion.N_PARAMS, 1);
+            k2 = new Matrix(Quaternion.N_PARAMS, 1);
+            k3 = new Matrix(Quaternion.N_PARAMS, 1);
+            k4 = new Matrix(Quaternion.N_PARAMS, 1);
+            omegaSkew = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
         } catch (final AlgebraException ignore) {
             // never happens
         }
@@ -158,9 +158,9 @@ public class RungeKuttaQuaternionStepIntegrator extends QuaternionStepIntegrator
     public void integrate(
             final Quaternion initialAttitude, final double initialWx, final double initialWy, final double initialWz,
             final double currentWx, final double currentWy, final double currentWz, final double dt,
-            Quaternion result) throws RotationException {
+            final Quaternion result) throws RotationException {
         integrationStep(initialAttitude, initialWx, initialWy, initialWz, currentWx, currentWy, currentWz, dt, result,
-                mOmega0, mOmega1, mOmega01, mQuat, mQuatResult, mTmpQ, mK1, mK2, mK3, mK4, mOmegaSkew);
+                omega0, omega1, omega01, quat, quatResult, tmpQ, k1, k2, k3, k4, omegaSkew);
     }
 
     /**
@@ -189,20 +189,20 @@ public class RungeKuttaQuaternionStepIntegrator extends QuaternionStepIntegrator
      */
     public static void integrationStep(
             final Quaternion initialAttitude, final double initialWx, final double initialWy, final double initialWz,
-            final double currentWx, final double currentWy, final double currentWz, final double dt, Quaternion result)
-            throws RotationException {
+            final double currentWx, final double currentWy, final double currentWz, final double dt,
+            final Quaternion result) throws RotationException {
         try {
-            final Matrix omega0 = new Matrix(Rotation3D.INHOM_COORDS, 1);
-            final Matrix omega1 = new Matrix(Rotation3D.INHOM_COORDS, 1);
-            final Matrix omega01 = new Matrix(Rotation3D.INHOM_COORDS, 1);
-            final Matrix quat = new Matrix(Quaternion.N_PARAMS, 1);
-            final Matrix quatResult = new Matrix(Quaternion.N_PARAMS, 1);
-            final Matrix tmpQ = new Matrix(Quaternion.N_PARAMS, 1);
-            final Matrix k1 = new Matrix(Quaternion.N_PARAMS, 1);
-            final Matrix k2 = new Matrix(Quaternion.N_PARAMS, 1);
-            final Matrix k3 = new Matrix(Quaternion.N_PARAMS, 1);
-            final Matrix k4 = new Matrix(Quaternion.N_PARAMS, 1);
-            final Matrix omegaSkew = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
+            final var omega0 = new Matrix(Rotation3D.INHOM_COORDS, 1);
+            final var omega1 = new Matrix(Rotation3D.INHOM_COORDS, 1);
+            final var omega01 = new Matrix(Rotation3D.INHOM_COORDS, 1);
+            final var quat = new Matrix(Quaternion.N_PARAMS, 1);
+            final var quatResult = new Matrix(Quaternion.N_PARAMS, 1);
+            final var tmpQ = new Matrix(Quaternion.N_PARAMS, 1);
+            final var k1 = new Matrix(Quaternion.N_PARAMS, 1);
+            final var k2 = new Matrix(Quaternion.N_PARAMS, 1);
+            final var k3 = new Matrix(Quaternion.N_PARAMS, 1);
+            final var k4 = new Matrix(Quaternion.N_PARAMS, 1);
+            final var omegaSkew = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
             integrationStep(initialAttitude, initialWx, initialWy, initialWz, currentWx, currentWy, currentWz, dt,
                     result, omega0, omega1, omega01, quat, quatResult, tmpQ, k1, k2, k3, k4, omegaSkew);
         } catch (final AlgebraException ignore) {
@@ -281,7 +281,7 @@ public class RungeKuttaQuaternionStepIntegrator extends QuaternionStepIntegrator
             // Compute Second Runge-Kutta coefficient k2 as the slope at mid-point:
             // k2 = f(t(n) + 0.5 * dt, x(t(n) + 0.5 * dt))
             // k2 = f(t(n) + 0.5 * dt, x(n) + 0.5 * dt * k1)
-            final double halfDt = 0.5 * dt;
+            final var halfDt = 0.5 * dt;
             tmpQ.copyFrom(k1);
             tmpQ.multiplyByScalar(halfDt);
             tmpQ.add(quat);

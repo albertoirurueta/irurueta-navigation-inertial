@@ -237,7 +237,7 @@ public class MagneticFluxDensityTriad extends Triad<MagneticFluxDensityUnit, Mag
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final MagneticFluxDensityTriad result = (MagneticFluxDensityTriad) super.clone();
+        final var result = (MagneticFluxDensityTriad) super.clone();
         copyTo(result);
         return result;
     }

@@ -17,7 +17,6 @@ package com.irurueta.navigation.inertial.estimators;
 
 import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.NEDVelocity;
-import com.irurueta.navigation.inertial.RadiiOfCurvature;
 import com.irurueta.units.*;
 
 /**
@@ -1016,23 +1015,23 @@ public class NEDPositionEstimator {
         }
 
         // Calculate meridian and transverse radii of curvature
-        final RadiiOfCurvature oldRadii = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(oldLatitude);
-        final double oldRn = oldRadii.getRn();
-        final double oldRe = oldRadii.getRe();
+        final var oldRadii = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(oldLatitude);
+        final var oldRn = oldRadii.getRn();
+        final var oldRe = oldRadii.getRe();
 
         // Update height using (5.56)
-        final double height = oldHeight - 0.5 * timeInterval * (oldVd + vd);
+        final var height = oldHeight - 0.5 * timeInterval * (oldVd + vd);
 
         // Update latitude using (5.56)
-        final double latitude = oldLatitude + 0.5 * timeInterval * (oldVn / (oldRn + oldHeight)
+        final var latitude = oldLatitude + 0.5 * timeInterval * (oldVn / (oldRn + oldHeight)
                 + vn / (oldRn + height));
 
         // Calculate meridian and transverse radii of curvature
-        final RadiiOfCurvature radii = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(latitude);
-        final double re = radii.getRe();
+        final var radii = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(latitude);
+        final var re = radii.getRe();
 
         // Update longitude using (5.56)
-        final double longitude = oldLongitude
+        final var longitude = oldLongitude
                 + 0.5 * timeInterval * (oldVe / ((oldRe + oldHeight) * Math.cos(oldLatitude))
                 + ve / ((re + height) * Math.cos(latitude)));
 
@@ -1531,7 +1530,7 @@ public class NEDPositionEstimator {
             final double timeInterval, final double oldLatitude, final double oldLongitude, final double oldHeight,
             final double oldVn, final double oldVe, final double oldVd,
             final double vn, final double ve, final double vd) {
-        final NEDPosition result = new NEDPosition();
+        final var result = new NEDPosition();
         estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, vn, ve, vd, result);
         return result;
     }
@@ -1562,7 +1561,7 @@ public class NEDPositionEstimator {
             final Time timeInterval, final double oldLatitude, final double oldLongitude, final double oldHeight,
             final double oldVn, final double oldVe, final double oldVd,
             final double vn, final double ve, final double vd) {
-        final NEDPosition result = new NEDPosition();
+        final var result = new NEDPosition();
         estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, vn, ve, vd, result);
         return result;
     }
@@ -1592,7 +1591,7 @@ public class NEDPositionEstimator {
     public static NEDPosition estimatePositionAndReturnNew(
             final double timeInterval, final Angle oldLatitude, final Angle oldLongitude, final Distance oldHeight,
             final Speed oldVn, final Speed oldVe, final Speed oldVd, final Speed vn, final Speed ve, final Speed vd) {
-        final NEDPosition result = new NEDPosition();
+        final var result = new NEDPosition();
         estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, vn, ve, vd, result);
         return result;
     }
@@ -1622,7 +1621,7 @@ public class NEDPositionEstimator {
     public static NEDPosition estimatePositionAndReturnNew(
             final Time timeInterval, final Angle oldLatitude, final Angle oldLongitude, final Distance oldHeight,
             final Speed oldVn, final Speed oldVe, final Speed oldVd, final Speed vn, final Speed ve, final Speed vd) {
-        final NEDPosition result = new NEDPosition();
+        final var result = new NEDPosition();
         estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, vn, ve, vd, result);
         return result;
     }
@@ -1653,7 +1652,7 @@ public class NEDPositionEstimator {
             final double timeInterval, final Angle oldLatitude, final Angle oldLongitude, final Distance oldHeight,
             final double oldVn, final double oldVe, final double oldVd,
             final double vn, final double ve, final double vd) {
-        final NEDPosition result = new NEDPosition();
+        final var result = new NEDPosition();
         estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, vn, ve, vd, result);
         return result;
     }
@@ -1684,7 +1683,7 @@ public class NEDPositionEstimator {
             final Time timeInterval, final Angle oldLatitude, final Angle oldLongitude, final Distance oldHeight,
             final double oldVn, final double oldVe, final double oldVd,
             final double vn, final double ve, final double vd) {
-        final NEDPosition result = new NEDPosition();
+        final var result = new NEDPosition();
         estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, vn, ve, vd, result);
         return result;
     }
@@ -1714,7 +1713,7 @@ public class NEDPositionEstimator {
     public static NEDPosition estimatePositionAndReturnNew(
             final double timeInterval, final double oldLatitude, final double oldLongitude, final double oldHeight,
             final Speed oldVn, final Speed oldVe, final Speed oldVd, final Speed vn, final Speed ve, final Speed vd) {
-        final NEDPosition result = new NEDPosition();
+        final var result = new NEDPosition();
         estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, vn, ve, vd, result);
         return result;
     }
@@ -1744,7 +1743,7 @@ public class NEDPositionEstimator {
     public static NEDPosition estimatePositionAndReturnNew(
             final Time timeInterval, final double oldLatitude, final double oldLongitude, final double oldHeight,
             final Speed oldVn, final Speed oldVe, final Speed oldVd, final Speed vn, final Speed ve, final Speed vd) {
-        final NEDPosition result = new NEDPosition();
+        final var result = new NEDPosition();
         estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, vn, ve, vd, result);
         return result;
     }
@@ -1774,7 +1773,7 @@ public class NEDPositionEstimator {
             final double timeInterval, final NEDPosition oldPosition,
             final double oldVn, final double oldVe, final double oldVd,
             final double vn, final double ve, final double vd) {
-        final NEDPosition result = new NEDPosition();
+        final var result = new NEDPosition();
         estimatePosition(timeInterval, oldPosition, oldVn, oldVe, oldVd, vn, ve, vd, result);
         return result;
     }
@@ -1804,7 +1803,7 @@ public class NEDPositionEstimator {
             final Time timeInterval, final NEDPosition oldPosition,
             final double oldVn, final double oldVe, final double oldVd,
             final double vn, final double ve, final double vd) {
-        final NEDPosition result = new NEDPosition();
+        final var result = new NEDPosition();
         estimatePosition(timeInterval, oldPosition, oldVn, oldVe, oldVd, vn, ve, vd, result);
         return result;
     }
@@ -1833,7 +1832,7 @@ public class NEDPositionEstimator {
     public static NEDPosition estimatePositionAndReturnNew(
             final double timeInterval, final NEDPosition oldPosition,
             final Speed oldVn, final Speed oldVe, final Speed oldVd, final Speed vn, final Speed ve, final Speed vd) {
-        final NEDPosition result = new NEDPosition();
+        final var result = new NEDPosition();
         estimatePosition(timeInterval, oldPosition, oldVn, oldVe, oldVd, vn, ve, vd, result);
         return result;
     }
@@ -1862,7 +1861,7 @@ public class NEDPositionEstimator {
     public static NEDPosition estimatePositionAndReturnNew(
             final Time timeInterval, final NEDPosition oldPosition,
             final Speed oldVn, final Speed oldVe, final Speed oldVd, final Speed vn, final Speed ve, final Speed vd) {
-        final NEDPosition result = new NEDPosition();
+        final var result = new NEDPosition();
         estimatePosition(timeInterval, oldPosition, oldVn, oldVe, oldVd, vn, ve, vd, result);
         return result;
     }
@@ -1886,7 +1885,7 @@ public class NEDPositionEstimator {
     public static NEDPosition estimatePositionAndReturnNew(
             final double timeInterval, final double oldLatitude, final double oldLongitude, final double oldHeight,
             final NEDVelocity oldVelocity, final NEDVelocity velocity) {
-        final NEDPosition result = new NEDPosition();
+        final var result = new NEDPosition();
         estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVelocity, velocity, result);
         return result;
     }
@@ -1910,7 +1909,7 @@ public class NEDPositionEstimator {
     public static NEDPosition estimatePositionAndReturnNew(
             final Time timeInterval, final double oldLatitude, final double oldLongitude, final double oldHeight,
             final NEDVelocity oldVelocity, final NEDVelocity velocity) {
-        final NEDPosition result = new NEDPosition();
+        final var result = new NEDPosition();
         estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVelocity, velocity, result);
         return result;
     }
@@ -1935,7 +1934,7 @@ public class NEDPositionEstimator {
     public static NEDPosition estimatePositionAndReturnNew(
             final double timeInterval, final Angle oldLatitude, final Angle oldLongitude, final Distance oldHeight,
             final NEDVelocity oldVelocity, final NEDVelocity velocity) {
-        final NEDPosition result = new NEDPosition();
+        final var result = new NEDPosition();
         estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVelocity, velocity, result);
         return result;
     }
@@ -1960,7 +1959,7 @@ public class NEDPositionEstimator {
     public static NEDPosition estimatePositionAndReturnNew(
             final Time timeInterval, final Angle oldLatitude, final Angle oldLongitude, final Distance oldHeight,
             final NEDVelocity oldVelocity, final NEDVelocity velocity) {
-        final NEDPosition result = new NEDPosition();
+        final var result = new NEDPosition();
         estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVelocity, velocity, result);
         return result;
     }
@@ -1983,7 +1982,7 @@ public class NEDPositionEstimator {
     public static NEDPosition estimatePositionAndReturnNew(
             final double timeInterval, final NEDPosition oldPosition, final NEDVelocity oldVelocity,
             final NEDVelocity velocity) {
-        final NEDPosition result = new NEDPosition();
+        final var result = new NEDPosition();
         estimatePosition(timeInterval, oldPosition, oldVelocity, velocity, result);
         return result;
     }
@@ -2006,7 +2005,7 @@ public class NEDPositionEstimator {
     public static NEDPosition estimatePositionAndReturnNew(
             final Time timeInterval, final NEDPosition oldPosition, final NEDVelocity oldVelocity,
             final NEDVelocity velocity) {
-        final NEDPosition result = new NEDPosition();
+        final var result = new NEDPosition();
         estimatePosition(timeInterval, oldPosition, oldVelocity, velocity, result);
         return result;
     }

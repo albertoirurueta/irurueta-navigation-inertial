@@ -21,7 +21,6 @@ import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.frames.CoordinateTransformation;
-import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.NEDFrame;
 import com.irurueta.navigation.frames.converters.ECEFtoNEDFrameConverter;
@@ -100,70 +99,70 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
     /**
      * Levenberg-Marquardt fitter to find a non-linear solution.
      */
-    private final LevenbergMarquardtMultiVariateFitter mFitter = new LevenbergMarquardtMultiVariateFitter();
+    private final LevenbergMarquardtMultiVariateFitter fitter = new LevenbergMarquardtMultiVariateFitter();
 
     /**
      * X-coordinate of known hard-iron bias.
      * This is expressed in Teslas (T).
      */
-    private double mHardIronX;
+    private double hardIronX;
 
     /**
      * Y-coordinate of known hard-iron bias.
      * This is expressed in Teslas (T).
      */
-    private double mHardIronY;
+    private double hardIronY;
 
     /**
      * Z-coordinate of known hard-iron bias.
      * This is expressed in Teslas (T).
      */
-    private double mHardIronZ;
+    private double hardIronZ;
 
     /**
      * Initial x scaling factor.
      */
-    private double mInitialSx;
+    private double initialSx;
 
     /**
      * Initial y scaling factor.
      */
-    private double mInitialSy;
+    private double initialSy;
 
     /**
      * Initial z scaling factor.
      */
-    private double mInitialSz;
+    private double initialSz;
 
     /**
      * Initial x-y cross coupling error.
      */
-    private double mInitialMxy;
+    private double initialMxy;
 
     /**
      * Initial x-z cross coupling error.
      */
-    private double mInitialMxz;
+    private double initialMxz;
 
     /**
      * Initial y-x cross coupling error.
      */
-    private double mInitialMyx;
+    private double initialMyx;
 
     /**
      * Initial y-z cross coupling error.
      */
-    private double mInitialMyz;
+    private double initialMyz;
 
     /**
      * Initial z-x cross coupling error.
      */
-    private double mInitialMzx;
+    private double initialMzx;
 
     /**
      * Initial z-y cross coupling error.
      */
-    private double mInitialMzy;
+    private double initialMzy;
 
     /**
      * Contains a collection of body magnetic flux density measurements taken
@@ -181,19 +180,19 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      * horizontal orientation while the phone remains on a
      * flat surface.
      */
-    private Collection<StandardDeviationFrameBodyMagneticFluxDensity> mMeasurements;
+    private Collection<StandardDeviationFrameBodyMagneticFluxDensity> measurements;
 
     /**
      * This flag indicates whether z-axis is assumed to be common for accelerometer,
      * gyroscope and magnetometer.
      * When enabled, this eliminates 3 variables from Mm matrix.
      */
-    private boolean mCommonAxisUsed = DEFAULT_USE_COMMON_Z_AXIS;
+    private boolean commonAxisUsed = DEFAULT_USE_COMMON_Z_AXIS;
 
     /**
      * Listener to handle events raised by this calibrator.
      */
-    private KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener mListener;
+    private KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener;
 
     /**
      * Estimated magnetometer soft-iron matrix containing scale factors
@@ -235,32 +234,32 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      * </pre>
      * Values of this matrix are unit-less.
      */
-    private Matrix mEstimatedMm;
+    private Matrix estimatedMm;
 
     /**
      * Estimated covariance matrix for estimated parameters.
      */
-    private Matrix mEstimatedCovariance;
+    private Matrix estimatedCovariance;
 
     /**
      * Estimated chi square value.
      */
-    private double mEstimatedChiSq;
+    private double estimatedChiSq;
 
     /**
      * Estimated mean square error respect to provided measurements.
      */
-    private double mEstimatedMse;
+    private double estimatedMse;
 
     /**
      * Indicates whether calibrator is running.
      */
-    private boolean mRunning;
+    private boolean running;
 
     /**
      * Contains Earth's magnetic model.
      */
-    private WorldMagneticModel mMagneticModel;
+    private WorldMagneticModel magneticModel;
 
     /**
      * Constructor.
@@ -275,7 +274,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     public KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator(
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -287,7 +286,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     public KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator(
             final Collection<StandardDeviationFrameBodyMagneticFluxDensity> measurements) {
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -302,7 +301,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final Collection<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -312,7 +311,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      *                       for the accelerometer, gyroscope and magnetometer.
      */
     public KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator(final boolean commonAxisUsed) {
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -326,7 +325,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final boolean commonAxisUsed,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -342,7 +341,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final Collection<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed) {
         this(measurements);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -359,7 +358,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final Collection<StandardDeviationFrameBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -369,7 +368,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      *                      will be used instead.
      */
     public KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator(final WorldMagneticModel magneticModel) {
-        mMagneticModel = magneticModel;
+        this.magneticModel = magneticModel;
     }
 
     /**
@@ -383,7 +382,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final WorldMagneticModel magneticModel,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(listener);
-        mMagneticModel = magneticModel;
+        this.magneticModel = magneticModel;
     }
 
     /**
@@ -399,7 +398,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final Collection<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
             final WorldMagneticModel magneticModel) {
         this(measurements);
-        mMagneticModel = magneticModel;
+        this.magneticModel = magneticModel;
     }
 
     /**
@@ -417,7 +416,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final WorldMagneticModel magneticModel,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, listener);
-        mMagneticModel = magneticModel;
+        this.magneticModel = magneticModel;
     }
 
     /**
@@ -431,7 +430,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
     public KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator(
             final boolean commonAxisUsed, final WorldMagneticModel magneticModel) {
         this(commonAxisUsed);
-        mMagneticModel = magneticModel;
+        this.magneticModel = magneticModel;
     }
 
     /**
@@ -447,7 +446,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final boolean commonAxisUsed, final WorldMagneticModel magneticModel,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed, listener);
-        mMagneticModel = magneticModel;
+        this.magneticModel = magneticModel;
     }
 
     /**
@@ -465,7 +464,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final Collection<StandardDeviationFrameBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final WorldMagneticModel magneticModel) {
         this(measurements, commonAxisUsed);
-        mMagneticModel = magneticModel;
+        this.magneticModel = magneticModel;
     }
 
     /**
@@ -485,7 +484,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final WorldMagneticModel magneticModel,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed, listener);
-        mMagneticModel = magneticModel;
+        this.magneticModel = magneticModel;
     }
 
     /**
@@ -522,7 +521,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final double hardIronX, final double hardIronY, final double hardIronZ,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(hardIronX, hardIronY, hardIronZ);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -542,7 +541,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final Collection<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
             final double hardIronX, final double hardIronY, final double hardIronZ) {
         this(hardIronX, hardIronY, hardIronZ);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -564,7 +563,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final double hardIronX, final double hardIronY, final double hardIronZ,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, hardIronX, hardIronY, hardIronZ);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -582,7 +581,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
     public KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator(
             final boolean commonAxisUsed, final double hardIronX, final double hardIronY, final double hardIronZ) {
         this(hardIronX, hardIronY, hardIronZ);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -602,7 +601,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final boolean commonAxisUsed, final double hardIronX, final double hardIronY, final double hardIronZ,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed, hardIronX, hardIronY, hardIronZ);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -624,7 +623,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final Collection<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final double hardIronX, final double hardIronY, final double hardIronZ) {
         this(commonAxisUsed, hardIronX, hardIronY, hardIronZ);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -648,7 +647,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final double hardIronX, final double hardIronY, final double hardIronZ,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed, hardIronX, hardIronY, hardIronZ);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -667,7 +666,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final WorldMagneticModel magneticModel,
             final double hardIronX, final double hardIronY, final double hardIronZ) {
         this(hardIronX, hardIronY, hardIronZ);
-        mMagneticModel = magneticModel;
+        this.magneticModel = magneticModel;
     }
 
     /**
@@ -688,7 +687,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final double hardIronX, final double hardIronY, final double hardIronZ,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(magneticModel, hardIronX, hardIronY, hardIronZ);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -711,8 +710,8 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final WorldMagneticModel magneticModel,
             final double hardIronX, final double hardIronY, final double hardIronZ) {
         this(hardIronX, hardIronY, hardIronZ);
-        mMeasurements = measurements;
-        mMagneticModel = magneticModel;
+        this.measurements = measurements;
+        this.magneticModel = magneticModel;
     }
 
     /**
@@ -737,7 +736,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final double hardIronX, final double hardIronY, final double hardIronZ,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, magneticModel, hardIronX, hardIronY, hardIronZ);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -758,7 +757,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final boolean commonAxisUsed, final WorldMagneticModel magneticModel,
             final double hardIronX, final double hardIronY, final double hardIronZ) {
         this(magneticModel, hardIronX, hardIronY, hardIronZ);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -781,7 +780,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final double hardIronX, final double hardIronY, final double hardIronZ,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed, magneticModel, hardIronX, hardIronY, hardIronZ);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -806,7 +805,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final WorldMagneticModel magneticModel,
             final double hardIronX, final double hardIronY, final double hardIronZ) {
         this(commonAxisUsed, magneticModel, hardIronX, hardIronY, hardIronZ);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -833,7 +832,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final double hardIronX, final double hardIronY, final double hardIronZ,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed, magneticModel, hardIronX, hardIronY, hardIronZ);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -879,7 +878,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final double initialSx, final double initialSy, final double initialSz,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(hardIronX, hardIronY, hardIronZ, initialSx, initialSy, initialSz);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -903,7 +902,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final double hardIronX, final double hardIronY, final double hardIronZ,
             final double initialSx, final double initialSy, final double initialSz) {
         this(hardIronX, hardIronY, hardIronZ, initialSx, initialSy, initialSz);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -929,7 +928,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final double initialSx, final double initialSy, final double initialSz,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, hardIronX, hardIronY, hardIronZ, initialSx, initialSy, initialSz);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -951,7 +950,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final boolean commonAxisUsed, final double hardIronX, final double hardIronY, final double hardIronZ,
             final double initialSx, final double initialSy, final double initialSz) {
         this(hardIronX, hardIronY, hardIronZ, initialSx, initialSy, initialSz);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -975,7 +974,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final double initialSx, final double initialSy, final double initialSz,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed, hardIronX, hardIronY, hardIronZ, initialSx, initialSy, initialSz);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1001,7 +1000,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final double hardIronX, final double hardIronY, final double hardIronZ,
             final double initialSx, final double initialSy, final double initialSz) {
         this(commonAxisUsed, hardIronX, hardIronY, hardIronZ, initialSx, initialSy, initialSz);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1029,7 +1028,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final double initialSx, final double initialSy, final double initialSz,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed, hardIronX, hardIronY, hardIronZ, initialSx, initialSy, initialSz);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1052,7 +1051,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final double hardIronX, final double hardIronY, final double hardIronZ,
             final double initialSx, final double initialSy, final double initialSz) {
         this(hardIronX, hardIronY, hardIronZ, initialSx, initialSy, initialSz);
-        mMagneticModel = magneticModel;
+        this.magneticModel = magneticModel;
     }
 
     /**
@@ -1077,7 +1076,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final double initialSx, final double initialSy, final double initialSz,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(magneticModel, hardIronX, hardIronY, hardIronZ, initialSx, initialSy, initialSz);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1104,7 +1103,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final double hardIronX, final double hardIronY, final double hardIronZ,
             final double initialSx, final double initialSy, final double initialSz) {
         this(magneticModel, hardIronX, hardIronY, hardIronZ, initialSx, initialSy, initialSz);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1133,7 +1132,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final double initialSx, final double initialSy, final double initialSz,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, magneticModel, hardIronX, hardIronY, hardIronZ, initialSx, initialSy, initialSz);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1158,7 +1157,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final double hardIronX, final double hardIronY, final double hardIronZ,
             final double initialSx, final double initialSy, final double initialSz) {
         this(magneticModel, hardIronX, hardIronY, hardIronZ, initialSx, initialSy, initialSz);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -1185,7 +1184,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final double initialSx, final double initialSy, final double initialSz,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed, magneticModel, hardIronX, hardIronY, hardIronZ, initialSx, initialSy, initialSz);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1214,7 +1213,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final double hardIronX, final double hardIronY, final double hardIronZ,
             final double initialSx, final double initialSy, final double initialSz) {
         this(commonAxisUsed, magneticModel, hardIronX, hardIronY, hardIronZ, initialSx, initialSy, initialSz);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1246,7 +1245,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed, magneticModel, hardIronX, hardIronY, hardIronZ,
                 initialSx, initialSy, initialSz);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1310,7 +1309,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(hardIronX, hardIronY, hardIronZ, initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1343,7 +1342,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final double initialMyz, final double initialMzx, final double initialMzy) {
         this(hardIronX, hardIronY, hardIronZ, initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1378,7 +1377,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, hardIronX, hardIronY, hardIronZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1409,7 +1408,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final double initialMyz, final double initialMzx, final double initialMzy) {
         this(hardIronX, hardIronY, hardIronZ, initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -1442,7 +1441,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed, hardIronX, hardIronY, hardIronZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1477,7 +1476,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final double initialMyz, final double initialMzx, final double initialMzy) {
         this(commonAxisUsed, hardIronX, hardIronY, hardIronZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1514,7 +1513,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed, hardIronX, hardIronY, hardIronZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1546,7 +1545,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final double initialMyz, final double initialMzx, final double initialMzy) {
         this(hardIronX, hardIronY, hardIronZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mMagneticModel = magneticModel;
+        this.magneticModel = magneticModel;
     }
 
     /**
@@ -1580,7 +1579,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(magneticModel, hardIronX, hardIronY, hardIronZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1616,7 +1615,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final double initialMyz, final double initialMzx, final double initialMzy) {
         this(magneticModel, hardIronX, hardIronY, hardIronZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1654,7 +1653,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, magneticModel, hardIronX, hardIronY, hardIronZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1688,7 +1687,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final double initialMyz, final double initialMzx, final double initialMzy) {
         this(magneticModel, hardIronX, hardIronY, hardIronZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -1724,7 +1723,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed, magneticModel, hardIronX, hardIronY, hardIronZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1762,7 +1761,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final double initialMyz, final double initialMzx, final double initialMzy) {
         this(commonAxisUsed, magneticModel, hardIronX, hardIronY, hardIronZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1803,7 +1802,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
         this(measurements, commonAxisUsed, magneticModel, hardIronX, hardIronY, hardIronZ,
                 initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1833,7 +1832,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final double[] hardIron,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(hardIron);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1849,7 +1848,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
     public KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator(
             final Collection<StandardDeviationFrameBodyMagneticFluxDensity> measurements, final double[] hardIron) {
         this(hardIron);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1867,7 +1866,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final Collection<StandardDeviationFrameBodyMagneticFluxDensity> measurements, final double[] hardIron,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, hardIron);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1882,7 +1881,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
     public KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator(
             final boolean commonAxisUsed, final double[] hardIron) {
         this(hardIron);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -1899,7 +1898,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final boolean commonAxisUsed, final double[] hardIron,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed, hardIron);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1915,11 +1914,10 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      *                                  not have length 3.
      */
     public KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator(
-            final Collection<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
+            final Collection<StandardDeviationFrameBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final double[] hardIron) {
         this(commonAxisUsed, hardIron);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1940,7 +1938,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final double[] hardIron,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed, hardIron);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1955,7 +1953,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
     public KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator(
             final WorldMagneticModel magneticModel, final double[] hardIron) {
         this(hardIron);
-        mMagneticModel = magneticModel;
+        this.magneticModel = magneticModel;
     }
 
     /**
@@ -1972,7 +1970,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final WorldMagneticModel magneticModel, final double[] hardIron,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(magneticModel, hardIron);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1991,7 +1989,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final Collection<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
             final WorldMagneticModel magneticModel, final double[] hardIron) {
         this(magneticModel, hardIron);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -2012,7 +2010,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final WorldMagneticModel magneticModel, final double[] hardIron,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, magneticModel, hardIron);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2029,7 +2027,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
     public KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator(
             final boolean commonAxisUsed, final WorldMagneticModel magneticModel, final double[] hardIron) {
         this(magneticModel, hardIron);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -2048,7 +2046,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final boolean commonAxisUsed, final WorldMagneticModel magneticModel, final double[] hardIron,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed, magneticModel, hardIron);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2069,7 +2067,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final Collection<StandardDeviationFrameBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final WorldMagneticModel magneticModel, final double[] hardIron) {
         this(commonAxisUsed, magneticModel, hardIron);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -2092,7 +2090,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final WorldMagneticModel magneticModel, final double[] hardIron,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed, magneticModel, hardIron);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2122,7 +2120,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final Matrix hardIron,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(hardIron);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2138,7 +2136,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
     public KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator(
             final Collection<StandardDeviationFrameBodyMagneticFluxDensity> measurements, final Matrix hardIron) {
         this(hardIron);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -2156,7 +2154,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final Collection<StandardDeviationFrameBodyMagneticFluxDensity> measurements, final Matrix hardIron,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, hardIron);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2171,7 +2169,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
     public KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator(
             final boolean commonAxisUsed, final Matrix hardIron) {
         this(hardIron);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -2188,7 +2186,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final boolean commonAxisUsed, final Matrix hardIron,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed, hardIron);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2207,7 +2205,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final Collection<StandardDeviationFrameBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final Matrix hardIron) {
         this(commonAxisUsed, hardIron);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -2228,7 +2226,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final Matrix hardIron,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed, hardIron);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2243,7 +2241,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
     public KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator(
             final WorldMagneticModel magneticModel, final Matrix hardIron) {
         this(hardIron);
-        mMagneticModel = magneticModel;
+        this.magneticModel = magneticModel;
     }
 
     /**
@@ -2260,7 +2258,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final WorldMagneticModel magneticModel, final Matrix hardIron,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(magneticModel, hardIron);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2279,7 +2277,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final Collection<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
             final WorldMagneticModel magneticModel, final Matrix hardIron) {
         this(magneticModel, hardIron);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -2300,7 +2298,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final WorldMagneticModel magneticModel, final Matrix hardIron,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, magneticModel, hardIron);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2317,7 +2315,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
     public KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator(
             final boolean commonAxisUsed, final WorldMagneticModel magneticModel, final Matrix hardIron) {
         this(magneticModel, hardIron);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -2336,7 +2334,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final boolean commonAxisUsed, final WorldMagneticModel magneticModel, final Matrix hardIron,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed, magneticModel, hardIron);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2357,7 +2355,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final Collection<StandardDeviationFrameBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final WorldMagneticModel magneticModel, final Matrix hardIron) {
         this(commonAxisUsed, magneticModel, hardIron);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -2380,7 +2378,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final WorldMagneticModel magneticModel, final Matrix hardIron,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed, magneticModel, hardIron);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2418,7 +2416,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final Matrix hardIron, final Matrix initialMm,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(hardIron, initialMm);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2438,7 +2436,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final Collection<StandardDeviationFrameBodyMagneticFluxDensity> measurements, final Matrix hardIron,
             final Matrix initialMm) {
         this(hardIron, initialMm);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -2460,7 +2458,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final Matrix initialMm,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, hardIron, initialMm);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2478,7 +2476,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
     public KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator(
             final boolean commonAxisUsed, final Matrix hardIron, final Matrix initialMm) {
         this(hardIron, initialMm);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -2498,7 +2496,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final boolean commonAxisUsed, final Matrix hardIron, final Matrix initialMm,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed, hardIron, initialMm);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2520,7 +2518,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final Collection<StandardDeviationFrameBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final Matrix hardIron, final Matrix initialMm) {
         this(commonAxisUsed, hardIron, initialMm);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -2544,7 +2542,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final Matrix hardIron, final Matrix initialMm,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed, hardIron, initialMm);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2562,7 +2560,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
     public KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator(
             final WorldMagneticModel magneticModel, final Matrix hardIron, final Matrix initialMm) {
         this(hardIron, initialMm);
-        mMagneticModel = magneticModel;
+        this.magneticModel = magneticModel;
     }
 
     /**
@@ -2582,7 +2580,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final WorldMagneticModel magneticModel, final Matrix hardIron, final Matrix initialMm,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(magneticModel, hardIron, initialMm);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2604,7 +2602,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final Collection<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
             final WorldMagneticModel magneticModel, final Matrix hardIron, final Matrix initialMm) {
         this(magneticModel, hardIron, initialMm);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -2628,7 +2626,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final WorldMagneticModel magneticModel, final Matrix hardIron, final Matrix initialMm,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, magneticModel, hardIron, initialMm);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2649,7 +2647,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final boolean commonAxisUsed, final WorldMagneticModel magneticModel, final Matrix hardIron,
             final Matrix initialMm) {
         this(magneticModel, hardIron, initialMm);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -2672,7 +2670,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final Matrix initialMm,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed, magneticModel, hardIron, initialMm);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2696,7 +2694,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final Collection<StandardDeviationFrameBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final WorldMagneticModel magneticModel, final Matrix hardIron, final Matrix initialMm) {
         this(commonAxisUsed, magneticModel, hardIron, initialMm);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -2722,7 +2720,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final WorldMagneticModel magneticModel, final Matrix hardIron, final Matrix initialMm,
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed, magneticModel, hardIron, initialMm);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2733,7 +2731,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public double getHardIronX() {
-        return mHardIronX;
+        return hardIronX;
     }
 
     /**
@@ -2745,10 +2743,10 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public void setHardIronX(final double hardIronX) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mHardIronX = hardIronX;
+        this.hardIronX = hardIronX;
     }
 
     /**
@@ -2759,7 +2757,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public double getHardIronY() {
-        return mHardIronY;
+        return hardIronY;
     }
 
     /**
@@ -2771,10 +2769,10 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public void setHardIronY(final double hardIronY) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mHardIronY = hardIronY;
+        this.hardIronY = hardIronY;
     }
 
     /**
@@ -2785,7 +2783,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public double getHardIronZ() {
-        return mHardIronZ;
+        return hardIronZ;
     }
 
     /**
@@ -2797,10 +2795,10 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public void setHardIronZ(final double hardIronZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mHardIronZ = hardIronZ;
+        this.hardIronZ = hardIronZ;
     }
 
     /**
@@ -2810,7 +2808,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public MagneticFluxDensity getHardIronXAsMagneticFluxDensity() {
-        return new MagneticFluxDensity(mHardIronX, MagneticFluxDensityUnit.TESLA);
+        return new MagneticFluxDensity(hardIronX, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -2820,7 +2818,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public void getHardIronXAsMagneticFluxDensity(final MagneticFluxDensity result) {
-        result.setValue(mHardIronX);
+        result.setValue(hardIronX);
         result.setUnit(MagneticFluxDensityUnit.TESLA);
     }
 
@@ -2832,10 +2830,10 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public void setHardIronX(final MagneticFluxDensity hardIronX) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mHardIronX = convertMagneticFluxDensity(hardIronX);
+        this.hardIronX = convertMagneticFluxDensity(hardIronX);
     }
 
     /**
@@ -2845,7 +2843,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public MagneticFluxDensity getHardIronYAsMagneticFluxDensity() {
-        return new MagneticFluxDensity(mHardIronY, MagneticFluxDensityUnit.TESLA);
+        return new MagneticFluxDensity(hardIronY, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -2855,7 +2853,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public void getHardIronYAsMagneticFluxDensity(final MagneticFluxDensity result) {
-        result.setValue(mHardIronY);
+        result.setValue(hardIronY);
         result.setUnit(MagneticFluxDensityUnit.TESLA);
     }
 
@@ -2867,10 +2865,10 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public void setHardIronY(final MagneticFluxDensity hardIronY) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mHardIronY = convertMagneticFluxDensity(hardIronY);
+        this.hardIronY = convertMagneticFluxDensity(hardIronY);
     }
 
     /**
@@ -2880,7 +2878,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public MagneticFluxDensity getHardIronZAsMagneticFluxDensity() {
-        return new MagneticFluxDensity(mHardIronZ, MagneticFluxDensityUnit.TESLA);
+        return new MagneticFluxDensity(hardIronZ, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -2890,7 +2888,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public void getHardIronZAsMagneticFluxDensity(final MagneticFluxDensity result) {
-        result.setValue(mHardIronZ);
+        result.setValue(hardIronZ);
         result.setUnit(MagneticFluxDensityUnit.TESLA);
     }
 
@@ -2902,10 +2900,10 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public void setHardIronZ(final MagneticFluxDensity hardIronZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mHardIronZ = convertMagneticFluxDensity(hardIronZ);
+        this.hardIronZ = convertMagneticFluxDensity(hardIronZ);
     }
 
     /**
@@ -2920,12 +2918,12 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
     @Override
     public void setHardIronCoordinates(
             final double hardIronX, final double hardIronY, final double hardIronZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mHardIronX = hardIronX;
-        mHardIronY = hardIronY;
-        mHardIronZ = hardIronZ;
+        this.hardIronX = hardIronX;
+        this.hardIronY = hardIronY;
+        this.hardIronZ = hardIronZ;
     }
 
     /**
@@ -2940,12 +2938,12 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
     public void setHardIronCoordinates(
             final MagneticFluxDensity hardIronX, final MagneticFluxDensity hardIronY,
             final MagneticFluxDensity hardIronZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mHardIronX = convertMagneticFluxDensity(hardIronX);
-        mHardIronY = convertMagneticFluxDensity(hardIronY);
-        mHardIronZ = convertMagneticFluxDensity(hardIronZ);
+        this.hardIronX = convertMagneticFluxDensity(hardIronX);
+        this.hardIronY = convertMagneticFluxDensity(hardIronY);
+        this.hardIronZ = convertMagneticFluxDensity(hardIronZ);
     }
 
     /**
@@ -2955,7 +2953,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public MagneticFluxDensityTriad getHardIronAsTriad() {
-        return new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA, mHardIronX, mHardIronY, mHardIronZ);
+        return new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA, hardIronX, hardIronY, hardIronZ);
     }
 
     /**
@@ -2965,7 +2963,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public void getHardIronAsTriad(final MagneticFluxDensityTriad result) {
-        result.setValueCoordinatesAndUnit(mHardIronX, mHardIronY, mHardIronZ, MagneticFluxDensityUnit.TESLA);
+        result.setValueCoordinatesAndUnit(hardIronX, hardIronY, hardIronZ, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -2976,13 +2974,13 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public void setHardIron(final MagneticFluxDensityTriad hardIron) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mHardIronX = convertMagneticFluxDensity(hardIron.getValueX(), hardIron.getUnit());
-        mHardIronY = convertMagneticFluxDensity(hardIron.getValueY(), hardIron.getUnit());
-        mHardIronZ = convertMagneticFluxDensity(hardIron.getValueZ(), hardIron.getUnit());
+        hardIronX = convertMagneticFluxDensity(hardIron.getValueX(), hardIron.getUnit());
+        hardIronY = convertMagneticFluxDensity(hardIron.getValueY(), hardIron.getUnit());
+        hardIronZ = convertMagneticFluxDensity(hardIron.getValueZ(), hardIron.getUnit());
     }
 
     /**
@@ -2992,7 +2990,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public double getInitialSx() {
-        return mInitialSx;
+        return initialSx;
     }
 
     /**
@@ -3003,10 +3001,10 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public void setInitialSx(final double initialSx) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialSx = initialSx;
+        this.initialSx = initialSx;
     }
 
     /**
@@ -3016,7 +3014,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public double getInitialSy() {
-        return mInitialSy;
+        return initialSy;
     }
 
     /**
@@ -3027,10 +3025,10 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public void setInitialSy(final double initialSy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialSy = initialSy;
+        this.initialSy = initialSy;
     }
 
     /**
@@ -3040,7 +3038,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public double getInitialSz() {
-        return mInitialSz;
+        return initialSz;
     }
 
     /**
@@ -3051,10 +3049,10 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public void setInitialSz(final double initialSz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialSz = initialSz;
+        this.initialSz = initialSz;
     }
 
     /**
@@ -3064,7 +3062,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public double getInitialMxy() {
-        return mInitialMxy;
+        return initialMxy;
     }
 
     /**
@@ -3075,10 +3073,10 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public void setInitialMxy(final double initialMxy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMxy = initialMxy;
+        this.initialMxy = initialMxy;
     }
 
     /**
@@ -3088,7 +3086,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public double getInitialMxz() {
-        return mInitialMxz;
+        return initialMxz;
     }
 
     /**
@@ -3099,10 +3097,10 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public void setInitialMxz(final double initialMxz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMxz = initialMxz;
+        this.initialMxz = initialMxz;
     }
 
     /**
@@ -3112,7 +3110,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public double getInitialMyx() {
-        return mInitialMyx;
+        return initialMyx;
     }
 
     /**
@@ -3123,10 +3121,10 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public void setInitialMyx(final double initialMyx) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMyx = initialMyx;
+        this.initialMyx = initialMyx;
     }
 
     /**
@@ -3136,7 +3134,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public double getInitialMyz() {
-        return mInitialMyz;
+        return initialMyz;
     }
 
     /**
@@ -3147,10 +3145,10 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public void setInitialMyz(final double initialMyz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMyz = initialMyz;
+        this.initialMyz = initialMyz;
     }
 
     /**
@@ -3160,7 +3158,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public double getInitialMzx() {
-        return mInitialMzx;
+        return initialMzx;
     }
 
     /**
@@ -3171,10 +3169,10 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public void setInitialMzx(final double initialMzx) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMzx = initialMzx;
+        this.initialMzx = initialMzx;
     }
 
     /**
@@ -3184,7 +3182,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public double getInitialMzy() {
-        return mInitialMzy;
+        return initialMzy;
     }
 
     /**
@@ -3195,10 +3193,10 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public void setInitialMzy(final double initialMzy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMzy = initialMzy;
+        this.initialMzy = initialMzy;
     }
 
     /**
@@ -3212,12 +3210,12 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
     @Override
     public void setInitialScalingFactors(
             final double initialSx, final double initialSy, final double initialSz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialSx = initialSx;
-        mInitialSy = initialSy;
-        mInitialSz = initialSz;
+        this.initialSx = initialSx;
+        this.initialSy = initialSy;
+        this.initialSz = initialSz;
     }
 
     /**
@@ -3235,15 +3233,15 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
     public void setInitialCrossCouplingErrors(
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMxy = initialMxy;
-        mInitialMxz = initialMxz;
-        mInitialMyx = initialMyx;
-        mInitialMyz = initialMyz;
-        mInitialMzx = initialMzx;
-        mInitialMzy = initialMzy;
+        this.initialMxy = initialMxy;
+        this.initialMxz = initialMxz;
+        this.initialMyx = initialMyx;
+        this.initialMyz = initialMyz;
+        this.initialMzx = initialMzx;
+        this.initialMzy = initialMzy;
     }
 
     /**
@@ -3265,7 +3263,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             final double initialSx, final double initialSy, final double initialSz,
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         setInitialScalingFactors(initialSx, initialSy, initialSz);
@@ -3280,7 +3278,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public double[] getHardIron() {
-        final double[] result = new double[BodyMagneticFluxDensity.COMPONENTS];
+        final var result = new double[BodyMagneticFluxDensity.COMPONENTS];
         getHardIron(result);
         return result;
     }
@@ -3298,9 +3296,9 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
         if (result.length != BodyMagneticFluxDensity.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        result[0] = mHardIronX;
-        result[1] = mHardIronY;
-        result[2] = mHardIronZ;
+        result[0] = hardIronX;
+        result[1] = hardIronY;
+        result[2] = hardIronZ;
     }
 
     /**
@@ -3314,16 +3312,16 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public void setHardIron(final double[] hardIron) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
         if (hardIron.length != BodyMagneticFluxDensity.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        mHardIronX = hardIron[0];
-        mHardIronY = hardIron[1];
-        mHardIronZ = hardIron[2];
+        hardIronX = hardIron[0];
+        hardIronY = hardIron[1];
+        hardIronZ = hardIron[2];
     }
 
     /**
@@ -3355,9 +3353,9 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
         if (result.getRows() != BodyMagneticFluxDensity.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
-        result.setElementAtIndex(0, mHardIronX);
-        result.setElementAtIndex(1, mHardIronY);
-        result.setElementAtIndex(2, mHardIronZ);
+        result.setElementAtIndex(0, hardIronX);
+        result.setElementAtIndex(1, hardIronY);
+        result.setElementAtIndex(2, hardIronZ);
     }
 
     /**
@@ -3369,16 +3367,16 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public void setHardIron(final Matrix hardIron) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (hardIron.getRows() != BodyMagneticFluxDensity.COMPONENTS || hardIron.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
-        mHardIronX = hardIron.getElementAtIndex(0);
-        mHardIronY = hardIron.getElementAtIndex(1);
-        mHardIronZ = hardIron.getElementAtIndex(2);
+        hardIronX = hardIron.getElementAtIndex(0);
+        hardIronY = hardIron.getElementAtIndex(1);
+        hardIronZ = hardIron.getElementAtIndex(2);
     }
 
     /**
@@ -3410,17 +3408,17 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
         if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        result.setElementAtIndex(0, mInitialSx);
-        result.setElementAtIndex(1, mInitialMyx);
-        result.setElementAtIndex(2, mInitialMzx);
+        result.setElementAtIndex(0, initialSx);
+        result.setElementAtIndex(1, initialMyx);
+        result.setElementAtIndex(2, initialMzx);
 
-        result.setElementAtIndex(3, mInitialMxy);
-        result.setElementAtIndex(4, mInitialSy);
-        result.setElementAtIndex(5, mInitialMzy);
+        result.setElementAtIndex(3, initialMxy);
+        result.setElementAtIndex(4, initialSy);
+        result.setElementAtIndex(5, initialMzy);
 
-        result.setElementAtIndex(6, mInitialMxz);
-        result.setElementAtIndex(7, mInitialMyz);
-        result.setElementAtIndex(8, mInitialSz);
+        result.setElementAtIndex(6, initialMxz);
+        result.setElementAtIndex(7, initialMyz);
+        result.setElementAtIndex(8, initialSz);
     }
 
     /**
@@ -3432,24 +3430,24 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public void setInitialMm(final Matrix initialMm) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (initialMm.getRows() != BodyKinematics.COMPONENTS || initialMm.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
-        mInitialSx = initialMm.getElementAtIndex(0);
-        mInitialMyx = initialMm.getElementAtIndex(1);
-        mInitialMzx = initialMm.getElementAtIndex(2);
+        initialSx = initialMm.getElementAtIndex(0);
+        initialMyx = initialMm.getElementAtIndex(1);
+        initialMzx = initialMm.getElementAtIndex(2);
 
-        mInitialMxy = initialMm.getElementAtIndex(3);
-        mInitialSy = initialMm.getElementAtIndex(4);
-        mInitialMzy = initialMm.getElementAtIndex(5);
+        initialMxy = initialMm.getElementAtIndex(3);
+        initialSy = initialMm.getElementAtIndex(4);
+        initialMzy = initialMm.getElementAtIndex(5);
 
-        mInitialMxz = initialMm.getElementAtIndex(6);
-        mInitialMyz = initialMm.getElementAtIndex(7);
-        mInitialSz = initialMm.getElementAtIndex(8);
+        initialMxz = initialMm.getElementAtIndex(6);
+        initialMyz = initialMm.getElementAtIndex(7);
+        initialSz = initialMm.getElementAtIndex(8);
     }
 
     /**
@@ -3470,7 +3468,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public Collection<StandardDeviationFrameBodyMagneticFluxDensity> getMeasurements() {
-        return mMeasurements;
+        return measurements;
     }
 
     /**
@@ -3495,11 +3493,11 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
     public void setMeasurements(
             final Collection<? extends StandardDeviationFrameBodyMagneticFluxDensity> measurements)
             throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         //noinspection unchecked
-        mMeasurements = (Collection<StandardDeviationFrameBodyMagneticFluxDensity>) measurements;
+        this.measurements = (Collection<StandardDeviationFrameBodyMagneticFluxDensity>) measurements;
     }
 
     /**
@@ -3544,7 +3542,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public boolean isCommonAxisUsed() {
-        return mCommonAxisUsed;
+        return commonAxisUsed;
     }
 
     /**
@@ -3559,11 +3557,11 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public void setCommonAxisUsed(final boolean commonAxisUsed) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -3573,7 +3571,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener getListener() {
-        return mListener;
+        return listener;
     }
 
     /**
@@ -3586,11 +3584,11 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
     public void setListener(
             final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener listener)
             throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -3610,7 +3608,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public boolean isReady() {
-        return mMeasurements != null && mMeasurements.size() >= MINIMUM_MEASUREMENTS;
+        return measurements != null && measurements.size() >= MINIMUM_MEASUREMENTS;
     }
 
     /**
@@ -3620,7 +3618,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public boolean isRunning() {
-        return mRunning;
+        return running;
     }
 
     /**
@@ -3629,7 +3627,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      * @return Earth's magnetic model or null if not provided.
      */
     public WorldMagneticModel getMagneticModel() {
-        return mMagneticModel;
+        return magneticModel;
     }
 
     /**
@@ -3639,10 +3637,10 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      * @throws LockedException if calibrator is currently running.
      */
     public void setMagneticModel(final WorldMagneticModel magneticModel) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mMagneticModel = magneticModel;
+        this.magneticModel = magneticModel;
     }
 
     /**
@@ -3655,7 +3653,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public void calibrate() throws LockedException, NotReadyException, CalibrationException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
@@ -3664,26 +3662,26 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
         }
 
         try {
-            mRunning = true;
+            running = true;
 
-            if (mListener != null) {
-                mListener.onCalibrateStart(this);
+            if (listener != null) {
+                listener.onCalibrateStart(this);
             }
 
-            if (mCommonAxisUsed) {
+            if (commonAxisUsed) {
                 calibrateCommonAxis();
             } else {
                 calibrateGeneral();
             }
 
-            if (mListener != null) {
-                mListener.onCalibrateEnd(this);
+            if (listener != null) {
+                listener.onCalibrateEnd(this);
             }
 
         } catch (final AlgebraException | FittingException | com.irurueta.numerical.NotReadyException | IOException e) {
             throw new CalibrationException(e);
         } finally {
-            mRunning = false;
+            running = false;
         }
     }
 
@@ -3732,7 +3730,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public Matrix getEstimatedMm() {
-        return mEstimatedMm;
+        return estimatedMm;
     }
 
     /**
@@ -3742,7 +3740,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public Double getEstimatedSx() {
-        return mEstimatedMm != null ? mEstimatedMm.getElementAt(0, 0) : null;
+        return estimatedMm != null ? estimatedMm.getElementAt(0, 0) : null;
     }
 
     /**
@@ -3752,7 +3750,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public Double getEstimatedSy() {
-        return mEstimatedMm != null ? mEstimatedMm.getElementAt(1, 1) : null;
+        return estimatedMm != null ? estimatedMm.getElementAt(1, 1) : null;
     }
 
     /**
@@ -3762,7 +3760,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public Double getEstimatedSz() {
-        return mEstimatedMm != null ? mEstimatedMm.getElementAt(2, 2) : null;
+        return estimatedMm != null ? estimatedMm.getElementAt(2, 2) : null;
     }
 
     /**
@@ -3772,7 +3770,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public Double getEstimatedMxy() {
-        return mEstimatedMm != null ? mEstimatedMm.getElementAt(0, 1) : null;
+        return estimatedMm != null ? estimatedMm.getElementAt(0, 1) : null;
     }
 
     /**
@@ -3782,7 +3780,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public Double getEstimatedMxz() {
-        return mEstimatedMm != null ? mEstimatedMm.getElementAt(0, 2) : null;
+        return estimatedMm != null ? estimatedMm.getElementAt(0, 2) : null;
     }
 
     /**
@@ -3792,7 +3790,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public Double getEstimatedMyx() {
-        return mEstimatedMm != null ? mEstimatedMm.getElementAt(1, 0) : null;
+        return estimatedMm != null ? estimatedMm.getElementAt(1, 0) : null;
     }
 
     /**
@@ -3802,7 +3800,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public Double getEstimatedMyz() {
-        return mEstimatedMm != null ? mEstimatedMm.getElementAt(1, 2) : null;
+        return estimatedMm != null ? estimatedMm.getElementAt(1, 2) : null;
     }
 
     /**
@@ -3812,7 +3810,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public Double getEstimatedMzx() {
-        return mEstimatedMm != null ? mEstimatedMm.getElementAt(2, 0) : null;
+        return estimatedMm != null ? estimatedMm.getElementAt(2, 0) : null;
     }
 
     /**
@@ -3822,7 +3820,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public Double getEstimatedMzy() {
-        return mEstimatedMm != null ? mEstimatedMm.getElementAt(2, 1) : null;
+        return estimatedMm != null ? estimatedMm.getElementAt(2, 1) : null;
     }
 
     /**
@@ -3835,7 +3833,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public Matrix getEstimatedCovariance() {
-        return mEstimatedCovariance;
+        return estimatedCovariance;
     }
 
     /**
@@ -3845,7 +3843,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public double getEstimatedChiSq() {
-        return mEstimatedChiSq;
+        return estimatedChiSq;
     }
 
     /**
@@ -3855,7 +3853,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
      */
     @Override
     public double getEstimatedMse() {
-        return mEstimatedMse;
+        return estimatedMse;
     }
 
     /**
@@ -3912,137 +3910,136 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
         //                                                       [mxz]
         //                                                       [myz]
 
-        mFitter.setFunctionEvaluator(
-                new LevenbergMarquardtMultiVariateFunctionEvaluator() {
-                    @Override
-                    public int getNumberOfDimensions() {
-                        // Input points are true magnetic flux density coordinates
-                        return BodyMagneticFluxDensity.COMPONENTS;
-                    }
+        fitter.setFunctionEvaluator(new LevenbergMarquardtMultiVariateFunctionEvaluator() {
+            @Override
+            public int getNumberOfDimensions() {
+                // Input points are true magnetic flux density coordinates
+                return BodyMagneticFluxDensity.COMPONENTS;
+            }
 
-                    @Override
-                    public int getNumberOfVariables() {
-                        // The multivariate function returns the components of measured magnetic flux density
-                        return BodyMagneticFluxDensity.COMPONENTS;
-                    }
+            @Override
+            public int getNumberOfVariables() {
+                // The multivariate function returns the components of measured magnetic flux density
+                return BodyMagneticFluxDensity.COMPONENTS;
+            }
 
-                    @Override
-                    public double[] createInitialParametersArray() {
-                        final double[] initial = new double[COMMON_Z_AXIS_UNKNOWNS];
+            @Override
+            public double[] createInitialParametersArray() {
+                final var initial = new double[COMMON_Z_AXIS_UNKNOWNS];
 
-                        initial[0] = mInitialSx;
-                        initial[1] = mInitialSy;
-                        initial[2] = mInitialSz;
+                initial[0] = initialSx;
+                initial[1] = initialSy;
+                initial[2] = initialSz;
 
-                        initial[3] = mInitialMxy;
-                        initial[4] = mInitialMxz;
-                        initial[5] = mInitialMyz;
+                initial[3] = initialMxy;
+                initial[4] = initialMxz;
+                initial[5] = initialMyz;
 
-                        return initial;
-                    }
+                return initial;
+            }
 
-                    @Override
-                    public void evaluate(
-                            final int i, final double[] point, final double[] result, final double[] params,
-                            final Matrix jacobian) {
-                        // We know that:
-                        // mBmeasx = bx + mBtruex + sx * mBtruex + mxy * mBtruey + mxz * mBtruez
-                        // mBmeasy = by + mBtruey + sy * mBtruey + myz * mBtruez
-                        // mBmeasz = bz + mBtruez + sz * mBtruez
+            @Override
+            public void evaluate(
+                    final int i, final double[] point, final double[] result, final double[] params,
+                    final Matrix jacobian) {
+                // We know that:
+                // mBmeasx = bx + mBtruex + sx * mBtruex + mxy * mBtruey + mxz * mBtruez
+                // mBmeasy = by + mBtruey + sy * mBtruey + myz * mBtruez
+                // mBmeasz = bz + mBtruez + sz * mBtruez
 
-                        // Hence, the derivatives respect the parameters sx, sy, sz,
-                        // mxy, mxz, myz
+                // Hence, the derivatives respect the parameters sx, sy, sz,
+                // mxy, mxz, myz
 
-                        // d(fmeasx)/d(sx) = mBtruex
-                        // d(fmeasx)/d(sy) = 0.0
-                        // d(fmeasx)/d(sz) = 0.0
-                        // d(fmeasx)/d(mxy) = mBtruey
-                        // d(fmeasx)/d(mxz) = mBtruez
-                        // d(fmeasx)/d(myz) = 0.0
+                // d(fmeasx)/d(sx) = mBtruex
+                // d(fmeasx)/d(sy) = 0.0
+                // d(fmeasx)/d(sz) = 0.0
+                // d(fmeasx)/d(mxy) = mBtruey
+                // d(fmeasx)/d(mxz) = mBtruez
+                // d(fmeasx)/d(myz) = 0.0
 
-                        // d(fmeasy)/d(sx) = 0.0
-                        // d(fmeasy)/d(sy) = mBtruey
-                        // d(fmeasy)/d(sz) = 0.0
-                        // d(fmeasy)/d(mxy) = 0.0
-                        // d(fmeasy)/d(mxz) = 0.0
-                        // d(fmeasy)/d(myz) = mBtruez
+                // d(fmeasy)/d(sx) = 0.0
+                // d(fmeasy)/d(sy) = mBtruey
+                // d(fmeasy)/d(sz) = 0.0
+                // d(fmeasy)/d(mxy) = 0.0
+                // d(fmeasy)/d(mxz) = 0.0
+                // d(fmeasy)/d(myz) = mBtruez
 
-                        // d(fmeasz)/d(sx) = 0.0
-                        // d(fmeasz)/d(sy) = 0.0
-                        // d(fmeasz)/d(sz) = mBtruez
-                        // d(fmeasz)/d(mxy) = 0.0
-                        // d(fmeasz)/d(mxz) = 0.0
-                        // d(fmeasz)/d(myz) = 0.0
+                // d(fmeasz)/d(sx) = 0.0
+                // d(fmeasz)/d(sy) = 0.0
+                // d(fmeasz)/d(sz) = mBtruez
+                // d(fmeasz)/d(mxy) = 0.0
+                // d(fmeasz)/d(mxz) = 0.0
+                // d(fmeasz)/d(myz) = 0.0
 
-                        final double sx = params[0];
-                        final double sy = params[1];
-                        final double sz = params[2];
+                final var sx = params[0];
+                final var sy = params[1];
+                final var sz = params[2];
 
-                        final double mxy = params[3];
-                        final double mxz = params[4];
-                        final double myz = params[5];
+                final var mxy = params[3];
+                final var mxz = params[4];
+                final var myz = params[5];
 
-                        final double btruex = point[0];
-                        final double btruey = point[1];
-                        final double btruez = point[2];
+                final var btruex = point[0];
+                final var btruey = point[1];
+                final var btruez = point[2];
 
-                        result[0] = mHardIronX + btruex + sx * btruex + mxy * btruey + mxz * btruez;
-                        result[1] = mHardIronY + btruey + sy * btruey + myz * btruez;
-                        result[2] = mHardIronZ + btruez + sz * btruez;
+                result[0] = hardIronX + btruex + sx * btruex + mxy * btruey + mxz * btruez;
+                result[1] = hardIronY + btruey + sy * btruey + myz * btruez;
+                result[2] = hardIronZ + btruez + sz * btruez;
 
-                        jacobian.setElementAt(0, 0, btruex);
-                        jacobian.setElementAt(0, 1, 0.0);
-                        jacobian.setElementAt(0, 2, 0.0);
-                        jacobian.setElementAt(0, 3, btruey);
-                        jacobian.setElementAt(0, 4, btruez);
-                        jacobian.setElementAt(0, 5, 0.0);
+                jacobian.setElementAt(0, 0, btruex);
+                jacobian.setElementAt(0, 1, 0.0);
+                jacobian.setElementAt(0, 2, 0.0);
+                jacobian.setElementAt(0, 3, btruey);
+                jacobian.setElementAt(0, 4, btruez);
+                jacobian.setElementAt(0, 5, 0.0);
 
-                        jacobian.setElementAt(1, 0, 0.0);
-                        jacobian.setElementAt(1, 1, btruey);
-                        jacobian.setElementAt(1, 2, 0.0);
-                        jacobian.setElementAt(1, 3, 0.0);
-                        jacobian.setElementAt(1, 4, 0.0);
-                        jacobian.setElementAt(1, 5, btruez);
+                jacobian.setElementAt(1, 0, 0.0);
+                jacobian.setElementAt(1, 1, btruey);
+                jacobian.setElementAt(1, 2, 0.0);
+                jacobian.setElementAt(1, 3, 0.0);
+                jacobian.setElementAt(1, 4, 0.0);
+                jacobian.setElementAt(1, 5, btruez);
 
-                        jacobian.setElementAt(2, 0, 0.0);
-                        jacobian.setElementAt(2, 1, 0.0);
-                        jacobian.setElementAt(2, 2, btruez);
-                        jacobian.setElementAt(2, 3, 0.0);
-                        jacobian.setElementAt(2, 4, 0.0);
-                        jacobian.setElementAt(2, 5, 0.0);
-                    }
-                });
+                jacobian.setElementAt(2, 0, 0.0);
+                jacobian.setElementAt(2, 1, 0.0);
+                jacobian.setElementAt(2, 2, btruez);
+                jacobian.setElementAt(2, 3, 0.0);
+                jacobian.setElementAt(2, 4, 0.0);
+                jacobian.setElementAt(2, 5, 0.0);
+            }
+        });
 
         setInputData();
 
-        mFitter.fit();
+        fitter.fit();
 
-        final double[] result = mFitter.getA();
+        final var result = fitter.getA();
 
-        final double sx = result[0];
-        final double sy = result[1];
-        final double sz = result[2];
+        final var sx = result[0];
+        final var sy = result[1];
+        final var sz = result[2];
 
-        final double mxy = result[3];
-        final double mxz = result[4];
-        final double myz = result[5];
+        final var mxy = result[3];
+        final var mxz = result[4];
+        final var myz = result[5];
 
-        if (mEstimatedMm == null) {
-            mEstimatedMm = new Matrix(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
+        if (estimatedMm == null) {
+            estimatedMm = new Matrix(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
         } else {
-            mEstimatedMm.initialize(0.0);
+            estimatedMm.initialize(0.0);
         }
 
-        mEstimatedMm.setElementAt(0, 0, sx);
+        estimatedMm.setElementAt(0, 0, sx);
 
-        mEstimatedMm.setElementAt(0, 1, mxy);
-        mEstimatedMm.setElementAt(1, 1, sy);
+        estimatedMm.setElementAt(0, 1, mxy);
+        estimatedMm.setElementAt(1, 1, sy);
 
-        mEstimatedMm.setElementAt(0, 2, mxz);
-        mEstimatedMm.setElementAt(1, 2, myz);
-        mEstimatedMm.setElementAt(2, 2, sz);
+        estimatedMm.setElementAt(0, 2, mxz);
+        estimatedMm.setElementAt(1, 2, myz);
+        estimatedMm.setElementAt(2, 2, sz);
 
-        mEstimatedCovariance = mFitter.getCovar();
+        estimatedCovariance = fitter.getCovar();
 
         // propagate covariance matrix so that all parameters are taken into
         // account in the order: sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy
@@ -4062,17 +4059,17 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
         // As defined in com.irurueta.statistics.MultivariateNormalDist,
         // if we consider the jacobian of the lineal application the matrix shown
         // above, then covariance can be propagated as follows
-        final Matrix jacobian = Matrix.identity(GENERAL_UNKNOWNS, COMMON_Z_AXIS_UNKNOWNS);
+        final var jacobian = Matrix.identity(GENERAL_UNKNOWNS, COMMON_Z_AXIS_UNKNOWNS);
         jacobian.setElementAt(5, 5, 0.0);
         jacobian.setElementAt(6, 5, 1.0);
 
         // propagated covariance is J * Cov * J'
-        final Matrix jacobianTrans = jacobian.transposeAndReturnNew();
-        jacobian.multiply(mEstimatedCovariance);
+        final var jacobianTrans = jacobian.transposeAndReturnNew();
+        jacobian.multiply(estimatedCovariance);
         jacobian.multiply(jacobianTrans);
-        mEstimatedCovariance = jacobian;
-        mEstimatedChiSq = mFitter.getChisq();
-        mEstimatedMse = mFitter.getMse();
+        estimatedCovariance = jacobian;
+        estimatedChiSq = fitter.getChisq();
+        estimatedMse = fitter.getMse();
     }
 
     /**
@@ -4124,169 +4121,168 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
         //                                                                                  [mzx]
         //                                                                                  [mzy]
 
-        mFitter.setFunctionEvaluator(
-                new LevenbergMarquardtMultiVariateFunctionEvaluator() {
-                    @Override
-                    public int getNumberOfDimensions() {
-                        // Input points are true magnetic flux density coordinates
-                        return BodyMagneticFluxDensity.COMPONENTS;
-                    }
+        fitter.setFunctionEvaluator(new LevenbergMarquardtMultiVariateFunctionEvaluator() {
+            @Override
+            public int getNumberOfDimensions() {
+                // Input points are true magnetic flux density coordinates
+                return BodyMagneticFluxDensity.COMPONENTS;
+            }
 
-                    @Override
-                    public int getNumberOfVariables() {
-                        // The multivariate function returns the components of measured magnetic flux density
-                        return BodyMagneticFluxDensity.COMPONENTS;
-                    }
+            @Override
+            public int getNumberOfVariables() {
+                // The multivariate function returns the components of measured magnetic flux density
+                return BodyMagneticFluxDensity.COMPONENTS;
+            }
 
-                    @Override
-                    public double[] createInitialParametersArray() {
-                        final double[] initial = new double[GENERAL_UNKNOWNS];
+            @Override
+            public double[] createInitialParametersArray() {
+                final var initial = new double[GENERAL_UNKNOWNS];
 
-                        initial[0] = mInitialSx;
-                        initial[1] = mInitialSy;
-                        initial[2] = mInitialSz;
+                initial[0] = initialSx;
+                initial[1] = initialSy;
+                initial[2] = initialSz;
 
-                        initial[3] = mInitialMxy;
-                        initial[4] = mInitialMxz;
-                        initial[5] = mInitialMyx;
-                        initial[6] = mInitialMyz;
-                        initial[7] = mInitialMzx;
-                        initial[8] = mInitialMzy;
+                initial[3] = initialMxy;
+                initial[4] = initialMxz;
+                initial[5] = initialMyx;
+                initial[6] = initialMyz;
+                initial[7] = initialMzx;
+                initial[8] = initialMzy;
 
-                        return initial;
-                    }
+                return initial;
+            }
 
-                    @Override
-                    public void evaluate(
-                            final int i, final double[] point, final double[] result, final double[] params,
-                            final Matrix jacobian) {
-                        // We know that:
-                        // mBmeasx = bx + mBtruex + sx * mBtruex + mxy * mBtruey + mxz * mBtruez
-                        // mBmeasy = by + myx * mBtruex + mBtruey + sy * mBtruey + myz * mBtruez
-                        // mBmeasz = bz + mzx * mBtruex + mzy * mBtruey + mBtruez + sz * mBtruez
+            @Override
+            public void evaluate(
+                    final int i, final double[] point, final double[] result, final double[] params,
+                    final Matrix jacobian) {
+                // We know that:
+                // mBmeasx = bx + mBtruex + sx * mBtruex + mxy * mBtruey + mxz * mBtruez
+                // mBmeasy = by + myx * mBtruex + mBtruey + sy * mBtruey + myz * mBtruez
+                // mBmeasz = bz + mzx * mBtruex + mzy * mBtruey + mBtruez + sz * mBtruez
 
-                        // Hence, the derivatives respect the parameters sx, sy, sz,
-                        // mxy, mxz, myx, myz, mzx and mzy is:
+                // Hence, the derivatives respect the parameters sx, sy, sz,
+                // mxy, mxz, myx, myz, mzx and mzy is:
 
-                        // d(fmeasx)/d(sx) = mBtruex
-                        // d(fmeasx)/d(sy) = 0.0
-                        // d(fmeasx)/d(sz) = 0.0
-                        // d(fmeasx)/d(mxy) = mBtruey
-                        // d(fmeasx)/d(mxz) = mBtruez
-                        // d(fmeasx)/d(myx) = 0.0
-                        // d(fmeasx)/d(myz) = 0.0
-                        // d(fmeasx)/d(mzx) = 0.0
-                        // d(fmeasx)/d(mzy) = 0.0
+                // d(fmeasx)/d(sx) = mBtruex
+                // d(fmeasx)/d(sy) = 0.0
+                // d(fmeasx)/d(sz) = 0.0
+                // d(fmeasx)/d(mxy) = mBtruey
+                // d(fmeasx)/d(mxz) = mBtruez
+                // d(fmeasx)/d(myx) = 0.0
+                // d(fmeasx)/d(myz) = 0.0
+                // d(fmeasx)/d(mzx) = 0.0
+                // d(fmeasx)/d(mzy) = 0.0
 
-                        // d(fmeasy)/d(sx) = 0.0
-                        // d(fmeasy)/d(sy) = mBtruey
-                        // d(fmeasy)/d(sz) = 0.0
-                        // d(fmeasy)/d(mxy) = 0.0
-                        // d(fmeasy)/d(mxz) = 0.0
-                        // d(fmeasy)/d(myx) = mBtruex
-                        // d(fmeasy)/d(myz) = mBtruez
-                        // d(fmeasy)/d(mzx) = 0.0
-                        // d(fmeasy)/d(mzy) = 0.0
+                // d(fmeasy)/d(sx) = 0.0
+                // d(fmeasy)/d(sy) = mBtruey
+                // d(fmeasy)/d(sz) = 0.0
+                // d(fmeasy)/d(mxy) = 0.0
+                // d(fmeasy)/d(mxz) = 0.0
+                // d(fmeasy)/d(myx) = mBtruex
+                // d(fmeasy)/d(myz) = mBtruez
+                // d(fmeasy)/d(mzx) = 0.0
+                // d(fmeasy)/d(mzy) = 0.0
 
-                        // d(fmeasz)/d(sx) = 0.0
-                        // d(fmeasz)/d(sy) = 0.0
-                        // d(fmeasz)/d(sz) = mBtruez
-                        // d(fmeasz)/d(mxy) = 0.0
-                        // d(fmeasz)/d(mxz) = 0.0
-                        // d(fmeasz)/d(myx) = 0.0
-                        // d(fmeasz)/d(myz) = 0.0
-                        // d(fmeasz)/d(mzx) = mBtruex
-                        // d(fmeasz)/d(mzy) = mBtruey
+                // d(fmeasz)/d(sx) = 0.0
+                // d(fmeasz)/d(sy) = 0.0
+                // d(fmeasz)/d(sz) = mBtruez
+                // d(fmeasz)/d(mxy) = 0.0
+                // d(fmeasz)/d(mxz) = 0.0
+                // d(fmeasz)/d(myx) = 0.0
+                // d(fmeasz)/d(myz) = 0.0
+                // d(fmeasz)/d(mzx) = mBtruex
+                // d(fmeasz)/d(mzy) = mBtruey
 
-                        final double sx = params[0];
-                        final double sy = params[1];
-                        final double sz = params[2];
+                final var sx = params[0];
+                final var sy = params[1];
+                final var sz = params[2];
 
-                        final double mxy = params[3];
-                        final double mxz = params[4];
-                        final double myx = params[5];
-                        final double myz = params[6];
-                        final double mzx = params[7];
-                        final double mzy = params[8];
+                final var mxy = params[3];
+                final var mxz = params[4];
+                final var myx = params[5];
+                final var myz = params[6];
+                final var mzx = params[7];
+                final var mzy = params[8];
 
-                        final double btruex = point[0];
-                        final double btruey = point[1];
-                        final double btruez = point[2];
+                final var btruex = point[0];
+                final var btruey = point[1];
+                final var btruez = point[2];
 
-                        result[0] = mHardIronX + btruex + sx * btruex + mxy * btruey + mxz * btruez;
-                        result[1] = mHardIronY + myx * btruex + btruey + sy * btruey + myz * btruez;
-                        result[2] = mHardIronZ + mzx * btruex + mzy * btruey + btruez + sz * btruez;
+                result[0] = hardIronX + btruex + sx * btruex + mxy * btruey + mxz * btruez;
+                result[1] = hardIronY + myx * btruex + btruey + sy * btruey + myz * btruez;
+                result[2] = hardIronZ + mzx * btruex + mzy * btruey + btruez + sz * btruez;
 
-                        jacobian.setElementAt(0, 0, btruex);
-                        jacobian.setElementAt(0, 1, 0.0);
-                        jacobian.setElementAt(0, 2, 0.0);
-                        jacobian.setElementAt(0, 3, btruey);
-                        jacobian.setElementAt(0, 4, btruez);
-                        jacobian.setElementAt(0, 5, 0.0);
-                        jacobian.setElementAt(0, 6, 0.0);
-                        jacobian.setElementAt(0, 7, 0.0);
-                        jacobian.setElementAt(0, 8, 0.0);
+                jacobian.setElementAt(0, 0, btruex);
+                jacobian.setElementAt(0, 1, 0.0);
+                jacobian.setElementAt(0, 2, 0.0);
+                jacobian.setElementAt(0, 3, btruey);
+                jacobian.setElementAt(0, 4, btruez);
+                jacobian.setElementAt(0, 5, 0.0);
+                jacobian.setElementAt(0, 6, 0.0);
+                jacobian.setElementAt(0, 7, 0.0);
+                jacobian.setElementAt(0, 8, 0.0);
 
-                        jacobian.setElementAt(1, 0, 0.0);
-                        jacobian.setElementAt(1, 1, btruey);
-                        jacobian.setElementAt(1, 2, 0.0);
-                        jacobian.setElementAt(1, 3, 0.0);
-                        jacobian.setElementAt(1, 4, 0.0);
-                        jacobian.setElementAt(1, 5, btruex);
-                        jacobian.setElementAt(1, 6, btruez);
-                        jacobian.setElementAt(1, 7, 0.0);
-                        jacobian.setElementAt(1, 8, 0.0);
+                jacobian.setElementAt(1, 0, 0.0);
+                jacobian.setElementAt(1, 1, btruey);
+                jacobian.setElementAt(1, 2, 0.0);
+                jacobian.setElementAt(1, 3, 0.0);
+                jacobian.setElementAt(1, 4, 0.0);
+                jacobian.setElementAt(1, 5, btruex);
+                jacobian.setElementAt(1, 6, btruez);
+                jacobian.setElementAt(1, 7, 0.0);
+                jacobian.setElementAt(1, 8, 0.0);
 
-                        jacobian.setElementAt(2, 0, 0.0);
-                        jacobian.setElementAt(2, 1, 0.0);
-                        jacobian.setElementAt(2, 2, btruez);
-                        jacobian.setElementAt(2, 3, 0.0);
-                        jacobian.setElementAt(2, 4, 0.0);
-                        jacobian.setElementAt(2, 5, 0.0);
-                        jacobian.setElementAt(2, 6, 0.0);
-                        jacobian.setElementAt(2, 7, btruex);
-                        jacobian.setElementAt(2, 8, btruey);
-                    }
-                });
+                jacobian.setElementAt(2, 0, 0.0);
+                jacobian.setElementAt(2, 1, 0.0);
+                jacobian.setElementAt(2, 2, btruez);
+                jacobian.setElementAt(2, 3, 0.0);
+                jacobian.setElementAt(2, 4, 0.0);
+                jacobian.setElementAt(2, 5, 0.0);
+                jacobian.setElementAt(2, 6, 0.0);
+                jacobian.setElementAt(2, 7, btruex);
+                jacobian.setElementAt(2, 8, btruey);
+            }
+        });
 
         setInputData();
 
-        mFitter.fit();
+        fitter.fit();
 
-        final double[] result = mFitter.getA();
+        final var result = fitter.getA();
 
-        final double sx = result[0];
-        final double sy = result[1];
-        final double sz = result[2];
+        final var sx = result[0];
+        final var sy = result[1];
+        final var sz = result[2];
 
-        final double mxy = result[3];
-        final double mxz = result[4];
-        final double myx = result[5];
-        final double myz = result[6];
-        final double mzx = result[7];
-        final double mzy = result[8];
+        final var mxy = result[3];
+        final var mxz = result[4];
+        final var myx = result[5];
+        final var myz = result[6];
+        final var mzx = result[7];
+        final var mzy = result[8];
 
-        if (mEstimatedMm == null) {
-            mEstimatedMm = new Matrix(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
+        if (estimatedMm == null) {
+            estimatedMm = new Matrix(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
         } else {
-            mEstimatedMm.initialize(0.0);
+            estimatedMm.initialize(0.0);
         }
 
-        mEstimatedMm.setElementAt(0, 0, sx);
-        mEstimatedMm.setElementAt(1, 0, myx);
-        mEstimatedMm.setElementAt(2, 0, mzx);
+        estimatedMm.setElementAt(0, 0, sx);
+        estimatedMm.setElementAt(1, 0, myx);
+        estimatedMm.setElementAt(2, 0, mzx);
 
-        mEstimatedMm.setElementAt(0, 1, mxy);
-        mEstimatedMm.setElementAt(1, 1, sy);
-        mEstimatedMm.setElementAt(2, 1, mzy);
+        estimatedMm.setElementAt(0, 1, mxy);
+        estimatedMm.setElementAt(1, 1, sy);
+        estimatedMm.setElementAt(2, 1, mzy);
 
-        mEstimatedMm.setElementAt(0, 2, mxz);
-        mEstimatedMm.setElementAt(1, 2, myz);
-        mEstimatedMm.setElementAt(2, 2, sz);
+        estimatedMm.setElementAt(0, 2, mxz);
+        estimatedMm.setElementAt(1, 2, myz);
+        estimatedMm.setElementAt(2, 2, sz);
 
-        mEstimatedCovariance = mFitter.getCovar();
-        mEstimatedChiSq = mFitter.getChisq();
-        mEstimatedMse = mFitter.getMse();
+        estimatedCovariance = fitter.getCovar();
+        estimatedChiSq = fitter.getChisq();
+        estimatedMse = fitter.getMse();
     }
 
     /**
@@ -4302,38 +4298,36 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
         // mBmeasz = bz + mzx * mBtruex + mzy * mBtruey + mBtruez + sz * mBtruez
 
         final WMMEarthMagneticFluxDensityEstimator wmmEstimator;
-        if (mMagneticModel != null) {
-            wmmEstimator = new WMMEarthMagneticFluxDensityEstimator(mMagneticModel);
+        if (magneticModel != null) {
+            wmmEstimator = new WMMEarthMagneticFluxDensityEstimator(magneticModel);
         } else {
             wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         }
 
-        final BodyMagneticFluxDensity expectedMagneticFluxDensity = new BodyMagneticFluxDensity();
-        final NEDFrame nedFrame = new NEDFrame();
-        final NEDMagneticFluxDensity earthB = new NEDMagneticFluxDensity();
-        final CoordinateTransformation cbn = new CoordinateTransformation(
-                FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
-        final CoordinateTransformation cnb = new CoordinateTransformation(
-                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
+        final var expectedMagneticFluxDensity = new BodyMagneticFluxDensity();
+        final var nedFrame = new NEDFrame();
+        final var earthB = new NEDMagneticFluxDensity();
+        final var cbn = new CoordinateTransformation(FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+        final var cnb = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
 
-        final int numMeasurements = mMeasurements.size();
-        final Matrix x = new Matrix(numMeasurements, BodyMagneticFluxDensity.COMPONENTS);
-        final Matrix y = new Matrix(numMeasurements, BodyMagneticFluxDensity.COMPONENTS);
-        final double[] specificForceStandardDeviations = new double[numMeasurements];
-        int i = 0;
-        for (final StandardDeviationFrameBodyMagneticFluxDensity measurement : mMeasurements) {
-            final BodyMagneticFluxDensity measuredMagneticFluxDensity = measurement.getMagneticFluxDensity();
+        final var numMeasurements = measurements.size();
+        final var x = new Matrix(numMeasurements, BodyMagneticFluxDensity.COMPONENTS);
+        final var y = new Matrix(numMeasurements, BodyMagneticFluxDensity.COMPONENTS);
+        final var specificForceStandardDeviations = new double[numMeasurements];
+        var i = 0;
+        for (final var measurement : measurements) {
+            final var measuredMagneticFluxDensity = measurement.getMagneticFluxDensity();
 
             // estimate Earth magnetic flux density at frame position and
             // timestamp using WMM
-            final ECEFFrame ecefFrame = measurement.getFrame();
+            final var ecefFrame = measurement.getFrame();
             ECEFtoNEDFrameConverter.convertECEFtoNED(ecefFrame, nedFrame);
 
-            final double year = measurement.getYear();
+            final var year = measurement.getYear();
 
-            final double latitude = nedFrame.getLatitude();
-            final double longitude = nedFrame.getLongitude();
-            final double height = nedFrame.getHeight();
+            final var latitude = nedFrame.getLatitude();
+            final var longitude = nedFrame.getLongitude();
+            final var height = nedFrame.getHeight();
 
             nedFrame.getCoordinateTransformation(cbn);
             cbn.inverse(cnb);
@@ -4345,13 +4339,13 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             // estimated Earth magnetic flux density
             BodyMagneticFluxDensityEstimator.estimate(earthB, cnb, expectedMagneticFluxDensity);
 
-            final double bMeasX = measuredMagneticFluxDensity.getBx();
-            final double bMeasY = measuredMagneticFluxDensity.getBy();
-            final double bMeasZ = measuredMagneticFluxDensity.getBz();
+            final var bMeasX = measuredMagneticFluxDensity.getBx();
+            final var bMeasY = measuredMagneticFluxDensity.getBy();
+            final var bMeasZ = measuredMagneticFluxDensity.getBz();
 
-            final double bTrueX = expectedMagneticFluxDensity.getBx();
-            final double bTrueY = expectedMagneticFluxDensity.getBy();
-            final double bTrueZ = expectedMagneticFluxDensity.getBz();
+            final var bTrueX = expectedMagneticFluxDensity.getBx();
+            final var bTrueY = expectedMagneticFluxDensity.getBy();
+            final var bTrueZ = expectedMagneticFluxDensity.getBz();
 
             x.setElementAt(i, 0, bTrueX);
             x.setElementAt(i, 1, bTrueY);
@@ -4365,7 +4359,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
             i++;
         }
 
-        mFitter.setInputData(x, y, specificForceStandardDeviations);
+        fitter.setInputData(x, y, specificForceStandardDeviations);
     }
 
     /**

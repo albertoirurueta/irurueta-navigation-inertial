@@ -23,15 +23,13 @@ import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationUnit;
 import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedUnit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class IMUErrorsTest {
+class IMUErrorsTest {
 
     private static final int COMPONENTS = 3;
 
@@ -41,12 +39,12 @@ public class IMUErrorsTest {
     private static final double ABSOLUTE_ERROR = 1e-8;
 
     @Test
-    public void testConstructors() throws WrongSizeException {
+    void testConstructors() throws WrongSizeException {
         // test constructor 1
-        IMUErrors errors = new IMUErrors();
+        var errors = new IMUErrors();
 
         // check default values
-        final double[] zeros = new double[COMPONENTS];
+        final var zeros = new double[COMPONENTS];
         assertArrayEquals(zeros, errors.getAccelerometerBiases(), 0.0);
         assertArrayEquals(zeros, errors.getGyroBiases(), 0.0);
         assertEquals(Matrix.identity(COMPONENTS, COMPONENTS),
@@ -59,22 +57,22 @@ public class IMUErrorsTest {
         assertEquals(0.0, errors.getGyroQuantizationLevel(), 0.0);
 
         // test constructor 2
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final var randomizer = new UniformRandomizer();
 
-        final double[] accelerometerBiases = new double[COMPONENTS];
+        final var accelerometerBiases = new double[COMPONENTS];
         randomizer.fill(accelerometerBiases, MIN_VALUE, MAX_VALUE);
 
-        final double[] gyroBiases = new double[COMPONENTS];
+        final var gyroBiases = new double[COMPONENTS];
         randomizer.fill(gyroBiases, MIN_VALUE, MAX_VALUE);
 
-        final Matrix accelerometerScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
+        final var accelerometerScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
         Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, accelerometerScaleFactorAndCrossCouplingErrors);
 
-        final Matrix gyroScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
+        final var gyroScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
         Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, gyroScaleFactorAndCrossCouplingErrors);
 
-        final double accelerometerNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gyroNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var accelerometerNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gyroNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
         errors = new IMUErrors(accelerometerBiases, gyroBiases, accelerometerScaleFactorAndCrossCouplingErrors,
                 gyroScaleFactorAndCrossCouplingErrors, accelerometerNoiseRootPSD, gyroNoiseRootPSD);
@@ -92,9 +90,9 @@ public class IMUErrorsTest {
         assertEquals(0.0, errors.getGyroQuantizationLevel(), 0.0);
 
         // Force IllegalArgumentException
-        double[] wrongArray = new double[1];
-        final Matrix wrongMatrix1 = new Matrix(1, 3);
-        final Matrix wrongMatrix2 = new Matrix(4, 1);
+        var wrongArray = new double[1];
+        final var wrongMatrix1 = new Matrix(1, 3);
+        final var wrongMatrix2 = new Matrix(4, 1);
 
         assertThrows(IllegalArgumentException.class, () -> new IMUErrors(wrongArray, gyroBiases,
                 accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
@@ -114,20 +112,20 @@ public class IMUErrorsTest {
                 gyroNoiseRootPSD));
 
         // test constructor 3
-        final Matrix accelerometerBiasesMatrix = new Matrix(3, 1);
+        final var accelerometerBiasesMatrix = new Matrix(3, 1);
         accelerometerBiasesMatrix.fromArray(accelerometerBiases);
 
-        final Matrix gyroBiasesMatrix = new Matrix(3, 1);
+        final var gyroBiasesMatrix = new Matrix(3, 1);
         gyroBiasesMatrix.fromArray(gyroBiases);
 
-        errors = new IMUErrors(accelerometerBiasesMatrix, gyroBiasesMatrix,
+        errors = new IMUErrors(accelerometerBiasesMatrix, gyroBiasesMatrix, 
                 accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
                 accelerometerNoiseRootPSD, gyroNoiseRootPSD);
 
         // check default values
         assertArrayEquals(accelerometerBiases, errors.getAccelerometerBiases(), 0.0);
         assertArrayEquals(gyroBiases, errors.getGyroBiases(), 0.0);
-        assertEquals(accelerometerScaleFactorAndCrossCouplingErrors,
+        assertEquals(accelerometerScaleFactorAndCrossCouplingErrors, 
                 errors.getAccelerometerScaleFactorAndCrossCouplingErrors());
         assertEquals(gyroScaleFactorAndCrossCouplingErrors, errors.getGyroScaleFactorAndCrossCouplingErrors());
         assertEquals(new Matrix(COMPONENTS, COMPONENTS), errors.getGyroGDependentBiases());
@@ -161,12 +159,12 @@ public class IMUErrorsTest {
                 gyroNoiseRootPSD));
 
         // test constructor 4
-        final Acceleration[] accelerometerBiases2 = new Acceleration[COMPONENTS];
+        final var accelerometerBiases2 = new Acceleration[COMPONENTS];
         accelerometerBiases2[0] = new Acceleration(accelerometerBiases[0], AccelerationUnit.METERS_PER_SQUARED_SECOND);
         accelerometerBiases2[1] = new Acceleration(accelerometerBiases[1], AccelerationUnit.METERS_PER_SQUARED_SECOND);
         accelerometerBiases2[2] = new Acceleration(accelerometerBiases[2], AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
-        final AngularSpeed[] gyroBiases2 = new AngularSpeed[COMPONENTS];
+        final var gyroBiases2 = new AngularSpeed[COMPONENTS];
         gyroBiases2[0] = new AngularSpeed(gyroBiases[0], AngularSpeedUnit.RADIANS_PER_SECOND);
         gyroBiases2[1] = new AngularSpeed(gyroBiases[1], AngularSpeedUnit.RADIANS_PER_SECOND);
         gyroBiases2[2] = new AngularSpeed(gyroBiases[2], AngularSpeedUnit.RADIANS_PER_SECOND);
@@ -187,8 +185,8 @@ public class IMUErrorsTest {
         assertEquals(0.0, errors.getGyroQuantizationLevel(), 0.0);
 
         // Force IllegalArgumentException
-        final Acceleration[] wrongAccelerations = new Acceleration[1];
-        final AngularSpeed[] wrongAngularSpeed = new AngularSpeed[1];
+        final var wrongAccelerations = new Acceleration[1];
+        final var wrongAngularSpeed = new AngularSpeed[1];
 
         assertThrows(IllegalArgumentException.class, () -> new IMUErrors(wrongAccelerations, gyroBiases2,
                 accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
@@ -208,11 +206,11 @@ public class IMUErrorsTest {
                 gyroNoiseRootPSD));
 
         // test constructor 5
-        final Matrix gyroGDependenciesBiases = new Matrix(COMPONENTS, COMPONENTS);
+        final var gyroGDependenciesBiases = new Matrix(COMPONENTS, COMPONENTS);
         Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, gyroGDependenciesBiases);
 
-        final double accelerometerQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gyroQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var accelerometerQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gyroQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
         errors = new IMUErrors(accelerometerBiases, gyroBiases, accelerometerScaleFactorAndCrossCouplingErrors,
                 gyroScaleFactorAndCrossCouplingErrors, gyroGDependenciesBiases, accelerometerNoiseRootPSD,
@@ -260,7 +258,7 @@ public class IMUErrorsTest {
                 gyroQuantizationLevel));
 
         // test constructor 6
-        errors = new IMUErrors(accelerometerBiasesMatrix, gyroBiasesMatrix,
+        errors = new IMUErrors(accelerometerBiasesMatrix, gyroBiasesMatrix, 
                 accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
                 gyroGDependenciesBiases, accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel,
                 gyroQuantizationLevel);
@@ -314,10 +312,9 @@ public class IMUErrorsTest {
                 accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel, gyroQuantizationLevel));
 
         // test constructor 7
-        final Acceleration accelerometerQuantizationLevel2 = new Acceleration(accelerometerQuantizationLevel,
+        final var accelerometerQuantizationLevel2 = new Acceleration(accelerometerQuantizationLevel, 
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final AngularSpeed gyroQuantizationLevel2 = new AngularSpeed(gyroQuantizationLevel,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var gyroQuantizationLevel2 = new AngularSpeed(gyroQuantizationLevel, AngularSpeedUnit.RADIANS_PER_SECOND);
         errors = new IMUErrors(accelerometerBiases2, gyroBiases2, accelerometerScaleFactorAndCrossCouplingErrors,
                 gyroScaleFactorAndCrossCouplingErrors, gyroGDependenciesBiases, accelerometerNoiseRootPSD,
                 gyroNoiseRootPSD, accelerometerQuantizationLevel2, gyroQuantizationLevel2);
@@ -366,7 +363,7 @@ public class IMUErrorsTest {
                 gyroScaleFactorAndCrossCouplingErrors, gyroGDependenciesBiases, accelerometerNoiseRootPSD,
                 gyroNoiseRootPSD, accelerometerQuantizationLevel, gyroQuantizationLevel);
 
-        final IMUErrors errors2 = new IMUErrors(errors);
+        final var errors2 = new IMUErrors(errors);
 
         // check default values
         assertArrayEquals(accelerometerBiases, errors2.getAccelerometerBiases(), 0.0);
@@ -382,23 +379,23 @@ public class IMUErrorsTest {
     }
 
     @Test
-    public void testGetSetAccelerometerBiases() {
-        final IMUErrors errors = new IMUErrors();
+    void testGetSetAccelerometerBiases() {
+        final var errors = new IMUErrors();
 
         // check default value
-        final double[] zeros = new double[COMPONENTS];
+        final var zeros = new double[COMPONENTS];
         assertArrayEquals(zeros, errors.getAccelerometerBiases(), 0.0);
 
         // set new values
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final var randomizer = new UniformRandomizer();
 
-        final double[] accelerometerBiases = new double[COMPONENTS];
+        final var accelerometerBiases = new double[COMPONENTS];
         randomizer.fill(accelerometerBiases, MIN_VALUE, MAX_VALUE);
 
         errors.setAccelerometerBiases(accelerometerBiases);
 
         assertArrayEquals(accelerometerBiases, errors.getAccelerometerBiases(), 0.0);
-        final double[] result = new double[COMPONENTS];
+        final var result = new double[COMPONENTS];
         errors.getAccelerometerBiases(result);
         assertArrayEquals(result, accelerometerBiases, 0.0);
 
@@ -408,26 +405,26 @@ public class IMUErrorsTest {
     }
 
     @Test
-    public void testGetSetAccelerometerBiasesAsMatrix() throws WrongSizeException {
-        final IMUErrors errors = new IMUErrors();
+    void testGetSetAccelerometerBiasesAsMatrix() throws WrongSizeException {
+        final var errors = new IMUErrors();
 
         // check default value
         assertEquals(new Matrix(COMPONENTS, 1), errors.getAccelerometerBiasesAsMatrix());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final var randomizer = new UniformRandomizer();
 
-        final double[] array = new double[COMPONENTS];
+        final var array = new double[COMPONENTS];
         randomizer.fill(array, MIN_VALUE, MAX_VALUE);
 
-        final Matrix accelerometerBiases1 = Matrix.newFromArray(array);
+        final var accelerometerBiases1 = Matrix.newFromArray(array);
 
         errors.setAccelerometerBiases(accelerometerBiases1);
 
         // check
-        final Matrix accelerometerBiases2 = new Matrix(COMPONENTS, 1);
+        final var accelerometerBiases2 = new Matrix(COMPONENTS, 1);
         errors.getAccelerometerBiasesAsMatrix(accelerometerBiases2);
-        final Matrix accelerometerBiases3 = errors.getAccelerometerBiasesAsMatrix();
+        final var accelerometerBiases3 = errors.getAccelerometerBiasesAsMatrix();
 
         assertEquals(accelerometerBiases1, accelerometerBiases2);
         assertEquals(accelerometerBiases1, accelerometerBiases3);
@@ -442,19 +439,19 @@ public class IMUErrorsTest {
     }
 
     @Test
-    public void testGetSetAccelerometerBiasesAsAcceleration() {
-        final IMUErrors errors = new IMUErrors();
+    void testGetSetAccelerometerBiasesAsAcceleration() {
+        final var errors = new IMUErrors();
 
         // check default value
-        final Acceleration[] accelerations1 = errors.getAccelerometerBiasesAsAcceleration();
-        for (Acceleration a : accelerations1) {
-            assertEquals(a, new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND));
+        final var accelerations1 = errors.getAccelerometerBiasesAsAcceleration();
+        for (final var a : accelerations1) {
+            assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND), a);
         }
 
         // set new values
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration[] accelerations2 = new Acceleration[COMPONENTS];
-        for (int i = 0; i < COMPONENTS; i++) {
+        final var randomizer = new UniformRandomizer();
+        final var accelerations2 = new Acceleration[COMPONENTS];
+        for (var i = 0; i < COMPONENTS; i++) {
             accelerations2[i] = new Acceleration(randomizer.nextDouble(MIN_VALUE, MAX_VALUE),
                     AccelerationUnit.METERS_PER_SQUARED_SECOND);
         }
@@ -462,8 +459,8 @@ public class IMUErrorsTest {
         errors.setAccelerometerBiases(accelerations2);
 
         // check
-        final Acceleration[] accelerations3 = errors.getAccelerometerBiasesAsAcceleration();
-        final Acceleration[] accelerations4 = new Acceleration[COMPONENTS];
+        final var accelerations3 = errors.getAccelerometerBiasesAsAcceleration();
+        final var accelerations4 = new Acceleration[COMPONENTS];
         accelerations4[0] = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         errors.getAccelerometerBiasesAsAcceleration(accelerations4);
 
@@ -477,23 +474,23 @@ public class IMUErrorsTest {
     }
 
     @Test
-    public void testGetSetGyroBiases() {
-        final IMUErrors errors = new IMUErrors();
+    void testGetSetGyroBiases() {
+        final var errors = new IMUErrors();
 
         // check default value
-        final double[] zeros = new double[COMPONENTS];
+        final var zeros = new double[COMPONENTS];
         assertArrayEquals(zeros, errors.getGyroBiases(), 0.0);
 
         // set new values
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final var randomizer = new UniformRandomizer();
 
-        final double[] gyroBiases = new double[COMPONENTS];
+        final var gyroBiases = new double[COMPONENTS];
         randomizer.fill(gyroBiases, MIN_VALUE, MAX_VALUE);
 
         errors.setGyroBiases(gyroBiases);
 
         assertArrayEquals(gyroBiases, errors.getGyroBiases(), 0.0);
-        final double[] result = new double[COMPONENTS];
+        final var result = new double[COMPONENTS];
         errors.getGyroBiases(result);
         assertArrayEquals(result, gyroBiases, 0.0);
 
@@ -503,26 +500,26 @@ public class IMUErrorsTest {
     }
 
     @Test
-    public void testGetSetGyroBiasesAsMatrix() throws WrongSizeException {
-        final IMUErrors errors = new IMUErrors();
+    void testGetSetGyroBiasesAsMatrix() throws WrongSizeException {
+        final var errors = new IMUErrors();
 
         // check default value
         assertEquals(new Matrix(COMPONENTS, 1), errors.getGyroBiasesAsMatrix());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final var randomizer = new UniformRandomizer();
 
-        final double[] array = new double[COMPONENTS];
+        final var array = new double[COMPONENTS];
         randomizer.fill(array, MIN_VALUE, MAX_VALUE);
 
-        final Matrix gyroBiases1 = Matrix.newFromArray(array);
+        final var gyroBiases1 = Matrix.newFromArray(array);
 
         errors.setGyroBiases(gyroBiases1);
 
         // check
-        final Matrix gyroBiases2 = new Matrix(COMPONENTS, 1);
+        final var gyroBiases2 = new Matrix(COMPONENTS, 1);
         errors.getGyroBiasesAsMatrix(gyroBiases2);
-        final Matrix gyroBiases3 = errors.getGyroBiasesAsMatrix();
+        final var gyroBiases3 = errors.getGyroBiasesAsMatrix();
 
         assertEquals(gyroBiases1, gyroBiases2);
         assertEquals(gyroBiases1, gyroBiases3);
@@ -537,19 +534,19 @@ public class IMUErrorsTest {
     }
 
     @Test
-    public void testGetSetGyroBiasesAsAngularSpeed() {
-        final IMUErrors errors = new IMUErrors();
+    void testGetSetGyroBiasesAsAngularSpeed() {
+        final var errors = new IMUErrors();
 
         // check default value
-        final AngularSpeed[] array1 = errors.getGyroBiasesAsAngularSpeed();
-        for (final AngularSpeed as : array1) {
-            assertEquals(as, new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND));
+        final var array1 = errors.getGyroBiasesAsAngularSpeed();
+        for (final var as : array1) {
+            assertEquals(new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND), as);
         }
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final AngularSpeed[] array2 = new AngularSpeed[COMPONENTS];
-        for (int i = 0; i < COMPONENTS; i++) {
+        final var randomizer = new UniformRandomizer();
+        final var array2 = new AngularSpeed[COMPONENTS];
+        for (var i = 0; i < COMPONENTS; i++) {
             array2[i] = new AngularSpeed(randomizer.nextDouble(MIN_VALUE, MAX_VALUE),
                     AngularSpeedUnit.RADIANS_PER_SECOND);
         }
@@ -557,8 +554,8 @@ public class IMUErrorsTest {
         errors.setGyroBiases(array2);
 
         // check
-        final AngularSpeed[] array3 = errors.getGyroBiasesAsAngularSpeed();
-        final AngularSpeed[] array4 = new AngularSpeed[COMPONENTS];
+        final var array3 = errors.getGyroBiasesAsAngularSpeed();
+        final var array4 = new AngularSpeed[COMPONENTS];
         array4[0] = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         errors.getGyroBiasesAsAngularSpeed(array4);
 
@@ -571,22 +568,22 @@ public class IMUErrorsTest {
     }
 
     @Test
-    public void testGetSetAccelerometerScaleFactorAndCrossCouplingErrors() throws WrongSizeException {
-        final IMUErrors errors = new IMUErrors();
+    void testGetSetAccelerometerScaleFactorAndCrossCouplingErrors() throws WrongSizeException {
+        final var errors = new IMUErrors();
 
         // check default value
         assertEquals(Matrix.identity(COMPONENTS, COMPONENTS),
                 errors.getAccelerometerScaleFactorAndCrossCouplingErrors());
 
         // set new value
-        final Matrix ma1 = new Matrix(COMPONENTS, COMPONENTS);
+        final var ma1 = new Matrix(COMPONENTS, COMPONENTS);
         Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, ma1);
 
         errors.setAccelerometerScaleFactorAndCrossCouplingErrors(ma1);
 
         // check
-        final Matrix ma2 = errors.getAccelerometerScaleFactorAndCrossCouplingErrors();
-        final Matrix ma3 = new Matrix(COMPONENTS, COMPONENTS);
+        final var ma2 = errors.getAccelerometerScaleFactorAndCrossCouplingErrors();
+        final var ma3 = new Matrix(COMPONENTS, COMPONENTS);
         errors.getAccelerometerScaleFactorAndCrossCouplingErrors(ma3);
 
         assertEquals(ma1, ma2);
@@ -602,21 +599,21 @@ public class IMUErrorsTest {
     }
 
     @Test
-    public void testGetSetGyroScaleFactorAndCrossCouplingErrors() throws WrongSizeException {
-        final IMUErrors errors = new IMUErrors();
+    void testGetSetGyroScaleFactorAndCrossCouplingErrors() throws WrongSizeException {
+        final var errors = new IMUErrors();
 
         // check default value
         assertEquals(Matrix.identity(COMPONENTS, COMPONENTS), errors.getGyroScaleFactorAndCrossCouplingErrors());
 
         // set new value
-        final Matrix mg1 = new Matrix(COMPONENTS, COMPONENTS);
+        final var mg1 = new Matrix(COMPONENTS, COMPONENTS);
         Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, mg1);
 
         errors.setGyroScaleFactorAndCrossCouplingErrors(mg1);
 
         // check
-        final Matrix mg2 = errors.getGyroScaleFactorAndCrossCouplingErrors();
-        final Matrix mg3 = new Matrix(COMPONENTS, COMPONENTS);
+        final var mg2 = errors.getGyroScaleFactorAndCrossCouplingErrors();
+        final var mg3 = new Matrix(COMPONENTS, COMPONENTS);
         errors.getGyroScaleFactorAndCrossCouplingErrors(mg3);
 
         assertEquals(mg1, mg2);
@@ -630,21 +627,21 @@ public class IMUErrorsTest {
     }
 
     @Test
-    public void testGetSetGyroGDependentBiases() throws WrongSizeException {
-        final IMUErrors errors = new IMUErrors();
+    void testGetSetGyroGDependentBiases() throws WrongSizeException {
+        final var errors = new IMUErrors();
 
         // check default value
         assertEquals(new Matrix(COMPONENTS, COMPONENTS), errors.getGyroGDependentBiases());
 
         // set new value
-        final Matrix mf1 = new Matrix(COMPONENTS, COMPONENTS);
+        final var mf1 = new Matrix(COMPONENTS, COMPONENTS);
         Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, mf1);
 
         errors.setGyroGDependentBiases(mf1);
 
         // check
-        final Matrix mf2 = errors.getGyroGDependentBiases();
-        final Matrix mf3 = new Matrix(COMPONENTS, COMPONENTS);
+        final var mf2 = errors.getGyroGDependentBiases();
+        final var mf3 = new Matrix(COMPONENTS, COMPONENTS);
         errors.getGyroGDependentBiases(mf3);
 
         assertEquals(mf1, mf2);
@@ -658,16 +655,16 @@ public class IMUErrorsTest {
     }
 
     @Test
-    public void testGetSetAccelerometerNoiseRootPSD() {
-        final IMUErrors errors = new IMUErrors();
+    void testGetSetAccelerometerNoiseRootPSD() {
+        final var errors = new IMUErrors();
 
         // check default value
         assertEquals(0.0, errors.getAccelerometerNoiseRootPSD(), 0.0);
         assertEquals(0.0, errors.getAccelerometerNoisePSD(), 0.0);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double accelerometerNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var randomizer = new UniformRandomizer();
+        final var accelerometerNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
         errors.setAccelerometerNoiseRootPSD(accelerometerNoiseRootPSD);
 
@@ -677,16 +674,16 @@ public class IMUErrorsTest {
     }
 
     @Test
-    public void testGetSetAccelerometerNoisePSD() {
-        final IMUErrors errors = new IMUErrors();
+    void testGetSetAccelerometerNoisePSD() {
+        final var errors = new IMUErrors();
 
         // check default value
         assertEquals(0.0, errors.getAccelerometerNoiseRootPSD(), 0.0);
         assertEquals(0.0, errors.getAccelerometerNoisePSD(), 0.0);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double accelerometerNoisePSD = randomizer.nextDouble(0.0, MAX_VALUE);
+        final var randomizer = new UniformRandomizer();
+        final var accelerometerNoisePSD = randomizer.nextDouble(0.0, MAX_VALUE);
 
         errors.setAccelerometerNoisePSD(accelerometerNoisePSD);
 
@@ -699,16 +696,16 @@ public class IMUErrorsTest {
     }
 
     @Test
-    public void testGetSetGyroNoiseRootPSD() {
-        final IMUErrors errors = new IMUErrors();
+    void testGetSetGyroNoiseRootPSD() {
+        final var errors = new IMUErrors();
 
         // check default value
         assertEquals(0.0, errors.getGyroNoiseRootPSD(), 0.0);
         assertEquals(0.0, errors.getGyroNoisePSD(), 0.0);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gyroNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var randomizer = new UniformRandomizer();
+        final var gyroNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
         errors.setGyroNoiseRootPSD(gyroNoiseRootPSD);
 
@@ -718,16 +715,16 @@ public class IMUErrorsTest {
     }
 
     @Test
-    public void testGetSetGyroNoisePSD() {
-        final IMUErrors errors = new IMUErrors();
+    void testGetSetGyroNoisePSD() {
+        final var errors = new IMUErrors();
 
         // check default value
         assertEquals(0.0, errors.getGyroNoiseRootPSD(), 0.0);
         assertEquals(0.0, errors.getGyroNoisePSD(), 0.0);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gyroNoisePSD = randomizer.nextDouble(0.0, MAX_VALUE);
+        final var randomizer = new UniformRandomizer();
+        final var gyroNoisePSD = randomizer.nextDouble(0.0, MAX_VALUE);
 
         errors.setGyroNoisePSD(gyroNoisePSD);
 
@@ -740,15 +737,15 @@ public class IMUErrorsTest {
     }
 
     @Test
-    public void testGetSetAccelerometerQuantizationLevel() {
-        final IMUErrors errors = new IMUErrors();
+    void testGetSetAccelerometerQuantizationLevel() {
+        final var errors = new IMUErrors();
 
         // check default value
         assertEquals(0.0, errors.getAccelerometerQuantizationLevel(), 0.0);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double level = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var randomizer = new UniformRandomizer();
+        final var level = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
         errors.setAccelerometerQuantizationLevel(level);
 
@@ -757,25 +754,25 @@ public class IMUErrorsTest {
     }
 
     @Test
-    public void testGetSetAccelerometerQuantizationLevelAsAcceleration() {
-        final IMUErrors errors = new IMUErrors();
+    void testGetSetAccelerometerQuantizationLevelAsAcceleration() {
+        final var errors = new IMUErrors();
 
         // check default value
-        final Acceleration level1 = errors.getAccelerometerQuantizationLevelAsAcceleration();
+        final var level1 = errors.getAccelerometerQuantizationLevelAsAcceleration();
 
         assertEquals(0.0, level1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, level1.getUnit());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double value = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final Acceleration level2 = new Acceleration(value, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var value = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var level2 = new Acceleration(value, AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
         errors.setAccelerometerQuantizationLevel(level2);
 
         // check
-        final Acceleration level3 = errors.getAccelerometerQuantizationLevelAsAcceleration();
-        final Acceleration level4 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var level3 = errors.getAccelerometerQuantizationLevelAsAcceleration();
+        final var level4 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         errors.getAccelerometerQuantizationLevelAsAcceleration(level4);
 
         assertEquals(level2, level3);
@@ -783,15 +780,15 @@ public class IMUErrorsTest {
     }
 
     @Test
-    public void testGetSetGyroQuantizationLevel() {
-        final IMUErrors errors = new IMUErrors();
+    void testGetSetGyroQuantizationLevel() {
+        final var errors = new IMUErrors();
 
         // check default value
         assertEquals(0.0, errors.getGyroQuantizationLevel(), 0.0);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double level = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var randomizer = new UniformRandomizer();
+        final var level = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
         errors.setGyroQuantizationLevel(level);
 
@@ -800,25 +797,25 @@ public class IMUErrorsTest {
     }
 
     @Test
-    public void testGyroQuantizationLevelAsAngularSpeed() {
-        final IMUErrors errors = new IMUErrors();
+    void testGyroQuantizationLevelAsAngularSpeed() {
+        final var errors = new IMUErrors();
 
         // check default value
-        final AngularSpeed level1 = errors.getGyroQuantizationLevelAsAngularSpeed();
+        final var level1 = errors.getGyroQuantizationLevelAsAngularSpeed();
 
         assertEquals(0.0, level1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, level1.getUnit());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double value = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final AngularSpeed level2 = new AngularSpeed(value, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var value = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var level2 = new AngularSpeed(value, AngularSpeedUnit.RADIANS_PER_SECOND);
 
         errors.setGyroQuantizationLevel(level2);
 
         // check
-        final AngularSpeed level3 = errors.getGyroQuantizationLevelAsAngularSpeed();
-        final AngularSpeed level4 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var level3 = errors.getGyroQuantizationLevelAsAngularSpeed();
+        final var level4 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         errors.getGyroQuantizationLevelAsAngularSpeed(level4);
 
         assertEquals(level2, level3);
@@ -826,36 +823,36 @@ public class IMUErrorsTest {
     }
 
     @Test
-    public void testCopyTo() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testCopyTo() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
 
-        final double[] accelerometerBiases = new double[COMPONENTS];
+        final var accelerometerBiases = new double[COMPONENTS];
         randomizer.fill(accelerometerBiases, MIN_VALUE, MAX_VALUE);
 
-        final double[] gyroBiases = new double[COMPONENTS];
+        final var gyroBiases = new double[COMPONENTS];
         randomizer.fill(gyroBiases, MIN_VALUE, MAX_VALUE);
 
-        final Matrix accelerometerScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
+        final var accelerometerScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
         Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, accelerometerScaleFactorAndCrossCouplingErrors);
 
-        final Matrix gyroScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
+        final var gyroScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
         Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, gyroScaleFactorAndCrossCouplingErrors);
 
-        final Matrix gyroGDependenciesBiases = new Matrix(COMPONENTS, COMPONENTS);
+        final var gyroGDependenciesBiases = new Matrix(COMPONENTS, COMPONENTS);
         Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, gyroGDependenciesBiases);
 
-        final double accelerometerNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gyroNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var accelerometerNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gyroNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final double accelerometerQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gyroQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var accelerometerQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gyroQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final IMUErrors errors = new IMUErrors(accelerometerBiases, gyroBiases,
+        final var errors = new IMUErrors(accelerometerBiases, gyroBiases,
                 accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
                 gyroGDependenciesBiases, accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel,
                 gyroQuantizationLevel);
 
-        final IMUErrors errors2 = new IMUErrors();
+        final var errors2 = new IMUErrors();
 
         // copy
         errors.copyTo(errors2);
@@ -874,36 +871,36 @@ public class IMUErrorsTest {
     }
 
     @Test
-    public void testCopyFrom() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testCopyFrom() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
 
-        final double[] accelerometerBiases = new double[COMPONENTS];
+        final var accelerometerBiases = new double[COMPONENTS];
         randomizer.fill(accelerometerBiases, MIN_VALUE, MAX_VALUE);
 
-        final double[] gyroBiases = new double[COMPONENTS];
+        final var gyroBiases = new double[COMPONENTS];
         randomizer.fill(gyroBiases, MIN_VALUE, MAX_VALUE);
 
-        final Matrix accelerometerScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
+        final var accelerometerScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
         Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, accelerometerScaleFactorAndCrossCouplingErrors);
 
-        final Matrix gyroScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
+        final var gyroScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
         Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, gyroScaleFactorAndCrossCouplingErrors);
 
-        final Matrix gyroGDependenciesBiases = new Matrix(COMPONENTS, COMPONENTS);
+        final var gyroGDependenciesBiases = new Matrix(COMPONENTS, COMPONENTS);
         Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, gyroGDependenciesBiases);
 
-        final double accelerometerNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gyroNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var accelerometerNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gyroNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final double accelerometerQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gyroQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var accelerometerQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gyroQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final IMUErrors errors = new IMUErrors(accelerometerBiases, gyroBiases,
+        final var errors = new IMUErrors(accelerometerBiases, gyroBiases,
                 accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
                 gyroGDependenciesBiases, accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel,
                 gyroQuantizationLevel);
 
-        final IMUErrors errors2 = new IMUErrors();
+        final var errors2 = new IMUErrors();
 
         // copy
         errors2.copyFrom(errors);
@@ -922,78 +919,78 @@ public class IMUErrorsTest {
     }
 
     @Test
-    public void testHashCode() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testHashCode() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
 
-        final double[] accelerometerBiases = new double[COMPONENTS];
+        final var accelerometerBiases = new double[COMPONENTS];
         randomizer.fill(accelerometerBiases, MIN_VALUE, MAX_VALUE);
 
-        final double[] gyroBiases = new double[COMPONENTS];
+        final var gyroBiases = new double[COMPONENTS];
         randomizer.fill(gyroBiases, MIN_VALUE, MAX_VALUE);
 
-        final Matrix accelerometerScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
+        final var accelerometerScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
         Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, accelerometerScaleFactorAndCrossCouplingErrors);
 
-        final Matrix gyroScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
+        final var gyroScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
         Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, gyroScaleFactorAndCrossCouplingErrors);
 
-        final Matrix gyroGDependenciesBiases = new Matrix(COMPONENTS, COMPONENTS);
+        final var gyroGDependenciesBiases = new Matrix(COMPONENTS, COMPONENTS);
         Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, gyroGDependenciesBiases);
 
-        final double accelerometerNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gyroNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var accelerometerNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gyroNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final double accelerometerQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gyroQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var accelerometerQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gyroQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final IMUErrors errors1 = new IMUErrors(accelerometerBiases, gyroBiases,
+        final var errors1 = new IMUErrors(accelerometerBiases, gyroBiases,
                 accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
                 gyroGDependenciesBiases, accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel,
                 gyroQuantizationLevel);
-        final IMUErrors errors2 = new IMUErrors(accelerometerBiases, gyroBiases,
+        final var errors2 = new IMUErrors(accelerometerBiases, gyroBiases,
                 accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
                 gyroGDependenciesBiases, accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel,
                 gyroQuantizationLevel);
-        final IMUErrors errors3 = new IMUErrors();
+        final var errors3 = new IMUErrors();
 
         assertEquals(errors1.hashCode(), errors2.hashCode());
         assertNotEquals(errors1.hashCode(), errors3.hashCode());
     }
 
     @Test
-    public void testEquals() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testEquals() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
 
-        final double[] accelerometerBiases = new double[COMPONENTS];
+        final var accelerometerBiases = new double[COMPONENTS];
         randomizer.fill(accelerometerBiases, MIN_VALUE, MAX_VALUE);
 
-        final double[] gyroBiases = new double[COMPONENTS];
+        final var gyroBiases = new double[COMPONENTS];
         randomizer.fill(gyroBiases, MIN_VALUE, MAX_VALUE);
 
-        final Matrix accelerometerScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
+        final var accelerometerScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
         Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, accelerometerScaleFactorAndCrossCouplingErrors);
 
-        final Matrix gyroScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
+        final var gyroScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
         Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, gyroScaleFactorAndCrossCouplingErrors);
 
-        final Matrix gyroGDependenciesBiases = new Matrix(COMPONENTS, COMPONENTS);
+        final var gyroGDependenciesBiases = new Matrix(COMPONENTS, COMPONENTS);
         Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, gyroGDependenciesBiases);
 
-        final double accelerometerNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gyroNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var accelerometerNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gyroNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final double accelerometerQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gyroQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var accelerometerQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gyroQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final IMUErrors errors1 = new IMUErrors(accelerometerBiases, gyroBiases,
+        final var errors1 = new IMUErrors(accelerometerBiases, gyroBiases,
                 accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
                 gyroGDependenciesBiases, accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel,
                 gyroQuantizationLevel);
-        final IMUErrors errors2 = new IMUErrors(accelerometerBiases, gyroBiases,
+        final var errors2 = new IMUErrors(accelerometerBiases, gyroBiases,
                 accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
                 gyroGDependenciesBiases, accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel,
                 gyroQuantizationLevel);
-        final IMUErrors errors3 = new IMUErrors();
+        final var errors3 = new IMUErrors();
 
         //noinspection SimplifiableJUnitAssertion,EqualsWithItself
         assertEquals(errors1, errors1);
@@ -1002,86 +999,86 @@ public class IMUErrorsTest {
         //noinspection SimplifiableJUnitAssertion
         assertNotEquals(errors1, errors3);
         //noinspection SimplifiableJUnitAssertion,ConstantConditions
-        assertNotEquals(errors1, null);
+        assertNotEquals(null, errors1);
         //noinspection SimplifiableJUnitAssertion
-        assertNotEquals(errors1, new Object());
+        assertNotEquals(new Object(), errors1);
     }
 
     @Test
-    public void testClone() throws CloneNotSupportedException, WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testClone() throws CloneNotSupportedException, WrongSizeException {
+        final var randomizer = new UniformRandomizer();
 
-        final double[] accelerometerBiases = new double[COMPONENTS];
+        final var accelerometerBiases = new double[COMPONENTS];
         randomizer.fill(accelerometerBiases, MIN_VALUE, MAX_VALUE);
 
-        final double[] gyroBiases = new double[COMPONENTS];
+        final var gyroBiases = new double[COMPONENTS];
         randomizer.fill(gyroBiases, MIN_VALUE, MAX_VALUE);
 
-        final Matrix accelerometerScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
+        final var accelerometerScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
         Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, accelerometerScaleFactorAndCrossCouplingErrors);
 
-        final Matrix gyroScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
+        final var gyroScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
         Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, gyroScaleFactorAndCrossCouplingErrors);
 
-        final Matrix gyroGDependenciesBiases = new Matrix(COMPONENTS, COMPONENTS);
+        final var gyroGDependenciesBiases = new Matrix(COMPONENTS, COMPONENTS);
         Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, gyroGDependenciesBiases);
 
-        final double accelerometerNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gyroNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var accelerometerNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gyroNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final double accelerometerQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gyroQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var accelerometerQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gyroQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final IMUErrors errors1 = new IMUErrors(accelerometerBiases, gyroBiases,
+        final var errors1 = new IMUErrors(accelerometerBiases, gyroBiases,
                 accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
                 gyroGDependenciesBiases, accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel,
                 gyroQuantizationLevel);
 
-        final Object errors2 = errors1.clone();
+        final var errors2 = errors1.clone();
 
         assertEquals(errors1, errors2);
     }
 
     @Test
-    public void testSerializeDeserialize() throws WrongSizeException, IOException, ClassNotFoundException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testSerializeDeserialize() throws WrongSizeException, IOException, ClassNotFoundException {
+        final var randomizer = new UniformRandomizer();
 
-        final double[] accelerometerBiases = new double[COMPONENTS];
+        final var accelerometerBiases = new double[COMPONENTS];
         randomizer.fill(accelerometerBiases, MIN_VALUE, MAX_VALUE);
 
-        final double[] gyroBiases = new double[COMPONENTS];
+        final var gyroBiases = new double[COMPONENTS];
         randomizer.fill(gyroBiases, MIN_VALUE, MAX_VALUE);
 
-        final Matrix accelerometerScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
+        final var accelerometerScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
         Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, accelerometerScaleFactorAndCrossCouplingErrors);
 
-        final Matrix gyroScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
+        final var gyroScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
         Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, gyroScaleFactorAndCrossCouplingErrors);
 
-        final Matrix gyroGDependenciesBiases = new Matrix(COMPONENTS, COMPONENTS);
+        final var gyroGDependenciesBiases = new Matrix(COMPONENTS, COMPONENTS);
         Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, gyroGDependenciesBiases);
 
-        final double accelerometerNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gyroNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var accelerometerNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gyroNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final double accelerometerQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gyroQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var accelerometerQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gyroQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final IMUErrors errors1 = new IMUErrors(accelerometerBiases, gyroBiases,
+        final var errors1 = new IMUErrors(accelerometerBiases, gyroBiases,
                 accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
                 gyroGDependenciesBiases, accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel,
                 gyroQuantizationLevel);
 
-        final byte[] bytes = SerializationHelper.serialize(errors1);
-        final IMUErrors errors2 = SerializationHelper.deserialize(bytes);
+        final var bytes = SerializationHelper.serialize(errors1);
+        final var errors2 = SerializationHelper.deserialize(bytes);
 
         assertEquals(errors1, errors2);
         assertNotSame(errors1, errors2);
     }
 
     @Test
-    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
-        final Field field = IMUErrors.class.getDeclaredField("serialVersionUID");
+    void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final var field = IMUErrors.class.getDeclaredField("serialVersionUID");
         field.setAccessible(true);
 
         assertEquals(0L, field.get(null));

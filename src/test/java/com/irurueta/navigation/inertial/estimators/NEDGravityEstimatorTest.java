@@ -24,13 +24,11 @@ import com.irurueta.units.Angle;
 import com.irurueta.units.AngleUnit;
 import com.irurueta.units.Distance;
 import com.irurueta.units.DistanceUnit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import java.util.Random;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import static org.junit.Assert.assertEquals;
-
-public class NEDGravityEstimatorTest {
+class NEDGravityEstimatorTest {
     private static final double LATITUDE_DEGREES = 41.3825;
     private static final double LONGITUDE_DEGREES = 2.176944;
     private static final double MIN_HEIGHT = -50.0;
@@ -45,7 +43,7 @@ public class NEDGravityEstimatorTest {
     private static final int TIMES = 100;
 
     @Test
-    public void testConstants() {
+    void testConstants() {
         assertEquals(NEDGravityEstimator.EARTH_EQUATORIAL_RADIUS_WGS84, Constants.EARTH_EQUATORIAL_RADIUS_WGS84, 0.0);
         assertEquals(NEDGravityEstimator.EARTH_POLAR_RADIUS_WGS84, Constants.EARTH_POLAR_RADIUS_WGS84, 0.0);
         assertEquals(NEDGravityEstimator.EARTH_ECCENTRICITY, Constants.EARTH_ECCENTRICITY, 0.0);
@@ -55,17 +53,17 @@ public class NEDGravityEstimatorTest {
     }
 
     @Test
-    public void testEstimateWithCoordinates() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testEstimateWithCoordinates() {
+        final var randomizer = new UniformRandomizer();
 
-        final double latitude = Math.toRadians(LATITUDE_DEGREES);
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var latitude = Math.toRadians(LATITUDE_DEGREES);
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-        final NEDGravityEstimator estimator = new NEDGravityEstimator();
-        final NEDGravity gravity = new NEDGravity();
+        final var estimator = new NEDGravityEstimator();
+        final var gravity = new NEDGravity();
         estimator.estimate(latitude, height, gravity);
 
-        final double g = Math.sqrt(Math.pow(gravity.getGn(), 2.0)
+        final var g = Math.sqrt(Math.pow(gravity.getGn(), 2.0)
                 + Math.pow(gravity.getGe(), 2.0)
                 + Math.pow(gravity.getGd(), 2.0));
 
@@ -73,16 +71,16 @@ public class NEDGravityEstimatorTest {
     }
 
     @Test
-    public void testEstimateAndReturnWithCoordinates() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testEstimateAndReturnWithCoordinates() {
+        final var randomizer = new UniformRandomizer();
 
-        final double latitude = Math.toRadians(LATITUDE_DEGREES);
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var latitude = Math.toRadians(LATITUDE_DEGREES);
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-        final NEDGravityEstimator estimator = new NEDGravityEstimator();
-        final NEDGravity gravity = estimator.estimateAndReturnNew(latitude, height);
+        final var estimator = new NEDGravityEstimator();
+        final var gravity = estimator.estimateAndReturnNew(latitude, height);
 
-        final double g = Math.sqrt(Math.pow(gravity.getGn(), 2.0)
+        final var g = Math.sqrt(Math.pow(gravity.getGn(), 2.0)
                 + Math.pow(gravity.getGe(), 2.0)
                 + Math.pow(gravity.getGd(), 2.0));
 
@@ -90,19 +88,19 @@ public class NEDGravityEstimatorTest {
     }
 
     @Test
-    public void testEstimateWithNEDFrame() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testEstimateWithNEDFrame() {
+        final var randomizer = new UniformRandomizer();
 
-        final double latitude = Math.toRadians(LATITUDE_DEGREES);
-        final double longitude = Math.toRadians(LONGITUDE_DEGREES);
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDFrame frame = new NEDFrame(latitude, longitude, height);
+        final var latitude = Math.toRadians(LATITUDE_DEGREES);
+        final var longitude = Math.toRadians(LONGITUDE_DEGREES);
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var frame = new NEDFrame(latitude, longitude, height);
 
-        final NEDGravityEstimator estimator = new NEDGravityEstimator();
-        final NEDGravity gravity = new NEDGravity();
+        final var estimator = new NEDGravityEstimator();
+        final var gravity = new NEDGravity();
         estimator.estimate(frame, gravity);
 
-        final double g = Math.sqrt(Math.pow(gravity.getGn(), 2.0)
+        final var g = Math.sqrt(Math.pow(gravity.getGn(), 2.0)
                 + Math.pow(gravity.getGe(), 2.0)
                 + Math.pow(gravity.getGd(), 2.0));
 
@@ -110,18 +108,18 @@ public class NEDGravityEstimatorTest {
     }
 
     @Test
-    public void testEstimateAndReturnNewWithNEDFrame() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testEstimateAndReturnNewWithNEDFrame() {
+        final var randomizer = new UniformRandomizer();
 
-        final double latitude = Math.toRadians(LATITUDE_DEGREES);
-        final double longitude = Math.toRadians(LONGITUDE_DEGREES);
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDFrame frame = new NEDFrame(latitude, longitude, height);
+        final var latitude = Math.toRadians(LATITUDE_DEGREES);
+        final var longitude = Math.toRadians(LONGITUDE_DEGREES);
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var frame = new NEDFrame(latitude, longitude, height);
 
-        final NEDGravityEstimator estimator = new NEDGravityEstimator();
-        final NEDGravity gravity = estimator.estimateAndReturnNew(frame);
+        final var estimator = new NEDGravityEstimator();
+        final var gravity = estimator.estimateAndReturnNew(frame);
 
-        final double g = Math.sqrt(Math.pow(gravity.getGn(), 2.0)
+        final var g = Math.sqrt(Math.pow(gravity.getGn(), 2.0)
                 + Math.pow(gravity.getGe(), 2.0)
                 + Math.pow(gravity.getGd(), 2.0));
 
@@ -129,18 +127,18 @@ public class NEDGravityEstimatorTest {
     }
 
     @Test
-    public void testEstimateWithAngleAndDistance() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testEstimateWithAngleAndDistance() {
+        final var randomizer = new UniformRandomizer();
 
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final Angle latitudeAngle = new Angle(LATITUDE_DEGREES, AngleUnit.DEGREES);
-        final Distance heightDistance = new Distance(height, DistanceUnit.METER);
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var latitudeAngle = new Angle(LATITUDE_DEGREES, AngleUnit.DEGREES);
+        final var heightDistance = new Distance(height, DistanceUnit.METER);
 
-        final NEDGravityEstimator estimator = new NEDGravityEstimator();
-        final NEDGravity gravity = new NEDGravity();
+        final var estimator = new NEDGravityEstimator();
+        final var gravity = new NEDGravity();
         estimator.estimate(latitudeAngle, heightDistance, gravity);
 
-        final double g = Math.sqrt(Math.pow(gravity.getGn(), 2.0)
+        final var g = Math.sqrt(Math.pow(gravity.getGn(), 2.0)
                 + Math.pow(gravity.getGe(), 2.0)
                 + Math.pow(gravity.getGd(), 2.0));
 
@@ -148,17 +146,17 @@ public class NEDGravityEstimatorTest {
     }
 
     @Test
-    public void testEstimateAndReturnNewWithAngleAndDistance() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testEstimateAndReturnNewWithAngleAndDistance() {
+        final var randomizer = new UniformRandomizer();
 
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final Angle latitudeAngle = new Angle(LATITUDE_DEGREES, AngleUnit.DEGREES);
-        final Distance heightDistance = new Distance(height, DistanceUnit.METER);
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var latitudeAngle = new Angle(LATITUDE_DEGREES, AngleUnit.DEGREES);
+        final var heightDistance = new Distance(height, DistanceUnit.METER);
 
-        final NEDGravityEstimator estimator = new NEDGravityEstimator();
-        final NEDGravity gravity = estimator.estimateAndReturnNew(latitudeAngle, heightDistance);
+        final var estimator = new NEDGravityEstimator();
+        final var gravity = estimator.estimateAndReturnNew(latitudeAngle, heightDistance);
 
-        final double g = Math.sqrt(Math.pow(gravity.getGn(), 2.0)
+        final var g = Math.sqrt(Math.pow(gravity.getGn(), 2.0)
                 + Math.pow(gravity.getGe(), 2.0)
                 + Math.pow(gravity.getGd(), 2.0));
 
@@ -166,19 +164,19 @@ public class NEDGravityEstimatorTest {
     }
 
     @Test
-    public void testEstimateWithNEDPosition() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testEstimateWithNEDPosition() {
+        final var randomizer = new UniformRandomizer();
 
-        final double latitude = Math.toRadians(LATITUDE_DEGREES);
-        final double longitude = Math.toRadians(LONGITUDE_DEGREES);
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition position = new NEDPosition(latitude, longitude, height);
+        final var latitude = Math.toRadians(LATITUDE_DEGREES);
+        final var longitude = Math.toRadians(LONGITUDE_DEGREES);
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var position = new NEDPosition(latitude, longitude, height);
 
-        final NEDGravityEstimator estimator = new NEDGravityEstimator();
-        final NEDGravity gravity = new NEDGravity();
+        final var estimator = new NEDGravityEstimator();
+        final var gravity = new NEDGravity();
         estimator.estimate(position, gravity);
 
-        final double g = Math.sqrt(Math.pow(gravity.getGn(), 2.0)
+        final var g = Math.sqrt(Math.pow(gravity.getGn(), 2.0)
                 + Math.pow(gravity.getGe(), 2.0)
                 + Math.pow(gravity.getGd(), 2.0));
 
@@ -186,18 +184,18 @@ public class NEDGravityEstimatorTest {
     }
 
     @Test
-    public void testEstimateAndReturnNewWithNEDPosition() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testEstimateAndReturnNewWithNEDPosition() {
+        final var randomizer = new UniformRandomizer();
 
-        final double latitude = Math.toRadians(LATITUDE_DEGREES);
-        final double longitude = Math.toRadians(LONGITUDE_DEGREES);
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition position = new NEDPosition(latitude, longitude, height);
+        final var latitude = Math.toRadians(LATITUDE_DEGREES);
+        final var longitude = Math.toRadians(LONGITUDE_DEGREES);
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var position = new NEDPosition(latitude, longitude, height);
 
-        final NEDGravityEstimator estimator = new NEDGravityEstimator();
-        final NEDGravity gravity = estimator.estimateAndReturnNew(position);
+        final var estimator = new NEDGravityEstimator();
+        final var gravity = estimator.estimateAndReturnNew(position);
 
-        final double g = Math.sqrt(Math.pow(gravity.getGn(), 2.0)
+        final var g = Math.sqrt(Math.pow(gravity.getGn(), 2.0)
                 + Math.pow(gravity.getGe(), 2.0)
                 + Math.pow(gravity.getGd(), 2.0));
 
@@ -205,16 +203,16 @@ public class NEDGravityEstimatorTest {
     }
 
     @Test
-    public void testEstimateForMultipleLatitudes() {
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testEstimateForMultipleLatitudes() {
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-            final NEDGravity gravity = NEDGravityEstimator.estimateGravityAndReturnNew(latitude, height);
+            final var gravity = NEDGravityEstimator.estimateGravityAndReturnNew(latitude, height);
 
-            final double g = Math.sqrt(Math.pow(gravity.getGn(), 2.0)
+            final var g = Math.sqrt(Math.pow(gravity.getGn(), 2.0)
                     + Math.pow(gravity.getGe(), 2.0)
                     + Math.pow(gravity.getGd(), 2.0));
 

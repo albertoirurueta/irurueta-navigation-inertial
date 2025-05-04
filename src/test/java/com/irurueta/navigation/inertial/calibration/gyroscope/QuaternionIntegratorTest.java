@@ -25,22 +25,19 @@ import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeExcept
 import com.irurueta.navigation.frames.NEDFrame;
 import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
-import com.irurueta.navigation.inertial.BodyKinematics;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsSequence;
 import com.irurueta.navigation.inertial.calibration.StandardDeviationTimedBodyKinematics;
 import com.irurueta.navigation.inertial.estimators.ECEFKinematicsEstimator;
 import com.irurueta.navigation.inertial.navigators.ECEFInertialNavigator;
 import com.irurueta.navigation.inertial.navigators.InertialNavigatorException;
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class QuaternionIntegratorTest {
+class QuaternionIntegratorTest {
 
     private static final double MIN_LATITUDE_DEGREES = -90.0;
     private static final double MAX_LATITUDE_DEGREES = 90.0;
@@ -66,69 +63,67 @@ public class QuaternionIntegratorTest {
     private static final int TIMES = 100;
 
     @Test
-    public void testIntegrateGyroSequenceWithInitialAttitudeAndEulerType()
+    void testIntegrateGyroSequenceWithInitialAttitudeAndEulerType()
             throws InvalidSourceAndDestinationFrameTypeException, InvalidRotationMatrixException, RotationException,
             InertialNavigatorException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation cbn1 = new CoordinateTransformation(roll1, pitch1, yaw1,
-                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            final var roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var cbn1 = new CoordinateTransformation(roll1, pitch1, yaw1, FrameType.BODY_FRAME, 
+                    FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame nedFrame1 = new NEDFrame(nedPosition, cbn1);
-            final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
+            final var nedFrame1 = new NEDFrame(nedPosition, cbn1);
+            final var ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
 
             // compute new orientation after 1 second
-            final double roll2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation cbn2 = new CoordinateTransformation(roll2, pitch2, yaw2,
-                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            final var roll2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var cbn2 = new CoordinateTransformation(roll2, pitch2, yaw2, FrameType.BODY_FRAME,
+                    FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame nedFrame2 = new NEDFrame(nedPosition, cbn2);
-            final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
+            final var nedFrame2 = new NEDFrame(nedPosition, cbn2);
+            final var ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
 
             // assume that body kinematics are constant during the time interval of 1 second
-            final BodyKinematics kinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                    ecefFrame2, ecefFrame1);
+            final var kinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, ecefFrame2,
+                    ecefFrame1);
 
-            final ECEFFrame previousFrame = new ECEFFrame(ecefFrame1);
-            final ECEFFrame currentFrame = new ECEFFrame();
+            final var previousFrame = new ECEFFrame(ecefFrame1);
+            final var currentFrame = new ECEFFrame();
 
-            final List<StandardDeviationTimedBodyKinematics> items = new ArrayList<>();
-            for (int i = 0; i < NUM_SAMPLES; i++) {
-                ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_BETWEEN_SAMPLES, previousFrame, kinematics,
+            final var items = new ArrayList<StandardDeviationTimedBodyKinematics>();
+            for (var i = 0; i < NUM_SAMPLES; i++) {
+                ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_BETWEEN_SAMPLES, previousFrame, kinematics, 
                         currentFrame);
 
                 previousFrame.copyFrom(currentFrame);
 
-                final double timestamp = i * TIME_INTERVAL_BETWEEN_SAMPLES;
-                final StandardDeviationTimedBodyKinematics item = new StandardDeviationTimedBodyKinematics(kinematics,
-                        timestamp);
+                final var timestamp = i * TIME_INTERVAL_BETWEEN_SAMPLES;
+                final var item = new StandardDeviationTimedBodyKinematics(kinematics, timestamp);
                 items.add(item);
             }
 
-            final Quaternion expected = currentFrame.getCoordinateTransformation().asRotation().toQuaternion();
+            final var expected = currentFrame.getCoordinateTransformation().asRotation().toQuaternion();
             expected.normalize();
 
-            final Quaternion expected2 = ecefFrame2.getCoordinateTransformation().asRotation().toQuaternion();
+            final var expected2 = ecefFrame2.getCoordinateTransformation().asRotation().toQuaternion();
             expected2.normalize();
 
             assertTrue(expected.equals(expected2, ABSOLUTE_ERROR));
 
-            final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence =
-                    new BodyKinematicsSequence<>(items);
-            final Quaternion initialAttitude = ecefFrame1.getCoordinateTransformation().asRotation().toQuaternion();
-            final Quaternion result = new Quaternion();
+            final var sequence = new BodyKinematicsSequence<>(items);
+            final var initialAttitude = ecefFrame1.getCoordinateTransformation().asRotation().toQuaternion();
+            final var result = new Quaternion();
 
             QuaternionIntegrator.integrateGyroSequence(sequence, initialAttitude,
                     QuaternionStepIntegratorType.EULER_METHOD, result);
@@ -147,68 +142,65 @@ public class QuaternionIntegratorTest {
     }
 
     @Test
-    public void testIntegrateGyroSequenceWithNoInitialAttitudeAndEulerType()
+    void testIntegrateGyroSequenceWithNoInitialAttitudeAndEulerType()
             throws InvalidSourceAndDestinationFrameTypeException, InvalidRotationMatrixException, RotationException,
             InertialNavigatorException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES,
-                    MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation cbn1 = new CoordinateTransformation(roll1, pitch1, yaw1,
-                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            final var roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var cbn1 = new CoordinateTransformation(roll1, pitch1, yaw1, FrameType.BODY_FRAME,
+                    FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame nedFrame1 = new NEDFrame(nedPosition, cbn1);
-            final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
+            final var nedFrame1 = new NEDFrame(nedPosition, cbn1);
+            final var ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
 
             // compute new orientation after 1 second
-            final double roll2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation cbn2 = new CoordinateTransformation(roll2, pitch2, yaw2,
-                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            final var roll2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var cbn2 = new CoordinateTransformation(roll2, pitch2, yaw2, FrameType.BODY_FRAME,
+                    FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame nedFrame2 = new NEDFrame(nedPosition, cbn2);
-            final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
+            final var nedFrame2 = new NEDFrame(nedPosition, cbn2);
+            final var ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
 
             // assume that body kinematics are constant during the time interval of 1 second
-            final BodyKinematics kinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                    ecefFrame2, ecefFrame1);
+            final var kinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, ecefFrame2,
+                    ecefFrame1);
 
-            final ECEFFrame previousFrame = new ECEFFrame(ecefFrame1);
+            final var previousFrame = new ECEFFrame(ecefFrame1);
             // set the identity ad initial attitude
             previousFrame.setCoordinateTransformation(new CoordinateTransformation(FrameType.BODY_FRAME,
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME));
 
-            final ECEFFrame currentFrame = new ECEFFrame();
+            final var currentFrame = new ECEFFrame();
 
-            final List<StandardDeviationTimedBodyKinematics> items = new ArrayList<>();
-            for (int i = 0; i < NUM_SAMPLES; i++) {
+            final var items = new ArrayList<StandardDeviationTimedBodyKinematics>();
+            for (var i = 0; i < NUM_SAMPLES; i++) {
                 ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_BETWEEN_SAMPLES, previousFrame, kinematics,
                         currentFrame);
 
                 previousFrame.copyFrom(currentFrame);
 
-                final double timestamp = i * TIME_INTERVAL_BETWEEN_SAMPLES;
-                final StandardDeviationTimedBodyKinematics item = new StandardDeviationTimedBodyKinematics(kinematics,
-                        timestamp);
+                final var timestamp = i * TIME_INTERVAL_BETWEEN_SAMPLES;
+                final var item = new StandardDeviationTimedBodyKinematics(kinematics, timestamp);
                 items.add(item);
             }
 
-            final Quaternion expected = currentFrame.getCoordinateTransformation().asRotation().toQuaternion();
+            final var expected = currentFrame.getCoordinateTransformation().asRotation().toQuaternion();
             expected.normalize();
 
-            final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence =
-                    new BodyKinematicsSequence<>(items);
-            final Quaternion result = new Quaternion();
+            final var sequence = new BodyKinematicsSequence<>(items);
+            final var result = new Quaternion();
 
             QuaternionIntegrator.integrateGyroSequence(sequence, null,
                     QuaternionStepIntegratorType.EULER_METHOD, result);
@@ -227,67 +219,64 @@ public class QuaternionIntegratorTest {
     }
 
     @Test
-    public void testIntegrateGyroSequenceWithEulerType() throws InvalidSourceAndDestinationFrameTypeException,
+    void testIntegrateGyroSequenceWithEulerType() throws InvalidSourceAndDestinationFrameTypeException,
             InvalidRotationMatrixException, RotationException, InertialNavigatorException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES,
-                    MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation cbn1 = new CoordinateTransformation(roll1, pitch1, yaw1,
-                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            final var roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var cbn1 = new CoordinateTransformation(roll1, pitch1, yaw1, FrameType.BODY_FRAME,
+                    FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame nedFrame1 = new NEDFrame(nedPosition, cbn1);
-            final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
+            final var nedFrame1 = new NEDFrame(nedPosition, cbn1);
+            final var ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
 
             // compute new orientation after 1 second
-            final double roll2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation cbn2 = new CoordinateTransformation(roll2, pitch2, yaw2,
-                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            final var roll2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var cbn2 = new CoordinateTransformation(roll2, pitch2, yaw2, FrameType.BODY_FRAME,
+                    FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame nedFrame2 = new NEDFrame(nedPosition, cbn2);
-            final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
+            final var nedFrame2 = new NEDFrame(nedPosition, cbn2);
+            final var ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
 
             // assume that body kinematics are constant during the time interval of 1 second
-            final BodyKinematics kinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                    ecefFrame2, ecefFrame1);
+            final var kinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, ecefFrame2,
+                    ecefFrame1);
 
-            final ECEFFrame previousFrame = new ECEFFrame(ecefFrame1);
+            final var previousFrame = new ECEFFrame(ecefFrame1);
             // set the identity ad initial attitude
             previousFrame.setCoordinateTransformation(new CoordinateTransformation(FrameType.BODY_FRAME,
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME));
 
-            final ECEFFrame currentFrame = new ECEFFrame();
+            final var currentFrame = new ECEFFrame();
 
-            final List<StandardDeviationTimedBodyKinematics> items = new ArrayList<>();
-            for (int i = 0; i < NUM_SAMPLES; i++) {
+            final var items = new ArrayList<StandardDeviationTimedBodyKinematics>();
+            for (var i = 0; i < NUM_SAMPLES; i++) {
                 ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_BETWEEN_SAMPLES, previousFrame, kinematics,
                         currentFrame);
 
                 previousFrame.copyFrom(currentFrame);
 
-                final double timestamp = i * TIME_INTERVAL_BETWEEN_SAMPLES;
-                final StandardDeviationTimedBodyKinematics item = new StandardDeviationTimedBodyKinematics(kinematics,
-                        timestamp);
+                final var timestamp = i * TIME_INTERVAL_BETWEEN_SAMPLES;
+                final var item = new StandardDeviationTimedBodyKinematics(kinematics, timestamp);
                 items.add(item);
             }
 
-            final Quaternion expected = currentFrame.getCoordinateTransformation().asRotation().toQuaternion();
+            final var expected = currentFrame.getCoordinateTransformation().asRotation().toQuaternion();
             expected.normalize();
 
-            final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence =
-                    new BodyKinematicsSequence<>(items);
-            final Quaternion result = new Quaternion();
+            final var sequence = new BodyKinematicsSequence<>(items);
+            final var result = new Quaternion();
 
             QuaternionIntegrator.integrateGyroSequence(sequence, QuaternionStepIntegratorType.EULER_METHOD, result);
             result.normalize();
@@ -305,69 +294,66 @@ public class QuaternionIntegratorTest {
     }
 
     @Test
-    public void testIntegrateGyroSequenceAndReturnNewWithEulerType()
-            throws InvalidSourceAndDestinationFrameTypeException, InvalidRotationMatrixException, RotationException,
-            InertialNavigatorException {
+    void testIntegrateGyroSequenceAndReturnNewWithEulerType() throws InvalidSourceAndDestinationFrameTypeException,
+            InvalidRotationMatrixException, RotationException, InertialNavigatorException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation cbn1 = new CoordinateTransformation(roll1, pitch1, yaw1,
-                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            final var roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var cbn1 = new CoordinateTransformation(roll1, pitch1, yaw1, FrameType.BODY_FRAME,
+                    FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame nedFrame1 = new NEDFrame(nedPosition, cbn1);
-            final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
+            final var nedFrame1 = new NEDFrame(nedPosition, cbn1);
+            final var ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
 
             // compute new orientation after 1 second
-            final double roll2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation cbn2 = new CoordinateTransformation(roll2, pitch2, yaw2,
-                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            final var roll2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var cbn2 = new CoordinateTransformation(roll2, pitch2, yaw2, FrameType.BODY_FRAME,
+                    FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame nedFrame2 = new NEDFrame(nedPosition, cbn2);
-            final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
+            final var nedFrame2 = new NEDFrame(nedPosition, cbn2);
+            final var ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
 
             // assume that body kinematics are constant during the time interval of 1 second
-            final BodyKinematics kinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                    ecefFrame2, ecefFrame1);
+            final var kinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, ecefFrame2,
+                    ecefFrame1);
 
-            final ECEFFrame previousFrame = new ECEFFrame(ecefFrame1);
-            final ECEFFrame currentFrame = new ECEFFrame();
+            final var previousFrame = new ECEFFrame(ecefFrame1);
+            final var currentFrame = new ECEFFrame();
 
-            final List<StandardDeviationTimedBodyKinematics> items = new ArrayList<>();
-            for (int i = 0; i < NUM_SAMPLES; i++) {
+            final var items = new ArrayList<StandardDeviationTimedBodyKinematics>();
+            for (var i = 0; i < NUM_SAMPLES; i++) {
                 ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_BETWEEN_SAMPLES, previousFrame, kinematics,
                         currentFrame);
 
                 previousFrame.copyFrom(currentFrame);
 
-                final double timestamp = i * TIME_INTERVAL_BETWEEN_SAMPLES;
-                final StandardDeviationTimedBodyKinematics item = new StandardDeviationTimedBodyKinematics(kinematics,
-                        timestamp);
+                final var timestamp = i * TIME_INTERVAL_BETWEEN_SAMPLES;
+                final var item = new StandardDeviationTimedBodyKinematics(kinematics, timestamp);
                 items.add(item);
             }
 
-            final Quaternion expected = currentFrame.getCoordinateTransformation().asRotation().toQuaternion();
+            final var expected = currentFrame.getCoordinateTransformation().asRotation().toQuaternion();
             expected.normalize();
 
-            final Quaternion expected2 = ecefFrame2.getCoordinateTransformation().asRotation().toQuaternion();
+            final var expected2 = ecefFrame2.getCoordinateTransformation().asRotation().toQuaternion();
             expected2.normalize();
 
             assertTrue(expected.equals(expected2, ABSOLUTE_ERROR));
 
-            final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence =
-                    new BodyKinematicsSequence<>(items);
-            final Quaternion initialAttitude = ecefFrame1.getCoordinateTransformation().asRotation().toQuaternion();
-            final Quaternion result = QuaternionIntegrator.integrateGyroSequenceAndReturnNew(sequence, initialAttitude,
+            final var sequence = new BodyKinematicsSequence<>(items);
+            final var initialAttitude = ecefFrame1.getCoordinateTransformation().asRotation().toQuaternion();
+            final var result = QuaternionIntegrator.integrateGyroSequenceAndReturnNew(sequence, initialAttitude,
                     QuaternionStepIntegratorType.EULER_METHOD);
             result.normalize();
 
@@ -384,67 +370,63 @@ public class QuaternionIntegratorTest {
     }
 
     @Test
-    public void testIntegrateGyroSequenceAndReturnNewWithEulerType2()
-            throws InvalidSourceAndDestinationFrameTypeException, InvalidRotationMatrixException, RotationException,
-            InertialNavigatorException {
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES,
-                    MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+    void testIntegrateGyroSequenceAndReturnNewWithEulerType2() throws InvalidSourceAndDestinationFrameTypeException,
+            InvalidRotationMatrixException, RotationException, InertialNavigatorException {
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation cbn1 = new CoordinateTransformation(roll1, pitch1, yaw1,
-                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            final var roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var cbn1 = new CoordinateTransformation(roll1, pitch1, yaw1, FrameType.BODY_FRAME,
+                    FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame nedFrame1 = new NEDFrame(nedPosition, cbn1);
-            final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
+            final var nedFrame1 = new NEDFrame(nedPosition, cbn1);
+            final var ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
 
             // compute new orientation after 1 second
-            final double roll2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation cbn2 = new CoordinateTransformation(roll2, pitch2, yaw2,
-                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            final var roll2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var cbn2 = new CoordinateTransformation(roll2, pitch2, yaw2, FrameType.BODY_FRAME,
+                    FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame nedFrame2 = new NEDFrame(nedPosition, cbn2);
-            final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
+            final var nedFrame2 = new NEDFrame(nedPosition, cbn2);
+            final var ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
 
             // assume that body kinematics are constant during the time interval of 1 second
-            final BodyKinematics kinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                    ecefFrame2, ecefFrame1);
+            final var kinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, ecefFrame2,
+                    ecefFrame1);
 
-            final ECEFFrame previousFrame = new ECEFFrame(ecefFrame1);
+            final var previousFrame = new ECEFFrame(ecefFrame1);
             // set the identity as initial attitude
             previousFrame.setCoordinateTransformation(new CoordinateTransformation(FrameType.BODY_FRAME,
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME));
 
-            final ECEFFrame currentFrame = new ECEFFrame();
+            final var currentFrame = new ECEFFrame();
 
-            final List<StandardDeviationTimedBodyKinematics> items = new ArrayList<>();
-            for (int i = 0; i < NUM_SAMPLES; i++) {
+            final var items = new ArrayList<StandardDeviationTimedBodyKinematics>();
+            for (var i = 0; i < NUM_SAMPLES; i++) {
                 ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_BETWEEN_SAMPLES, previousFrame, kinematics,
                         currentFrame);
 
                 previousFrame.copyFrom(currentFrame);
 
-                final double timestamp = i * TIME_INTERVAL_BETWEEN_SAMPLES;
-                final StandardDeviationTimedBodyKinematics item = new StandardDeviationTimedBodyKinematics(kinematics,
-                        timestamp);
+                final var timestamp = i * TIME_INTERVAL_BETWEEN_SAMPLES;
+                final var item = new StandardDeviationTimedBodyKinematics(kinematics, timestamp);
                 items.add(item);
             }
 
-            final Quaternion expected = currentFrame.getCoordinateTransformation().asRotation().toQuaternion();
+            final var expected = currentFrame.getCoordinateTransformation().asRotation().toQuaternion();
             expected.normalize();
 
-            final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence =
-                    new BodyKinematicsSequence<>(items);
-            final Quaternion result = QuaternionIntegrator.integrateGyroSequenceAndReturnNew(sequence,
+            final var sequence = new BodyKinematicsSequence<>(items);
+            final var result = QuaternionIntegrator.integrateGyroSequenceAndReturnNew(sequence,
                     QuaternionStepIntegratorType.EULER_METHOD);
             result.normalize();
 
@@ -461,70 +443,67 @@ public class QuaternionIntegratorTest {
     }
 
     @Test
-    public void testIntegrateGyroSequenceWithInitialAttitudeAndMidPointType()
+    void testIntegrateGyroSequenceWithInitialAttitudeAndMidPointType()
             throws InvalidSourceAndDestinationFrameTypeException, InvalidRotationMatrixException, RotationException,
             InertialNavigatorException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(randomizer.nextDouble(
-                    MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation cbn1 = new CoordinateTransformation(roll1, pitch1, yaw1,
-                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            final var roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var cbn1 = new CoordinateTransformation(roll1, pitch1, yaw1, FrameType.BODY_FRAME,
+                    FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame nedFrame1 = new NEDFrame(nedPosition, cbn1);
-            final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
+            final var nedFrame1 = new NEDFrame(nedPosition, cbn1);
+            final var ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
 
             // compute new orientation after 1 second
-            final double roll2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation cbn2 = new CoordinateTransformation(roll2, pitch2, yaw2,
-                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            final var roll2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var cbn2 = new CoordinateTransformation(roll2, pitch2, yaw2, FrameType.BODY_FRAME,
+                    FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame nedFrame2 = new NEDFrame(nedPosition, cbn2);
-            final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
+            final var nedFrame2 = new NEDFrame(nedPosition, cbn2);
+            final var ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
 
             // assume that body kinematics are constant during the time interval of 1 second
-            final BodyKinematics kinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                    ecefFrame2, ecefFrame1);
+            final var kinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, ecefFrame2,
+                    ecefFrame1);
 
-            final ECEFFrame previousFrame = new ECEFFrame(ecefFrame1);
-            final ECEFFrame currentFrame = new ECEFFrame();
+            final var previousFrame = new ECEFFrame(ecefFrame1);
+            final var currentFrame = new ECEFFrame();
 
-            final List<StandardDeviationTimedBodyKinematics> items = new ArrayList<>();
-            for (int i = 0; i < NUM_SAMPLES; i++) {
+            final var items = new ArrayList<StandardDeviationTimedBodyKinematics>();
+            for (var i = 0; i < NUM_SAMPLES; i++) {
                 ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_BETWEEN_SAMPLES, previousFrame, kinematics,
                         currentFrame);
 
                 previousFrame.copyFrom(currentFrame);
 
-                final double timestamp = i * TIME_INTERVAL_BETWEEN_SAMPLES;
-                final StandardDeviationTimedBodyKinematics item = new StandardDeviationTimedBodyKinematics(kinematics,
-                        timestamp);
+                final var timestamp = i * TIME_INTERVAL_BETWEEN_SAMPLES;
+                final var item = new StandardDeviationTimedBodyKinematics(kinematics, timestamp);
                 items.add(item);
             }
 
-            final Quaternion expected = currentFrame.getCoordinateTransformation().asRotation().toQuaternion();
+            final var expected = currentFrame.getCoordinateTransformation().asRotation().toQuaternion();
             expected.normalize();
 
-            final Quaternion expected2 = ecefFrame2.getCoordinateTransformation().asRotation().toQuaternion();
+            final var expected2 = ecefFrame2.getCoordinateTransformation().asRotation().toQuaternion();
             expected2.normalize();
 
             assertTrue(expected.equals(expected2, ABSOLUTE_ERROR));
 
-            final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence =
-                    new BodyKinematicsSequence<>(items);
-            final Quaternion initialAttitude = ecefFrame1.getCoordinateTransformation().asRotation().toQuaternion();
-            final Quaternion result = new Quaternion();
+            final var sequence = new BodyKinematicsSequence<>(items);
+            final var initialAttitude = ecefFrame1.getCoordinateTransformation().asRotation().toQuaternion();
+            final var result = new Quaternion();
 
             QuaternionIntegrator.integrateGyroSequence(sequence, initialAttitude,
                     QuaternionStepIntegratorType.MID_POINT, result);
@@ -543,68 +522,66 @@ public class QuaternionIntegratorTest {
     }
 
     @Test
-    public void testIntegrateGyroSequenceWithNoInitialAttitudeAndMidPointType()
+    void testIntegrateGyroSequenceWithNoInitialAttitudeAndMidPointType()
             throws InvalidSourceAndDestinationFrameTypeException, InvalidRotationMatrixException, RotationException,
             InertialNavigatorException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(randomizer.nextDouble(
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(
                     MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation cbn1 = new CoordinateTransformation(roll1, pitch1, yaw1,
-                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            final var roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var cbn1 = new CoordinateTransformation(roll1, pitch1, yaw1, FrameType.BODY_FRAME,
+                    FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame nedFrame1 = new NEDFrame(nedPosition, cbn1);
-            final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
+            final var nedFrame1 = new NEDFrame(nedPosition, cbn1);
+            final var ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
 
             // compute new orientation after 1 second
-            final double roll2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation cbn2 = new CoordinateTransformation(
-                    roll2, pitch2, yaw2, FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            final var roll2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var cbn2 = new CoordinateTransformation(roll2, pitch2, yaw2, FrameType.BODY_FRAME,
+                    FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame nedFrame2 = new NEDFrame(nedPosition, cbn2);
-            final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
+            final var nedFrame2 = new NEDFrame(nedPosition, cbn2);
+            final var ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
 
             // assume that body kinematics are constant during the time interval of 1 second
-            final BodyKinematics kinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                    ecefFrame2, ecefFrame1);
+            final var kinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, ecefFrame2,
+                    ecefFrame1);
 
-            final ECEFFrame previousFrame = new ECEFFrame(ecefFrame1);
+            final var previousFrame = new ECEFFrame(ecefFrame1);
             // set the identity ad initial attitude
             previousFrame.setCoordinateTransformation(new CoordinateTransformation(FrameType.BODY_FRAME,
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME));
 
-            final ECEFFrame currentFrame = new ECEFFrame();
+            final var currentFrame = new ECEFFrame();
 
-            final List<StandardDeviationTimedBodyKinematics> items = new ArrayList<>();
-            for (int i = 0; i < NUM_SAMPLES; i++) {
+            final var items = new ArrayList<StandardDeviationTimedBodyKinematics>();
+            for (var i = 0; i < NUM_SAMPLES; i++) {
                 ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_BETWEEN_SAMPLES, previousFrame, kinematics,
                         currentFrame);
 
                 previousFrame.copyFrom(currentFrame);
 
-                final double timestamp = i * TIME_INTERVAL_BETWEEN_SAMPLES;
-                final StandardDeviationTimedBodyKinematics item = new StandardDeviationTimedBodyKinematics(kinematics,
-                        timestamp);
+                final var timestamp = i * TIME_INTERVAL_BETWEEN_SAMPLES;
+                final var item = new StandardDeviationTimedBodyKinematics(kinematics, timestamp);
                 items.add(item);
             }
 
-            final Quaternion expected = currentFrame.getCoordinateTransformation().asRotation().toQuaternion();
+            final var expected = currentFrame.getCoordinateTransformation().asRotation().toQuaternion();
             expected.normalize();
 
-            final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence =
-                    new BodyKinematicsSequence<>(items);
-            final Quaternion result = new Quaternion();
+            final var sequence = new BodyKinematicsSequence<>(items);
+            final var result = new Quaternion();
 
             QuaternionIntegrator.integrateGyroSequence(sequence, null,
                     QuaternionStepIntegratorType.MID_POINT, result);
@@ -623,67 +600,64 @@ public class QuaternionIntegratorTest {
     }
 
     @Test
-    public void testIntegrateGyroSequenceWithMidPointType() throws InvalidSourceAndDestinationFrameTypeException,
+    void testIntegrateGyroSequenceWithMidPointType() throws InvalidSourceAndDestinationFrameTypeException,
             InvalidRotationMatrixException, RotationException, InertialNavigatorException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(randomizer.nextDouble(
-                    MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation cbn1 = new CoordinateTransformation(roll1, pitch1, yaw1,
-                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            final var roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var cbn1 = new CoordinateTransformation(roll1, pitch1, yaw1, FrameType.BODY_FRAME,
+                    FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame nedFrame1 = new NEDFrame(nedPosition, cbn1);
-            final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
+            final var nedFrame1 = new NEDFrame(nedPosition, cbn1);
+            final var ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
 
             // compute new orientation after 1 second
-            final double roll2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation cbn2 = new CoordinateTransformation(roll2, pitch2, yaw2,
-                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            final var roll2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var cbn2 = new CoordinateTransformation(roll2, pitch2, yaw2, FrameType.BODY_FRAME,
+                    FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame nedFrame2 = new NEDFrame(nedPosition, cbn2);
-            final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
+            final var nedFrame2 = new NEDFrame(nedPosition, cbn2);
+            final var ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
 
             // assume that body kinematics are constant during the time interval of 1 second
-            final BodyKinematics kinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                    ecefFrame2, ecefFrame1);
+            final var kinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, ecefFrame2,
+                    ecefFrame1);
 
-            final ECEFFrame previousFrame = new ECEFFrame(ecefFrame1);
+            final var previousFrame = new ECEFFrame(ecefFrame1);
             // set the identity ad initial attitude
             previousFrame.setCoordinateTransformation(new CoordinateTransformation(FrameType.BODY_FRAME,
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME));
 
-            final ECEFFrame currentFrame = new ECEFFrame();
+            final var currentFrame = new ECEFFrame();
 
-            final List<StandardDeviationTimedBodyKinematics> items = new ArrayList<>();
-            for (int i = 0; i < NUM_SAMPLES; i++) {
+            final var items = new ArrayList<StandardDeviationTimedBodyKinematics>();
+            for (var i = 0; i < NUM_SAMPLES; i++) {
                 ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_BETWEEN_SAMPLES, previousFrame, kinematics,
                         currentFrame);
 
                 previousFrame.copyFrom(currentFrame);
 
-                final double timestamp = i * TIME_INTERVAL_BETWEEN_SAMPLES;
-                final StandardDeviationTimedBodyKinematics item = new StandardDeviationTimedBodyKinematics(kinematics,
-                        timestamp);
+                final var timestamp = i * TIME_INTERVAL_BETWEEN_SAMPLES;
+                final var item = new StandardDeviationTimedBodyKinematics(kinematics, timestamp);
                 items.add(item);
             }
 
-            final Quaternion expected = currentFrame.getCoordinateTransformation().asRotation().toQuaternion();
+            final var expected = currentFrame.getCoordinateTransformation().asRotation().toQuaternion();
             expected.normalize();
 
-            final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence =
-                    new BodyKinematicsSequence<>(items);
-            final Quaternion result = new Quaternion();
+            final var sequence = new BodyKinematicsSequence<>(items);
+            final var result = new Quaternion();
 
             QuaternionIntegrator.integrateGyroSequence(sequence, QuaternionStepIntegratorType.MID_POINT, result);
             result.normalize();
@@ -701,70 +675,66 @@ public class QuaternionIntegratorTest {
     }
 
     @Test
-    public void testIntegrateGyroSequenceAndReturnNewWithMidPointType()
-            throws InvalidSourceAndDestinationFrameTypeException, InvalidRotationMatrixException, RotationException,
-            InertialNavigatorException {
+    void testIntegrateGyroSequenceAndReturnNewWithMidPointType() throws InvalidSourceAndDestinationFrameTypeException,
+            InvalidRotationMatrixException, RotationException, InertialNavigatorException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(randomizer.nextDouble(
-                    MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation cbn1 = new CoordinateTransformation(roll1, pitch1, yaw1,
-                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            final var roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var cbn1 = new CoordinateTransformation(roll1, pitch1, yaw1, FrameType.BODY_FRAME,
+                    FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame nedFrame1 = new NEDFrame(nedPosition, cbn1);
-            final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
+            final var nedFrame1 = new NEDFrame(nedPosition, cbn1);
+            final var ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
 
             // compute new orientation after 1 second
-            final double roll2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation cbn2 = new CoordinateTransformation(roll2, pitch2, yaw2,
-                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            final var roll2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var cbn2 = new CoordinateTransformation(roll2, pitch2, yaw2, FrameType.BODY_FRAME,
+                    FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame nedFrame2 = new NEDFrame(nedPosition, cbn2);
-            final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
+            final var nedFrame2 = new NEDFrame(nedPosition, cbn2);
+            final var ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
 
             // assume that body kinematics are constant during the time interval of 1 second
-            final BodyKinematics kinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                    ecefFrame2, ecefFrame1);
+            final var kinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, ecefFrame2,
+                    ecefFrame1);
 
-            final ECEFFrame previousFrame = new ECEFFrame(ecefFrame1);
-            final ECEFFrame currentFrame = new ECEFFrame();
+            final var previousFrame = new ECEFFrame(ecefFrame1);
+            final var currentFrame = new ECEFFrame();
 
-            final List<StandardDeviationTimedBodyKinematics> items = new ArrayList<>();
-            for (int i = 0; i < NUM_SAMPLES; i++) {
+            final var items = new ArrayList<StandardDeviationTimedBodyKinematics>();
+            for (var i = 0; i < NUM_SAMPLES; i++) {
                 ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_BETWEEN_SAMPLES, previousFrame, kinematics,
                         currentFrame);
 
                 previousFrame.copyFrom(currentFrame);
 
-                final double timestamp = i * TIME_INTERVAL_BETWEEN_SAMPLES;
-                final StandardDeviationTimedBodyKinematics item = new StandardDeviationTimedBodyKinematics(kinematics,
-                        timestamp);
+                final var timestamp = i * TIME_INTERVAL_BETWEEN_SAMPLES;
+                final var item = new StandardDeviationTimedBodyKinematics(kinematics, timestamp);
                 items.add(item);
             }
 
-            final Quaternion expected = currentFrame.getCoordinateTransformation().asRotation().toQuaternion();
+            final var expected = currentFrame.getCoordinateTransformation().asRotation().toQuaternion();
             expected.normalize();
 
-            final Quaternion expected2 = ecefFrame2.getCoordinateTransformation().asRotation().toQuaternion();
+            final var expected2 = ecefFrame2.getCoordinateTransformation().asRotation().toQuaternion();
             expected2.normalize();
 
             assertTrue(expected.equals(expected2, ABSOLUTE_ERROR));
 
-            final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence =
-                    new BodyKinematicsSequence<>(items);
-            final Quaternion initialAttitude = ecefFrame1.getCoordinateTransformation().asRotation().toQuaternion();
-            final Quaternion result = QuaternionIntegrator.integrateGyroSequenceAndReturnNew(sequence, initialAttitude,
+            final var sequence = new BodyKinematicsSequence<>(items);
+            final var initialAttitude = ecefFrame1.getCoordinateTransformation().asRotation().toQuaternion();
+            final var result = QuaternionIntegrator.integrateGyroSequenceAndReturnNew(sequence, initialAttitude,
                     QuaternionStepIntegratorType.MID_POINT);
             result.normalize();
 
@@ -781,67 +751,63 @@ public class QuaternionIntegratorTest {
     }
 
     @Test
-    public void testIntegrateGyroSequenceAndReturnNewWithMidPointType2()
-            throws InvalidSourceAndDestinationFrameTypeException, InvalidRotationMatrixException, RotationException,
-            InertialNavigatorException {
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(randomizer.nextDouble(
-                    MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+    void testIntegrateGyroSequenceAndReturnNewWithMidPointType2() throws InvalidSourceAndDestinationFrameTypeException,
+            InvalidRotationMatrixException, RotationException, InertialNavigatorException {
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation cbn1 = new CoordinateTransformation(roll1, pitch1, yaw1,
-                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            final var roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var cbn1 = new CoordinateTransformation(roll1, pitch1, yaw1, FrameType.BODY_FRAME,
+                    FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame nedFrame1 = new NEDFrame(nedPosition, cbn1);
-            final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
+            final var nedFrame1 = new NEDFrame(nedPosition, cbn1);
+            final var ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
 
             // compute new orientation after 1 second
-            final double roll2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation cbn2 = new CoordinateTransformation(roll2, pitch2, yaw2,
-                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            final var roll2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var cbn2 = new CoordinateTransformation(roll2, pitch2, yaw2, FrameType.BODY_FRAME,
+                    FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame nedFrame2 = new NEDFrame(nedPosition, cbn2);
-            final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
+            final var nedFrame2 = new NEDFrame(nedPosition, cbn2);
+            final var ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
 
             // assume that body kinematics are constant during the time interval of 1 second
-            final BodyKinematics kinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                    ecefFrame2, ecefFrame1);
+            final var kinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, ecefFrame2,
+                    ecefFrame1);
 
-            final ECEFFrame previousFrame = new ECEFFrame(ecefFrame1);
+            final var previousFrame = new ECEFFrame(ecefFrame1);
             // set the identity as initial attitude
             previousFrame.setCoordinateTransformation(new CoordinateTransformation(FrameType.BODY_FRAME,
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME));
 
-            final ECEFFrame currentFrame = new ECEFFrame();
+            final var currentFrame = new ECEFFrame();
 
-            final List<StandardDeviationTimedBodyKinematics> items = new ArrayList<>();
+            final var items = new ArrayList<StandardDeviationTimedBodyKinematics>();
             for (int i = 0; i < NUM_SAMPLES; i++) {
                 ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_BETWEEN_SAMPLES, previousFrame, kinematics,
                         currentFrame);
 
                 previousFrame.copyFrom(currentFrame);
 
-                final double timestamp = i * TIME_INTERVAL_BETWEEN_SAMPLES;
-                final StandardDeviationTimedBodyKinematics item = new StandardDeviationTimedBodyKinematics(kinematics,
-                        timestamp);
+                final var timestamp = i * TIME_INTERVAL_BETWEEN_SAMPLES;
+                final var item = new StandardDeviationTimedBodyKinematics(kinematics, timestamp);
                 items.add(item);
             }
 
-            final Quaternion expected = currentFrame.getCoordinateTransformation().asRotation().toQuaternion();
+            final var expected = currentFrame.getCoordinateTransformation().asRotation().toQuaternion();
             expected.normalize();
 
-            final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence =
-                    new BodyKinematicsSequence<>(items);
-            final Quaternion result = QuaternionIntegrator.integrateGyroSequenceAndReturnNew(sequence,
+            final var sequence = new BodyKinematicsSequence<>(items);
+            final var result = QuaternionIntegrator.integrateGyroSequenceAndReturnNew(sequence,
                     QuaternionStepIntegratorType.MID_POINT);
             result.normalize();
 
@@ -858,70 +824,67 @@ public class QuaternionIntegratorTest {
     }
 
     @Test
-    public void testIntegrateGyroSequenceWithInitialAttitudeAndRungeKuttaType()
+    void testIntegrateGyroSequenceWithInitialAttitudeAndRungeKuttaType()
             throws InvalidSourceAndDestinationFrameTypeException, InvalidRotationMatrixException, RotationException,
             InertialNavigatorException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(randomizer.nextDouble(
-                    MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation cbn1 = new CoordinateTransformation(roll1, pitch1, yaw1,
-                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            final var roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var cbn1 = new CoordinateTransformation(roll1, pitch1, yaw1, FrameType.BODY_FRAME,
+                    FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame nedFrame1 = new NEDFrame(nedPosition, cbn1);
-            final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
+            final var nedFrame1 = new NEDFrame(nedPosition, cbn1);
+            final var ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
 
             // compute new orientation after 1 second
-            final double roll2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation cbn2 = new CoordinateTransformation(roll2, pitch2, yaw2,
-                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            final var roll2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var cbn2 = new CoordinateTransformation(roll2, pitch2, yaw2, FrameType.BODY_FRAME,
+                    FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame nedFrame2 = new NEDFrame(nedPosition, cbn2);
-            final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
+            final var nedFrame2 = new NEDFrame(nedPosition, cbn2);
+            final var ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
 
             // assume that body kinematics are constant during the time interval of 1 second
-            final BodyKinematics kinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                    ecefFrame2, ecefFrame1);
+            final var kinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, ecefFrame2,
+                    ecefFrame1);
 
-            final ECEFFrame previousFrame = new ECEFFrame(ecefFrame1);
-            final ECEFFrame currentFrame = new ECEFFrame();
+            final var previousFrame = new ECEFFrame(ecefFrame1);
+            final var currentFrame = new ECEFFrame();
 
-            final List<StandardDeviationTimedBodyKinematics> items = new ArrayList<>();
-            for (int i = 0; i < NUM_SAMPLES; i++) {
+            final var items = new ArrayList<StandardDeviationTimedBodyKinematics>();
+            for (var i = 0; i < NUM_SAMPLES; i++) {
                 ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_BETWEEN_SAMPLES, previousFrame, kinematics,
                         currentFrame);
 
                 previousFrame.copyFrom(currentFrame);
 
-                final double timestamp = i * TIME_INTERVAL_BETWEEN_SAMPLES;
-                final StandardDeviationTimedBodyKinematics item = new StandardDeviationTimedBodyKinematics(kinematics,
-                        timestamp);
+                final var timestamp = i * TIME_INTERVAL_BETWEEN_SAMPLES;
+                final var item = new StandardDeviationTimedBodyKinematics(kinematics, timestamp);
                 items.add(item);
             }
 
-            final Quaternion expected = currentFrame.getCoordinateTransformation().asRotation().toQuaternion();
+            final var expected = currentFrame.getCoordinateTransformation().asRotation().toQuaternion();
             expected.normalize();
 
-            final Quaternion expected2 = ecefFrame2.getCoordinateTransformation().asRotation().toQuaternion();
+            final var expected2 = ecefFrame2.getCoordinateTransformation().asRotation().toQuaternion();
             expected2.normalize();
 
             assertTrue(expected.equals(expected2, ABSOLUTE_ERROR));
 
-            final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence =
-                    new BodyKinematicsSequence<>(items);
-            final Quaternion initialAttitude = ecefFrame1.getCoordinateTransformation().asRotation().toQuaternion();
-            final Quaternion result = new Quaternion();
+            final var sequence = new BodyKinematicsSequence<>(items);
+            final var initialAttitude = ecefFrame1.getCoordinateTransformation().asRotation().toQuaternion();
+            final var result = new Quaternion();
 
             QuaternionIntegrator.integrateGyroSequence(sequence, initialAttitude,
                     QuaternionStepIntegratorType.RUNGE_KUTTA, result);
@@ -940,68 +903,65 @@ public class QuaternionIntegratorTest {
     }
 
     @Test
-    public void testIntegrateGyroSequenceWithNoInitialAttitudeAndRungeKuttaType()
+    void testIntegrateGyroSequenceWithNoInitialAttitudeAndRungeKuttaType()
             throws InvalidSourceAndDestinationFrameTypeException, InvalidRotationMatrixException, RotationException,
             InertialNavigatorException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(randomizer.nextDouble(
-                    MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation cbn1 = new CoordinateTransformation(roll1, pitch1, yaw1,
-                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            final var roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var cbn1 = new CoordinateTransformation(roll1, pitch1, yaw1, FrameType.BODY_FRAME,
+                    FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame nedFrame1 = new NEDFrame(nedPosition, cbn1);
-            final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
+            final var nedFrame1 = new NEDFrame(nedPosition, cbn1);
+            final var ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
 
             // compute new orientation after 1 second
-            final double roll2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation cbn2 = new CoordinateTransformation(roll2, pitch2, yaw2,
-                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            final var roll2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var cbn2 = new CoordinateTransformation(roll2, pitch2, yaw2, FrameType.BODY_FRAME,
+                    FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame nedFrame2 = new NEDFrame(nedPosition, cbn2);
-            final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
+            final var nedFrame2 = new NEDFrame(nedPosition, cbn2);
+            final var ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
 
             // assume that body kinematics are constant during the time interval of 1 second
-            final BodyKinematics kinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                    ecefFrame2, ecefFrame1);
+            final var kinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, ecefFrame2,
+                    ecefFrame1);
 
-            final ECEFFrame previousFrame = new ECEFFrame(ecefFrame1);
+            final var previousFrame = new ECEFFrame(ecefFrame1);
             // set the identity ad initial attitude
             previousFrame.setCoordinateTransformation(new CoordinateTransformation(FrameType.BODY_FRAME,
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME));
 
-            final ECEFFrame currentFrame = new ECEFFrame();
+            final var currentFrame = new ECEFFrame();
 
-            final List<StandardDeviationTimedBodyKinematics> items = new ArrayList<>();
-            for (int i = 0; i < NUM_SAMPLES; i++) {
+            final var items = new ArrayList<StandardDeviationTimedBodyKinematics>();
+            for (var i = 0; i < NUM_SAMPLES; i++) {
                 ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_BETWEEN_SAMPLES, previousFrame, kinematics,
                         currentFrame);
 
                 previousFrame.copyFrom(currentFrame);
 
-                final double timestamp = i * TIME_INTERVAL_BETWEEN_SAMPLES;
-                final StandardDeviationTimedBodyKinematics item = new StandardDeviationTimedBodyKinematics(kinematics,
-                        timestamp);
+                final var timestamp = i * TIME_INTERVAL_BETWEEN_SAMPLES;
+                final var item = new StandardDeviationTimedBodyKinematics(kinematics, timestamp);
                 items.add(item);
             }
 
-            final Quaternion expected = currentFrame.getCoordinateTransformation().asRotation().toQuaternion();
+            final var expected = currentFrame.getCoordinateTransformation().asRotation().toQuaternion();
             expected.normalize();
 
-            final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence =
-                    new BodyKinematicsSequence<>(items);
-            final Quaternion result = new Quaternion();
+            final var sequence = new BodyKinematicsSequence<>(items);
+            final var result = new Quaternion();
 
             QuaternionIntegrator.integrateGyroSequence(sequence, null,
                     QuaternionStepIntegratorType.RUNGE_KUTTA, result);
@@ -1020,67 +980,64 @@ public class QuaternionIntegratorTest {
     }
 
     @Test
-    public void testIntegrateGyroSequenceWithRungeKuttaType() throws InvalidSourceAndDestinationFrameTypeException,
+    void testIntegrateGyroSequenceWithRungeKuttaType() throws InvalidSourceAndDestinationFrameTypeException,
             InvalidRotationMatrixException, RotationException, InertialNavigatorException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(randomizer.nextDouble(
-                    MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation cbn1 = new CoordinateTransformation(roll1, pitch1, yaw1,
-                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            final var roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var cbn1 = new CoordinateTransformation(roll1, pitch1, yaw1, FrameType.BODY_FRAME,
+                    FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame nedFrame1 = new NEDFrame(nedPosition, cbn1);
-            final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
+            final var nedFrame1 = new NEDFrame(nedPosition, cbn1);
+            final var ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
 
             // compute new orientation after 1 second
-            final double roll2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation cbn2 = new CoordinateTransformation(roll2, pitch2, yaw2,
-                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            final var roll2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var cbn2 = new CoordinateTransformation(roll2, pitch2, yaw2, FrameType.BODY_FRAME,
+                    FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame nedFrame2 = new NEDFrame(nedPosition, cbn2);
-            final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
+            final var nedFrame2 = new NEDFrame(nedPosition, cbn2);
+            final var ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
 
             // assume that body kinematics are constant during the time interval of 1 second
-            final BodyKinematics kinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                    ecefFrame2, ecefFrame1);
+            final var kinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, ecefFrame2,
+                    ecefFrame1);
 
-            final ECEFFrame previousFrame = new ECEFFrame(ecefFrame1);
+            final var previousFrame = new ECEFFrame(ecefFrame1);
             // set the identity ad initial attitude
             previousFrame.setCoordinateTransformation(new CoordinateTransformation(FrameType.BODY_FRAME,
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME));
 
-            final ECEFFrame currentFrame = new ECEFFrame();
+            final var currentFrame = new ECEFFrame();
 
-            final List<StandardDeviationTimedBodyKinematics> items = new ArrayList<>();
-            for (int i = 0; i < NUM_SAMPLES; i++) {
+            final var items = new ArrayList<StandardDeviationTimedBodyKinematics>();
+            for (var i = 0; i < NUM_SAMPLES; i++) {
                 ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_BETWEEN_SAMPLES, previousFrame, kinematics,
                         currentFrame);
 
                 previousFrame.copyFrom(currentFrame);
 
-                final double timestamp = i * TIME_INTERVAL_BETWEEN_SAMPLES;
-                final StandardDeviationTimedBodyKinematics item = new StandardDeviationTimedBodyKinematics(kinematics,
-                        timestamp);
+                final var timestamp = i * TIME_INTERVAL_BETWEEN_SAMPLES;
+                final var item = new StandardDeviationTimedBodyKinematics(kinematics, timestamp);
                 items.add(item);
             }
 
-            final Quaternion expected = currentFrame.getCoordinateTransformation().asRotation().toQuaternion();
+            final var expected = currentFrame.getCoordinateTransformation().asRotation().toQuaternion();
             expected.normalize();
 
-            final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence =
-                    new BodyKinematicsSequence<>(items);
-            final Quaternion result = new Quaternion();
+            final var sequence = new BodyKinematicsSequence<>(items);
+            final var result = new Quaternion();
 
             QuaternionIntegrator.integrateGyroSequence(sequence, QuaternionStepIntegratorType.RUNGE_KUTTA, result);
             result.normalize();
@@ -1098,70 +1055,66 @@ public class QuaternionIntegratorTest {
     }
 
     @Test
-    public void testIntegrateGyroSequenceAndReturnNewWithRungeKuttaType()
-            throws InvalidSourceAndDestinationFrameTypeException, InvalidRotationMatrixException,
-            RotationException, InertialNavigatorException {
+    void testIntegrateGyroSequenceAndReturnNewWithRungeKuttaType() throws InvalidSourceAndDestinationFrameTypeException,
+            InvalidRotationMatrixException, RotationException, InertialNavigatorException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(randomizer.nextDouble(
-                    MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation cbn1 = new CoordinateTransformation(roll1, pitch1, yaw1,
-                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            final var roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var cbn1 = new CoordinateTransformation(roll1, pitch1, yaw1, FrameType.BODY_FRAME,
+                    FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame nedFrame1 = new NEDFrame(nedPosition, cbn1);
-            final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
+            final var nedFrame1 = new NEDFrame(nedPosition, cbn1);
+            final var ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
 
             // compute new orientation after 1 second
-            final double roll2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation cbn2 = new CoordinateTransformation(roll2, pitch2, yaw2,
-                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            final var roll2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var cbn2 = new CoordinateTransformation(roll2, pitch2, yaw2, FrameType.BODY_FRAME,
+                    FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame nedFrame2 = new NEDFrame(nedPosition, cbn2);
-            final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
+            final var nedFrame2 = new NEDFrame(nedPosition, cbn2);
+            final var ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
 
             // assume that body kinematics are constant during the time interval of 1 second
-            final BodyKinematics kinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                    ecefFrame2, ecefFrame1);
+            final var kinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, ecefFrame2,
+                    ecefFrame1);
 
-            final ECEFFrame previousFrame = new ECEFFrame(ecefFrame1);
-            final ECEFFrame currentFrame = new ECEFFrame();
+            final var previousFrame = new ECEFFrame(ecefFrame1);
+            final var currentFrame = new ECEFFrame();
 
-            final List<StandardDeviationTimedBodyKinematics> items = new ArrayList<>();
-            for (int i = 0; i < NUM_SAMPLES; i++) {
+            final var items = new ArrayList<StandardDeviationTimedBodyKinematics>();
+            for (var i = 0; i < NUM_SAMPLES; i++) {
                 ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_BETWEEN_SAMPLES, previousFrame, kinematics,
                         currentFrame);
 
                 previousFrame.copyFrom(currentFrame);
 
-                final double timestamp = i * TIME_INTERVAL_BETWEEN_SAMPLES;
-                final StandardDeviationTimedBodyKinematics item = new StandardDeviationTimedBodyKinematics(kinematics,
-                        timestamp);
+                final var timestamp = i * TIME_INTERVAL_BETWEEN_SAMPLES;
+                final var item = new StandardDeviationTimedBodyKinematics(kinematics, timestamp);
                 items.add(item);
             }
 
-            final Quaternion expected = currentFrame.getCoordinateTransformation().asRotation().toQuaternion();
+            final var expected = currentFrame.getCoordinateTransformation().asRotation().toQuaternion();
             expected.normalize();
 
-            final Quaternion expected2 = ecefFrame2.getCoordinateTransformation().asRotation().toQuaternion();
+            final var expected2 = ecefFrame2.getCoordinateTransformation().asRotation().toQuaternion();
             expected2.normalize();
 
             assertTrue(expected.equals(expected2, ABSOLUTE_ERROR));
 
-            final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence =
-                    new BodyKinematicsSequence<>(items);
-            final Quaternion initialAttitude = ecefFrame1.getCoordinateTransformation().asRotation().toQuaternion();
-            final Quaternion result = QuaternionIntegrator.integrateGyroSequenceAndReturnNew(sequence, initialAttitude,
+            final var sequence = new BodyKinematicsSequence<>(items);
+            final var initialAttitude = ecefFrame1.getCoordinateTransformation().asRotation().toQuaternion();
+            final var result = QuaternionIntegrator.integrateGyroSequenceAndReturnNew(sequence, initialAttitude,
                     QuaternionStepIntegratorType.RUNGE_KUTTA);
             result.normalize();
 
@@ -1178,67 +1131,65 @@ public class QuaternionIntegratorTest {
     }
 
     @Test
-    public void testIntegrateGyroSequenceAndReturnNewWithRungeKuttaType2()
+    void testIntegrateGyroSequenceAndReturnNewWithRungeKuttaType2()
             throws InvalidSourceAndDestinationFrameTypeException, InvalidRotationMatrixException, RotationException,
             InertialNavigatorException {
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(randomizer.nextDouble(
-                    MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation cbn1 = new CoordinateTransformation(roll1, pitch1, yaw1,
-                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final NEDFrame nedFrame1 = new NEDFrame(nedPosition, cbn1);
-            final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
+            final var roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var cbn1 = new CoordinateTransformation(roll1, pitch1, yaw1, FrameType.BODY_FRAME,
+                    FrameType.LOCAL_NAVIGATION_FRAME);
+
+            final var nedFrame1 = new NEDFrame(nedPosition, cbn1);
+            final var ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
 
             // compute new orientation after 1 second
-            final double roll2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation cbn2 = new CoordinateTransformation(roll2, pitch2, yaw2,
-                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            final var roll2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var cbn2 = new CoordinateTransformation(roll2, pitch2, yaw2, FrameType.BODY_FRAME,
+                    FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame nedFrame2 = new NEDFrame(nedPosition, cbn2);
-            final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
+            final var nedFrame2 = new NEDFrame(nedPosition, cbn2);
+            final var ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
 
             // assume that body kinematics are constant during the time interval of 1 second
-            final BodyKinematics kinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                    ecefFrame2, ecefFrame1);
+            final var kinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, ecefFrame2,
+                    ecefFrame1);
 
-            final ECEFFrame previousFrame = new ECEFFrame(ecefFrame1);
+            final var previousFrame = new ECEFFrame(ecefFrame1);
             // set the identity as initial attitude
             previousFrame.setCoordinateTransformation(new CoordinateTransformation(FrameType.BODY_FRAME,
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME));
 
-            final ECEFFrame currentFrame = new ECEFFrame();
+            final var currentFrame = new ECEFFrame();
 
-            final List<StandardDeviationTimedBodyKinematics> items = new ArrayList<>();
-            for (int i = 0; i < NUM_SAMPLES; i++) {
+            final var items = new ArrayList<StandardDeviationTimedBodyKinematics>();
+            for (var i = 0; i < NUM_SAMPLES; i++) {
                 ECEFInertialNavigator.navigateECEF(TIME_INTERVAL_BETWEEN_SAMPLES, previousFrame, kinematics,
                         currentFrame);
 
                 previousFrame.copyFrom(currentFrame);
 
-                final double timestamp = i * TIME_INTERVAL_BETWEEN_SAMPLES;
-                final StandardDeviationTimedBodyKinematics item = new StandardDeviationTimedBodyKinematics(kinematics,
-                        timestamp);
+                final var timestamp = i * TIME_INTERVAL_BETWEEN_SAMPLES;
+                final var item = new StandardDeviationTimedBodyKinematics(kinematics, timestamp);
                 items.add(item);
             }
 
-            final Quaternion expected = currentFrame.getCoordinateTransformation().asRotation().toQuaternion();
+            final var expected = currentFrame.getCoordinateTransformation().asRotation().toQuaternion();
             expected.normalize();
 
-            final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence =
-                    new BodyKinematicsSequence<>(items);
-            final Quaternion result = QuaternionIntegrator.integrateGyroSequenceAndReturnNew(sequence,
+            final var sequence = new BodyKinematicsSequence<>(items);
+            final var result = QuaternionIntegrator.integrateGyroSequenceAndReturnNew(sequence,
                     QuaternionStepIntegratorType.RUNGE_KUTTA);
             result.normalize();
 

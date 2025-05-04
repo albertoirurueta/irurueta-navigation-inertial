@@ -62,71 +62,71 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * Time interval expressed in seconds (s) between consecutive accelerometer
      * samples.
      */
-    private double mTimeInterval = DEFAULT_TIME_INTERVAL_SECONDS;
+    private double timeInterval = DEFAULT_TIME_INTERVAL_SECONDS;
 
     /**
      * Listener to handle events raised by this estimator.
      */
-    private L mListener;
+    private L listener;
 
     /**
      * Last provided triad.
      */
-    private T mLastTriad;
+    private T lastTriad;
 
     /**
      * Contains estimated average of x coordinate of measurement expressed in its default
      * unit (m/s^2 for acceleration, rad/s for angular speed or T for magnetic flux density).
      */
-    private double mAvgX;
+    private double avgX;
 
     /**
      * Contains estimated average of y coordinate of measurement expressed in its default
      * unit (m/s^2 for acceleration, rad/s for angular speed or T for magnetic flux density).
      */
-    private double mAvgY;
+    private double avgY;
 
     /**
      * Contains estimated average of z coordinate of measurement expressed in its default
      * unit (m/s^2 for acceleration, rad/s for angular speed or T for magnetic flux density).
      */
-    private double mAvgZ;
+    private double avgZ;
 
     /**
      * Contains estimated variance of x coordinate of measurement expressed in its default
      * squared unit (m^2/s^4 for acceleration, rad^2/s^2 for angular speed or T^2 for magnetic
      * flux density).
      */
-    private double mVarianceX;
+    private double varianceX;
 
     /**
      * Contains estimated variance of y coordinate of measurement expressed in its default
      * squared unit (m^2/s^4 for acceleration, rad^2/s^2 for angular speed or T^2 for magnetic
      * flux density).
      */
-    private double mVarianceY;
+    private double varianceY;
 
     /**
      * Contains estimated variance of x coordinate of measurement expressed in its default
      * squared unit (m^2/s^4 for acceleration, rad^2/s^2 for angular speed or T^2 for magnetic
      * flux density).
      */
-    private double mVarianceZ;
+    private double varianceZ;
 
     /**
      * Number of processed body kinematics samples.
      */
-    private int mNumberOfProcessedSamples;
+    private int numberOfProcessedSamples;
 
     /**
      * Number of processed timestamp samples plus one.
      */
-    private int mNumberOfProcessedSamplesPlusOne = 1;
+    private int numberOfProcessedSamplesPlusOne = 1;
 
     /**
      * Indicates that estimator is running.
      */
-    private boolean mRunning;
+    private boolean running;
 
     /**
      * Constructor.
@@ -140,7 +140,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @param listener listener to handle events raised by this estimator.
      */
     protected AccumulatedTriadNoiseEstimator(final L listener) {
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -150,7 +150,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @return time interval between accelerometer triad samples.
      */
     public double getTimeInterval() {
-        return mTimeInterval;
+        return timeInterval;
     }
 
     /**
@@ -162,7 +162,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @throws LockedException          if estimator is currently running.
      */
     public void setTimeInterval(final double timeInterval) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
@@ -170,7 +170,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
             throw new IllegalArgumentException();
         }
 
-        mTimeInterval = timeInterval;
+        this.timeInterval = timeInterval;
     }
 
     /**
@@ -179,7 +179,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @return time interval between triad samples.
      */
     public Time getTimeIntervalAsTime() {
-        return new Time(mTimeInterval, TimeUnit.SECOND);
+        return new Time(timeInterval, TimeUnit.SECOND);
     }
 
     /**
@@ -188,7 +188,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @param result instance where time interval will be stored.
      */
     public void getTimeIntervalAsTime(final Time result) {
-        result.setValue(mTimeInterval);
+        result.setValue(timeInterval);
         result.setUnit(TimeUnit.SECOND);
     }
 
@@ -199,8 +199,8 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @throws LockedException if estimator is currently running.
      */
     public void setTimeInterval(final Time timeInterval) throws LockedException {
-        setTimeInterval(TimeConverter.convert(timeInterval.getValue().doubleValue(),
-                timeInterval.getUnit(), TimeUnit.SECOND));
+        setTimeInterval(TimeConverter.convert(timeInterval.getValue().doubleValue(), timeInterval.getUnit(),
+                TimeUnit.SECOND));
     }
 
     /**
@@ -209,7 +209,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @return listener to handle events raised by this estimator.
      */
     public L getListener() {
-        return mListener;
+        return listener;
     }
 
     /**
@@ -219,11 +219,11 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @throws LockedException if this estimator is running.
      */
     public void setListener(final L listener) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -232,7 +232,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @return last provided triad values or null.
      */
     public T getLastTriad() {
-        return mLastTriad;
+        return lastTriad;
     }
 
     /**
@@ -242,8 +242,8 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @return true if result instance was updated, false otherwise.
      */
     public boolean getLastTriad(final T result) {
-        if (mLastTriad != null) {
-            mLastTriad.copyTo(result);
+        if (lastTriad != null) {
+            lastTriad.copyTo(result);
             return true;
         } else {
             return false;
@@ -259,7 +259,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @return average of x coordinate of measurement in current window.
      */
     public double getAvgX() {
-        return mAvgX;
+        return avgX;
     }
 
     /**
@@ -270,7 +270,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @return average of x coordinate of measurement in current window.
      */
     public M getAvgXAsMeasurement() {
-        return createMeasurement(mAvgX, getDefaultUnit());
+        return createMeasurement(avgX, getDefaultUnit());
     }
 
     /**
@@ -281,7 +281,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @param result instance where average of x coordinate of measurement will be stored.
      */
     public void getAvgXAsMeasurement(final M result) {
-        result.setValue(mAvgX);
+        result.setValue(avgX);
         result.setUnit(getDefaultUnit());
     }
 
@@ -294,7 +294,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @return average of y coordinate of measurement in current window.
      */
     public double getAvgY() {
-        return mAvgY;
+        return avgY;
     }
 
     /**
@@ -305,7 +305,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @return average of y coordinate of measurement in current window.
      */
     public M getAvgYAsMeasurement() {
-        return createMeasurement(mAvgY, getDefaultUnit());
+        return createMeasurement(avgY, getDefaultUnit());
     }
 
     /**
@@ -316,7 +316,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @param result instance where average of y coordinate of measurement will be stored.
      */
     public void getAvgYAsMeasurement(final M result) {
-        result.setValue(mAvgY);
+        result.setValue(avgY);
         result.setUnit(getDefaultUnit());
     }
 
@@ -329,7 +329,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @return average of z coordinate of measurement in current window.
      */
     public double getAvgZ() {
-        return mAvgZ;
+        return avgZ;
     }
 
     /**
@@ -340,7 +340,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @return average of z coordinate of measurement in current window.
      */
     public M getAvgZAsMeasurement() {
-        return createMeasurement(mAvgZ, getDefaultUnit());
+        return createMeasurement(avgZ, getDefaultUnit());
     }
 
     /**
@@ -351,7 +351,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @param result instance where average of z coordinate of measurement will be stored.
      */
     public void getAvgZAsMeasurement(final M result) {
-        result.setValue(mAvgZ);
+        result.setValue(avgZ);
         result.setUnit(getDefaultUnit());
     }
 
@@ -361,7 +361,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @return average measurement triad.
      */
     public T getAvgTriad() {
-        return createTriad(mAvgX, mAvgY, mAvgZ, getDefaultUnit());
+        return createTriad(avgX, avgY, avgZ, getDefaultUnit());
     }
 
     /**
@@ -370,7 +370,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @param result instance where average values and unit will be stored.
      */
     public void getAvgTriad(final T result) {
-        result.setValueCoordinatesAndUnit(mAvgX, mAvgY, mAvgZ, getDefaultUnit());
+        result.setValueCoordinatesAndUnit(avgX, avgY, avgZ, getDefaultUnit());
     }
 
     /**
@@ -381,7 +381,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @return norm of estimated average specific force.
      */
     public double getAvgNorm() {
-        return Math.sqrt(mAvgX * mAvgX + mAvgY * mAvgY + mAvgZ * mAvgZ);
+        return Math.sqrt(avgX * avgX + avgY * avgY + avgZ * avgZ);
     }
 
     /**
@@ -412,7 +412,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * window.
      */
     public double getVarianceX() {
-        return mVarianceX;
+        return varianceX;
     }
 
     /**
@@ -424,7 +424,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * window.
      */
     public double getVarianceY() {
-        return mVarianceY;
+        return varianceY;
     }
 
     /**
@@ -436,7 +436,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * window.
      */
     public double getVarianceZ() {
-        return mVarianceZ;
+        return varianceZ;
     }
 
     /**
@@ -448,7 +448,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * current window.
      */
     public double getStandardDeviationX() {
-        return Math.sqrt(mVarianceX);
+        return Math.sqrt(varianceX);
     }
 
     /**
@@ -482,7 +482,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * current window.
      */
     public double getStandardDeviationY() {
-        return Math.sqrt(mVarianceY);
+        return Math.sqrt(varianceY);
     }
 
     /**
@@ -516,7 +516,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * current window.
      */
     public double getStandardDeviationZ() {
-        return Math.sqrt(mVarianceZ);
+        return Math.sqrt(varianceZ);
     }
 
     /**
@@ -569,9 +569,9 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @return norm of estimated standard deviation of measurement.
      */
     public double getStandardDeviationNorm() {
-        final double fx = getStandardDeviationX();
-        final double fy = getStandardDeviationY();
-        final double fz = getStandardDeviationZ();
+        final var fx = getStandardDeviationX();
+        final var fy = getStandardDeviationY();
+        final var fz = getStandardDeviationZ();
         return Math.sqrt(fx * fx + fy * fy + fz * fz);
     }
 
@@ -589,8 +589,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      *
      * @param result instance where norm of estimated standard deviation will be stored.
      */
-    public void getStandardDeviationNormAsMeasurement(
-            final M result) {
+    public void getStandardDeviationNormAsMeasurement(final M result) {
         result.setValue(getStandardDeviationNorm());
         result.setUnit(getDefaultUnit());
     }
@@ -603,9 +602,9 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @return average of estimated standard deviation coordinates.
      */
     public double getAverageStandardDeviation() {
-        final double fx = getStandardDeviationX();
-        final double fy = getStandardDeviationY();
-        final double fz = getStandardDeviationZ();
+        final var fx = getStandardDeviationX();
+        final var fy = getStandardDeviationY();
+        final var fz = getStandardDeviationZ();
         return (fx + fy + fz) / 3.0;
     }
 
@@ -638,7 +637,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @return measurement noise PSD on x axis.
      */
     public double getPsdX() {
-        return mVarianceX * mTimeInterval;
+        return varianceX * timeInterval;
     }
 
     /**
@@ -649,7 +648,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @return measurement noise PSD on y axis.
      */
     public double getPsdY() {
-        return mVarianceY * mTimeInterval;
+        return varianceY * timeInterval;
     }
 
     /**
@@ -660,7 +659,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @return measurement noise PSD on z axis.
      */
     public double getPsdZ() {
-        return mVarianceZ * mTimeInterval;
+        return varianceZ * timeInterval;
     }
 
     /**
@@ -724,7 +723,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @return number of samples that have been processed so far.
      */
     public int getNumberOfProcessedSamples() {
-        return mNumberOfProcessedSamples;
+        return numberOfProcessedSamples;
     }
 
     /**
@@ -733,7 +732,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @return true if estimator is running, false otherwise.
      */
     public boolean isRunning() {
-        return mRunning;
+        return running;
     }
 
     /**
@@ -749,50 +748,50 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
     @SuppressWarnings("DuplicatedCode")
     public void addTriad(final double valueX, final double valueY, final double valueZ) throws LockedException {
 
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mRunning = true;
+        running = true;
 
-        if (mLastTriad == null && mListener != null) {
+        if (lastTriad == null && listener != null) {
             //noinspection unchecked
-            mListener.onStart((E) this);
+            listener.onStart((E) this);
         }
 
         // compute averages
-        final double tmp = (double) mNumberOfProcessedSamples / (double) mNumberOfProcessedSamplesPlusOne;
-        mAvgX = mAvgX * tmp + valueX / mNumberOfProcessedSamplesPlusOne;
-        mAvgY = mAvgY * tmp + valueY / mNumberOfProcessedSamplesPlusOne;
-        mAvgZ = mAvgZ * tmp + valueZ / mNumberOfProcessedSamplesPlusOne;
+        final var tmp = (double) numberOfProcessedSamples / (double) numberOfProcessedSamplesPlusOne;
+        avgX = avgX * tmp + valueX / numberOfProcessedSamplesPlusOne;
+        avgY = avgY * tmp + valueY / numberOfProcessedSamplesPlusOne;
+        avgZ = avgZ * tmp + valueZ / numberOfProcessedSamplesPlusOne;
 
         // compute variances
-        final double diffX = valueX - mAvgX;
-        final double diffY = valueY - mAvgY;
-        final double diffZ = valueZ - mAvgZ;
-        final double diffX2 = diffX * diffX;
-        final double diffY2 = diffY * diffY;
-        final double diffZ2 = diffZ * diffZ;
+        final var diffX = valueX - avgX;
+        final var diffY = valueY - avgY;
+        final var diffZ = valueZ - avgZ;
+        final var diffX2 = diffX * diffX;
+        final var diffY2 = diffY * diffY;
+        final var diffZ2 = diffZ * diffZ;
 
-        mVarianceX = mVarianceX * tmp + diffX2 / mNumberOfProcessedSamplesPlusOne;
-        mVarianceY = mVarianceY * tmp + diffY2 / mNumberOfProcessedSamplesPlusOne;
-        mVarianceZ = mVarianceZ * tmp + diffZ2 / mNumberOfProcessedSamplesPlusOne;
+        varianceX = varianceX * tmp + diffX2 / numberOfProcessedSamplesPlusOne;
+        varianceY = varianceY * tmp + diffY2 / numberOfProcessedSamplesPlusOne;
+        varianceZ = varianceZ * tmp + diffZ2 / numberOfProcessedSamplesPlusOne;
 
-        if (mLastTriad == null) {
-            mLastTriad = createTriad(valueX, valueY, valueZ, getDefaultUnit());
+        if (lastTriad == null) {
+            lastTriad = createTriad(valueX, valueY, valueZ, getDefaultUnit());
         } else {
-            mLastTriad.setValueCoordinatesAndUnit(valueX, valueY, valueZ, getDefaultUnit());
+            lastTriad.setValueCoordinatesAndUnit(valueX, valueY, valueZ, getDefaultUnit());
         }
 
-        mNumberOfProcessedSamples++;
-        mNumberOfProcessedSamplesPlusOne++;
+        numberOfProcessedSamples++;
+        numberOfProcessedSamplesPlusOne++;
 
-        if (mListener != null) {
+        if (listener != null) {
             //noinspection unchecked
-            mListener.onTriadAdded((E) this);
+            listener.onTriadAdded((E) this);
         }
 
-        mRunning = false;
+        running = false;
     }
 
     /**
@@ -828,31 +827,31 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @throws LockedException if estimator is currently running.
      */
     public boolean reset() throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        if (mNumberOfProcessedSamples == 0) {
+        if (numberOfProcessedSamples == 0) {
             return false;
         }
 
-        mRunning = true;
-        mLastTriad = null;
-        mAvgX = 0.0;
-        mAvgY = 0.0;
-        mAvgZ = 0.0;
-        mVarianceX = 0.0;
-        mVarianceY = 0.0;
-        mVarianceZ = 0.0;
-        mNumberOfProcessedSamples = 0;
-        mNumberOfProcessedSamplesPlusOne = 1;
+        running = true;
+        lastTriad = null;
+        avgX = 0.0;
+        avgY = 0.0;
+        avgZ = 0.0;
+        varianceX = 0.0;
+        varianceY = 0.0;
+        varianceZ = 0.0;
+        numberOfProcessedSamples = 0;
+        numberOfProcessedSamplesPlusOne = 1;
 
-        if (mListener != null) {
+        if (listener != null) {
             //noinspection unchecked
-            mListener.onReset((E) this);
+            listener.onReset((E) this);
         }
 
-        mRunning = false;
+        running = false;
 
         return true;
     }

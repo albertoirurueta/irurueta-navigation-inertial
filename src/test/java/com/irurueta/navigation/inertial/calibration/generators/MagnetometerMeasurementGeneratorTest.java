@@ -40,13 +40,12 @@ import com.irurueta.navigation.inertial.calibration.intervals.TriadStaticInterva
 import com.irurueta.navigation.inertial.calibration.magnetometer.KnownPositionAndInstantMagnetometerCalibrator;
 import com.irurueta.navigation.inertial.estimators.BodyMagneticFluxDensityEstimator;
 import com.irurueta.navigation.inertial.estimators.ECEFKinematicsEstimator;
-import com.irurueta.navigation.inertial.wmm.NEDMagneticFluxDensity;
 import com.irurueta.navigation.inertial.wmm.WMMEarthMagneticFluxDensityEstimator;
 import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationUnit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -55,9 +54,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasurementsGeneratorListener {
+class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasurementsGeneratorListener {
 
     private static final double TIME_INTERVAL_SECONDS = 0.02;
 
@@ -112,21 +111,21 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
         END_TIMESTAMP_MILLIS = END_CALENDAR.getTimeInMillis();
     }
 
-    private int mInitializationStarted;
-    private int mInitializationCompleted;
-    private int mError;
-    private int mStaticIntervalDetected;
-    private int mDynamicIntervalDetected;
-    private int mStaticIntervalSkipped;
+    private int initializationStarted;
+    private int initializationCompleted;
+    private int error;
+    private int staticIntervalDetected;
+    private int dynamicIntervalDetected;
+    private int staticIntervalSkipped;
     private int mDynamicIntervalSkipped;
     private int mGeneratedMeasurement;
-    private int mReset;
+    private int reset;
 
-    private final List<StandardDeviationBodyMagneticFluxDensity> mMeasurements = new ArrayList<>();
+    private final List<StandardDeviationBodyMagneticFluxDensity> measurements = new ArrayList<>();
 
     @Test
-    public void testConstructor1() {
-        final MagnetometerMeasurementsGenerator generator = new MagnetometerMeasurementsGenerator();
+    void testConstructor1() {
+        final var generator = new MagnetometerMeasurementsGenerator();
 
         // check default values
         assertEquals(MeasurementsGenerator.DEFAULT_MIN_STATIC_SAMPLES, generator.getMinStaticSamples());
@@ -141,37 +140,37 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
         assertEquals(TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE, generator.getWindowSize());
         assertEquals(TriadStaticIntervalDetector.DEFAULT_INITIAL_STATIC_SAMPLES, generator.getInitialStaticSamples());
         assertEquals(TriadStaticIntervalDetector.DEFAULT_THRESHOLD_FACTOR, generator.getThresholdFactor(), 0.0);
-        assertEquals(TriadStaticIntervalDetector.DEFAULT_INSTANTANEOUS_NOISE_LEVEL_FACTOR,
+        assertEquals(TriadStaticIntervalDetector.DEFAULT_INSTANTANEOUS_NOISE_LEVEL_FACTOR, 
                 generator.getInstantaneousNoiseLevelFactor(), 0.0);
-        assertEquals(TriadStaticIntervalDetector.DEFAULT_BASE_NOISE_LEVEL_ABSOLUTE_THRESHOLD,
+        assertEquals(TriadStaticIntervalDetector.DEFAULT_BASE_NOISE_LEVEL_ABSOLUTE_THRESHOLD, 
                 generator.getBaseNoiseLevelAbsoluteThreshold(), 0.0);
-        final Acceleration errorThreshold1 = generator.getBaseNoiseLevelAbsoluteThresholdAsMeasurement();
-        assertEquals(errorThreshold1.getValue().doubleValue(),
-                generator.getBaseNoiseLevelAbsoluteThreshold(), 0.0);
+        final var errorThreshold1 = generator.getBaseNoiseLevelAbsoluteThresholdAsMeasurement();
+        assertEquals(errorThreshold1.getValue().doubleValue(), generator.getBaseNoiseLevelAbsoluteThreshold(), 
+                0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, errorThreshold1.getUnit());
-        final Acceleration errorThreshold2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var errorThreshold2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         generator.getBaseNoiseLevelAbsoluteThresholdAsMeasurement(errorThreshold2);
         assertEquals(errorThreshold1, errorThreshold2);
         assertEquals(TriadStaticIntervalDetector.Status.IDLE, generator.getStatus());
         assertEquals(0.0, generator.getAccelerometerBaseNoiseLevel(), 0.0);
-        final Acceleration baseNoiseLevel1 = generator.getAccelerometerBaseNoiseLevelAsMeasurement();
+        final var baseNoiseLevel1 = generator.getAccelerometerBaseNoiseLevelAsMeasurement();
         assertEquals(0.0, baseNoiseLevel1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, baseNoiseLevel1.getUnit());
-        final Acceleration baseNoiseLevel2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var baseNoiseLevel2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         generator.getAccelerometerBaseNoiseLevelAsMeasurement(baseNoiseLevel2);
         assertEquals(baseNoiseLevel1, baseNoiseLevel2);
         assertEquals(0.0, generator.getThreshold(), 0.0);
-        final Acceleration threshold1 = generator.getThresholdAsMeasurement();
+        final var threshold1 = generator.getThresholdAsMeasurement();
         assertEquals(0.0, threshold1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, threshold1.getUnit());
-        final Acceleration threshold2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var threshold2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         generator.getThresholdAsMeasurement(threshold2);
         assertEquals(threshold1, threshold2);
     }
 
     @Test
-    public void testConstructor2() {
-        final MagnetometerMeasurementsGenerator generator = new MagnetometerMeasurementsGenerator(this);
+    void testConstructor2() {
+        final var generator = new MagnetometerMeasurementsGenerator(this);
 
         // check default values
         assertEquals(MeasurementsGenerator.DEFAULT_MIN_STATIC_SAMPLES, generator.getMinStaticSamples());
@@ -190,33 +189,33 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
                 generator.getInstantaneousNoiseLevelFactor(), 0.0);
         assertEquals(TriadStaticIntervalDetector.DEFAULT_BASE_NOISE_LEVEL_ABSOLUTE_THRESHOLD,
                 generator.getBaseNoiseLevelAbsoluteThreshold(), 0.0);
-        final Acceleration errorThreshold1 = generator.getBaseNoiseLevelAbsoluteThresholdAsMeasurement();
-        assertEquals(errorThreshold1.getValue().doubleValue(),
-                generator.getBaseNoiseLevelAbsoluteThreshold(), 0.0);
+        final var errorThreshold1 = generator.getBaseNoiseLevelAbsoluteThresholdAsMeasurement();
+        assertEquals(errorThreshold1.getValue().doubleValue(), generator.getBaseNoiseLevelAbsoluteThreshold(), 
+                0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, errorThreshold1.getUnit());
-        final Acceleration errorThreshold2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var errorThreshold2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         generator.getBaseNoiseLevelAbsoluteThresholdAsMeasurement(errorThreshold2);
         assertEquals(errorThreshold1, errorThreshold2);
         assertEquals(TriadStaticIntervalDetector.Status.IDLE, generator.getStatus());
         assertEquals(0.0, generator.getAccelerometerBaseNoiseLevel(), 0.0);
-        final Acceleration baseNoiseLevel1 = generator.getAccelerometerBaseNoiseLevelAsMeasurement();
+        final var baseNoiseLevel1 = generator.getAccelerometerBaseNoiseLevelAsMeasurement();
         assertEquals(0.0, baseNoiseLevel1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, baseNoiseLevel1.getUnit());
-        final Acceleration baseNoiseLevel2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var baseNoiseLevel2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         generator.getAccelerometerBaseNoiseLevelAsMeasurement(baseNoiseLevel2);
         assertEquals(baseNoiseLevel1, baseNoiseLevel2);
         assertEquals(0.0, generator.getThreshold(), 0.0);
-        final Acceleration threshold1 = generator.getThresholdAsMeasurement();
+        final var threshold1 = generator.getThresholdAsMeasurement();
         assertEquals(0.0, threshold1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, threshold1.getUnit());
-        final Acceleration threshold2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var threshold2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         generator.getThresholdAsMeasurement(threshold2);
         assertEquals(threshold1, threshold2);
     }
 
     @Test
-    public void testGetSetMinStaticSamples() throws LockedException {
-        final MagnetometerMeasurementsGenerator generator = new MagnetometerMeasurementsGenerator();
+    void testGetSetMinStaticSamples() throws LockedException {
+        final var generator = new MagnetometerMeasurementsGenerator();
 
         // check default value
         assertEquals(MeasurementsGenerator.DEFAULT_MIN_STATIC_SAMPLES, generator.getMinStaticSamples());
@@ -232,8 +231,8 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
     }
 
     @Test
-    public void testGetSetMaxDynamicSamples() throws LockedException {
-        final MagnetometerMeasurementsGenerator generator = new MagnetometerMeasurementsGenerator();
+    void testGetSetMaxDynamicSamples() throws LockedException {
+        final var generator = new MagnetometerMeasurementsGenerator();
 
         // check default value
         assertEquals(MeasurementsGenerator.DEFAULT_MAX_DYNAMIC_SAMPLES, generator.getMaxDynamicSamples());
@@ -249,8 +248,8 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
     }
 
     @Test
-    public void testGetSetListener() throws LockedException {
-        final MagnetometerMeasurementsGenerator generator = new MagnetometerMeasurementsGenerator();
+    void testGetSetListener() throws LockedException {
+        final var generator = new MagnetometerMeasurementsGenerator();
 
         // check default value
         assertNull(generator.getListener());
@@ -263,8 +262,8 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
     }
 
     @Test
-    public void testGetSetWindowSize() throws LockedException {
-        final MagnetometerMeasurementsGenerator generator = new MagnetometerMeasurementsGenerator();
+    void testGetSetWindowSize() throws LockedException {
+        final var generator = new MagnetometerMeasurementsGenerator();
 
         // check default value
         assertEquals(TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE, generator.getWindowSize());
@@ -281,8 +280,8 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
     }
 
     @Test
-    public void testGetSetInitialStaticSamples() throws LockedException {
-        final MagnetometerMeasurementsGenerator generator = new MagnetometerMeasurementsGenerator();
+    void testGetSetInitialStaticSamples() throws LockedException {
+        final var generator = new MagnetometerMeasurementsGenerator();
 
         // check default value
         assertEquals(TriadStaticIntervalDetector.DEFAULT_INITIAL_STATIC_SAMPLES, generator.getInitialStaticSamples());
@@ -298,8 +297,8 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
     }
 
     @Test
-    public void testGetSetThresholdFactor() throws LockedException {
-        final MagnetometerMeasurementsGenerator generator = new MagnetometerMeasurementsGenerator();
+    void testGetSetThresholdFactor() throws LockedException {
+        final var generator = new MagnetometerMeasurementsGenerator();
 
         // check default value
         assertEquals(TriadStaticIntervalDetector.DEFAULT_THRESHOLD_FACTOR, generator.getThresholdFactor(), 0.0);
@@ -315,11 +314,11 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
     }
 
     @Test
-    public void testGetSetInstantaneousNoiseLevelFactor() throws LockedException {
-        final MagnetometerMeasurementsGenerator generator = new MagnetometerMeasurementsGenerator();
+    void testGetSetInstantaneousNoiseLevelFactor() throws LockedException {
+        final var generator = new MagnetometerMeasurementsGenerator();
 
         // check default value
-        assertEquals(TriadStaticIntervalDetector.DEFAULT_INSTANTANEOUS_NOISE_LEVEL_FACTOR,
+        assertEquals(TriadStaticIntervalDetector.DEFAULT_INSTANTANEOUS_NOISE_LEVEL_FACTOR, 
                 generator.getInstantaneousNoiseLevelFactor(), 0.0);
 
         // set new value
@@ -333,11 +332,11 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
     }
 
     @Test
-    public void testGetSetBaseNoiseLevelAbsoluteThreshold() throws LockedException {
-        final MagnetometerMeasurementsGenerator generator = new MagnetometerMeasurementsGenerator();
+    void testGetSetBaseNoiseLevelAbsoluteThreshold() throws LockedException {
+        final var generator = new MagnetometerMeasurementsGenerator();
 
         // check default value
-        assertEquals(TriadStaticIntervalDetector.DEFAULT_BASE_NOISE_LEVEL_ABSOLUTE_THRESHOLD,
+        assertEquals(TriadStaticIntervalDetector.DEFAULT_BASE_NOISE_LEVEL_ABSOLUTE_THRESHOLD, 
                 generator.getBaseNoiseLevelAbsoluteThreshold(), 0.0);
 
         // set new value
@@ -351,117 +350,115 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
     }
 
     @Test
-    public void testGetSetBaseNoiseLevelAbsoluteThresholdAsMeasurement() throws LockedException {
-        final MagnetometerMeasurementsGenerator generator = new MagnetometerMeasurementsGenerator();
+    void testGetSetBaseNoiseLevelAbsoluteThresholdAsMeasurement() throws LockedException {
+        final var generator = new MagnetometerMeasurementsGenerator();
 
         // check default value
         assertEquals(TriadStaticIntervalDetector.DEFAULT_BASE_NOISE_LEVEL_ABSOLUTE_THRESHOLD,
                 generator.getBaseNoiseLevelAbsoluteThreshold(), 0.0);
 
-        final Acceleration a1 = generator.getBaseNoiseLevelAbsoluteThresholdAsMeasurement();
+        final var a1 = generator.getBaseNoiseLevelAbsoluteThresholdAsMeasurement();
         assertEquals(AccelerationTriadStaticIntervalDetector.DEFAULT_BASE_NOISE_LEVEL_ABSOLUTE_THRESHOLD,
                 a1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, a1.getUnit());
 
         // set new value
-        final Acceleration a2 = new Acceleration(1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var a2 = new Acceleration(1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         generator.setBaseNoiseLevelAbsoluteThreshold(a2);
 
         // check
-        final Acceleration a3 = generator.getBaseNoiseLevelAbsoluteThresholdAsMeasurement();
-        final Acceleration a4 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var a3 = generator.getBaseNoiseLevelAbsoluteThresholdAsMeasurement();
+        final var a4 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         generator.getBaseNoiseLevelAbsoluteThresholdAsMeasurement(a4);
         assertEquals(a2, a3);
         assertEquals(a2, a4);
     }
 
     @Test
-    public void testProcessCalibrateAndResetWithSmallNoiseAndCommonAxis() throws WrongSizeException,
+    void testProcessCalibrateAndResetWithSmallNoiseAndCommonAxis() throws WrongSizeException, 
             InvalidSourceAndDestinationFrameTypeException, LockedException, NotReadyException, IOException {
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMaCommonAxis();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMaCommonAxis();
+        final var mg = generateMg();
+        final var gg = generateGg();
 
-        final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-        final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+        final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
+        
+        final var randomizer = new UniformRandomizer();
+        final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        final Random random = new Random();
-        final UniformRandomizer randomizer = new UniformRandomizer(random);
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final var noiseRandomizer = new GaussianRandomizer(0.0, SMALL_MAGNETOMETER_NOISE_STD);
 
-        final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
-                SMALL_MAGNETOMETER_NOISE_STD);
-
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Matrix hardIron = Matrix.newFromArray(generateHardIron(randomizer));
-            final Matrix mm = generateSoftIronCommonAxis();
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var hardIron = Matrix.newFromArray(generateHardIron(randomizer));
+            final var mm = generateSoftIronCommonAxis();
             assertNotNull(mm);
 
-            final Date timestamp = new Date(createTimestamp(randomizer));
-            NEDPosition nedPosition = createPosition(randomizer);
-            CoordinateTransformation cnb = generateBodyC(randomizer);
+            final var timestamp = new Date(createTimestamp(randomizer));
+            var nedPosition = createPosition(randomizer);
+            var cnb = generateBodyC(randomizer);
 
-            CoordinateTransformation nedC = cnb.inverseAndReturnNew();
+            var nedC = cnb.inverseAndReturnNew();
 
-            final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-            final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+            final var nedFrame = new NEDFrame(nedPosition, nedC);
+            final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
             // compute ground-truth kinematics that should be generated at provided
             // position, velocity and orientation
-            final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
-                    TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
+            final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS,
+                    ecefFrame, ecefFrame);
 
             reset();
-            assertTrue(mMeasurements.isEmpty());
-            assertEquals(0, mInitializationStarted);
-            assertEquals(0, mInitializationCompleted);
-            assertEquals(0, mError);
-            assertEquals(0, mStaticIntervalDetected);
-            assertEquals(0, mDynamicIntervalDetected);
+            assertTrue(measurements.isEmpty());
+            assertEquals(0, initializationStarted);
+            assertEquals(0, initializationCompleted);
+            assertEquals(0, error);
+            assertEquals(0, staticIntervalDetected);
+            assertEquals(0, dynamicIntervalDetected);
             assertEquals(0, mGeneratedMeasurement);
-            assertEquals(0, mReset);
+            assertEquals(0, reset);
 
-            final MagnetometerMeasurementsGenerator generator = new MagnetometerMeasurementsGenerator(this);
+            final var generator = new MagnetometerMeasurementsGenerator(this);
 
             // generate initial static samples
-            final int initialStaticSamples = TriadStaticIntervalDetector.DEFAULT_INITIAL_STATIC_SAMPLES;
+            final var initialStaticSamples = TriadStaticIntervalDetector.DEFAULT_INITIAL_STATIC_SAMPLES;
             generateStaticSamples(generator, initialStaticSamples, trueKinematics, errors, hardIron, mm, wmmEstimator,
-                    random, timestamp, nedPosition, cnb, noiseRandomizer);
+                    timestamp, nedPosition, cnb, noiseRandomizer);
 
-            assertEquals(1, mInitializationStarted);
-            assertEquals(1, mInitializationCompleted);
+            assertEquals(1, initializationStarted);
+            assertEquals(1, initializationCompleted);
 
-            final int numMeasurements = KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL;
-            final int staticPeriodLength = 3 * TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE;
-            final int dynamicPeriodLength = 2 * TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE;
+            final var numMeasurements = KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL;
+            final var staticPeriodLength = 3 * TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE;
+            final var dynamicPeriodLength = 2 * TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE;
 
-            for (int i = 0; i < numMeasurements; i++) {
+            for (var i = 0; i < numMeasurements; i++) {
                 nedPosition = nedFrame.getPosition();
                 nedC = nedFrame.getCoordinateTransformation();
                 cnb = nedC.inverseAndReturnNew();
 
                 // generate static samples
                 generateStaticSamples(generator, staticPeriodLength, trueKinematics, errors, hardIron, mm, wmmEstimator,
-                        random, timestamp, nedPosition, cnb, noiseRandomizer);
+                        timestamp, nedPosition, cnb, noiseRandomizer);
 
-                assertEquals(i + 1, mStaticIntervalDetected);
+                assertEquals(i + 1, staticIntervalDetected);
 
                 // generate dynamic samples
                 generateDynamicSamples(generator, dynamicPeriodLength, trueKinematics, randomizer, ecefFrame, nedFrame,
-                        errors, hardIron, mm, wmmEstimator, random, timestamp, nedPosition, cnb, noiseRandomizer,
+                        errors, hardIron, mm, wmmEstimator, timestamp, nedPosition, cnb, noiseRandomizer, 
                         false);
 
-                assertEquals(i + 1, mDynamicIntervalDetected);
-                assertEquals(i + 1, mMeasurements.size());
+                assertEquals(i + 1, dynamicIntervalDetected);
+                assertEquals(i + 1, measurements.size());
             }
 
             if (generator.getStatus() == TriadStaticIntervalDetector.Status.FAILED) {
@@ -470,11 +467,11 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
 
             generator.reset();
 
-            assertEquals(1, mReset);
-            assertEquals(0, mError);
+            assertEquals(1, reset);
+            assertEquals(0, error);
 
-            KnownPositionAndInstantMagnetometerCalibrator calibrator =
-                    new KnownPositionAndInstantMagnetometerCalibrator(nedPosition, mMeasurements, true);
+            final var calibrator = new KnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements, 
+                    true);
             calibrator.setTime(timestamp);
 
             try {
@@ -483,8 +480,8 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
                 continue;
             }
 
-            final Matrix estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
-            final Matrix estimatedMm = calibrator.getEstimatedMm();
+            final var estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
+            final var estimatedMm = calibrator.getEstimatedMm();
 
             if (!hardIron.equals(estimatedHardIron, ABSOLUTE_ERROR)) {
                 continue;
@@ -504,92 +501,90 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
     }
 
     @Test
-    public void testProcessCalibrateAndResetWithSmallNoiseAndGeneralCase() throws WrongSizeException,
+    void testProcessCalibrateAndResetWithSmallNoiseAndGeneralCase() throws WrongSizeException,
             InvalidSourceAndDestinationFrameTypeException, LockedException, NotReadyException, IOException {
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMaCommonAxis();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMaCommonAxis();
+        final var mg = generateMg();
+        final var gg = generateGg();
 
-        final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-        final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+        final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
+        
+        final var randomizer = new UniformRandomizer();
+        final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        final Random random = new Random();
-        final UniformRandomizer randomizer = new UniformRandomizer(random);
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final var noiseRandomizer = new GaussianRandomizer(new Random(), 0.0, SMALL_MAGNETOMETER_NOISE_STD);
 
-        final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
-                SMALL_MAGNETOMETER_NOISE_STD);
-
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Matrix hardIron = Matrix.newFromArray(generateHardIron(randomizer));
-            final Matrix mm = generateSoftIronGeneral();
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var hardIron = Matrix.newFromArray(generateHardIron(randomizer));
+            final var mm = generateSoftIronGeneral();
             assertNotNull(mm);
 
-            final Date timestamp = new Date(createTimestamp(randomizer));
-            NEDPosition nedPosition = createPosition(randomizer);
-            CoordinateTransformation cnb = generateBodyC(randomizer);
+            final var timestamp = new Date(createTimestamp(randomizer));
+            var nedPosition = createPosition(randomizer);
+            var cnb = generateBodyC(randomizer);
 
-            CoordinateTransformation nedC = cnb.inverseAndReturnNew();
+            var nedC = cnb.inverseAndReturnNew();
 
-            final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-            final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+            final var nedFrame = new NEDFrame(nedPosition, nedC);
+            final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
             // compute ground-truth kinematics that should be generated at provided
             // position, velocity and orientation
-            final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
-                    TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
+            final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, 
+                    ecefFrame, ecefFrame);
 
             reset();
-            assertTrue(mMeasurements.isEmpty());
-            assertEquals(0, mInitializationStarted);
-            assertEquals(0, mInitializationCompleted);
-            assertEquals(0, mError);
-            assertEquals(0, mStaticIntervalDetected);
-            assertEquals(0, mDynamicIntervalDetected);
+            assertTrue(measurements.isEmpty());
+            assertEquals(0, initializationStarted);
+            assertEquals(0, initializationCompleted);
+            assertEquals(0, error);
+            assertEquals(0, staticIntervalDetected);
+            assertEquals(0, dynamicIntervalDetected);
             assertEquals(0, mGeneratedMeasurement);
-            assertEquals(0, mReset);
+            assertEquals(0, reset);
 
-            final MagnetometerMeasurementsGenerator generator = new MagnetometerMeasurementsGenerator(this);
+            final var generator = new MagnetometerMeasurementsGenerator(this);
 
             // generate initial static samples
-            final int initialStaticSamples = TriadStaticIntervalDetector.DEFAULT_INITIAL_STATIC_SAMPLES;
+            final var initialStaticSamples = TriadStaticIntervalDetector.DEFAULT_INITIAL_STATIC_SAMPLES;
             generateStaticSamples(generator, initialStaticSamples, trueKinematics, errors, hardIron, mm, wmmEstimator,
-                    random, timestamp, nedPosition, cnb, noiseRandomizer);
+                    timestamp, nedPosition, cnb, noiseRandomizer);
 
-            assertEquals(1, mInitializationStarted);
-            assertEquals(1, mInitializationCompleted);
+            assertEquals(1, initializationStarted);
+            assertEquals(1, initializationCompleted);
 
-            final int numMeasurements = KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL;
-            final int staticPeriodLength = 3 * TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE;
-            final int dynamicPeriodLength = 2 * TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE;
+            final var numMeasurements = KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL;
+            final var staticPeriodLength = 3 * TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE;
+            final var dynamicPeriodLength = 2 * TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE;
 
-            for (int i = 0; i < numMeasurements; i++) {
+            for (var i = 0; i < numMeasurements; i++) {
                 nedPosition = nedFrame.getPosition();
                 nedC = nedFrame.getCoordinateTransformation();
                 cnb = nedC.inverseAndReturnNew();
 
                 // generate static samples
                 generateStaticSamples(generator, staticPeriodLength, trueKinematics, errors, hardIron, mm, wmmEstimator,
-                        random, timestamp, nedPosition, cnb, noiseRandomizer);
+                        timestamp, nedPosition, cnb, noiseRandomizer);
 
-                assertEquals(i + 1, mStaticIntervalDetected);
+                assertEquals(i + 1, staticIntervalDetected);
 
                 // generate dynamic samples
                 generateDynamicSamples(generator, dynamicPeriodLength, trueKinematics, randomizer, ecefFrame, nedFrame,
-                        errors, hardIron, mm, wmmEstimator, random, timestamp, nedPosition, cnb, noiseRandomizer,
+                        errors, hardIron, mm, wmmEstimator, timestamp, nedPosition, cnb, noiseRandomizer, 
                         true);
 
-                assertEquals(i + 1, mDynamicIntervalDetected);
-                assertEquals(i + 1, mMeasurements.size());
+                assertEquals(i + 1, dynamicIntervalDetected);
+                assertEquals(i + 1, measurements.size());
             }
 
             if (generator.getStatus() == TriadStaticIntervalDetector.Status.FAILED) {
@@ -598,11 +593,11 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
 
             generator.reset();
 
-            assertEquals(1, mReset);
-            assertEquals(0, mError);
+            assertEquals(1, reset);
+            assertEquals(0, error);
 
-            final KnownPositionAndInstantMagnetometerCalibrator calibrator =
-                    new KnownPositionAndInstantMagnetometerCalibrator(nedPosition, mMeasurements, false);
+            final var calibrator = new KnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                    false);
             calibrator.setTime(timestamp);
 
             try {
@@ -611,8 +606,8 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
                 continue;
             }
 
-            final Matrix estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
-            final Matrix estimatedMm = calibrator.getEstimatedMm();
+            final var estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
+            final var estimatedMm = calibrator.getEstimatedMm();
 
             if (!hardIron.equals(estimatedHardIron, ABSOLUTE_ERROR)) {
                 continue;
@@ -632,92 +627,90 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
     }
 
     @Test
-    public void testProcessCalibrateAndResetWithNoiseAndCommonAxis() throws WrongSizeException,
+    void testProcessCalibrateAndResetWithNoiseAndCommonAxis() throws WrongSizeException,
             InvalidSourceAndDestinationFrameTypeException, LockedException, NotReadyException, IOException {
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMaCommonAxis();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMaCommonAxis();
+        final var mg = generateMg();
+        final var gg = generateGg();
 
-        final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-        final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+        final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final Random random = new Random();
-        final UniformRandomizer randomizer = new UniformRandomizer(random);
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final var randomizer = new UniformRandomizer();
+        final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
-                MAGNETOMETER_NOISE_STD);
+        final var noiseRandomizer = new GaussianRandomizer(new Random(), 0.0, MAGNETOMETER_NOISE_STD);
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Matrix hardIron = Matrix.newFromArray(generateHardIron(randomizer));
-            final Matrix mm = generateSoftIronCommonAxis();
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var hardIron = Matrix.newFromArray(generateHardIron(randomizer));
+            final var mm = generateSoftIronCommonAxis();
             assertNotNull(mm);
 
-            final Date timestamp = new Date(createTimestamp(randomizer));
-            NEDPosition nedPosition = createPosition(randomizer);
-            CoordinateTransformation cnb = generateBodyC(randomizer);
+            final var timestamp = new Date(createTimestamp(randomizer));
+            var nedPosition = createPosition(randomizer);
+            var cnb = generateBodyC(randomizer);
 
-            CoordinateTransformation nedC = cnb.inverseAndReturnNew();
+            var nedC = cnb.inverseAndReturnNew();
 
-            final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-            final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+            final var nedFrame = new NEDFrame(nedPosition, nedC);
+            final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
             // compute ground-truth kinematics that should be generated at provided
             // position, velocity and orientation
-            final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
-                    TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
+            final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS,
+                    ecefFrame, ecefFrame);
 
             reset();
-            assertTrue(mMeasurements.isEmpty());
-            assertEquals(0, mInitializationStarted);
-            assertEquals(0, mInitializationCompleted);
-            assertEquals(0, mError);
-            assertEquals(0, mStaticIntervalDetected);
-            assertEquals(0, mDynamicIntervalDetected);
+            assertTrue(measurements.isEmpty());
+            assertEquals(0, initializationStarted);
+            assertEquals(0, initializationCompleted);
+            assertEquals(0, error);
+            assertEquals(0, staticIntervalDetected);
+            assertEquals(0, dynamicIntervalDetected);
             assertEquals(0, mGeneratedMeasurement);
-            assertEquals(0, mReset);
+            assertEquals(0, reset);
 
-            final MagnetometerMeasurementsGenerator generator = new MagnetometerMeasurementsGenerator(this);
+            final var generator = new MagnetometerMeasurementsGenerator(this);
 
             // generate initial static samples
-            final int initialStaticSamples = TriadStaticIntervalDetector.DEFAULT_INITIAL_STATIC_SAMPLES;
+            final var initialStaticSamples = TriadStaticIntervalDetector.DEFAULT_INITIAL_STATIC_SAMPLES;
             generateStaticSamples(generator, initialStaticSamples, trueKinematics, errors, hardIron, mm, wmmEstimator,
-                    random, timestamp, nedPosition, cnb, noiseRandomizer);
+                    timestamp, nedPosition, cnb, noiseRandomizer);
 
-            assertEquals(1, mInitializationStarted);
-            assertEquals(1, mInitializationCompleted);
+            assertEquals(1, initializationStarted);
+            assertEquals(1, initializationCompleted);
 
-            final int numMeasurements = KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL;
-            final int staticPeriodLength = 3 * TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE;
-            final int dynamicPeriodLength = 2 * TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE;
+            final var numMeasurements = KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL;
+            final var staticPeriodLength = 3 * TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE;
+            final var dynamicPeriodLength = 2 * TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE;
 
-            for (int i = 0; i < numMeasurements; i++) {
+            for (var i = 0; i < numMeasurements; i++) {
                 nedPosition = nedFrame.getPosition();
                 nedC = nedFrame.getCoordinateTransformation();
                 cnb = nedC.inverseAndReturnNew();
 
                 // generate static samples
                 generateStaticSamples(generator, staticPeriodLength, trueKinematics, errors, hardIron, mm, wmmEstimator,
-                        random, timestamp, nedPosition, cnb, noiseRandomizer);
+                        timestamp, nedPosition, cnb, noiseRandomizer);
 
-                assertEquals(i + 1, mStaticIntervalDetected);
+                assertEquals(i + 1, staticIntervalDetected);
 
                 // generate dynamic samples
                 generateDynamicSamples(generator, dynamicPeriodLength, trueKinematics, randomizer, ecefFrame, nedFrame,
-                        errors, hardIron, mm, wmmEstimator, random, timestamp, nedPosition, cnb, noiseRandomizer,
+                        errors, hardIron, mm, wmmEstimator, timestamp, nedPosition, cnb, noiseRandomizer, 
                         true);
 
-                assertEquals(i + 1, mDynamicIntervalDetected);
-                assertEquals(i + 1, mMeasurements.size());
+                assertEquals(i + 1, dynamicIntervalDetected);
+                assertEquals(i + 1, measurements.size());
             }
 
             if (generator.getStatus() == TriadStaticIntervalDetector.Status.FAILED) {
@@ -726,11 +719,11 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
 
             generator.reset();
 
-            assertEquals(1, mReset);
-            assertEquals(0, mError);
+            assertEquals(1, reset);
+            assertEquals(0, error);
 
-            final KnownPositionAndInstantMagnetometerCalibrator calibrator =
-                    new KnownPositionAndInstantMagnetometerCalibrator(nedPosition, mMeasurements, true);
+            final var calibrator = new KnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements, 
+                    true);
             calibrator.setTime(timestamp);
 
             try {
@@ -739,8 +732,8 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
                 continue;
             }
 
-            final Matrix estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
-            final Matrix estimatedMm = calibrator.getEstimatedMm();
+            final var estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
+            final var estimatedMm = calibrator.getEstimatedMm();
 
             if (!hardIron.equals(estimatedHardIron, LARGE_ABSOLUTE_ERROR)) {
                 continue;
@@ -760,92 +753,90 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
     }
 
     @Test
-    public void testProcessCalibrateAndResetWithNoiseAndGeneralCase() throws WrongSizeException,
+    void testProcessCalibrateAndResetWithNoiseAndGeneralCase() throws WrongSizeException, 
             InvalidSourceAndDestinationFrameTypeException, LockedException, NotReadyException, IOException {
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMaCommonAxis();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMaCommonAxis();
+        final var mg = generateMg();
+        final var gg = generateGg();
 
-        final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-        final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+        final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
+        
+        final var randomizer = new UniformRandomizer();
+        final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        final Random random = new Random();
-        final UniformRandomizer randomizer = new UniformRandomizer(random);
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final var noiseRandomizer = new GaussianRandomizer(new Random(), 0.0, MAGNETOMETER_NOISE_STD);
 
-        final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
-                MAGNETOMETER_NOISE_STD);
-
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Matrix hardIron = Matrix.newFromArray(generateHardIron(randomizer));
-            final Matrix mm = generateSoftIronGeneral();
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var hardIron = Matrix.newFromArray(generateHardIron(randomizer));
+            final var mm = generateSoftIronGeneral();
             assertNotNull(mm);
 
-            final Date timestamp = new Date(createTimestamp(randomizer));
-            NEDPosition nedPosition = createPosition(randomizer);
-            CoordinateTransformation cnb = generateBodyC(randomizer);
+            final var timestamp = new Date(createTimestamp(randomizer));
+            var nedPosition = createPosition(randomizer);
+            var cnb = generateBodyC(randomizer);
 
-            CoordinateTransformation nedC = cnb.inverseAndReturnNew();
+            var nedC = cnb.inverseAndReturnNew();
 
-            final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-            final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+            final var nedFrame = new NEDFrame(nedPosition, nedC);
+            final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
             // compute ground-truth kinematics that should be generated at provided
             // position, velocity and orientation
-            final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
-                    TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
+            final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, 
+                    ecefFrame, ecefFrame);
 
             reset();
-            assertTrue(mMeasurements.isEmpty());
-            assertEquals(0, mInitializationStarted);
-            assertEquals(0, mInitializationCompleted);
-            assertEquals(0, mError);
-            assertEquals(0, mStaticIntervalDetected);
-            assertEquals(0, mDynamicIntervalDetected);
+            assertTrue(measurements.isEmpty());
+            assertEquals(0, initializationStarted);
+            assertEquals(0, initializationCompleted);
+            assertEquals(0, error);
+            assertEquals(0, staticIntervalDetected);
+            assertEquals(0, dynamicIntervalDetected);
             assertEquals(0, mGeneratedMeasurement);
-            assertEquals(0, mReset);
+            assertEquals(0, reset);
 
-            final MagnetometerMeasurementsGenerator generator = new MagnetometerMeasurementsGenerator(this);
+            final var generator = new MagnetometerMeasurementsGenerator(this);
 
             // generate initial static samples
-            final int initialStaticSamples = TriadStaticIntervalDetector.DEFAULT_INITIAL_STATIC_SAMPLES;
+            final var initialStaticSamples = TriadStaticIntervalDetector.DEFAULT_INITIAL_STATIC_SAMPLES;
             generateStaticSamples(generator, initialStaticSamples, trueKinematics, errors, hardIron, mm, wmmEstimator,
-                    random, timestamp, nedPosition, cnb, noiseRandomizer);
+                    timestamp, nedPosition, cnb, noiseRandomizer);
 
-            assertEquals(1, mInitializationStarted);
-            assertEquals(1, mInitializationCompleted);
+            assertEquals(1, initializationStarted);
+            assertEquals(1, initializationCompleted);
 
-            final int numMeasurements = KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL;
-            final int staticPeriodLength = 3 * TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE;
-            final int dynamicPeriodLength = 2 * TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE;
+            final var numMeasurements = KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL;
+            final var staticPeriodLength = 3 * TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE;
+            final var dynamicPeriodLength = 2 * TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE;
 
-            for (int i = 0; i < numMeasurements; i++) {
+            for (var i = 0; i < numMeasurements; i++) {
                 nedPosition = nedFrame.getPosition();
                 nedC = nedFrame.getCoordinateTransformation();
                 cnb = nedC.inverseAndReturnNew();
 
                 // generate static samples
                 generateStaticSamples(generator, staticPeriodLength, trueKinematics, errors, hardIron, mm, wmmEstimator,
-                        random, timestamp, nedPosition, cnb, noiseRandomizer);
+                        timestamp, nedPosition, cnb, noiseRandomizer);
 
-                assertEquals(i + 1, mStaticIntervalDetected);
+                assertEquals(i + 1, staticIntervalDetected);
 
                 // generate dynamic samples
                 generateDynamicSamples(generator, dynamicPeriodLength, trueKinematics, randomizer, ecefFrame, nedFrame,
-                        errors, hardIron, mm, wmmEstimator, random, timestamp, nedPosition, cnb, noiseRandomizer,
+                        errors, hardIron, mm, wmmEstimator, timestamp, nedPosition, cnb, noiseRandomizer, 
                         true);
 
-                assertEquals(i + 1, mDynamicIntervalDetected);
-                assertEquals(i + 1, mMeasurements.size());
+                assertEquals(i + 1, dynamicIntervalDetected);
+                assertEquals(i + 1, measurements.size());
             }
 
             if (generator.getStatus() == TriadStaticIntervalDetector.Status.FAILED) {
@@ -854,11 +845,11 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
 
             generator.reset();
 
-            assertEquals(1, mReset);
-            assertEquals(0, mError);
+            assertEquals(1, reset);
+            assertEquals(0, error);
 
-            KnownPositionAndInstantMagnetometerCalibrator calibrator =
-                    new KnownPositionAndInstantMagnetometerCalibrator(nedPosition, mMeasurements, false);
+            final var calibrator = new KnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements, 
+                    false);
             calibrator.setTime(timestamp);
 
             try {
@@ -867,8 +858,8 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
                 continue;
             }
 
-            final Matrix estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
-            final Matrix estimatedMm = calibrator.getEstimatedMm();
+            final var estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
+            final var estimatedMm = calibrator.getEstimatedMm();
 
             if (!hardIron.equals(estimatedHardIron, LARGE_ABSOLUTE_ERROR)) {
                 continue;
@@ -888,92 +879,90 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
     }
 
     @Test
-    public void testProcessSmallNoiseWithRotationAndPositionChange() throws WrongSizeException,
+    void testProcessSmallNoiseWithRotationAndPositionChange() throws WrongSizeException,
             InvalidSourceAndDestinationFrameTypeException, LockedException, NotReadyException, IOException {
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMaCommonAxis();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMaCommonAxis();
+        final var mg = generateMg();
+        final var gg = generateGg();
 
-        final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-        final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+        final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
+        
+        final var randomizer = new UniformRandomizer();
+        final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        final Random random = new Random();
-        final UniformRandomizer randomizer = new UniformRandomizer(random);
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final var noiseRandomizer = new GaussianRandomizer(new Random(), 0.0, SMALL_MAGNETOMETER_NOISE_STD);
 
-        final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
-                SMALL_MAGNETOMETER_NOISE_STD);
-
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Matrix hardIron = Matrix.newFromArray(generateHardIron(randomizer));
-            final Matrix mm = generateSoftIronCommonAxis();
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var hardIron = Matrix.newFromArray(generateHardIron(randomizer));
+            final var mm = generateSoftIronCommonAxis();
             assertNotNull(mm);
 
-            final Date timestamp = new Date(createTimestamp(randomizer));
-            NEDPosition nedPosition = createPosition(randomizer);
-            CoordinateTransformation cnb = generateBodyC(randomizer);
+            final var timestamp = new Date(createTimestamp(randomizer));
+            var nedPosition = createPosition(randomizer);
+            var cnb = generateBodyC(randomizer);
 
-            CoordinateTransformation nedC = cnb.inverseAndReturnNew();
+            var nedC = cnb.inverseAndReturnNew();
 
-            final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-            final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+            final var nedFrame = new NEDFrame(nedPosition, nedC);
+            final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
             // compute ground-truth kinematics that should be generated at provided
             // position, velocity and orientation
-            final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
-                    TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
+            final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS,
+                    ecefFrame, ecefFrame);
 
             reset();
-            assertTrue(mMeasurements.isEmpty());
-            assertEquals(0, mInitializationStarted);
-            assertEquals(0, mInitializationCompleted);
-            assertEquals(0, mError);
-            assertEquals(0, mStaticIntervalDetected);
-            assertEquals(0, mDynamicIntervalDetected);
+            assertTrue(measurements.isEmpty());
+            assertEquals(0, initializationStarted);
+            assertEquals(0, initializationCompleted);
+            assertEquals(0, error);
+            assertEquals(0, staticIntervalDetected);
+            assertEquals(0, dynamicIntervalDetected);
             assertEquals(0, mGeneratedMeasurement);
-            assertEquals(0, mReset);
+            assertEquals(0, reset);
 
-            final MagnetometerMeasurementsGenerator generator = new MagnetometerMeasurementsGenerator(this);
+            final var generator = new MagnetometerMeasurementsGenerator(this);
 
             // generate initial static samples
-            final int initialStaticSamples = TriadStaticIntervalDetector.DEFAULT_INITIAL_STATIC_SAMPLES;
+            final var initialStaticSamples = TriadStaticIntervalDetector.DEFAULT_INITIAL_STATIC_SAMPLES;
             generateStaticSamples(generator, initialStaticSamples, trueKinematics, errors, hardIron, mm, wmmEstimator,
-                    random, timestamp, nedPosition, cnb, noiseRandomizer);
+                    timestamp, nedPosition, cnb, noiseRandomizer);
 
-            assertEquals(1, mInitializationStarted);
-            assertEquals(1, mInitializationCompleted);
+            assertEquals(1, initializationStarted);
+            assertEquals(1, initializationCompleted);
 
-            final int numMeasurements = KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL;
-            final int staticPeriodLength = 3 * TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE;
-            final int dynamicPeriodLength = 2 * TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE;
+            final var numMeasurements = KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL;
+            final var staticPeriodLength = 3 * TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE;
+            final var dynamicPeriodLength = 2 * TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE;
 
-            for (int i = 0; i < numMeasurements; i++) {
+            for (var i = 0; i < numMeasurements; i++) {
                 nedPosition = nedFrame.getPosition();
                 nedC = nedFrame.getCoordinateTransformation();
                 cnb = nedC.inverseAndReturnNew();
 
                 // generate static samples
                 generateStaticSamples(generator, staticPeriodLength, trueKinematics, errors, hardIron, mm, wmmEstimator,
-                        random, timestamp, nedPosition, cnb, noiseRandomizer);
+                        timestamp, nedPosition, cnb, noiseRandomizer);
 
-                assertEquals(i + 1, mStaticIntervalDetected);
+                assertEquals(i + 1, staticIntervalDetected);
 
                 // generate dynamic samples
                 generateDynamicSamples(generator, dynamicPeriodLength, trueKinematics, randomizer, ecefFrame, nedFrame,
-                        errors, hardIron, mm, wmmEstimator, random, timestamp, nedPosition, cnb, noiseRandomizer,
+                        errors, hardIron, mm, wmmEstimator, timestamp, nedPosition, cnb, noiseRandomizer, 
                         true);
 
-                assertEquals(i + 1, mDynamicIntervalDetected);
-                assertEquals(i + 1, mMeasurements.size());
+                assertEquals(i + 1, dynamicIntervalDetected);
+                assertEquals(i + 1, measurements.size());
             }
 
             if (generator.getStatus() == TriadStaticIntervalDetector.Status.FAILED) {
@@ -982,11 +971,11 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
 
             generator.reset();
 
-            assertEquals(1, mReset);
-            assertEquals(0, mError);
+            assertEquals(1, reset);
+            assertEquals(0, error);
 
-            final KnownPositionAndInstantMagnetometerCalibrator calibrator =
-                    new KnownPositionAndInstantMagnetometerCalibrator(nedPosition, mMeasurements, true);
+            final var calibrator = new KnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements, 
+                    true);
             calibrator.setTime(timestamp);
 
             try {
@@ -995,8 +984,8 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
                 continue;
             }
 
-            final Matrix estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
-            final Matrix estimatedMm = calibrator.getEstimatedMm();
+            final var estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
+            final var estimatedMm = calibrator.getEstimatedMm();
 
             if (!hardIron.equals(estimatedHardIron, ABSOLUTE_ERROR)) {
                 continue;
@@ -1016,254 +1005,246 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
     }
 
     @Test
-    public void testProcessErrorWithExcessiveOverallNoise() throws WrongSizeException,
+    void testProcessErrorWithExcessiveOverallNoise() throws WrongSizeException, 
             InvalidSourceAndDestinationFrameTypeException, LockedException, IOException {
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMaCommonAxis();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMaCommonAxis();
+        final var mg = generateMg();
+        final var gg = generateGg();
 
-        final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-        final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+        final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
+        
+        final var randomizer = new UniformRandomizer();
+        final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        final Random random = new Random();
-        final UniformRandomizer randomizer = new UniformRandomizer(random);
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final var noiseRandomizer = new GaussianRandomizer(new Random(), 0.0, SMALL_MAGNETOMETER_NOISE_STD);
 
-        final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
-                SMALL_MAGNETOMETER_NOISE_STD);
-
-        final Matrix hardIron = Matrix.newFromArray(generateHardIron(randomizer));
-        final Matrix mm = generateSoftIronCommonAxis();
+        final var hardIron = Matrix.newFromArray(generateHardIron(randomizer));
+        final var mm = generateSoftIronCommonAxis();
         assertNotNull(mm);
 
-        final Date timestamp = new Date(createTimestamp(randomizer));
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final CoordinateTransformation cnb = generateBodyC(randomizer);
+        final var timestamp = new Date(createTimestamp(randomizer));
+        final var nedPosition = createPosition(randomizer);
+        final var cnb = generateBodyC(randomizer);
 
-        final CoordinateTransformation nedC = cnb.inverseAndReturnNew();
+        final var nedC = cnb.inverseAndReturnNew();
 
-        final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var nedFrame = new NEDFrame(nedPosition, nedC);
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
         // compute ground-truth kinematics that should be generated at provided
         // position, velocity and orientation
-        final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
-                TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
+        final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, 
+                ecefFrame, ecefFrame);
 
         reset();
-        assertTrue(mMeasurements.isEmpty());
-        assertEquals(0, mInitializationStarted);
-        assertEquals(0, mInitializationCompleted);
-        assertEquals(0, mError);
-        assertEquals(0, mStaticIntervalDetected);
-        assertEquals(0, mDynamicIntervalDetected);
+        assertTrue(measurements.isEmpty());
+        assertEquals(0, initializationStarted);
+        assertEquals(0, initializationCompleted);
+        assertEquals(0, error);
+        assertEquals(0, staticIntervalDetected);
+        assertEquals(0, dynamicIntervalDetected);
         assertEquals(0, mGeneratedMeasurement);
-        assertEquals(0, mReset);
+        assertEquals(0, reset);
 
-        final MagnetometerMeasurementsGenerator generator = new MagnetometerMeasurementsGenerator(this);
+        final var generator = new MagnetometerMeasurementsGenerator(this);
         generator.setBaseNoiseLevelAbsoluteThreshold(Double.MIN_VALUE);
 
         // generate initial static samples
-        final int initialStaticSamples = TriadStaticIntervalDetector.DEFAULT_INITIAL_STATIC_SAMPLES;
+        final var initialStaticSamples = TriadStaticIntervalDetector.DEFAULT_INITIAL_STATIC_SAMPLES;
         generateStaticSamples(generator, initialStaticSamples, trueKinematics, errors, hardIron, mm, wmmEstimator,
-                random, timestamp, nedPosition, cnb, noiseRandomizer);
+                timestamp, nedPosition, cnb, noiseRandomizer);
 
-        assertEquals(1, mInitializationStarted);
-        assertEquals(0, mInitializationCompleted);
-        assertEquals(1, mError);
+        assertEquals(1, initializationStarted);
+        assertEquals(0, initializationCompleted);
+        assertEquals(1, error);
 
-        final BodyMagneticFluxDensity b = generateB(hardIron.getBuffer(), mm, wmmEstimator, noiseRandomizer, timestamp,
-                nedPosition, cnb);
-        final BodyKinematicsAndMagneticFluxDensity kb = new BodyKinematicsAndMagneticFluxDensity(trueKinematics, b);
+        final var b = generateB(hardIron.getBuffer(), mm, wmmEstimator, noiseRandomizer, timestamp, nedPosition, cnb);
+        final var kb = new BodyKinematicsAndMagneticFluxDensity(trueKinematics, b);
         assertFalse(generator.process(kb));
 
         generator.reset();
 
-        assertEquals(1, mReset);
+        assertEquals(1, reset);
 
         assertTrue(generator.process(kb));
     }
 
     @Test
-    public void testProcessSkipStaticInterval() throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException, LockedException, IOException {
+    void testProcessSkipStaticInterval() throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException, 
+            LockedException, IOException {
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMaCommonAxis();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMaCommonAxis();
+        final var mg = generateMg();
+        final var gg = generateGg();
 
-        final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-        final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+        final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
+        
+        final var randomizer = new UniformRandomizer();
+        final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        final Random random = new Random();
-        final UniformRandomizer randomizer = new UniformRandomizer(random);
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final var noiseRandomizer = new GaussianRandomizer(new Random(), 0.0, SMALL_MAGNETOMETER_NOISE_STD);
 
-        final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(new Random(), 0.0, SMALL_MAGNETOMETER_NOISE_STD);
-
-        final Matrix hardIron = Matrix.newFromArray(generateHardIron(randomizer));
-        final Matrix mm = generateSoftIronCommonAxis();
+        final var hardIron = Matrix.newFromArray(generateHardIron(randomizer));
+        final var mm = generateSoftIronCommonAxis();
         assertNotNull(mm);
 
-        final Date timestamp = new Date(createTimestamp(randomizer));
-        NEDPosition nedPosition = createPosition(randomizer);
-        CoordinateTransformation cnb = generateBodyC(randomizer);
+        final var timestamp = new Date(createTimestamp(randomizer));
+        var nedPosition = createPosition(randomizer);
+        var cnb = generateBodyC(randomizer);
 
-        CoordinateTransformation nedC = cnb.inverseAndReturnNew();
+        var nedC = cnb.inverseAndReturnNew();
 
-        final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var nedFrame = new NEDFrame(nedPosition, nedC);
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
         // compute ground-truth kinematics that should be generated at provided
         // position, velocity and orientation
-        final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+        final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
                 TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
         reset();
-        assertTrue(mMeasurements.isEmpty());
-        assertEquals(0, mInitializationStarted);
-        assertEquals(0, mInitializationCompleted);
-        assertEquals(0, mError);
-        assertEquals(0, mStaticIntervalDetected);
-        assertEquals(0, mDynamicIntervalDetected);
+        assertTrue(measurements.isEmpty());
+        assertEquals(0, initializationStarted);
+        assertEquals(0, initializationCompleted);
+        assertEquals(0, error);
+        assertEquals(0, staticIntervalDetected);
+        assertEquals(0, dynamicIntervalDetected);
         assertEquals(0, mGeneratedMeasurement);
-        assertEquals(0, mReset);
+        assertEquals(0, reset);
 
-        final MagnetometerMeasurementsGenerator generator = new MagnetometerMeasurementsGenerator(this);
-
-        // generate initial static samples
-        final int initialStaticSamples = TriadStaticIntervalDetector
-                .DEFAULT_INITIAL_STATIC_SAMPLES;
-        generateStaticSamples(generator, initialStaticSamples, trueKinematics,
-                errors, hardIron, mm, wmmEstimator, random, timestamp, nedPosition,
-                cnb, noiseRandomizer);
-
-        assertEquals(1, mInitializationStarted);
-        assertEquals(1, mInitializationCompleted);
-
-        final int staticPeriodLength = generator.getMinStaticSamples() / 2;
-        final int dynamicPeriodLength = 2 * TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE;
-
-        nedPosition = nedFrame.getPosition();
-        nedC = nedFrame.getCoordinateTransformation();
-        cnb = nedC.inverseAndReturnNew();
-
-        // generate static samples
-        generateStaticSamples(generator, staticPeriodLength, trueKinematics, errors, hardIron, mm, wmmEstimator, random,
-                timestamp, nedPosition, cnb, noiseRandomizer);
-
-        assertEquals(1, mStaticIntervalDetected);
-
-        // generate dynamic samples
-        generateDynamicSamples(generator, dynamicPeriodLength, trueKinematics, randomizer, ecefFrame, nedFrame, errors,
-                hardIron, mm, wmmEstimator, random, timestamp, nedPosition, cnb, noiseRandomizer, true);
-
-        assertEquals(1, mDynamicIntervalDetected);
-        assertEquals(1, mStaticIntervalSkipped);
-    }
-
-    @Test
-    public void testProcessSkipDynamicInterval() throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException, LockedException, IOException {
-
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMaCommonAxis();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-
-        final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-        final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
-
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
-                gyroQuantLevel);
-
-        final Random random = new Random();
-        final UniformRandomizer randomizer = new UniformRandomizer(random);
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
-
-        final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
-                SMALL_MAGNETOMETER_NOISE_STD);
-
-        final Matrix hardIron = Matrix.newFromArray(generateHardIron(randomizer));
-        final Matrix mm = generateSoftIronCommonAxis();
-        assertNotNull(mm);
-
-        final Date timestamp = new Date(createTimestamp(randomizer));
-        NEDPosition nedPosition = createPosition(randomizer);
-        CoordinateTransformation cnb = generateBodyC(randomizer);
-
-        CoordinateTransformation nedC = cnb.inverseAndReturnNew();
-
-        final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
-
-        // compute ground-truth kinematics that should be generated at provided
-        // position, velocity and orientation
-        final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
-                TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
-
-        reset();
-        assertTrue(mMeasurements.isEmpty());
-        assertEquals(0, mInitializationStarted);
-        assertEquals(0, mInitializationCompleted);
-        assertEquals(0, mError);
-        assertEquals(0, mStaticIntervalDetected);
-        assertEquals(0, mDynamicIntervalDetected);
-        assertEquals(0, mGeneratedMeasurement);
-        assertEquals(0, mReset);
-
-        final MagnetometerMeasurementsGenerator generator = new MagnetometerMeasurementsGenerator(this);
+        final var generator = new MagnetometerMeasurementsGenerator(this);
 
         // generate initial static samples
         final int initialStaticSamples = TriadStaticIntervalDetector.DEFAULT_INITIAL_STATIC_SAMPLES;
-        generateStaticSamples(generator, initialStaticSamples, trueKinematics, errors, hardIron, mm, wmmEstimator,
-                random, timestamp, nedPosition, cnb, noiseRandomizer);
+        generateStaticSamples(generator, initialStaticSamples, trueKinematics, errors, hardIron, mm, wmmEstimator, 
+                timestamp, nedPosition, cnb, noiseRandomizer);
 
-        assertEquals(1, mInitializationStarted);
-        assertEquals(1, mInitializationCompleted);
+        assertEquals(1, initializationStarted);
+        assertEquals(1, initializationCompleted);
 
-        final int staticPeriodLength = 3 * TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE;
-        final int dynamicPeriodLength = 2 * generator.getMaxDynamicSamples();
+        final var staticPeriodLength = generator.getMinStaticSamples() / 2;
+        final var dynamicPeriodLength = 2 * TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE;
 
         nedPosition = nedFrame.getPosition();
         nedC = nedFrame.getCoordinateTransformation();
         cnb = nedC.inverseAndReturnNew();
 
         // generate static samples
-        generateStaticSamples(generator, staticPeriodLength, trueKinematics, errors, hardIron, mm, wmmEstimator, random,
+        generateStaticSamples(generator, staticPeriodLength, trueKinematics, errors, hardIron, mm, wmmEstimator, 
                 timestamp, nedPosition, cnb, noiseRandomizer);
 
-        assertEquals(1, mStaticIntervalDetected);
+        assertEquals(1, staticIntervalDetected);
 
         // generate dynamic samples
         generateDynamicSamples(generator, dynamicPeriodLength, trueKinematics, randomizer, ecefFrame, nedFrame, errors,
-                hardIron, mm, wmmEstimator, random, timestamp, nedPosition, cnb, noiseRandomizer, true);
+                hardIron, mm, wmmEstimator, timestamp, nedPosition, cnb, noiseRandomizer, true);
 
-        assertEquals(1, mDynamicIntervalDetected);
+        assertEquals(1, dynamicIntervalDetected);
+        assertEquals(1, staticIntervalSkipped);
+    }
+
+    @Test
+    void testProcessSkipDynamicInterval() throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException, 
+            LockedException, IOException {
+
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMaCommonAxis();
+        final var mg = generateMg();
+        final var gg = generateGg();
+
+        final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+        final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
+
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
+        
+        final var randomizer = new UniformRandomizer();
+        final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+
+        final var noiseRandomizer = new GaussianRandomizer(new Random(), 0.0, SMALL_MAGNETOMETER_NOISE_STD);
+
+        final var hardIron = Matrix.newFromArray(generateHardIron(randomizer));
+        final var mm = generateSoftIronCommonAxis();
+        assertNotNull(mm);
+
+        final var timestamp = new Date(createTimestamp(randomizer));
+        var nedPosition = createPosition(randomizer);
+        var cnb = generateBodyC(randomizer);
+
+        var nedC = cnb.inverseAndReturnNew();
+
+        final var nedFrame = new NEDFrame(nedPosition, nedC);
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+
+        // compute ground-truth kinematics that should be generated at provided
+        // position, velocity and orientation
+        final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, 
+                ecefFrame, ecefFrame);
+
+        reset();
+        assertTrue(measurements.isEmpty());
+        assertEquals(0, initializationStarted);
+        assertEquals(0, initializationCompleted);
+        assertEquals(0, error);
+        assertEquals(0, staticIntervalDetected);
+        assertEquals(0, dynamicIntervalDetected);
+        assertEquals(0, mGeneratedMeasurement);
+        assertEquals(0, reset);
+
+        final var generator = new MagnetometerMeasurementsGenerator(this);
+
+        // generate initial static samples
+        final var initialStaticSamples = TriadStaticIntervalDetector.DEFAULT_INITIAL_STATIC_SAMPLES;
+        generateStaticSamples(generator, initialStaticSamples, trueKinematics, errors, hardIron, mm, wmmEstimator,
+                timestamp, nedPosition, cnb, noiseRandomizer);
+
+        assertEquals(1, initializationStarted);
+        assertEquals(1, initializationCompleted);
+
+        final var staticPeriodLength = 3 * TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE;
+        final var dynamicPeriodLength = 2 * generator.getMaxDynamicSamples();
+
+        nedPosition = nedFrame.getPosition();
+        nedC = nedFrame.getCoordinateTransformation();
+        cnb = nedC.inverseAndReturnNew();
+
+        // generate static samples
+        generateStaticSamples(generator, staticPeriodLength, trueKinematics, errors, hardIron, mm, wmmEstimator,
+                timestamp, nedPosition, cnb, noiseRandomizer);
+
+        assertEquals(1, staticIntervalDetected);
+
+        // generate dynamic samples
+        generateDynamicSamples(generator, dynamicPeriodLength, trueKinematics, randomizer, ecefFrame, nedFrame, errors,
+                hardIron, mm, wmmEstimator, timestamp, nedPosition, cnb, noiseRandomizer, true);
+
+        assertEquals(1, dynamicIntervalDetected);
         assertEquals(1, mDynamicIntervalSkipped);
     }
 
     @Override
     public void onInitializationStarted(final MagnetometerMeasurementsGenerator generator) {
-        mInitializationStarted++;
+        initializationStarted++;
         checkLocked(generator);
 
         assertEquals(TriadStaticIntervalDetector.Status.INITIALIZING, generator.getStatus());
@@ -1272,23 +1253,23 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
     @Override
     public void onInitializationCompleted(
             final MagnetometerMeasurementsGenerator generator, final double baseNoiseLevel) {
-        mInitializationCompleted++;
+        initializationCompleted++;
         checkLocked(generator);
 
         assertTrue(baseNoiseLevel > 0.0);
         assertEquals(baseNoiseLevel, generator.getAccelerometerBaseNoiseLevel(), 0.0);
-        final Acceleration baseNoiseLevel1 = generator.getAccelerometerBaseNoiseLevelAsMeasurement();
+        final var baseNoiseLevel1 = generator.getAccelerometerBaseNoiseLevelAsMeasurement();
         assertEquals(baseNoiseLevel1.getValue().doubleValue(), baseNoiseLevel, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, baseNoiseLevel1.getUnit());
-        final Acceleration baseNoiseLevel2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var baseNoiseLevel2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         generator.getAccelerometerBaseNoiseLevelAsMeasurement(baseNoiseLevel2);
         assertEquals(baseNoiseLevel1, baseNoiseLevel2);
 
         assertTrue(generator.getThreshold() > 0.0);
-        final Acceleration threshold1 = generator.getThresholdAsMeasurement();
+        final var threshold1 = generator.getThresholdAsMeasurement();
         assertEquals(threshold1.getValue().doubleValue(), generator.getThreshold(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, threshold1.getUnit());
-        final Acceleration threshold2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var threshold2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         generator.getThresholdAsMeasurement(threshold2);
         assertEquals(threshold1, threshold2);
     }
@@ -1296,7 +1277,7 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
     @Override
     public void onError(
             final MagnetometerMeasurementsGenerator generator, final TriadStaticIntervalDetector.ErrorReason reason) {
-        mError++;
+        error++;
         checkLocked(generator);
 
         assertEquals(TriadStaticIntervalDetector.Status.FAILED, generator.getStatus());
@@ -1304,7 +1285,7 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
 
     @Override
     public void onStaticIntervalDetected(final MagnetometerMeasurementsGenerator generator) {
-        mStaticIntervalDetected++;
+        staticIntervalDetected++;
         checkLocked(generator);
 
         assertEquals(TriadStaticIntervalDetector.Status.STATIC_INTERVAL, generator.getStatus());
@@ -1312,7 +1293,7 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
 
     @Override
     public void onDynamicIntervalDetected(final MagnetometerMeasurementsGenerator generator) {
-        mDynamicIntervalDetected++;
+        dynamicIntervalDetected++;
         checkLocked(generator);
 
         assertEquals(TriadStaticIntervalDetector.Status.DYNAMIC_INTERVAL, generator.getStatus());
@@ -1320,7 +1301,7 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
 
     @Override
     public void onStaticIntervalSkipped(final MagnetometerMeasurementsGenerator generator) {
-        mStaticIntervalSkipped++;
+        staticIntervalSkipped++;
         checkLocked(generator);
 
         assertEquals(TriadStaticIntervalDetector.Status.DYNAMIC_INTERVAL, generator.getStatus());
@@ -1339,29 +1320,29 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
             final MagnetometerMeasurementsGenerator generator,
             final StandardDeviationBodyMagneticFluxDensity measurement) {
         mGeneratedMeasurement++;
-        mMeasurements.add(measurement);
+        measurements.add(measurement);
         checkLocked(generator);
     }
 
     @Override
     public void onReset(final MagnetometerMeasurementsGenerator generator) {
-        mReset++;
+        reset++;
 
         assertEquals(TriadStaticIntervalDetector.Status.IDLE, generator.getStatus());
     }
 
     private void reset() {
-        mMeasurements.clear();
+        measurements.clear();
 
-        mInitializationStarted = 0;
-        mInitializationCompleted = 0;
-        mError = 0;
-        mStaticIntervalDetected = 0;
-        mDynamicIntervalDetected = 0;
-        mStaticIntervalSkipped = 0;
+        initializationStarted = 0;
+        initializationCompleted = 0;
+        error = 0;
+        staticIntervalDetected = 0;
+        dynamicIntervalDetected = 0;
+        staticIntervalSkipped = 0;
         mDynamicIntervalSkipped = 0;
         mGeneratedMeasurement = 0;
-        mReset = 0;
+        reset = 0;
     }
 
     private void checkLocked(final MagnetometerMeasurementsGenerator generator) {
@@ -1384,11 +1365,10 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
             final GaussianRandomizer noiseRandomizer, final Date timestamp, final NEDPosition position,
             final CoordinateTransformation cnb) {
 
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
+        final var earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity truthMagnetic = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
-        final BodyMagneticFluxDensity measuredMagnetic = generateMeasuredMagneticFluxDensity(truthMagnetic, hardIron,
-                softIron);
+        final var truthMagnetic = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final var measuredMagnetic = generateMeasuredMagneticFluxDensity(truthMagnetic, hardIron, softIron);
 
         if (noiseRandomizer != null) {
             measuredMagnetic.setBx(measuredMagnetic.getBx() + noiseRandomizer.nextDouble());
@@ -1401,9 +1381,9 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
 
     private static CoordinateTransformation generateBodyC(final UniformRandomizer randomizer) {
 
-        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         return new CoordinateTransformation(roll, pitch, yaw1, FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
     }
@@ -1414,17 +1394,17 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
     }
 
     private static double[] generateHardIron(final UniformRandomizer randomizer) {
-        final double[] result = new double[BodyMagneticFluxDensity.COMPONENTS];
+        final var result = new double[BodyMagneticFluxDensity.COMPONENTS];
         randomizer.fill(result, MIN_HARD_IRON, MAX_HARD_IRON);
         return result;
     }
 
     private static Matrix generateSoftIronCommonAxis() {
-        final Matrix mm = generateSoftIronGeneral();
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        for (int col = 0; col < mm.getColumns(); col++) {
-            for (int row = 0; row < mm.getRows(); row++) {
+        for (var col = 0; col < mm.getColumns(); col++) {
+            for (var row = 0; row < mm.getRows(); row++) {
                 if (row > col) {
                     mm.setElementAt(row, col, 0.0);
                 }
@@ -1445,11 +1425,11 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
     }
 
     private static NEDPosition createPosition(final UniformRandomizer randomizer) {
-        final double latitude = Math.toRadians(randomizer.nextDouble(
+        final var latitude = Math.toRadians(randomizer.nextDouble(
                 MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(
+        final var longitude = Math.toRadians(randomizer.nextDouble(
                 MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(
+        final var height = randomizer.nextDouble(
                 MIN_HEIGHT_METERS, MAX_HEIGHT_METERS);
 
         return new NEDPosition(latitude, longitude, height);
@@ -1475,7 +1455,7 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
     }
 
     private static Matrix generateMaCommonAxis() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
+        final var result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 500e-6, -300e-6, 200e-6,
                 0.0, -600e-6, 250e-6,
@@ -1486,7 +1466,7 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
     }
 
     private static Matrix generateMg() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
+        final var result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 400e-6, -300e-6, 250e-6,
                 0.0, -300e-6, -150e-6,
@@ -1497,8 +1477,8 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
     }
 
     private static Matrix generateGg() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
-        final double tmp = DEG_TO_RAD / (3600 * 9.80665);
+        final var result = new Matrix(3, 3);
+        final var tmp = DEG_TO_RAD / (3600 * 9.80665);
         result.fromArray(new double[]{
                 0.9 * tmp, -1.1 * tmp, -0.6 * tmp,
                 -0.5 * tmp, 1.9 * tmp, -1.6 * tmp,
@@ -1519,17 +1499,17 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
     private static void generateStaticSamples(
             final MagnetometerMeasurementsGenerator generator, final int numSamples,
             final BodyKinematics trueKinematics, final IMUErrors errors, final Matrix hardIron, final Matrix mm,
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator, final Random random, final Date timestamp,
+            final WMMEarthMagneticFluxDensityEstimator wmmEstimator, final Date timestamp,
             final NEDPosition nedPosition, final CoordinateTransformation cnb, final GaussianRandomizer noiseRandomizer)
             throws LockedException {
-        final BodyKinematics measuredKinematics = new BodyKinematics();
-        for (int i = 0; i < numSamples; i++) {
+        final var random = new Random();
+        final var measuredKinematics = new BodyKinematics();
+        for (var i = 0; i < numSamples; i++) {
             BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors, random, measuredKinematics);
 
-            final BodyMagneticFluxDensity b = generateB(hardIron.getBuffer(), mm, wmmEstimator, noiseRandomizer,
-                    timestamp, nedPosition, cnb);
-            final BodyKinematicsAndMagneticFluxDensity kb = new BodyKinematicsAndMagneticFluxDensity(measuredKinematics,
-                    b);
+            final var b = generateB(hardIron.getBuffer(), mm, wmmEstimator, noiseRandomizer, timestamp, nedPosition,
+                    cnb);
+            final var kb = new BodyKinematicsAndMagneticFluxDensity(measuredKinematics, b);
             assertTrue(generator.process(kb));
         }
     }
@@ -1538,61 +1518,58 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
             final MagnetometerMeasurementsGenerator generator, final int numSamples,
             final BodyKinematics trueKinematics, final UniformRandomizer randomizer, final ECEFFrame ecefFrame,
             final NEDFrame nedFrame, final IMUErrors errors, final Matrix hardIron, final Matrix mm,
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator, final Random random, final Date timestamp,
+            final WMMEarthMagneticFluxDensityEstimator wmmEstimator, final Date timestamp,
             final NEDPosition nedPosition, final CoordinateTransformation cnb, final GaussianRandomizer noiseRandomizer,
             final boolean changePosition) throws InvalidSourceAndDestinationFrameTypeException, LockedException {
 
-        final double deltaX = changePosition ? randomizer.nextDouble(MIN_DELTA_POS_METERS, MAX_DELTA_POS_METERS) : 0.0;
-        final double deltaY = changePosition ? randomizer.nextDouble(MIN_DELTA_POS_METERS, MAX_DELTA_POS_METERS) : 0.0;
-        final double deltaZ = changePosition ? randomizer.nextDouble(MIN_DELTA_POS_METERS, MAX_DELTA_POS_METERS) : 0.0;
+        final var deltaX = changePosition ? randomizer.nextDouble(MIN_DELTA_POS_METERS, MAX_DELTA_POS_METERS) : 0.0;
+        final var deltaY = changePosition ? randomizer.nextDouble(MIN_DELTA_POS_METERS, MAX_DELTA_POS_METERS) : 0.0;
+        final var deltaZ = changePosition ? randomizer.nextDouble(MIN_DELTA_POS_METERS, MAX_DELTA_POS_METERS) : 0.0;
 
-        final double deltaRoll = Math.toRadians(randomizer.nextDouble(
-                MIN_DELTA_ANGLE_DEGREES, MAX_DELTA_ANGLE_DEGREES));
-        final double deltaPitch = Math.toRadians(randomizer.nextDouble(
-                MIN_DELTA_ANGLE_DEGREES, MAX_DELTA_ANGLE_DEGREES));
-        final double deltaYaw = Math.toRadians(randomizer.nextDouble(
-                MIN_DELTA_ANGLE_DEGREES, MAX_DELTA_ANGLE_DEGREES));
+        final var deltaRoll = Math.toRadians(randomizer.nextDouble(MIN_DELTA_ANGLE_DEGREES, MAX_DELTA_ANGLE_DEGREES));
+        final var deltaPitch = Math.toRadians(randomizer.nextDouble(MIN_DELTA_ANGLE_DEGREES, MAX_DELTA_ANGLE_DEGREES));
+        final var deltaYaw = Math.toRadians(randomizer.nextDouble(MIN_DELTA_ANGLE_DEGREES, MAX_DELTA_ANGLE_DEGREES));
 
-        final double ecefX = ecefFrame.getX();
-        final double ecefY = ecefFrame.getY();
-        final double ecefZ = ecefFrame.getZ();
+        final var ecefX = ecefFrame.getX();
+        final var ecefY = ecefFrame.getY();
+        final var ecefZ = ecefFrame.getZ();
 
-        final CoordinateTransformation nedC = nedFrame.getCoordinateTransformation();
+        final var nedC = nedFrame.getCoordinateTransformation();
 
-        final double roll = nedC.getRollEulerAngle();
-        final double pitch = nedC.getPitchEulerAngle();
-        final double yaw = nedC.getYawEulerAngle();
+        final var roll = nedC.getRollEulerAngle();
+        final var pitch = nedC.getPitchEulerAngle();
+        final var yaw = nedC.getYawEulerAngle();
 
-        NEDFrame oldNedFrame = new NEDFrame(nedFrame);
-        NEDFrame newNedFrame = new NEDFrame();
-        ECEFFrame oldEcefFrame = new ECEFFrame(ecefFrame);
-        ECEFFrame newEcefFrame = new ECEFFrame();
+        var oldNedFrame = new NEDFrame(nedFrame);
+        var newNedFrame = new NEDFrame();
+        var oldEcefFrame = new ECEFFrame(ecefFrame);
+        var newEcefFrame = new ECEFFrame();
 
-        double oldEcefX = ecefX - deltaX;
-        double oldEcefY = ecefY - deltaY;
-        double oldEcefZ = ecefZ - deltaZ;
-        double oldRoll = roll - deltaRoll;
-        double oldPitch = pitch - deltaPitch;
-        double oldYaw = yaw - deltaYaw;
+        var oldEcefX = ecefX - deltaX;
+        var oldEcefY = ecefY - deltaY;
+        var oldEcefZ = ecefZ - deltaZ;
+        var oldRoll = roll - deltaRoll;
+        var oldPitch = pitch - deltaPitch;
+        var oldYaw = yaw - deltaYaw;
 
-        final BodyKinematics measuredKinematics = new BodyKinematics();
-
-        for (int i = 0; i < numSamples; i++) {
-            final double newRoll = oldRoll + deltaRoll;
-            final double newPitch = oldPitch + deltaPitch;
-            final double newYaw = oldYaw + deltaYaw;
-            final CoordinateTransformation newNedC = new CoordinateTransformation(newRoll, newPitch, newYaw,
-                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
-            final NEDPosition newNedPosition = oldNedFrame.getPosition();
+        final var measuredKinematics = new BodyKinematics();
+        final var random = new Random();
+        for (var i = 0; i < numSamples; i++) {
+            final var newRoll = oldRoll + deltaRoll;
+            final var newPitch = oldPitch + deltaPitch;
+            final var newYaw = oldYaw + deltaYaw;
+            final var newNedC = new CoordinateTransformation(newRoll, newPitch, newYaw, FrameType.BODY_FRAME,
+                    FrameType.LOCAL_NAVIGATION_FRAME);
+            final var newNedPosition = oldNedFrame.getPosition();
 
             newNedFrame.setPosition(newNedPosition);
             newNedFrame.setCoordinateTransformation(newNedC);
 
             NEDtoECEFFrameConverter.convertNEDtoECEF(newNedFrame, newEcefFrame);
 
-            final double newEcefX = oldEcefX + deltaX;
-            final double newEcefY = oldEcefY + deltaY;
-            final double newEcefZ = oldEcefZ + deltaZ;
+            final var newEcefX = oldEcefX + deltaX;
+            final var newEcefY = oldEcefY + deltaY;
+            final var newEcefZ = oldEcefZ + deltaZ;
 
             newEcefFrame.setCoordinates(newEcefX, newEcefY, newEcefZ);
 
@@ -1605,10 +1582,9 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
             // add error to true kinematics
             BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors, random, measuredKinematics);
 
-            final BodyMagneticFluxDensity b = generateB(hardIron.getBuffer(), mm, wmmEstimator, noiseRandomizer,
-                    timestamp, nedPosition, cnb);
-            final BodyKinematicsAndMagneticFluxDensity kb = new BodyKinematicsAndMagneticFluxDensity(measuredKinematics,
-                    b);
+            final var b = generateB(hardIron.getBuffer(), mm, wmmEstimator, noiseRandomizer, timestamp, nedPosition,
+                    cnb);
+            final var kb = new BodyKinematicsAndMagneticFluxDensity(measuredKinematics, b);
             assertTrue(generator.process(kb));
 
             oldNedFrame.copyFrom(newNedFrame);
@@ -1627,7 +1603,6 @@ public class MagnetometerMeasurementGeneratorTest implements MagnetometerMeasure
 
         // after dynamic sequence finishes, update true kinematics for a
         // static sequence at current frame
-        ECEFKinematicsEstimator.estimateKinematics(TIME_INTERVAL_SECONDS,
-                newEcefFrame, newEcefFrame, trueKinematics);
+        ECEFKinematicsEstimator.estimateKinematics(TIME_INTERVAL_SECONDS, newEcefFrame, newEcefFrame, trueKinematics);
     }
 }

@@ -44,12 +44,12 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
     /**
      * Current body kinematics measurement. Contains accelerometer and gyroscope measurements.
      */
-    private BodyKinematics mKinematics;
+    private BodyKinematics kinematics;
 
     /**
      * Timestamp value expressed in seconds.
      */
-    private double mTimestampSeconds;
+    private double timestampSeconds;
 
     /**
      * Constructor.
@@ -63,7 +63,7 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
      * @param kinematics current body kinematics measurement.
      */
     public TimedBodyKinematics(final BodyKinematics kinematics) {
-        mKinematics = kinematics;
+        this.kinematics = kinematics;
     }
 
     /**
@@ -72,7 +72,7 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
      * @param timestampSeconds timestamp value expressed in seconds.
      */
     public TimedBodyKinematics(final double timestampSeconds) {
-        mTimestampSeconds = timestampSeconds;
+        this.timestampSeconds = timestampSeconds;
     }
 
     /**
@@ -81,7 +81,7 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
      * @param timestamp timestamp value.
      */
     public TimedBodyKinematics(final Time timestamp) {
-        mTimestampSeconds = convertTime(timestamp);
+        timestampSeconds = convertTime(timestamp);
     }
 
     /**
@@ -92,7 +92,7 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
      */
     public TimedBodyKinematics(final BodyKinematics kinematics, final double timestampSeconds) {
         this(kinematics);
-        mTimestampSeconds = timestampSeconds;
+        this.timestampSeconds = timestampSeconds;
     }
 
     /**
@@ -103,7 +103,7 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
      */
     public TimedBodyKinematics(final BodyKinematics kinematics, final Time timestamp) {
         this(timestamp);
-        mKinematics = kinematics;
+        this.kinematics = kinematics;
     }
 
     /**
@@ -122,7 +122,7 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
      * @return current body kinematics measurement.
      */
     public BodyKinematics getKinematics() {
-        return mKinematics;
+        return kinematics;
     }
 
     /**
@@ -132,7 +132,7 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
      * @param kinematics current body kinematics measurement to be set.
      */
     public void setKinematics(final BodyKinematics kinematics) {
-        mKinematics = kinematics;
+        this.kinematics = kinematics;
     }
 
     /**
@@ -141,7 +141,7 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
      * @return timestamp value expressed in seconds.
      */
     public double getTimestampSeconds() {
-        return mTimestampSeconds;
+        return timestampSeconds;
     }
 
     /**
@@ -150,7 +150,7 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
      * @param timestampSeconds timestamp value expressed in seconds.
      */
     public void setTimestampSeconds(final double timestampSeconds) {
-        mTimestampSeconds = timestampSeconds;
+        this.timestampSeconds = timestampSeconds;
     }
 
     /**
@@ -159,7 +159,7 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
      * @return a new timestamp instance.
      */
     public Time getTimestamp() {
-        return new Time(mTimestampSeconds, TimeUnit.SECOND);
+        return new Time(timestampSeconds, TimeUnit.SECOND);
     }
 
     /**
@@ -168,7 +168,7 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
      * @param result instance where result data will be stored.
      */
     public void getTimestamp(final Time result) {
-        result.setValue(mTimestampSeconds);
+        result.setValue(timestampSeconds);
         result.setUnit(TimeUnit.SECOND);
     }
 
@@ -178,7 +178,7 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
      * @param timestamp timestamp to be set.
      */
     public void setTimestamp(final Time timestamp) {
-        mTimestampSeconds = convertTime(timestamp);
+        timestampSeconds = convertTime(timestamp);
     }
 
     /**
@@ -187,17 +187,17 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
      * @param input instance to copy data from.
      */
     public void copyFrom(final TimedBodyKinematics input) {
-        if (input.mKinematics != null) {
-            if (mKinematics == null) {
-                mKinematics = new BodyKinematics(input.mKinematics);
+        if (input.kinematics != null) {
+            if (kinematics == null) {
+                kinematics = new BodyKinematics(input.kinematics);
             } else {
-                mKinematics.copyFrom(input.mKinematics);
+                kinematics.copyFrom(input.kinematics);
             }
         } else {
-            mKinematics = null;
+            kinematics = null;
         }
 
-        mTimestampSeconds = input.mTimestampSeconds;
+        timestampSeconds = input.timestampSeconds;
     }
 
     /**
@@ -217,7 +217,7 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(mKinematics, mTimestampSeconds);
+        return Objects.hash(kinematics, timestampSeconds);
     }
 
     /**
@@ -244,9 +244,9 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
             return false;
         }
 
-        return ((other.mKinematics == null && mKinematics == null)
-                || (mKinematics != null && mKinematics.equals(other.mKinematics, threshold)))
-                && Math.abs(other.mTimestampSeconds - mTimestampSeconds) <= threshold;
+        return ((other.kinematics == null && kinematics == null)
+                || (kinematics != null && kinematics.equals(other.kinematics, threshold)))
+                && Math.abs(other.timestampSeconds - timestampSeconds) <= threshold;
     }
 
     /**
@@ -264,7 +264,7 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        final TimedBodyKinematics other = (TimedBodyKinematics) obj;
+        final var other = (TimedBodyKinematics) obj;
         return equals(other);
     }
 
@@ -276,7 +276,7 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final TimedBodyKinematics result = (TimedBodyKinematics) super.clone();
+        final var result = (TimedBodyKinematics) super.clone();
         copyTo(result);
         return result;
     }

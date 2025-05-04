@@ -19,12 +19,12 @@ import com.irurueta.navigation.geodesic.Constants;
 import com.irurueta.navigation.inertial.RadiiOfCurvature;
 import com.irurueta.units.Angle;
 import com.irurueta.units.AngleUnit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class RadiiOfCurvatureEstimatorTest {
+class RadiiOfCurvatureEstimatorTest {
     private static final double LATITUDE_DEGREES = 41.3825;
     private static final double EQUATOR_LATITUDE_DEGREES = 0.0;
 
@@ -34,26 +34,26 @@ public class RadiiOfCurvatureEstimatorTest {
     private static final double ABSOLUTE_ERROR = 1e-6;
 
     @Test
-    public void testConstants() {
+    void testConstants() {
         assertEquals(RadiiOfCurvatureEstimator.EARTH_EQUATORIAL_RADIUS_WGS84, Constants.EARTH_EQUATORIAL_RADIUS_WGS84,
                 0.0);
         assertEquals(RadiiOfCurvatureEstimator.EARTH_ECCENTRICITY, Constants.EARTH_ECCENTRICITY, 0.0);
     }
 
     @Test
-    public void testEstimate() {
-        final RadiiOfCurvatureEstimator estimator = new RadiiOfCurvatureEstimator();
+    void testEstimate() {
+        final var estimator = new RadiiOfCurvatureEstimator();
 
-        final RadiiOfCurvature radii = new RadiiOfCurvature();
+        final var radii = new RadiiOfCurvature();
         estimator.estimate(Math.toRadians(LATITUDE_DEGREES), radii);
 
-        final RadiiOfCurvature northPoleRadii = new RadiiOfCurvature();
+        final var northPoleRadii = new RadiiOfCurvature();
         estimator.estimate(Math.toRadians(MAX_LATITUDE_DEGREES), northPoleRadii);
 
-        final RadiiOfCurvature southPoleRadii = new RadiiOfCurvature();
+        final var southPoleRadii = new RadiiOfCurvature();
         estimator.estimate(Math.toRadians(MIN_LATITUDE_DEGREES), southPoleRadii);
 
-        final RadiiOfCurvature equatorRadii = new RadiiOfCurvature();
+        final var equatorRadii = new RadiiOfCurvature();
         estimator.estimate(Math.toRadians(EQUATOR_LATITUDE_DEGREES), equatorRadii);
 
         assertTrue(radii.getRn() > equatorRadii.getRn());
@@ -69,13 +69,13 @@ public class RadiiOfCurvatureEstimatorTest {
     }
 
     @Test
-    public void testEstimateAndReturnNew() {
-        final RadiiOfCurvatureEstimator estimator = new RadiiOfCurvatureEstimator();
+    void testEstimateAndReturnNew() {
+        final var estimator = new RadiiOfCurvatureEstimator();
 
-        final RadiiOfCurvature radii = estimator.estimateAndReturnNew(Math.toRadians(LATITUDE_DEGREES));
-        final RadiiOfCurvature northPoleRadii = estimator.estimateAndReturnNew(Math.toRadians(MAX_LATITUDE_DEGREES));
-        final RadiiOfCurvature southPoleRadii = estimator.estimateAndReturnNew(Math.toRadians(MIN_LATITUDE_DEGREES));
-        final RadiiOfCurvature equatorRadii = estimator.estimateAndReturnNew(Math.toRadians(EQUATOR_LATITUDE_DEGREES));
+        final var radii = estimator.estimateAndReturnNew(Math.toRadians(LATITUDE_DEGREES));
+        final var northPoleRadii = estimator.estimateAndReturnNew(Math.toRadians(MAX_LATITUDE_DEGREES));
+        final var southPoleRadii = estimator.estimateAndReturnNew(Math.toRadians(MIN_LATITUDE_DEGREES));
+        final var equatorRadii = estimator.estimateAndReturnNew(Math.toRadians(EQUATOR_LATITUDE_DEGREES));
 
         assertTrue(radii.getRn() > equatorRadii.getRn());
         assertTrue(radii.getRn() < northPoleRadii.getRn());
@@ -90,17 +90,17 @@ public class RadiiOfCurvatureEstimatorTest {
     }
 
     @Test
-    public void testEstimateRadiiOfCurvature() {
-        final RadiiOfCurvature radii = new RadiiOfCurvature();
+    void testEstimateRadiiOfCurvature() {
+        final var radii = new RadiiOfCurvature();
         RadiiOfCurvatureEstimator.estimateRadiiOfCurvature(Math.toRadians(LATITUDE_DEGREES), radii);
 
-        final RadiiOfCurvature northPoleRadii = new RadiiOfCurvature();
+        final var northPoleRadii = new RadiiOfCurvature();
         RadiiOfCurvatureEstimator.estimateRadiiOfCurvature(Math.toRadians(MAX_LATITUDE_DEGREES), northPoleRadii);
 
-        final RadiiOfCurvature southPoleRadii = new RadiiOfCurvature();
+        final var southPoleRadii = new RadiiOfCurvature();
         RadiiOfCurvatureEstimator.estimateRadiiOfCurvature(Math.toRadians(MIN_LATITUDE_DEGREES), southPoleRadii);
 
-        final RadiiOfCurvature equatorRadii = new RadiiOfCurvature();
+        final var equatorRadii = new RadiiOfCurvature();
         RadiiOfCurvatureEstimator.estimateRadiiOfCurvature(Math.toRadians(EQUATOR_LATITUDE_DEGREES), equatorRadii);
 
         assertTrue(radii.getRn() > equatorRadii.getRn());
@@ -116,14 +116,14 @@ public class RadiiOfCurvatureEstimatorTest {
     }
 
     @Test
-    public void testEstimateRadiiOfCurvatureAndAndReturnNew() {
-        final RadiiOfCurvature radii = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(
+    void testEstimateRadiiOfCurvatureAndAndReturnNew() {
+        final var radii = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(
                 Math.toRadians(LATITUDE_DEGREES));
-        final RadiiOfCurvature northPoleRadii = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(
+        final var northPoleRadii = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(
                 Math.toRadians(MAX_LATITUDE_DEGREES));
-        final RadiiOfCurvature southPoleRadii = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(
+        final var southPoleRadii = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(
                 Math.toRadians(MIN_LATITUDE_DEGREES));
-        final RadiiOfCurvature equatorRadii = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(
+        final var equatorRadii = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(
                 Math.toRadians(EQUATOR_LATITUDE_DEGREES));
 
         assertTrue(radii.getRn() > equatorRadii.getRn());
@@ -139,23 +139,23 @@ public class RadiiOfCurvatureEstimatorTest {
     }
 
     @Test
-    public void testEstimateWithAngle() {
-        final RadiiOfCurvatureEstimator estimator = new RadiiOfCurvatureEstimator();
+    void testEstimateWithAngle() {
+        final var estimator = new RadiiOfCurvatureEstimator();
 
-        final Angle latitude = new Angle(LATITUDE_DEGREES, AngleUnit.DEGREES);
-        final RadiiOfCurvature radii = new RadiiOfCurvature();
+        final var latitude = new Angle(LATITUDE_DEGREES, AngleUnit.DEGREES);
+        final var radii = new RadiiOfCurvature();
         estimator.estimate(latitude, radii);
 
-        final Angle maxLatitude = new Angle(MAX_LATITUDE_DEGREES, AngleUnit.DEGREES);
-        final RadiiOfCurvature northPoleRadii = new RadiiOfCurvature();
+        final var maxLatitude = new Angle(MAX_LATITUDE_DEGREES, AngleUnit.DEGREES);
+        final var northPoleRadii = new RadiiOfCurvature();
         estimator.estimate(maxLatitude, northPoleRadii);
 
-        final Angle minLatitude = new Angle(MIN_LATITUDE_DEGREES, AngleUnit.DEGREES);
-        final RadiiOfCurvature southPoleRadii = new RadiiOfCurvature();
+        final var minLatitude = new Angle(MIN_LATITUDE_DEGREES, AngleUnit.DEGREES);
+        final var southPoleRadii = new RadiiOfCurvature();
         estimator.estimate(minLatitude, southPoleRadii);
 
-        final Angle equatorLatitude = new Angle(EQUATOR_LATITUDE_DEGREES, AngleUnit.DEGREES);
-        final RadiiOfCurvature equatorRadii = new RadiiOfCurvature();
+        final var equatorLatitude = new Angle(EQUATOR_LATITUDE_DEGREES, AngleUnit.DEGREES);
+        final var equatorRadii = new RadiiOfCurvature();
         estimator.estimate(equatorLatitude, equatorRadii);
 
         assertTrue(radii.getRn() > equatorRadii.getRn());
@@ -171,20 +171,20 @@ public class RadiiOfCurvatureEstimatorTest {
     }
 
     @Test
-    public void testEstimateAndReturnNewWithAngle() {
-        final RadiiOfCurvatureEstimator estimator = new RadiiOfCurvatureEstimator();
+    void testEstimateAndReturnNewWithAngle() {
+        final var estimator = new RadiiOfCurvatureEstimator();
 
-        final Angle latitude = new Angle(LATITUDE_DEGREES, AngleUnit.DEGREES);
-        final RadiiOfCurvature radii = estimator.estimateAndReturnNew(latitude);
+        final var latitude = new Angle(LATITUDE_DEGREES, AngleUnit.DEGREES);
+        final var radii = estimator.estimateAndReturnNew(latitude);
 
-        final Angle maxLatitude = new Angle(MAX_LATITUDE_DEGREES, AngleUnit.DEGREES);
-        final RadiiOfCurvature northPoleRadii = estimator.estimateAndReturnNew(maxLatitude);
+        final var maxLatitude = new Angle(MAX_LATITUDE_DEGREES, AngleUnit.DEGREES);
+        final var northPoleRadii = estimator.estimateAndReturnNew(maxLatitude);
 
-        final Angle minLatitude = new Angle(MIN_LATITUDE_DEGREES, AngleUnit.DEGREES);
-        final RadiiOfCurvature southPoleRadii = estimator.estimateAndReturnNew(minLatitude);
+        final var minLatitude = new Angle(MIN_LATITUDE_DEGREES, AngleUnit.DEGREES);
+        final var southPoleRadii = estimator.estimateAndReturnNew(minLatitude);
 
-        final Angle equatorLatitude = new Angle(EQUATOR_LATITUDE_DEGREES, AngleUnit.DEGREES);
-        final RadiiOfCurvature equatorRadii = estimator.estimateAndReturnNew(equatorLatitude);
+        final var equatorLatitude = new Angle(EQUATOR_LATITUDE_DEGREES, AngleUnit.DEGREES);
+        final var equatorRadii = estimator.estimateAndReturnNew(equatorLatitude);
 
         assertTrue(radii.getRn() > equatorRadii.getRn());
         assertTrue(radii.getRn() < northPoleRadii.getRn());
@@ -199,21 +199,21 @@ public class RadiiOfCurvatureEstimatorTest {
     }
 
     @Test
-    public void testEstimateRadiiOfCurvatureWithAngle() {
-        final Angle latitude = new Angle(LATITUDE_DEGREES, AngleUnit.DEGREES);
-        final RadiiOfCurvature radii = new RadiiOfCurvature();
+    void testEstimateRadiiOfCurvatureWithAngle() {
+        final var latitude = new Angle(LATITUDE_DEGREES, AngleUnit.DEGREES);
+        final var radii = new RadiiOfCurvature();
         RadiiOfCurvatureEstimator.estimateRadiiOfCurvature(latitude, radii);
 
-        final Angle maxLatitude = new Angle(MAX_LATITUDE_DEGREES, AngleUnit.DEGREES);
-        final RadiiOfCurvature northPoleRadii = new RadiiOfCurvature();
+        final var maxLatitude = new Angle(MAX_LATITUDE_DEGREES, AngleUnit.DEGREES);
+        final var northPoleRadii = new RadiiOfCurvature();
         RadiiOfCurvatureEstimator.estimateRadiiOfCurvature(maxLatitude, northPoleRadii);
 
-        final Angle minLatitude = new Angle(MIN_LATITUDE_DEGREES, AngleUnit.DEGREES);
-        final RadiiOfCurvature southPoleRadii = new RadiiOfCurvature();
+        final var minLatitude = new Angle(MIN_LATITUDE_DEGREES, AngleUnit.DEGREES);
+        final var southPoleRadii = new RadiiOfCurvature();
         RadiiOfCurvatureEstimator.estimateRadiiOfCurvature(minLatitude, southPoleRadii);
 
-        final Angle equatorLatitude = new Angle(EQUATOR_LATITUDE_DEGREES, AngleUnit.DEGREES);
-        final RadiiOfCurvature equatorRadii = new RadiiOfCurvature();
+        final var equatorLatitude = new Angle(EQUATOR_LATITUDE_DEGREES, AngleUnit.DEGREES);
+        final var equatorRadii = new RadiiOfCurvature();
         RadiiOfCurvatureEstimator.estimateRadiiOfCurvature(equatorLatitude, equatorRadii);
 
         assertTrue(radii.getRn() > equatorRadii.getRn());
@@ -229,21 +229,18 @@ public class RadiiOfCurvatureEstimatorTest {
     }
 
     @Test
-    public void testEstimateRadiiOfCurvatureAndAndReturnNewWithAngle() {
-        final Angle latitude = new Angle(LATITUDE_DEGREES, AngleUnit.DEGREES);
-        final RadiiOfCurvature radii = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(latitude);
+    void testEstimateRadiiOfCurvatureAndAndReturnNewWithAngle() {
+        final var latitude = new Angle(LATITUDE_DEGREES, AngleUnit.DEGREES);
+        final var radii = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(latitude);
 
-        final Angle maxLatitude = new Angle(MAX_LATITUDE_DEGREES, AngleUnit.DEGREES);
-        final RadiiOfCurvature northPoleRadii = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(
-                maxLatitude);
+        final var maxLatitude = new Angle(MAX_LATITUDE_DEGREES, AngleUnit.DEGREES);
+        final var northPoleRadii = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(maxLatitude);
 
-        final Angle minLatitude = new Angle(MIN_LATITUDE_DEGREES, AngleUnit.DEGREES);
-        final RadiiOfCurvature southPoleRadii = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(
-                minLatitude);
+        final var minLatitude = new Angle(MIN_LATITUDE_DEGREES, AngleUnit.DEGREES);
+        final var southPoleRadii = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(minLatitude);
 
-        final Angle equatorLatitude = new Angle(EQUATOR_LATITUDE_DEGREES, AngleUnit.DEGREES);
-        final RadiiOfCurvature equatorRadii = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(
-                equatorLatitude);
+        final var equatorLatitude = new Angle(EQUATOR_LATITUDE_DEGREES, AngleUnit.DEGREES);
+        final var equatorRadii = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(equatorLatitude);
 
         assertTrue(radii.getRn() > equatorRadii.getRn());
         assertTrue(radii.getRn() < northPoleRadii.getRn());

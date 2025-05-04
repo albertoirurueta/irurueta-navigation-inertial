@@ -19,7 +19,6 @@ import com.irurueta.algebra.Matrix;
 import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
-import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.inertial.BodyKinematics;
 import com.irurueta.navigation.inertial.calibration.AngularSpeedTriad;
 import com.irurueta.navigation.inertial.calibration.CalibrationException;
@@ -32,7 +31,6 @@ import com.irurueta.units.AngularSpeedConverter;
 import com.irurueta.units.AngularSpeedUnit;
 
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.List;
 
 /**
@@ -164,42 +162,42 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      * typically constant at horizontal orientation while the phone remains on a
      * flat surface.
      */
-    protected List<StandardDeviationFrameBodyKinematics> mMeasurements;
+    protected List<StandardDeviationFrameBodyKinematics> measurements;
 
     /**
      * Listener to be notified of events such as when calibration starts, ends or its
      * progress significantly changes.
      */
-    protected RobustKnownBiasAndFrameGyroscopeCalibratorListener mListener;
+    protected RobustKnownBiasAndFrameGyroscopeCalibratorListener listener;
 
     /**
      * Indicates whether estimator is running.
      */
-    protected boolean mRunning;
+    protected boolean running;
 
     /**
      * Amount of progress variation before notifying a progress change during calibration.
      */
-    protected float mProgressDelta = DEFAULT_PROGRESS_DELTA;
+    protected float progressDelta = DEFAULT_PROGRESS_DELTA;
 
     /**
      * Amount of confidence expressed as a value between 0.0 and 1.0 (which is equivalent
      * to 100%). The amount of confidence indicates the probability that the estimated
      * result is correct. Usually this value will be close to 1.0, but not exactly 1.0.
      */
-    protected double mConfidence = DEFAULT_CONFIDENCE;
+    protected double confidence = DEFAULT_CONFIDENCE;
 
     /**
      * Maximum allowed number of iterations. When the maximum number of iterations is
      * exceeded, result will not be available, however an approximate result will be
      * available for retrieval.
      */
-    protected int mMaxIterations = DEFAULT_MAX_ITERATIONS;
+    protected int maxIterations = DEFAULT_MAX_ITERATIONS;
 
     /**
      * Data related to inlier found after calibration.
      */
-    protected InliersData mInliersData;
+    protected InliersData inliersData;
 
     /**
      * Indicates whether result must be refined using a non linear calibrator over
@@ -207,97 +205,97 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      * If true, inliers will be computed and kept in any implementation regardless of the
      * settings.
      */
-    protected boolean mRefineResult = DEFAULT_REFINE_RESULT;
+    protected boolean refineResult = DEFAULT_REFINE_RESULT;
 
     /**
      * Size of subsets to be checked during robust estimation.
      */
-    protected int mPreliminarySubsetSize = MINIMUM_MEASUREMENTS;
+    protected int preliminarySubsetSize = MINIMUM_MEASUREMENTS;
 
     /**
      * This flag indicates whether z-axis is assumed to be common for accelerometer
      * and gyroscope.
      * When enabled, this eliminates 3 variables from Mg matrix.
      */
-    private boolean mCommonAxisUsed = DEFAULT_USE_COMMON_Z_AXIS;
+    private boolean commonAxisUsed = DEFAULT_USE_COMMON_Z_AXIS;
 
     /**
      * Known x coordinate of gyroscope bias expressed in radians per second (rad/s).
      */
-    private double mBiasX;
+    private double biasX;
 
     /**
      * Known y coordinate of gyroscope bias expressed in radians per second (rad/s).
      */
-    private double mBiasY;
+    private double biasY;
 
     /**
      * Known z coordinate of gyroscope bias expressed in radians per second (rad/s).
      */
-    private double mBiasZ;
+    private double biasZ;
 
     /**
      * Initial x scaling factor.
      */
-    private double mInitialSx;
+    private double initialSx;
 
     /**
      * Initial y scaling factor.
      */
-    private double mInitialSy;
+    private double initialSy;
 
     /**
      * Initial z scaling factor.
      */
-    private double mInitialSz;
+    private double initialSz;
 
     /**
      * Initial x-y cross coupling error.
      */
-    private double mInitialMxy;
+    private double initialMxy;
 
     /**
      * Initial x-z cross coupling error.
      */
-    private double mInitialMxz;
+    private double initialMxz;
 
     /**
      * Initial y-x cross coupling error.
      */
-    private double mInitialMyx;
+    private double initialMyx;
 
     /**
      * Initial y-z cross coupling error.
      */
-    private double mInitialMyz;
+    private double initialMyz;
 
     /**
      * Initial z-x cross coupling error.
      */
-    private double mInitialMzx;
+    private double initialMzx;
 
     /**
      * Initial z-y cross coupling error.
      */
-    private double mInitialMzy;
+    private double initialMzy;
 
     /**
      * Initial G-dependent cross biases introduced on the gyroscope by the
      * specific forces sensed by the accelerometer.
      */
-    private Matrix mInitialGg;
+    private Matrix initialGg;
 
     /**
      * Indicates whether a linear calibrator is used or not for preliminary
      * solutions.
      */
-    private boolean mUseLinearCalibrator = DEFAULT_USE_LINEAR_CALIBRATOR;
+    private boolean useLinearCalibrator = DEFAULT_USE_LINEAR_CALIBRATOR;
 
     /**
      * Indicates whether preliminary solutions must be refined after an initial linear solution
      * is found.
      */
-    private boolean mRefinePreliminarySolutions = DEFAULT_REFINE_PRELIMINARY_SOLUTIONS;
+    private boolean refinePreliminarySolutions = DEFAULT_REFINE_PRELIMINARY_SOLUTIONS;
 
     /**
      * Estimated gyroscope scale factors and cross coupling errors.
@@ -338,47 +336,47 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      * </pre>
      * Values of this matrix are unit-less.
      */
-    private Matrix mEstimatedMg;
+    private Matrix estimatedMg;
 
     /**
      * Estimated G-dependent cross biases introduced on the gyroscope by the
      * specific forces sensed by the accelerometer.
      * This instance allows any 3x3 matrix.
      */
-    private Matrix mEstimatedGg;
+    private Matrix estimatedGg;
 
     /**
      * Indicates whether covariance must be kept after refining result.
      * This setting is only taken into account if result is refined.
      */
-    private boolean mKeepCovariance = DEFAULT_KEEP_COVARIANCE;
+    private boolean keepCovariance = DEFAULT_KEEP_COVARIANCE;
 
     /**
      * Estimated covariance of estimated position.
      * This is only available when result has been refined and covariance is kept.
      */
-    private Matrix mEstimatedCovariance;
+    private Matrix estimatedCovariance;
 
     /**
      * Estimated chi square value.
      */
-    private double mEstimatedChiSq;
+    private double estimatedChiSq;
 
     /**
      * Estimated mean square error respect to provided measurements.
      */
-    private double mEstimatedMse;
+    private double estimatedMse;
 
     /**
      * A linear least squares calibrator.
      */
-    private final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator mLinearCalibrator =
+    private final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator linearCalibrator =
             new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator();
 
     /**
      * A non-linear least squares calibrator.
      */
-    private final KnownBiasAndFrameGyroscopeNonLinearLeastSquaresCalibrator mNonLinearCalibrator =
+    private final KnownBiasAndFrameGyroscopeNonLinearLeastSquaresCalibrator nonLinearCalibrator =
             new KnownBiasAndFrameGyroscopeNonLinearLeastSquaresCalibrator();
 
     /**
@@ -386,7 +384,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     protected RobustKnownBiasAndFrameGyroscopeCalibrator() {
         try {
-            mInitialGg = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+            initialGg = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         } catch (final WrongSizeException ignore) {
             // never happens
         }
@@ -401,7 +399,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
     protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         this();
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -414,7 +412,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
     protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final List<StandardDeviationFrameBodyKinematics> measurements) {
         this();
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -429,7 +427,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
             final List<StandardDeviationFrameBodyKinematics> measurements,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         this(measurements);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -440,7 +438,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     protected RobustKnownBiasAndFrameGyroscopeCalibrator(final boolean commonAxisUsed) {
         this();
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -453,7 +451,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
     protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final boolean commonAxisUsed, final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         this(commonAxisUsed);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -468,7 +466,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
     protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final List<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed) {
         this(measurements);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -485,7 +483,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
             final List<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         this(measurements, commonAxisUsed);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1041,7 +1039,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public double getBiasX() {
-        return mBiasX;
+        return biasX;
     }
 
     /**
@@ -1053,10 +1051,10 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public void setBiasX(final double biasX) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mBiasX = biasX;
+        this.biasX = biasX;
     }
 
     /**
@@ -1067,7 +1065,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public double getBiasY() {
-        return mBiasY;
+        return biasY;
     }
 
     /**
@@ -1079,11 +1077,11 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public void setBiasY(final double biasY) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mBiasY = biasY;
+        this.biasY = biasY;
     }
 
     /**
@@ -1094,7 +1092,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public double getBiasZ() {
-        return mBiasZ;
+        return biasZ;
     }
 
     /**
@@ -1106,11 +1104,11 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public void setBiasZ(final double biasZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mBiasZ = biasZ;
+        this.biasZ = biasZ;
     }
 
     /**
@@ -1120,7 +1118,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public AngularSpeed getBiasAngularSpeedX() {
-        return new AngularSpeed(mBiasX, AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(biasX, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -1130,7 +1128,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public void getBiasAngularSpeedX(final AngularSpeed result) {
-        result.setValue(mBiasX);
+        result.setValue(biasX);
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -1142,10 +1140,10 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public void setBiasX(final AngularSpeed biasX) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mBiasX = convertAngularSpeed(biasX);
+        this.biasX = convertAngularSpeed(biasX);
     }
 
     /**
@@ -1155,7 +1153,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public AngularSpeed getBiasAngularSpeedY() {
-        return new AngularSpeed(mBiasY, AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(biasY, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -1165,7 +1163,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public void getBiasAngularSpeedY(final AngularSpeed result) {
-        result.setValue(mBiasY);
+        result.setValue(biasY);
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -1177,10 +1175,10 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public void setBiasY(final AngularSpeed biasY) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mBiasY = convertAngularSpeed(biasY);
+        this.biasY = convertAngularSpeed(biasY);
     }
 
     /**
@@ -1190,7 +1188,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public AngularSpeed getBiasAngularSpeedZ() {
-        return new AngularSpeed(mBiasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(biasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -1200,7 +1198,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public void getBiasAngularSpeedZ(final AngularSpeed result) {
-        result.setValue(mBiasZ);
+        result.setValue(biasZ);
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -1212,10 +1210,10 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public void setBiasZ(final AngularSpeed biasZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mBiasZ = convertAngularSpeed(biasZ);
+        this.biasZ = convertAngularSpeed(biasZ);
     }
 
     /**
@@ -1228,7 +1226,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public void setBiasCoordinates(final double biasX, final double biasY, final double biasZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
@@ -1246,7 +1244,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
     @Override
     public void setBiasCoordinates(
             final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
@@ -1259,7 +1257,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      * @return known gyroscope bias.
      */
     public AngularSpeedTriad getBiasAsTriad() {
-        return new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND, mBiasX, mBiasY, mBiasZ);
+        return new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND, biasX, biasY, biasZ);
     }
 
     /**
@@ -1268,7 +1266,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      * @param result instance where result will be stored.
      */
     public void getBiasAsTriad(final AngularSpeedTriad result) {
-        result.setValueCoordinatesAndUnit(mBiasX, mBiasY, mBiasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
+        result.setValueCoordinatesAndUnit(biasX, biasY, biasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -1278,13 +1276,13 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      * @throws LockedException if calibrator is currently running.
      */
     public void setBias(final AngularSpeedTriad bias) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mBiasX = convertAngularSpeed(bias.getValueX(), bias.getUnit());
-        mBiasY = convertAngularSpeed(bias.getValueY(), bias.getUnit());
-        mBiasZ = convertAngularSpeed(bias.getValueZ(), bias.getUnit());
+        biasX = convertAngularSpeed(bias.getValueX(), bias.getUnit());
+        biasY = convertAngularSpeed(bias.getValueY(), bias.getUnit());
+        biasZ = convertAngularSpeed(bias.getValueZ(), bias.getUnit());
     }
 
     /**
@@ -1295,7 +1293,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public double[] getBias() {
-        final double[] result = new double[BodyKinematics.COMPONENTS];
+        final var result = new double[BodyKinematics.COMPONENTS];
         getBias(result);
         return result;
     }
@@ -1312,9 +1310,9 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
         if (result.length != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        result[0] = mBiasX;
-        result[1] = mBiasY;
-        result[2] = mBiasZ;
+        result[0] = biasX;
+        result[1] = biasY;
+        result[2] = biasZ;
     }
 
     /**
@@ -1327,7 +1325,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public void setBias(final double[] bias) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
@@ -1363,9 +1361,9 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
         if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
-        result.setElementAtIndex(0, mBiasX);
-        result.setElementAtIndex(1, mBiasY);
-        result.setElementAtIndex(2, mBiasZ);
+        result.setElementAtIndex(0, biasX);
+        result.setElementAtIndex(1, biasY);
+        result.setElementAtIndex(2, biasZ);
     }
 
     /**
@@ -1377,7 +1375,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public void setBias(final Matrix bias) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
@@ -1392,7 +1390,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public double getInitialSx() {
-        return mInitialSx;
+        return initialSx;
     }
 
     /**
@@ -1404,10 +1402,10 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public void setInitialSx(final double initialSx) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialSx = initialSx;
+        this.initialSx = initialSx;
     }
 
     /**
@@ -1418,7 +1416,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public double getInitialSy() {
-        return mInitialSy;
+        return initialSy;
     }
 
     /**
@@ -1430,10 +1428,10 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public void setInitialSy(final double initialSy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialSy = initialSy;
+        this.initialSy = initialSy;
     }
 
     /**
@@ -1444,7 +1442,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public double getInitialSz() {
-        return mInitialSz;
+        return initialSz;
     }
 
     /**
@@ -1456,10 +1454,10 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public void setInitialSz(final double initialSz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialSz = initialSz;
+        this.initialSz = initialSz;
     }
 
     /**
@@ -1470,7 +1468,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public double getInitialMxy() {
-        return mInitialMxy;
+        return initialMxy;
     }
 
     /**
@@ -1482,10 +1480,10 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public void setInitialMxy(final double initialMxy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMxy = initialMxy;
+        this.initialMxy = initialMxy;
     }
 
     /**
@@ -1496,7 +1494,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public double getInitialMxz() {
-        return mInitialMxz;
+        return initialMxz;
     }
 
     /**
@@ -1508,10 +1506,10 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public void setInitialMxz(final double initialMxz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMxz = initialMxz;
+        this.initialMxz = initialMxz;
     }
 
     /**
@@ -1522,7 +1520,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public double getInitialMyx() {
-        return mInitialMyx;
+        return initialMyx;
     }
 
     /**
@@ -1534,10 +1532,10 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public void setInitialMyx(final double initialMyx) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMyx = initialMyx;
+        this.initialMyx = initialMyx;
     }
 
     /**
@@ -1548,7 +1546,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public double getInitialMyz() {
-        return mInitialMyz;
+        return initialMyz;
     }
 
     /**
@@ -1560,10 +1558,10 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public void setInitialMyz(final double initialMyz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMyz = initialMyz;
+        this.initialMyz = initialMyz;
     }
 
     /**
@@ -1574,7 +1572,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public double getInitialMzx() {
-        return mInitialMzx;
+        return initialMzx;
     }
 
     /**
@@ -1586,10 +1584,10 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public void setInitialMzx(final double initialMzx) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMzx = initialMzx;
+        this.initialMzx = initialMzx;
     }
 
     /**
@@ -1600,7 +1598,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public double getInitialMzy() {
-        return mInitialMzy;
+        return initialMzy;
     }
 
     /**
@@ -1612,10 +1610,10 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public void setInitialMzy(final double initialMzy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMzy = initialMzy;
+        this.initialMzy = initialMzy;
     }
 
     /**
@@ -1630,12 +1628,12 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
     @Override
     public void setInitialScalingFactors(
             final double initialSx, final double initialSy, final double initialSz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialSx = initialSx;
-        mInitialSy = initialSy;
-        mInitialSz = initialSz;
+        this.initialSx = initialSx;
+        this.initialSy = initialSy;
+        this.initialSz = initialSz;
     }
 
     /**
@@ -1654,15 +1652,15 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
     public void setInitialCrossCouplingErrors(
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMxy = initialMxy;
-        mInitialMxz = initialMxz;
-        mInitialMyx = initialMyx;
-        mInitialMyz = initialMyz;
-        mInitialMzx = initialMzx;
-        mInitialMzy = initialMzy;
+        this.initialMxy = initialMxy;
+        this.initialMxz = initialMxz;
+        this.initialMyx = initialMyx;
+        this.initialMyz = initialMyz;
+        this.initialMzx = initialMzx;
+        this.initialMzy = initialMzy;
     }
 
     /**
@@ -1685,7 +1683,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
             final double initialSx, final double initialSy, final double initialSz,
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         setInitialScalingFactors(initialSx, initialSy, initialSz);
@@ -1721,17 +1719,17 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
         if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        result.setElementAtIndex(0, mInitialSx);
-        result.setElementAtIndex(1, mInitialMyx);
-        result.setElementAtIndex(2, mInitialMzx);
+        result.setElementAtIndex(0, initialSx);
+        result.setElementAtIndex(1, initialMyx);
+        result.setElementAtIndex(2, initialMzx);
 
-        result.setElementAtIndex(3, mInitialMxy);
-        result.setElementAtIndex(4, mInitialSy);
-        result.setElementAtIndex(5, mInitialMzy);
+        result.setElementAtIndex(3, initialMxy);
+        result.setElementAtIndex(4, initialSy);
+        result.setElementAtIndex(5, initialMzy);
 
-        result.setElementAtIndex(6, mInitialMxz);
-        result.setElementAtIndex(7, mInitialMyz);
-        result.setElementAtIndex(8, mInitialSz);
+        result.setElementAtIndex(6, initialMxz);
+        result.setElementAtIndex(7, initialMyz);
+        result.setElementAtIndex(8, initialSz);
     }
 
     /**
@@ -1743,24 +1741,24 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public void setInitialMg(final Matrix initialMg) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (initialMg.getRows() != BodyKinematics.COMPONENTS || initialMg.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
-        mInitialSx = initialMg.getElementAtIndex(0);
-        mInitialMyx = initialMg.getElementAtIndex(1);
-        mInitialMzx = initialMg.getElementAtIndex(2);
+        initialSx = initialMg.getElementAtIndex(0);
+        initialMyx = initialMg.getElementAtIndex(1);
+        initialMzx = initialMg.getElementAtIndex(2);
 
-        mInitialMxy = initialMg.getElementAtIndex(3);
-        mInitialSy = initialMg.getElementAtIndex(4);
-        mInitialMzy = initialMg.getElementAtIndex(5);
+        initialMxy = initialMg.getElementAtIndex(3);
+        initialSy = initialMg.getElementAtIndex(4);
+        initialMzy = initialMg.getElementAtIndex(5);
 
-        mInitialMxz = initialMg.getElementAtIndex(6);
-        mInitialMyz = initialMg.getElementAtIndex(7);
-        mInitialSz = initialMg.getElementAtIndex(8);
+        initialMxz = initialMg.getElementAtIndex(6);
+        initialMyz = initialMg.getElementAtIndex(7);
+        initialSz = initialMg.getElementAtIndex(8);
     }
 
     /**
@@ -1771,7 +1769,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public Matrix getInitialGg() {
-        return new Matrix(mInitialGg);
+        return new Matrix(initialGg);
     }
 
     /**
@@ -1787,7 +1785,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
             throw new IllegalArgumentException();
         }
 
-        result.copyFrom(mInitialGg);
+        result.copyFrom(initialGg);
     }
 
     /**
@@ -1800,7 +1798,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public void setInitialGg(final Matrix initialGg) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
@@ -1808,7 +1806,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
             throw new IllegalArgumentException();
         }
 
-        initialGg.copyTo(mInitialGg);
+        initialGg.copyTo(this.initialGg);
     }
 
     /**
@@ -1830,7 +1828,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public List<StandardDeviationFrameBodyKinematics> getMeasurements() {
-        return mMeasurements;
+        return measurements;
     }
 
     /**
@@ -1853,10 +1851,10 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public void setMeasurements(final List<StandardDeviationFrameBodyKinematics> measurements) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1890,7 +1888,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public boolean isCommonAxisUsed() {
-        return mCommonAxisUsed;
+        return commonAxisUsed;
     }
 
     /**
@@ -1904,11 +1902,11 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public void setCommonAxisUsed(final boolean commonAxisUsed) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -1917,7 +1915,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      * @return listener to handle events raised by this estimator.
      */
     public RobustKnownBiasAndFrameGyroscopeCalibratorListener getListener() {
-        return mListener;
+        return listener;
     }
 
     /**
@@ -1927,11 +1925,11 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      * @throws LockedException if calibrator is currently running.
      */
     public void setListener(final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1951,7 +1949,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public boolean isReady() {
-        return mMeasurements != null && mMeasurements.size() >= MINIMUM_MEASUREMENTS;
+        return measurements != null && measurements.size() >= MINIMUM_MEASUREMENTS;
     }
 
     /**
@@ -1961,7 +1959,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public boolean isRunning() {
-        return mRunning;
+        return running;
     }
 
     /**
@@ -1972,7 +1970,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      * preliminary solutions.
      */
     public boolean isLinearCalibratorUsed() {
-        return mUseLinearCalibrator;
+        return useLinearCalibrator;
     }
 
     /**
@@ -1984,10 +1982,10 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      * @throws LockedException if calibrator is currently running.
      */
     public void setLinearCalibratorUsed(final boolean linearCalibratorUsed) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mUseLinearCalibrator = linearCalibratorUsed;
+        useLinearCalibrator = linearCalibratorUsed;
     }
 
     /**
@@ -2000,7 +1998,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      * otherwise.
      */
     public boolean isPreliminarySolutionRefined() {
-        return mRefinePreliminarySolutions;
+        return refinePreliminarySolutions;
     }
 
     /**
@@ -2014,11 +2012,11 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      * @throws LockedException if calibrator is currently running.
      */
     public void setPreliminarySolutionRefined(final boolean preliminarySolutionRefined) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mRefinePreliminarySolutions = preliminarySolutionRefined;
+        refinePreliminarySolutions = preliminarySolutionRefined;
     }
 
     /**
@@ -2029,7 +2027,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      * calibration.
      */
     public float getProgressDelta() {
-        return mProgressDelta;
+        return progressDelta;
     }
 
     /**
@@ -2042,13 +2040,13 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      * @throws LockedException          if calibrator is currently running.
      */
     public void setProgressDelta(final float progressDelta) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (progressDelta < MIN_PROGRESS_DELTA || progressDelta > MAX_PROGRESS_DELTA) {
             throw new IllegalArgumentException();
         }
-        mProgressDelta = progressDelta;
+        this.progressDelta = progressDelta;
     }
 
     /**
@@ -2060,7 +2058,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      * @return amount of confidence as a value between 0.0 and 1.0.
      */
     public double getConfidence() {
-        return mConfidence;
+        return confidence;
     }
 
     /**
@@ -2074,13 +2072,13 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      * @throws LockedException          if calibrator is currently running.
      */
     public void setConfidence(final double confidence) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (confidence < MIN_CONFIDENCE || confidence > MAX_CONFIDENCE) {
             throw new IllegalArgumentException();
         }
-        mConfidence = confidence;
+        this.confidence = confidence;
     }
 
     /**
@@ -2091,7 +2089,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      * @return maximum allowed number of iterations.
      */
     public int getMaxIterations() {
-        return mMaxIterations;
+        return maxIterations;
     }
 
     /**
@@ -2104,13 +2102,13 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      * @throws LockedException          if calibrator is currently running.
      */
     public void setMaxIterations(final int maxIterations) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (maxIterations < MIN_ITERATIONS) {
             throw new IllegalArgumentException();
         }
-        mMaxIterations = maxIterations;
+        this.maxIterations = maxIterations;
     }
 
     /**
@@ -2119,7 +2117,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      * @return data related to inliers found after estimation.
      */
     public InliersData getInliersData() {
-        return mInliersData;
+        return inliersData;
     }
 
     /**
@@ -2129,7 +2127,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      * without further refining.
      */
     public boolean isResultRefined() {
-        return mRefineResult;
+        return refineResult;
     }
 
     /**
@@ -2140,10 +2138,10 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      * @throws LockedException if calibrator is currently running.
      */
     public void setResultRefined(final boolean refineResult) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mRefineResult = refineResult;
+        this.refineResult = refineResult;
     }
 
     /**
@@ -2153,7 +2151,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      * @return true if covariance must be kept after refining result, false otherwise.
      */
     public boolean isCovarianceKept() {
-        return mKeepCovariance;
+        return keepCovariance;
     }
 
     /**
@@ -2165,10 +2163,10 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      * @throws LockedException if calibrator is currently running.
      */
     public void setCovarianceKept(final boolean keepCovariance) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mKeepCovariance = keepCovariance;
+        this.keepCovariance = keepCovariance;
     }
 
     /**
@@ -2244,7 +2242,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public Matrix getEstimatedMg() {
-        return mEstimatedMg;
+        return estimatedMg;
     }
 
     /**
@@ -2254,7 +2252,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public Double getEstimatedSx() {
-        return mEstimatedMg != null ? mEstimatedMg.getElementAt(0, 0) : null;
+        return estimatedMg != null ? estimatedMg.getElementAt(0, 0) : null;
     }
 
     /**
@@ -2264,7 +2262,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public Double getEstimatedSy() {
-        return mEstimatedMg != null ? mEstimatedMg.getElementAt(1, 1) : null;
+        return estimatedMg != null ? estimatedMg.getElementAt(1, 1) : null;
     }
 
     /**
@@ -2274,7 +2272,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public Double getEstimatedSz() {
-        return mEstimatedMg != null ? mEstimatedMg.getElementAt(2, 2) : null;
+        return estimatedMg != null ? estimatedMg.getElementAt(2, 2) : null;
     }
 
     /**
@@ -2284,7 +2282,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public Double getEstimatedMxy() {
-        return mEstimatedMg != null ? mEstimatedMg.getElementAt(0, 1) : null;
+        return estimatedMg != null ? estimatedMg.getElementAt(0, 1) : null;
     }
 
     /**
@@ -2294,7 +2292,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public Double getEstimatedMxz() {
-        return mEstimatedMg != null ? mEstimatedMg.getElementAt(0, 2) : null;
+        return estimatedMg != null ? estimatedMg.getElementAt(0, 2) : null;
     }
 
     /**
@@ -2304,7 +2302,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public Double getEstimatedMyx() {
-        return mEstimatedMg != null ? mEstimatedMg.getElementAt(1, 0) : null;
+        return estimatedMg != null ? estimatedMg.getElementAt(1, 0) : null;
     }
 
     /**
@@ -2314,7 +2312,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public Double getEstimatedMyz() {
-        return mEstimatedMg != null ? mEstimatedMg.getElementAt(1, 2) : null;
+        return estimatedMg != null ? estimatedMg.getElementAt(1, 2) : null;
     }
 
     /**
@@ -2324,7 +2322,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public Double getEstimatedMzx() {
-        return mEstimatedMg != null ? mEstimatedMg.getElementAt(2, 0) : null;
+        return estimatedMg != null ? estimatedMg.getElementAt(2, 0) : null;
     }
 
     /**
@@ -2334,7 +2332,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public Double getEstimatedMzy() {
-        return mEstimatedMg != null ? mEstimatedMg.getElementAt(2, 1) : null;
+        return estimatedMg != null ? estimatedMg.getElementAt(2, 1) : null;
     }
 
     /**
@@ -2346,7 +2344,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public Matrix getEstimatedGg() {
-        return mEstimatedGg;
+        return estimatedGg;
     }
 
     /**
@@ -2361,7 +2359,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public Matrix getEstimatedCovariance() {
-        return mEstimatedCovariance;
+        return estimatedCovariance;
     }
 
     /**
@@ -2370,7 +2368,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      * @return estimated chi square value.
      */
     public double getEstimatedChiSq() {
-        return mEstimatedChiSq;
+        return estimatedChiSq;
     }
 
     /**
@@ -2380,7 +2378,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     @Override
     public double getEstimatedMse() {
-        return mEstimatedMse;
+        return estimatedMse;
     }
 
     /**
@@ -2390,7 +2388,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      * @return size of subsets to be checked during robust estimation.
      */
     public int getPreliminarySubsetSize() {
-        return mPreliminarySubsetSize;
+        return preliminarySubsetSize;
     }
 
     /**
@@ -2402,14 +2400,14 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      * @throws IllegalArgumentException if provided value is less than {@link #MINIMUM_MEASUREMENTS}.
      */
     public void setPreliminarySubsetSize(final int preliminarySubsetSize) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (preliminarySubsetSize < MINIMUM_MEASUREMENTS) {
             throw new IllegalArgumentException();
         }
 
-        mPreliminarySubsetSize = preliminarySubsetSize;
+        this.preliminarySubsetSize = preliminarySubsetSize;
     }
 
     /**
@@ -5231,56 +5229,56 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
         // [Ωmeasy]   [by]     [0   1   0]   [myx   sy     myz]  [Ωtruey]   [g21   g22   g23][ftruey]
         // [Ωmeasz]   [bz]     [0   0   1]   [mzx   mzy    sz ]  [Ωtruez]   [g31   g32   g33][ftruez]
 
-        final BodyKinematics measuredKinematics = measurement.getKinematics();
-        final ECEFFrame ecefFrame = measurement.getFrame();
-        final ECEFFrame previousEcefFrame = measurement.getPreviousFrame();
-        final double timeInterval = measurement.getTimeInterval();
+        final var measuredKinematics = measurement.getKinematics();
+        final var ecefFrame = measurement.getFrame();
+        final var previousEcefFrame = measurement.getPreviousFrame();
+        final var timeInterval = measurement.getTimeInterval();
 
-        final BodyKinematics expectedKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(timeInterval,
-                ecefFrame, previousEcefFrame);
+        final var expectedKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(timeInterval, ecefFrame,
+                previousEcefFrame);
 
-        final double angularRateMeasX1 = measuredKinematics.getAngularRateX();
-        final double angularRateMeasY1 = measuredKinematics.getAngularRateY();
-        final double angularRateMeasZ1 = measuredKinematics.getAngularRateZ();
+        final var angularRateMeasX1 = measuredKinematics.getAngularRateX();
+        final var angularRateMeasY1 = measuredKinematics.getAngularRateY();
+        final var angularRateMeasZ1 = measuredKinematics.getAngularRateZ();
 
-        final double angularRateTrueX = expectedKinematics.getAngularRateX();
-        final double angularRateTrueY = expectedKinematics.getAngularRateY();
-        final double angularRateTrueZ = expectedKinematics.getAngularRateZ();
+        final var angularRateTrueX = expectedKinematics.getAngularRateX();
+        final var angularRateTrueY = expectedKinematics.getAngularRateY();
+        final var angularRateTrueZ = expectedKinematics.getAngularRateZ();
 
-        final double fTrueX = expectedKinematics.getFx();
-        final double fTrueY = expectedKinematics.getFy();
-        final double fTrueZ = expectedKinematics.getFz();
+        final var fTrueX = expectedKinematics.getFx();
+        final var fTrueY = expectedKinematics.getFy();
+        final var fTrueZ = expectedKinematics.getFz();
 
-        final Matrix mg = preliminaryResult.mEstimatedMg;
+        final var mg = preliminaryResult.estimatedMg;
 
-        final Matrix gg = preliminaryResult.mEstimatedGg;
+        final var gg = preliminaryResult.estimatedGg;
 
         try {
-            final Matrix m1 = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+            final var m1 = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
             m1.add(mg);
 
-            final Matrix angularRateTrue = new Matrix(BodyKinematics.COMPONENTS, 1);
+            final var angularRateTrue = new Matrix(BodyKinematics.COMPONENTS, 1);
             angularRateTrue.setElementAtIndex(0, angularRateTrueX);
             angularRateTrue.setElementAtIndex(1, angularRateTrueY);
             angularRateTrue.setElementAtIndex(2, angularRateTrueZ);
 
             m1.multiply(angularRateTrue);
 
-            final Matrix fTrue = new Matrix(BodyKinematics.COMPONENTS, 1);
+            final var fTrue = new Matrix(BodyKinematics.COMPONENTS, 1);
             fTrue.setElementAtIndex(0, fTrueX);
             fTrue.setElementAtIndex(1, fTrueY);
             fTrue.setElementAtIndex(2, fTrueZ);
-            final Matrix m2 = gg.multiplyAndReturnNew(fTrue);
+            final var m2 = gg.multiplyAndReturnNew(fTrue);
 
             m1.add(m2);
 
-            final double angularRateMeasX2 = mBiasX + m1.getElementAtIndex(0);
-            final double angularRateMeasY2 = mBiasY + m1.getElementAtIndex(1);
-            final double angularRateMeasZ2 = mBiasZ + m1.getElementAtIndex(2);
+            final var angularRateMeasX2 = biasX + m1.getElementAtIndex(0);
+            final var angularRateMeasY2 = biasY + m1.getElementAtIndex(1);
+            final var angularRateMeasZ2 = biasZ + m1.getElementAtIndex(2);
 
-            final double diffX = angularRateMeasX2 - angularRateMeasX1;
-            final double diffY = angularRateMeasY2 - angularRateMeasY1;
-            final double diffZ = angularRateMeasZ2 - angularRateMeasZ1;
+            final var diffX = angularRateMeasX2 - angularRateMeasX1;
+            final var diffY = angularRateMeasY2 - angularRateMeasY1;
+            final var diffZ = angularRateMeasZ2 - angularRateMeasZ1;
 
             return Math.sqrt(diffX * diffX + diffY * diffY + diffZ * diffZ);
 
@@ -5297,51 +5295,51 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     protected void computePreliminarySolutions(final int[] samplesIndices, final List<PreliminaryResult> solutions) {
 
-        final List<StandardDeviationFrameBodyKinematics> measurements = new ArrayList<>();
+        final var meas = new ArrayList<StandardDeviationFrameBodyKinematics>();
 
-        for (final int samplesIndex : samplesIndices) {
-            measurements.add(mMeasurements.get(samplesIndex));
+        for (final var samplesIndex : samplesIndices) {
+            meas.add(this.measurements.get(samplesIndex));
         }
 
         try {
-            final PreliminaryResult result = new PreliminaryResult();
-            result.mEstimatedMg = getInitialMg();
-            result.mEstimatedGg = getInitialGg();
+            final var result = new PreliminaryResult();
+            result.estimatedMg = getInitialMg();
+            result.estimatedGg = getInitialGg();
 
-            if (mUseLinearCalibrator) {
-                mLinearCalibrator.setCommonAxisUsed(mCommonAxisUsed);
-                mLinearCalibrator.setMeasurements(measurements);
-                mLinearCalibrator.setBiasCoordinates(mBiasX, mBiasY, mBiasZ);
-                mLinearCalibrator.calibrate();
+            if (useLinearCalibrator) {
+                linearCalibrator.setCommonAxisUsed(commonAxisUsed);
+                linearCalibrator.setMeasurements(meas);
+                linearCalibrator.setBiasCoordinates(biasX, biasY, biasZ);
+                linearCalibrator.calibrate();
 
-                result.mEstimatedMg = mLinearCalibrator.getEstimatedMg();
-                result.mEstimatedGg = mLinearCalibrator.getEstimatedGg();
+                result.estimatedMg = linearCalibrator.getEstimatedMg();
+                result.estimatedGg = linearCalibrator.getEstimatedGg();
             }
 
-            if (mRefinePreliminarySolutions) {
-                mNonLinearCalibrator.setInitialMg(result.mEstimatedMg);
-                mNonLinearCalibrator.setInitialGg(result.mEstimatedGg);
-                mNonLinearCalibrator.setCommonAxisUsed(mCommonAxisUsed);
-                mNonLinearCalibrator.setMeasurements(measurements);
-                mNonLinearCalibrator.setBiasCoordinates(mBiasX, mBiasY, mBiasZ);
-                mNonLinearCalibrator.calibrate();
+            if (refinePreliminarySolutions) {
+                nonLinearCalibrator.setInitialMg(result.estimatedMg);
+                nonLinearCalibrator.setInitialGg(result.estimatedGg);
+                nonLinearCalibrator.setCommonAxisUsed(commonAxisUsed);
+                nonLinearCalibrator.setMeasurements(meas);
+                nonLinearCalibrator.setBiasCoordinates(biasX, biasY, biasZ);
+                nonLinearCalibrator.calibrate();
 
-                result.mEstimatedMg = mNonLinearCalibrator.getEstimatedMg();
-                result.mEstimatedGg = mNonLinearCalibrator.getEstimatedGg();
+                result.estimatedMg = nonLinearCalibrator.getEstimatedMg();
+                result.estimatedGg = nonLinearCalibrator.getEstimatedGg();
 
-                if (mKeepCovariance) {
-                    result.mCovariance = mNonLinearCalibrator.getEstimatedCovariance();
+                if (keepCovariance) {
+                    result.covariance = nonLinearCalibrator.getEstimatedCovariance();
                 } else {
-                    result.mCovariance = null;
+                    result.covariance = null;
                 }
 
-                result.mEstimatedMse = mNonLinearCalibrator.getEstimatedMse();
-                result.mEstimatedChiSq = mNonLinearCalibrator.getEstimatedChiSq();
+                result.estimatedMse = nonLinearCalibrator.getEstimatedMse();
+                result.estimatedChiSq = nonLinearCalibrator.getEstimatedChiSq();
 
             } else {
-                result.mCovariance = null;
-                result.mEstimatedMse = 0.0;
-                result.mEstimatedChiSq = 0.0;
+                result.covariance = null;
+                result.estimatedMse = 0.0;
+                result.estimatedChiSq = 0.0;
             }
 
             solutions.add(result);
@@ -5360,50 +5358,50 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      * @param preliminaryResult a preliminary result.
      */
     protected void attemptRefine(final PreliminaryResult preliminaryResult) {
-        if (mRefineResult && mInliersData != null) {
-            final BitSet inliers = mInliersData.getInliers();
-            final int nSamples = mMeasurements.size();
+        if (refineResult && inliersData != null) {
+            final var inliers = inliersData.getInliers();
+            final var nSamples = measurements.size();
 
-            final List<StandardDeviationFrameBodyKinematics> inlierMeasurements = new ArrayList<>();
-            for (int i = 0; i < nSamples; i++) {
+            final var inlierMeasurements = new ArrayList<StandardDeviationFrameBodyKinematics>();
+            for (var i = 0; i < nSamples; i++) {
                 if (inliers.get(i)) {
                     // sample is inlier
-                    inlierMeasurements.add(mMeasurements.get(i));
+                    inlierMeasurements.add(measurements.get(i));
                 }
             }
 
             try {
-                mNonLinearCalibrator.setInitialMg(preliminaryResult.mEstimatedMg);
-                mNonLinearCalibrator.setInitialGg(preliminaryResult.mEstimatedGg);
-                mNonLinearCalibrator.setCommonAxisUsed(mCommonAxisUsed);
-                mNonLinearCalibrator.setMeasurements(inlierMeasurements);
-                mNonLinearCalibrator.setBiasCoordinates(mBiasX, mBiasY, mBiasZ);
-                mNonLinearCalibrator.calibrate();
+                nonLinearCalibrator.setInitialMg(preliminaryResult.estimatedMg);
+                nonLinearCalibrator.setInitialGg(preliminaryResult.estimatedGg);
+                nonLinearCalibrator.setCommonAxisUsed(commonAxisUsed);
+                nonLinearCalibrator.setMeasurements(inlierMeasurements);
+                nonLinearCalibrator.setBiasCoordinates(biasX, biasY, biasZ);
+                nonLinearCalibrator.calibrate();
 
-                mEstimatedMg = mNonLinearCalibrator.getEstimatedMg();
-                mEstimatedGg = mNonLinearCalibrator.getEstimatedGg();
+                estimatedMg = nonLinearCalibrator.getEstimatedMg();
+                estimatedGg = nonLinearCalibrator.getEstimatedGg();
 
-                if (mKeepCovariance) {
-                    mEstimatedCovariance = mNonLinearCalibrator.getEstimatedCovariance();
+                if (keepCovariance) {
+                    estimatedCovariance = nonLinearCalibrator.getEstimatedCovariance();
                 } else {
-                    mEstimatedCovariance = null;
+                    estimatedCovariance = null;
                 }
-                mEstimatedMse = mNonLinearCalibrator.getEstimatedMse();
-                mEstimatedChiSq = mNonLinearCalibrator.getEstimatedChiSq();
+                estimatedMse = nonLinearCalibrator.getEstimatedMse();
+                estimatedChiSq = nonLinearCalibrator.getEstimatedChiSq();
 
             } catch (final LockedException | CalibrationException | NotReadyException e) {
-                mEstimatedCovariance = preliminaryResult.mCovariance;
-                mEstimatedMg = preliminaryResult.mEstimatedMg;
-                mEstimatedGg = preliminaryResult.mEstimatedGg;
-                mEstimatedMse = preliminaryResult.mEstimatedMse;
-                mEstimatedChiSq = preliminaryResult.mEstimatedChiSq;
+                estimatedCovariance = preliminaryResult.covariance;
+                estimatedMg = preliminaryResult.estimatedMg;
+                estimatedGg = preliminaryResult.estimatedGg;
+                estimatedMse = preliminaryResult.estimatedMse;
+                estimatedChiSq = preliminaryResult.estimatedChiSq;
             }
         } else {
-            mEstimatedCovariance = preliminaryResult.mCovariance;
-            mEstimatedMg = preliminaryResult.mEstimatedMg;
-            mEstimatedGg = preliminaryResult.mEstimatedGg;
-            mEstimatedMse = preliminaryResult.mEstimatedMse;
-            mEstimatedChiSq = preliminaryResult.mEstimatedChiSq;
+            estimatedCovariance = preliminaryResult.covariance;
+            estimatedMg = preliminaryResult.estimatedMg;
+            estimatedGg = preliminaryResult.estimatedGg;
+            estimatedMse = preliminaryResult.estimatedMse;
+            estimatedChiSq = preliminaryResult.estimatedChiSq;
         }
     }
 
@@ -5418,9 +5416,9 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      *              second (rad/s).
      */
     private void internalSetBiasCoordinates(final double biasX, final double biasY, final double biasZ) {
-        mBiasX = biasX;
-        mBiasY = biasY;
-        mBiasZ = biasZ;
+        this.biasX = biasX;
+        this.biasY = biasY;
+        this.biasZ = biasZ;
     }
 
     /**
@@ -5432,9 +5430,9 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     private void internalSetBiasCoordinates(
             final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ) {
-        mBiasX = convertAngularSpeed(biasX);
-        mBiasY = convertAngularSpeed(biasY);
-        mBiasZ = convertAngularSpeed(biasZ);
+        this.biasX = convertAngularSpeed(biasX);
+        this.biasY = convertAngularSpeed(biasY);
+        this.biasZ = convertAngularSpeed(biasZ);
     }
 
     /**
@@ -5448,9 +5446,9 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
         if (bias.length != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        mBiasX = bias[0];
-        mBiasY = bias[1];
-        mBiasZ = bias[2];
+        biasX = bias[0];
+        biasY = bias[1];
+        biasZ = bias[2];
     }
 
     /**
@@ -5465,9 +5463,9 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
             throw new IllegalArgumentException();
         }
 
-        mBiasX = bias.getElementAtIndex(0);
-        mBiasY = bias.getElementAtIndex(1);
-        mBiasZ = bias.getElementAtIndex(2);
+        biasX = bias.getElementAtIndex(0);
+        biasY = bias.getElementAtIndex(1);
+        biasZ = bias.getElementAtIndex(2);
     }
 
     /**
@@ -5534,28 +5532,28 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
          * </pre>
          * Values of this matrix are unit-less.
          */
-        private Matrix mEstimatedMg;
+        private Matrix estimatedMg;
 
         /**
          * Estimated G-dependent cross biases introduced on the gyroscope by the
          * specific forces sensed by the accelerometer.
          * This instance allows any 3x3 matrix.
          */
-        private Matrix mEstimatedGg;
+        private Matrix estimatedGg;
 
         /**
          * Covariance matrix for estimated result.
          */
-        private Matrix mCovariance;
+        private Matrix covariance;
 
         /**
          * Estimated Mean Square Error.
          */
-        private double mEstimatedMse;
+        private double estimatedMse;
 
         /**
          * Estimated chi square value.
          */
-        private double mEstimatedChiSq;
+        private double estimatedChiSq;
     }
 }

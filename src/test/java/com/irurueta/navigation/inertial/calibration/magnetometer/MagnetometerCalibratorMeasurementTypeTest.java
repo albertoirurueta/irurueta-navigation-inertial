@@ -1,13 +1,13 @@
 package com.irurueta.navigation.inertial.calibration.magnetometer;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class MagnetometerCalibratorMeasurementTypeTest {
+class MagnetometerCalibratorMeasurementTypeTest {
 
     @Test
-    public void testValues() {
+    void testValues() {
         assertEquals(3, MagnetometerCalibratorMeasurementType.values().length);
     }
 }

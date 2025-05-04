@@ -104,100 +104,100 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      * Ground truth gravity norm to be expected at location where measurements have been made,
      * expressed in meters per squared second (m/s^2).
      */
-    protected Double mGroundTruthGravityNorm;
+    protected Double groundTruthGravityNorm;
 
     /**
      * Levenberg-Marquardt fitter to find a non-linear solution.
      */
-    private final LevenbergMarquardtMultiDimensionFitter mFitter = new LevenbergMarquardtMultiDimensionFitter();
+    private final LevenbergMarquardtMultiDimensionFitter fitter = new LevenbergMarquardtMultiDimensionFitter();
 
     /**
      * Initial x-coordinate of accelerometer bias to be used to find a solution.
      * This is expressed in meters per squared second (m/s^2).
      */
-    private double mInitialBiasX;
+    private double initialBiasX;
 
     /**
      * Initial y-coordinate of accelerometer bias to be used to find a solution.
      * This is expressed in meters per squared second (m/s^2).
      */
-    private double mInitialBiasY;
+    private double initialBiasY;
 
     /**
      * Initial z-coordinate of accelerometer bias to be used to find a solution.
      * This is expressed in meters per squared second (m/s^2).
      */
-    private double mInitialBiasZ;
+    private double initialBiasZ;
 
     /**
      * Initial x scaling factor.
      */
-    private double mInitialSx;
+    private double initialSx;
 
     /**
      * Initial y scaling factor.
      */
-    private double mInitialSy;
+    private double initialSy;
 
     /**
      * Initial z scaling factor.
      */
-    private double mInitialSz;
+    private double initialSz;
 
     /**
      * Initial x-y cross coupling error.
      */
-    private double mInitialMxy;
+    private double initialMxy;
 
     /**
      * Initial x-z cross coupling error.
      */
-    private double mInitialMxz;
+    private double initialMxz;
 
     /**
      * Initial y-x cross coupling error.
      */
-    private double mInitialMyx;
+    private double initialMyx;
 
     /**
      * Initial y-z cross coupling error.
      */
-    private double mInitialMyz;
+    private double initialMyz;
 
     /**
      * Initial z-x cross coupling error.
      */
-    private double mInitialMzx;
+    private double initialMzx;
 
     /**
      * Initial z-y cross coupling error.
      */
-    private double mInitialMzy;
+    private double initialMzy;
 
     /**
      * Contains a collection of body kinematics measurements taken at
      * a the same position with different unknown orientations and containing
      * the standard deviations of accelerometer and gyroscope measurements.
      */
-    private Collection<StandardDeviationBodyKinematics> mMeasurements;
+    private Collection<StandardDeviationBodyKinematics> measurements;
 
     /**
      * This flag indicates whether z-axis is assumed to be common for accelerometer
      * and gyroscope.
      * When enabled, this eliminates 3 variables from Ma matrix.
      */
-    private boolean mCommonAxisUsed = DEFAULT_USE_COMMON_Z_AXIS;
+    private boolean commonAxisUsed = DEFAULT_USE_COMMON_Z_AXIS;
 
     /**
      * Listener to handle events raised by this calibrator.
      */
-    private L mListener;
+    private L listener;
 
     /**
      * Estimated accelerometer biases for each IMU axis expressed in meter per squared
      * second (m/s^2).
      */
-    private double[] mEstimatedBiases;
+    private double[] estimatedBiases;
 
     /**
      * Estimated accelerometer scale factors and cross coupling errors.
@@ -238,68 +238,68 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      * </pre>
      * Values of this matrix are unit-less.
      */
-    private Matrix mEstimatedMa;
+    private Matrix estimatedMa;
 
     /**
      * Estimated covariance matrix for estimated parameters.
      */
-    private Matrix mEstimatedCovariance;
+    private Matrix estimatedCovariance;
 
     /**
      * Estimated chi square value.
      */
-    private double mEstimatedChiSq;
+    private double estimatedChiSq;
 
     /**
      * Estimated mean square error respect to provided measurements.
      */
-    private double mEstimatedMse;
+    private double estimatedMse;
 
     /**
      * Indicates whether estimator is running.
      */
-    private boolean mRunning;
+    private boolean running;
 
     /**
      * Internally holds x-coordinate of measured specific force during calibration.
      */
-    private double mFmeasX;
+    private double fmeasX;
 
     /**
      * Internally holds y-coordinate of measured specific force during calibration.
      */
-    private double mFmeasY;
+    private double fmeasY;
 
     /**
      * Internally holds z-coordinate of measured specific force during calibration.
      */
-    private double mFmeasZ;
+    private double fmeasZ;
 
     /**
      * Internally holds measured specific force during calibration expressed as
      * a column matrix.
      */
-    private Matrix mFmeas;
+    private Matrix fmeas;
 
     /**
      * Internally holds cross-coupling errors during calibration.
      */
-    private Matrix mM;
+    private Matrix m;
 
     /**
      * Internally holds inverse of cross-coupling errors during calibration.
      */
-    private Matrix mInvM;
+    private Matrix invM;
 
     /**
      * Internally holds biases during calibration.
      */
-    private Matrix mB;
+    private Matrix b;
 
     /**
      * Internally holds computed true specific force during calibration.
      */
-    private Matrix mFtrue;
+    private Matrix ftrue;
 
     /**
      * Constructor.
@@ -313,7 +313,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      * @param listener listener to handle events raised by this calibrator.
      */
     protected BaseGravityNormAccelerometerCalibrator(final L listener) {
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -324,7 +324,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      *                     and unknown different orientations.
      */
     protected BaseGravityNormAccelerometerCalibrator(final Collection<StandardDeviationBodyKinematics> measurements) {
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -338,7 +338,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
     protected BaseGravityNormAccelerometerCalibrator(
             final Collection<StandardDeviationBodyKinematics> measurements, final L listener) {
         this(measurements);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -348,7 +348,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      *                       accelerometer and gyroscope.
      */
     protected BaseGravityNormAccelerometerCalibrator(final boolean commonAxisUsed) {
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -360,7 +360,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     protected BaseGravityNormAccelerometerCalibrator(final boolean commonAxisUsed, final L listener) {
         this(commonAxisUsed);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -375,7 +375,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
     protected BaseGravityNormAccelerometerCalibrator(
             final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed) {
         this(measurements);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -392,7 +392,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
             final L listener) {
         this(measurements, commonAxisUsed);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -434,7 +434,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
     protected BaseGravityNormAccelerometerCalibrator(
             final double initialBiasX, final double initialBiasY, final double initialBiasZ, final L listener) {
         this(initialBiasX, initialBiasY, initialBiasZ);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -457,7 +457,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final Collection<StandardDeviationBodyKinematics> measurements,
             final double initialBiasX, final double initialBiasY, final double initialBiasZ) {
         this(initialBiasX, initialBiasY, initialBiasZ);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -481,7 +481,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final Collection<StandardDeviationBodyKinematics> measurements,
             final double initialBiasX, final double initialBiasY, final double initialBiasZ, final L listener) {
         this(measurements, initialBiasX, initialBiasY, initialBiasZ);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -503,7 +503,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final boolean commonAxisUsed, final double initialBiasX, final double initialBiasY,
             final double initialBiasZ) {
         this(initialBiasX, initialBiasY, initialBiasZ);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -526,7 +526,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final boolean commonAxisUsed, final double initialBiasX, final double initialBiasY,
             final double initialBiasZ, final L listener) {
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -552,7 +552,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final boolean commonAxisUsed, final double initialBiasX, final double initialBiasY,
             final double initialBiasZ) {
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -579,7 +579,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final boolean commonAxisUsed, final double initialBiasX, final double initialBiasY,
             final double initialBiasZ, final L listener) {
         this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -616,7 +616,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final Acceleration initialBiasX, final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final L listener) {
         this(initialBiasX, initialBiasY, initialBiasZ);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -636,7 +636,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final Collection<StandardDeviationBodyKinematics> measurements,
             final Acceleration initialBiasX, final Acceleration initialBiasY, final Acceleration initialBiasZ) {
         this(initialBiasX, initialBiasY, initialBiasZ);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -658,7 +658,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final Acceleration initialBiasX, final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final L listener) {
         this(measurements, initialBiasX, initialBiasY, initialBiasZ);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -677,7 +677,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final boolean commonAxisUsed, final Acceleration initialBiasX, final Acceleration initialBiasY,
             final Acceleration initialBiasZ) {
         this(initialBiasX, initialBiasY, initialBiasZ);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -697,7 +697,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final boolean commonAxisUsed, final Acceleration initialBiasX, final Acceleration initialBiasY,
             final Acceleration initialBiasZ, final L listener) {
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -719,7 +719,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
             final Acceleration initialBiasX, final Acceleration initialBiasY, final Acceleration initialBiasZ) {
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -743,7 +743,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final Acceleration initialBiasX, final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final L listener) {
         this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -797,7 +797,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final double initialBiasX, final double initialBiasY, final double initialBiasZ,
             final double initialSx, final double initialSy, final double initialSz) {
         this(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -825,7 +825,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final double initialBiasX, final double initialBiasY, final double initialBiasZ,
             final double initialSx, final double initialSy, final double initialSz, final L listener) {
         this(measurements, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -850,7 +850,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final boolean commonAxisUsed, final double initialBiasX, final double initialBiasY,
             final double initialBiasZ, final double initialSx, final double initialSy, final double initialSz) {
         this(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -877,7 +877,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final double initialBiasZ, final double initialSx, final double initialSy, final double initialSz,
             final L listener) {
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -906,7 +906,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final double initialBiasX, final double initialBiasY, final double initialBiasZ, final double initialSx,
             final double initialSy, final double initialSz) {
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -936,7 +936,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final double initialBiasX, final double initialBiasY, final double initialBiasZ, final double initialSx,
             final double initialSy, final double initialSz, final L listener) {
         this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -981,7 +981,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final Acceleration initialBiasX, final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final double initialSx, final double initialSy, final double initialSz, final L listener) {
         this(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1005,7 +1005,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final Acceleration initialBiasX, final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final double initialSx, final double initialSy, final double initialSz) {
         this(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1030,7 +1030,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final Acceleration initialBiasX, final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final double initialSx, final double initialSy, final double initialSz, final L listener) {
         this(measurements, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1052,7 +1052,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final boolean commonAxisUsed, final Acceleration initialBiasX, final Acceleration initialBiasY,
             final Acceleration initialBiasZ, final double initialSx, final double initialSy, final double initialSz) {
         this(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -1076,7 +1076,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final Acceleration initialBiasZ, final double initialSx, final double initialSy, final double initialSz,
             final L listener) {
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1102,7 +1102,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final Acceleration initialBiasX, final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final double initialSx, final double initialSy, final double initialSz) {
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1129,7 +1129,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final Acceleration initialBiasX, final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final double initialSx, final double initialSy, final double initialSz, final L listener) {
         this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1200,7 +1200,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final double initialMyz, final double initialMzx, final double initialMzy) {
         this(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz, initialMxy, initialMxz,
                 initialMyx, initialMyz, initialMzx, initialMzy);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1236,7 +1236,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final double initialMyz, final double initialMzx, final double initialMzy, final L listener) {
         this(measurements, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz, initialMxy,
                 initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1270,7 +1270,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final double initialMzx, final double initialMzy) {
         this(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz, initialMxy, initialMxz,
                 initialMyx, initialMyz, initialMzx, initialMzy);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -1305,7 +1305,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final double initialMzx, final double initialMzy, final L listener) {
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz, initialMxy,
                 initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1342,7 +1342,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final double initialMyx, final double initialMyz, final double initialMzx, final double initialMzy) {
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz, initialMxy,
                 initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1381,7 +1381,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final L listener) {
         this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1444,7 +1444,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final double initialMzy, final L listener) {
         this(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz, initialMxy, initialMxz,
                 initialMyx, initialMyz, initialMzx, initialMzy);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1477,7 +1477,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final double initialMzy) {
         this(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz, initialMxy, initialMxz,
                 initialMyx, initialMyz, initialMzx, initialMzy);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1511,7 +1511,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final L listener) {
         this(measurements, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz, initialMxy,
                 initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1542,7 +1542,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final double initialMzx, final double initialMzy) {
         this(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz, initialMxy, initialMxz,
                 initialMyx, initialMyz, initialMzx, initialMzy);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -1574,7 +1574,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final double initialMzx, final double initialMzy, final L listener) {
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz, initialMxy,
                 initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1609,7 +1609,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final double initialMyz, final double initialMzx, final double initialMzy) {
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz, initialMxy,
                 initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1645,7 +1645,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final double initialMzy, final L listener) {
         this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1675,7 +1675,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     protected BaseGravityNormAccelerometerCalibrator(final double[] initialBias, final L listener) {
         this(initialBias);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1692,7 +1692,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
     protected BaseGravityNormAccelerometerCalibrator(
             final Collection<StandardDeviationBodyKinematics> measurements, final double[] initialBias) {
         this(initialBias);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1711,7 +1711,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final Collection<StandardDeviationBodyKinematics> measurements, final double[] initialBias,
             final L listener) {
         this(measurements, initialBias);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1726,7 +1726,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     protected BaseGravityNormAccelerometerCalibrator(final boolean commonAxisUsed, final double[] initialBias) {
         this(initialBias);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -1743,7 +1743,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
     protected BaseGravityNormAccelerometerCalibrator(
             final boolean commonAxisUsed, final double[] initialBias, final L listener) {
         this(commonAxisUsed, initialBias);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1763,7 +1763,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
             final double[] initialBias) {
         this(commonAxisUsed, initialBias);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1784,7 +1784,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
             final double[] initialBias, final L listener) {
         this(measurements, commonAxisUsed, initialBias);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1810,7 +1810,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     protected BaseGravityNormAccelerometerCalibrator(final Matrix initialBias, final L listener) {
         this(initialBias);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1825,7 +1825,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
     protected BaseGravityNormAccelerometerCalibrator(
             final Collection<StandardDeviationBodyKinematics> measurements, final Matrix initialBias) {
         this(initialBias);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1842,7 +1842,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final Collection<StandardDeviationBodyKinematics> measurements, final Matrix initialBias,
             final L listener) {
         this(measurements, initialBias);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1855,7 +1855,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     protected BaseGravityNormAccelerometerCalibrator(final boolean commonAxisUsed, final Matrix initialBias) {
         this(initialBias);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -1870,7 +1870,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
     protected BaseGravityNormAccelerometerCalibrator(
             final boolean commonAxisUsed, final Matrix initialBias, final L listener) {
         this(commonAxisUsed, initialBias);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1888,7 +1888,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
             final Matrix initialBias) {
         this(commonAxisUsed, initialBias);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1907,7 +1907,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final Collection<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix initialBias, final L listener) {
         this(measurements, commonAxisUsed, initialBias);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1939,7 +1939,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
     protected BaseGravityNormAccelerometerCalibrator(
             final Matrix initialBias, final Matrix initialMa, final L listener) {
         this(initialBias, initialMa);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1957,7 +1957,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final Collection<StandardDeviationBodyKinematics> measurements,
             final Matrix initialBias, final Matrix initialMa) {
         this(initialBias, initialMa);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1976,7 +1976,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final Collection<StandardDeviationBodyKinematics> measurements, final Matrix initialBias,
             final Matrix initialMa, final L listener) {
         this(measurements, initialBias, initialMa);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1992,7 +1992,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
     protected BaseGravityNormAccelerometerCalibrator(
             final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMa) {
         this(initialBias, initialMa);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -2009,7 +2009,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
     protected BaseGravityNormAccelerometerCalibrator(
             final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMa, final L listener) {
         this(commonAxisUsed, initialBias, initialMa);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2029,7 +2029,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
             final Matrix initialBias, final Matrix initialMa) {
         this(commonAxisUsed, initialBias, initialMa);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -2050,7 +2050,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
             final Matrix initialBias, final Matrix initialMa, final L listener) {
         this(measurements, commonAxisUsed, initialBias, initialMa);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2074,7 +2074,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     protected BaseGravityNormAccelerometerCalibrator(final Double groundTruthGravityNorm, final L listener) {
         this(groundTruthGravityNorm);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2090,7 +2090,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
     protected BaseGravityNormAccelerometerCalibrator(
             final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements) {
         this(groundTruthGravityNorm);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -3600,7 +3600,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      *                                  if provided gravity norm value is negative.
      */
     protected BaseGravityNormAccelerometerCalibrator(final Double groundTruthGravityNorm, final double[] initialBias,
-            final L listener) {
+                                                     final L listener) {
         this(initialBias, listener);
         internalSetGroundTruthGravityNorm(groundTruthGravityNorm);
     }
@@ -4056,7 +4056,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      * @return ground truth gravity norm or null.
      */
     public Double getGroundTruthGravityNorm() {
-        return mGroundTruthGravityNorm;
+        return groundTruthGravityNorm;
     }
 
     /**
@@ -4065,8 +4065,8 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      * @return ground truth gravity norm or null.
      */
     public Acceleration getGroundTruthGravityNormAsAcceleration() {
-        return mGroundTruthGravityNorm != null
-                ? new Acceleration(mGroundTruthGravityNorm, AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;
+        return groundTruthGravityNorm != null
+                ? new Acceleration(groundTruthGravityNorm, AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;
     }
 
     /**
@@ -4076,8 +4076,8 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      * @return true if ground truth gravity norm has been defined, false if it is not available yet.
      */
     public boolean getGroundTruthGravityNormAsAcceleration(final Acceleration result) {
-        if (mGroundTruthGravityNorm != null) {
-            result.setValue(mGroundTruthGravityNorm);
+        if (groundTruthGravityNorm != null) {
+            result.setValue(groundTruthGravityNorm);
             result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
             return true;
         } else {
@@ -4093,7 +4093,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public double getInitialBiasX() {
-        return mInitialBiasX;
+        return initialBiasX;
     }
 
     /**
@@ -4105,10 +4105,10 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public void setInitialBiasX(final double initialBiasX) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialBiasX = initialBiasX;
+        this.initialBiasX = initialBiasX;
     }
 
     /**
@@ -4119,7 +4119,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public double getInitialBiasY() {
-        return mInitialBiasY;
+        return initialBiasY;
     }
 
     /**
@@ -4131,10 +4131,10 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public void setInitialBiasY(final double initialBiasY) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialBiasY = initialBiasY;
+        this.initialBiasY = initialBiasY;
     }
 
     /**
@@ -4145,7 +4145,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public double getInitialBiasZ() {
-        return mInitialBiasZ;
+        return initialBiasZ;
     }
 
     /**
@@ -4157,10 +4157,10 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public void setInitialBiasZ(final double initialBiasZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialBiasZ = initialBiasZ;
+        this.initialBiasZ = initialBiasZ;
     }
 
     /**
@@ -4170,7 +4170,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public Acceleration getInitialBiasXAsAcceleration() {
-        return new Acceleration(mInitialBiasX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(initialBiasX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -4180,7 +4180,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public void getInitialBiasXAsAcceleration(final Acceleration result) {
-        result.setValue(mInitialBiasX);
+        result.setValue(initialBiasX);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -4192,10 +4192,10 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public void setInitialBiasX(final Acceleration initialBiasX) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialBiasX = convertAcceleration(initialBiasX);
+        this.initialBiasX = convertAcceleration(initialBiasX);
     }
 
     /**
@@ -4205,7 +4205,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public Acceleration getInitialBiasYAsAcceleration() {
-        return new Acceleration(mInitialBiasY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(initialBiasY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -4215,7 +4215,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public void getInitialBiasYAsAcceleration(final Acceleration result) {
-        result.setValue(mInitialBiasY);
+        result.setValue(initialBiasY);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -4227,10 +4227,10 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public void setInitialBiasY(final Acceleration initialBiasY) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialBiasY = convertAcceleration(initialBiasY);
+        this.initialBiasY = convertAcceleration(initialBiasY);
     }
 
     /**
@@ -4240,7 +4240,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public Acceleration getInitialBiasZAsAcceleration() {
-        return new Acceleration(mInitialBiasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(initialBiasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -4250,7 +4250,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public void getInitialBiasZAsAcceleration(final Acceleration result) {
-        result.setValue(mInitialBiasZ);
+        result.setValue(initialBiasZ);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -4262,10 +4262,10 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public void setInitialBiasZ(final Acceleration initialBiasZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialBiasZ = convertAcceleration(initialBiasZ);
+        this.initialBiasZ = convertAcceleration(initialBiasZ);
     }
 
     /**
@@ -4280,12 +4280,12 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
     @Override
     public void setInitialBias(final double initialBiasX, final double initialBiasY, final double initialBiasZ)
             throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialBiasX = initialBiasX;
-        mInitialBiasY = initialBiasY;
-        mInitialBiasZ = initialBiasZ;
+        this.initialBiasX = initialBiasX;
+        this.initialBiasY = initialBiasY;
+        this.initialBiasZ = initialBiasZ;
     }
 
     /**
@@ -4299,12 +4299,12 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
     @Override
     public void setInitialBias(final Acceleration initialBiasX, final Acceleration initialBiasY,
                                final Acceleration initialBiasZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialBiasX = convertAcceleration(initialBiasX);
-        mInitialBiasY = convertAcceleration(initialBiasY);
-        mInitialBiasZ = convertAcceleration(initialBiasZ);
+        this.initialBiasX = convertAcceleration(initialBiasX);
+        this.initialBiasY = convertAcceleration(initialBiasY);
+        this.initialBiasZ = convertAcceleration(initialBiasZ);
     }
 
     /**
@@ -4315,7 +4315,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
     @Override
     public AccelerationTriad getInitialBiasAsTriad() {
         return new AccelerationTriad(AccelerationUnit.METERS_PER_SQUARED_SECOND,
-                mInitialBiasX, mInitialBiasY, mInitialBiasZ);
+                initialBiasX, initialBiasY, initialBiasZ);
     }
 
     /**
@@ -4325,7 +4325,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public void getInitialBiasAsTriad(final AccelerationTriad result) {
-        result.setValueCoordinatesAndUnit(mInitialBiasX, mInitialBiasY, mInitialBiasZ,
+        result.setValueCoordinatesAndUnit(initialBiasX, initialBiasY, initialBiasZ,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -4337,13 +4337,13 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public void setInitialBias(final AccelerationTriad initialBias) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mInitialBiasX = convertAcceleration(initialBias.getValueX(), initialBias.getUnit());
-        mInitialBiasY = convertAcceleration(initialBias.getValueY(), initialBias.getUnit());
-        mInitialBiasZ = convertAcceleration(initialBias.getValueZ(), initialBias.getUnit());
+        initialBiasX = convertAcceleration(initialBias.getValueX(), initialBias.getUnit());
+        initialBiasY = convertAcceleration(initialBias.getValueY(), initialBias.getUnit());
+        initialBiasZ = convertAcceleration(initialBias.getValueZ(), initialBias.getUnit());
     }
 
     /**
@@ -4353,7 +4353,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public double getInitialSx() {
-        return mInitialSx;
+        return initialSx;
     }
 
     /**
@@ -4364,10 +4364,10 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public void setInitialSx(final double initialSx) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialSx = initialSx;
+        this.initialSx = initialSx;
     }
 
     /**
@@ -4377,7 +4377,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public double getInitialSy() {
-        return mInitialSy;
+        return initialSy;
     }
 
     /**
@@ -4388,10 +4388,10 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public void setInitialSy(final double initialSy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialSy = initialSy;
+        this.initialSy = initialSy;
     }
 
     /**
@@ -4401,7 +4401,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public double getInitialSz() {
-        return mInitialSz;
+        return initialSz;
     }
 
     /**
@@ -4412,10 +4412,10 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public void setInitialSz(final double initialSz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialSz = initialSz;
+        this.initialSz = initialSz;
     }
 
     /**
@@ -4425,7 +4425,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public double getInitialMxy() {
-        return mInitialMxy;
+        return initialMxy;
     }
 
     /**
@@ -4436,10 +4436,10 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public void setInitialMxy(final double initialMxy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMxy = initialMxy;
+        this.initialMxy = initialMxy;
     }
 
     /**
@@ -4449,7 +4449,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public double getInitialMxz() {
-        return mInitialMxz;
+        return initialMxz;
     }
 
     /**
@@ -4460,10 +4460,10 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public void setInitialMxz(final double initialMxz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMxz = initialMxz;
+        this.initialMxz = initialMxz;
     }
 
     /**
@@ -4473,7 +4473,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public double getInitialMyx() {
-        return mInitialMyx;
+        return initialMyx;
     }
 
     /**
@@ -4484,10 +4484,10 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public void setInitialMyx(final double initialMyx) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMyx = initialMyx;
+        this.initialMyx = initialMyx;
     }
 
     /**
@@ -4497,7 +4497,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public double getInitialMyz() {
-        return mInitialMyz;
+        return initialMyz;
     }
 
     /**
@@ -4508,10 +4508,10 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public void setInitialMyz(final double initialMyz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMyz = initialMyz;
+        this.initialMyz = initialMyz;
     }
 
     /**
@@ -4521,7 +4521,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public double getInitialMzx() {
-        return mInitialMzx;
+        return initialMzx;
     }
 
     /**
@@ -4532,10 +4532,10 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public void setInitialMzx(final double initialMzx) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMzx = initialMzx;
+        this.initialMzx = initialMzx;
     }
 
     /**
@@ -4545,7 +4545,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public double getInitialMzy() {
-        return mInitialMzy;
+        return initialMzy;
     }
 
     /**
@@ -4556,10 +4556,10 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public void setInitialMzy(final double initialMzy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMzy = initialMzy;
+        this.initialMzy = initialMzy;
     }
 
     /**
@@ -4573,12 +4573,12 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
     @Override
     public void setInitialScalingFactors(final double initialSx, final double initialSy, final double initialSz)
             throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialSx = initialSx;
-        mInitialSy = initialSy;
-        mInitialSz = initialSz;
+        this.initialSx = initialSx;
+        this.initialSy = initialSy;
+        this.initialSz = initialSz;
     }
 
     /**
@@ -4596,15 +4596,15 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
     public void setInitialCrossCouplingErrors(
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMxy = initialMxy;
-        mInitialMxz = initialMxz;
-        mInitialMyx = initialMyx;
-        mInitialMyz = initialMyz;
-        mInitialMzx = initialMzx;
-        mInitialMzy = initialMzy;
+        this.initialMxy = initialMxy;
+        this.initialMxz = initialMxz;
+        this.initialMyx = initialMyx;
+        this.initialMyz = initialMyz;
+        this.initialMzx = initialMzx;
+        this.initialMzy = initialMzy;
     }
 
     /**
@@ -4626,7 +4626,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             final double initialSx, final double initialSy, final double initialSz,
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         setInitialScalingFactors(initialSx, initialSy, initialSz);
@@ -4641,7 +4641,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public double[] getInitialBias() {
-        final double[] result = new double[BodyKinematics.COMPONENTS];
+        final var result = new double[BodyKinematics.COMPONENTS];
         getInitialBias(result);
         return result;
     }
@@ -4658,9 +4658,9 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
         if (result.length != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        result[0] = mInitialBiasX;
-        result[1] = mInitialBiasY;
-        result[2] = mInitialBiasZ;
+        result[0] = initialBiasX;
+        result[1] = initialBiasY;
+        result[2] = initialBiasZ;
     }
 
     /**
@@ -4673,16 +4673,16 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public void setInitialBias(final double[] initialBias) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
         if (initialBias.length != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        mInitialBiasX = initialBias[0];
-        mInitialBiasY = initialBias[1];
-        mInitialBiasZ = initialBias[2];
+        initialBiasX = initialBias[0];
+        initialBiasY = initialBias[1];
+        initialBiasZ = initialBias[2];
     }
 
     /**
@@ -4716,9 +4716,9 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
         if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
-        result.setElementAtIndex(0, mInitialBiasX);
-        result.setElementAtIndex(1, mInitialBiasY);
-        result.setElementAtIndex(2, mInitialBiasZ);
+        result.setElementAtIndex(0, initialBiasX);
+        result.setElementAtIndex(1, initialBiasY);
+        result.setElementAtIndex(2, initialBiasZ);
     }
 
     /**
@@ -4731,16 +4731,16 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public void setInitialBias(final Matrix initialBias) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (initialBias.getRows() != BodyKinematics.COMPONENTS || initialBias.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
-        mInitialBiasX = initialBias.getElementAtIndex(0);
-        mInitialBiasY = initialBias.getElementAtIndex(1);
-        mInitialBiasZ = initialBias.getElementAtIndex(2);
+        initialBiasX = initialBias.getElementAtIndex(0);
+        initialBiasY = initialBias.getElementAtIndex(1);
+        initialBiasZ = initialBias.getElementAtIndex(2);
     }
 
     /**
@@ -4772,17 +4772,17 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
         if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        result.setElementAtIndex(0, mInitialSx);
-        result.setElementAtIndex(1, mInitialMyx);
-        result.setElementAtIndex(2, mInitialMzx);
+        result.setElementAtIndex(0, initialSx);
+        result.setElementAtIndex(1, initialMyx);
+        result.setElementAtIndex(2, initialMzx);
 
-        result.setElementAtIndex(3, mInitialMxy);
-        result.setElementAtIndex(4, mInitialSy);
-        result.setElementAtIndex(5, mInitialMzy);
+        result.setElementAtIndex(3, initialMxy);
+        result.setElementAtIndex(4, initialSy);
+        result.setElementAtIndex(5, initialMzy);
 
-        result.setElementAtIndex(6, mInitialMxz);
-        result.setElementAtIndex(7, mInitialMyz);
-        result.setElementAtIndex(8, mInitialSz);
+        result.setElementAtIndex(6, initialMxz);
+        result.setElementAtIndex(7, initialMyz);
+        result.setElementAtIndex(8, initialSz);
     }
 
     /**
@@ -4794,24 +4794,24 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public void setInitialMa(final Matrix initialMa) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (initialMa.getRows() != BodyKinematics.COMPONENTS || initialMa.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
-        mInitialSx = initialMa.getElementAtIndex(0);
-        mInitialMyx = initialMa.getElementAtIndex(1);
-        mInitialMzx = initialMa.getElementAtIndex(2);
+        initialSx = initialMa.getElementAtIndex(0);
+        initialMyx = initialMa.getElementAtIndex(1);
+        initialMzx = initialMa.getElementAtIndex(2);
 
-        mInitialMxy = initialMa.getElementAtIndex(3);
-        mInitialSy = initialMa.getElementAtIndex(4);
-        mInitialMzy = initialMa.getElementAtIndex(5);
+        initialMxy = initialMa.getElementAtIndex(3);
+        initialSy = initialMa.getElementAtIndex(4);
+        initialMzy = initialMa.getElementAtIndex(5);
 
-        mInitialMxz = initialMa.getElementAtIndex(6);
-        mInitialMyz = initialMa.getElementAtIndex(7);
-        mInitialSz = initialMa.getElementAtIndex(8);
+        initialMxz = initialMa.getElementAtIndex(6);
+        initialMyz = initialMa.getElementAtIndex(7);
+        initialSz = initialMa.getElementAtIndex(8);
     }
 
     /**
@@ -4824,7 +4824,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public Collection<StandardDeviationBodyKinematics> getMeasurements() {
-        return mMeasurements;
+        return measurements;
     }
 
     /**
@@ -4839,10 +4839,10 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
     @Override
     public void setMeasurements(final Collection<StandardDeviationBodyKinematics> measurements)
             throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -4887,7 +4887,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public boolean isCommonAxisUsed() {
-        return mCommonAxisUsed;
+        return commonAxisUsed;
     }
 
     /**
@@ -4901,11 +4901,11 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public void setCommonAxisUsed(final boolean commonAxisUsed) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -4914,7 +4914,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      * @return listener to handle events raised by this estimator.
      */
     public L getListener() {
-        return mListener;
+        return listener;
     }
 
     /**
@@ -4924,11 +4924,11 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      * @throws LockedException if calibrator is currently running.
      */
     public void setListener(final L listener) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -4938,7 +4938,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public int getMinimumRequiredMeasurements() {
-        return mCommonAxisUsed ? MINIMUM_MEASUREMENTS_COMMON_Z_AXIS : MINIMUM_MEASUREMENTS_GENERAL;
+        return commonAxisUsed ? MINIMUM_MEASUREMENTS_COMMON_Z_AXIS : MINIMUM_MEASUREMENTS_GENERAL;
     }
 
     /**
@@ -4948,8 +4948,8 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public boolean isReady() {
-        return mMeasurements != null && mMeasurements.size() >= getMinimumRequiredMeasurements()
-                && mGroundTruthGravityNorm != null;
+        return measurements != null && measurements.size() >= getMinimumRequiredMeasurements()
+                && groundTruthGravityNorm != null;
     }
 
     /**
@@ -4959,7 +4959,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public boolean isRunning() {
-        return mRunning;
+        return running;
     }
 
     /**
@@ -4972,7 +4972,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public void calibrate() throws LockedException, NotReadyException, CalibrationException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
@@ -4981,28 +4981,28 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
         }
 
         try {
-            mRunning = true;
+            running = true;
 
-            if (mListener != null) {
+            if (listener != null) {
                 //noinspection unchecked
-                mListener.onCalibrateStart((C) this);
+                listener.onCalibrateStart((C) this);
             }
 
-            if (mCommonAxisUsed) {
+            if (commonAxisUsed) {
                 calibrateCommonAxis();
             } else {
                 calibrateGeneral();
             }
 
-            if (mListener != null) {
+            if (listener != null) {
                 //noinspection unchecked
-                mListener.onCalibrateEnd((C) this);
+                listener.onCalibrateEnd((C) this);
             }
 
         } catch (final AlgebraException | FittingException | com.irurueta.numerical.NotReadyException e) {
             throw new CalibrationException(e);
         } finally {
-            mRunning = false;
+            running = false;
         }
     }
 
@@ -5014,7 +5014,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public double[] getEstimatedBiases() {
-        return mEstimatedBiases;
+        return estimatedBiases;
     }
 
     /**
@@ -5027,8 +5027,8 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public boolean getEstimatedBiases(final double[] result) {
-        if (mEstimatedBiases != null) {
-            System.arraycopy(mEstimatedBiases, 0, result, 0, mEstimatedBiases.length);
+        if (estimatedBiases != null) {
+            System.arraycopy(estimatedBiases, 0, result, 0, estimatedBiases.length);
             return true;
         } else {
             return false;
@@ -5044,7 +5044,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public Matrix getEstimatedBiasesAsMatrix() {
-        return mEstimatedBiases != null ? Matrix.newFromArray(mEstimatedBiases) : null;
+        return estimatedBiases != null ? Matrix.newFromArray(estimatedBiases) : null;
     }
 
     /**
@@ -5057,8 +5057,8 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public boolean getEstimatedBiasesAsMatrix(final Matrix result) throws WrongSizeException {
-        if (mEstimatedBiases != null) {
-            result.fromArray(mEstimatedBiases);
+        if (estimatedBiases != null) {
+            result.fromArray(estimatedBiases);
             return true;
         } else {
             return false;
@@ -5073,7 +5073,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public Double getEstimatedBiasFx() {
-        return mEstimatedBiases != null ? mEstimatedBiases[0] : null;
+        return estimatedBiases != null ? estimatedBiases[0] : null;
     }
 
     /**
@@ -5084,7 +5084,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public Double getEstimatedBiasFy() {
-        return mEstimatedBiases != null ? mEstimatedBiases[1] : null;
+        return estimatedBiases != null ? estimatedBiases[1] : null;
     }
 
     /**
@@ -5095,7 +5095,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public Double getEstimatedBiasFz() {
-        return mEstimatedBiases != null ? mEstimatedBiases[2] : null;
+        return estimatedBiases != null ? estimatedBiases[2] : null;
     }
 
     /**
@@ -5105,8 +5105,8 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public Acceleration getEstimatedBiasFxAsAcceleration() {
-        return mEstimatedBiases != null ?
-                new Acceleration(mEstimatedBiases[0], AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;
+        return estimatedBiases != null ?
+                new Acceleration(estimatedBiases[0], AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;
     }
 
     /**
@@ -5117,8 +5117,8 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public boolean getEstimatedBiasFxAsAcceleration(final Acceleration result) {
-        if (mEstimatedBiases != null) {
-            result.setValue(mEstimatedBiases[0]);
+        if (estimatedBiases != null) {
+            result.setValue(estimatedBiases[0]);
             result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
             return true;
         } else {
@@ -5133,8 +5133,8 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public Acceleration getEstimatedBiasFyAsAcceleration() {
-        return mEstimatedBiases != null ?
-                new Acceleration(mEstimatedBiases[1], AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;
+        return estimatedBiases != null ?
+                new Acceleration(estimatedBiases[1], AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;
     }
 
     /**
@@ -5145,8 +5145,8 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public boolean getEstimatedBiasFyAsAcceleration(final Acceleration result) {
-        if (mEstimatedBiases != null) {
-            result.setValue(mEstimatedBiases[1]);
+        if (estimatedBiases != null) {
+            result.setValue(estimatedBiases[1]);
             result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
             return true;
         } else {
@@ -5161,8 +5161,8 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public Acceleration getEstimatedBiasFzAsAcceleration() {
-        return mEstimatedBiases != null ?
-                new Acceleration(mEstimatedBiases[2], AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;
+        return estimatedBiases != null ?
+                new Acceleration(estimatedBiases[2], AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;
     }
 
     /**
@@ -5173,8 +5173,8 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public boolean getEstimatedBiasFzAsAcceleration(final Acceleration result) {
-        if (mEstimatedBiases != null) {
-            result.setValue(mEstimatedBiases[2]);
+        if (estimatedBiases != null) {
+            result.setValue(estimatedBiases[2]);
             result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
             return true;
         } else {
@@ -5189,9 +5189,9 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public AccelerationTriad getEstimatedBiasAsTriad() {
-        return mEstimatedBiases != null ?
+        return estimatedBiases != null ?
                 new AccelerationTriad(AccelerationUnit.METERS_PER_SQUARED_SECOND,
-                        mEstimatedBiases[0], mEstimatedBiases[1], mEstimatedBiases[2]) : null;
+                        estimatedBiases[0], estimatedBiases[1], estimatedBiases[2]) : null;
     }
 
     /**
@@ -5203,8 +5203,8 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public boolean getEstimatedBiasAsTriad(final AccelerationTriad result) {
-        if (mEstimatedBiases != null) {
-            result.setValueCoordinatesAndUnit(mEstimatedBiases[0], mEstimatedBiases[1], mEstimatedBiases[2],
+        if (estimatedBiases != null) {
+            result.setValueCoordinatesAndUnit(estimatedBiases[0], estimatedBiases[1], estimatedBiases[2],
                     AccelerationUnit.METERS_PER_SQUARED_SECOND);
             return true;
         } else {
@@ -5257,7 +5257,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public Matrix getEstimatedMa() {
-        return mEstimatedMa;
+        return estimatedMa;
     }
 
     /**
@@ -5267,7 +5267,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public Double getEstimatedSx() {
-        return mEstimatedMa != null ? mEstimatedMa.getElementAt(0, 0) : null;
+        return estimatedMa != null ? estimatedMa.getElementAt(0, 0) : null;
     }
 
     /**
@@ -5277,7 +5277,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public Double getEstimatedSy() {
-        return mEstimatedMa != null ? mEstimatedMa.getElementAt(1, 1) : null;
+        return estimatedMa != null ? estimatedMa.getElementAt(1, 1) : null;
     }
 
     /**
@@ -5287,7 +5287,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public Double getEstimatedSz() {
-        return mEstimatedMa != null ? mEstimatedMa.getElementAt(2, 2) : null;
+        return estimatedMa != null ? estimatedMa.getElementAt(2, 2) : null;
     }
 
     /**
@@ -5297,7 +5297,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public Double getEstimatedMxy() {
-        return mEstimatedMa != null ? mEstimatedMa.getElementAt(0, 1) : null;
+        return estimatedMa != null ? estimatedMa.getElementAt(0, 1) : null;
     }
 
     /**
@@ -5307,7 +5307,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public Double getEstimatedMxz() {
-        return mEstimatedMa != null ? mEstimatedMa.getElementAt(0, 2) : null;
+        return estimatedMa != null ? estimatedMa.getElementAt(0, 2) : null;
     }
 
     /**
@@ -5317,7 +5317,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public Double getEstimatedMyx() {
-        return mEstimatedMa != null ? mEstimatedMa.getElementAt(1, 0) : null;
+        return estimatedMa != null ? estimatedMa.getElementAt(1, 0) : null;
     }
 
     /**
@@ -5327,7 +5327,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public Double getEstimatedMyz() {
-        return mEstimatedMa != null ? mEstimatedMa.getElementAt(1, 2) : null;
+        return estimatedMa != null ? estimatedMa.getElementAt(1, 2) : null;
     }
 
     /**
@@ -5337,7 +5337,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public Double getEstimatedMzx() {
-        return mEstimatedMa != null ? mEstimatedMa.getElementAt(2, 0) : null;
+        return estimatedMa != null ? estimatedMa.getElementAt(2, 0) : null;
     }
 
     /**
@@ -5347,7 +5347,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public Double getEstimatedMzy() {
-        return mEstimatedMa != null ? mEstimatedMa.getElementAt(2, 1) : null;
+        return estimatedMa != null ? estimatedMa.getElementAt(2, 1) : null;
     }
 
     /**
@@ -5360,7 +5360,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public Matrix getEstimatedCovariance() {
-        return mEstimatedCovariance;
+        return estimatedCovariance;
     }
 
     /**
@@ -5370,7 +5370,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public double getEstimatedChiSq() {
-        return mEstimatedChiSq;
+        return estimatedChiSq;
     }
 
     /**
@@ -5380,7 +5380,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public double getEstimatedMse() {
-        return mEstimatedMse;
+        return estimatedMse;
     }
 
     /**
@@ -5389,7 +5389,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      * @return variance of estimated x coordinate of accelerometer bias or null if not available.
      */
     public Double getEstimatedBiasFxVariance() {
-        return mEstimatedCovariance != null ? mEstimatedCovariance.getElementAt(0, 0) : null;
+        return estimatedCovariance != null ? estimatedCovariance.getElementAt(0, 0) : null;
     }
 
     /**
@@ -5400,7 +5400,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      * available.
      */
     public Double getEstimatedBiasFxStandardDeviation() {
-        final Double variance = getEstimatedBiasFxVariance();
+        final var variance = getEstimatedBiasFxVariance();
         return variance != null ? Math.sqrt(variance) : null;
     }
 
@@ -5411,9 +5411,9 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      * available.
      */
     public Acceleration getEstimatedBiasFxStandardDeviationAsAcceleration() {
-        return mEstimatedCovariance != null ?
-                new Acceleration(getEstimatedBiasFxStandardDeviation(), AccelerationUnit.METERS_PER_SQUARED_SECOND) :
-                null;
+        return estimatedCovariance != null
+                ? new Acceleration(getEstimatedBiasFxStandardDeviation(), AccelerationUnit.METERS_PER_SQUARED_SECOND)
+                : null;
     }
 
     /**
@@ -5424,7 +5424,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      * false otherwise.
      */
     public boolean getEstimatedBiasFxStandardDeviationAsAcceleration(final Acceleration result) {
-        if (mEstimatedCovariance != null) {
+        if (estimatedCovariance != null) {
             result.setValue(getEstimatedBiasFxStandardDeviation());
             result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
             return true;
@@ -5439,7 +5439,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      * @return variance of estimated y coordinate of accelerometer bias or null if not available.
      */
     public Double getEstimatedBiasFyVariance() {
-        return mEstimatedCovariance != null ? mEstimatedCovariance.getElementAt(1, 1) : null;
+        return estimatedCovariance != null ? estimatedCovariance.getElementAt(1, 1) : null;
     }
 
     /**
@@ -5450,7 +5450,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      * available.
      */
     public Double getEstimatedBiasFyStandardDeviation() {
-        final Double variance = getEstimatedBiasFyVariance();
+        final var variance = getEstimatedBiasFyVariance();
         return variance != null ? Math.sqrt(variance) : null;
     }
 
@@ -5461,9 +5461,9 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      * available.
      */
     public Acceleration getEstimatedBiasFyStandardDeviationAsAcceleration() {
-        return mEstimatedCovariance != null ?
-                new Acceleration(getEstimatedBiasFyStandardDeviation(), AccelerationUnit.METERS_PER_SQUARED_SECOND) :
-                null;
+        return estimatedCovariance != null
+                ? new Acceleration(getEstimatedBiasFyStandardDeviation(), AccelerationUnit.METERS_PER_SQUARED_SECOND)
+                : null;
     }
 
     /**
@@ -5474,7 +5474,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      * false otherwise.
      */
     public boolean getEstimatedBiasFyStandardDeviationAsAcceleration(final Acceleration result) {
-        if (mEstimatedCovariance != null) {
+        if (estimatedCovariance != null) {
             result.setValue(getEstimatedBiasFyStandardDeviation());
             result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
             return true;
@@ -5489,7 +5489,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      * @return variance of estimated z coordinate of accelerometer bias or null if not available.
      */
     public Double getEstimatedBiasFzVariance() {
-        return mEstimatedCovariance != null ? mEstimatedCovariance.getElementAt(2, 2) : null;
+        return estimatedCovariance != null ? estimatedCovariance.getElementAt(2, 2) : null;
     }
 
     /**
@@ -5500,7 +5500,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      * available.
      */
     public Double getEstimatedBiasFzStandardDeviation() {
-        final Double variance = getEstimatedBiasFzVariance();
+        final var variance = getEstimatedBiasFzVariance();
         return variance != null ? Math.sqrt(variance) : null;
     }
 
@@ -5511,9 +5511,9 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      * available.
      */
     public Acceleration getEstimatedBiasFzStandardDeviationAsAcceleration() {
-        return mEstimatedCovariance != null ?
-                new Acceleration(getEstimatedBiasFzStandardDeviation(), AccelerationUnit.METERS_PER_SQUARED_SECOND) :
-                null;
+        return estimatedCovariance != null
+                ? new Acceleration(getEstimatedBiasFzStandardDeviation(), AccelerationUnit.METERS_PER_SQUARED_SECOND)
+                : null;
     }
 
     /**
@@ -5524,7 +5524,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      * false otherwise.
      */
     public boolean getEstimatedBiasFzStandardDeviationAsAcceleration(final Acceleration result) {
-        if (mEstimatedCovariance != null) {
+        if (estimatedCovariance != null) {
             result.setValue(getEstimatedBiasFzStandardDeviation());
             result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
             return true;
@@ -5539,7 +5539,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      * @return standard deviation of estimated accelerometer bias coordinates.
      */
     public AccelerationTriad getEstimatedBiasStandardDeviation() {
-        return mEstimatedCovariance != null ?
+        return estimatedCovariance != null ?
                 new AccelerationTriad(AccelerationUnit.METERS_PER_SQUARED_SECOND,
                         getEstimatedBiasFxStandardDeviation(),
                         getEstimatedBiasFyStandardDeviation(),
@@ -5554,7 +5554,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      * otherwise.
      */
     public boolean getEstimatedBiasStandardDeviation(final AccelerationTriad result) {
-        if (mEstimatedCovariance != null) {
+        if (estimatedCovariance != null) {
             result.setValueCoordinatesAndUnit(
                     getEstimatedBiasFxStandardDeviation(),
                     getEstimatedBiasFyStandardDeviation(),
@@ -5574,10 +5574,9 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      * if not available.
      */
     public Double getEstimatedBiasStandardDeviationAverage() {
-        return mEstimatedCovariance != null ?
-                (getEstimatedBiasFxStandardDeviation() +
-                        getEstimatedBiasFyStandardDeviation() +
-                        getEstimatedBiasFzStandardDeviation()) / 3.0 : null;
+        return estimatedCovariance != null ?
+                (getEstimatedBiasFxStandardDeviation() + getEstimatedBiasFyStandardDeviation()
+                        + getEstimatedBiasFzStandardDeviation()) / 3.0 : null;
     }
 
     /**
@@ -5586,7 +5585,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      * @return average of estimated standard deviation of accelerometer bias coordinates or null.
      */
     public Acceleration getEstimatedBiasStandardDeviationAverageAsAcceleration() {
-        return mEstimatedCovariance != null ?
+        return estimatedCovariance != null ?
                 new Acceleration(getEstimatedBiasStandardDeviationAverage(),
                         AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;
     }
@@ -5599,7 +5598,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      * false otherwise.
      */
     public boolean getEstimatedBiasStandardDeviationAverageAsAcceleration(final Acceleration result) {
-        if (mEstimatedCovariance != null) {
+        if (estimatedCovariance != null) {
             result.setValue(getEstimatedBiasStandardDeviationAverage());
             result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
             return true;
@@ -5619,9 +5618,9 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     @Override
     public Double getEstimatedBiasStandardDeviationNorm() {
-        return mEstimatedCovariance != null ?
-                Math.sqrt(getEstimatedBiasFxVariance() + getEstimatedBiasFyVariance() + getEstimatedBiasFzVariance()) :
-                null;
+        return estimatedCovariance != null
+                ? Math.sqrt(getEstimatedBiasFxVariance() + getEstimatedBiasFyVariance() + getEstimatedBiasFzVariance())
+                : null;
     }
 
     /**
@@ -5633,9 +5632,9 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      * if not available.
      */
     public Acceleration getEstimatedBiasStandardDeviationNormAsAcceleration() {
-        return mEstimatedCovariance != null ?
-                new Acceleration(getEstimatedBiasStandardDeviationNorm(),
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;
+        return estimatedCovariance != null
+                ? new Acceleration(getEstimatedBiasStandardDeviationNorm(), AccelerationUnit.METERS_PER_SQUARED_SECOND)
+                : null;
     }
 
     /**
@@ -5648,7 +5647,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      * available, false otherwise.
      */
     public boolean getEstimatedBiasStandardDeviationNormAsAcceleration(final Acceleration result) {
-        if (mEstimatedCovariance != null) {
+        if (estimatedCovariance != null) {
             result.setValue(getEstimatedBiasStandardDeviationNorm());
             result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
             return true;
@@ -5680,7 +5679,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
         if (groundTruthGravityNorm != null && groundTruthGravityNorm < 0.0) {
             throw new IllegalArgumentException();
         }
-        mGroundTruthGravityNorm = groundTruthGravityNorm;
+        this.groundTruthGravityNorm = groundTruthGravityNorm;
     }
 
     /**
@@ -5701,24 +5700,24 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      */
     private void setInputData() throws WrongSizeException {
 
-        final double g = mGroundTruthGravityNorm;
-        final double g2 = g * g;
+        final var g = groundTruthGravityNorm;
+        final var g2 = g * g;
 
-        final int numMeasurements = mMeasurements.size();
-        final Matrix x = new Matrix(numMeasurements, BodyKinematics.COMPONENTS);
-        final double[] y = new double[numMeasurements];
-        final double[] specificForceStandardDeviations = new double[numMeasurements];
-        int i = 0;
-        for (final StandardDeviationBodyKinematics measurement : mMeasurements) {
-            final BodyKinematics measuredKinematics = measurement.getKinematics();
+        final var numMeasurements = measurements.size();
+        final var x = new Matrix(numMeasurements, BodyKinematics.COMPONENTS);
+        final var y = new double[numMeasurements];
+        final var specificForceStandardDeviations = new double[numMeasurements];
+        var i = 0;
+        for (final var measurement : measurements) {
+            final var measuredKinematics = measurement.getKinematics();
 
-            final double fmeasX = measuredKinematics.getFx();
-            final double fmeasY = measuredKinematics.getFy();
-            final double fmeasZ = measuredKinematics.getFz();
+            final var fx = measuredKinematics.getFx();
+            final var fy = measuredKinematics.getFy();
+            final var fz = measuredKinematics.getFz();
 
-            x.setElementAt(i, 0, fmeasX);
-            x.setElementAt(i, 1, fmeasY);
-            x.setElementAt(i, 2, fmeasZ);
+            x.setElementAt(i, 0, fx);
+            x.setElementAt(i, 1, fy);
+            x.setElementAt(i, 2, fz);
 
             y[i] = g2;
 
@@ -5727,7 +5726,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             i++;
         }
 
-        mFitter.setInputData(x, y, specificForceStandardDeviations);
+        fitter.setInputData(x, y, specificForceStandardDeviations);
     }
 
     /**
@@ -5780,97 +5779,96 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
         //     [m21 	m22 	m23]
         //     [m31 	m32 	m33]
 
-        final GradientEstimator gradientEstimator = new GradientEstimator(this::evaluateGeneral);
+        final var gradientEstimator = new GradientEstimator(this::evaluateGeneral);
 
-        final Matrix initialM = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+        final var initialM = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         initialM.add(getInitialMa());
 
-        final Matrix invInitialM = Utils.inverse(initialM);
-        final Matrix initialBa = getInitialBiasAsMatrix();
-        final Matrix initialB = invInitialM.multiplyAndReturnNew(initialBa);
+        final var invInitialM = Utils.inverse(initialM);
+        final var initialBa = getInitialBiasAsMatrix();
+        final var initialB = invInitialM.multiplyAndReturnNew(initialBa);
 
-        mFitter.setFunctionEvaluator(
-                new LevenbergMarquardtMultiDimensionFunctionEvaluator() {
-                    @Override
-                    public int getNumberOfDimensions() {
-                        // Input points are measured specific force coordinates
-                        return BodyKinematics.COMPONENTS;
-                    }
+        fitter.setFunctionEvaluator(new LevenbergMarquardtMultiDimensionFunctionEvaluator() {
+            @Override
+            public int getNumberOfDimensions() {
+                // Input points are measured specific force coordinates
+                return BodyKinematics.COMPONENTS;
+            }
 
-                    @Override
-                    public double[] createInitialParametersArray() {
-                        final double[] initial = new double[GENERAL_UNKNOWNS];
+            @Override
+            public double[] createInitialParametersArray() {
+                final var initial = new double[GENERAL_UNKNOWNS];
 
-                        // biases b
-                        for (int i = 0; i < BodyKinematics.COMPONENTS; i++) {
-                            initial[i] = initialB.getElementAtIndex(i);
-                        }
+                // biases b
+                for (var i = 0; i < BodyKinematics.COMPONENTS; i++) {
+                    initial[i] = initialB.getElementAtIndex(i);
+                }
 
-                        // cross coupling errors M
-                        final int num = BodyKinematics.COMPONENTS * BodyKinematics.COMPONENTS;
-                        for (int i = 0, j = BodyKinematics.COMPONENTS; i < num; i++, j++) {
-                            initial[j] = initialM.getElementAtIndex(i);
-                        }
+                // cross coupling errors M
+                final var num = BodyKinematics.COMPONENTS * BodyKinematics.COMPONENTS;
+                for (int i = 0, j = BodyKinematics.COMPONENTS; i < num; i++, j++) {
+                    initial[j] = initialM.getElementAtIndex(i);
+                }
 
-                        return initial;
-                    }
+                return initial;
+            }
 
-                    @Override
-                    public double evaluate(
-                            final int i, final double[] point, final double[] params, final double[] derivatives)
-                            throws EvaluationException {
+            @Override
+            public double evaluate(
+                    final int i, final double[] point, final double[] params, final double[] derivatives)
+                    throws EvaluationException {
 
-                        mFmeasX = point[0];
-                        mFmeasY = point[1];
-                        mFmeasZ = point[2];
+                fmeasX = point[0];
+                fmeasY = point[1];
+                fmeasZ = point[2];
 
-                        gradientEstimator.gradient(params, derivatives);
+                gradientEstimator.gradient(params, derivatives);
 
-                        return evaluateGeneral(params);
-                    }
-                });
+                return evaluateGeneral(params);
+            }
+        });
 
         setInputData();
 
-        mFitter.fit();
+        fitter.fit();
 
-        final double[] result = mFitter.getA();
+        final var result = fitter.getA();
 
-        final double bx = result[0];
-        final double by = result[1];
-        final double bz = result[2];
+        final var bx = result[0];
+        final var by = result[1];
+        final var bz = result[2];
 
-        final double m11 = result[3];
-        final double m21 = result[4];
-        final double m31 = result[5];
+        final var m11 = result[3];
+        final var m21 = result[4];
+        final var m31 = result[5];
 
-        final double m12 = result[6];
-        final double m22 = result[7];
-        final double m32 = result[8];
+        final var m12 = result[6];
+        final var m22 = result[7];
+        final var m32 = result[8];
 
-        final double m13 = result[9];
-        final double m23 = result[10];
-        final double m33 = result[11];
+        final var m13 = result[9];
+        final var m23 = result[10];
+        final var m33 = result[11];
 
-        final Matrix b = new Matrix(BodyKinematics.COMPONENTS, 1);
-        b.setElementAtIndex(0, bx);
-        b.setElementAtIndex(1, by);
-        b.setElementAtIndex(2, bz);
+        final var bias = new Matrix(BodyKinematics.COMPONENTS, 1);
+        bias.setElementAtIndex(0, bx);
+        bias.setElementAtIndex(1, by);
+        bias.setElementAtIndex(2, bz);
 
-        final Matrix m = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
-        m.setElementAtIndex(0, m11);
-        m.setElementAtIndex(1, m21);
-        m.setElementAtIndex(2, m31);
+        final var crossCoupling = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+        crossCoupling.setElementAtIndex(0, m11);
+        crossCoupling.setElementAtIndex(1, m21);
+        crossCoupling.setElementAtIndex(2, m31);
 
-        m.setElementAtIndex(3, m12);
-        m.setElementAtIndex(4, m22);
-        m.setElementAtIndex(5, m32);
+        crossCoupling.setElementAtIndex(3, m12);
+        crossCoupling.setElementAtIndex(4, m22);
+        crossCoupling.setElementAtIndex(5, m32);
 
-        m.setElementAtIndex(6, m13);
-        m.setElementAtIndex(7, m23);
-        m.setElementAtIndex(8, m33);
+        crossCoupling.setElementAtIndex(6, m13);
+        crossCoupling.setElementAtIndex(7, m23);
+        crossCoupling.setElementAtIndex(8, m33);
 
-        setResult(m, b);
+        setResult(crossCoupling, bias);
 
         // at this point covariance is expressed in terms of b and M, and must
         // be expressed in terms of ba and Ma.
@@ -5927,7 +5925,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
         //	    [0    0    0    0   0   0   0   0   1   0   0   0 ]
 
         // We know that the propagated covariance is J * Cov * J', hence:
-        final Matrix jacobian = new Matrix(GENERAL_UNKNOWNS, GENERAL_UNKNOWNS);
+        final var jacobian = new Matrix(GENERAL_UNKNOWNS, GENERAL_UNKNOWNS);
 
         jacobian.setElementAt(0, 0, m11);
         jacobian.setElementAt(1, 0, m21);
@@ -5968,10 +5966,10 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
         jacobian.setElementAt(2, 11, bz);
         jacobian.setElementAt(5, 11, 1.0);
 
-        final Matrix jacobianTrans = jacobian.transposeAndReturnNew();
-        jacobian.multiply(mEstimatedCovariance);
+        final var jacobianTrans = jacobian.transposeAndReturnNew();
+        jacobian.multiply(estimatedCovariance);
         jacobian.multiply(jacobianTrans);
-        mEstimatedCovariance = jacobian;
+        estimatedCovariance = jacobian;
     }
 
     /**
@@ -6026,9 +6024,9 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
         //     [0 	 	0 		m33]
 
 
-        final GradientEstimator gradientEstimator = new GradientEstimator(this::evaluateCommonAxis);
+        final var gradientEstimator = new GradientEstimator(this::evaluateCommonAxis);
 
-        final Matrix initialM = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+        final var initialM = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         initialM.add(getInitialMa());
 
         // Force initial M to be upper diagonal
@@ -6036,94 +6034,93 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
         initialM.setElementAt(2, 0, 0.0);
         initialM.setElementAt(2, 1, 0.0);
 
-        final Matrix invInitialM = Utils.inverse(initialM);
-        final Matrix initialBa = getInitialBiasAsMatrix();
-        final Matrix initialB = invInitialM.multiplyAndReturnNew(initialBa);
+        final var invInitialM = Utils.inverse(initialM);
+        final var initialBa = getInitialBiasAsMatrix();
+        final var initialB = invInitialM.multiplyAndReturnNew(initialBa);
 
-        mFitter.setFunctionEvaluator(
-                new LevenbergMarquardtMultiDimensionFunctionEvaluator() {
-                    @Override
-                    public int getNumberOfDimensions() {
-                        // Input points are measured specific force coordinates
-                        return BodyKinematics.COMPONENTS;
-                    }
+        fitter.setFunctionEvaluator(new LevenbergMarquardtMultiDimensionFunctionEvaluator() {
+            @Override
+            public int getNumberOfDimensions() {
+                // Input points are measured specific force coordinates
+                return BodyKinematics.COMPONENTS;
+            }
 
-                    @Override
-                    public double[] createInitialParametersArray() {
-                        final double[] initial = new double[COMMON_Z_AXIS_UNKNOWNS];
+            @Override
+            public double[] createInitialParametersArray() {
+                final var initial = new double[COMMON_Z_AXIS_UNKNOWNS];
 
-                        // biases b
-                        for (int i = 0; i < BodyKinematics.COMPONENTS; i++) {
-                            initial[i] = initialB.getElementAtIndex(i);
+                // biases b
+                for (var i = 0; i < BodyKinematics.COMPONENTS; i++) {
+                    initial[i] = initialB.getElementAtIndex(i);
+                }
+
+                // upper diagonal cross coupling errors M
+                var k = BodyKinematics.COMPONENTS;
+                for (var j = 0; j < BodyKinematics.COMPONENTS; j++) {
+                    for (var i = 0; i < BodyKinematics.COMPONENTS; i++) {
+                        if (i <= j) {
+                            initial[k] = initialM.getElementAt(i, j);
+                            k++;
                         }
-
-                        // upper diagonal cross coupling errors M
-                        int k = BodyKinematics.COMPONENTS;
-                        for (int j = 0; j < BodyKinematics.COMPONENTS; j++) {
-                            for (int i = 0; i < BodyKinematics.COMPONENTS; i++) {
-                                if (i <= j) {
-                                    initial[k] = initialM.getElementAt(i, j);
-                                    k++;
-                                }
-                            }
-                        }
-
-                        return initial;
                     }
+                }
 
-                    @Override
-                    public double evaluate(
-                            final int i, final double[] point, final double[] params, final double[] derivatives)
-                            throws EvaluationException {
+                return initial;
+            }
 
-                        mFmeasX = point[0];
-                        mFmeasY = point[1];
-                        mFmeasZ = point[2];
+            @Override
+            public double evaluate(
+                    final int i, final double[] point, final double[] params, final double[] derivatives)
+                    throws EvaluationException {
 
-                        gradientEstimator.gradient(params, derivatives);
+                fmeasX = point[0];
+                fmeasY = point[1];
+                fmeasZ = point[2];
 
-                        return evaluateCommonAxis(params);
-                    }
-                });
+                gradientEstimator.gradient(params, derivatives);
+
+                return evaluateCommonAxis(params);
+            }
+        });
 
         setInputData();
 
-        mFitter.fit();
+        fitter.fit();
 
-        final double[] result = mFitter.getA();
+        final var result = fitter.getA();
 
-        final double bx = result[0];
-        final double by = result[1];
-        final double bz = result[2];
+        final var bx = result[0];
+        final var by = result[1];
+        final var bz = result[2];
 
-        final double m11 = result[3];
+        final var m11 = result[3];
 
-        final double m12 = result[4];
-        final double m22 = result[5];
+        final var m12 = result[4];
+        final var m22 = result[5];
 
-        final double m13 = result[6];
-        final double m23 = result[7];
-        final double m33 = result[8];
+        final var m13 = result[6];
+        final var m23 = result[7];
+        final var m33 = result[8];
 
-        final Matrix b = new Matrix(BodyKinematics.COMPONENTS, 1);
-        b.setElementAtIndex(0, bx);
-        b.setElementAtIndex(1, by);
-        b.setElementAtIndex(2, bz);
+        final var bias = new Matrix(BodyKinematics.COMPONENTS, 1);
+        bias.setElementAtIndex(0, bx);
+        bias.setElementAtIndex(1, by);
+        bias.setElementAtIndex(2, bz);
 
-        final Matrix m = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
-        m.setElementAtIndex(0, m11);
-        m.setElementAtIndex(1, 0.0);
-        m.setElementAtIndex(2, 0.0);
+        final var crossCoupling = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+        crossCoupling.setElementAtIndex(0, m11);
+        crossCoupling.setElementAtIndex(1, 0.0);
+        crossCoupling.setElementAtIndex(2, 0.0);
 
-        m.setElementAtIndex(3, m12);
-        m.setElementAtIndex(4, m22);
-        m.setElementAtIndex(5, 0.0);
+        crossCoupling.setElementAtIndex(3, m12);
+        crossCoupling.setElementAtIndex(4, m22);
+        crossCoupling.setElementAtIndex(5, 0.0);
 
-        m.setElementAtIndex(6, m13);
-        m.setElementAtIndex(7, m23);
-        m.setElementAtIndex(8, m33);
+        crossCoupling.setElementAtIndex(6, m13);
+        crossCoupling.setElementAtIndex(7, m23);
+        crossCoupling.setElementAtIndex(8, m33);
 
-        setResult(m, b);
+        setResult(crossCoupling, bias);
 
         // at this point covariance is expressed in terms of b and M, and must
         // be expressed in terms of ba and Ma.
@@ -6182,7 +6179,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
         //	    [0    0    0    0   0   0   0   0   0 ]
 
         // We know that the propagated covariance is J * Cov * J', hence:
-        final Matrix jacobian = new Matrix(GENERAL_UNKNOWNS, COMMON_Z_AXIS_UNKNOWNS);
+        final var jacobian = new Matrix(GENERAL_UNKNOWNS, COMMON_Z_AXIS_UNKNOWNS);
 
         jacobian.setElementAt(0, 0, m11);
 
@@ -6211,10 +6208,10 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
         jacobian.setElementAt(2, 8, bz);
         jacobian.setElementAt(5, 8, 1.0);
 
-        final Matrix jacobianTrans = jacobian.transposeAndReturnNew();
-        jacobian.multiply(mEstimatedCovariance);
+        final var jacobianTrans = jacobian.transposeAndReturnNew();
+        jacobian.multiply(estimatedCovariance);
         jacobian.multiply(jacobianTrans);
-        mEstimatedCovariance = jacobian;
+        estimatedCovariance = jacobian;
     }
 
     /**
@@ -6233,26 +6230,26 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
         // Ma = M - I
         // ba = M*b
 
-        if (mEstimatedBiases == null) {
-            mEstimatedBiases = new double[BodyKinematics.COMPONENTS];
+        if (estimatedBiases == null) {
+            estimatedBiases = new double[BodyKinematics.COMPONENTS];
         }
 
-        final Matrix ba = m.multiplyAndReturnNew(b);
-        ba.toArray(mEstimatedBiases);
+        final var ba = m.multiplyAndReturnNew(b);
+        ba.toArray(estimatedBiases);
 
-        if (mEstimatedMa == null) {
-            mEstimatedMa = m;
+        if (estimatedMa == null) {
+            estimatedMa = m;
         } else {
-            mEstimatedMa.copyFrom(m);
+            estimatedMa.copyFrom(m);
         }
 
-        for (int i = 0; i < BodyKinematics.COMPONENTS; i++) {
-            mEstimatedMa.setElementAt(i, i, mEstimatedMa.getElementAt(i, i) - 1.0);
+        for (var i = 0; i < BodyKinematics.COMPONENTS; i++) {
+            estimatedMa.setElementAt(i, i, estimatedMa.getElementAt(i, i) - 1.0);
         }
 
-        mEstimatedCovariance = mFitter.getCovar();
-        mEstimatedChiSq = mFitter.getChisq();
-        mEstimatedMse = mFitter.getMse();
+        estimatedCovariance = fitter.getCovar();
+        estimatedChiSq = fitter.getChisq();
+        estimatedMse = fitter.getMse();
     }
 
     /**
@@ -6267,21 +6264,21 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      * @throws EvaluationException if there are numerical instabilities.
      */
     private double evaluateGeneral(final double[] params) throws EvaluationException {
-        final double bx = params[0];
-        final double by = params[1];
-        final double bz = params[2];
+        final var bx = params[0];
+        final var by = params[1];
+        final var bz = params[2];
 
-        final double m11 = params[3];
-        final double m21 = params[4];
-        final double m31 = params[5];
+        final var m11 = params[3];
+        final var m21 = params[4];
+        final var m31 = params[5];
 
-        final double m12 = params[6];
-        final double m22 = params[7];
-        final double m32 = params[8];
+        final var m12 = params[6];
+        final var m22 = params[7];
+        final var m32 = params[8];
 
-        final double m13 = params[9];
-        final double m23 = params[10];
-        final double m33 = params[11];
+        final var m13 = params[9];
+        final var m23 = params[10];
+        final var m33 = params[11];
 
         return evaluate(bx, by, bz, m11, m21, m31, m12, m22, m32, m13, m23, m33);
     }
@@ -6298,18 +6295,18 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      * @throws EvaluationException if there are numerical instabilities.
      */
     private double evaluateCommonAxis(final double[] params) throws EvaluationException {
-        final double bx = params[0];
-        final double by = params[1];
-        final double bz = params[2];
+        final var bx = params[0];
+        final var by = params[1];
+        final var bz = params[2];
 
-        final double m11 = params[3];
+        final var m11 = params[3];
 
-        final double m12 = params[4];
-        final double m22 = params[5];
+        final var m12 = params[4];
+        final var m22 = params[5];
 
-        final double m13 = params[6];
-        final double m23 = params[7];
-        final double m33 = params[8];
+        final var m13 = params[6];
+        final var m23 = params[7];
+        final var m33 = params[8];
 
         return evaluate(bx, by, bz, m11, 0.0, 0.0, m12, m22, 0.0, m13, m23, m33);
     }
@@ -6345,48 +6342,48 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
         // ftrue = M^-1*fmeas - b
 
         try {
-            if (mFmeas == null) {
-                mFmeas = new Matrix(BodyKinematics.COMPONENTS, 1);
+            if (fmeas == null) {
+                fmeas = new Matrix(BodyKinematics.COMPONENTS, 1);
             }
-            if (mM == null) {
-                mM = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+            if (m == null) {
+                m = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
             }
-            if (mInvM == null) {
-                mInvM = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+            if (invM == null) {
+                invM = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
             }
-            if (mB == null) {
-                mB = new Matrix(BodyKinematics.COMPONENTS, 1);
+            if (b == null) {
+                b = new Matrix(BodyKinematics.COMPONENTS, 1);
             }
-            if (mFtrue == null) {
-                mFtrue = new Matrix(BodyKinematics.COMPONENTS, 1);
+            if (ftrue == null) {
+                ftrue = new Matrix(BodyKinematics.COMPONENTS, 1);
             }
 
-            mFmeas.setElementAtIndex(0, mFmeasX);
-            mFmeas.setElementAtIndex(1, mFmeasY);
-            mFmeas.setElementAtIndex(2, mFmeasZ);
+            fmeas.setElementAtIndex(0, fmeasX);
+            fmeas.setElementAtIndex(1, fmeasY);
+            fmeas.setElementAtIndex(2, fmeasZ);
 
-            mM.setElementAt(0, 0, m11);
-            mM.setElementAt(1, 0, m21);
-            mM.setElementAt(2, 0, m31);
+            m.setElementAt(0, 0, m11);
+            m.setElementAt(1, 0, m21);
+            m.setElementAt(2, 0, m31);
 
-            mM.setElementAt(0, 1, m12);
-            mM.setElementAt(1, 1, m22);
-            mM.setElementAt(2, 1, m32);
+            m.setElementAt(0, 1, m12);
+            m.setElementAt(1, 1, m22);
+            m.setElementAt(2, 1, m32);
 
-            mM.setElementAt(0, 2, m13);
-            mM.setElementAt(1, 2, m23);
-            mM.setElementAt(2, 2, m33);
+            m.setElementAt(0, 2, m13);
+            m.setElementAt(1, 2, m23);
+            m.setElementAt(2, 2, m33);
 
-            Utils.inverse(mM, mInvM);
+            Utils.inverse(m, invM);
 
-            mB.setElementAtIndex(0, bx);
-            mB.setElementAtIndex(1, by);
-            mB.setElementAtIndex(2, bz);
+            b.setElementAtIndex(0, bx);
+            b.setElementAtIndex(1, by);
+            b.setElementAtIndex(2, bz);
 
-            mInvM.multiply(mFmeas, mFtrue);
-            mFtrue.subtract(mB);
+            invM.multiply(fmeas, ftrue);
+            ftrue.subtract(b);
 
-            final double norm = Utils.normF(mFtrue);
+            final var norm = Utils.normF(ftrue);
             return norm * norm;
 
         } catch (final AlgebraException e) {

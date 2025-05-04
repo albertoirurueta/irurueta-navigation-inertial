@@ -25,7 +25,6 @@ import com.irurueta.navigation.frames.converters.ECEFtoNEDPositionVelocityConver
 import com.irurueta.navigation.frames.converters.NEDtoECEFPositionVelocityConverter;
 import com.irurueta.navigation.inertial.calibration.CalibrationException;
 import com.irurueta.navigation.inertial.calibration.StandardDeviationBodyMagneticFluxDensity;
-import com.irurueta.navigation.inertial.wmm.NEDMagneticFluxDensity;
 import com.irurueta.navigation.inertial.wmm.WMMEarthMagneticFluxDensityEstimator;
 import com.irurueta.navigation.inertial.wmm.WorldMagneticModel;
 
@@ -72,18 +71,18 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
      * Position where body magnetic flux density measurements have been
      * taken.
      */
-    private NEDPosition mPosition;
+    private NEDPosition position;
 
     /**
      * Timestamp expressed as decimal year where magnetic flux density
      * measurements have been measured.
      */
-    private Double mYear = convertTime(System.currentTimeMillis());
+    private Double year = convertTime(System.currentTimeMillis());
 
     /**
      * Contains Earth's magnetic model.
      */
-    private WorldMagneticModel mMagneticModel;
+    private WorldMagneticModel magneticModel;
 
     /**
      * Constructor.
@@ -134,7 +133,7 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
      */
     public KnownHardIronPositionAndInstantMagnetometerCalibrator(final WorldMagneticModel magneticModel) {
         super();
-        mMagneticModel = magneticModel;
+        this.magneticModel = magneticModel;
     }
 
     /**
@@ -181,7 +180,7 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
      */
     public KnownHardIronPositionAndInstantMagnetometerCalibrator(final NEDPosition position) {
         super();
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -198,7 +197,7 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
     public KnownHardIronPositionAndInstantMagnetometerCalibrator(
             final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements) {
         super(measurements);
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -217,7 +216,7 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
             final NEDPosition position, final Collection<StandardDeviationBodyMagneticFluxDensity> measurements,
             final KnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(measurements, listener);
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -237,7 +236,7 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
             final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed) {
         super(measurements, commonAxisUsed);
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -259,7 +258,7 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
             final boolean commonAxisUsed,
             final KnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(measurements, commonAxisUsed, listener);
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -280,7 +279,7 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
             final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final double[] hardIron) {
         super(measurements, hardIron);
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -302,7 +301,7 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
             final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final double[] hardIron, final KnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(measurements, hardIron, listener);
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -323,7 +322,7 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
             final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final double[] hardIron) {
         super(measurements, commonAxisUsed, hardIron);
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -348,7 +347,7 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
             final boolean commonAxisUsed, final double[] hardIron,
             final KnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(measurements, commonAxisUsed, hardIron, listener);
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -369,7 +368,7 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
             final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix hardIron) {
         super(measurements, hardIron);
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -391,7 +390,7 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
             final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix hardIron, final KnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(measurements, hardIron, listener);
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -414,7 +413,7 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
             final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final Matrix hardIron) {
         super(measurements, commonAxisUsed, hardIron);
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -439,7 +438,7 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
             final boolean commonAxisUsed, final Matrix hardIron,
             final KnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(measurements, commonAxisUsed, hardIron, listener);
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -463,7 +462,7 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
             final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix hardIron, final Matrix initialMm) {
         super(measurements, hardIron, initialMm);
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -489,7 +488,7 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
             final Matrix hardIron, final Matrix initialMm,
             final KnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(measurements, hardIron, initialMm, listener);
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -515,7 +514,7 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
             final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final Matrix hardIron, final Matrix initialMm) {
         super(measurements, commonAxisUsed, hardIron, initialMm);
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -543,7 +542,7 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
             final boolean commonAxisUsed, final Matrix hardIron, final Matrix initialMm,
             final KnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(measurements, commonAxisUsed, hardIron, initialMm, listener);
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -910,7 +909,7 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
      * been taken.
      */
     public NEDPosition getNedPosition() {
-        return mPosition;
+        return position;
     }
 
     /**
@@ -926,7 +925,7 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
             throw new LockedException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -937,8 +936,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
      * been taken or null if not available.
      */
     public ECEFPosition getEcefPosition() {
-        if (mPosition != null) {
-            final ECEFPosition result = new ECEFPosition();
+        if (position != null) {
+            final var result = new ECEFPosition();
             getEcefPosition(result);
             return result;
         } else {
@@ -954,10 +953,10 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
      * @return true if ECEF position could be computed, false otherwise.
      */
     public boolean getEcefPosition(final ECEFPosition result) {
-        if (mPosition != null) {
-            final ECEFVelocity velocity = new ECEFVelocity();
+        if (position != null) {
+            final var velocity = new ECEFVelocity();
             NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                    mPosition.getLatitude(), mPosition.getLongitude(), mPosition.getHeight(),
+                    position.getLatitude(), position.getLongitude(), position.getHeight(),
                     0.0, 0.0, 0.0, result, velocity);
             return true;
         } else {
@@ -978,7 +977,7 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
             throw new LockedException();
         }
 
-        mPosition = convertPosition(position);
+        this.position = convertPosition(position);
     }
 
     /**
@@ -988,7 +987,7 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
      * @return timestamp expressed as decimal year or null if not defined.
      */
     public Double getYear() {
-        return mYear;
+        return year;
     }
 
     /**
@@ -1002,7 +1001,7 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
         if (isRunning()) {
             throw new LockedException();
         }
-        mYear = year;
+        this.year = year;
     }
 
     /**
@@ -1017,7 +1016,7 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
         if (isRunning()) {
             throw new LockedException();
         }
-        mYear = convertTime(timestampMillis);
+        year = convertTime(timestampMillis);
     }
 
     /**
@@ -1031,7 +1030,7 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
         if (isRunning()) {
             throw new LockedException();
         }
-        mYear = convertTime(date);
+        year = convertTime(date);
     }
 
     /**
@@ -1045,7 +1044,7 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
         if (isRunning()) {
             throw new LockedException();
         }
-        mYear = convertTime(calendar);
+        year = convertTime(calendar);
     }
 
     /**
@@ -1055,7 +1054,7 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
      */
     @Override
     public boolean isReady() {
-        return super.isReady() && mPosition != null && mYear != null;
+        return super.isReady() && position != null && year != null;
     }
 
     /**
@@ -1064,7 +1063,7 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
      * @return Earth's magnetic model or null if not provided.
      */
     public WorldMagneticModel getMagneticModel() {
-        return mMagneticModel;
+        return magneticModel;
     }
 
     /**
@@ -1077,7 +1076,7 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
         if (isRunning()) {
             throw new LockedException();
         }
-        mMagneticModel = magneticModel;
+        this.magneticModel = magneticModel;
     }
 
     /**
@@ -1100,8 +1099,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
      */
     private void computeGroundTruthMagneticFluxDensityNorm() throws CalibrationException {
         final WMMEarthMagneticFluxDensityEstimator wmmEstimator;
-        if (mMagneticModel != null) {
-            wmmEstimator = new WMMEarthMagneticFluxDensityEstimator(mMagneticModel);
+        if (magneticModel != null) {
+            wmmEstimator = new WMMEarthMagneticFluxDensityEstimator(magneticModel);
         } else {
             try {
                 wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
@@ -1110,9 +1109,9 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
             }
         }
 
-        final NEDPosition position = getNedPosition();
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, mYear);
-        mGroundTruthMagneticFluxDensityNorm = earthB.getNorm();
+        final var pos = getNedPosition();
+        final var earthB = wmmEstimator.estimate(pos, year);
+        groundTruthMagneticFluxDensityNorm = earthB.getNorm();
     }
 
     /**
@@ -1127,7 +1126,7 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
             return null;
         }
 
-        final GregorianCalendar calendar = new GregorianCalendar();
+        final var calendar = new GregorianCalendar();
         calendar.setTimeInMillis(timestampMillis);
         return convertTime(calendar);
     }
@@ -1144,7 +1143,7 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
             return null;
         }
 
-        final GregorianCalendar calendar = new GregorianCalendar();
+        final var calendar = new GregorianCalendar();
         calendar.setTime(date);
         return convertTime(calendar);
     }
@@ -1173,8 +1172,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator extends
      * @return converted position expressed in NED coordinates.
      */
     private static NEDPosition convertPosition(final ECEFPosition position) {
-        final NEDVelocity velocity = new NEDVelocity();
-        final NEDPosition result = new NEDPosition();
+        final var velocity = new NEDVelocity();
+        final var result = new NEDPosition();
         ECEFtoNEDPositionVelocityConverter.convertECEFtoNED(
                 position.getX(), position.getY(), position.getZ(),
                 0.0, 0.0, 0.0, result, velocity);

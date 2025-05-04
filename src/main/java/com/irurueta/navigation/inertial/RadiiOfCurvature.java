@@ -45,7 +45,7 @@ public class RadiiOfCurvature implements Serializable, Cloneable {
      * The meridian radius of curvature varies with latitude and is smallest at the
      * equator, where the geocentric radius is largest, and largest at the poles.
      */
-    private double mRn;
+    private double rn;
 
     /**
      * Transverse radius of curvature expressed in meters (m).
@@ -60,7 +60,7 @@ public class RadiiOfCurvature implements Serializable, Cloneable {
      * equator. It is also equal to the length of the normal from a point on the
      * surface to the polar axis.
      */
-    private double mRe;
+    private double re;
 
     /**
      * Constructor.
@@ -110,7 +110,7 @@ public class RadiiOfCurvature implements Serializable, Cloneable {
      * @return meridian radius of curvature expressed in meters (m).
      */
     public double getRn() {
-        return mRn;
+        return rn;
     }
 
     /**
@@ -126,7 +126,7 @@ public class RadiiOfCurvature implements Serializable, Cloneable {
      * @param rn meridian radius of curvature expressed in meters (m).
      */
     public void setRn(final double rn) {
-        mRn = rn;
+        this.rn = rn;
     }
 
     /**
@@ -145,7 +145,7 @@ public class RadiiOfCurvature implements Serializable, Cloneable {
      * @return transverse radius of curvature expressed in meters (m).
      */
     public double getRe() {
-        return mRe;
+        return re;
     }
 
     /**
@@ -164,7 +164,7 @@ public class RadiiOfCurvature implements Serializable, Cloneable {
      * @param re transverse radius of curvature expressed in meters (m).
      */
     public void setRe(final double re) {
-        mRe = re;
+        this.re = re;
     }
 
     /**
@@ -174,8 +174,8 @@ public class RadiiOfCurvature implements Serializable, Cloneable {
      * @param re transverse radius of curvature expressed in meters (m).
      */
     public void setValues(final double rn, final double re) {
-        mRn = rn;
-        mRe = re;
+        this.rn = rn;
+        this.re = re;
     }
 
     /**
@@ -191,7 +191,7 @@ public class RadiiOfCurvature implements Serializable, Cloneable {
      * @param result instance where meridian radius of curvature will be stored.
      */
     public void getRnDistance(final Distance result) {
-        result.setValue(mRn);
+        result.setValue(rn);
         result.setUnit(DistanceUnit.METER);
     }
 
@@ -208,7 +208,7 @@ public class RadiiOfCurvature implements Serializable, Cloneable {
      * @return meridian radius of curvature.
      */
     public Distance getRnDistance() {
-        return new Distance(mRn, DistanceUnit.METER);
+        return new Distance(rn, DistanceUnit.METER);
     }
 
     /**
@@ -224,7 +224,7 @@ public class RadiiOfCurvature implements Serializable, Cloneable {
      * @param rnDistance meridian radius of curvature to be set.
      */
     public void setRnDistance(final Distance rnDistance) {
-        mRn = DistanceConverter.convert(rnDistance.getValue().doubleValue(), rnDistance.getUnit(), DistanceUnit.METER);
+        rn = DistanceConverter.convert(rnDistance.getValue().doubleValue(), rnDistance.getUnit(), DistanceUnit.METER);
     }
 
     /**
@@ -243,7 +243,7 @@ public class RadiiOfCurvature implements Serializable, Cloneable {
      * @param result instance where transverse radius of curvature will be stored.
      */
     public void getReDistance(final Distance result) {
-        result.setValue(mRe);
+        result.setValue(re);
         result.setUnit(DistanceUnit.METER);
     }
 
@@ -263,7 +263,7 @@ public class RadiiOfCurvature implements Serializable, Cloneable {
      * @return transverse radius of curvature.
      */
     public Distance getReDistance() {
-        return new Distance(mRe, DistanceUnit.METER);
+        return new Distance(re, DistanceUnit.METER);
     }
 
     /**
@@ -282,7 +282,7 @@ public class RadiiOfCurvature implements Serializable, Cloneable {
      * @param reDistance transverse radius of curvature to be set.
      */
     public void setReDistance(final Distance reDistance) {
-        mRe = DistanceConverter.convert(reDistance.getValue().doubleValue(), reDistance.getUnit(), DistanceUnit.METER);
+        re = DistanceConverter.convert(reDistance.getValue().doubleValue(), reDistance.getUnit(), DistanceUnit.METER);
     }
 
     /**
@@ -302,8 +302,8 @@ public class RadiiOfCurvature implements Serializable, Cloneable {
      * @param output destination instance where data will be copied to.
      */
     public void copyTo(final RadiiOfCurvature output) {
-        output.mRn = mRn;
-        output.mRe = mRe;
+        output.rn = rn;
+        output.re = re;
     }
 
     /**
@@ -312,8 +312,8 @@ public class RadiiOfCurvature implements Serializable, Cloneable {
      * @param input instance to copy data from.
      */
     public void copyFrom(final RadiiOfCurvature input) {
-        mRn = input.mRn;
-        mRe = input.mRe;
+        rn = input.rn;
+        re = input.re;
     }
 
     /**
@@ -324,7 +324,7 @@ public class RadiiOfCurvature implements Serializable, Cloneable {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(mRn, mRe);
+        return Objects.hash(rn, re);
     }
 
     /**
@@ -347,7 +347,7 @@ public class RadiiOfCurvature implements Serializable, Cloneable {
         }
 
         //noinspection PatternVariableCanBeUsed
-        final RadiiOfCurvature other = (RadiiOfCurvature) obj;
+        final var other = (RadiiOfCurvature) obj;
         return equals(other);
     }
 
@@ -375,7 +375,7 @@ public class RadiiOfCurvature implements Serializable, Cloneable {
             return false;
         }
 
-        return Math.abs(mRn - other.mRn) <= threshold && Math.abs(mRe - other.mRe) <= threshold;
+        return Math.abs(rn - other.rn) <= threshold && Math.abs(re - other.re) <= threshold;
     }
 
     /**
@@ -386,7 +386,7 @@ public class RadiiOfCurvature implements Serializable, Cloneable {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final RadiiOfCurvature result = (RadiiOfCurvature) super.clone();
+        final var result = (RadiiOfCurvature) super.clone();
         copyTo(result);
         return result;
     }

@@ -402,9 +402,8 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param biasZ          z-coordinate of accelerometer bias.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Acceleration biasX, final Acceleration biasY,
-            final Acceleration biasZ) {
+            final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ) {
         super(measurements, commonAxisUsed, biasX, biasY, biasZ);
     }
 
@@ -422,8 +421,8 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(measurements, commonAxisUsed, biasX, biasY, biasZ, listener);
     }
@@ -601,8 +600,8 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param initialSz initial z scaling factor.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ, final double initialSx,
-            final double initialSy, final double initialSz) {
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final double initialSx, final double initialSy, final double initialSz) {
         super(biasX, biasY, biasZ, initialSx, initialSy, initialSz);
     }
 
@@ -618,8 +617,8 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param listener  listener to handle events raised by this calibrator.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ, final double initialSx,
-            final double initialSy, final double initialSz,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final double initialSx, final double initialSy, final double initialSz,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(biasX, biasY, biasZ, initialSx, initialSy, initialSz, listener);
     }
@@ -638,9 +637,9 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param initialSz    initial z scaling factor.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Collection<StandardDeviationBodyKinematics> measurements, final Acceleration biasX,
-            final Acceleration biasY, final Acceleration biasZ, final double initialSx,
-            final double initialSy, final double initialSz) {
+            final Collection<StandardDeviationBodyKinematics> measurements,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final double initialSx, final double initialSy, final double initialSz) {
         super(measurements, biasX, biasY, biasZ, initialSx, initialSy, initialSz);
     }
 
@@ -660,8 +659,8 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
             final Collection<StandardDeviationBodyKinematics> measurements,
-            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ, final double initialSx,
-            final double initialSy, final double initialSz,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final double initialSx, final double initialSy, final double initialSz,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(measurements, biasX, biasY, biasZ, initialSx, initialSy, initialSz, listener);
     }
@@ -1264,8 +1263,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                       in meters per squared second (m/s^2).
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final boolean commonAxisUsed, final double[] bias) {
+    public KnownBiasAndGravityNormAccelerometerCalibrator(final boolean commonAxisUsed, final double[] bias) {
         super(commonAxisUsed, bias);
     }
 
@@ -1317,9 +1315,8 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final double[] bias,
-            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+            final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final double[] bias, final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(measurements, commonAxisUsed, bias, listener);
     }
 
@@ -1431,9 +1428,8 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias,
-            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+            final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final Matrix bias, final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(measurements, commonAxisUsed, bias, listener);
     }
 
@@ -1476,8 +1472,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  scaling and coupling error matrix is not 3x3.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias, final Matrix initialMa) {
+            final Collection<StandardDeviationBodyKinematics> measurements, final Matrix bias, final Matrix initialMa) {
         super(measurements, bias, initialMa);
     }
 
@@ -1494,9 +1489,8 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  scaling and coupling error matrix is not 3x3.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias, final Matrix initialMa,
-            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+            final Collection<StandardDeviationBodyKinematics> measurements, final Matrix bias,
+            final Matrix initialMa, final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(measurements, bias, initialMa, listener);
     }
 
@@ -1693,8 +1687,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
     public KnownBiasAndGravityNormAccelerometerCalibrator(
             final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                listener);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, listener);
     }
 
     /**
@@ -1961,8 +1954,8 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm, final boolean commonAxisUsed, final Acceleration biasX,
-            final Acceleration biasY, final Acceleration biasZ) {
+            final Double groundTruthGravityNorm, final boolean commonAxisUsed,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ) {
         super(groundTruthGravityNorm, commonAxisUsed, biasX, biasY, biasZ);
     }
 
@@ -1980,8 +1973,8 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm, final boolean commonAxisUsed, final Acceleration biasX,
-            final Acceleration biasY, final Acceleration biasZ,
+            final Double groundTruthGravityNorm, final boolean commonAxisUsed,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(groundTruthGravityNorm, commonAxisUsed, biasX, biasY, biasZ, listener);
     }
@@ -2673,8 +2666,8 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
             final Double groundTruthGravityNorm,
             final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
             final double initialSx, final double initialSy, final double initialSz,
-            final double initialMxy, final double initialMxz, final double initialMyx, final double initialMyz,
-            final double initialMzx, final double initialMzy) {
+            final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy) {
         super(groundTruthGravityNorm, biasX, biasY, biasZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
     }
@@ -2908,8 +2901,8 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
             final double initialMyz, final double initialMzx, final double initialMzy,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(groundTruthGravityNorm, measurements, commonAxisUsed, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
-                initialMyz, initialMzx, initialMzy, listener);
+                initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy,
+                listener);
     }
 
     /**

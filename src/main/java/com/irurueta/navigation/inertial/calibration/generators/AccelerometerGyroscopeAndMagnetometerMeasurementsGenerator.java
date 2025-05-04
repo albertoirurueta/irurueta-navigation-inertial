@@ -55,12 +55,12 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
     /**
      * Listener to handle generated events.
      */
-    private AccelerometerGyroscopeAndMagnetometerMeasurementsGeneratorListener mListener;
+    private AccelerometerGyroscopeAndMagnetometerMeasurementsGeneratorListener listener;
 
     /**
      * Listener for internal accelerometer measurements generator.
      */
-    private final AccelerometerMeasurementsGeneratorListener mAccelerometerListener =
+    private final AccelerometerMeasurementsGeneratorListener accelerometerListener =
             new AccelerometerMeasurementsGeneratorListener() {
                 @Override
                 public void onInitializationStarted(final AccelerometerMeasurementsGenerator generator) {
@@ -77,8 +77,8 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
                 public void onError(
                         final AccelerometerMeasurementsGenerator generator,
                         final TriadStaticIntervalDetector.ErrorReason reason) {
-                    if (mListener != null) {
-                        mListener.onError(
+                    if (listener != null) {
+                        listener.onError(
                                 AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this, reason);
                     }
                 }
@@ -107,8 +107,8 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
                 public void onGeneratedMeasurement(
                         final AccelerometerMeasurementsGenerator generator,
                         final StandardDeviationBodyKinematics measurement) {
-                    if (mListener != null) {
-                        mListener.onGeneratedAccelerometerMeasurement(
+                    if (listener != null) {
+                        listener.onGeneratedAccelerometerMeasurement(
                                 AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this,
                                 measurement);
                     }
@@ -123,7 +123,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
     /**
      * Listener for internal gyroscope measurements generator.
      */
-    private final GyroscopeMeasurementsGeneratorListener mGyroscopeListener =
+    private final GyroscopeMeasurementsGeneratorListener gyroscopeListener =
             new GyroscopeMeasurementsGeneratorListener() {
                 @Override
                 public void onInitializationStarted(final GyroscopeMeasurementsGenerator generator) {
@@ -167,8 +167,8 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
                 public void onGeneratedMeasurement(
                         final GyroscopeMeasurementsGenerator generator,
                         final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> measurement) {
-                    if (mListener != null) {
-                        mListener.onGeneratedGyroscopeMeasurement(
+                    if (listener != null) {
+                        listener.onGeneratedGyroscopeMeasurement(
                                 AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this, measurement);
                     }
                 }
@@ -182,12 +182,12 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
     /**
      * Listener for internal magnetometer measurements generator.
      */
-    private final MagnetometerMeasurementsGeneratorListener mMagnetometerListener =
+    private final MagnetometerMeasurementsGeneratorListener magnetometerListener =
             new MagnetometerMeasurementsGeneratorListener() {
                 @Override
                 public void onInitializationStarted(final MagnetometerMeasurementsGenerator generator) {
-                    if (mListener != null) {
-                        mListener.onInitializationStarted(
+                    if (listener != null) {
+                        listener.onInitializationStarted(
                                 AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this);
                     }
                 }
@@ -195,8 +195,8 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
                 @Override
                 public void onInitializationCompleted(
                         final MagnetometerMeasurementsGenerator generator, final double baseNoiseLevel) {
-                    if (mListener != null) {
-                        mListener.onInitializationCompleted(
+                    if (listener != null) {
+                        listener.onInitializationCompleted(
                                 AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this,
                                 baseNoiseLevel);
                     }
@@ -210,32 +210,32 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
 
                 @Override
                 public void onStaticIntervalDetected(final MagnetometerMeasurementsGenerator generator) {
-                    if (mListener != null) {
-                        mListener.onStaticIntervalDetected(
+                    if (listener != null) {
+                        listener.onStaticIntervalDetected(
                                 AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this);
                     }
                 }
 
                 @Override
                 public void onDynamicIntervalDetected(final MagnetometerMeasurementsGenerator generator) {
-                    if (mListener != null) {
-                        mListener.onDynamicIntervalDetected(
+                    if (listener != null) {
+                        listener.onDynamicIntervalDetected(
                                 AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this);
                     }
                 }
 
                 @Override
                 public void onStaticIntervalSkipped(final MagnetometerMeasurementsGenerator generator) {
-                    if (mListener != null) {
-                        mListener.onStaticIntervalSkipped(
+                    if (listener != null) {
+                        listener.onStaticIntervalSkipped(
                                 AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this);
                     }
                 }
 
                 @Override
                 public void onDynamicIntervalSkipped(final MagnetometerMeasurementsGenerator generator) {
-                    if (mListener != null) {
-                        mListener.onDynamicIntervalSkipped(
+                    if (listener != null) {
+                        listener.onDynamicIntervalSkipped(
                                 AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this);
                     }
                 }
@@ -244,8 +244,8 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
                 public void onGeneratedMeasurement(
                         final MagnetometerMeasurementsGenerator generator,
                         final StandardDeviationBodyMagneticFluxDensity measurement) {
-                    if (mListener != null) {
-                        mListener.onGeneratedMagnetometerMeasurement(
+                    if (listener != null) {
+                        listener.onGeneratedMagnetometerMeasurement(
                                 AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this, measurement);
                     }
                 }
@@ -259,30 +259,30 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
     /**
      * Internal accelerometer measurements generator.
      */
-    private final AccelerometerMeasurementsGenerator mAccelerometerMeasurementsGenerator =
-            new AccelerometerMeasurementsGenerator(mAccelerometerListener);
+    private final AccelerometerMeasurementsGenerator accelerometerMeasurementsGenerator =
+            new AccelerometerMeasurementsGenerator(accelerometerListener);
 
     /**
      * Internal gyroscope measurements generator.
      */
-    private final GyroscopeMeasurementsGenerator mGyroscopeMeasurementsGenerator =
-            new GyroscopeMeasurementsGenerator(mGyroscopeListener);
+    private final GyroscopeMeasurementsGenerator gyroscopeMeasurementsGenerator =
+            new GyroscopeMeasurementsGenerator(gyroscopeListener);
 
     /**
      * Internal magnetometer measurements generator.
      */
-    private final MagnetometerMeasurementsGenerator mMagnetometerMeasurementsGenerator =
-            new MagnetometerMeasurementsGenerator(mMagnetometerListener);
+    private final MagnetometerMeasurementsGenerator magnetometerMeasurementsGenerator =
+            new MagnetometerMeasurementsGenerator(magnetometerListener);
 
     /**
      * Indicates whether generator is running or not.
      */
-    private boolean mRunning;
+    private boolean running;
 
     /**
      * Timed body kinematics instance to be reused.
      */
-    private final TimedBodyKinematics mTimedKinematics = new TimedBodyKinematics();
+    private final TimedBodyKinematics timedKinematics = new TimedBodyKinematics();
 
     /**
      * Constructor.
@@ -298,7 +298,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
     public AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator(
             final AccelerometerGyroscopeAndMagnetometerMeasurementsGeneratorListener listener) {
         this();
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -307,7 +307,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @return time interval between input samples.
      */
     public double getTimeInterval() {
-        return mAccelerometerMeasurementsGenerator.getTimeInterval();
+        return accelerometerMeasurementsGenerator.getTimeInterval();
     }
 
     /**
@@ -318,7 +318,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @throws LockedException          if generator is currently running.
      */
     public void setTimeInterval(final double timeInterval) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
@@ -326,9 +326,9 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
             throw new IllegalArgumentException();
         }
 
-        mAccelerometerMeasurementsGenerator.setTimeInterval(timeInterval);
-        mGyroscopeMeasurementsGenerator.setTimeInterval(timeInterval);
-        mMagnetometerMeasurementsGenerator.setTimeInterval(timeInterval);
+        accelerometerMeasurementsGenerator.setTimeInterval(timeInterval);
+        gyroscopeMeasurementsGenerator.setTimeInterval(timeInterval);
+        magnetometerMeasurementsGenerator.setTimeInterval(timeInterval);
     }
 
     /**
@@ -358,8 +358,8 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @throws LockedException          if estimator is currently running.
      */
     public void setTimeInterval(final Time timeInterval) throws LockedException {
-        setTimeInterval(TimeConverter.convert(timeInterval.getValue().doubleValue(),
-                timeInterval.getUnit(), TimeUnit.SECOND));
+        setTimeInterval(TimeConverter.convert(timeInterval.getValue().doubleValue(), timeInterval.getUnit(),
+                TimeUnit.SECOND));
     }
 
     /**
@@ -369,7 +369,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @return minimum number of samples required in a static interval to be taken into account.
      */
     public int getMinStaticSamples() {
-        return mAccelerometerMeasurementsGenerator.getMinStaticSamples();
+        return accelerometerMeasurementsGenerator.getMinStaticSamples();
     }
 
     /**
@@ -382,13 +382,13 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @throws IllegalArgumentException if provided value is less than 2.
      */
     public void setMinStaticSamples(final int minStaticSamples) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mAccelerometerMeasurementsGenerator.setMinStaticSamples(minStaticSamples);
-        mGyroscopeMeasurementsGenerator.setMinStaticSamples(minStaticSamples);
-        mMagnetometerMeasurementsGenerator.setMinStaticSamples(minStaticSamples);
+        accelerometerMeasurementsGenerator.setMinStaticSamples(minStaticSamples);
+        gyroscopeMeasurementsGenerator.setMinStaticSamples(minStaticSamples);
+        magnetometerMeasurementsGenerator.setMinStaticSamples(minStaticSamples);
     }
 
     /**
@@ -397,7 +397,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @return maximum number of samples allowed in dynamic intervals.
      */
     public int getMaxDynamicSamples() {
-        return mAccelerometerMeasurementsGenerator.getMaxDynamicSamples();
+        return accelerometerMeasurementsGenerator.getMaxDynamicSamples();
     }
 
     /**
@@ -408,13 +408,13 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @throws IllegalArgumentException if provided value is less than 2.
      */
     public void setMaxDynamicSamples(final int maxDynamicSamples) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mAccelerometerMeasurementsGenerator.setMaxDynamicSamples(maxDynamicSamples);
-        mGyroscopeMeasurementsGenerator.setMaxDynamicSamples(maxDynamicSamples);
-        mMagnetometerMeasurementsGenerator.setMaxDynamicSamples(maxDynamicSamples);
+        accelerometerMeasurementsGenerator.setMaxDynamicSamples(maxDynamicSamples);
+        gyroscopeMeasurementsGenerator.setMaxDynamicSamples(maxDynamicSamples);
+        magnetometerMeasurementsGenerator.setMaxDynamicSamples(maxDynamicSamples);
     }
 
     /**
@@ -423,7 +423,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @return listener to handle generated events.
      */
     public AccelerometerGyroscopeAndMagnetometerMeasurementsGeneratorListener getListener() {
-        return mListener;
+        return listener;
     }
 
     /**
@@ -434,11 +434,11 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      */
     public void setListener(final AccelerometerGyroscopeAndMagnetometerMeasurementsGeneratorListener listener)
             throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -448,7 +448,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @return length of number of samples to keep within the window.
      */
     public int getWindowSize() {
-        return mAccelerometerMeasurementsGenerator.getWindowSize();
+        return accelerometerMeasurementsGenerator.getWindowSize();
     }
 
     /**
@@ -462,13 +462,13 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @throws IllegalArgumentException if provided value is not valid.
      */
     public void setWindowSize(final int windowSize) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mAccelerometerMeasurementsGenerator.setWindowSize(windowSize);
-        mGyroscopeMeasurementsGenerator.setWindowSize(windowSize);
-        mMagnetometerMeasurementsGenerator.setWindowSize(windowSize);
+        accelerometerMeasurementsGenerator.setWindowSize(windowSize);
+        gyroscopeMeasurementsGenerator.setWindowSize(windowSize);
+        magnetometerMeasurementsGenerator.setWindowSize(windowSize);
     }
 
     /**
@@ -478,7 +478,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @return number of samples to be processed initially.
      */
     public int getInitialStaticSamples() {
-        return mAccelerometerMeasurementsGenerator.getInitialStaticSamples();
+        return accelerometerMeasurementsGenerator.getInitialStaticSamples();
     }
 
     /**
@@ -491,13 +491,13 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      *                                  {@link TriadStaticIntervalDetector#MINIMUM_INITIAL_STATIC_SAMPLES}
      */
     public void setInitialStaticSamples(final int initialStaticSamples) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mAccelerometerMeasurementsGenerator.setInitialStaticSamples(initialStaticSamples);
-        mGyroscopeMeasurementsGenerator.setInitialStaticSamples(initialStaticSamples);
-        mMagnetometerMeasurementsGenerator.setInitialStaticSamples(initialStaticSamples);
+        accelerometerMeasurementsGenerator.setInitialStaticSamples(initialStaticSamples);
+        gyroscopeMeasurementsGenerator.setInitialStaticSamples(initialStaticSamples);
+        magnetometerMeasurementsGenerator.setInitialStaticSamples(initialStaticSamples);
     }
 
     /**
@@ -508,7 +508,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @return factor to be applied to detected base noise level.
      */
     public double getThresholdFactor() {
-        return mAccelerometerMeasurementsGenerator.getThresholdFactor();
+        return accelerometerMeasurementsGenerator.getThresholdFactor();
     }
 
     /**
@@ -521,13 +521,13 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @throws IllegalArgumentException if provided value is zero or negative.
      */
     public void setThresholdFactor(final double thresholdFactor) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mAccelerometerMeasurementsGenerator.setThresholdFactor(thresholdFactor);
-        mGyroscopeMeasurementsGenerator.setThresholdFactor(thresholdFactor);
-        mMagnetometerMeasurementsGenerator.setThresholdFactor(thresholdFactor);
+        accelerometerMeasurementsGenerator.setThresholdFactor(thresholdFactor);
+        gyroscopeMeasurementsGenerator.setThresholdFactor(thresholdFactor);
+        magnetometerMeasurementsGenerator.setThresholdFactor(thresholdFactor);
     }
 
     /**
@@ -539,7 +539,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @return factor to determine that a sudden movement has occurred.
      */
     public double getInstantaneousNoiseLevelFactor() {
-        return mAccelerometerMeasurementsGenerator.getInstantaneousNoiseLevelFactor();
+        return accelerometerMeasurementsGenerator.getInstantaneousNoiseLevelFactor();
     }
 
     /**
@@ -555,16 +555,13 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @throws IllegalArgumentException if provided value is zero or negative.
      */
     public void setInstantaneousNoiseLevelFactor(final double instantaneousNoiseLevelFactor) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mAccelerometerMeasurementsGenerator.setInstantaneousNoiseLevelFactor(
-                instantaneousNoiseLevelFactor);
-        mGyroscopeMeasurementsGenerator.setInstantaneousNoiseLevelFactor(
-                instantaneousNoiseLevelFactor);
-        mMagnetometerMeasurementsGenerator.setInstantaneousNoiseLevelFactor(
-                instantaneousNoiseLevelFactor);
+        accelerometerMeasurementsGenerator.setInstantaneousNoiseLevelFactor(instantaneousNoiseLevelFactor);
+        gyroscopeMeasurementsGenerator.setInstantaneousNoiseLevelFactor(instantaneousNoiseLevelFactor);
+        magnetometerMeasurementsGenerator.setInstantaneousNoiseLevelFactor(instantaneousNoiseLevelFactor);
     }
 
     /**
@@ -578,7 +575,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * been excessive motion.
      */
     public double getBaseNoiseLevelAbsoluteThreshold() {
-        return mAccelerometerMeasurementsGenerator.getBaseNoiseLevelAbsoluteThreshold();
+        return accelerometerMeasurementsGenerator.getBaseNoiseLevelAbsoluteThreshold();
     }
 
     /**
@@ -596,13 +593,13 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      */
     public void setBaseNoiseLevelAbsoluteThreshold(final double baseNoiseLevelAbsoluteThreshold)
             throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mAccelerometerMeasurementsGenerator.setBaseNoiseLevelAbsoluteThreshold(baseNoiseLevelAbsoluteThreshold);
-        mGyroscopeMeasurementsGenerator.setBaseNoiseLevelAbsoluteThreshold(baseNoiseLevelAbsoluteThreshold);
-        mMagnetometerMeasurementsGenerator.setBaseNoiseLevelAbsoluteThreshold(baseNoiseLevelAbsoluteThreshold);
+        accelerometerMeasurementsGenerator.setBaseNoiseLevelAbsoluteThreshold(baseNoiseLevelAbsoluteThreshold);
+        gyroscopeMeasurementsGenerator.setBaseNoiseLevelAbsoluteThreshold(baseNoiseLevelAbsoluteThreshold);
+        magnetometerMeasurementsGenerator.setBaseNoiseLevelAbsoluteThreshold(baseNoiseLevelAbsoluteThreshold);
     }
 
     /**
@@ -615,7 +612,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * excessive motion.
      */
     public Acceleration getBaseNoiseLevelAbsoluteThresholdAsMeasurement() {
-        return mAccelerometerMeasurementsGenerator.getBaseNoiseLevelAbsoluteThresholdAsMeasurement();
+        return accelerometerMeasurementsGenerator.getBaseNoiseLevelAbsoluteThresholdAsMeasurement();
     }
 
     /**
@@ -627,7 +624,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @param result instance where result will be stored.
      */
     public void getBaseNoiseLevelAbsoluteThresholdAsMeasurement(final Acceleration result) {
-        mAccelerometerMeasurementsGenerator.getBaseNoiseLevelAbsoluteThresholdAsMeasurement(result);
+        accelerometerMeasurementsGenerator.getBaseNoiseLevelAbsoluteThresholdAsMeasurement(result);
     }
 
     /**
@@ -644,13 +641,13 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      */
     public void setBaseNoiseLevelAbsoluteThreshold(final Acceleration baseNoiseLevelAbsoluteThreshold)
             throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mAccelerometerMeasurementsGenerator.setBaseNoiseLevelAbsoluteThreshold(baseNoiseLevelAbsoluteThreshold);
-        mGyroscopeMeasurementsGenerator.setBaseNoiseLevelAbsoluteThreshold(baseNoiseLevelAbsoluteThreshold);
-        mMagnetometerMeasurementsGenerator.setBaseNoiseLevelAbsoluteThreshold(baseNoiseLevelAbsoluteThreshold);
+        accelerometerMeasurementsGenerator.setBaseNoiseLevelAbsoluteThreshold(baseNoiseLevelAbsoluteThreshold);
+        gyroscopeMeasurementsGenerator.setBaseNoiseLevelAbsoluteThreshold(baseNoiseLevelAbsoluteThreshold);
+        magnetometerMeasurementsGenerator.setBaseNoiseLevelAbsoluteThreshold(baseNoiseLevelAbsoluteThreshold);
     }
 
     /**
@@ -659,7 +656,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @return internal status of this generator.
      */
     public TriadStaticIntervalDetector.Status getStatus() {
-        return mAccelerometerMeasurementsGenerator.getStatus();
+        return accelerometerMeasurementsGenerator.getStatus();
     }
 
     /**
@@ -671,7 +668,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @return accelerometer base noise level.
      */
     public double getAccelerometerBaseNoiseLevel() {
-        return mAccelerometerMeasurementsGenerator.getAccelerometerBaseNoiseLevel();
+        return accelerometerMeasurementsGenerator.getAccelerometerBaseNoiseLevel();
     }
 
     /**
@@ -683,7 +680,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @return measurement base noise level.
      */
     public Acceleration getAccelerometerBaseNoiseLevelAsMeasurement() {
-        return mAccelerometerMeasurementsGenerator.getAccelerometerBaseNoiseLevelAsMeasurement();
+        return accelerometerMeasurementsGenerator.getAccelerometerBaseNoiseLevelAsMeasurement();
     }
 
     /**
@@ -693,7 +690,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @param result instance where result will be stored.
      */
     public void getAccelerometerBaseNoiseLevelAsMeasurement(final Acceleration result) {
-        mAccelerometerMeasurementsGenerator.getAccelerometerBaseNoiseLevelAsMeasurement(result);
+        accelerometerMeasurementsGenerator.getAccelerometerBaseNoiseLevelAsMeasurement(result);
     }
 
     /**
@@ -703,7 +700,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @return accelerometer base noise level PSD.
      */
     public double getAccelerometerBaseNoiseLevelPsd() {
-        return mAccelerometerMeasurementsGenerator.getAccelerometerBaseNoiseLevelPsd();
+        return accelerometerMeasurementsGenerator.getAccelerometerBaseNoiseLevelPsd();
     }
 
     /**
@@ -714,7 +711,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      */
     @Override
     public double getAccelerometerBaseNoiseLevelRootPsd() {
-        return mAccelerometerMeasurementsGenerator.getAccelerometerBaseNoiseLevelRootPsd();
+        return accelerometerMeasurementsGenerator.getAccelerometerBaseNoiseLevelRootPsd();
     }
 
     /**
@@ -724,7 +721,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @return threshold to determine static/dynamic period changes.
      */
     public double getThreshold() {
-        return mAccelerometerMeasurementsGenerator.getThreshold();
+        return accelerometerMeasurementsGenerator.getThreshold();
     }
 
     /**
@@ -733,7 +730,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @return threshold to determine static/dynamic period changes.
      */
     public Acceleration getThresholdAsMeasurement() {
-        return mAccelerometerMeasurementsGenerator.getThresholdAsMeasurement();
+        return accelerometerMeasurementsGenerator.getThresholdAsMeasurement();
     }
 
     /**
@@ -742,7 +739,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @param result instance where result will be stored.
      */
     public void getThresholdAsMeasurement(final Acceleration result) {
-        mAccelerometerMeasurementsGenerator.getThresholdAsMeasurement(result);
+        accelerometerMeasurementsGenerator.getThresholdAsMeasurement(result);
     }
 
     /**
@@ -751,7 +748,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @return number of samples that have been processed in a static period so far.
      */
     public int getProcessedStaticSamples() {
-        return mAccelerometerMeasurementsGenerator.getProcessedStaticSamples();
+        return accelerometerMeasurementsGenerator.getProcessedStaticSamples();
     }
 
     /**
@@ -760,7 +757,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @return number of samples that have been processed in a dynamic period so far.
      */
     public int getProcessedDynamicSamples() {
-        return mAccelerometerMeasurementsGenerator.getProcessedDynamicSamples();
+        return accelerometerMeasurementsGenerator.getProcessedDynamicSamples();
     }
 
     /**
@@ -769,7 +766,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @return true if last static interval must be skipped.
      */
     public boolean isStaticIntervalSkipped() {
-        return mAccelerometerMeasurementsGenerator.isStaticIntervalSkipped();
+        return accelerometerMeasurementsGenerator.isStaticIntervalSkipped();
     }
 
     /**
@@ -778,7 +775,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @return true if last dynamic interval must be skipped.
      */
     public boolean isDynamicIntervalSkipped() {
-        return mAccelerometerMeasurementsGenerator.isDynamicIntervalSkipped();
+        return accelerometerMeasurementsGenerator.isDynamicIntervalSkipped();
     }
 
     /**
@@ -787,7 +784,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @return true if generator is running, false otherwise.
      */
     public boolean isRunning() {
-        return mRunning;
+        return running;
     }
 
     /**
@@ -800,20 +797,20 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @throws LockedException if generator is busy processing a previous sample.
      */
     public boolean process(final TimedBodyKinematicsAndMagneticFluxDensity sample) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
         try {
-            mRunning = true;
+            running = true;
 
-            sample.getTimedKinematics(mTimedKinematics);
+            sample.getTimedKinematics(timedKinematics);
 
-            return mAccelerometerMeasurementsGenerator.process(sample.getKinematics())
-                    && mGyroscopeMeasurementsGenerator.process(mTimedKinematics)
-                    && mMagnetometerMeasurementsGenerator.process(sample);
+            return accelerometerMeasurementsGenerator.process(sample.getKinematics())
+                    && gyroscopeMeasurementsGenerator.process(timedKinematics)
+                    && magnetometerMeasurementsGenerator.process(sample);
         } finally {
-            mRunning = false;
+            running = false;
         }
     }
 
@@ -823,16 +820,16 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @throws LockedException if generator is busy.
      */
     public void reset() throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mAccelerometerMeasurementsGenerator.reset();
-        mGyroscopeMeasurementsGenerator.reset();
-        mMagnetometerMeasurementsGenerator.reset();
+        accelerometerMeasurementsGenerator.reset();
+        gyroscopeMeasurementsGenerator.reset();
+        magnetometerMeasurementsGenerator.reset();
 
-        if (mListener != null) {
-            mListener.onReset(this);
+        if (listener != null) {
+            listener.onReset(this);
         }
     }
 
@@ -842,7 +839,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @return estimated average angular rate during initialization phase.
      */
     public AngularSpeedTriad getInitialAvgAngularSpeedTriad() {
-        return mGyroscopeMeasurementsGenerator.getInitialAvgAngularSpeedTriad();
+        return gyroscopeMeasurementsGenerator.getInitialAvgAngularSpeedTriad();
     }
 
     /**
@@ -851,7 +848,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @param result instance where result will be stored.
      */
     public void getInitialAvgAngularSpeedTriad(final AngularSpeedTriad result) {
-        mGyroscopeMeasurementsGenerator.getInitialAvgAngularSpeedTriad(result);
+        gyroscopeMeasurementsGenerator.getInitialAvgAngularSpeedTriad(result);
     }
 
     /**
@@ -860,7 +857,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @return estimated standard deviation of angular rate during initialization phase.
      */
     public AngularSpeedTriad getInitialAngularSpeedTriadStandardDeviation() {
-        return mGyroscopeMeasurementsGenerator.getInitialAngularSpeedTriadStandardDeviation();
+        return gyroscopeMeasurementsGenerator.getInitialAngularSpeedTriadStandardDeviation();
     }
 
     /**
@@ -869,7 +866,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @param result instance where result will be stored.
      */
     public void getInitialAngularSpeedTriadStandardDeviation(final AngularSpeedTriad result) {
-        mGyroscopeMeasurementsGenerator.getInitialAngularSpeedTriadStandardDeviation(result);
+        gyroscopeMeasurementsGenerator.getInitialAngularSpeedTriadStandardDeviation(result);
     }
 
     /**
@@ -881,7 +878,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @return gyroscope base noise level.
      */
     public double getGyroscopeBaseNoiseLevel() {
-        return mGyroscopeMeasurementsGenerator.getGyroscopeBaseNoiseLevel();
+        return gyroscopeMeasurementsGenerator.getGyroscopeBaseNoiseLevel();
     }
 
     /**
@@ -893,7 +890,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @return gyroscope base noise level.
      */
     public AngularSpeed getGyroscopeBaseNoiseLevelAsMeasurement() {
-        return mGyroscopeMeasurementsGenerator.getGyroscopeBaseNoiseLevelAsMeasurement();
+        return gyroscopeMeasurementsGenerator.getGyroscopeBaseNoiseLevelAsMeasurement();
     }
 
     /**
@@ -905,7 +902,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @param result instance where result will be stored.
      */
     public void getGyroscopeBaseNoiseLevelAsMeasurement(final AngularSpeed result) {
-        mGyroscopeMeasurementsGenerator.getGyroscopeBaseNoiseLevelAsMeasurement(result);
+        gyroscopeMeasurementsGenerator.getGyroscopeBaseNoiseLevelAsMeasurement(result);
     }
 
     /**
@@ -915,7 +912,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      * @return gyroscope base noise level PSD.
      */
     public double getGyroscopeBaseNoiseLevelPsd() {
-        return mGyroscopeMeasurementsGenerator.getGyroscopeBaseNoiseLevelPsd();
+        return gyroscopeMeasurementsGenerator.getGyroscopeBaseNoiseLevelPsd();
     }
 
     /**
@@ -926,6 +923,6 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      */
     @Override
     public double getGyroscopeBaseNoiseLevelRootPsd() {
-        return mGyroscopeMeasurementsGenerator.getGyroscopeBaseNoiseLevelRootPsd();
+        return gyroscopeMeasurementsGenerator.getGyroscopeBaseNoiseLevelRootPsd();
     }
 }

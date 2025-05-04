@@ -96,7 +96,7 @@ public class LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      * lower than the one typically used in LMedS, and yet the algorithm could
      * still produce even smaller thresholds in estimated results.
      */
-    private double mStopThreshold = DEFAULT_STOP_THRESHOLD;
+    private double stopThreshold = DEFAULT_STOP_THRESHOLD;
 
     /**
      * Constructor.
@@ -213,7 +213,7 @@ public class LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      * accuracy has been reached.
      */
     public double getStopThreshold() {
-        return mStopThreshold;
+        return stopThreshold;
     }
 
     /**
@@ -238,14 +238,14 @@ public class LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      * @throws LockedException          if calibrator is currently running.
      */
     public void setStopThreshold(final double stopThreshold) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (stopThreshold <= MIN_STOP_THRESHOLD) {
             throw new IllegalArgumentException();
         }
 
-        mStopThreshold = stopThreshold;
+        this.stopThreshold = stopThreshold;
     }
 
     /**
@@ -259,93 +259,88 @@ public class LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
     @SuppressWarnings("DuplicatedCode")
     @Override
     public void calibrate() throws LockedException, NotReadyException, CalibrationException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (!isReady()) {
             throw new NotReadyException();
         }
 
-        final LMedSRobustEstimator<Matrix> innerEstimator =
-                new LMedSRobustEstimator<>(new LMedSRobustEstimatorListener<>() {
-                    @Override
-                    public int getTotalSamples() {
-                        return mMeasurements.size();
-                    }
-
-                    @Override
-                    public int getSubsetSize() {
-                        return mPreliminarySubsetSize;
-                    }
-
-                    @Override
-                    public void estimatePreliminarSolutions(
-                            final int[] samplesIndices, final List<Matrix> solutions) {
-                        computePreliminarySolutions(samplesIndices, solutions);
-                    }
-
-                    @Override
-                    public double computeResidual(
-                            final Matrix currentEstimation, final int i) {
-                        return computeError(mMeasurements.get(i), currentEstimation);
-                    }
-
-                    @Override
-                    public boolean isReady() {
-                        return LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator.this.isReady();
-                    }
-
-                    @Override
-                    public void onEstimateStart(final RobustEstimator<Matrix> estimator) {
-                        // no action needed
-                    }
-
-                    @Override
-                    public void onEstimateEnd(final RobustEstimator<Matrix> estimator) {
-                        // no action needed
-                    }
-
-                    @Override
-                    public void onEstimateNextIteration(
-                            final RobustEstimator<Matrix> estimator, final int iteration) {
-                        if (mListener != null) {
-                            mListener.onCalibrateNextIteration(
-                                    LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator.this, iteration);
-                        }
-                    }
-
-                    @Override
-                    public void onEstimateProgressChange(
-                            final RobustEstimator<Matrix> estimator, final float progress) {
-                        if (mListener != null) {
-                            mListener.onCalibrateProgressChange(
-                                    LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator.this, progress);
-                        }
-                    }
-                });
-
-        try {
-            mRunning = true;
-
-            if (mListener != null) {
-                mListener.onCalibrateStart(this);
+        final var innerEstimator = new LMedSRobustEstimator<>(new LMedSRobustEstimatorListener<Matrix>() {
+            @Override
+            public int getTotalSamples() {
+                return measurements.size();
             }
 
-            mInliersData = null;
+            @Override
+            public int getSubsetSize() {
+                return preliminarySubsetSize;
+            }
+
+            @Override
+            public void estimatePreliminarSolutions(final int[] samplesIndices, final List<Matrix> solutions) {
+                computePreliminarySolutions(samplesIndices, solutions);
+            }
+
+            @Override
+            public double computeResidual(final Matrix currentEstimation, final int i) {
+                return computeError(measurements.get(i), currentEstimation);
+            }
+
+            @Override
+            public boolean isReady() {
+                return LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator.this.isReady();
+            }
+
+            @Override
+            public void onEstimateStart(final RobustEstimator<Matrix> estimator) {
+                // no action needed
+            }
+
+            @Override
+            public void onEstimateEnd(final RobustEstimator<Matrix> estimator) {
+                // no action needed
+            }
+
+            @Override
+            public void onEstimateNextIteration(final RobustEstimator<Matrix> estimator, final int iteration) {
+                if (listener != null) {
+                    listener.onCalibrateNextIteration(
+                            LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator.this, iteration);
+                }
+            }
+
+            @Override
+            public void onEstimateProgressChange(final RobustEstimator<Matrix> estimator, final float progress) {
+                if (listener != null) {
+                    listener.onCalibrateProgressChange(
+                            LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator.this, progress);
+                }
+            }
+        });
+
+        try {
+            running = true;
+
+            if (listener != null) {
+                listener.onCalibrateStart(this);
+            }
+
+            inliersData = null;
 
             setupWmmEstimator();
 
-            innerEstimator.setConfidence(mConfidence);
-            innerEstimator.setMaxIterations(mMaxIterations);
-            innerEstimator.setProgressDelta(mProgressDelta);
-            innerEstimator.setStopThreshold(mStopThreshold);
-            final Matrix preliminaryResult = innerEstimator.estimate();
-            mInliersData = innerEstimator.getInliersData();
+            innerEstimator.setConfidence(confidence);
+            innerEstimator.setMaxIterations(maxIterations);
+            innerEstimator.setProgressDelta(progressDelta);
+            innerEstimator.setStopThreshold(stopThreshold);
+            final var preliminaryResult = innerEstimator.estimate();
+            inliersData = innerEstimator.getInliersData();
 
             attemptRefine(preliminaryResult);
 
-            if (mListener != null) {
-                mListener.onCalibrateEnd(this);
+            if (listener != null) {
+                listener.onCalibrateEnd(this);
             }
 
         } catch (final com.irurueta.numerical.LockedException e) {
@@ -355,7 +350,7 @@ public class LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
         } catch (final RobustEstimatorException | IOException e) {
             throw new CalibrationException(e);
         } finally {
-            mRunning = false;
+            running = false;
         }
     }
 

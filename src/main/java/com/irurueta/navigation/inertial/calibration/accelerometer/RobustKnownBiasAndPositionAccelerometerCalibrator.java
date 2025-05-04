@@ -28,7 +28,6 @@ import com.irurueta.navigation.frames.NEDVelocity;
 import com.irurueta.navigation.frames.converters.ECEFtoNEDPositionVelocityConverter;
 import com.irurueta.navigation.frames.converters.NEDtoECEFPositionVelocityConverter;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.inertial.ECEFGravity;
 import com.irurueta.navigation.inertial.calibration.AccelerationTriad;
 import com.irurueta.navigation.inertial.calibration.CalibrationException;
 import com.irurueta.navigation.inertial.calibration.StandardDeviationBodyKinematics;
@@ -40,7 +39,6 @@ import com.irurueta.units.AccelerationConverter;
 import com.irurueta.units.AccelerationUnit;
 
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.List;
 
 /**
@@ -149,42 +147,42 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * given position with different unknown orientations and containing the
      * standard deviations of accelerometer and gyroscope measurements.
      */
-    protected List<StandardDeviationBodyKinematics> mMeasurements;
+    protected List<StandardDeviationBodyKinematics> measurements;
 
     /**
      * Listener to be notified of events such as when calibration starts, ends or its
      * progress significantly changes.
      */
-    protected RobustKnownBiasAndPositionAccelerometerCalibratorListener mListener;
+    protected RobustKnownBiasAndPositionAccelerometerCalibratorListener listener;
 
     /**
      * Indicates whether calibrator is running.
      */
-    protected boolean mRunning;
+    protected boolean running;
 
     /**
      * Amount of progress variation before notifying a progress change during calibration.
      */
-    protected float mProgressDelta = DEFAULT_PROGRESS_DELTA;
+    protected float progressDelta = DEFAULT_PROGRESS_DELTA;
 
     /**
      * Amount of confidence expressed as a value between 0.0 and 1.0 (which is equivalent
      * to 100%). The amount of confidence indicates the probability that the estimated
      * result is correct. Usually this value will be close to 1.0, but not exactly 1.0.
      */
-    protected double mConfidence = DEFAULT_CONFIDENCE;
+    protected double confidence = DEFAULT_CONFIDENCE;
 
     /**
      * Maximum allowed number of iterations. When the maximum number of iterations is
      * exceeded, result will not be available, however an approximate result will be
      * available for retrieval.
      */
-    protected int mMaxIterations = DEFAULT_MAX_ITERATIONS;
+    protected int maxIterations = DEFAULT_MAX_ITERATIONS;
 
     /**
      * Data related to inliers found after calibration.
      */
-    protected InliersData mInliersData;
+    protected InliersData inliersData;
 
     /**
      * Indicates whether result must be refined using a non linear calibrator over
@@ -192,87 +190,87 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * If true, inliers will be computed and kept in any implementation regardless of the
      * settings.
      */
-    protected boolean mRefineResult = DEFAULT_REFINE_RESULT;
+    protected boolean refineResult = DEFAULT_REFINE_RESULT;
 
     /**
      * Size of subsets to be checked during robust estimation.
      */
-    protected int mPreliminarySubsetSize = MINIMUM_MEASUREMENTS_GENERAL;
+    protected int preliminarySubsetSize = MINIMUM_MEASUREMENTS_GENERAL;
 
     /**
      * This flag indicates whether z-axis is assumed to be common for accelerometer
      * and gyroscope.
      * When enabled, this eliminates 3 variables from Ma matrix.
      */
-    private boolean mCommonAxisUsed = DEFAULT_USE_COMMON_Z_AXIS;
+    private boolean commonAxisUsed = DEFAULT_USE_COMMON_Z_AXIS;
 
     /**
      * X-coordinate of known accelerometer bias.
      * This is expressed in meters per squared second (m/s^2).
      */
-    private double mBiasX;
+    private double biasX;
 
     /**
      * Y-coordinate of known accelerometer bias.
      * This is expressed in meters per squared second (m/s^2).
      */
-    private double mBiasY;
+    private double biasY;
 
     /**
      * Z-coordinate of known accelerometer bias.
      * This is expressed in meters per squared second (m/s^2).
      */
-    private double mBiasZ;
+    private double biasZ;
 
     /**
      * Initial x scaling factor.
      */
-    private double mInitialSx;
+    private double initialSx;
 
     /**
      * Initial y scaling factor.
      */
-    private double mInitialSy;
+    private double initialSy;
 
     /**
      * Initial z scaling factor.
      */
-    private double mInitialSz;
+    private double initialSz;
 
     /**
      * Initial x-y cross coupling error.
      */
-    private double mInitialMxy;
+    private double initialMxy;
 
     /**
      * Initial x-z cross coupling error.
      */
-    private double mInitialMxz;
+    private double initialMxz;
 
     /**
      * Initial y-x cross coupling error.
      */
-    private double mInitialMyx;
+    private double initialMyx;
 
     /**
      * Initial y-z cross coupling error.
      */
-    private double mInitialMyz;
+    private double initialMyz;
 
     /**
      * Initial z-x cross coupling error.
      */
-    private double mInitialMzx;
+    private double initialMzx;
 
     /**
      * Initial z-y cross coupling error.
      */
-    private double mInitialMzy;
+    private double initialMzy;
 
     /**
      * Position where body kinematics measures have been taken.
      */
-    private ECEFPosition mPosition;
+    private ECEFPosition position;
 
     /**
      * Estimated accelerometer scale factors and cross coupling errors.
@@ -313,66 +311,66 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * </pre>
      * Values of this matrix are unit-less.
      */
-    private Matrix mEstimatedMa;
+    private Matrix estimatedMa;
 
     /**
      * Indicates whether covariance must be kept after refining result.
      * This setting is only taken into account if result is refined.
      */
-    private boolean mKeepCovariance = DEFAULT_KEEP_COVARIANCE;
+    private boolean keepCovariance = DEFAULT_KEEP_COVARIANCE;
 
     /**
      * Estimated covariance of estimated position.
      * This is only available when result has been refined and covariance is kept.
      */
-    private Matrix mEstimatedCovariance;
+    private Matrix estimatedCovariance;
 
     /**
      * Estimated chi square value.
      */
-    private double mEstimatedChiSq;
+    private double estimatedChiSq;
 
     /**
      * Estimated mean square error respect to provided measurements.
      */
-    private double mEstimatedMse;
+    private double estimatedMse;
 
     /**
      * Inner calibrator to compute calibration for each subset of data or during
      * final refining.
      */
-    private final KnownBiasAndPositionAccelerometerCalibrator mInnerCalibrator =
+    private final KnownBiasAndPositionAccelerometerCalibrator innerCalibrator =
             new KnownBiasAndPositionAccelerometerCalibrator();
 
     /**
      * Contains gravity norm for current position to be reused during calibration.
      */
-    protected double mGravityNorm;
+    protected double gravityNorm;
 
     /**
      * Contains 3x3 identify to be reused.
      */
-    protected Matrix mIdentity;
+    protected Matrix identity;
 
     /**
      * Contains 3x3 temporary matrix.
      */
-    protected Matrix mTmp1;
+    protected Matrix tmp1;
 
     /**
      * Contains 3x3 temporary matrix.
      */
-    protected Matrix mTmp2;
+    protected Matrix tmp2;
 
     /**
      * Contains 3x1 temporary matrix.
      */
-    protected Matrix mTmp3;
+    protected Matrix tmp3;
 
     /**
      * Contains 3x1 temporary matrix.
      */
-    protected Matrix mTmp4;
+    protected Matrix tmp4;
 
     /**
      * Constructor.
@@ -388,7 +386,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -400,7 +398,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final List<StandardDeviationBodyKinematics> measurements) {
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -410,7 +408,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      *                       accelerometer and gyroscope.
      */
     protected RobustKnownBiasAndPositionAccelerometerCalibrator(final boolean commonAxisUsed) {
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -465,7 +463,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @param position position where body kinematics measures have been taken.
      */
     protected RobustKnownBiasAndPositionAccelerometerCalibrator(final ECEFPosition position) {
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -479,7 +477,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
     protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements) {
         this(measurements);
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -496,8 +494,8 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
             final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         this(measurements);
-        mPosition = position;
-        mListener = listener;
+        this.position = position;
+        this.listener = listener;
     }
 
     /**
@@ -514,8 +512,8 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
             final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed) {
         this(measurements);
-        mPosition = position;
-        mCommonAxisUsed = commonAxisUsed;
+        this.position = position;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -534,7 +532,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
             final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         this(position, measurements, commonAxisUsed);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -552,8 +550,8 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
             final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final double[] bias) {
         this(bias);
-        mPosition = position;
-        mMeasurements = measurements;
+        this.position = position;
+        this.measurements = measurements;
     }
 
     /**
@@ -572,7 +570,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
             final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final double[] bias, final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         this(position, measurements, bias);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -592,7 +590,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
             final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] bias) {
         this(position, measurements, bias);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -614,7 +612,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
             final boolean commonAxisUsed, final double[] bias,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         this(position, measurements, commonAxisUsed, bias);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -631,8 +629,8 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
             final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias) {
         this(bias);
-        mPosition = position;
-        mMeasurements = measurements;
+        this.position = position;
+        this.measurements = measurements;
     }
 
     /**
@@ -650,7 +648,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
             final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias, final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         this(position, measurements, bias);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -669,7 +667,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
             final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias) {
         this(position, measurements, bias);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -690,7 +688,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
             final boolean commonAxisUsed, final Matrix bias,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         this(position, measurements, commonAxisUsed, bias);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -709,8 +707,8 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
             final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias, final Matrix initialMa) {
         this(bias, initialMa);
-        mPosition = position;
-        mMeasurements = measurements;
+        this.position = position;
+        this.measurements = measurements;
     }
 
     /**
@@ -731,7 +729,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
             final Matrix bias, final Matrix initialMa,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         this(position, measurements, bias, initialMa);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -752,7 +750,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
             final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias, final Matrix initialMa) {
         this(position, measurements, bias, initialMa);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -775,7 +773,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
             final boolean commonAxisUsed, final Matrix bias, final Matrix initialMa,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         this(position, measurements, commonAxisUsed, bias, initialMa);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -784,7 +782,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @param position position where body kinematics measures have been taken.
      */
     protected RobustKnownBiasAndPositionAccelerometerCalibrator(final NEDPosition position) {
-        mPosition = convertPosition(position);
+        this.position = convertPosition(position);
     }
 
     /**
@@ -1083,7 +1081,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public double getBiasX() {
-        return mBiasX;
+        return biasX;
     }
 
     /**
@@ -1095,10 +1093,10 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public void setBiasX(final double biasX) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mBiasX = biasX;
+        this.biasX = biasX;
     }
 
     /**
@@ -1109,7 +1107,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public double getBiasY() {
-        return mBiasY;
+        return biasY;
     }
 
     /**
@@ -1121,10 +1119,10 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public void setBiasY(final double biasY) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mBiasY = biasY;
+        this.biasY = biasY;
     }
 
     /**
@@ -1135,7 +1133,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public double getBiasZ() {
-        return mBiasZ;
+        return biasZ;
     }
 
     /**
@@ -1147,10 +1145,10 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public void setBiasZ(final double biasZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mBiasZ = biasZ;
+        this.biasZ = biasZ;
     }
 
     /**
@@ -1160,7 +1158,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public Acceleration getBiasXAsAcceleration() {
-        return new Acceleration(mBiasX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -1170,7 +1168,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public void getBiasXAsAcceleration(final Acceleration result) {
-        result.setValue(mBiasX);
+        result.setValue(biasX);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -1182,10 +1180,10 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public void setBiasX(final Acceleration biasX) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mBiasX = convertAcceleration(biasX);
+        this.biasX = convertAcceleration(biasX);
     }
 
     /**
@@ -1195,7 +1193,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public Acceleration getBiasYAsAcceleration() {
-        return new Acceleration(mBiasY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -1205,7 +1203,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public void getBiasYAsAcceleration(final Acceleration result) {
-        result.setValue(mBiasY);
+        result.setValue(biasY);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -1217,10 +1215,10 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public void setBiasY(final Acceleration biasY) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mBiasY = convertAcceleration(biasY);
+        this.biasY = convertAcceleration(biasY);
     }
 
     /**
@@ -1230,7 +1228,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public Acceleration getBiasZAsAcceleration() {
-        return new Acceleration(mBiasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -1240,7 +1238,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public void getBiasZAsAcceleration(final Acceleration result) {
-        result.setValue(mBiasZ);
+        result.setValue(biasZ);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -1252,10 +1250,10 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public void setBiasZ(final Acceleration biasZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mBiasZ = convertAcceleration(biasZ);
+        this.biasZ = convertAcceleration(biasZ);
     }
 
     /**
@@ -1269,12 +1267,12 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public void setBiasCoordinates(final double biasX, final double biasY, final double biasZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mBiasX = biasX;
-        mBiasY = biasY;
-        mBiasZ = biasZ;
+        this.biasX = biasX;
+        this.biasY = biasY;
+        this.biasZ = biasZ;
     }
 
     /**
@@ -1288,12 +1286,12 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
     @Override
     public void setBiasCoordinates(final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ)
             throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mBiasX = convertAcceleration(biasX);
-        mBiasY = convertAcceleration(biasY);
-        mBiasZ = convertAcceleration(biasZ);
+        this.biasX = convertAcceleration(biasX);
+        this.biasY = convertAcceleration(biasY);
+        this.biasZ = convertAcceleration(biasZ);
     }
 
     /**
@@ -1303,7 +1301,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public AccelerationTriad getBiasAsTriad() {
-        return new AccelerationTriad(AccelerationUnit.METERS_PER_SQUARED_SECOND, mBiasX, mBiasY, mBiasZ);
+        return new AccelerationTriad(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasX, biasY, biasZ);
     }
 
     /**
@@ -1313,7 +1311,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public void getBiasAsTriad(final AccelerationTriad result) {
-        result.setValueCoordinatesAndUnit(mBiasX, mBiasY, mBiasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        result.setValueCoordinatesAndUnit(biasX, biasY, biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -1324,13 +1322,13 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public void setBias(final AccelerationTriad bias) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mBiasX = convertAcceleration(bias.getValueX(), bias.getUnit());
-        mBiasY = convertAcceleration(bias.getValueY(), bias.getUnit());
-        mBiasZ = convertAcceleration(bias.getValueZ(), bias.getUnit());
+        biasX = convertAcceleration(bias.getValueX(), bias.getUnit());
+        biasY = convertAcceleration(bias.getValueY(), bias.getUnit());
+        biasZ = convertAcceleration(bias.getValueZ(), bias.getUnit());
     }
 
     /**
@@ -1340,7 +1338,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public double getInitialSx() {
-        return mInitialSx;
+        return initialSx;
     }
 
     /**
@@ -1351,10 +1349,10 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public void setInitialSx(final double initialSx) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialSx = initialSx;
+        this.initialSx = initialSx;
     }
 
     /**
@@ -1365,7 +1363,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public double getInitialSy() {
-        return mInitialSy;
+        return initialSy;
     }
 
     /**
@@ -1377,10 +1375,10 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public void setInitialSy(final double initialSy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialSy = initialSy;
+        this.initialSy = initialSy;
     }
 
     /**
@@ -1391,7 +1389,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public double getInitialSz() {
-        return mInitialSz;
+        return initialSz;
     }
 
     /**
@@ -1403,10 +1401,10 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public void setInitialSz(final double initialSz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialSz = initialSz;
+        this.initialSz = initialSz;
     }
 
     /**
@@ -1417,7 +1415,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public double getInitialMxy() {
-        return mInitialMxy;
+        return initialMxy;
     }
 
     /**
@@ -1429,10 +1427,10 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public void setInitialMxy(final double initialMxy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMxy = initialMxy;
+        this.initialMxy = initialMxy;
     }
 
     /**
@@ -1443,7 +1441,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public double getInitialMxz() {
-        return mInitialMxz;
+        return initialMxz;
     }
 
     /**
@@ -1455,10 +1453,10 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public void setInitialMxz(final double initialMxz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMxz = initialMxz;
+        this.initialMxz = initialMxz;
     }
 
     /**
@@ -1469,7 +1467,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public double getInitialMyx() {
-        return mInitialMyx;
+        return initialMyx;
     }
 
     /**
@@ -1481,10 +1479,10 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public void setInitialMyx(final double initialMyx) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMyx = initialMyx;
+        this.initialMyx = initialMyx;
     }
 
     /**
@@ -1495,7 +1493,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public double getInitialMyz() {
-        return mInitialMyz;
+        return initialMyz;
     }
 
     /**
@@ -1507,10 +1505,10 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public void setInitialMyz(final double initialMyz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMyz = initialMyz;
+        this.initialMyz = initialMyz;
     }
 
     /**
@@ -1521,7 +1519,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public double getInitialMzx() {
-        return mInitialMzx;
+        return initialMzx;
     }
 
     /**
@@ -1533,10 +1531,10 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public void setInitialMzx(final double initialMzx) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMzx = initialMzx;
+        this.initialMzx = initialMzx;
     }
 
     /**
@@ -1547,7 +1545,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public double getInitialMzy() {
-        return mInitialMzy;
+        return initialMzy;
     }
 
     /**
@@ -1559,10 +1557,10 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public void setInitialMzy(final double initialMzy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMzy = initialMzy;
+        this.initialMzy = initialMzy;
     }
 
     /**
@@ -1577,12 +1575,12 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
     @Override
     public void setInitialScalingFactors(final double initialSx, final double initialSy, final double initialSz)
             throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialSx = initialSx;
-        mInitialSy = initialSy;
-        mInitialSz = initialSz;
+        this.initialSx = initialSx;
+        this.initialSy = initialSy;
+        this.initialSz = initialSz;
     }
 
     /**
@@ -1601,15 +1599,15 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
     public void setInitialCrossCouplingErrors(
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMxy = initialMxy;
-        mInitialMxz = initialMxz;
-        mInitialMyx = initialMyx;
-        mInitialMyz = initialMyz;
-        mInitialMzx = initialMzx;
-        mInitialMzy = initialMzy;
+        this.initialMxy = initialMxy;
+        this.initialMxz = initialMxz;
+        this.initialMyx = initialMyx;
+        this.initialMyz = initialMyz;
+        this.initialMzx = initialMzx;
+        this.initialMzy = initialMzy;
     }
 
     /**
@@ -1632,7 +1630,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
             final double initialSx, final double initialSy, final double initialSz,
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         setInitialScalingFactors(initialSx, initialSy, initialSz);
@@ -1647,7 +1645,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public double[] getBias() {
-        final double[] result = new double[BodyKinematics.COMPONENTS];
+        final var result = new double[BodyKinematics.COMPONENTS];
         getBias(result);
         return result;
     }
@@ -1664,9 +1662,9 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
         if (result.length != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        result[0] = mBiasX;
-        result[1] = mBiasY;
-        result[2] = mBiasZ;
+        result[0] = biasX;
+        result[1] = biasY;
+        result[2] = biasZ;
     }
 
     /**
@@ -1679,16 +1677,16 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public void setBias(final double[] bias) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
         if (bias.length != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        mBiasX = bias[0];
-        mBiasY = bias[1];
-        mBiasZ = bias[2];
+        biasX = bias[0];
+        biasY = bias[1];
+        biasZ = bias[2];
     }
 
     /**
@@ -1720,9 +1718,9 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
         if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
-        result.setElementAtIndex(0, mBiasX);
-        result.setElementAtIndex(1, mBiasY);
-        result.setElementAtIndex(2, mBiasZ);
+        result.setElementAtIndex(0, biasX);
+        result.setElementAtIndex(1, biasY);
+        result.setElementAtIndex(2, biasZ);
     }
 
     /**
@@ -1734,16 +1732,16 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public void setBias(final Matrix bias) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (bias.getRows() != BodyKinematics.COMPONENTS || bias.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
-        mBiasX = bias.getElementAtIndex(0);
-        mBiasY = bias.getElementAtIndex(1);
-        mBiasZ = bias.getElementAtIndex(2);
+        biasX = bias.getElementAtIndex(0);
+        biasY = bias.getElementAtIndex(1);
+        biasZ = bias.getElementAtIndex(2);
     }
 
     /**
@@ -1777,17 +1775,17 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
         if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        result.setElementAtIndex(0, mInitialSx);
-        result.setElementAtIndex(1, mInitialMyx);
-        result.setElementAtIndex(2, mInitialMzx);
+        result.setElementAtIndex(0, initialSx);
+        result.setElementAtIndex(1, initialMyx);
+        result.setElementAtIndex(2, initialMzx);
 
-        result.setElementAtIndex(3, mInitialMxy);
-        result.setElementAtIndex(4, mInitialSy);
-        result.setElementAtIndex(5, mInitialMzy);
+        result.setElementAtIndex(3, initialMxy);
+        result.setElementAtIndex(4, initialSy);
+        result.setElementAtIndex(5, initialMzy);
 
-        result.setElementAtIndex(6, mInitialMxz);
-        result.setElementAtIndex(7, mInitialMyz);
-        result.setElementAtIndex(8, mInitialSz);
+        result.setElementAtIndex(6, initialMxz);
+        result.setElementAtIndex(7, initialMyz);
+        result.setElementAtIndex(8, initialSz);
     }
 
     /**
@@ -1800,24 +1798,24 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public void setInitialMa(final Matrix initialMa) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (initialMa.getRows() != BodyKinematics.COMPONENTS || initialMa.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
-        mInitialSx = initialMa.getElementAtIndex(0);
-        mInitialMyx = initialMa.getElementAtIndex(1);
-        mInitialMzx = initialMa.getElementAtIndex(2);
+        initialSx = initialMa.getElementAtIndex(0);
+        initialMyx = initialMa.getElementAtIndex(1);
+        initialMzx = initialMa.getElementAtIndex(2);
 
-        mInitialMxy = initialMa.getElementAtIndex(3);
-        mInitialSy = initialMa.getElementAtIndex(4);
-        mInitialMzy = initialMa.getElementAtIndex(5);
+        initialMxy = initialMa.getElementAtIndex(3);
+        initialSy = initialMa.getElementAtIndex(4);
+        initialMzy = initialMa.getElementAtIndex(5);
 
-        mInitialMxz = initialMa.getElementAtIndex(6);
-        mInitialMyz = initialMa.getElementAtIndex(7);
-        mInitialSz = initialMa.getElementAtIndex(8);
+        initialMxz = initialMa.getElementAtIndex(6);
+        initialMyz = initialMa.getElementAtIndex(7);
+        initialSz = initialMa.getElementAtIndex(8);
     }
 
     /**
@@ -1827,7 +1825,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @return position where body kinematics measures have been taken.
      */
     public ECEFPosition getEcefPosition() {
-        return mPosition;
+        return position;
     }
 
     /**
@@ -1838,11 +1836,11 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @throws LockedException if calibrator is currently running.
      */
     public void setPosition(final ECEFPosition position) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -1853,7 +1851,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * not available.
      */
     public NEDPosition getNedPosition() {
-        final NEDPosition result = new NEDPosition();
+        final var result = new NEDPosition();
         return getNedPosition(result) ? result : null;
     }
 
@@ -1866,9 +1864,9 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     public boolean getNedPosition(final NEDPosition result) {
 
-        if (mPosition != null) {
-            final NEDVelocity velocity = new NEDVelocity();
-            ECEFtoNEDPositionVelocityConverter.convertECEFtoNED(mPosition.getX(), mPosition.getY(), mPosition.getZ(),
+        if (position != null) {
+            final var velocity = new NEDVelocity();
+            ECEFtoNEDPositionVelocityConverter.convertECEFtoNED(position.getX(), position.getY(), position.getZ(),
                     0.0, 0.0, 0.0, result, velocity);
             return true;
         } else {
@@ -1884,11 +1882,11 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @throws LockedException if calibrator is currently running.
      */
     public void setPosition(final NEDPosition position) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mPosition = convertPosition(position);
+        this.position = convertPosition(position);
     }
 
     /**
@@ -1900,7 +1898,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public List<StandardDeviationBodyKinematics> getMeasurements() {
-        return mMeasurements;
+        return measurements;
     }
 
     /**
@@ -1913,10 +1911,10 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public void setMeasurements(final List<StandardDeviationBodyKinematics> measurements) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1950,7 +1948,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public boolean isCommonAxisUsed() {
-        return mCommonAxisUsed;
+        return commonAxisUsed;
     }
 
     /**
@@ -1964,11 +1962,11 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public void setCommonAxisUsed(final boolean commonAxisUsed) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -1977,7 +1975,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @return listener to handle events raised by this estimator.
      */
     public RobustKnownBiasAndPositionAccelerometerCalibratorListener getListener() {
-        return mListener;
+        return listener;
     }
 
     /**
@@ -1988,11 +1986,11 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     public void setListener(final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener)
             throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2002,7 +2000,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public int getMinimumRequiredMeasurements() {
-        return mCommonAxisUsed ? MINIMUM_MEASUREMENTS_COMMON_Z_AXIS : MINIMUM_MEASUREMENTS_GENERAL;
+        return commonAxisUsed ? MINIMUM_MEASUREMENTS_COMMON_Z_AXIS : MINIMUM_MEASUREMENTS_GENERAL;
     }
 
     /**
@@ -2012,7 +2010,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public boolean isReady() {
-        return mMeasurements != null && mMeasurements.size() >= getMinimumRequiredMeasurements() && mPosition != null;
+        return measurements != null && measurements.size() >= getMinimumRequiredMeasurements() && position != null;
     }
 
     /**
@@ -2022,7 +2020,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public boolean isRunning() {
-        return mRunning;
+        return running;
     }
 
     /**
@@ -2033,7 +2031,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * calibration.
      */
     public float getProgressDelta() {
-        return mProgressDelta;
+        return progressDelta;
     }
 
     /**
@@ -2046,13 +2044,13 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @throws LockedException          if calibrator is currently running.
      */
     public void setProgressDelta(final float progressDelta) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (progressDelta < MIN_PROGRESS_DELTA || progressDelta > MAX_PROGRESS_DELTA) {
             throw new IllegalArgumentException();
         }
-        mProgressDelta = progressDelta;
+        this.progressDelta = progressDelta;
     }
 
     /**
@@ -2064,7 +2062,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @return amount of confidence as a value between 0.0 and 1.0.
      */
     public double getConfidence() {
-        return mConfidence;
+        return confidence;
     }
 
     /**
@@ -2078,13 +2076,13 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @throws LockedException          if calibrator is currently running.
      */
     public void setConfidence(final double confidence) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (confidence < MIN_CONFIDENCE || confidence > MAX_CONFIDENCE) {
             throw new IllegalArgumentException();
         }
-        mConfidence = confidence;
+        this.confidence = confidence;
     }
 
     /**
@@ -2095,7 +2093,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @return maximum allowed number of iterations.
      */
     public int getMaxIterations() {
-        return mMaxIterations;
+        return maxIterations;
     }
 
     /**
@@ -2108,13 +2106,13 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @throws LockedException          if calibrator is currently running.
      */
     public void setMaxIterations(final int maxIterations) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (maxIterations < MIN_ITERATIONS) {
             throw new IllegalArgumentException();
         }
-        mMaxIterations = maxIterations;
+        this.maxIterations = maxIterations;
     }
 
     /**
@@ -2123,7 +2121,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @return data related to inliers found after estimation.
      */
     public InliersData getInliersData() {
-        return mInliersData;
+        return inliersData;
     }
 
     /**
@@ -2133,7 +2131,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * without further refining.
      */
     public boolean isResultRefined() {
-        return mRefineResult;
+        return refineResult;
     }
 
     /**
@@ -2144,10 +2142,10 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @throws LockedException if calibrator is currently running.
      */
     public void setResultRefined(final boolean refineResult) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mRefineResult = refineResult;
+        this.refineResult = refineResult;
     }
 
     /**
@@ -2157,7 +2155,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @return true if covariance must be kept after refining result, false otherwise.
      */
     public boolean isCovarianceKept() {
-        return mKeepCovariance;
+        return keepCovariance;
     }
 
     /**
@@ -2169,10 +2167,10 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @throws LockedException if calibrator is currently running.
      */
     public void setCovarianceKept(final boolean keepCovariance) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mKeepCovariance = keepCovariance;
+        this.keepCovariance = keepCovariance;
     }
 
     /**
@@ -2248,7 +2246,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public Matrix getEstimatedMa() {
-        return mEstimatedMa;
+        return estimatedMa;
     }
 
     /**
@@ -2258,7 +2256,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public Double getEstimatedSx() {
-        return mEstimatedMa != null ? mEstimatedMa.getElementAt(0, 0) : null;
+        return estimatedMa != null ? estimatedMa.getElementAt(0, 0) : null;
     }
 
     /**
@@ -2268,7 +2266,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public Double getEstimatedSy() {
-        return mEstimatedMa != null ? mEstimatedMa.getElementAt(1, 1) : null;
+        return estimatedMa != null ? estimatedMa.getElementAt(1, 1) : null;
     }
 
     /**
@@ -2278,7 +2276,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public Double getEstimatedSz() {
-        return mEstimatedMa != null ? mEstimatedMa.getElementAt(2, 2) : null;
+        return estimatedMa != null ? estimatedMa.getElementAt(2, 2) : null;
     }
 
     /**
@@ -2288,7 +2286,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public Double getEstimatedMxy() {
-        return mEstimatedMa != null ? mEstimatedMa.getElementAt(0, 1) : null;
+        return estimatedMa != null ? estimatedMa.getElementAt(0, 1) : null;
     }
 
     /**
@@ -2298,7 +2296,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public Double getEstimatedMxz() {
-        return mEstimatedMa != null ? mEstimatedMa.getElementAt(0, 2) : null;
+        return estimatedMa != null ? estimatedMa.getElementAt(0, 2) : null;
     }
 
     /**
@@ -2308,7 +2306,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public Double getEstimatedMyx() {
-        return mEstimatedMa != null ? mEstimatedMa.getElementAt(1, 0) : null;
+        return estimatedMa != null ? estimatedMa.getElementAt(1, 0) : null;
     }
 
     /**
@@ -2318,7 +2316,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public Double getEstimatedMyz() {
-        return mEstimatedMa != null ? mEstimatedMa.getElementAt(1, 2) : null;
+        return estimatedMa != null ? estimatedMa.getElementAt(1, 2) : null;
     }
 
     /**
@@ -2328,7 +2326,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public Double getEstimatedMzx() {
-        return mEstimatedMa != null ? mEstimatedMa.getElementAt(2, 0) : null;
+        return estimatedMa != null ? estimatedMa.getElementAt(2, 0) : null;
     }
 
     /**
@@ -2338,7 +2336,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public Double getEstimatedMzy() {
-        return mEstimatedMa != null ? mEstimatedMa.getElementAt(2, 1) : null;
+        return estimatedMa != null ? estimatedMa.getElementAt(2, 1) : null;
     }
 
     /**
@@ -2353,7 +2351,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public Matrix getEstimatedCovariance() {
-        return mEstimatedCovariance;
+        return estimatedCovariance;
     }
 
     /**
@@ -2363,7 +2361,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public double getEstimatedChiSq() {
-        return mEstimatedChiSq;
+        return estimatedChiSq;
     }
 
     /**
@@ -2373,7 +2371,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     @Override
     public double getEstimatedMse() {
-        return mEstimatedMse;
+        return estimatedMse;
     }
 
     /**
@@ -2383,7 +2381,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @return size of subsets to be checked during robust estimation.
      */
     public int getPreliminarySubsetSize() {
-        return mPreliminarySubsetSize;
+        return preliminarySubsetSize;
     }
 
     /**
@@ -2395,14 +2393,14 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @throws IllegalArgumentException if provided value is less than {@link #getMinimumRequiredMeasurements()}.
      */
     public void setPreliminarySubsetSize(final int preliminarySubsetSize) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (preliminarySubsetSize < getMinimumRequiredMeasurements()) {
             throw new IllegalArgumentException();
         }
 
-        mPreliminarySubsetSize = preliminarySubsetSize;
+        this.preliminarySubsetSize = preliminarySubsetSize;
     }
 
     /**
@@ -5497,45 +5495,45 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
             // position
             // ||ftrue|| = g ~ 9.81 m/s^2
 
-            final Matrix estimatedMa = preliminaryResult.mEstimatedMa;
+            final var estMa = preliminaryResult.estimatedMa;
 
-            if (mIdentity == null) {
-                mIdentity = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+            if (identity == null) {
+                identity = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
             }
 
-            if (mTmp1 == null) {
-                mTmp1 = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+            if (tmp1 == null) {
+                tmp1 = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
             }
 
-            if (mTmp2 == null) {
-                mTmp2 = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+            if (tmp2 == null) {
+                tmp2 = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
             }
 
-            if (mTmp3 == null) {
-                mTmp3 = new Matrix(BodyKinematics.COMPONENTS, 1);
+            if (tmp3 == null) {
+                tmp3 = new Matrix(BodyKinematics.COMPONENTS, 1);
             }
 
-            if (mTmp4 == null) {
-                mTmp4 = new Matrix(BodyKinematics.COMPONENTS, 1);
+            if (tmp4 == null) {
+                tmp4 = new Matrix(BodyKinematics.COMPONENTS, 1);
             }
 
-            mIdentity.add(estimatedMa, mTmp1);
+            identity.add(estMa, tmp1);
 
-            Utils.inverse(mTmp1, mTmp2);
+            Utils.inverse(tmp1, tmp2);
 
-            final BodyKinematics kinematics = measurement.getKinematics();
-            final double fmeasX = kinematics.getFx();
-            final double fmeasY = kinematics.getFy();
-            final double fmeasZ = kinematics.getFz();
+            final var kinematics = measurement.getKinematics();
+            final var fmeasX = kinematics.getFx();
+            final var fmeasY = kinematics.getFy();
+            final var fmeasZ = kinematics.getFz();
 
-            mTmp3.setElementAtIndex(0, fmeasX - mBiasX);
-            mTmp3.setElementAtIndex(1, fmeasY - mBiasY);
-            mTmp3.setElementAtIndex(2, fmeasZ - mBiasZ);
+            tmp3.setElementAtIndex(0, fmeasX - biasX);
+            tmp3.setElementAtIndex(1, fmeasY - biasY);
+            tmp3.setElementAtIndex(2, fmeasZ - biasZ);
 
-            mTmp2.multiply(mTmp3, mTmp4);
+            tmp2.multiply(tmp3, tmp4);
 
-            final double norm = Utils.normF(mTmp4);
-            final double diff = mGravityNorm - norm;
+            final var norm = Utils.normF(tmp4);
+            final var diff = gravityNorm - norm;
 
             return diff * diff;
 
@@ -5553,33 +5551,33 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
     protected void computePreliminarySolutions(
             final int[] samplesIndices, final List<PreliminaryResult> solutions) {
 
-        final List<StandardDeviationBodyKinematics> measurements = new ArrayList<>();
+        final var meas = new ArrayList<StandardDeviationBodyKinematics>();
 
-        for (final int samplesIndex : samplesIndices) {
-            measurements.add(mMeasurements.get(samplesIndex));
+        for (final var samplesIndex : samplesIndices) {
+            meas.add(measurements.get(samplesIndex));
         }
 
         try {
-            final PreliminaryResult result = new PreliminaryResult();
-            result.mEstimatedMa = getInitialMa();
+            final var result = new PreliminaryResult();
+            result.estimatedMa = getInitialMa();
 
-            mInnerCalibrator.setBiasCoordinates(mBiasX, mBiasY, mBiasZ);
-            mInnerCalibrator.setInitialMa(result.mEstimatedMa);
-            mInnerCalibrator.setCommonAxisUsed(mCommonAxisUsed);
-            mInnerCalibrator.setPosition(mPosition);
-            mInnerCalibrator.setMeasurements(measurements);
-            mInnerCalibrator.calibrate();
+            innerCalibrator.setBiasCoordinates(biasX, biasY, biasZ);
+            innerCalibrator.setInitialMa(result.estimatedMa);
+            innerCalibrator.setCommonAxisUsed(commonAxisUsed);
+            innerCalibrator.setPosition(position);
+            innerCalibrator.setMeasurements(meas);
+            innerCalibrator.calibrate();
 
-            result.mEstimatedMa = mInnerCalibrator.getEstimatedMa();
+            result.estimatedMa = innerCalibrator.getEstimatedMa();
 
-            if (mKeepCovariance) {
-                result.mCovariance = mInnerCalibrator.getEstimatedCovariance();
+            if (keepCovariance) {
+                result.covariance = innerCalibrator.getEstimatedCovariance();
             } else {
-                result.mCovariance = null;
+                result.covariance = null;
             }
 
-            result.mEstimatedMse = mInnerCalibrator.getEstimatedMse();
-            result.mEstimatedChiSq = mInnerCalibrator.getEstimatedChiSq();
+            result.estimatedMse = innerCalibrator.getEstimatedMse();
+            result.estimatedChiSq = innerCalibrator.getEstimatedChiSq();
 
             solutions.add(result);
 
@@ -5598,47 +5596,46 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @param preliminaryResult a preliminary result.
      */
     protected void attemptRefine(final PreliminaryResult preliminaryResult) {
-        if (mRefineResult && mInliersData != null) {
-            final BitSet inliers = mInliersData.getInliers();
-            final int nSamples = mMeasurements.size();
+        if (refineResult && inliersData != null) {
+            final var inliers = inliersData.getInliers();
+            final var nSamples = measurements.size();
 
-            final List<StandardDeviationBodyKinematics> inlierMeasurements =
-                    new ArrayList<>();
-            for (int i = 0; i < nSamples; i++) {
+            final var inlierMeasurements = new ArrayList<StandardDeviationBodyKinematics>();
+            for (var i = 0; i < nSamples; i++) {
                 if (inliers.get(i)) {
                     // sample is inlier
-                    inlierMeasurements.add(mMeasurements.get(i));
+                    inlierMeasurements.add(measurements.get(i));
                 }
             }
 
             try {
-                mInnerCalibrator.setBiasCoordinates(mBiasX, mBiasY, mBiasZ);
-                mInnerCalibrator.setInitialMa(preliminaryResult.mEstimatedMa);
-                mInnerCalibrator.setCommonAxisUsed(mCommonAxisUsed);
-                mInnerCalibrator.setPosition(mPosition);
-                mInnerCalibrator.setMeasurements(inlierMeasurements);
-                mInnerCalibrator.calibrate();
+                innerCalibrator.setBiasCoordinates(biasX, biasY, biasZ);
+                innerCalibrator.setInitialMa(preliminaryResult.estimatedMa);
+                innerCalibrator.setCommonAxisUsed(commonAxisUsed);
+                innerCalibrator.setPosition(position);
+                innerCalibrator.setMeasurements(inlierMeasurements);
+                innerCalibrator.calibrate();
 
-                mEstimatedMa = mInnerCalibrator.getEstimatedMa();
-                mEstimatedMse = mInnerCalibrator.getEstimatedMse();
-                mEstimatedChiSq = mInnerCalibrator.getEstimatedChiSq();
+                estimatedMa = innerCalibrator.getEstimatedMa();
+                estimatedMse = innerCalibrator.getEstimatedMse();
+                estimatedChiSq = innerCalibrator.getEstimatedChiSq();
 
-                if (mKeepCovariance) {
-                    mEstimatedCovariance = mInnerCalibrator.getEstimatedCovariance();
+                if (keepCovariance) {
+                    estimatedCovariance = innerCalibrator.getEstimatedCovariance();
                 } else {
-                    mEstimatedCovariance = null;
+                    estimatedCovariance = null;
                 }
             } catch (final LockedException | CalibrationException | NotReadyException e) {
-                mEstimatedCovariance = preliminaryResult.mCovariance;
-                mEstimatedMa = preliminaryResult.mEstimatedMa;
-                mEstimatedMse = preliminaryResult.mEstimatedMse;
-                mEstimatedChiSq = preliminaryResult.mEstimatedChiSq;
+                estimatedCovariance = preliminaryResult.covariance;
+                estimatedMa = preliminaryResult.estimatedMa;
+                estimatedMse = preliminaryResult.estimatedMse;
+                estimatedChiSq = preliminaryResult.estimatedChiSq;
             }
         } else {
-            mEstimatedCovariance = preliminaryResult.mCovariance;
-            mEstimatedMa = preliminaryResult.mEstimatedMa;
-            mEstimatedMse = preliminaryResult.mEstimatedMse;
-            mEstimatedChiSq = preliminaryResult.mEstimatedChiSq;
+            estimatedCovariance = preliminaryResult.covariance;
+            estimatedMa = preliminaryResult.estimatedMa;
+            estimatedMse = preliminaryResult.estimatedMse;
+            estimatedChiSq = preliminaryResult.estimatedChiSq;
         }
     }
 
@@ -5648,8 +5645,8 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @return gravity norm for current position expressed in meters per squared second.
      */
     protected double computeGravityNorm() {
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
-                mPosition.getX(), mPosition.getY(), mPosition.getZ());
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+                position.getX(), position.getY(), position.getZ());
         return gravity.getNorm();
     }
 
@@ -5661,8 +5658,8 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @return converted position expressed in ECEF coordinates.
      */
     private static ECEFPosition convertPosition(final NEDPosition position) {
-        final ECEFVelocity velocity = new ECEFVelocity();
-        final ECEFPosition result = new ECEFPosition();
+        final var velocity = new ECEFVelocity();
+        final var result = new ECEFPosition();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
                 position.getLatitude(), position.getLongitude(), position.getHeight(),
                 0.0, 0.0, 0.0, result, velocity);
@@ -5733,21 +5730,21 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
          * </pre>
          * Values of this matrix are unit-less.
          */
-        private Matrix mEstimatedMa;
+        private Matrix estimatedMa;
 
         /**
          * Estimated covariance matrix.
          */
-        private Matrix mCovariance;
+        private Matrix covariance;
 
         /**
          * Estimated MSE (Mean Square Error).
          */
-        private double mEstimatedMse;
+        private double estimatedMse;
 
         /**
          * Estimated chi square value.
          */
-        private double mEstimatedChiSq;
+        private double estimatedChiSq;
     }
 }

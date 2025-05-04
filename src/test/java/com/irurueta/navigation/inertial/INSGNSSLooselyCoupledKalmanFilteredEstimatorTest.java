@@ -15,7 +15,6 @@
  */
 package com.irurueta.navigation.inertial;
 
-import com.irurueta.algebra.Matrix;
 import com.irurueta.algebra.Utils;
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
@@ -38,18 +37,15 @@ import com.irurueta.navigation.inertial.estimators.ECEFGravityEstimator;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeUnit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
-        INSGNSSLooselyCoupledKalmanFilteredEstimatorListener {
+class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements INSGNSSLooselyCoupledKalmanFilteredEstimatorListener {
 
     private static final double MIN_VALUE = 1e-4;
     private static final double MAX_VALUE = 1e-3;
@@ -99,25 +95,24 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
 
     private static final double ABSOLUTE_ERROR = 1e-8;
 
-    private int mUpdateGNSSMeasurementsStart;
-    private int mUpdateGNSSMeasurementsEnd;
-    private int mUpdateBodyKinematicsStart;
-    private int mUpdateBodyKinematicsEnd;
-    private int mPropagateStart;
-    private int mPropagateEnd;
-    private int mReset;
+    private int updateGNSSMeasurementsStart;
+    private int updateGNSSMeasurementsEnd;
+    private int updateBodyKinematicsStart;
+    private int updateBodyKinematicsEnd;
+    private int propagateStart;
+    private int propagateEnd;
+    private int reset;
 
     @Test
-    public void testConstructor()
-            throws InvalidSourceAndDestinationFrameTypeException {
+    void testConstructor() throws InvalidSourceAndDestinationFrameTypeException {
 
         // test constructor 1
-        INSGNSSLooselyCoupledKalmanFilteredEstimator estimator = new INSGNSSLooselyCoupledKalmanFilteredEstimator();
+        var estimator = new INSGNSSLooselyCoupledKalmanFilteredEstimator();
 
         // check default values
         assertNull(estimator.getListener());
         assertEquals(0.0, estimator.getEpochInterval(), 0.0);
-        final Time epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
+        final var epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
         assertEquals(new Time(0.0, TimeUnit.SECOND), epochIntervalTime);
         assertEquals(new Time(0.0, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
@@ -137,14 +132,14 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertNull(estimator.getState());
         assertFalse(estimator.getState(null));
         assertNull(estimator.getLastStateTimestamp());
-        Time lastStateTimestamp = new Time(0.0, TimeUnit.MILLISECOND);
+        var lastStateTimestamp = new Time(0.0, TimeUnit.MILLISECOND);
         assertFalse(estimator.getLastStateTimestampAsTime(lastStateTimestamp));
         assertNull(estimator.getLastStateTimestampAsTime());
         assertFalse(estimator.isRunning());
         assertFalse(estimator.isPropagateReady());
 
         // test constructor 2
-        final INSLooselyCoupledKalmanConfig kalmanConfig = generateKalmanConfig();
+        final var kalmanConfig = generateKalmanConfig();
         estimator = new INSGNSSLooselyCoupledKalmanFilteredEstimator(kalmanConfig);
 
         // check default values
@@ -179,8 +174,8 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // test constructor 3
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double epochInterval = randomizer.nextDouble(MIN_EPOCH_INTERVAL, MAX_EPOCH_INTERVAL);
+        final var randomizer = new UniformRandomizer();
+        final var epochInterval = randomizer.nextDouble(MIN_EPOCH_INTERVAL, MAX_EPOCH_INTERVAL);
         estimator = new INSGNSSLooselyCoupledKalmanFilteredEstimator(epochInterval);
 
         // check default values
@@ -464,7 +459,7 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        final Time wrongEpochIntervalTime = new Time(-epochInterval, TimeUnit.SECOND);
+        final var wrongEpochIntervalTime = new Time(-epochInterval, TimeUnit.SECOND);
         assertThrows(IllegalArgumentException.class, () -> new INSGNSSLooselyCoupledKalmanFilteredEstimator(
                 kalmanConfig, wrongEpochIntervalTime));
 
@@ -543,11 +538,11 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
                 kalmanConfig, wrongEpochIntervalTime, this));
 
         // test constructor 13
-        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-        final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+        final var c = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME, 
                 FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
 
         estimator = new INSGNSSLooselyCoupledKalmanFilteredEstimator(c);
@@ -562,7 +557,7 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
         assertEquals(c, estimator.getCoordinateTransformation());
-        CoordinateTransformation c2 = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
+        CoordinateTransformation c2 = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, 
                 FrameType.LOCAL_NAVIGATION_FRAME);
         assertTrue(estimator.getCoordinateTransformation(c2));
         assertEquals(c, c2);
@@ -587,7 +582,7 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
         // Force InvalidSourceAndDestinationFrameTypeException
         assertThrows(InvalidSourceAndDestinationFrameTypeException.class,
                 () -> new INSGNSSLooselyCoupledKalmanFilteredEstimator(
-                        new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
+                        new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, 
                                 FrameType.LOCAL_NAVIGATION_FRAME)));
 
         // test constructor 14
@@ -799,7 +794,7 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
         // Force InvalidSourceAndDestinationFrameTypeException
         assertThrows(InvalidSourceAndDestinationFrameTypeException.class,
                 () -> new INSGNSSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                        new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
+                        new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, 
                                 FrameType.LOCAL_NAVIGATION_FRAME), this));
 
         // test constructor 19
@@ -885,7 +880,7 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
         // Force InvalidSourceAndDestinationFrameTypeException
         assertThrows(InvalidSourceAndDestinationFrameTypeException.class,
                 () -> new INSGNSSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, epochInterval,
-                        new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
+                        new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, 
                                 FrameType.LOCAL_NAVIGATION_FRAME), this));
 
         // Force IllegalArgumentException
@@ -1030,7 +1025,7 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
         estimator = new INSGNSSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, epochIntervalTime, c, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
         assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
         final var epochIntervalTime25 = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime25);
@@ -1065,7 +1060,7 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
         // Force InvalidSourceAndDestinationFrameTypeException
         assertThrows(InvalidSourceAndDestinationFrameTypeException.class,
                 () -> new INSGNSSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, epochIntervalTime,
-                        new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
+                        new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, 
                                 FrameType.LOCAL_NAVIGATION_FRAME), this));
 
         // Force IllegalArgumentException
@@ -1073,8 +1068,7 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
                 kalmanConfig, wrongEpochIntervalTime, c, this));
 
         // test constructor 25
-        final INSLooselyCoupledKalmanInitializerConfig initialConfig =
-                generateInitConfig();
+        final var initialConfig = generateInitConfig();
         estimator = new INSGNSSLooselyCoupledKalmanFilteredEstimator(initialConfig);
 
         // check default values
@@ -1264,7 +1258,7 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertEquals(0.0, estimator.getEpochInterval(), 0.0);
         final var epochIntervalTime31 = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime31);
-        assertEquals(epochIntervalTime31, new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), epochIntervalTime31);
         assertEquals(new Time(0.0, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSLooselyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
@@ -1296,7 +1290,7 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
         estimator = new INSGNSSLooselyCoupledKalmanFilteredEstimator(epochInterval, initialConfig, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
         assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         final var epochIntervalTime32 = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime32);
@@ -2070,14 +2064,13 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
     }
 
     @Test
-    public void testGetSetListener() throws LockedException {
-        final INSGNSSLooselyCoupledKalmanFilteredEstimator estimator =
-                new INSGNSSLooselyCoupledKalmanFilteredEstimator();
+    void testGetSetListener() throws LockedException {
+        final var estimator = new INSGNSSLooselyCoupledKalmanFilteredEstimator();
 
         // check default value
         assertNull(estimator.getListener());
 
-        // set new value
+        // set a new value
         estimator.setListener(this);
 
         // check
@@ -2085,14 +2078,13 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
     }
 
     @Test
-    public void testGetSetEpochInterval() throws LockedException {
-        final INSGNSSLooselyCoupledKalmanFilteredEstimator estimator =
-                new INSGNSSLooselyCoupledKalmanFilteredEstimator();
+    void testGetSetEpochInterval() throws LockedException {
+        final var estimator = new INSGNSSLooselyCoupledKalmanFilteredEstimator();
 
         // check default value
         assertEquals(0.0, estimator.getEpochInterval(), 0.0);
 
-        // set new value
+        // set a new value
         estimator.setEpochInterval(1.0);
 
         // check
@@ -2103,76 +2095,71 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
     }
 
     @Test
-    public void testGetSetEpochIntervalAsTime() throws LockedException {
-        final INSGNSSLooselyCoupledKalmanFilteredEstimator estimator =
-                new INSGNSSLooselyCoupledKalmanFilteredEstimator();
+    void testGetSetEpochIntervalAsTime() throws LockedException {
+        final var estimator = new INSGNSSLooselyCoupledKalmanFilteredEstimator();
 
-        final Time epochInterval1 = estimator.getEpochIntervalAsTime();
+        final var epochInterval1 = estimator.getEpochIntervalAsTime();
 
         assertEquals(0.0, epochInterval1.getValue().doubleValue(), 0.0);
         assertEquals(TimeUnit.SECOND, epochInterval1.getUnit());
 
-        // set new value
-        final Time epochInterval2 = new Time(1.0, TimeUnit.SECOND);
+        // set a new value
+        final var epochInterval2 = new Time(1.0, TimeUnit.SECOND);
         estimator.setEpochInterval(epochInterval2);
 
         // check
-        final Time epochInterval3 = new Time(0.0, TimeUnit.MILLISECOND);
+        final var epochInterval3 = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochInterval3);
-        final Time epochInterval4 = estimator.getEpochIntervalAsTime();
+        final var epochInterval4 = estimator.getEpochIntervalAsTime();
 
         assertEquals(epochInterval2, epochInterval3);
         assertEquals(epochInterval2, epochInterval4);
     }
 
     @Test
-    public void testGetSetConfig() throws LockedException {
-        final INSGNSSLooselyCoupledKalmanFilteredEstimator estimator =
-                new INSGNSSLooselyCoupledKalmanFilteredEstimator();
+    void testGetSetConfig() throws LockedException {
+        final var estimator = new INSGNSSLooselyCoupledKalmanFilteredEstimator();
 
         // check default value
         assertNull(estimator.getConfig());
         assertFalse(estimator.getConfig(null));
 
-        // set new value
-        final INSLooselyCoupledKalmanConfig config1 = generateKalmanConfig();
+        // set a new value
+        final var config1 = generateKalmanConfig();
         estimator.setConfig(config1);
 
         // check
-        final INSLooselyCoupledKalmanConfig config2 = new INSLooselyCoupledKalmanConfig();
+        final var config2 = new INSLooselyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(config2));
-        final INSLooselyCoupledKalmanConfig config3 = estimator.getConfig();
+        final var config3 = estimator.getConfig();
 
         assertEquals(config1, config2);
         assertEquals(config1, config3);
     }
 
     @Test
-    public void testGetSetCoordinateTransformation() throws InvalidSourceAndDestinationFrameTypeException,
-            LockedException {
-        final INSGNSSLooselyCoupledKalmanFilteredEstimator estimator =
-                new INSGNSSLooselyCoupledKalmanFilteredEstimator();
+    void testGetSetCoordinateTransformation() throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+        final var estimator = new INSGNSSLooselyCoupledKalmanFilteredEstimator();
 
         // check default value
         assertNull(estimator.getCoordinateTransformation());
         assertFalse(estimator.getCoordinateTransformation(null));
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-        final CoordinateTransformation c1 = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+        final var c1 = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME, 
                 FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
 
         estimator.setCoordinateTransformation(c1);
 
         // check
-        final CoordinateTransformation c2 = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.LOCAL_NAVIGATION_FRAME);
+        final var c2 = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
         assertTrue(estimator.getCoordinateTransformation(c2));
-        final CoordinateTransformation c3 = estimator.getCoordinateTransformation();
+        final var c3 = estimator.getCoordinateTransformation();
 
         assertEquals(c1, c2);
         assertEquals(c1, c3);
@@ -2184,124 +2171,117 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
     }
 
     @Test
-    public void testGetSetInitialConfig() throws LockedException {
-        final INSGNSSLooselyCoupledKalmanFilteredEstimator estimator =
-                new INSGNSSLooselyCoupledKalmanFilteredEstimator();
+    void testGetSetInitialConfig() throws LockedException {
+        final var estimator = new INSGNSSLooselyCoupledKalmanFilteredEstimator();
 
         // check default value
         assertNull(estimator.getInitialConfig());
         assertFalse(estimator.getInitialConfig(null));
 
-        // set new value
-        final INSLooselyCoupledKalmanInitializerConfig config1 = generateInitConfig();
+        // set a new value
+        final var config1 = generateInitConfig();
         estimator.setInitialConfig(config1);
 
         // check
-        final INSLooselyCoupledKalmanInitializerConfig config2 = new INSLooselyCoupledKalmanInitializerConfig();
+        final var config2 = new INSLooselyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(config2));
-        final INSLooselyCoupledKalmanInitializerConfig config3 = estimator.getInitialConfig();
+        final var config3 = estimator.getInitialConfig();
 
         assertEquals(config1, config2);
         assertSame(config1, config3);
     }
 
     @Test
-    public void testIsUpdateMeasurementsReady() {
+    void testIsUpdateMeasurementsReady() {
         assertFalse(INSGNSSLooselyCoupledKalmanFilteredEstimator.isUpdateMeasurementsReady(null));
 
-        final List<GNSSMeasurement> measurements = new ArrayList<>();
+        final var measurements = new ArrayList<GNSSMeasurement>();
         assertFalse(INSGNSSLooselyCoupledKalmanFilteredEstimator.isUpdateMeasurementsReady(measurements));
 
-        for (int i = 0; i < GNSSLeastSquaresPositionAndVelocityEstimator.MIN_MEASUREMENTS; i++) {
+        for (var i = 0; i < GNSSLeastSquaresPositionAndVelocityEstimator.MIN_MEASUREMENTS; i++) {
             measurements.add(new GNSSMeasurement());
         }
         assertTrue(INSGNSSLooselyCoupledKalmanFilteredEstimator.isUpdateMeasurementsReady(measurements));
     }
 
     @Test
-    public void testUpdateMeasurementsWithoutKinematicsAndWithoutInitialAttitude() throws LockedException,
-            NotReadyException, INSGNSSException {
+    void testUpdateMeasurementsWithoutKinematicsAndWithoutInitialAttitude() throws LockedException, NotReadyException,
+            INSGNSSException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final double timeSeconds = randomizer.nextDouble(MIN_TIME, MAX_TIME);
+            final var timeSeconds = randomizer.nextDouble(MIN_TIME, MAX_TIME);
 
-            final double userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES,
-                    MAX_LATITUDE_DEGREES));
-            final double userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES,
-                    MAX_LONGITUDE_DEGREES));
-            final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-            final com.irurueta.navigation.frames.NEDPosition nedUserPosition =
-                    new com.irurueta.navigation.frames.NEDPosition(userLatitude, userLongitude, userHeight);
+            final var userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
+            final var nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
 
-            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
-            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
-            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
-            final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
+            final var userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final var userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final var userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final var nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
-            final ECEFPosition ecefUserPosition = new ECEFPosition();
-            final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
+            final var ecefUserPosition = new ECEFPosition();
+            final var ecefUserVelocity = new ECEFVelocity();
             NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedUserPosition, nedUserVelocity, ecefUserPosition,
                     ecefUserVelocity);
 
-            final ECEFPositionAndVelocity ecefUserPositionAndVelocity = new ECEFPositionAndVelocity(ecefUserPosition,
-                    ecefUserVelocity);
+            final var ecefUserPositionAndVelocity = new ECEFPositionAndVelocity(ecefUserPosition, ecefUserVelocity);
 
-            final GNSSConfig config = generateConfig();
-            final int numSatellites = config.getNumberOfSatellites();
-            final double maskAngle = Math.toRadians(config.getMaskAngleDegrees());
-            final double delta = maskAngle / 3.0;
+            final var config = generateConfig();
+            final var numSatellites = config.getNumberOfSatellites();
+            final var maskAngle = Math.toRadians(config.getMaskAngleDegrees());
+            final var delta = maskAngle / 3.0;
 
-            final List<Double> biases = new ArrayList<>();
-            final List<ECEFPositionAndVelocity> satellitePositionsAndVelocities = new ArrayList<>();
-            for (int n = 0; n < numSatellites; n++) {
-                final double satLatitude = randomizer.nextDouble(userLatitude - delta, userLatitude + delta);
-                final double satLongitude = randomizer.nextDouble(userLongitude - delta, userLongitude + delta);
-                final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT, MAX_SAT_HEIGHT);
-                final com.irurueta.navigation.frames.NEDPosition nedSatPosition =
-                        new com.irurueta.navigation.frames.NEDPosition(satLatitude, satLongitude, satHeight);
+            final var biases = new ArrayList<Double>();
+            final var satellitePositionsAndVelocities = new ArrayList<ECEFPositionAndVelocity>();
+            final var random = new Random();
+            for (var n = 0; n < numSatellites; n++) {
+                final var satLatitude = randomizer.nextDouble(userLatitude - delta, userLatitude + delta);
+                final var satLongitude = randomizer.nextDouble(userLongitude - delta, userLongitude + delta);
+                final var satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT, MAX_SAT_HEIGHT);
+                final var nedSatPosition = new NEDPosition(satLatitude, satLongitude, satHeight);
 
-                final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
-                final double satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
-                final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
-                final NEDVelocity nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
+                final var satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final var satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final var satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final var nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
 
-                final ECEFPosition ecefSatPosition = new ECEFPosition();
-                final ECEFVelocity ecefSatVelocity = new ECEFVelocity();
+                final var ecefSatPosition = new ECEFPosition();
+                final var ecefSatVelocity = new ECEFVelocity();
                 NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedSatPosition, nedSatVelocity, ecefSatPosition,
                         ecefSatVelocity);
 
-                final ECEFPositionAndVelocity ecefSatPositionAndVelocity = new ECEFPositionAndVelocity(ecefSatPosition,
-                        ecefSatVelocity);
+                final var ecefSatPositionAndVelocity = new ECEFPositionAndVelocity(ecefSatPosition, ecefSatVelocity);
 
-                final double bias = GNSSBiasesGenerator.generateBias(ecefSatPosition, ecefUserPosition, config, random);
+                final var bias = GNSSBiasesGenerator.generateBias(ecefSatPosition, ecefUserPosition, config, random);
 
                 biases.add(bias);
                 satellitePositionsAndVelocities.add(ecefSatPositionAndVelocity);
             }
 
-            final Collection<GNSSMeasurement> measurements = GNSSMeasurementsGenerator.generate(timeSeconds,
-                    satellitePositionsAndVelocities, ecefUserPositionAndVelocity, biases, config, random);
+            final var measurements = GNSSMeasurementsGenerator.generate(timeSeconds, satellitePositionsAndVelocities,
+                    ecefUserPositionAndVelocity, biases, config, random);
 
             if (measurements.size() < GNSSLeastSquaresPositionAndVelocityEstimator.MIN_MEASUREMENTS) {
                 continue;
             }
 
-            final INSLooselyCoupledKalmanConfig kalmanConfig = generateKalmanConfig();
-            final INSLooselyCoupledKalmanInitializerConfig initConfig = generateInitConfig();
-            final INSGNSSLooselyCoupledKalmanFilteredEstimator estimator =
-                    new INSGNSSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, initConfig, this);
+            final var kalmanConfig = generateKalmanConfig();
+            final var initConfig = generateInitConfig();
+            final var estimator = new INSGNSSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, initConfig, 
+                    this);
 
             reset();
-            assertEquals(0, mUpdateGNSSMeasurementsStart);
-            assertEquals(0, mUpdateGNSSMeasurementsEnd);
-            assertEquals(0, mUpdateBodyKinematicsStart);
-            assertEquals(0, mUpdateBodyKinematicsEnd);
-            assertEquals(0, mPropagateStart);
-            assertEquals(0, mPropagateEnd);
+            assertEquals(0, updateGNSSMeasurementsStart);
+            assertEquals(0, updateGNSSMeasurementsEnd);
+            assertEquals(0, updateBodyKinematicsStart);
+            assertEquals(0, updateBodyKinematicsEnd);
+            assertEquals(0, propagateStart);
+            assertEquals(0, propagateEnd);
 
             assertNull(estimator.getEstimation());
             assertFalse(estimator.getEstimation(null));
@@ -2323,73 +2303,73 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
             assertEquals(measurements, estimator.getMeasurements());
             assertEquals(timeSeconds, estimator.getLastStateTimestamp(), 0.0);
             assertEquals(new Time(timeSeconds, TimeUnit.SECOND), estimator.getLastStateTimestampAsTime());
-            final Time timestamp = new Time(0.0, TimeUnit.MILLISECOND);
+            final var timestamp = new Time(0.0, TimeUnit.MILLISECOND);
             assertTrue(estimator.getLastStateTimestampAsTime(timestamp));
             assertEquals(new Time(timeSeconds, TimeUnit.SECOND), timestamp);
             assertNull(estimator.getKinematics());
             assertNull(estimator.getCorrectedKinematics());
             assertEquals(new CoordinateTransformation(FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME),
                     estimator.getCoordinateTransformation());
-            final CoordinateTransformation c2 = new CoordinateTransformation(FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME,
+            final var c2 = new CoordinateTransformation(FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME, 
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
             assertTrue(estimator.getCoordinateTransformation(c2));
-            assertEquals(c2, new CoordinateTransformation(FrameType.BODY_FRAME,
-                    FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME));
+            assertEquals(new CoordinateTransformation(FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME), 
+                    c2);
 
-            final GNSSEstimation estimation1 = estimator.getEstimation();
+            final var estimation1 = estimator.getEstimation();
             assertNotNull(estimation1);
 
-            final GNSSEstimation estimation2 = new GNSSEstimation();
+            final var estimation2 = new GNSSEstimation();
             assertTrue(estimator.getEstimation(estimation2));
 
             assertEquals(estimation1, estimation2);
 
-            final INSLooselyCoupledKalmanState state1 = estimator.getState();
+            final var state1 = estimator.getState();
             assertNotNull(state1);
 
-            final INSLooselyCoupledKalmanState state2 = new INSLooselyCoupledKalmanState();
+            final var state2 = new INSLooselyCoupledKalmanState();
             assertTrue(estimator.getState(state2));
 
             assertEquals(state1, state2);
 
-            final ECEFPosition estimatedPosition = estimation1.getEcefPosition();
-            final ECEFVelocity estimatedVelocity = estimation1.getEcefVelocity();
+            final var estimatedPosition = estimation1.getEcefPosition();
+            final var estimatedVelocity = estimation1.getEcefVelocity();
 
-            final double diffX = Math.abs(ecefUserPosition.getX() - estimatedPosition.getX());
-            final double diffY = Math.abs(ecefUserPosition.getY() - estimatedPosition.getY());
-            final double diffZ = Math.abs(ecefUserPosition.getZ() - estimatedPosition.getZ());
-            final double posError = Math.max(diffX, Math.max(diffY, diffZ));
+            final var diffX = Math.abs(ecefUserPosition.getX() - estimatedPosition.getX());
+            final var diffY = Math.abs(ecefUserPosition.getY() - estimatedPosition.getY());
+            final var diffZ = Math.abs(ecefUserPosition.getZ() - estimatedPosition.getZ());
+            final var posError = Math.max(diffX, Math.max(diffY, diffZ));
             if (posError > POSITION_ERROR) {
                 continue;
             }
             assertTrue(ecefUserPosition.equals(estimatedPosition, POSITION_ERROR));
 
-            final double diffVx = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity.getVx());
-            final double diffVy = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity.getVy());
-            final double diffVz = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity.getVz());
-            final double velError = Math.max(diffVx, Math.max(diffVy, diffVz));
+            final var diffVx = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity.getVx());
+            final var diffVy = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity.getVy());
+            final var diffVz = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity.getVz());
+            final var velError = Math.max(diffVx, Math.max(diffVy, diffVz));
             if (velError > VELOCITY_ERROR) {
                 continue;
             }
             assertTrue(ecefUserVelocity.equals(estimatedVelocity, VELOCITY_ERROR));
 
-            // update again with same timestamp makes no action
+            // update again with the same timestamp makes no action
             assertFalse(estimator.updateMeasurements(measurements, new Time(timeSeconds, TimeUnit.SECOND)));
 
             assertFalse(estimator.isRunning());
             assertEquals(estimator.getLastStateTimestamp(), timeSeconds, 0.0);
-            final GNSSEstimation estimation3 = estimator.getEstimation();
-            final INSLooselyCoupledKalmanState state3 = estimator.getState();
+            final var estimation3 = estimator.getEstimation();
+            final var state3 = estimator.getState();
 
             assertEquals(estimation1, estimation3);
             assertEquals(state1, state3);
 
-            assertEquals(1, mUpdateGNSSMeasurementsStart);
-            assertEquals(1, mUpdateGNSSMeasurementsEnd);
-            assertEquals(1, mUpdateBodyKinematicsStart);
-            assertEquals(1, mUpdateBodyKinematicsEnd);
-            assertEquals(1, mPropagateStart);
-            assertEquals(1, mPropagateEnd);
+            assertEquals(1, updateGNSSMeasurementsStart);
+            assertEquals(1, updateGNSSMeasurementsEnd);
+            assertEquals(1, updateBodyKinematicsStart);
+            assertEquals(1, updateBodyKinematicsEnd);
+            assertEquals(1, propagateStart);
+            assertEquals(1, propagateEnd);
 
             numValid++;
             break;
@@ -2399,81 +2379,78 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
     }
 
     @Test
-    public void testUpdateMeasurementsWithBodyKinematicsAndWithoutInitialAttitude() throws LockedException,
-            INSGNSSException, NotReadyException {
+    void testUpdateMeasurementsWithBodyKinematicsAndWithoutInitialAttitude() throws LockedException, INSGNSSException,
+            NotReadyException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final double timeSeconds = randomizer.nextDouble(MIN_TIME, MAX_TIME);
+            final var timeSeconds = randomizer.nextDouble(MIN_TIME, MAX_TIME);
 
-            final double userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES,
-                    MAX_LATITUDE_DEGREES));
-            final double userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES,
+            final var userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, 
                     MAX_LONGITUDE_DEGREES));
-            final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-            final NEDPosition nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
+            final var userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
+            final var nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
 
-            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
-            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
-            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
-            final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
+            final var userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final var userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final var userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final var nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
-            final ECEFPosition ecefUserPosition = new ECEFPosition();
-            final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
+            final var ecefUserPosition = new ECEFPosition();
+            final var ecefUserVelocity = new ECEFVelocity();
             NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedUserPosition, nedUserVelocity, ecefUserPosition,
                     ecefUserVelocity);
 
-            final ECEFPositionAndVelocity ecefUserPositionAndVelocity = new ECEFPositionAndVelocity(ecefUserPosition,
-                    ecefUserVelocity);
+            final var ecefUserPositionAndVelocity = new ECEFPositionAndVelocity(ecefUserPosition, ecefUserVelocity);
 
-            final GNSSConfig config = generateConfig();
-            final int numSatellites = config.getNumberOfSatellites();
-            final double maskAngle = Math.toRadians(config.getMaskAngleDegrees());
-            final double delta = maskAngle / 3.0;
+            final var config = generateConfig();
+            final var numSatellites = config.getNumberOfSatellites();
+            final var maskAngle = Math.toRadians(config.getMaskAngleDegrees());
+            final var delta = maskAngle / 3.0;
 
-            final List<Double> biases = new ArrayList<>();
-            final List<ECEFPositionAndVelocity> satellitePositionsAndVelocities = new ArrayList<>();
-            for (int n = 0; n < numSatellites; n++) {
-                final double satLatitude = randomizer.nextDouble(userLatitude - delta, userLatitude + delta);
-                final double satLongitude = randomizer.nextDouble(userLongitude - delta, userLongitude + delta);
-                final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT, MAX_SAT_HEIGHT);
-                final NEDPosition nedSatPosition = new NEDPosition(satLatitude, satLongitude, satHeight);
+            final var biases = new ArrayList<Double>();
+            final var satellitePositionsAndVelocities = new ArrayList<ECEFPositionAndVelocity>();
+            final var random = new Random();
+            for (var n = 0; n < numSatellites; n++) {
+                final var satLatitude = randomizer.nextDouble(userLatitude - delta, userLatitude + delta);
+                final var satLongitude = randomizer.nextDouble(userLongitude - delta, userLongitude + delta);
+                final var satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT, MAX_SAT_HEIGHT);
+                final var nedSatPosition = new NEDPosition(satLatitude, satLongitude, satHeight);
 
-                final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
-                final double satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
-                final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
-                final NEDVelocity nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
+                final var satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final var satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final var satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final var nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
 
-                final ECEFPosition ecefSatPosition = new ECEFPosition();
-                final ECEFVelocity ecefSatVelocity = new ECEFVelocity();
+                final var ecefSatPosition = new ECEFPosition();
+                final var ecefSatVelocity = new ECEFVelocity();
                 NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedSatPosition, nedSatVelocity, ecefSatPosition,
                         ecefSatVelocity);
 
-                final ECEFPositionAndVelocity ecefSatPositionAndVelocity = new ECEFPositionAndVelocity(ecefSatPosition,
-                        ecefSatVelocity);
+                final var ecefSatPositionAndVelocity = new ECEFPositionAndVelocity(ecefSatPosition, ecefSatVelocity);
 
-                final double bias = GNSSBiasesGenerator.generateBias(ecefSatPosition, ecefUserPosition, config, random);
+                final var bias = GNSSBiasesGenerator.generateBias(ecefSatPosition, ecefUserPosition, config, random);
 
                 biases.add(bias);
                 satellitePositionsAndVelocities.add(ecefSatPositionAndVelocity);
             }
 
-            final Collection<GNSSMeasurement> measurements = GNSSMeasurementsGenerator.generate(timeSeconds,
-                    satellitePositionsAndVelocities, ecefUserPositionAndVelocity, biases, config, random);
+            final var measurements = GNSSMeasurementsGenerator.generate(timeSeconds, satellitePositionsAndVelocities,
+                    ecefUserPositionAndVelocity, biases, config, random);
 
             if (measurements.size() < GNSSLeastSquaresPositionAndVelocityEstimator.MIN_MEASUREMENTS) {
                 continue;
             }
 
-            final INSLooselyCoupledKalmanConfig kalmanConfig = generateKalmanConfig();
-            final INSLooselyCoupledKalmanInitializerConfig initConfig = generateInitConfig();
-            final INSGNSSLooselyCoupledKalmanFilteredEstimator estimator =
-                    new INSGNSSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, initConfig, this);
+            final var kalmanConfig = generateKalmanConfig();
+            final var initConfig = generateInitConfig();
+            final var estimator = new INSGNSSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, initConfig, 
+                    this);
 
-            final BodyKinematics kinematics = new BodyKinematics();
+            final var kinematics = new BodyKinematics();
             assertTrue(estimator.updateBodyKinematics(kinematics, timeSeconds));
 
             assertNull(estimator.getEstimation());
@@ -2486,21 +2463,21 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
             assertEquals(kinematics, kinematics2);
             assertNotNull(estimator.getCorrectedKinematics());
             assertTrue(estimator.getCorrectedKinematics(new BodyKinematics()));
-            assertEquals(estimator.getCoordinateTransformation(), new CoordinateTransformation(FrameType.BODY_FRAME,
-                    FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME));
-            CoordinateTransformation c2 = new CoordinateTransformation(FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME,
+            assertEquals(new CoordinateTransformation(FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME),
+                    estimator.getCoordinateTransformation());
+            var c2 = new CoordinateTransformation(FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME,
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
             assertTrue(estimator.getCoordinateTransformation(c2));
-            assertEquals(c2, new CoordinateTransformation(FrameType.BODY_FRAME,
-                    FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME));
+            assertEquals(new CoordinateTransformation(FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME),
+                    c2);
 
             reset();
-            assertEquals(0, mUpdateGNSSMeasurementsStart);
-            assertEquals(0, mUpdateGNSSMeasurementsEnd);
-            assertEquals(0, mUpdateBodyKinematicsStart);
-            assertEquals(0, mUpdateBodyKinematicsEnd);
-            assertEquals(0, mPropagateStart);
-            assertEquals(0, mPropagateEnd);
+            assertEquals(0, updateGNSSMeasurementsStart);
+            assertEquals(0, updateGNSSMeasurementsEnd);
+            assertEquals(0, updateBodyKinematicsStart);
+            assertEquals(0, updateBodyKinematicsEnd);
+            assertEquals(0, propagateStart);
+            assertEquals(0, propagateEnd);
 
             // update measurement
             try {
@@ -2513,7 +2490,7 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
             assertEquals(measurements, estimator.getMeasurements());
             assertEquals(2.0 * timeSeconds, estimator.getLastStateTimestamp(), 0.0);
             assertEquals(new Time(2.0 * timeSeconds, TimeUnit.SECOND), estimator.getLastStateTimestampAsTime());
-            final Time timestamp = new Time(0.0, TimeUnit.MILLISECOND);
+            final var timestamp = new Time(0.0, TimeUnit.MILLISECOND);
             assertTrue(estimator.getLastStateTimestampAsTime(timestamp));
             assertEquals(new Time(2.0 * timeSeconds, TimeUnit.SECOND), timestamp);
             assertEquals(kinematics, estimator.getKinematics());
@@ -2526,38 +2503,38 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
             assertEquals(new CoordinateTransformation(FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME),
                     c2);
 
-            final GNSSEstimation estimation1 = estimator.getEstimation();
+            final var estimation1 = estimator.getEstimation();
             assertNotNull(estimation1);
 
-            final GNSSEstimation estimation2 = new GNSSEstimation();
+            final var estimation2 = new GNSSEstimation();
             assertTrue(estimator.getEstimation(estimation2));
 
             assertEquals(estimation1, estimation2);
 
-            final INSLooselyCoupledKalmanState state1 = estimator.getState();
+            final var state1 = estimator.getState();
             assertNotNull(state1);
 
-            final INSLooselyCoupledKalmanState state2 = new INSLooselyCoupledKalmanState();
+            final var state2 = new INSLooselyCoupledKalmanState();
             assertTrue(estimator.getState(state2));
 
             assertEquals(state1, state2);
 
-            final ECEFPosition estimatedPosition = estimation1.getEcefPosition();
-            final ECEFVelocity estimatedVelocity = estimation1.getEcefVelocity();
+            final var estimatedPosition = estimation1.getEcefPosition();
+            final var estimatedVelocity = estimation1.getEcefVelocity();
 
-            final double diffX = Math.abs(ecefUserPosition.getX() - estimatedPosition.getX());
-            final double diffY = Math.abs(ecefUserPosition.getY() - estimatedPosition.getY());
-            final double diffZ = Math.abs(ecefUserPosition.getZ() - estimatedPosition.getZ());
-            final double posError = Math.max(diffX, Math.max(diffY, diffZ));
+            final var diffX = Math.abs(ecefUserPosition.getX() - estimatedPosition.getX());
+            final var diffY = Math.abs(ecefUserPosition.getY() - estimatedPosition.getY());
+            final var diffZ = Math.abs(ecefUserPosition.getZ() - estimatedPosition.getZ());
+            final var posError = Math.max(diffX, Math.max(diffY, diffZ));
             if (posError > POSITION_ERROR) {
                 continue;
             }
             assertTrue(ecefUserPosition.equals(estimatedPosition, POSITION_ERROR));
 
-            final double diffVx = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity.getVx());
-            final double diffVy = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity.getVy());
-            final double diffVz = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity.getVz());
-            final double velError = Math.max(diffVx, Math.max(diffVy, diffVz));
+            final var diffVx = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity.getVx());
+            final var diffVy = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity.getVy());
+            final var diffVz = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity.getVz());
+            final var velError = Math.max(diffVx, Math.max(diffVy, diffVz));
             if (velError > VELOCITY_ERROR) {
                 continue;
             }
@@ -2571,94 +2548,91 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
     }
 
     @Test
-    public void testUpdateMeasurementsWithoutBodyKinematicsAndWithInitialAttitude()
+    void testUpdateMeasurementsWithoutBodyKinematicsAndWithInitialAttitude()
             throws InvalidSourceAndDestinationFrameTypeException, LockedException, NotReadyException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final double timeSeconds = randomizer.nextDouble(MIN_TIME, MAX_TIME);
+            final var timeSeconds = randomizer.nextDouble(MIN_TIME, MAX_TIME);
 
-            final double userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES,
-                    MAX_LATITUDE_DEGREES));
-            final double userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES,
+            final var userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES,
                     MAX_LONGITUDE_DEGREES));
-            final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-            final NEDPosition nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
+            final var userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
+            final var nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
 
-            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
-            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
-            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
-            final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
+            final var userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final var userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final var userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final var nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
-            final ECEFPosition ecefUserPosition = new ECEFPosition();
-            final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
+            final var ecefUserPosition = new ECEFPosition();
+            final var ecefUserVelocity = new ECEFVelocity();
             NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedUserPosition, nedUserVelocity, ecefUserPosition,
                     ecefUserVelocity);
 
-            final ECEFPositionAndVelocity ecefUserPositionAndVelocity = new ECEFPositionAndVelocity(ecefUserPosition,
-                    ecefUserVelocity);
+            final var ecefUserPositionAndVelocity = new ECEFPositionAndVelocity(ecefUserPosition, ecefUserVelocity);
 
-            final GNSSConfig config = generateConfig();
-            final int numSatellites = config.getNumberOfSatellites();
-            final double maskAngle = Math.toRadians(config.getMaskAngleDegrees());
-            final double delta = maskAngle / 3.0;
+            final var config = generateConfig();
+            final var numSatellites = config.getNumberOfSatellites();
+            final var maskAngle = Math.toRadians(config.getMaskAngleDegrees());
+            final var delta = maskAngle / 3.0;
 
-            final List<Double> biases = new ArrayList<>();
-            final List<ECEFPositionAndVelocity> satellitePositionsAndVelocities = new ArrayList<>();
-            for (int n = 0; n < numSatellites; n++) {
-                final double satLatitude = randomizer.nextDouble(userLatitude - delta, userLatitude + delta);
-                final double satLongitude = randomizer.nextDouble(userLongitude - delta, userLongitude + delta);
-                final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT, MAX_SAT_HEIGHT);
-                final NEDPosition nedSatPosition = new NEDPosition(satLatitude, satLongitude, satHeight);
+            final var biases = new ArrayList<Double>();
+            final var satellitePositionsAndVelocities = new ArrayList<ECEFPositionAndVelocity>();
+            final var random = new Random();
+            for (var n = 0; n < numSatellites; n++) {
+                final var satLatitude = randomizer.nextDouble(userLatitude - delta, userLatitude + delta);
+                final var satLongitude = randomizer.nextDouble(userLongitude - delta, userLongitude + delta);
+                final var satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT, MAX_SAT_HEIGHT);
+                final var nedSatPosition = new NEDPosition(satLatitude, satLongitude, satHeight);
 
-                final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
-                final double satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
-                final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
-                final NEDVelocity nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
+                final var satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final var satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final var satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final var nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
 
-                final ECEFPosition ecefSatPosition = new ECEFPosition();
-                final ECEFVelocity ecefSatVelocity = new ECEFVelocity();
+                final var ecefSatPosition = new ECEFPosition();
+                final var ecefSatVelocity = new ECEFVelocity();
                 NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedSatPosition, nedSatVelocity, ecefSatPosition,
                         ecefSatVelocity);
 
-                final ECEFPositionAndVelocity ecefSatPositionAndVelocity = new ECEFPositionAndVelocity(ecefSatPosition,
-                        ecefSatVelocity);
+                final var ecefSatPositionAndVelocity = new ECEFPositionAndVelocity(ecefSatPosition, ecefSatVelocity);
 
-                final double bias = GNSSBiasesGenerator.generateBias(ecefSatPosition, ecefUserPosition, config, random);
+                final var bias = GNSSBiasesGenerator.generateBias(ecefSatPosition, ecefUserPosition, config, random);
 
                 biases.add(bias);
                 satellitePositionsAndVelocities.add(ecefSatPositionAndVelocity);
             }
 
-            final Collection<GNSSMeasurement> measurements = GNSSMeasurementsGenerator.generate(timeSeconds,
-                    satellitePositionsAndVelocities, ecefUserPositionAndVelocity, biases, config, random);
+            final var measurements = GNSSMeasurementsGenerator.generate(timeSeconds, satellitePositionsAndVelocities,
+                    ecefUserPositionAndVelocity, biases, config, random);
 
             if (measurements.size() < GNSSLeastSquaresPositionAndVelocityEstimator.MIN_MEASUREMENTS) {
                 continue;
             }
 
-            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-            final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+            final var c = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
 
-            final INSLooselyCoupledKalmanConfig kalmanConfig = generateKalmanConfig();
-            final INSLooselyCoupledKalmanInitializerConfig initConfig = generateInitConfig();
-            final INSGNSSLooselyCoupledKalmanFilteredEstimator estimator =
-                    new INSGNSSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, initConfig, c, this);
+            final var kalmanConfig = generateKalmanConfig();
+            final var initConfig = generateInitConfig();
+            final var estimator = new INSGNSSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, initConfig, c,
+                    this);
 
             reset();
-            assertEquals(0, mUpdateGNSSMeasurementsStart);
-            assertEquals(0, mUpdateGNSSMeasurementsEnd);
-            assertEquals(0, mUpdateBodyKinematicsStart);
-            assertEquals(0, mUpdateBodyKinematicsEnd);
-            assertEquals(0, mPropagateStart);
-            assertEquals(0, mPropagateEnd);
+            assertEquals(0, updateGNSSMeasurementsStart);
+            assertEquals(0, updateGNSSMeasurementsEnd);
+            assertEquals(0, updateBodyKinematicsStart);
+            assertEquals(0, updateBodyKinematicsEnd);
+            assertEquals(0, propagateStart);
+            assertEquals(0, propagateEnd);
 
             assertNull(estimator.getEstimation());
             assertFalse(estimator.getEstimation(null));
@@ -2669,7 +2643,7 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
             assertNull(estimator.getCorrectedKinematics());
             assertFalse(estimator.getCorrectedKinematics(null));
             assertEquals(c, estimator.getCoordinateTransformation());
-            CoordinateTransformation c2 = new CoordinateTransformation(FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME,
+            var c2 = new CoordinateTransformation(FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME,
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
             assertTrue(estimator.getCoordinateTransformation(c2));
             assertEquals(c2, c);
@@ -2685,7 +2659,7 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
             assertEquals(measurements, estimator.getMeasurements());
             assertEquals(timeSeconds, estimator.getLastStateTimestamp(), 0.0);
             assertEquals(new Time(timeSeconds, TimeUnit.SECOND), estimator.getLastStateTimestampAsTime());
-            final Time timestamp = new Time(0.0, TimeUnit.MILLISECOND);
+            final var timestamp = new Time(0.0, TimeUnit.MILLISECOND);
             assertTrue(estimator.getLastStateTimestampAsTime(timestamp));
             assertEquals(new Time(timeSeconds, TimeUnit.SECOND), timestamp);
             assertNull(estimator.getKinematics());
@@ -2696,38 +2670,38 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
             assertTrue(estimator.getCoordinateTransformation(c2));
             assertTrue(c.equals(c2, ABSOLUTE_ERROR));
 
-            final GNSSEstimation estimation1 = estimator.getEstimation();
+            final var estimation1 = estimator.getEstimation();
             assertNotNull(estimation1);
 
-            final GNSSEstimation estimation2 = new GNSSEstimation();
+            final var estimation2 = new GNSSEstimation();
             assertTrue(estimator.getEstimation(estimation2));
 
             assertEquals(estimation1, estimation2);
 
-            final INSLooselyCoupledKalmanState state1 = estimator.getState();
+            final var state1 = estimator.getState();
             assertNotNull(state1);
 
-            final INSLooselyCoupledKalmanState state2 = new INSLooselyCoupledKalmanState();
+            final var state2 = new INSLooselyCoupledKalmanState();
             assertTrue(estimator.getState(state2));
 
             assertEquals(state1, state2);
 
-            final ECEFPosition estimatedPosition = estimation1.getEcefPosition();
-            final ECEFVelocity estimatedVelocity = estimation1.getEcefVelocity();
+            final var estimatedPosition = estimation1.getEcefPosition();
+            final var estimatedVelocity = estimation1.getEcefVelocity();
 
-            final double diffX = Math.abs(ecefUserPosition.getX() - estimatedPosition.getX());
-            final double diffY = Math.abs(ecefUserPosition.getY() - estimatedPosition.getY());
-            final double diffZ = Math.abs(ecefUserPosition.getZ() - estimatedPosition.getZ());
-            final double posError = Math.max(diffX, Math.max(diffY, diffZ));
+            final var diffX = Math.abs(ecefUserPosition.getX() - estimatedPosition.getX());
+            final var diffY = Math.abs(ecefUserPosition.getY() - estimatedPosition.getY());
+            final var diffZ = Math.abs(ecefUserPosition.getZ() - estimatedPosition.getZ());
+            final var posError = Math.max(diffX, Math.max(diffY, diffZ));
             if (posError > POSITION_ERROR) {
                 continue;
             }
             assertTrue(ecefUserPosition.equals(estimatedPosition, POSITION_ERROR));
 
-            final double diffVx = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity.getVx());
-            final double diffVy = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity.getVy());
-            final double diffVz = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity.getVz());
-            final double velError = Math.max(diffVx, Math.max(diffVy, diffVz));
+            final var diffVx = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity.getVx());
+            final var diffVy = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity.getVy());
+            final var diffVz = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity.getVz());
+            final var velError = Math.max(diffVx, Math.max(diffVy, diffVz));
             if (velError > VELOCITY_ERROR) {
                 continue;
             }
@@ -2741,88 +2715,85 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
     }
 
     @Test
-    public void testUpdateMeasurementsWithKinematicsAndInitialAttitude() throws LockedException, INSGNSSException,
+    void testUpdateMeasurementsWithKinematicsAndInitialAttitude() throws LockedException, INSGNSSException,
             InvalidSourceAndDestinationFrameTypeException, NotReadyException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final double timeSeconds = randomizer.nextDouble(MIN_TIME, MAX_TIME);
+            final var timeSeconds = randomizer.nextDouble(MIN_TIME, MAX_TIME);
 
-            final double userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES,
-                    MAX_LATITUDE_DEGREES));
-            final double userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES,
+            final var userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES,
                     MAX_LONGITUDE_DEGREES));
-            final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-            final NEDPosition nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
+            final var userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
+            final var nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
 
-            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
-            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
-            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
-            final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
+            final var userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final var userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final var userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final var nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
-            final ECEFPosition ecefUserPosition = new ECEFPosition();
-            final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
+            final var ecefUserPosition = new ECEFPosition();
+            final var ecefUserVelocity = new ECEFVelocity();
             NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedUserPosition, nedUserVelocity, ecefUserPosition,
                     ecefUserVelocity);
 
-            final ECEFPositionAndVelocity ecefUserPositionAndVelocity = new ECEFPositionAndVelocity(ecefUserPosition,
-                    ecefUserVelocity);
+            final var ecefUserPositionAndVelocity = new ECEFPositionAndVelocity(ecefUserPosition, ecefUserVelocity);
 
-            final GNSSConfig config = generateConfig();
-            final int numSatellites = config.getNumberOfSatellites();
-            final double maskAngle = Math.toRadians(config.getMaskAngleDegrees());
-            final double delta = maskAngle / 3.0;
+            final var config = generateConfig();
+            final var numSatellites = config.getNumberOfSatellites();
+            final var maskAngle = Math.toRadians(config.getMaskAngleDegrees());
+            final var delta = maskAngle / 3.0;
 
-            final List<Double> biases = new ArrayList<>();
-            final List<ECEFPositionAndVelocity> satellitePositionsAndVelocities = new ArrayList<>();
-            for (int n = 0; n < numSatellites; n++) {
-                final double satLatitude = randomizer.nextDouble(userLatitude - delta, userLatitude + delta);
-                final double satLongitude = randomizer.nextDouble(userLongitude - delta, userLongitude + delta);
-                final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT, MAX_SAT_HEIGHT);
-                final NEDPosition nedSatPosition = new NEDPosition(satLatitude, satLongitude, satHeight);
+            final var biases = new ArrayList<Double>();
+            final var satellitePositionsAndVelocities = new ArrayList<ECEFPositionAndVelocity>();
+            final var random = new Random();
+            for (var n = 0; n < numSatellites; n++) {
+                final var satLatitude = randomizer.nextDouble(userLatitude - delta, userLatitude + delta);
+                final var satLongitude = randomizer.nextDouble(userLongitude - delta, userLongitude + delta);
+                final var satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT, MAX_SAT_HEIGHT);
+                final var nedSatPosition = new NEDPosition(satLatitude, satLongitude, satHeight);
 
-                final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
-                final double satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
-                final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
-                final NEDVelocity nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
+                final var satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final var satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final var satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final var nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
 
-                final ECEFPosition ecefSatPosition = new ECEFPosition();
-                final ECEFVelocity ecefSatVelocity = new ECEFVelocity();
+                final var ecefSatPosition = new ECEFPosition();
+                final var ecefSatVelocity = new ECEFVelocity();
                 NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedSatPosition, nedSatVelocity, ecefSatPosition,
                         ecefSatVelocity);
 
-                final ECEFPositionAndVelocity ecefSatPositionAndVelocity = new ECEFPositionAndVelocity(ecefSatPosition,
-                        ecefSatVelocity);
+                final var ecefSatPositionAndVelocity = new ECEFPositionAndVelocity(ecefSatPosition, ecefSatVelocity);
 
-                final double bias = GNSSBiasesGenerator.generateBias(ecefSatPosition, ecefUserPosition, config, random);
+                final var bias = GNSSBiasesGenerator.generateBias(ecefSatPosition, ecefUserPosition, config, random);
 
                 biases.add(bias);
                 satellitePositionsAndVelocities.add(ecefSatPositionAndVelocity);
             }
 
-            final Collection<GNSSMeasurement> measurements = GNSSMeasurementsGenerator.generate(timeSeconds,
-                    satellitePositionsAndVelocities, ecefUserPositionAndVelocity, biases, config, random);
+            final var measurements = GNSSMeasurementsGenerator.generate(timeSeconds, satellitePositionsAndVelocities,
+                    ecefUserPositionAndVelocity, biases, config, random);
 
             if (measurements.size() < GNSSLeastSquaresPositionAndVelocityEstimator.MIN_MEASUREMENTS) {
                 continue;
             }
 
-            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-            final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+            final var c = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
 
-            final INSLooselyCoupledKalmanConfig kalmanConfig = generateKalmanConfig();
-            final INSLooselyCoupledKalmanInitializerConfig initConfig = generateInitConfig();
-            final INSGNSSLooselyCoupledKalmanFilteredEstimator estimator =
-                    new INSGNSSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, initConfig, c, this);
+            final var kalmanConfig = generateKalmanConfig();
+            final var initConfig = generateInitConfig();
+            final var estimator = new INSGNSSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, initConfig, c,
+                    this);
 
-            final BodyKinematics kinematics = new BodyKinematics();
+            final var kinematics = new BodyKinematics();
             assertTrue(estimator.updateBodyKinematics(kinematics, timeSeconds));
 
             assertNull(estimator.getEstimation());
@@ -2836,18 +2807,18 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
             assertNotNull(estimator.getCorrectedKinematics());
             assertTrue(estimator.getCorrectedKinematics(new BodyKinematics()));
             assertTrue(estimator.getCoordinateTransformation().equals(c, ABSOLUTE_ERROR));
-            CoordinateTransformation c2 = new CoordinateTransformation(FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME,
+            var c2 = new CoordinateTransformation(FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME,
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
             assertTrue(estimator.getCoordinateTransformation(c2));
             assertTrue(c2.equals(c, ABSOLUTE_ERROR));
 
             reset();
-            assertEquals(0, mUpdateGNSSMeasurementsStart);
-            assertEquals(0, mUpdateGNSSMeasurementsEnd);
-            assertEquals(0, mUpdateBodyKinematicsStart);
-            assertEquals(0, mUpdateBodyKinematicsEnd);
-            assertEquals(0, mPropagateStart);
-            assertEquals(0, mPropagateEnd);
+            assertEquals(0, updateGNSSMeasurementsStart);
+            assertEquals(0, updateGNSSMeasurementsEnd);
+            assertEquals(0, updateBodyKinematicsStart);
+            assertEquals(0, updateBodyKinematicsEnd);
+            assertEquals(0, propagateStart);
+            assertEquals(0, propagateEnd);
 
             // update measurement
             try {
@@ -2860,7 +2831,7 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
             assertEquals(measurements, estimator.getMeasurements());
             assertEquals(2.0 * timeSeconds, estimator.getLastStateTimestamp(), 0.0);
             assertEquals(new Time(2.0 * timeSeconds, TimeUnit.SECOND), estimator.getLastStateTimestampAsTime());
-            final Time timestamp = new Time(0.0, TimeUnit.MILLISECOND);
+            final var timestamp = new Time(0.0, TimeUnit.MILLISECOND);
             assertTrue(estimator.getLastStateTimestampAsTime(timestamp));
             assertEquals(timestamp, new Time(2.0 * timeSeconds, TimeUnit.SECOND));
             assertEquals(kinematics, estimator.getKinematics());
@@ -2871,38 +2842,38 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
             assertTrue(estimator.getCoordinateTransformation(c2));
             assertTrue(c.equals(c2, ABSOLUTE_ERROR));
 
-            final GNSSEstimation estimation1 = estimator.getEstimation();
+            final var estimation1 = estimator.getEstimation();
             assertNotNull(estimation1);
 
-            final GNSSEstimation estimation2 = new GNSSEstimation();
+            final var estimation2 = new GNSSEstimation();
             assertTrue(estimator.getEstimation(estimation2));
 
             assertEquals(estimation1, estimation2);
 
-            final INSLooselyCoupledKalmanState state1 = estimator.getState();
+            final var state1 = estimator.getState();
             assertNotNull(state1);
 
-            final INSLooselyCoupledKalmanState state2 = new INSLooselyCoupledKalmanState();
+            final var state2 = new INSLooselyCoupledKalmanState();
             assertTrue(estimator.getState(state2));
 
             assertEquals(state1, state2);
 
-            final ECEFPosition estimatedPosition = estimation1.getEcefPosition();
-            final ECEFVelocity estimatedVelocity = estimation1.getEcefVelocity();
+            final var estimatedPosition = estimation1.getEcefPosition();
+            final var estimatedVelocity = estimation1.getEcefVelocity();
 
-            final double diffX = Math.abs(ecefUserPosition.getX() - estimatedPosition.getX());
-            final double diffY = Math.abs(ecefUserPosition.getY() - estimatedPosition.getY());
-            final double diffZ = Math.abs(ecefUserPosition.getZ() - estimatedPosition.getZ());
-            final double posError = Math.max(diffX, Math.max(diffY, diffZ));
+            final var diffX = Math.abs(ecefUserPosition.getX() - estimatedPosition.getX());
+            final var diffY = Math.abs(ecefUserPosition.getY() - estimatedPosition.getY());
+            final var diffZ = Math.abs(ecefUserPosition.getZ() - estimatedPosition.getZ());
+            final var posError = Math.max(diffX, Math.max(diffY, diffZ));
             if (posError > POSITION_ERROR) {
                 continue;
             }
             assertTrue(ecefUserPosition.equals(estimatedPosition, POSITION_ERROR));
 
-            final double diffVx = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity.getVx());
-            final double diffVy = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity.getVy());
-            final double diffVz = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity.getVz());
-            final double velError = Math.max(diffVx, Math.max(diffVy, diffVz));
+            final var diffVx = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity.getVx());
+            final var diffVy = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity.getVy());
+            final var diffVz = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity.getVz());
+            final var velError = Math.max(diffVx, Math.max(diffVy, diffVz));
             if (velError > VELOCITY_ERROR) {
                 continue;
             }
@@ -2915,100 +2886,95 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertTrue(numValid > 0);
     }
 
-    @Test(expected = NotReadyException.class)
-    public void testUpdateMeasurementsWhenNotReadyThrowsNotReadyException() throws LockedException, NotReadyException,
-            INSGNSSException {
+    @Test
+    void testUpdateMeasurementsWhenNotReadyThrowsNotReadyException() {
+        final var kalmanConfig = generateKalmanConfig();
+        final var initConfig = generateInitConfig();
+        final var estimator = new INSGNSSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, initConfig);
 
-        final INSLooselyCoupledKalmanConfig kalmanConfig = generateKalmanConfig();
-        final INSLooselyCoupledKalmanInitializerConfig initConfig = generateInitConfig();
-        final INSGNSSLooselyCoupledKalmanFilteredEstimator estimator = new INSGNSSLooselyCoupledKalmanFilteredEstimator(
-                kalmanConfig, initConfig);
-
-        estimator.updateMeasurements(Collections.<GNSSMeasurement>emptyList(), 0.0);
+        assertThrows(NotReadyException.class, () -> estimator.updateMeasurements(Collections.emptyList(),
+                0.0));
     }
 
     @Test
-    public void testUpdateKinematicsWithZeroSpecificForceAndAngularRate() throws LockedException, NotReadyException,
+    void testUpdateKinematicsWithZeroSpecificForceAndAngularRate() throws LockedException, NotReadyException,
             INSGNSSException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final double timeSeconds = randomizer.nextDouble(MIN_TIME, MAX_TIME);
+            final var timeSeconds = randomizer.nextDouble(MIN_TIME, MAX_TIME);
 
-            final double userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES,
-                    MAX_LATITUDE_DEGREES));
-            final double userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES,
+            final var userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES,
                     MAX_LONGITUDE_DEGREES));
-            final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-            final NEDPosition nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
+            final var userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
+            final var nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
 
-            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
-            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
-            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
-            final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
+            final var userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final var userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final var userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final var nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
-            final ECEFPosition ecefUserPosition = new ECEFPosition();
-            final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
+            final var ecefUserPosition = new ECEFPosition();
+            final var ecefUserVelocity = new ECEFVelocity();
             NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedUserPosition, nedUserVelocity, ecefUserPosition,
                     ecefUserVelocity);
 
-            final ECEFPositionAndVelocity ecefUserPositionAndVelocity = new ECEFPositionAndVelocity(ecefUserPosition,
-                    ecefUserVelocity);
+            final var ecefUserPositionAndVelocity = new ECEFPositionAndVelocity(ecefUserPosition, ecefUserVelocity);
 
-            final GNSSConfig config = generateConfig();
-            final int numSatellites = config.getNumberOfSatellites();
-            final double maskAngle = Math.toRadians(config.getMaskAngleDegrees());
-            final double delta = maskAngle / 3.0;
+            final var config = generateConfig();
+            final var numSatellites = config.getNumberOfSatellites();
+            final var maskAngle = Math.toRadians(config.getMaskAngleDegrees());
+            final var delta = maskAngle / 3.0;
 
-            final List<Double> biases = new ArrayList<>();
-            final List<ECEFPositionAndVelocity> satellitePositionsAndVelocities = new ArrayList<>();
-            for (int n = 0; n < numSatellites; n++) {
-                final double satLatitude = randomizer.nextDouble(userLatitude - delta, userLatitude + delta);
-                final double satLongitude = randomizer.nextDouble(userLongitude - delta, userLongitude + delta);
-                final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT, MAX_SAT_HEIGHT);
-                final NEDPosition nedSatPosition = new NEDPosition(satLatitude, satLongitude, satHeight);
+            final var biases = new ArrayList<Double>();
+            final var satellitePositionsAndVelocities = new ArrayList<ECEFPositionAndVelocity>();
+            final var random = new Random();
+            for (var n = 0; n < numSatellites; n++) {
+                final var satLatitude = randomizer.nextDouble(userLatitude - delta, userLatitude + delta);
+                final var satLongitude = randomizer.nextDouble(userLongitude - delta, userLongitude + delta);
+                final var satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT, MAX_SAT_HEIGHT);
+                final var nedSatPosition = new NEDPosition(satLatitude, satLongitude, satHeight);
 
-                final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
-                final double satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
-                final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
-                final NEDVelocity nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
+                final var satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final var satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final var satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final var nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
 
-                final ECEFPosition ecefSatPosition = new ECEFPosition();
-                final ECEFVelocity ecefSatVelocity = new ECEFVelocity();
+                final var ecefSatPosition = new ECEFPosition();
+                final var ecefSatVelocity = new ECEFVelocity();
                 NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedSatPosition, nedSatVelocity, ecefSatPosition,
                         ecefSatVelocity);
 
-                final ECEFPositionAndVelocity ecefSatPositionAndVelocity = new ECEFPositionAndVelocity(ecefSatPosition,
-                        ecefSatVelocity);
+                final var ecefSatPositionAndVelocity = new ECEFPositionAndVelocity(ecefSatPosition, ecefSatVelocity);
 
-                final double bias = GNSSBiasesGenerator.generateBias(ecefSatPosition, ecefUserPosition, config, random);
+                final var bias = GNSSBiasesGenerator.generateBias(ecefSatPosition, ecefUserPosition, config, random);
 
                 biases.add(bias);
                 satellitePositionsAndVelocities.add(ecefSatPositionAndVelocity);
             }
 
-            final Collection<GNSSMeasurement> measurements = GNSSMeasurementsGenerator.generate(timeSeconds,
-                    satellitePositionsAndVelocities, ecefUserPositionAndVelocity, biases, config, random);
+            final var measurements = GNSSMeasurementsGenerator.generate(timeSeconds, satellitePositionsAndVelocities,
+                    ecefUserPositionAndVelocity, biases, config, random);
 
             if (measurements.size() < GNSSLeastSquaresPositionAndVelocityEstimator.MIN_MEASUREMENTS) {
                 continue;
             }
 
-            final INSLooselyCoupledKalmanConfig kalmanConfig = generateKalmanConfig();
-            final INSLooselyCoupledKalmanInitializerConfig initConfig = generateInitConfig();
-            final INSGNSSLooselyCoupledKalmanFilteredEstimator estimator =
-                    new INSGNSSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, initConfig, this);
+            final var kalmanConfig = generateKalmanConfig();
+            final var initConfig = generateInitConfig();
+            final var estimator = new INSGNSSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, initConfig, 
+                    this);
 
             reset();
-            assertEquals(0, mUpdateGNSSMeasurementsStart);
-            assertEquals(0, mUpdateGNSSMeasurementsEnd);
-            assertEquals(0, mUpdateBodyKinematicsStart);
-            assertEquals(0, mUpdateBodyKinematicsEnd);
-            assertEquals(0, mPropagateStart);
-            assertEquals(0, mPropagateEnd);
+            assertEquals(0, updateGNSSMeasurementsStart);
+            assertEquals(0, updateGNSSMeasurementsEnd);
+            assertEquals(0, updateBodyKinematicsStart);
+            assertEquals(0, updateBodyKinematicsEnd);
+            assertEquals(0, propagateStart);
+            assertEquals(0, propagateEnd);
 
             assertNull(estimator.getEstimation());
             assertFalse(estimator.getEstimation(null));
@@ -3028,80 +2994,80 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
                 continue;
             }
 
-            final BodyKinematics kinematics = new BodyKinematics();
+            final var kinematics = new BodyKinematics();
             assertTrue(estimator.updateBodyKinematics(kinematics, 2.0 * timeSeconds));
 
             assertFalse(estimator.isRunning());
             assertEquals(measurements, estimator.getMeasurements());
             assertEquals(2.0 * timeSeconds, estimator.getLastStateTimestamp(), 0.0);
             assertEquals(new Time(2.0 * timeSeconds, TimeUnit.SECOND), estimator.getLastStateTimestampAsTime());
-            final Time timestamp = new Time(0.0, TimeUnit.MILLISECOND);
+            final var timestamp = new Time(0.0, TimeUnit.MILLISECOND);
             assertTrue(estimator.getLastStateTimestampAsTime(timestamp));
             assertEquals(new Time(2.0 * timeSeconds, TimeUnit.SECOND), timestamp);
             assertEquals(kinematics, estimator.getKinematics());
             assertNotNull(estimator.getCorrectedKinematics());
-            assertEquals(estimator.getCoordinateTransformation(), new CoordinateTransformation(FrameType.BODY_FRAME,
-                    FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME));
-            CoordinateTransformation c2 = new CoordinateTransformation(FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME,
+            assertEquals(new CoordinateTransformation(FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME),
+                    estimator.getCoordinateTransformation());
+            var c2 = new CoordinateTransformation(FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME, 
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
             assertTrue(estimator.getCoordinateTransformation(c2));
-            assertEquals(c2, new CoordinateTransformation(FrameType.BODY_FRAME,
-                    FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME));
+            assertEquals(new CoordinateTransformation(FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME), 
+                    c2);
 
-            final GNSSEstimation estimation1 = estimator.getEstimation();
+            final var estimation1 = estimator.getEstimation();
             assertNotNull(estimation1);
 
-            final GNSSEstimation estimation2 = new GNSSEstimation();
+            final var estimation2 = new GNSSEstimation();
             assertTrue(estimator.getEstimation(estimation2));
 
             assertEquals(estimation1, estimation2);
 
-            final INSLooselyCoupledKalmanState state1 = estimator.getState();
+            final var state1 = estimator.getState();
             assertNotNull(state1);
 
-            final INSLooselyCoupledKalmanState state2 = new INSLooselyCoupledKalmanState();
+            final var state2 = new INSLooselyCoupledKalmanState();
             assertTrue(estimator.getState(state2));
 
             assertEquals(state1, state2);
 
-            final ECEFPosition estimatedPosition = estimation1.getEcefPosition();
-            final ECEFVelocity estimatedVelocity = estimation1.getEcefVelocity();
+            final var estimatedPosition = estimation1.getEcefPosition();
+            final var estimatedVelocity = estimation1.getEcefVelocity();
 
-            final double diffX = Math.abs(ecefUserPosition.getX() - estimatedPosition.getX());
-            final double diffY = Math.abs(ecefUserPosition.getY() - estimatedPosition.getY());
-            final double diffZ = Math.abs(ecefUserPosition.getZ() - estimatedPosition.getZ());
-            final double posError = Math.max(diffX, Math.max(diffY, diffZ));
+            final var diffX = Math.abs(ecefUserPosition.getX() - estimatedPosition.getX());
+            final var diffY = Math.abs(ecefUserPosition.getY() - estimatedPosition.getY());
+            final var diffZ = Math.abs(ecefUserPosition.getZ() - estimatedPosition.getZ());
+            final var posError = Math.max(diffX, Math.max(diffY, diffZ));
             if (posError > POSITION_ERROR) {
                 continue;
             }
             assertTrue(ecefUserPosition.equals(estimatedPosition, POSITION_ERROR));
 
-            final double diffVx = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity.getVx());
-            final double diffVy = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity.getVy());
-            final double diffVz = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity.getVz());
-            final double velError = Math.max(diffVx, Math.max(diffVy, diffVz));
+            final var diffVx = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity.getVx());
+            final var diffVy = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity.getVy());
+            final var diffVz = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity.getVz());
+            final var velError = Math.max(diffVx, Math.max(diffVy, diffVz));
             if (velError > VELOCITY_ERROR) {
                 continue;
             }
             assertTrue(ecefUserVelocity.equals(estimatedVelocity, VELOCITY_ERROR));
 
-            // update again with same timestamp makes no action
+            // update again with the same timestamp makes no action
             assertFalse(estimator.updateBodyKinematics(kinematics, 2.0 * timeSeconds));
 
             assertFalse(estimator.isRunning());
             assertEquals(2.0 * timeSeconds, estimator.getLastStateTimestamp(), 0.0);
-            final GNSSEstimation estimation3 = estimator.getEstimation();
-            final INSLooselyCoupledKalmanState state3 = estimator.getState();
+            final var estimation3 = estimator.getEstimation();
+            final var state3 = estimator.getState();
 
             assertEquals(estimation1, estimation3);
             assertEquals(state1, state3);
 
-            assertEquals(1, mUpdateGNSSMeasurementsStart);
-            assertEquals(1, mUpdateGNSSMeasurementsEnd);
-            assertEquals(2, mUpdateBodyKinematicsStart);
-            assertEquals(2, mUpdateBodyKinematicsEnd);
-            assertEquals(2, mPropagateStart);
-            assertEquals(2, mPropagateEnd);
+            assertEquals(1, updateGNSSMeasurementsStart);
+            assertEquals(1, updateGNSSMeasurementsEnd);
+            assertEquals(2, updateBodyKinematicsStart);
+            assertEquals(2, updateBodyKinematicsEnd);
+            assertEquals(2, propagateStart);
+            assertEquals(2, propagateEnd);
 
             numValid++;
             break;
@@ -3111,87 +3077,84 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
     }
 
     @Test
-    public void testUpdateKinematicsWithFreeFallSpecificForceAndZeroAngularRate() throws LockedException,
-            NotReadyException, INSGNSSException {
+    void testUpdateKinematicsWithFreeFallSpecificForceAndZeroAngularRate() throws LockedException, NotReadyException,
+            INSGNSSException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final double timeSeconds = randomizer.nextDouble(MIN_TIME, MAX_TIME);
+            final var timeSeconds = randomizer.nextDouble(MIN_TIME, MAX_TIME);
 
-            final double userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES,
-                    MAX_LATITUDE_DEGREES));
-            final double userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES,
+            final var userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, 
                     MAX_LONGITUDE_DEGREES));
-            final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-            final NEDPosition nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
+            final var userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
+            final var nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
 
-            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
-            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
-            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
-            final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
+            final var userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final var userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final var userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final var nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
-            final ECEFPosition ecefUserPosition = new ECEFPosition();
-            final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
+            final var ecefUserPosition = new ECEFPosition();
+            final var ecefUserVelocity = new ECEFVelocity();
             NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedUserPosition, nedUserVelocity, ecefUserPosition,
                     ecefUserVelocity);
 
-            final ECEFPositionAndVelocity ecefUserPositionAndVelocity = new ECEFPositionAndVelocity(ecefUserPosition,
-                    ecefUserVelocity);
+            final var ecefUserPositionAndVelocity = new ECEFPositionAndVelocity(ecefUserPosition, ecefUserVelocity);
 
-            final GNSSConfig config = generateConfig();
-            final int numSatellites = config.getNumberOfSatellites();
-            final double maskAngle = Math.toRadians(config.getMaskAngleDegrees());
-            final double delta = maskAngle / 3.0;
+            final var config = generateConfig();
+            final var numSatellites = config.getNumberOfSatellites();
+            final var maskAngle = Math.toRadians(config.getMaskAngleDegrees());
+            final var delta = maskAngle / 3.0;
 
-            final List<Double> biases = new ArrayList<>();
-            final List<ECEFPositionAndVelocity> satellitePositionsAndVelocities = new ArrayList<>();
-            for (int n = 0; n < numSatellites; n++) {
-                final double satLatitude = randomizer.nextDouble(userLatitude - delta, userLatitude + delta);
-                final double satLongitude = randomizer.nextDouble(userLongitude - delta, userLongitude + delta);
-                final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT, MAX_SAT_HEIGHT);
-                final NEDPosition nedSatPosition = new NEDPosition(satLatitude, satLongitude, satHeight);
+            final var biases = new ArrayList<Double>();
+            final var satellitePositionsAndVelocities = new ArrayList<ECEFPositionAndVelocity>();
+            final var random = new Random();
+            for (var n = 0; n < numSatellites; n++) {
+                final var satLatitude = randomizer.nextDouble(userLatitude - delta, userLatitude + delta);
+                final var satLongitude = randomizer.nextDouble(userLongitude - delta, userLongitude + delta);
+                final var satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT, MAX_SAT_HEIGHT);
+                final var nedSatPosition = new NEDPosition(satLatitude, satLongitude, satHeight);
 
-                final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
-                final double satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
-                final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
-                final NEDVelocity nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
+                final var satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final var satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final var satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final var nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
 
-                final ECEFPosition ecefSatPosition = new ECEFPosition();
-                final ECEFVelocity ecefSatVelocity = new ECEFVelocity();
+                final var ecefSatPosition = new ECEFPosition();
+                final var ecefSatVelocity = new ECEFVelocity();
                 NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedSatPosition, nedSatVelocity, ecefSatPosition,
                         ecefSatVelocity);
 
-                final ECEFPositionAndVelocity ecefSatPositionAndVelocity = new ECEFPositionAndVelocity(ecefSatPosition,
-                        ecefSatVelocity);
+                final var ecefSatPositionAndVelocity = new ECEFPositionAndVelocity(ecefSatPosition, ecefSatVelocity);
 
-                final double bias = GNSSBiasesGenerator.generateBias(ecefSatPosition, ecefUserPosition, config, random);
+                final var bias = GNSSBiasesGenerator.generateBias(ecefSatPosition, ecefUserPosition, config, random);
 
                 biases.add(bias);
                 satellitePositionsAndVelocities.add(ecefSatPositionAndVelocity);
             }
 
-            final Collection<GNSSMeasurement> measurements = GNSSMeasurementsGenerator.generate(timeSeconds,
-                    satellitePositionsAndVelocities, ecefUserPositionAndVelocity, biases, config, random);
+            final var measurements = GNSSMeasurementsGenerator.generate(timeSeconds, satellitePositionsAndVelocities,
+                    ecefUserPositionAndVelocity, biases, config, random);
 
             if (measurements.size() < GNSSLeastSquaresPositionAndVelocityEstimator.MIN_MEASUREMENTS) {
                 continue;
             }
 
-            final INSLooselyCoupledKalmanConfig kalmanConfig = generateKalmanConfig();
-            final INSLooselyCoupledKalmanInitializerConfig initConfig = generateInitConfig();
-            final INSGNSSLooselyCoupledKalmanFilteredEstimator estimator =
-                    new INSGNSSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, initConfig, this);
+            final var kalmanConfig = generateKalmanConfig();
+            final var initConfig = generateInitConfig();
+            final var estimator = new INSGNSSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, initConfig, 
+                    this);
 
             reset();
-            assertEquals(0, mUpdateGNSSMeasurementsStart);
-            assertEquals(0, mUpdateGNSSMeasurementsEnd);
-            assertEquals(0, mUpdateBodyKinematicsStart);
-            assertEquals(0, mUpdateBodyKinematicsEnd);
-            assertEquals(0, mPropagateStart);
-            assertEquals(0, mPropagateEnd);
+            assertEquals(0, updateGNSSMeasurementsStart);
+            assertEquals(0, updateGNSSMeasurementsEnd);
+            assertEquals(0, updateBodyKinematicsStart);
+            assertEquals(0, updateBodyKinematicsEnd);
+            assertEquals(0, propagateStart);
+            assertEquals(0, propagateEnd);
 
             assertNull(estimator.getEstimation());
             assertFalse(estimator.getEstimation(null));
@@ -3211,12 +3174,12 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
                 continue;
             }
 
-            final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(ecefUserPosition.getX(),
+            final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(ecefUserPosition.getX(),
                     ecefUserPosition.getY(), ecefUserPosition.getZ());
 
             // because there is no attitude, the specific force is directly the
             // gravity.
-            final BodyKinematics kinematics = new BodyKinematics(gravity.getGx(), gravity.getGy(), gravity.getGz(),
+            final var kinematics = new BodyKinematics(gravity.getGx(), gravity.getGy(), gravity.getGz(),
                     0.0, 0.0, 0.0);
             assertTrue(estimator.updateBodyKinematics(kinematics, 2.0 * timeSeconds));
 
@@ -3224,66 +3187,66 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
             assertEquals(measurements, estimator.getMeasurements());
             assertEquals(2.0 * timeSeconds, estimator.getLastStateTimestamp(), 0.0);
             assertEquals(new Time(2.0 * timeSeconds, TimeUnit.SECOND), estimator.getLastStateTimestampAsTime());
-            final Time timestamp = new Time(0.0, TimeUnit.MILLISECOND);
+            final var timestamp = new Time(0.0, TimeUnit.MILLISECOND);
             assertTrue(estimator.getLastStateTimestampAsTime(timestamp));
             assertEquals(timestamp, new Time(2.0 * timeSeconds, TimeUnit.SECOND));
             assertEquals(kinematics, estimator.getKinematics());
             assertNotNull(estimator.getCorrectedKinematics());
 
-            final GNSSEstimation estimation1 = estimator.getEstimation();
+            final var estimation1 = estimator.getEstimation();
             assertNotNull(estimation1);
 
-            final GNSSEstimation estimation2 = new GNSSEstimation();
+            final var estimation2 = new GNSSEstimation();
             assertTrue(estimator.getEstimation(estimation2));
 
             assertEquals(estimation1, estimation2);
 
-            final INSLooselyCoupledKalmanState state1 = estimator.getState();
+            final var state1 = estimator.getState();
             assertNotNull(state1);
 
-            final INSLooselyCoupledKalmanState state2 = new INSLooselyCoupledKalmanState();
+            final var state2 = new INSLooselyCoupledKalmanState();
             assertTrue(estimator.getState(state2));
 
             assertEquals(state1, state2);
 
-            final ECEFPosition estimatedPosition = estimation1.getEcefPosition();
-            final ECEFVelocity estimatedVelocity = estimation1.getEcefVelocity();
+            final var estimatedPosition = estimation1.getEcefPosition();
+            final var estimatedVelocity = estimation1.getEcefVelocity();
 
-            final double diffX = Math.abs(ecefUserPosition.getX() - estimatedPosition.getX());
-            final double diffY = Math.abs(ecefUserPosition.getY() - estimatedPosition.getY());
-            final double diffZ = Math.abs(ecefUserPosition.getZ() - estimatedPosition.getZ());
-            final double posError = Math.max(diffX, Math.max(diffY, diffZ));
+            final var diffX = Math.abs(ecefUserPosition.getX() - estimatedPosition.getX());
+            final var diffY = Math.abs(ecefUserPosition.getY() - estimatedPosition.getY());
+            final var diffZ = Math.abs(ecefUserPosition.getZ() - estimatedPosition.getZ());
+            final var posError = Math.max(diffX, Math.max(diffY, diffZ));
             if (posError > POSITION_ERROR) {
                 continue;
             }
             assertTrue(ecefUserPosition.equals(estimatedPosition, POSITION_ERROR));
 
-            final double diffVx = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity.getVx());
-            final double diffVy = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity.getVy());
-            final double diffVz = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity.getVz());
-            final double velError = Math.max(diffVx, Math.max(diffVy, diffVz));
+            final var diffVx = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity.getVx());
+            final var diffVy = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity.getVy());
+            final var diffVz = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity.getVz());
+            final var velError = Math.max(diffVx, Math.max(diffVy, diffVz));
             if (velError > VELOCITY_ERROR) {
                 continue;
             }
             assertTrue(ecefUserVelocity.equals(estimatedVelocity, VELOCITY_ERROR));
 
-            // update again with same timestamp makes no action
+            // update again with the same timestamp makes no action
             assertFalse(estimator.updateBodyKinematics(kinematics, 2.0 * timeSeconds));
 
             assertFalse(estimator.isRunning());
             assertEquals(2.0 * timeSeconds, estimator.getLastStateTimestamp(), 0.0);
-            final GNSSEstimation estimation3 = estimator.getEstimation();
-            final INSLooselyCoupledKalmanState state3 = estimator.getState();
+            final var estimation3 = estimator.getEstimation();
+            final var state3 = estimator.getState();
 
             assertEquals(estimation1, estimation3);
             assertEquals(state1, state3);
 
-            assertEquals(1, mUpdateGNSSMeasurementsStart);
-            assertEquals(1, mUpdateGNSSMeasurementsEnd);
-            assertEquals(2, mUpdateBodyKinematicsStart);
-            assertEquals(2, mUpdateBodyKinematicsEnd);
-            assertEquals(2, mPropagateStart);
-            assertEquals(2, mPropagateEnd);
+            assertEquals(1, updateGNSSMeasurementsStart);
+            assertEquals(1, updateGNSSMeasurementsEnd);
+            assertEquals(2, updateBodyKinematicsStart);
+            assertEquals(2, updateBodyKinematicsEnd);
+            assertEquals(2, propagateStart);
+            assertEquals(2, propagateEnd);
 
             numValid++;
             break;
@@ -3293,87 +3256,84 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
     }
 
     @Test
-    public void testUpdateKinematicsWithZeroSpecificForceAndRotationOnly() throws LockedException, INSGNSSException,
+    void testUpdateKinematicsWithZeroSpecificForceAndRotationOnly() throws LockedException, INSGNSSException,
             NotReadyException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final double timeSeconds = randomizer.nextDouble(MIN_TIME, MAX_TIME);
+            final var timeSeconds = randomizer.nextDouble(MIN_TIME, MAX_TIME);
 
-            final double userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES,
-                    MAX_LATITUDE_DEGREES));
-            final double userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES,
+            final var userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, 
                     MAX_LONGITUDE_DEGREES));
-            final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-            final NEDPosition nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
+            final var userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
+            final var nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
 
-            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
-            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
-            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
-            final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
+            final var userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final var userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final var userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final var nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
-            final ECEFPosition ecefUserPosition = new ECEFPosition();
-            final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
+            final var ecefUserPosition = new ECEFPosition();
+            final var ecefUserVelocity = new ECEFVelocity();
             NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedUserPosition, nedUserVelocity, ecefUserPosition,
                     ecefUserVelocity);
 
-            final ECEFPositionAndVelocity ecefUserPositionAndVelocity = new ECEFPositionAndVelocity(ecefUserPosition,
-                    ecefUserVelocity);
+            final var ecefUserPositionAndVelocity = new ECEFPositionAndVelocity(ecefUserPosition, ecefUserVelocity);
 
-            final GNSSConfig config = generateConfig();
-            final int numSatellites = config.getNumberOfSatellites();
-            final double maskAngle = Math.toRadians(config.getMaskAngleDegrees());
-            final double delta = maskAngle / 3.0;
+            final var config = generateConfig();
+            final var numSatellites = config.getNumberOfSatellites();
+            final var maskAngle = Math.toRadians(config.getMaskAngleDegrees());
+            final var delta = maskAngle / 3.0;
 
-            final List<Double> biases = new ArrayList<>();
-            final List<ECEFPositionAndVelocity> satellitePositionsAndVelocities = new ArrayList<>();
-            for (int n = 0; n < numSatellites; n++) {
-                final double satLatitude = randomizer.nextDouble(userLatitude - delta, userLatitude + delta);
-                final double satLongitude = randomizer.nextDouble(userLongitude - delta, userLongitude + delta);
-                final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT, MAX_SAT_HEIGHT);
-                final NEDPosition nedSatPosition = new NEDPosition(satLatitude, satLongitude, satHeight);
+            final var biases = new ArrayList<Double>();
+            final var satellitePositionsAndVelocities = new ArrayList<ECEFPositionAndVelocity>();
+            final var random = new Random();
+            for (var n = 0; n < numSatellites; n++) {
+                final var satLatitude = randomizer.nextDouble(userLatitude - delta, userLatitude + delta);
+                final var satLongitude = randomizer.nextDouble(userLongitude - delta, userLongitude + delta);
+                final var satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT, MAX_SAT_HEIGHT);
+                final var nedSatPosition = new NEDPosition(satLatitude, satLongitude, satHeight);
 
-                final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
-                final double satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
-                final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
-                final NEDVelocity nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
+                final var satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final var satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final var satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final var nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
 
-                final ECEFPosition ecefSatPosition = new ECEFPosition();
-                final ECEFVelocity ecefSatVelocity = new ECEFVelocity();
+                final var ecefSatPosition = new ECEFPosition();
+                final var ecefSatVelocity = new ECEFVelocity();
                 NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedSatPosition, nedSatVelocity, ecefSatPosition,
                         ecefSatVelocity);
 
-                final ECEFPositionAndVelocity ecefSatPositionAndVelocity = new ECEFPositionAndVelocity(ecefSatPosition,
-                        ecefSatVelocity);
+                final var ecefSatPositionAndVelocity = new ECEFPositionAndVelocity(ecefSatPosition, ecefSatVelocity);
 
-                final double bias = GNSSBiasesGenerator.generateBias(ecefSatPosition, ecefUserPosition, config, random);
+                final var bias = GNSSBiasesGenerator.generateBias(ecefSatPosition, ecefUserPosition, config, random);
 
                 biases.add(bias);
                 satellitePositionsAndVelocities.add(ecefSatPositionAndVelocity);
             }
 
-            final Collection<GNSSMeasurement> measurements = GNSSMeasurementsGenerator.generate(timeSeconds,
-                    satellitePositionsAndVelocities, ecefUserPositionAndVelocity, biases, config, random);
+            final var measurements = GNSSMeasurementsGenerator.generate(timeSeconds, satellitePositionsAndVelocities,
+                    ecefUserPositionAndVelocity, biases, config, random);
 
             if (measurements.size() < GNSSLeastSquaresPositionAndVelocityEstimator.MIN_MEASUREMENTS) {
                 continue;
             }
 
-            final INSLooselyCoupledKalmanConfig kalmanConfig = generateKalmanConfig();
-            final INSLooselyCoupledKalmanInitializerConfig initConfig = generateInitConfig();
-            final INSGNSSLooselyCoupledKalmanFilteredEstimator estimator =
-                    new INSGNSSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, initConfig, this);
+            final var kalmanConfig = generateKalmanConfig();
+            final var initConfig = generateInitConfig();
+            final var estimator = new INSGNSSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, initConfig, 
+                    this);
 
             reset();
-            assertEquals(0, mUpdateGNSSMeasurementsStart);
-            assertEquals(0, mUpdateGNSSMeasurementsEnd);
-            assertEquals(0, mUpdateBodyKinematicsStart);
-            assertEquals(0, mUpdateBodyKinematicsEnd);
-            assertEquals(0, mPropagateStart);
-            assertEquals(0, mPropagateEnd);
+            assertEquals(0, updateGNSSMeasurementsStart);
+            assertEquals(0, updateGNSSMeasurementsEnd);
+            assertEquals(0, updateBodyKinematicsStart);
+            assertEquals(0, updateBodyKinematicsEnd);
+            assertEquals(0, propagateStart);
+            assertEquals(0, propagateEnd);
 
             assertNull(estimator.getEstimation());
             assertFalse(estimator.getEstimation(null));
@@ -3393,14 +3353,14 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
                 continue;
             }
 
-            final double angularRateX = Math.toRadians(randomizer.nextDouble(MIN_DEGREES_PER_SECOND,
+            final var angularRateX = Math.toRadians(randomizer.nextDouble(MIN_DEGREES_PER_SECOND, 
                     MAX_DEGREES_PER_SECOND));
-            final double angularRateY = Math.toRadians(randomizer.nextDouble(MIN_DEGREES_PER_SECOND,
+            final var angularRateY = Math.toRadians(randomizer.nextDouble(MIN_DEGREES_PER_SECOND,
                     MAX_DEGREES_PER_SECOND));
-            final double angularRateZ = Math.toRadians(randomizer.nextDouble(MIN_DEGREES_PER_SECOND,
+            final var angularRateZ = Math.toRadians(randomizer.nextDouble(MIN_DEGREES_PER_SECOND,
                     MAX_DEGREES_PER_SECOND));
 
-            final BodyKinematics kinematics = new BodyKinematics(0.0, 0.0, 0.0,
+            final var kinematics = new BodyKinematics(0.0, 0.0, 0.0, 
                     angularRateX, angularRateY, angularRateZ);
             assertTrue(estimator.updateBodyKinematics(kinematics, 2.0 * timeSeconds));
 
@@ -3408,66 +3368,66 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
             assertEquals(measurements, estimator.getMeasurements());
             assertEquals(estimator.getLastStateTimestamp(), 2.0 * timeSeconds, 0.0);
             assertEquals(estimator.getLastStateTimestampAsTime(), new Time(2.0 * timeSeconds, TimeUnit.SECOND));
-            final Time timestamp = new Time(0.0, TimeUnit.MILLISECOND);
+            final var timestamp = new Time(0.0, TimeUnit.MILLISECOND);
             assertTrue(estimator.getLastStateTimestampAsTime(timestamp));
             assertEquals(new Time(2.0 * timeSeconds, TimeUnit.SECOND), timestamp);
             assertEquals(kinematics, estimator.getKinematics());
             assertNotNull(estimator.getCorrectedKinematics());
 
-            final GNSSEstimation estimation1 = estimator.getEstimation();
+            final var estimation1 = estimator.getEstimation();
             assertNotNull(estimation1);
 
-            final GNSSEstimation estimation2 = new GNSSEstimation();
+            final var estimation2 = new GNSSEstimation();
             assertTrue(estimator.getEstimation(estimation2));
 
             assertEquals(estimation1, estimation2);
 
-            final INSLooselyCoupledKalmanState state1 = estimator.getState();
+            final var state1 = estimator.getState();
             assertNotNull(state1);
 
-            final INSLooselyCoupledKalmanState state2 = new INSLooselyCoupledKalmanState();
+            final var state2 = new INSLooselyCoupledKalmanState();
             assertTrue(estimator.getState(state2));
 
             assertEquals(state1, state2);
 
-            final ECEFPosition estimatedPosition = estimation1.getEcefPosition();
-            final ECEFVelocity estimatedVelocity = estimation1.getEcefVelocity();
+            final var estimatedPosition = estimation1.getEcefPosition();
+            final var estimatedVelocity = estimation1.getEcefVelocity();
 
-            final double diffX = Math.abs(ecefUserPosition.getX() - estimatedPosition.getX());
-            final double diffY = Math.abs(ecefUserPosition.getY() - estimatedPosition.getY());
-            final double diffZ = Math.abs(ecefUserPosition.getZ() - estimatedPosition.getZ());
-            final double posError = Math.max(diffX, Math.max(diffY, diffZ));
+            final var diffX = Math.abs(ecefUserPosition.getX() - estimatedPosition.getX());
+            final var diffY = Math.abs(ecefUserPosition.getY() - estimatedPosition.getY());
+            final var diffZ = Math.abs(ecefUserPosition.getZ() - estimatedPosition.getZ());
+            final var posError = Math.max(diffX, Math.max(diffY, diffZ));
             if (posError > POSITION_ERROR) {
                 continue;
             }
             assertTrue(ecefUserPosition.equals(estimatedPosition, POSITION_ERROR));
 
-            final double diffVx = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity.getVx());
-            final double diffVy = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity.getVy());
-            final double diffVz = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity.getVz());
-            final double velError = Math.max(diffVx, Math.max(diffVy, diffVz));
+            final var diffVx = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity.getVx());
+            final var diffVy = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity.getVy());
+            final var diffVz = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity.getVz());
+            final var velError = Math.max(diffVx, Math.max(diffVy, diffVz));
             if (velError > VELOCITY_ERROR) {
                 continue;
             }
             assertTrue(ecefUserVelocity.equals(estimatedVelocity, VELOCITY_ERROR));
 
-            // update again with same timestamp makes no action
+            // update again with the same timestamp makes no action
             assertFalse(estimator.updateBodyKinematics(kinematics, 2.0 * timeSeconds));
 
             assertFalse(estimator.isRunning());
             assertEquals(2.0 * timeSeconds, estimator.getLastStateTimestamp(), 0.0);
-            final GNSSEstimation estimation3 = estimator.getEstimation();
-            final INSLooselyCoupledKalmanState state3 = estimator.getState();
+            final var estimation3 = estimator.getEstimation();
+            final var state3 = estimator.getState();
 
             assertEquals(estimation1, estimation3);
             assertEquals(state1, state3);
 
-            assertEquals(1, mUpdateGNSSMeasurementsStart);
-            assertEquals(1, mUpdateGNSSMeasurementsEnd);
-            assertEquals(2, mUpdateBodyKinematicsStart);
-            assertEquals(2, mUpdateBodyKinematicsEnd);
-            assertEquals(2, mPropagateStart);
-            assertEquals(2, mPropagateEnd);
+            assertEquals(1, updateGNSSMeasurementsStart);
+            assertEquals(1, updateGNSSMeasurementsEnd);
+            assertEquals(2, updateBodyKinematicsStart);
+            assertEquals(2, updateBodyKinematicsEnd);
+            assertEquals(2, propagateStart);
+            assertEquals(2, propagateEnd);
 
             numValid++;
             break;
@@ -3477,87 +3437,84 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
     }
 
     @Test
-    public void testUpdateKinematicsWithFreeFallSpecificForceAndRotation() throws LockedException, NotReadyException,
+    void testUpdateKinematicsWithFreeFallSpecificForceAndRotation() throws LockedException, NotReadyException, 
             INSGNSSException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final double timeSeconds = randomizer.nextDouble(MIN_TIME, MAX_TIME);
+            final var timeSeconds = randomizer.nextDouble(MIN_TIME, MAX_TIME);
 
-            final double userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES,
-                    MAX_LATITUDE_DEGREES));
-            final double userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES,
+            final var userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, 
                     MAX_LONGITUDE_DEGREES));
-            final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-            final NEDPosition nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
+            final var userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
+            final var nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
 
-            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
-            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
-            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
-            final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
+            final var userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final var userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final var userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final var nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
-            final ECEFPosition ecefUserPosition = new ECEFPosition();
-            final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
+            final var ecefUserPosition = new ECEFPosition();
+            final var ecefUserVelocity = new ECEFVelocity();
             NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedUserPosition, nedUserVelocity, ecefUserPosition,
                     ecefUserVelocity);
 
-            final ECEFPositionAndVelocity ecefUserPositionAndVelocity = new ECEFPositionAndVelocity(ecefUserPosition,
-                    ecefUserVelocity);
+            final var ecefUserPositionAndVelocity = new ECEFPositionAndVelocity(ecefUserPosition, ecefUserVelocity);
 
-            final GNSSConfig config = generateConfig();
-            final int numSatellites = config.getNumberOfSatellites();
-            final double maskAngle = Math.toRadians(config.getMaskAngleDegrees());
-            final double delta = maskAngle / 3.0;
+            final var config = generateConfig();
+            final var numSatellites = config.getNumberOfSatellites();
+            final var maskAngle = Math.toRadians(config.getMaskAngleDegrees());
+            final var delta = maskAngle / 3.0;
 
-            final List<Double> biases = new ArrayList<>();
-            final List<ECEFPositionAndVelocity> satellitePositionsAndVelocities = new ArrayList<>();
-            for (int n = 0; n < numSatellites; n++) {
-                final double satLatitude = randomizer.nextDouble(userLatitude - delta, userLatitude + delta);
-                final double satLongitude = randomizer.nextDouble(userLongitude - delta, userLongitude + delta);
-                final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT, MAX_SAT_HEIGHT);
-                final NEDPosition nedSatPosition = new NEDPosition(satLatitude, satLongitude, satHeight);
+            final var biases = new ArrayList<Double>();
+            final var satellitePositionsAndVelocities = new ArrayList<ECEFPositionAndVelocity>();
+            final var random = new Random();
+            for (var n = 0; n < numSatellites; n++) {
+                final var satLatitude = randomizer.nextDouble(userLatitude - delta, userLatitude + delta);
+                final var satLongitude = randomizer.nextDouble(userLongitude - delta, userLongitude + delta);
+                final var satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT, MAX_SAT_HEIGHT);
+                final var nedSatPosition = new NEDPosition(satLatitude, satLongitude, satHeight);
 
-                final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
-                final double satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
-                final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
-                final NEDVelocity nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
+                final var satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final var satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final var satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final var nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
 
-                final ECEFPosition ecefSatPosition = new ECEFPosition();
-                final ECEFVelocity ecefSatVelocity = new ECEFVelocity();
+                final var ecefSatPosition = new ECEFPosition();
+                final var ecefSatVelocity = new ECEFVelocity();
                 NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedSatPosition, nedSatVelocity, ecefSatPosition,
                         ecefSatVelocity);
 
-                final ECEFPositionAndVelocity ecefSatPositionAndVelocity = new ECEFPositionAndVelocity(ecefSatPosition,
-                        ecefSatVelocity);
+                final var ecefSatPositionAndVelocity = new ECEFPositionAndVelocity(ecefSatPosition, ecefSatVelocity);
 
-                final double bias = GNSSBiasesGenerator.generateBias(ecefSatPosition, ecefUserPosition, config, random);
+                final var bias = GNSSBiasesGenerator.generateBias(ecefSatPosition, ecefUserPosition, config, random);
 
                 biases.add(bias);
                 satellitePositionsAndVelocities.add(ecefSatPositionAndVelocity);
             }
 
-            final Collection<GNSSMeasurement> measurements = GNSSMeasurementsGenerator.generate(timeSeconds,
-                    satellitePositionsAndVelocities, ecefUserPositionAndVelocity, biases, config, random);
+            final var measurements = GNSSMeasurementsGenerator.generate(timeSeconds, satellitePositionsAndVelocities,
+                    ecefUserPositionAndVelocity, biases, config, random);
 
             if (measurements.size() < GNSSLeastSquaresPositionAndVelocityEstimator.MIN_MEASUREMENTS) {
                 continue;
             }
 
-            final INSLooselyCoupledKalmanConfig kalmanConfig = generateKalmanConfig();
-            final INSLooselyCoupledKalmanInitializerConfig initConfig = generateInitConfig();
-            final INSGNSSLooselyCoupledKalmanFilteredEstimator estimator =
-                    new INSGNSSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, initConfig, this);
+            final var kalmanConfig = generateKalmanConfig();
+            final var initConfig = generateInitConfig();
+            final var estimator = new INSGNSSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, initConfig, 
+                    this);
 
             reset();
-            assertEquals(0, mUpdateGNSSMeasurementsStart);
-            assertEquals(0, mUpdateGNSSMeasurementsEnd);
-            assertEquals(0, mUpdateBodyKinematicsStart);
-            assertEquals(0, mUpdateBodyKinematicsEnd);
-            assertEquals(0, mPropagateStart);
-            assertEquals(0, mPropagateEnd);
+            assertEquals(0, updateGNSSMeasurementsStart);
+            assertEquals(0, updateGNSSMeasurementsEnd);
+            assertEquals(0, updateBodyKinematicsStart);
+            assertEquals(0, updateBodyKinematicsEnd);
+            assertEquals(0, propagateStart);
+            assertEquals(0, propagateEnd);
 
             assertNull(estimator.getEstimation());
             assertFalse(estimator.getEstimation(null));
@@ -3577,19 +3534,19 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
                 continue;
             }
 
-            final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+            final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                     ecefUserPosition.getX(), ecefUserPosition.getY(), ecefUserPosition.getZ());
 
-            final double angularRateX = Math.toRadians(randomizer.nextDouble(MIN_DEGREES_PER_SECOND,
+            final var angularRateX = Math.toRadians(randomizer.nextDouble(MIN_DEGREES_PER_SECOND, 
                     MAX_DEGREES_PER_SECOND));
-            final double angularRateY = Math.toRadians(randomizer.nextDouble(MIN_DEGREES_PER_SECOND,
+            final var angularRateY = Math.toRadians(randomizer.nextDouble(MIN_DEGREES_PER_SECOND,
                     MAX_DEGREES_PER_SECOND));
-            final double angularRateZ = Math.toRadians(randomizer.nextDouble(MIN_DEGREES_PER_SECOND,
+            final var angularRateZ = Math.toRadians(randomizer.nextDouble(MIN_DEGREES_PER_SECOND,
                     MAX_DEGREES_PER_SECOND));
 
             // because there is no attitude, the specific force is directly the
             // gravity.
-            final BodyKinematics kinematics = new BodyKinematics(gravity.getGx(), gravity.getGy(), gravity.getGz(),
+            final var kinematics = new BodyKinematics(gravity.getGx(), gravity.getGy(), gravity.getGz(),
                     angularRateX, angularRateY, angularRateZ);
             assertTrue(estimator.updateBodyKinematics(kinematics, 2.0 * timeSeconds));
 
@@ -3597,65 +3554,65 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
             assertEquals(measurements, estimator.getMeasurements());
             assertEquals(2.0 * timeSeconds, estimator.getLastStateTimestamp(), 0.0);
             assertEquals(new Time(2.0 * timeSeconds, TimeUnit.SECOND), estimator.getLastStateTimestampAsTime());
-            final Time timestamp = new Time(0.0, TimeUnit.MILLISECOND);
+            final var timestamp = new Time(0.0, TimeUnit.MILLISECOND);
             assertTrue(estimator.getLastStateTimestampAsTime(timestamp));
             assertEquals(timestamp, new Time(2.0 * timeSeconds, TimeUnit.SECOND));
             assertEquals(kinematics, estimator.getKinematics());
 
-            final GNSSEstimation estimation1 = estimator.getEstimation();
+            final var estimation1 = estimator.getEstimation();
             assertNotNull(estimation1);
 
-            final GNSSEstimation estimation2 = new GNSSEstimation();
+            final var estimation2 = new GNSSEstimation();
             assertTrue(estimator.getEstimation(estimation2));
 
             assertEquals(estimation1, estimation2);
 
-            final INSLooselyCoupledKalmanState state1 = estimator.getState();
+            final var state1 = estimator.getState();
             assertNotNull(state1);
 
-            final INSLooselyCoupledKalmanState state2 = new INSLooselyCoupledKalmanState();
+            final var state2 = new INSLooselyCoupledKalmanState();
             assertTrue(estimator.getState(state2));
 
             assertEquals(state1, state2);
 
-            final ECEFPosition estimatedPosition = estimation1.getEcefPosition();
-            final ECEFVelocity estimatedVelocity = estimation1.getEcefVelocity();
+            final var estimatedPosition = estimation1.getEcefPosition();
+            final var estimatedVelocity = estimation1.getEcefVelocity();
 
-            final double diffX = Math.abs(ecefUserPosition.getX() - estimatedPosition.getX());
-            final double diffY = Math.abs(ecefUserPosition.getY() - estimatedPosition.getY());
-            final double diffZ = Math.abs(ecefUserPosition.getZ() - estimatedPosition.getZ());
-            final double posError = Math.max(diffX, Math.max(diffY, diffZ));
+            final var diffX = Math.abs(ecefUserPosition.getX() - estimatedPosition.getX());
+            final var diffY = Math.abs(ecefUserPosition.getY() - estimatedPosition.getY());
+            final var diffZ = Math.abs(ecefUserPosition.getZ() - estimatedPosition.getZ());
+            final var posError = Math.max(diffX, Math.max(diffY, diffZ));
             if (posError > POSITION_ERROR) {
                 continue;
             }
             assertTrue(ecefUserPosition.equals(estimatedPosition, POSITION_ERROR));
 
-            final double diffVx = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity.getVx());
-            final double diffVy = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity.getVy());
-            final double diffVz = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity.getVz());
-            final double velError = Math.max(diffVx, Math.max(diffVy, diffVz));
+            final var diffVx = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity.getVx());
+            final var diffVy = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity.getVy());
+            final var diffVz = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity.getVz());
+            final var velError = Math.max(diffVx, Math.max(diffVy, diffVz));
             if (velError > VELOCITY_ERROR) {
                 continue;
             }
             assertTrue(ecefUserVelocity.equals(estimatedVelocity, VELOCITY_ERROR));
 
-            // update again with same timestamp makes no action
+            // update again with the same timestamp makes no action
             assertFalse(estimator.updateBodyKinematics(kinematics, new Time(2.0 * timeSeconds, TimeUnit.SECOND)));
 
             assertFalse(estimator.isRunning());
             assertEquals(2.0 * timeSeconds, estimator.getLastStateTimestamp(), 0.0);
-            final GNSSEstimation estimation3 = estimator.getEstimation();
-            final INSLooselyCoupledKalmanState state3 = estimator.getState();
+            final var estimation3 = estimator.getEstimation();
+            final var state3 = estimator.getState();
 
             assertEquals(estimation1, estimation3);
             assertEquals(state1, state3);
 
-            assertEquals(1, mUpdateGNSSMeasurementsStart);
-            assertEquals(1, mUpdateGNSSMeasurementsEnd);
-            assertEquals(2, mUpdateBodyKinematicsStart);
-            assertEquals(2, mUpdateBodyKinematicsEnd);
-            assertEquals(2, mPropagateStart);
-            assertEquals(2, mPropagateEnd);
+            assertEquals(1, updateGNSSMeasurementsStart);
+            assertEquals(1, updateGNSSMeasurementsEnd);
+            assertEquals(2, updateBodyKinematicsStart);
+            assertEquals(2, updateBodyKinematicsEnd);
+            assertEquals(2, propagateStart);
+            assertEquals(2, propagateEnd);
 
             numValid++;
             break;
@@ -3665,86 +3622,83 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
     }
 
     @Test
-    public void testPropagate() throws LockedException, NotReadyException, INSGNSSException {
+    void testPropagate() throws LockedException, NotReadyException, INSGNSSException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final double timeSeconds = randomizer.nextDouble(MIN_TIME, MAX_TIME);
+            final var timeSeconds = randomizer.nextDouble(MIN_TIME, MAX_TIME);
 
-            final double userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES,
-                    MAX_LATITUDE_DEGREES));
-            final double userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES,
+            final var userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, 
                     MAX_LONGITUDE_DEGREES));
-            final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-            final NEDPosition nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
+            final var userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
+            final var nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
 
-            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
-            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
-            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
-            final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
+            final var userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final var userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final var userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final var nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
-            final ECEFPosition ecefUserPosition = new ECEFPosition();
-            final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
+            final var ecefUserPosition = new ECEFPosition();
+            final var ecefUserVelocity = new ECEFVelocity();
             NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedUserPosition, nedUserVelocity, ecefUserPosition,
                     ecefUserVelocity);
 
-            final ECEFPositionAndVelocity ecefUserPositionAndVelocity = new ECEFPositionAndVelocity(ecefUserPosition,
-                    ecefUserVelocity);
+            final var ecefUserPositionAndVelocity = new ECEFPositionAndVelocity(ecefUserPosition, ecefUserVelocity);
 
-            final GNSSConfig config = generateConfig();
-            final int numSatellites = config.getNumberOfSatellites();
-            final double maskAngle = Math.toRadians(config.getMaskAngleDegrees());
-            final double delta = maskAngle / 3.0;
+            final var config = generateConfig();
+            final var numSatellites = config.getNumberOfSatellites();
+            final var maskAngle = Math.toRadians(config.getMaskAngleDegrees());
+            final var delta = maskAngle / 3.0;
 
-            final List<Double> biases = new ArrayList<>();
-            final List<ECEFPositionAndVelocity> satellitePositionsAndVelocities = new ArrayList<>();
-            for (int n = 0; n < numSatellites; n++) {
-                final double satLatitude = randomizer.nextDouble(userLatitude - delta, userLatitude + delta);
-                final double satLongitude = randomizer.nextDouble(userLongitude - delta, userLongitude + delta);
-                final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT, MAX_SAT_HEIGHT);
-                final NEDPosition nedSatPosition = new NEDPosition(satLatitude, satLongitude, satHeight);
+            final var biases = new ArrayList<Double>();
+            final var satellitePositionsAndVelocities = new ArrayList<ECEFPositionAndVelocity>();
+            final var random = new Random();
+            for (var n = 0; n < numSatellites; n++) {
+                final var satLatitude = randomizer.nextDouble(userLatitude - delta, userLatitude + delta);
+                final var satLongitude = randomizer.nextDouble(userLongitude - delta, userLongitude + delta);
+                final var satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT, MAX_SAT_HEIGHT);
+                final var nedSatPosition = new NEDPosition(satLatitude, satLongitude, satHeight);
 
-                final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
-                final double satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
-                final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
-                final NEDVelocity nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
+                final var satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final var satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final var satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final var nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
 
-                final ECEFPosition ecefSatPosition = new ECEFPosition();
-                final ECEFVelocity ecefSatVelocity = new ECEFVelocity();
+                final var ecefSatPosition = new ECEFPosition();
+                final var ecefSatVelocity = new ECEFVelocity();
                 NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedSatPosition, nedSatVelocity, ecefSatPosition,
                         ecefSatVelocity);
 
-                final ECEFPositionAndVelocity ecefSatPositionAndVelocity = new ECEFPositionAndVelocity(ecefSatPosition,
-                        ecefSatVelocity);
+                final var ecefSatPositionAndVelocity = new ECEFPositionAndVelocity(ecefSatPosition, ecefSatVelocity);
 
-                final double bias = GNSSBiasesGenerator.generateBias(ecefSatPosition, ecefUserPosition, config, random);
+                final var bias = GNSSBiasesGenerator.generateBias(ecefSatPosition, ecefUserPosition, config, random);
 
                 biases.add(bias);
                 satellitePositionsAndVelocities.add(ecefSatPositionAndVelocity);
             }
 
-            final Collection<GNSSMeasurement> measurements = GNSSMeasurementsGenerator.generate(timeSeconds,
-                    satellitePositionsAndVelocities, ecefUserPositionAndVelocity, biases, config, random);
+            final var measurements = GNSSMeasurementsGenerator.generate(timeSeconds, satellitePositionsAndVelocities,
+                    ecefUserPositionAndVelocity, biases, config, random);
 
             if (measurements.size() < GNSSLeastSquaresPositionAndVelocityEstimator.MIN_MEASUREMENTS) {
                 continue;
             }
 
-            final INSLooselyCoupledKalmanConfig kalmanConfig = generateKalmanConfig();
-            final INSLooselyCoupledKalmanInitializerConfig initConfig = generateInitConfig();
-            final INSGNSSLooselyCoupledKalmanFilteredEstimator estimator =
-                    new INSGNSSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, initConfig, this);
+            final var kalmanConfig = generateKalmanConfig();
+            final var initConfig = generateInitConfig();
+            final var estimator = new INSGNSSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, initConfig, 
+                    this);
 
             reset();
-            assertEquals(0, mUpdateGNSSMeasurementsStart);
-            assertEquals(0, mUpdateGNSSMeasurementsEnd);
-            assertEquals(0, mUpdateBodyKinematicsStart);
-            assertEquals(0, mUpdateBodyKinematicsEnd);
-            assertEquals(0, mPropagateStart);
-            assertEquals(0, mPropagateEnd);
+            assertEquals(0, updateGNSSMeasurementsStart);
+            assertEquals(0, updateGNSSMeasurementsEnd);
+            assertEquals(0, updateBodyKinematicsStart);
+            assertEquals(0, updateBodyKinematicsEnd);
+            assertEquals(0, propagateStart);
+            assertEquals(0, propagateEnd);
 
             assertNull(estimator.getEstimation());
             assertFalse(estimator.getEstimation(null));
@@ -3766,38 +3720,38 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
 
             assertEquals(measurements, estimator.getMeasurements());
             assertEquals(timeSeconds, estimator.getLastStateTimestamp(), 0.0);
-            final GNSSEstimation estimation1 = estimator.getEstimation();
+            final var estimation1 = estimator.getEstimation();
             assertNotNull(estimation1);
 
-            final GNSSEstimation estimation2 = new GNSSEstimation();
+            final var estimation2 = new GNSSEstimation();
             assertTrue(estimator.getEstimation(estimation2));
 
             assertEquals(estimation1, estimation2);
 
-            final INSLooselyCoupledKalmanState state1 = estimator.getState();
+            final var state1 = estimator.getState();
             assertNotNull(state1);
 
-            final INSLooselyCoupledKalmanState state2 = new INSLooselyCoupledKalmanState();
+            final var state2 = new INSLooselyCoupledKalmanState();
             assertTrue(estimator.getState(state2));
 
             assertEquals(state1, state2);
 
-            final ECEFPosition estimatedPosition1 = estimation1.getEcefPosition();
-            final ECEFVelocity estimatedVelocity1 = estimation1.getEcefVelocity();
+            final var estimatedPosition1 = estimation1.getEcefPosition();
+            final var estimatedVelocity1 = estimation1.getEcefVelocity();
 
-            final double diffX1 = Math.abs(ecefUserPosition.getX() - estimatedPosition1.getX());
-            final double diffY1 = Math.abs(ecefUserPosition.getY() - estimatedPosition1.getY());
-            final double diffZ1 = Math.abs(ecefUserPosition.getZ() - estimatedPosition1.getZ());
-            final double posError1 = Math.max(diffX1, Math.max(diffY1, diffZ1));
+            final var diffX1 = Math.abs(ecefUserPosition.getX() - estimatedPosition1.getX());
+            final var diffY1 = Math.abs(ecefUserPosition.getY() - estimatedPosition1.getY());
+            final var diffZ1 = Math.abs(ecefUserPosition.getZ() - estimatedPosition1.getZ());
+            final var posError1 = Math.max(diffX1, Math.max(diffY1, diffZ1));
             if (posError1 > POSITION_ERROR) {
                 continue;
             }
             assertTrue(ecefUserPosition.equals(estimatedPosition1, POSITION_ERROR));
 
-            final double diffVx1 = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity1.getVx());
-            final double diffVy1 = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity1.getVy());
-            final double diffVz1 = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity1.getVz());
-            final double velError = Math.max(diffVx1, Math.max(diffVy1, diffVz1));
+            final var diffVx1 = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity1.getVx());
+            final var diffVy1 = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity1.getVy());
+            final var diffVz1 = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity1.getVz());
+            final var velError = Math.max(diffVx1, Math.max(diffVy1, diffVz1));
             if (velError > VELOCITY_ERROR) {
                 continue;
             }
@@ -3808,53 +3762,53 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
 
             assertFalse(estimator.isRunning());
             assertEquals(2.0 * timeSeconds, estimator.getLastStateTimestamp(), 0.0);
-            final GNSSEstimation estimation3 = estimator.getEstimation();
-            final INSLooselyCoupledKalmanState state3 = estimator.getState();
+            final var estimation3 = estimator.getEstimation();
+            final var state3 = estimator.getState();
 
-            final ECEFPosition estimatedPosition3 = estimation3.getEcefPosition();
-            final ECEFVelocity estimatedVelocity3 = estimation3.getEcefVelocity();
+            final var estimatedPosition3 = estimation3.getEcefPosition();
+            final var estimatedVelocity3 = estimation3.getEcefVelocity();
 
-            final double diffX3 = Math.abs(ecefUserPosition.getX() - estimatedPosition3.getX());
-            final double diffY3 = Math.abs(ecefUserPosition.getY() - estimatedPosition3.getY());
-            final double diffZ3 = Math.abs(ecefUserPosition.getZ() - estimatedPosition3.getZ());
-            final double posError3 = Math.max(diffX3, Math.max(diffY3, diffZ3));
+            final var diffX3 = Math.abs(ecefUserPosition.getX() - estimatedPosition3.getX());
+            final var diffY3 = Math.abs(ecefUserPosition.getY() - estimatedPosition3.getY());
+            final var diffZ3 = Math.abs(ecefUserPosition.getZ() - estimatedPosition3.getZ());
+            final var posError3 = Math.max(diffX3, Math.max(diffY3, diffZ3));
             if (posError3 > POSITION_ERROR) {
                 continue;
             }
             assertTrue(ecefUserPosition.equals(estimatedPosition3, PROPAGATION_ERROR));
 
-            final double diffVx3 = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity3.getVx());
-            final double diffVy3 = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity3.getVy());
-            final double diffVz3 = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity3.getVz());
-            final double velError3 = Math.max(diffVx3, Math.max(diffVy3, diffVz3));
+            final var diffVx3 = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity3.getVx());
+            final var diffVy3 = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity3.getVy());
+            final var diffVz3 = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity3.getVz());
+            final var velError3 = Math.max(diffVx3, Math.max(diffVy3, diffVz3));
             if (velError3 > VELOCITY_ERROR) {
                 continue;
             }
             assertTrue(ecefUserVelocity.equals(estimatedVelocity3, PROPAGATION_ERROR));
 
-            final Matrix covariance1 = state1.getCovariance();
-            final Matrix covariance3 = state3.getCovariance();
+            final var covariance1 = state1.getCovariance();
+            final var covariance3 = state3.getCovariance();
 
-            final double norm1 = Utils.normF(covariance1);
-            final double norm3 = Utils.normF(covariance3);
+            final var norm1 = Utils.normF(covariance1);
+            final var norm3 = Utils.normF(covariance3);
             assertTrue(norm3 >= norm1);
 
             assertFalse(estimator.propagate(new Time(2.0 * timeSeconds, TimeUnit.SECOND)));
 
             assertFalse(estimator.isRunning());
             assertEquals(2.0 * timeSeconds, estimator.getLastStateTimestamp(), 0.0);
-            final GNSSEstimation estimation4 = estimator.getEstimation();
-            final INSLooselyCoupledKalmanState state4 = estimator.getState();
+            final var estimation4 = estimator.getEstimation();
+            final var state4 = estimator.getState();
 
             assertEquals(estimation3, estimation4);
             assertEquals(state3, state4);
 
-            assertEquals(1, mUpdateGNSSMeasurementsStart);
-            assertEquals(1, mUpdateGNSSMeasurementsEnd);
-            assertEquals(1, mUpdateBodyKinematicsStart);
-            assertEquals(1, mUpdateBodyKinematicsEnd);
-            assertEquals(2, mPropagateStart);
-            assertEquals(2, mPropagateEnd);
+            assertEquals(1, updateGNSSMeasurementsStart);
+            assertEquals(1, updateGNSSMeasurementsEnd);
+            assertEquals(1, updateBodyKinematicsStart);
+            assertEquals(1, updateBodyKinematicsEnd);
+            assertEquals(2, propagateStart);
+            assertEquals(2, propagateEnd);
 
             numValid++;
             break;
@@ -3864,98 +3818,93 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
     }
 
     @Test
-    public void testPropagateWhenNotReadyReturnsFalse() throws LockedException, INSGNSSException {
-        final INSLooselyCoupledKalmanConfig kalmanConfig = generateKalmanConfig();
-        final INSLooselyCoupledKalmanInitializerConfig initConfig = generateInitConfig();
+    void testPropagateWhenNotReadyReturnsFalse() throws LockedException, INSGNSSException {
+        final var kalmanConfig = generateKalmanConfig();
+        final var initConfig = generateInitConfig();
 
-        final INSGNSSLooselyCoupledKalmanFilteredEstimator estimator = new INSGNSSLooselyCoupledKalmanFilteredEstimator(
-                kalmanConfig, initConfig);
+        final var estimator = new INSGNSSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, initConfig);
 
         assertFalse(estimator.propagate(0.0));
     }
 
     @Test
-    public void testReset() throws LockedException, NotReadyException, INSGNSSException {
+    void testReset() throws LockedException, NotReadyException, INSGNSSException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final double timeSeconds = randomizer.nextDouble(MIN_TIME, MAX_TIME);
+            final var timeSeconds = randomizer.nextDouble(MIN_TIME, MAX_TIME);
 
-            final double userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES,
-                    MAX_LATITUDE_DEGREES));
-            final double userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES,
+            final var userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES,
                     MAX_LONGITUDE_DEGREES));
-            final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-            final NEDPosition nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
+            final var userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
+            final var nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
 
-            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
-            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
-            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
-            final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
+            final var userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final var userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final var userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final var nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
-            final ECEFPosition ecefUserPosition = new ECEFPosition();
-            final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
+            final var ecefUserPosition = new ECEFPosition();
+            final var ecefUserVelocity = new ECEFVelocity();
             NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedUserPosition, nedUserVelocity, ecefUserPosition,
                     ecefUserVelocity);
 
-            final ECEFPositionAndVelocity ecefUserPositionAndVelocity = new ECEFPositionAndVelocity(ecefUserPosition,
-                    ecefUserVelocity);
+            final var ecefUserPositionAndVelocity = new ECEFPositionAndVelocity(ecefUserPosition, ecefUserVelocity);
 
-            final GNSSConfig config = generateConfig();
-            final int numSatellites = config.getNumberOfSatellites();
-            final double maskAngle = Math.toRadians(config.getMaskAngleDegrees());
-            final double delta = maskAngle / 3.0;
+            final var config = generateConfig();
+            final var numSatellites = config.getNumberOfSatellites();
+            final var maskAngle = Math.toRadians(config.getMaskAngleDegrees());
+            final var delta = maskAngle / 3.0;
 
-            final List<Double> biases = new ArrayList<>();
-            final List<ECEFPositionAndVelocity> satellitePositionsAndVelocities = new ArrayList<>();
-            for (int n = 0; n < numSatellites; n++) {
-                final double satLatitude = randomizer.nextDouble(userLatitude - delta, userLatitude + delta);
-                final double satLongitude = randomizer.nextDouble(userLongitude - delta, userLongitude + delta);
-                final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT, MAX_SAT_HEIGHT);
-                final com.irurueta.navigation.frames.NEDPosition nedSatPosition = new NEDPosition(satLatitude,
-                        satLongitude, satHeight);
+            final var biases = new ArrayList<Double>();
+            final var satellitePositionsAndVelocities = new ArrayList<ECEFPositionAndVelocity>();
+            final var random = new Random();
+            for (var n = 0; n < numSatellites; n++) {
+                final var satLatitude = randomizer.nextDouble(userLatitude - delta, userLatitude + delta);
+                final var satLongitude = randomizer.nextDouble(userLongitude - delta, userLongitude + delta);
+                final var satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT, MAX_SAT_HEIGHT);
+                final var nedSatPosition = new NEDPosition(satLatitude, satLongitude, satHeight);
 
-                final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
-                final double satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
-                final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
-                final NEDVelocity nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
+                final var satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final var satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final var satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final var nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
 
-                final ECEFPosition ecefSatPosition = new ECEFPosition();
-                final ECEFVelocity ecefSatVelocity = new ECEFVelocity();
+                final var ecefSatPosition = new ECEFPosition();
+                final var ecefSatVelocity = new ECEFVelocity();
                 NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedSatPosition, nedSatVelocity, ecefSatPosition,
                         ecefSatVelocity);
 
-                final ECEFPositionAndVelocity ecefSatPositionAndVelocity = new ECEFPositionAndVelocity(ecefSatPosition,
-                        ecefSatVelocity);
+                final var ecefSatPositionAndVelocity = new ECEFPositionAndVelocity(ecefSatPosition, ecefSatVelocity);
 
-                final double bias = GNSSBiasesGenerator.generateBias(ecefSatPosition, ecefUserPosition, config, random);
+                final var bias = GNSSBiasesGenerator.generateBias(ecefSatPosition, ecefUserPosition, config, random);
 
                 biases.add(bias);
                 satellitePositionsAndVelocities.add(ecefSatPositionAndVelocity);
             }
 
-            final Collection<GNSSMeasurement> measurements = GNSSMeasurementsGenerator.generate(timeSeconds,
-                    satellitePositionsAndVelocities, ecefUserPositionAndVelocity, biases, config, random);
+            final var measurements = GNSSMeasurementsGenerator.generate(timeSeconds, satellitePositionsAndVelocities,
+                    ecefUserPositionAndVelocity, biases, config, random);
 
             if (measurements.size() < GNSSLeastSquaresPositionAndVelocityEstimator.MIN_MEASUREMENTS) {
                 continue;
             }
 
-            final INSLooselyCoupledKalmanConfig kalmanConfig = generateKalmanConfig();
-            final INSLooselyCoupledKalmanInitializerConfig initConfig = generateInitConfig();
-            final INSGNSSLooselyCoupledKalmanFilteredEstimator estimator =
-                    new INSGNSSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, initConfig, this);
+            final var kalmanConfig = generateKalmanConfig();
+            final var initConfig = generateInitConfig();
+            final var estimator = new INSGNSSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, initConfig,
+                    this);
 
             reset();
-            assertEquals(0, mUpdateGNSSMeasurementsStart);
-            assertEquals(0, mUpdateGNSSMeasurementsEnd);
-            assertEquals(0, mUpdateBodyKinematicsStart);
-            assertEquals(0, mUpdateBodyKinematicsEnd);
-            assertEquals(0, mPropagateStart);
-            assertEquals(0, mPropagateEnd);
+            assertEquals(0, updateGNSSMeasurementsStart);
+            assertEquals(0, updateGNSSMeasurementsEnd);
+            assertEquals(0, updateBodyKinematicsStart);
+            assertEquals(0, updateBodyKinematicsEnd);
+            assertEquals(0, propagateStart);
+            assertEquals(0, propagateEnd);
 
             assertNull(estimator.getEstimation());
             assertFalse(estimator.getEstimation(null));
@@ -3979,52 +3928,52 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
             assertEquals(measurements, estimator.getMeasurements());
             assertEquals(timeSeconds, estimator.getLastStateTimestamp(), 0.0);
             assertEquals(new Time(timeSeconds, TimeUnit.SECOND), estimator.getLastStateTimestampAsTime());
-            final Time timestamp = new Time(0.0, TimeUnit.MILLISECOND);
+            final var timestamp = new Time(0.0, TimeUnit.MILLISECOND);
             assertTrue(estimator.getLastStateTimestampAsTime(timestamp));
             assertEquals(timestamp, new Time(timeSeconds, TimeUnit.SECOND));
             assertNull(estimator.getKinematics());
             assertNull(estimator.getCorrectedKinematics());
-            assertEquals(estimator.getCoordinateTransformation(), new CoordinateTransformation(FrameType.BODY_FRAME,
-                    FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME));
-            final CoordinateTransformation c2 = new CoordinateTransformation(FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME,
+            assertEquals(new CoordinateTransformation(FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME),
+                    estimator.getCoordinateTransformation());
+            final var c2 = new CoordinateTransformation(FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME,
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
             assertTrue(estimator.getCoordinateTransformation(c2));
-            assertEquals(c2, new CoordinateTransformation(FrameType.BODY_FRAME,
-                    FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME));
+            assertEquals(new CoordinateTransformation(FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME),
+                    c2);
 
-            final GNSSEstimation estimation1 = estimator.getEstimation();
+            final var estimation1 = estimator.getEstimation();
             assertNotNull(estimation1);
 
-            final INSLooselyCoupledKalmanState state1 = estimator.getState();
+            final var state1 = estimator.getState();
             assertNotNull(state1);
 
-            final ECEFPosition estimatedPosition = estimation1.getEcefPosition();
-            final ECEFVelocity estimatedVelocity = estimation1.getEcefVelocity();
+            final var estimatedPosition = estimation1.getEcefPosition();
+            final var estimatedVelocity = estimation1.getEcefVelocity();
 
-            final double diffX = Math.abs(ecefUserPosition.getX() - estimatedPosition.getX());
-            final double diffY = Math.abs(ecefUserPosition.getY() - estimatedPosition.getY());
-            final double diffZ = Math.abs(ecefUserPosition.getZ() - estimatedPosition.getZ());
-            final double posError = Math.max(diffX, Math.max(diffY, diffZ));
+            final var diffX = Math.abs(ecefUserPosition.getX() - estimatedPosition.getX());
+            final var diffY = Math.abs(ecefUserPosition.getY() - estimatedPosition.getY());
+            final var diffZ = Math.abs(ecefUserPosition.getZ() - estimatedPosition.getZ());
+            final var posError = Math.max(diffX, Math.max(diffY, diffZ));
             if (posError > POSITION_ERROR) {
                 continue;
             }
             assertTrue(ecefUserPosition.equals(estimatedPosition, POSITION_ERROR));
 
-            final double diffVx = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity.getVx());
-            final double diffVy = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity.getVy());
-            final double diffVz = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity.getVz());
-            final double velError = Math.max(diffVx, Math.max(diffVy, diffVz));
+            final var diffVx = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity.getVx());
+            final var diffVy = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity.getVy());
+            final var diffVz = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity.getVz());
+            final var velError = Math.max(diffVx, Math.max(diffVy, diffVz));
             if (velError > VELOCITY_ERROR) {
                 continue;
             }
             assertTrue(ecefUserVelocity.equals(estimatedVelocity, VELOCITY_ERROR));
 
             // reset
-            assertEquals(0, mReset);
+            assertEquals(0, reset);
 
             estimator.reset();
 
-            assertEquals(1, mReset);
+            assertEquals(1, reset);
             assertNull(estimator.getMeasurements());
             assertNull(estimator.getEstimation());
             assertNull(estimator.getState());
@@ -4033,23 +3982,23 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
             assertNull(estimator.getKinematics());
             assertFalse(estimator.isRunning());
 
-            // update again with same timestamp now it does make an action
+            // update again with the same timestamp now it does make an action
             assertTrue(estimator.updateMeasurements(measurements, new Time(timeSeconds, TimeUnit.SECOND)));
 
             assertEquals(measurements, estimator.getMeasurements());
             assertEquals(timeSeconds, estimator.getLastStateTimestamp(), 0.0);
-            final GNSSEstimation estimation2 = estimator.getEstimation();
-            final INSLooselyCoupledKalmanState state2 = estimator.getState();
+            final var estimation2 = estimator.getEstimation();
+            final var state2 = estimator.getState();
 
             assertEquals(estimation1, estimation2);
             assertEquals(state1, state2);
 
-            assertEquals(2, mUpdateGNSSMeasurementsStart);
-            assertEquals(2, mUpdateGNSSMeasurementsEnd);
-            assertEquals(2, mUpdateBodyKinematicsStart);
-            assertEquals(2, mUpdateBodyKinematicsEnd);
-            assertEquals(2, mPropagateStart);
-            assertEquals(2, mPropagateEnd);
+            assertEquals(2, updateGNSSMeasurementsStart);
+            assertEquals(2, updateGNSSMeasurementsEnd);
+            assertEquals(2, updateBodyKinematicsStart);
+            assertEquals(2, updateBodyKinematicsEnd);
+            assertEquals(2, propagateStart);
+            assertEquals(2, propagateEnd);
 
             numValid++;
             break;
@@ -4061,53 +4010,53 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
     @Override
     public void onUpdateGNSSMeasurementsStart(final INSGNSSLooselyCoupledKalmanFilteredEstimator estimator) {
         checkLocked(estimator);
-        mUpdateGNSSMeasurementsStart++;
+        updateGNSSMeasurementsStart++;
     }
 
     @Override
     public void onUpdateGNSSMeasurementsEnd(final INSGNSSLooselyCoupledKalmanFilteredEstimator estimator) {
         checkLocked(estimator);
-        mUpdateGNSSMeasurementsEnd++;
+        updateGNSSMeasurementsEnd++;
     }
 
     @Override
     public void onUpdateBodyKinematicsStart(final INSGNSSLooselyCoupledKalmanFilteredEstimator estimator) {
         checkLocked(estimator);
-        mUpdateBodyKinematicsStart++;
+        updateBodyKinematicsStart++;
     }
 
     @Override
     public void onUpdateBodyKinematicsEnd(final INSGNSSLooselyCoupledKalmanFilteredEstimator estimator) {
         checkLocked(estimator);
-        mUpdateBodyKinematicsEnd++;
+        updateBodyKinematicsEnd++;
     }
 
     @Override
     public void onPropagateStart(final INSGNSSLooselyCoupledKalmanFilteredEstimator estimator) {
         checkLocked(estimator);
-        mPropagateStart++;
+        propagateStart++;
     }
 
     @Override
     public void onPropagateEnd(final INSGNSSLooselyCoupledKalmanFilteredEstimator estimator) {
         checkLocked(estimator);
-        mPropagateEnd++;
+        propagateEnd++;
     }
 
     @Override
     public void onReset(final INSGNSSLooselyCoupledKalmanFilteredEstimator estimator) {
         checkLocked(estimator);
-        mReset++;
+        reset++;
     }
 
     private void reset() {
-        mUpdateGNSSMeasurementsStart = 0;
-        mUpdateGNSSMeasurementsEnd = 0;
-        mUpdateBodyKinematicsStart = 0;
-        mUpdateBodyKinematicsEnd = 0;
-        mPropagateStart = 0;
-        mPropagateEnd = 0;
-        mReset = 0;
+        updateGNSSMeasurementsStart = 0;
+        updateGNSSMeasurementsEnd = 0;
+        updateBodyKinematicsStart = 0;
+        updateBodyKinematicsEnd = 0;
+        propagateStart = 0;
+        propagateEnd = 0;
+        reset = 0;
     }
 
     private static void checkLocked(final INSGNSSLooselyCoupledKalmanFilteredEstimator estimator) {
@@ -4130,49 +4079,49 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements
     }
 
     private static INSLooselyCoupledKalmanInitializerConfig generateInitConfig() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double initialAttitudeUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double initialVelocityUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double initialPositionUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double initialAccelerationBiasUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double initialGyroscopeBiasUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var randomizer = new UniformRandomizer();
+        final var initialAttitudeUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var initialVelocityUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var initialPositionUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var initialAccelerationBiasUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var initialGyroscopeBiasUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
         return new INSLooselyCoupledKalmanInitializerConfig(initialAttitudeUncertainty, initialVelocityUncertainty,
                 initialPositionUncertainty, initialAccelerationBiasUncertainty, initialGyroscopeBiasUncertainty);
     }
 
     private static INSLooselyCoupledKalmanConfig generateKalmanConfig() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gyroNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double accelerometerNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double accelerometerBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gyroBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double positionNoiseSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double velocityNoiseSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var randomizer = new UniformRandomizer();
+        final var gyroNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var accelerometerNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var accelerometerBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gyroBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var positionNoiseSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var velocityNoiseSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
         return new INSLooselyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD,
                 positionNoiseSD, velocityNoiseSD);
     }
 
     private static GNSSConfig generateConfig() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double epochInterval = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double initialEstimatedEcefPositionX = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double initialEstimatedEcefPositionY = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double initialEstimatedEcefPositionZ = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final int numberOfSatellites = randomizer.nextInt(MIN_NUM_SAT, MAX_NUM_SAT);
-        final double orbitalRadiusOfSatellites = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double satellitesInclinationDegrees = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double constellationLongitudeOffsetDegrees = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double constellationTimingOffset = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double maskAngleDegrees = randomizer.nextDouble(MIN_MASK_ANGLE_DEGREES, MAX_MASK_ANGLE_DEGREES);
-        final double sisErrorSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double zenithIonosphereErrorSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double zenithTroposphereErrorSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double codeTrackingErrorSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double rangeRateTrackingErrorSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double initialReceiverClockOffset = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double initialReceiverClockDrift = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var randomizer = new UniformRandomizer();
+        final var epochInterval = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var initialEstimatedEcefPositionX = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var initialEstimatedEcefPositionY = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var initialEstimatedEcefPositionZ = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var numberOfSatellites = randomizer.nextInt(MIN_NUM_SAT, MAX_NUM_SAT);
+        final var orbitalRadiusOfSatellites = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var satellitesInclinationDegrees = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var constellationLongitudeOffsetDegrees = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var constellationTimingOffset = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var maskAngleDegrees = randomizer.nextDouble(MIN_MASK_ANGLE_DEGREES, MAX_MASK_ANGLE_DEGREES);
+        final var sisErrorSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var zenithIonosphereErrorSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var zenithTroposphereErrorSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var codeTrackingErrorSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var rangeRateTrackingErrorSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var initialReceiverClockOffset = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var initialReceiverClockDrift = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
         return new GNSSConfig(epochInterval, initialEstimatedEcefPositionX, initialEstimatedEcefPositionY,
                 initialEstimatedEcefPositionZ, numberOfSatellites, orbitalRadiusOfSatellites,

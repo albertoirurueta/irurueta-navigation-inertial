@@ -16,7 +16,6 @@
 package com.irurueta.navigation.inertial;
 
 import com.irurueta.algebra.AlgebraException;
-import com.irurueta.algebra.Matrix;
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.frames.CoordinateTransformation;
@@ -34,7 +33,6 @@ import com.irurueta.units.TimeUnit;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Calculates position, velocity, attitude, clock offset, clock drift and IMU biases
@@ -53,13 +51,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
     /**
      * Internal estimator to compute least squares solution for GNSS measurements.
      */
-    private final GNSSLeastSquaresPositionAndVelocityEstimator mLsEstimator
+    private final GNSSLeastSquaresPositionAndVelocityEstimator lsEstimator
             = new GNSSLeastSquaresPositionAndVelocityEstimator();
 
     /**
      * Listener to notify events raised by this instance.
      */
-    private INSGNSSTightlyCoupledKalmanFilteredEstimatorListener mListener;
+    private INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener;
 
     /**
      * Minimum epoch interval expressed in seconds (s) between consecutive
@@ -67,35 +65,35 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * Attempting to propagate results using Kalman filter or updating measurements
      * when intervals are less than this value, will be ignored.
      */
-    private double mEpochInterval;
+    private double epochInterval;
 
     /**
      * INS/GNSS tightly coupled Kalman filter configuration parameters (usually
      * obtained through calibration).
      */
-    private INSTightlyCoupledKalmanConfig mConfig;
+    private INSTightlyCoupledKalmanConfig config;
 
     /**
      * GNSS measurements of a collection of satellites.
      */
-    private Collection<GNSSMeasurement> mMeasurements;
+    private Collection<GNSSMeasurement> measurements;
 
     /**
      * Last provided user kinematics containing applied specific force and
      * angular rates resolved in body axes.
      */
-    private BodyKinematics mKinematics;
+    private BodyKinematics kinematics;
 
     /**
      * Contains last provided user kinematics minus currently estimated bias
      * for acceleration and angular rate values.
      */
-    private BodyKinematics mCorrectedKinematics;
+    private BodyKinematics correctedKinematics;
 
     /**
      * Internally keeps user position, velocity and attitude.
      */
-    private ECEFFrame mFrame;
+    private ECEFFrame frame;
 
     /**
      * Configuration containing uncertainty measures to set initial covariance matrix
@@ -103,30 +101,30 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * Once this estimator is initialized, covariance will be updated with new provided
      * GNSS and INS measurements until convergence is reached.
      */
-    private INSTightlyCoupledKalmanInitializerConfig mInitialConfig;
+    private INSTightlyCoupledKalmanInitializerConfig initialConfig;
 
     /**
      * Current estimation containing user ECEF position, user ECEF velocity, clock offset
      * and clock drift.
      */
-    private GNSSEstimation mEstimation;
+    private GNSSEstimation estimation;
 
     /**
      * Current Kalman filter state containing current INS/GNSS estimation along with
      * Kalman filter covariance error matrix.
      */
-    private INSTightlyCoupledKalmanState mState;
+    private INSTightlyCoupledKalmanState state;
 
     /**
      * Timestamp expressed in seconds since epoch time when Kalman filter state
      * was last propagated.
      */
-    private Double mLastStateTimestamp;
+    private Double lastStateTimestamp;
 
     /**
      * Indicates whether this estimator is running or not.
      */
-    private boolean mRunning;
+    private boolean running;
 
     /**
      * Constructor.
@@ -141,7 +139,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      *               through calibration).
      */
     public INSGNSSTightlyCoupledKalmanFilteredEstimator(final INSTightlyCoupledKalmanConfig config) {
-        mConfig = new INSTightlyCoupledKalmanConfig(config);
+        this.config = new INSTightlyCoupledKalmanConfig(config);
     }
 
     /**
@@ -166,7 +164,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      */
     public INSGNSSTightlyCoupledKalmanFilteredEstimator(
             final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener) {
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -181,7 +179,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
     public INSGNSSTightlyCoupledKalmanFilteredEstimator(
             final INSTightlyCoupledKalmanConfig config, final double epochInterval) {
         this(epochInterval);
-        mConfig = new INSTightlyCoupledKalmanConfig(config);
+        this.config = new INSTightlyCoupledKalmanConfig(config);
     }
 
     /**
@@ -195,7 +193,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             final INSTightlyCoupledKalmanConfig config,
             final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener) {
         this(config);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -207,10 +205,9 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @throws IllegalArgumentException if provided epoch interval is negative.
      */
     public INSGNSSTightlyCoupledKalmanFilteredEstimator(
-            final double epochInterval,
-            final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener) {
+            final double epochInterval, final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener) {
         this(epochInterval);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -227,7 +224,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             final INSTightlyCoupledKalmanConfig config, final double epochInterval,
             final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener) {
         this(config, epochInterval);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -267,7 +264,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
     public INSGNSSTightlyCoupledKalmanFilteredEstimator(
             final Time epochInterval, final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener) {
         this(epochInterval);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -284,7 +281,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             final INSTightlyCoupledKalmanConfig config, final Time epochInterval,
             final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener) {
         this(config, epochInterval);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -319,7 +316,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             final INSTightlyCoupledKalmanConfig config, final CoordinateTransformation c)
             throws InvalidSourceAndDestinationFrameTypeException {
         this(c);
-        mConfig = new INSTightlyCoupledKalmanConfig(config);
+        this.config = new INSTightlyCoupledKalmanConfig(config);
     }
 
     /**
@@ -357,7 +354,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             final CoordinateTransformation c, final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener)
             throws InvalidSourceAndDestinationFrameTypeException {
         this(c);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -615,7 +612,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             final INSTightlyCoupledKalmanInitializerConfig initialConfig,
             final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener) {
         this(initialConfig);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1101,7 +1098,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @return listener to notify events raised by this instance.
      */
     public INSGNSSTightlyCoupledKalmanFilteredEstimatorListener getListener() {
-        return mListener;
+        return listener;
     }
 
     /**
@@ -1112,11 +1109,11 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      */
     public void setListener(final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener)
             throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1129,7 +1126,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * measurements.
      */
     public double getEpochInterval() {
-        return mEpochInterval;
+        return epochInterval;
     }
 
     /**
@@ -1144,7 +1141,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @throws IllegalArgumentException if provided epoch interval is negative.
      */
     public void setEpochInterval(final double epochInterval) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
@@ -1152,7 +1149,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             throw new IllegalArgumentException();
         }
 
-        mEpochInterval = epochInterval;
+        this.epochInterval = epochInterval;
     }
 
     /**
@@ -1163,7 +1160,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @param result instance where minimum epoch interval will be stored.
      */
     public void getEpochIntervalAsTime(final Time result) {
-        result.setValue(mEpochInterval);
+        result.setValue(epochInterval);
         result.setUnit(TimeUnit.SECOND);
     }
 
@@ -1175,7 +1172,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @return minimum epoch interval.
      */
     public Time getEpochIntervalAsTime() {
-        return new Time(mEpochInterval, TimeUnit.SECOND);
+        return new Time(epochInterval, TimeUnit.SECOND);
     }
 
     /**
@@ -1188,7 +1185,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @throws IllegalArgumentException if provided epoch interval is negative.
      */
     public void setEpochInterval(final Time epochInterval) throws LockedException {
-        final double epochIntervalSeconds = TimeConverter.convert(epochInterval.getValue().doubleValue(),
+        final var epochIntervalSeconds = TimeConverter.convert(epochInterval.getValue().doubleValue(),
                 epochInterval.getUnit(), TimeUnit.SECOND);
         setEpochInterval(epochIntervalSeconds);
     }
@@ -1202,8 +1199,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @return true if result instance is updated, false otherwise.
      */
     public boolean getConfig(final INSTightlyCoupledKalmanConfig result) {
-        if (mConfig != null) {
-            result.copyFrom(mConfig);
+        if (config != null) {
+            result.copyFrom(config);
             return true;
         } else {
             return false;
@@ -1217,7 +1214,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @return INS/GNSS tightly coupled Kalman configuration parameters.
      */
     public INSTightlyCoupledKalmanConfig getConfig() {
-        return mConfig;
+        return config;
     }
 
     /**
@@ -1229,11 +1226,11 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @throws LockedException if this estimator is already running.
      */
     public void setConfig(final INSTightlyCoupledKalmanConfig config) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mConfig = new INSTightlyCoupledKalmanConfig(config);
+        this.config = new INSTightlyCoupledKalmanConfig(config);
     }
 
     /**
@@ -1244,7 +1241,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @return body-to-ECEF coordinate transformation.
      */
     public CoordinateTransformation getCoordinateTransformation() {
-        return mFrame != null ? mFrame.getCoordinateTransformation() : null;
+        return frame != null ? frame.getCoordinateTransformation() : null;
     }
 
     /**
@@ -1256,8 +1253,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @return true if result instance was updated, false otherwise.
      */
     public boolean getCoordinateTransformation(final CoordinateTransformation result) {
-        if (mFrame != null) {
-            mFrame.getCoordinateTransformation(result);
+        if (frame != null) {
+            frame.getCoordinateTransformation(result);
             return true;
         } else {
             return false;
@@ -1277,12 +1274,12 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      */
     public void setCoordinateTransformation(final CoordinateTransformation c)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
         initFrame();
-        mFrame.setCoordinateTransformation(c);
+        frame.setCoordinateTransformation(c);
     }
 
     /**
@@ -1295,8 +1292,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @return true if result instance was updated, false otherwise.
      */
     public boolean getInitialConfig(final INSTightlyCoupledKalmanInitializerConfig result) {
-        if (mInitialConfig != null) {
-            result.copyFrom(mInitialConfig);
+        if (initialConfig != null) {
+            result.copyFrom(initialConfig);
             return true;
         } else {
             return false;
@@ -1312,7 +1309,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @return initial INS tightly coupled Kalman configuration.
      */
     public INSTightlyCoupledKalmanInitializerConfig getInitialConfig() {
-        return mInitialConfig;
+        return initialConfig;
     }
 
     /**
@@ -1326,11 +1323,11 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      */
     public void setInitialConfig(final INSTightlyCoupledKalmanInitializerConfig initialConfig) throws LockedException {
 
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mInitialConfig = initialConfig;
+        this.initialConfig = initialConfig;
     }
 
     /**
@@ -1339,12 +1336,12 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @return last updated GNSS measurements of a collection of satellites.
      */
     public Collection<GNSSMeasurement> getMeasurements() {
-        if (mMeasurements == null) {
+        if (measurements == null) {
             return null;
         }
 
-        final List<GNSSMeasurement> result = new ArrayList<>();
-        for (final GNSSMeasurement measurement : mMeasurements) {
+        final var result = new ArrayList<GNSSMeasurement>();
+        for (final var measurement : measurements) {
             result.add(new GNSSMeasurement(measurement));
         }
         return result;
@@ -1357,7 +1354,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @return last provided user kinematics.
      */
     public BodyKinematics getKinematics() {
-        return mKinematics != null ? new BodyKinematics(mKinematics) : null;
+        return kinematics != null ? new BodyKinematics(kinematics) : null;
     }
 
     /**
@@ -1368,8 +1365,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @return true if provided result instance was updated, false otherwise.
      */
     public boolean getKinematics(final BodyKinematics result) {
-        if (mKinematics != null) {
-            result.copyFrom(mKinematics);
+        if (kinematics != null) {
+            result.copyFrom(kinematics);
             return true;
         } else {
             return false;
@@ -1384,7 +1381,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @see #getKinematics()
      */
     public BodyKinematics getCorrectedKinematics() {
-        return mCorrectedKinematics != null ? new BodyKinematics(mCorrectedKinematics) : null;
+        return correctedKinematics != null ? new BodyKinematics(correctedKinematics) : null;
     }
 
     /**
@@ -1395,8 +1392,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @return true if provided result instance was updated, false otherwise.
      */
     public boolean getCorrectedKinematics(final BodyKinematics result) {
-        if (mCorrectedKinematics != null) {
-            result.copyFrom(mCorrectedKinematics);
+        if (correctedKinematics != null) {
+            result.copyFrom(correctedKinematics);
             return true;
         } else {
             return false;
@@ -1411,7 +1408,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * clock offset and clock drift.
      */
     public GNSSEstimation getEstimation() {
-        return mEstimation != null ? new GNSSEstimation(mEstimation) : null;
+        return estimation != null ? new GNSSEstimation(estimation) : null;
     }
 
     /**
@@ -1423,8 +1420,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @return true if result estimation was updated, false otherwise.
      */
     public boolean getEstimation(final GNSSEstimation result) {
-        if (mEstimation != null) {
-            result.copyFrom(mEstimation);
+        if (estimation != null) {
+            result.copyFrom(estimation);
             return true;
         } else {
             return false;
@@ -1439,7 +1436,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * along with Kalman filter covariance error matrix.
      */
     public INSTightlyCoupledKalmanState getState() {
-        return mState != null ? new INSTightlyCoupledKalmanState(mState) : null;
+        return state != null ? new INSTightlyCoupledKalmanState(state) : null;
     }
 
     /**
@@ -1451,8 +1448,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @return true if result state was updated, false otherwise.
      */
     public boolean getState(final INSTightlyCoupledKalmanState result) {
-        if (mState != null) {
-            result.copyFrom(mState);
+        if (state != null) {
+            result.copyFrom(state);
             return true;
         } else {
             return false;
@@ -1467,7 +1464,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * state was last propagated.
      */
     public Double getLastStateTimestamp() {
-        return mLastStateTimestamp;
+        return lastStateTimestamp;
     }
 
     /**
@@ -1478,8 +1475,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @return true if result instance is updated, false otherwise.
      */
     public boolean getLastStateTimestampAsTime(final Time result) {
-        if (mLastStateTimestamp != null) {
-            result.setValue(mLastStateTimestamp);
+        if (lastStateTimestamp != null) {
+            result.setValue(lastStateTimestamp);
             result.setUnit(TimeUnit.SECOND);
             return true;
         } else {
@@ -1494,8 +1491,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * propagated.
      */
     public Time getLastStateTimestampAsTime() {
-        return mLastStateTimestamp != null ?
-                new Time(mLastStateTimestamp, TimeUnit.SECOND) : null;
+        return lastStateTimestamp != null ? new Time(lastStateTimestamp, TimeUnit.SECOND) : null;
     }
 
     /**
@@ -1504,7 +1500,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @return true if this estimator is running, false otherwise.
      */
     public boolean isRunning() {
-        return mRunning;
+        return running;
     }
 
     /**
@@ -1555,7 +1551,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
     public boolean updateMeasurements(final Collection<GNSSMeasurement> measurements, final double timestamp)
             throws LockedException, NotReadyException, INSGNSSException {
 
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
@@ -1563,38 +1559,38 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             throw new NotReadyException();
         }
 
-        if (mLastStateTimestamp != null && timestamp - mLastStateTimestamp <= mEpochInterval) {
+        if (lastStateTimestamp != null && timestamp - lastStateTimestamp <= epochInterval) {
             return false;
         }
 
         try {
-            mRunning = true;
+            running = true;
 
-            if (mListener != null) {
-                mListener.onUpdateGNSSMeasurementsStart(this);
+            if (listener != null) {
+                listener.onUpdateGNSSMeasurementsStart(this);
             }
 
-            mMeasurements = new ArrayList<>(measurements);
+            this.measurements = new ArrayList<>(measurements);
 
-            mLsEstimator.setMeasurements(mMeasurements);
-            mLsEstimator.setPriorPositionAndVelocityFromEstimation(mEstimation);
-            if (mEstimation != null) {
-                mLsEstimator.estimate(mEstimation);
+            lsEstimator.setMeasurements(this.measurements);
+            lsEstimator.setPriorPositionAndVelocityFromEstimation(estimation);
+            if (estimation != null) {
+                lsEstimator.estimate(estimation);
             } else {
-                mEstimation = mLsEstimator.estimate();
+                estimation = lsEstimator.estimate();
             }
 
-            if (mListener != null) {
-                mListener.onUpdateGNSSMeasurementsEnd(this);
+            if (listener != null) {
+                listener.onUpdateGNSSMeasurementsEnd(this);
             }
 
         } catch (final GNSSException e) {
             throw new INSGNSSException(e);
         } finally {
-            mRunning = false;
+            running = false;
         }
 
-        updateBodyKinematics(mKinematics, timestamp);
+        updateBodyKinematics(kinematics, timestamp);
 
         return true;
     }
@@ -1634,43 +1630,43 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
     public boolean updateBodyKinematics(final BodyKinematics kinematics, final double timestamp) throws LockedException,
             INSGNSSException {
 
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        final double propagationInterval = mLastStateTimestamp != null ? timestamp - mLastStateTimestamp : 0.0;
-        if (mLastStateTimestamp != null && propagationInterval <= mEpochInterval) {
+        final var propagationInterval = lastStateTimestamp != null ? timestamp - lastStateTimestamp : 0.0;
+        if (lastStateTimestamp != null && propagationInterval <= epochInterval) {
             return false;
         }
 
         try {
-            mRunning = true;
+            running = true;
 
-            if (mListener != null) {
-                mListener.onUpdateBodyKinematicsStart(this);
+            if (listener != null) {
+                listener.onUpdateBodyKinematicsStart(this);
             }
 
             initFrame();
-            if (mEstimation != null) {
-                mFrame.setCoordinates(mEstimation.getX(), mEstimation.getY(), mEstimation.getZ());
-                mFrame.setVelocityCoordinates(mEstimation.getVx(), mEstimation.getVy(), mEstimation.getVz());
+            if (estimation != null) {
+                frame.setCoordinates(estimation.getX(), estimation.getY(), estimation.getZ());
+                frame.setVelocityCoordinates(estimation.getVx(), estimation.getVy(), estimation.getVz());
             }
 
             if (kinematics != null) {
                 correctKinematics(kinematics);
-                ECEFInertialNavigator.navigateECEF(propagationInterval, mFrame, mCorrectedKinematics, mFrame);
+                ECEFInertialNavigator.navigateECEF(propagationInterval, frame, correctedKinematics, frame);
             }
 
-            mKinematics = kinematics;
+            this.kinematics = kinematics;
 
-            if (mListener != null) {
-                mListener.onUpdateBodyKinematicsEnd(this);
+            if (listener != null) {
+                listener.onUpdateBodyKinematicsEnd(this);
             }
 
         } catch (final InertialNavigatorException e) {
             return false;
         } finally {
-            mRunning = false;
+            running = false;
         }
 
         propagate(timestamp);
@@ -1684,7 +1680,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @return true if estimator is ready, false otherwise.
      */
     public boolean isPropagateReady() {
-        return mConfig != null && mEstimation != null;
+        return config != null && estimation != null;
     }
 
     /**
@@ -1716,7 +1712,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      */
     public boolean propagate(final double timestamp) throws LockedException, INSGNSSException {
 
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
@@ -1724,65 +1720,65 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             return false;
         }
 
-        final double propagationInterval = mLastStateTimestamp != null ? timestamp - mLastStateTimestamp : 0.0;
-        if (mLastStateTimestamp != null && propagationInterval <= mEpochInterval) {
+        final var propagationInterval = lastStateTimestamp != null ? timestamp - lastStateTimestamp : 0.0;
+        if (lastStateTimestamp != null && propagationInterval <= epochInterval) {
             return false;
         }
 
         try {
-            mRunning = true;
+            running = true;
 
-            if (mListener != null) {
-                mListener.onPropagateStart(this);
+            if (listener != null) {
+                listener.onPropagateStart(this);
             }
 
             if (initFrame()) {
-                mFrame.setCoordinates(mEstimation.getX(), mEstimation.getY(), mEstimation.getZ());
-                mFrame.setVelocityCoordinates(mEstimation.getVx(), mEstimation.getVy(), mEstimation.getVz());
+                frame.setCoordinates(estimation.getX(), estimation.getY(), estimation.getZ());
+                frame.setVelocityCoordinates(estimation.getVx(), estimation.getVy(), estimation.getVz());
             }
 
-            if (mState == null) {
+            if (state == null) {
                 // initialize state
                 initInitialConfig();
-                final Matrix covariance = INSTightlyCoupledKalmanInitializer.initialize(mInitialConfig);
+                final var covariance = INSTightlyCoupledKalmanInitializer.initialize(initialConfig);
 
-                mState = new INSTightlyCoupledKalmanState();
-                mState.setFrame(mFrame);
-                mState.setCovariance(covariance);
+                state = new INSTightlyCoupledKalmanState();
+                state.setFrame(frame);
+                state.setCovariance(covariance);
             }
 
-            if (mKinematics != null) {
-                correctKinematics(mKinematics);
+            if (kinematics != null) {
+                correctKinematics(kinematics);
             }
 
             final double fx;
             final double fy;
             final double fz;
-            if (mCorrectedKinematics != null) {
-                fx = mCorrectedKinematics.getFx();
-                fy = mCorrectedKinematics.getFy();
-                fz = mCorrectedKinematics.getFz();
+            if (correctedKinematics != null) {
+                fx = correctedKinematics.getFx();
+                fy = correctedKinematics.getFy();
+                fz = correctedKinematics.getFz();
             } else {
                 fx = 0.0;
                 fy = 0.0;
                 fz = 0.0;
             }
 
-            INSTightlyCoupledKalmanEpochEstimator.estimate(mMeasurements, propagationInterval, mState, fx, fy, fz,
-                    mConfig, mState);
-            mLastStateTimestamp = timestamp;
+            INSTightlyCoupledKalmanEpochEstimator.estimate(measurements, propagationInterval, state, fx, fy, fz,
+                    config, state);
+            lastStateTimestamp = timestamp;
 
-            mState.getGNSSEstimation(mEstimation);
-            mState.getFrame(mFrame);
+            state.getGNSSEstimation(estimation);
+            state.getFrame(frame);
 
-            if (mListener != null) {
-                mListener.onPropagateEnd(this);
+            if (listener != null) {
+                listener.onPropagateEnd(this);
             }
 
         } catch (final AlgebraException e) {
             throw new INSGNSSException(e);
         } finally {
-            mRunning = false;
+            running = false;
         }
 
         return true;
@@ -1794,24 +1790,24 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @throws LockedException if this estimator is already running.
      */
     public void reset() throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mRunning = true;
-        mMeasurements = null;
-        mEstimation = null;
-        mState = null;
-        mLastStateTimestamp = null;
-        mKinematics = null;
-        mCorrectedKinematics = null;
-        mFrame = null;
+        running = true;
+        measurements = null;
+        estimation = null;
+        state = null;
+        lastStateTimestamp = null;
+        kinematics = null;
+        correctedKinematics = null;
+        frame = null;
 
-        if (mListener != null) {
-            mListener.onReset(this);
+        if (listener != null) {
+            listener.onReset(this);
         }
 
-        mRunning = false;
+        running = false;
     }
 
     /**
@@ -1822,8 +1818,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @return true if frame was initialized, false otherwise.
      */
     private boolean initFrame() {
-        if (mFrame == null) {
-            mFrame = new ECEFFrame();
+        if (frame == null) {
+            frame = new ECEFFrame();
             return true;
         } else {
             return false;
@@ -1836,8 +1832,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * This method makes no action if an initial configuration already exists.
      */
     private void initInitialConfig() {
-        if (mInitialConfig == null) {
-            mInitialConfig = new INSTightlyCoupledKalmanInitializerConfig();
+        if (initialConfig == null) {
+            initialConfig = new INSTightlyCoupledKalmanInitializerConfig();
         }
     }
 
@@ -1850,8 +1846,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @param kinematics kinematics instance to be corrected.
      */
     private void correctKinematics(final BodyKinematics kinematics) {
-        if (mCorrectedKinematics == null) {
-            mCorrectedKinematics = new BodyKinematics();
+        if (correctedKinematics == null) {
+            correctedKinematics = new BodyKinematics();
         }
 
         final double accelBiasX;
@@ -1860,13 +1856,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
         final double gyroBiasX;
         final double gyroBiasY;
         final double gyroBiasZ;
-        if (mState != null) {
-            accelBiasX = mState.getAccelerationBiasX();
-            accelBiasY = mState.getAccelerationBiasY();
-            accelBiasZ = mState.getAccelerationBiasZ();
-            gyroBiasX = mState.getGyroBiasX();
-            gyroBiasY = mState.getGyroBiasY();
-            gyroBiasZ = mState.getGyroBiasZ();
+        if (state != null) {
+            accelBiasX = state.getAccelerationBiasX();
+            accelBiasY = state.getAccelerationBiasY();
+            accelBiasZ = state.getAccelerationBiasZ();
+            gyroBiasX = state.getGyroBiasX();
+            gyroBiasY = state.getGyroBiasY();
+            gyroBiasZ = state.getGyroBiasZ();
         } else {
             accelBiasX = 0.0;
             accelBiasY = 0.0;
@@ -1876,15 +1872,15 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             gyroBiasZ = 0.0;
         }
 
-        final double fx = kinematics.getFx();
-        final double fy = kinematics.getFy();
-        final double fz = kinematics.getFz();
-        final double angularRateX = kinematics.getAngularRateX();
-        final double angularRateY = kinematics.getAngularRateY();
-        final double angularRateZ = kinematics.getAngularRateZ();
+        final var fx = kinematics.getFx();
+        final var fy = kinematics.getFy();
+        final var fz = kinematics.getFz();
+        final var angularRateX = kinematics.getAngularRateX();
+        final var angularRateY = kinematics.getAngularRateY();
+        final var angularRateZ = kinematics.getAngularRateZ();
 
-        mCorrectedKinematics.setSpecificForceCoordinates(fx - accelBiasX, fy - accelBiasY, fz - accelBiasZ);
-        mCorrectedKinematics.setAngularRateCoordinates(
+        correctedKinematics.setSpecificForceCoordinates(fx - accelBiasX, fy - accelBiasY, fz - accelBiasZ);
+        correctedKinematics.setAngularRateCoordinates(
                 angularRateX - gyroBiasX,
                 angularRateY - gyroBiasY,
                 angularRateZ - gyroBiasZ);

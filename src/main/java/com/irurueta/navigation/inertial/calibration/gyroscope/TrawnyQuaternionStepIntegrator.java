@@ -18,6 +18,7 @@ package com.irurueta.navigation.inertial.calibration.gyroscope;
 import com.irurueta.algebra.AlgebraException;
 import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.Quaternion;
+import com.irurueta.geometry.Rotation3D;
 import com.irurueta.geometry.RotationException;
 import com.irurueta.numerical.ExponentialMatrixEstimator;
 
@@ -31,8 +32,7 @@ public class TrawnyQuaternionStepIntegrator extends QuaternionStepIntegrator {
     /**
      * Estimates exponential of a square matrix.
      */
-    private final ExponentialMatrixEstimator exponentialMatrixEstimator =
-            new ExponentialMatrixEstimator();
+    private final ExponentialMatrixEstimator exponentialMatrixEstimator = new ExponentialMatrixEstimator();
 
     /**
      * Initial attitude to be reused.
@@ -106,12 +106,12 @@ public class TrawnyQuaternionStepIntegrator extends QuaternionStepIntegrator {
     public TrawnyQuaternionStepIntegrator() {
         try {
             quat = new Matrix(Quaternion.N_PARAMS, 1);
-            omega0 = new Matrix(Quaternion.INHOM_COORDS, 1);
-            omega1 = new Matrix(Quaternion.INHOM_COORDS, 1);
+            omega0 = new Matrix(Rotation3D.INHOM_COORDS, 1);
+            omega1 = new Matrix(Rotation3D.INHOM_COORDS, 1);
             omegaSkew0 = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
             omegaSkew1 = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
             omegaAvgOmega = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
-            dotOmega = new Matrix(Quaternion.INHOM_COORDS, 1);
+            dotOmega = new Matrix(Rotation3D.INHOM_COORDS, 1);
             omegaSkewDotOmega = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
             a = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
             b = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
@@ -157,10 +157,10 @@ public class TrawnyQuaternionStepIntegrator extends QuaternionStepIntegrator {
      */
     @Override
     public void integrate(
-            Quaternion initialAttitude,
-            double initialWx, double initialWy, double initialWz,
-            double currentWx, double currentWy, double currentWz,
-            double dt, Quaternion result) throws RotationException {
+            final Quaternion initialAttitude,
+            final double initialWx, final double initialWy, final double initialWz,
+            final double currentWx, final double currentWy, final double currentWz,
+            final double dt, final Quaternion result) throws RotationException {
         integrationStep(initialAttitude, initialWx, initialWy, initialWz,
                 currentWx, currentWy, currentWz, dt, result, exponentialMatrixEstimator, quat,
                 omega0, omega1, omegaSkew0, omegaSkew1, omegaAvgOmega, dotOmega,
@@ -190,26 +190,25 @@ public class TrawnyQuaternionStepIntegrator extends QuaternionStepIntegrator {
      * @throws RotationException if a numerical error occurs.
      */
     public static void integrationStep(
-            Quaternion initialAttitude,
-            double initialWx, double initialWy, double initialWz,
-            double currentWx, double currentWy, double currentWz,
-            double dt, Quaternion result) throws RotationException {
+            final Quaternion initialAttitude,
+            final double initialWx, final double initialWy, final double initialWz,
+            final double currentWx, final double currentWy, final double currentWz,
+            final double dt, final Quaternion result) throws RotationException {
         try {
-            final ExponentialMatrixEstimator exponentialMatrixEstimator =
-                    new ExponentialMatrixEstimator();
-            final Matrix quat = new Matrix(Quaternion.N_PARAMS, 1);
-            final Matrix omega0 = new Matrix(Quaternion.INHOM_COORDS, 1);
-            final Matrix omega1 = new Matrix(Quaternion.INHOM_COORDS, 1);
-            final Matrix omegaSkew0 = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
-            final Matrix omegaSkew1 = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
-            final Matrix omegaAvgOmega = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
-            final Matrix dotOmega = new Matrix(Quaternion.INHOM_COORDS, 1);
-            final Matrix omegaSkewDotOmega = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
-            final Matrix a = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
-            final Matrix b = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
-            final Matrix tmp = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
-            final Matrix expA = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
-            final Matrix quatResult = new Matrix(Quaternion.N_PARAMS, 1);
+            final var exponentialMatrixEstimator = new ExponentialMatrixEstimator();
+            final var quat = new Matrix(Quaternion.N_PARAMS, 1);
+            final var omega0 = new Matrix(Rotation3D.INHOM_COORDS, 1);
+            final var omega1 = new Matrix(Rotation3D.INHOM_COORDS, 1);
+            final var omegaSkew0 = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
+            final var omegaSkew1 = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
+            final var omegaAvgOmega = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
+            final var dotOmega = new Matrix(Rotation3D.INHOM_COORDS, 1);
+            final var omegaSkewDotOmega = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
+            final var a = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
+            final var b = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
+            final var tmp = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
+            final var expA = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
+            final var quatResult = new Matrix(Quaternion.N_PARAMS, 1);
             integrationStep(initialAttitude, initialWx, initialWy, initialWz,
                     currentWx, currentWy, currentWz, dt, result, exponentialMatrixEstimator, quat,
                     omega0, omega1, omegaSkew0, omegaSkew1, omegaAvgOmega, dotOmega,
@@ -255,10 +254,10 @@ public class TrawnyQuaternionStepIntegrator extends QuaternionStepIntegrator {
      * @throws RotationException if a numerical error occurs.
      */
     private static void integrationStep(
-            Quaternion initialAttitude,
-            double initialWx, double initialWy, double initialWz,
-            double currentWx, double currentWy, double currentWz,
-            double dt, Quaternion result,
+            final Quaternion initialAttitude,
+            final double initialWx, final double initialWy, final double initialWz,
+            final double currentWx, final double currentWy, final double currentWz,
+            final double dt, final Quaternion result,
             final ExponentialMatrixEstimator exponentialMatrixEstimator, final Matrix quat,
             final Matrix omega0, final Matrix omega1, final Matrix omegaSkew0,
             final Matrix omegaSkew1, final Matrix omegaAvgOmega, final Matrix dotOmega,
@@ -278,8 +277,7 @@ public class TrawnyQuaternionStepIntegrator extends QuaternionStepIntegrator {
             computeOmegaSkew(omega0, omegaSkew0);
             computeOmegaSkew(omega1, omegaSkew1);
 
-            computeOmegaAvgOmega(omega0, omega1, dt, omegaSkew1, omegaAvgOmega, dotOmega,
-                    omegaSkewDotOmega);
+            computeOmegaAvgOmega(omega0, omega1, dt, omegaSkew1, omegaAvgOmega, dotOmega, omegaSkewDotOmega);
 
             a.copyFrom(omegaAvgOmega);
             a.multiplyByScalar(0.5 * dt);

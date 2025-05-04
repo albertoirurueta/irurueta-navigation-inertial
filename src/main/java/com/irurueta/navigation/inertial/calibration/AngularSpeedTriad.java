@@ -165,8 +165,8 @@ public class AngularSpeedTriad extends Triad<AngularSpeedUnit, AngularSpeed> imp
      */
     @Override
     public void setMeasurementY(final AngularSpeed measurementY) {
-        setValueY(AngularSpeedConverter.convert(measurementY.getValue(),
-                measurementY.getUnit(), getUnit()).doubleValue());
+        setValueY(AngularSpeedConverter.convert(measurementY.getValue(), measurementY.getUnit(),
+                getUnit()).doubleValue());
     }
 
     /**
@@ -235,7 +235,7 @@ public class AngularSpeedTriad extends Triad<AngularSpeedUnit, AngularSpeed> imp
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final AngularSpeedTriad result = (AngularSpeedTriad) super.clone();
+        final var result = (AngularSpeedTriad) super.clone();
         copyTo(result);
         return result;
     }

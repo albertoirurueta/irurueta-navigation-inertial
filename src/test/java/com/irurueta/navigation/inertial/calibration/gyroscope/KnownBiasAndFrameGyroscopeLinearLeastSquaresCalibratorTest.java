@@ -20,13 +20,11 @@ import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.frames.CoordinateTransformation;
-import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
 import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
-import com.irurueta.navigation.inertial.BodyKinematics;
 import com.irurueta.navigation.inertial.calibration.AngularSpeedTriad;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsGenerator;
 import com.irurueta.navigation.inertial.calibration.CalibrationException;
@@ -36,17 +34,15 @@ import com.irurueta.navigation.inertial.estimators.ECEFKinematicsEstimator;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedUnit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implements
+class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implements
         KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorListener {
 
     private static final double TIME_INTERVAL_SECONDS = 0.02;
@@ -72,13 +68,12 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
 
     private static final int TIMES = 100;
 
-    private int mCalibrateStart;
-    private int mCalibrateEnd;
+    private int calibrateStart;
+    private int calibrateEnd;
 
     @Test
-    public void testConstructor1() throws WrongSizeException {
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator();
+    void testConstructor1() throws WrongSizeException {
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator();
 
         // check default values
         assertNull(calibrator.getMeasurements());
@@ -92,39 +87,39 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
         assertEquals(0.0, calibrator.getBiasY(), 0.0);
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed bx1 = calibrator.getBiasAngularSpeedX();
+        final var bx1 = calibrator.getBiasAngularSpeedX();
         assertEquals(0.0, bx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bx1.getUnit());
-        final AngularSpeed bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(bx2);
         assertEquals(bx1, bx2);
-        final AngularSpeed by1 = calibrator.getBiasAngularSpeedY();
+        final var by1 = calibrator.getBiasAngularSpeedY();
         assertEquals(0.0, by1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, by1.getUnit());
-        final AngularSpeed by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedY(by2);
         assertEquals(by1, by2);
-        final AngularSpeed bz1 = calibrator.getBiasAngularSpeedZ();
+        final var bz1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(0.0, bz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bz1.getUnit());
-        AngularSpeed bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        var bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(bz2);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(new double[3], bias1, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
-        assertEquals(bg1, new Matrix(3, 1));
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg1 = calibrator.getBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), bg1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(0.0, biasTriad1.getValueX(), 0.0);
         assertEquals(0.0, biasTriad1.getValueY(), 0.0);
         assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
@@ -145,9 +140,8 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testConstructor2() throws WrongSizeException {
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(this);
+    void testConstructor2() throws WrongSizeException {
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(this);
 
         // check default values
         assertNull(calibrator.getMeasurements());
@@ -161,39 +155,39 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
         assertEquals(0.0, calibrator.getBiasY(), 0.0);
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed bx1 = calibrator.getBiasAngularSpeedX();
+        final var bx1 = calibrator.getBiasAngularSpeedX();
         assertEquals(0.0, bx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bx1.getUnit());
-        final AngularSpeed bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(bx2);
         assertEquals(bx1, bx2);
-        final AngularSpeed by1 = calibrator.getBiasAngularSpeedY();
+        final var by1 = calibrator.getBiasAngularSpeedY();
         assertEquals(0.0, by1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, by1.getUnit());
-        final AngularSpeed by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedY(by2);
         assertEquals(by1, by2);
-        final AngularSpeed bz1 = calibrator.getBiasAngularSpeedZ();
+        final var bz1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(0.0, bz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bz1.getUnit());
-        AngularSpeed bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        var bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(bz2);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(new double[3], bias1, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
-        assertEquals(bg1, new Matrix(3, 1));
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg1 = calibrator.getBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), bg1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(0.0, biasTriad1.getValueX(), 0.0);
         assertEquals(0.0, biasTriad1.getValueY(), 0.0);
         assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
@@ -214,10 +208,9 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testConstructor3() throws WrongSizeException {
-        final Collection<FrameBodyKinematics> measurements = Collections.emptyList();
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(measurements);
+    void testConstructor3() throws WrongSizeException {
+        final var measurements = Collections.<FrameBodyKinematics>emptyList();
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(measurements);
 
         // check default values
         assertSame(calibrator.getMeasurements(), measurements);
@@ -231,39 +224,39 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
         assertEquals(0.0, calibrator.getBiasY(), 0.0);
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed bx1 = calibrator.getBiasAngularSpeedX();
+        final var bx1 = calibrator.getBiasAngularSpeedX();
         assertEquals(0.0, bx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bx1.getUnit());
-        final AngularSpeed bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(bx2);
         assertEquals(bx1, bx2);
-        final AngularSpeed by1 = calibrator.getBiasAngularSpeedY();
+        final var by1 = calibrator.getBiasAngularSpeedY();
         assertEquals(0.0, by1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, by1.getUnit());
-        final AngularSpeed by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedY(by2);
         assertEquals(by1, by2);
-        final AngularSpeed bz1 = calibrator.getBiasAngularSpeedZ();
+        final var bz1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(0.0, bz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bz1.getUnit());
-        AngularSpeed bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        var bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(bz2);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(new double[3], bias1, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
-        assertEquals(bg1, new Matrix(3, 1));
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg1 = calibrator.getBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), bg1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(0.0, biasTriad1.getValueX(), 0.0);
         assertEquals(0.0, biasTriad1.getValueY(), 0.0);
         assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
@@ -284,10 +277,9 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testConstructor4() throws WrongSizeException {
-        final Collection<FrameBodyKinematics> measurements = Collections.emptyList();
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(measurements, this);
+    void testConstructor4() throws WrongSizeException {
+        final var measurements = Collections.<FrameBodyKinematics>emptyList();
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(measurements, this);
 
         // check default values
         assertSame(calibrator.getMeasurements(), measurements);
@@ -301,39 +293,39 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
         assertEquals(0.0, calibrator.getBiasY(), 0.0);
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed bx1 = calibrator.getBiasAngularSpeedX();
+        final var bx1 = calibrator.getBiasAngularSpeedX();
         assertEquals(0.0, bx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bx1.getUnit());
-        final AngularSpeed bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(bx2);
         assertEquals(bx1, bx2);
-        final AngularSpeed by1 = calibrator.getBiasAngularSpeedY();
+        final var by1 = calibrator.getBiasAngularSpeedY();
         assertEquals(0.0, by1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, by1.getUnit());
-        final AngularSpeed by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedY(by2);
         assertEquals(by1, by2);
-        final AngularSpeed bz1 = calibrator.getBiasAngularSpeedZ();
+        final var bz1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(0.0, bz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bz1.getUnit());
-        AngularSpeed bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        var bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(bz2);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(new double[3], bias1, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
-        assertEquals(bg1, new Matrix(3, 1));
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg1 = calibrator.getBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), bg1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(0.0, biasTriad1.getValueX(), 0.0);
         assertEquals(0.0, biasTriad1.getValueY(), 0.0);
         assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
@@ -354,9 +346,8 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testConstructor5() throws WrongSizeException {
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(true);
+    void testConstructor5() throws WrongSizeException {
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(true);
 
         // check default values
         assertNull(calibrator.getMeasurements());
@@ -369,39 +360,39 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
         assertEquals(0.0, calibrator.getBiasY(), 0.0);
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed bx1 = calibrator.getBiasAngularSpeedX();
+        final var bx1 = calibrator.getBiasAngularSpeedX();
         assertEquals(0.0, bx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bx1.getUnit());
-        final AngularSpeed bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(bx2);
         assertEquals(bx1, bx2);
-        final AngularSpeed by1 = calibrator.getBiasAngularSpeedY();
+        final var by1 = calibrator.getBiasAngularSpeedY();
         assertEquals(0.0, by1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, by1.getUnit());
-        final AngularSpeed by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedY(by2);
         assertEquals(by1, by2);
-        final AngularSpeed bz1 = calibrator.getBiasAngularSpeedZ();
+        final var bz1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(0.0, bz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bz1.getUnit());
-        AngularSpeed bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        var bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(bz2);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(new double[3], bias1, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
-        assertEquals(bg1, new Matrix(3, 1));
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg1 = calibrator.getBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), bg1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(0.0, biasTriad1.getValueX(), 0.0);
         assertEquals(0.0, biasTriad1.getValueY(), 0.0);
         assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
@@ -422,9 +413,9 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testConstructor6() throws WrongSizeException {
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(true, this);
+    void testConstructor6() throws WrongSizeException {
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(true, 
+                this);
 
         // check default values
         assertNull(calibrator.getMeasurements());
@@ -437,39 +428,39 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
         assertEquals(0.0, calibrator.getBiasY(), 0.0);
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed bx1 = calibrator.getBiasAngularSpeedX();
+        final var bx1 = calibrator.getBiasAngularSpeedX();
         assertEquals(0.0, bx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bx1.getUnit());
-        final AngularSpeed bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(bx2);
         assertEquals(bx1, bx2);
-        final AngularSpeed by1 = calibrator.getBiasAngularSpeedY();
+        final var by1 = calibrator.getBiasAngularSpeedY();
         assertEquals(0.0, by1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, by1.getUnit());
-        final AngularSpeed by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedY(by2);
         assertEquals(by1, by2);
-        final AngularSpeed bz1 = calibrator.getBiasAngularSpeedZ();
+        final var bz1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(0.0, bz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bz1.getUnit());
-        AngularSpeed bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        var bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(bz2);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(new double[3], bias1, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
-        assertEquals(bg1, new Matrix(3, 1));
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg1 = calibrator.getBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), bg1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(0.0, biasTriad1.getValueX(), 0.0);
         assertEquals(0.0, biasTriad1.getValueY(), 0.0);
         assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
@@ -490,10 +481,10 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testConstructor7() throws WrongSizeException {
-        final Collection<FrameBodyKinematics> measurements = Collections.emptyList();
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(measurements, true);
+    void testConstructor7() throws WrongSizeException {
+        final var measurements = Collections.<FrameBodyKinematics>emptyList();
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(measurements, 
+                true);
 
         // check default values
         assertSame(calibrator.getMeasurements(), measurements);
@@ -506,39 +497,39 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
         assertEquals(0.0, calibrator.getBiasY(), 0.0);
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed bx1 = calibrator.getBiasAngularSpeedX();
+        final var bx1 = calibrator.getBiasAngularSpeedX();
         assertEquals(0.0, bx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bx1.getUnit());
-        final AngularSpeed bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(bx2);
         assertEquals(bx1, bx2);
-        final AngularSpeed by1 = calibrator.getBiasAngularSpeedY();
+        final var by1 = calibrator.getBiasAngularSpeedY();
         assertEquals(0.0, by1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, by1.getUnit());
-        final AngularSpeed by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedY(by2);
         assertEquals(by1, by2);
-        final AngularSpeed bz1 = calibrator.getBiasAngularSpeedZ();
+        final var bz1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(0.0, bz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bz1.getUnit());
-        AngularSpeed bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        var bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(bz2);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(new double[3], bias1, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
-        assertEquals(bg1, new Matrix(3, 1));
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg1 = calibrator.getBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), bg1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(0.0, biasTriad1.getValueX(), 0.0);
         assertEquals(0.0, biasTriad1.getValueY(), 0.0);
         assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
@@ -559,11 +550,10 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testConstructor8() throws WrongSizeException {
-        final Collection<FrameBodyKinematics> measurements = Collections.emptyList();
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(measurements, true,
-                        this);
+    void testConstructor8() throws WrongSizeException {
+        final var measurements = Collections.<FrameBodyKinematics>emptyList();
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(measurements,
+                true, this);
 
         // check default values
         assertSame(measurements, calibrator.getMeasurements());
@@ -576,39 +566,39 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
         assertEquals(0.0, calibrator.getBiasY(), 0.0);
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed bx1 = calibrator.getBiasAngularSpeedX();
+        final var bx1 = calibrator.getBiasAngularSpeedX();
         assertEquals(0.0, bx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bx1.getUnit());
-        final AngularSpeed bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(bx2);
         assertEquals(bx1, bx2);
-        final AngularSpeed by1 = calibrator.getBiasAngularSpeedY();
+        final var by1 = calibrator.getBiasAngularSpeedY();
         assertEquals(0.0, by1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, by1.getUnit());
-        final AngularSpeed by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedY(by2);
         assertEquals(by1, by2);
-        final AngularSpeed bz1 = calibrator.getBiasAngularSpeedZ();
+        final var bz1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(0.0, bz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bz1.getUnit());
-        AngularSpeed bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        var bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(bz2);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(new double[3], bias1, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
-        assertEquals(bg1, new Matrix(3, 1));
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg1 = calibrator.getBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), bg1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(0.0, biasTriad1.getValueX(), 0.0);
         assertEquals(0.0, biasTriad1.getValueY(), 0.0);
         assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
@@ -629,13 +619,12 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testConstructor9() throws WrongSizeException {
-        final Matrix bg = generateBg();
-        final double biasX = bg.getElementAtIndex(0);
-        final double biasY = bg.getElementAtIndex(1);
-        final double biasZ = bg.getElementAtIndex(2);
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(biasX, biasY, biasZ);
+    void testConstructor9() throws WrongSizeException {
+        final var bg = generateBg();
+        final var biasX = bg.getElementAtIndex(0);
+        final var biasY = bg.getElementAtIndex(1);
+        final var biasZ = bg.getElementAtIndex(2);
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(biasX, biasY, biasZ);
 
         // check default values
         assertNull(calibrator.getMeasurements());
@@ -649,39 +638,39 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
         assertEquals(biasX, calibrator.getBiasX(), 0.0);
         assertEquals(biasY, calibrator.getBiasY(), 0.0);
         assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed bx1 = calibrator.getBiasAngularSpeedX();
+        final var bx1 = calibrator.getBiasAngularSpeedX();
         assertEquals(bx1.getValue().doubleValue(), biasX, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bx1.getUnit());
-        final AngularSpeed bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(bx2);
         assertEquals(bx1, bx2);
-        final AngularSpeed by1 = calibrator.getBiasAngularSpeedY();
+        final var by1 = calibrator.getBiasAngularSpeedY();
         assertEquals(biasY, by1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, by1.getUnit());
-        final AngularSpeed by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedY(by2);
         assertEquals(by1, by2);
-        final AngularSpeed bz1 = calibrator.getBiasAngularSpeedZ();
+        final var bz1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(biasZ, bz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bz1.getUnit());
-        AngularSpeed bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        var bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(bz2);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bg.getBuffer(), bias1, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasX, biasTriad1.getValueX(), 0.0);
         assertEquals(biasY, biasTriad1.getValueY(), 0.0);
         assertEquals(biasZ, biasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
@@ -702,13 +691,13 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testConstructor10() throws WrongSizeException {
-        final Matrix bg = generateBg();
-        final double biasX = bg.getElementAtIndex(0);
-        final double biasY = bg.getElementAtIndex(1);
-        final double biasZ = bg.getElementAtIndex(2);
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(biasX, biasY, biasZ, this);
+    void testConstructor10() throws WrongSizeException {
+        final var bg = generateBg();
+        final var biasX = bg.getElementAtIndex(0);
+        final var biasY = bg.getElementAtIndex(1);
+        final var biasZ = bg.getElementAtIndex(2);
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(biasX, biasY, biasZ,
+                this);
 
         // check default values
         assertNull(calibrator.getMeasurements());
@@ -722,39 +711,39 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
         assertEquals(biasX, calibrator.getBiasX(), 0.0);
         assertEquals(biasY, calibrator.getBiasY(), 0.0);
         assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed bx1 = calibrator.getBiasAngularSpeedX();
+        final var bx1 = calibrator.getBiasAngularSpeedX();
         assertEquals(biasX, bx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bx1.getUnit());
-        final AngularSpeed bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(bx2);
         assertEquals(bx1, bx2);
-        final AngularSpeed by1 = calibrator.getBiasAngularSpeedY();
+        final var by1 = calibrator.getBiasAngularSpeedY();
         assertEquals(by1.getValue().doubleValue(), biasY, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, by1.getUnit());
-        final AngularSpeed by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedY(by2);
         assertEquals(by1, by2);
-        final AngularSpeed bz1 = calibrator.getBiasAngularSpeedZ();
+        final var bz1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(bz1.getValue().doubleValue(), biasZ, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bz1.getUnit());
-        AngularSpeed bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        var bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(bz2);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bg.getBuffer(), bias1, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), biasX, 0.0);
         assertEquals(biasTriad1.getValueY(), biasY, 0.0);
         assertEquals(biasTriad1.getValueZ(), biasZ, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
@@ -775,14 +764,14 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testConstructor11() throws WrongSizeException {
-        final Collection<FrameBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final double biasX = bg.getElementAtIndex(0);
-        final double biasY = bg.getElementAtIndex(1);
-        final double biasZ = bg.getElementAtIndex(2);
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(measurements, biasX, biasY, biasZ);
+    void testConstructor11() throws WrongSizeException {
+        final var measurements = Collections.<FrameBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var biasX = bg.getElementAtIndex(0);
+        final var biasY = bg.getElementAtIndex(1);
+        final var biasZ = bg.getElementAtIndex(2);
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(measurements,
+                biasX, biasY, biasZ);
 
         // check default values
         assertSame(calibrator.getMeasurements(), measurements);
@@ -796,39 +785,39 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
         assertEquals(biasX, calibrator.getBiasX(), 0.0);
         assertEquals(biasY, calibrator.getBiasY(), 0.0);
         assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed bx1 = calibrator.getBiasAngularSpeedX();
+        final var bx1 = calibrator.getBiasAngularSpeedX();
         assertEquals(bx1.getValue().doubleValue(), biasX, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bx1.getUnit());
-        final AngularSpeed bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(bx2);
         assertEquals(bx1, bx2);
-        final AngularSpeed by1 = calibrator.getBiasAngularSpeedY();
+        final var by1 = calibrator.getBiasAngularSpeedY();
         assertEquals(by1.getValue().doubleValue(), biasY, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, by1.getUnit());
-        final AngularSpeed by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedY(by2);
         assertEquals(by1, by2);
-        final AngularSpeed bz1 = calibrator.getBiasAngularSpeedZ();
+        final var bz1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(bz1.getValue().doubleValue(), biasZ, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bz1.getUnit());
-        AngularSpeed bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        var bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(bz2);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bg.getBuffer(), bias1, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), biasX, 0.0);
         assertEquals(biasTriad1.getValueY(), biasY, 0.0);
         assertEquals(biasTriad1.getValueZ(), biasZ, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
@@ -849,15 +838,14 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testConstructor12() throws WrongSizeException {
-        final Collection<FrameBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final double biasX = bg.getElementAtIndex(0);
-        final double biasY = bg.getElementAtIndex(1);
-        final double biasZ = bg.getElementAtIndex(2);
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(measurements, biasX, biasY, biasZ,
-                        this);
+    void testConstructor12() throws WrongSizeException {
+        final var measurements = Collections.<FrameBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var biasX = bg.getElementAtIndex(0);
+        final var biasY = bg.getElementAtIndex(1);
+        final var biasZ = bg.getElementAtIndex(2);
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(measurements,
+                biasX, biasY, biasZ, this);
 
         // check default values
         assertSame(measurements, calibrator.getMeasurements());
@@ -871,39 +859,39 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
         assertEquals(biasX, calibrator.getBiasX(), 0.0);
         assertEquals(biasY, calibrator.getBiasY(), 0.0);
         assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed bx1 = calibrator.getBiasAngularSpeedX();
+        final var bx1 = calibrator.getBiasAngularSpeedX();
         assertEquals(bx1.getValue().doubleValue(), biasX, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bx1.getUnit());
-        final AngularSpeed bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(bx2);
         assertEquals(bx1, bx2);
-        final AngularSpeed by1 = calibrator.getBiasAngularSpeedY();
+        final var by1 = calibrator.getBiasAngularSpeedY();
         assertEquals(by1.getValue().doubleValue(), biasY, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, by1.getUnit());
-        final AngularSpeed by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedY(by2);
         assertEquals(by1, by2);
-        final AngularSpeed bz1 = calibrator.getBiasAngularSpeedZ();
+        final var bz1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(bz1.getValue().doubleValue(), biasZ, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bz1.getUnit());
-        AngularSpeed bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        var bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(bz2);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bg.getBuffer(), bias1, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), biasX, 0.0);
         assertEquals(biasTriad1.getValueY(), biasY, 0.0);
         assertEquals(biasTriad1.getValueZ(), biasZ, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
@@ -924,13 +912,13 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testConstructor13() throws WrongSizeException {
-        final Matrix bg = generateBg();
-        final double biasX = bg.getElementAtIndex(0);
-        final double biasY = bg.getElementAtIndex(1);
-        final double biasZ = bg.getElementAtIndex(2);
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(biasX, biasY, biasZ, true);
+    void testConstructor13() throws WrongSizeException {
+        final var bg = generateBg();
+        final var biasX = bg.getElementAtIndex(0);
+        final var biasY = bg.getElementAtIndex(1);
+        final var biasZ = bg.getElementAtIndex(2);
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(biasX, biasY, biasZ,
+                true);
 
         // check default values
         assertNull(calibrator.getMeasurements());
@@ -943,39 +931,39 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
         assertEquals(biasX, calibrator.getBiasX(), 0.0);
         assertEquals(biasY, calibrator.getBiasY(), 0.0);
         assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed bx1 = calibrator.getBiasAngularSpeedX();
+        final var bx1 = calibrator.getBiasAngularSpeedX();
         assertEquals(bx1.getValue().doubleValue(), biasX, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bx1.getUnit());
-        final AngularSpeed bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(bx2);
         assertEquals(bx1, bx2);
-        final AngularSpeed by1 = calibrator.getBiasAngularSpeedY();
+        final var by1 = calibrator.getBiasAngularSpeedY();
         assertEquals(by1.getValue().doubleValue(), biasY, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, by1.getUnit());
-        final AngularSpeed by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedY(by2);
         assertEquals(by1, by2);
-        final AngularSpeed bz1 = calibrator.getBiasAngularSpeedZ();
+        final var bz1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(bz1.getValue().doubleValue(), biasZ, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bz1.getUnit());
-        AngularSpeed bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        var bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(bz2);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bg.getBuffer(), bias1, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), biasX, 0.0);
         assertEquals(biasTriad1.getValueY(), biasY, 0.0);
         assertEquals(biasTriad1.getValueZ(), biasZ, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
@@ -996,14 +984,13 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testConstructor14() throws WrongSizeException {
-        final Matrix bg = generateBg();
-        final double biasX = bg.getElementAtIndex(0);
-        final double biasY = bg.getElementAtIndex(1);
-        final double biasZ = bg.getElementAtIndex(2);
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(biasX, biasY, biasZ, true,
-                        this);
+    void testConstructor14() throws WrongSizeException {
+        final var bg = generateBg();
+        final var biasX = bg.getElementAtIndex(0);
+        final var biasY = bg.getElementAtIndex(1);
+        final var biasZ = bg.getElementAtIndex(2);
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(biasX, biasY, biasZ,
+                true, this);
 
         // check default values
         assertNull(calibrator.getMeasurements());
@@ -1016,39 +1003,39 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
         assertEquals(biasX, calibrator.getBiasX(), 0.0);
         assertEquals(biasY, calibrator.getBiasY(), 0.0);
         assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed bx1 = calibrator.getBiasAngularSpeedX();
+        final var bx1 = calibrator.getBiasAngularSpeedX();
         assertEquals(bx1.getValue().doubleValue(), biasX, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bx1.getUnit());
-        final AngularSpeed bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(bx2);
         assertEquals(bx1, bx2);
-        final AngularSpeed by1 = calibrator.getBiasAngularSpeedY();
+        final var by1 = calibrator.getBiasAngularSpeedY();
         assertEquals(by1.getValue().doubleValue(), biasY, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, by1.getUnit());
-        final AngularSpeed by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedY(by2);
         assertEquals(by1, by2);
-        final AngularSpeed bz1 = calibrator.getBiasAngularSpeedZ();
+        final var bz1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(bz1.getValue().doubleValue(), biasZ, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bz1.getUnit());
-        AngularSpeed bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        var bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(bz2);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bg.getBuffer(), bias1, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), biasX, 0.0);
         assertEquals(biasTriad1.getValueY(), biasY, 0.0);
         assertEquals(biasTriad1.getValueZ(), biasZ, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
@@ -1069,15 +1056,14 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testConstructor15() throws WrongSizeException {
-        final Collection<FrameBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final double biasX = bg.getElementAtIndex(0);
-        final double biasY = bg.getElementAtIndex(1);
-        final double biasZ = bg.getElementAtIndex(2);
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(measurements, biasX, biasY, biasZ,
-                        true);
+    void testConstructor15() throws WrongSizeException {
+        final var measurements = Collections.<FrameBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var biasX = bg.getElementAtIndex(0);
+        final var biasY = bg.getElementAtIndex(1);
+        final var biasZ = bg.getElementAtIndex(2);
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(measurements,
+                biasX, biasY, biasZ, true);
 
         // check default values
         assertSame(measurements, calibrator.getMeasurements());
@@ -1090,39 +1076,39 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
         assertEquals(biasX, calibrator.getBiasX(), 0.0);
         assertEquals(biasY, calibrator.getBiasY(), 0.0);
         assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed bx1 = calibrator.getBiasAngularSpeedX();
+        final var bx1 = calibrator.getBiasAngularSpeedX();
         assertEquals(bx1.getValue().doubleValue(), biasX, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bx1.getUnit());
-        final AngularSpeed bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(bx2);
         assertEquals(bx1, bx2);
-        final AngularSpeed by1 = calibrator.getBiasAngularSpeedY();
+        final var by1 = calibrator.getBiasAngularSpeedY();
         assertEquals(by1.getValue().doubleValue(), biasY, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, by1.getUnit());
-        final AngularSpeed by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedY(by2);
         assertEquals(by1, by2);
-        final AngularSpeed bz1 = calibrator.getBiasAngularSpeedZ();
+        final var bz1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(bz1.getValue().doubleValue(), biasZ, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bz1.getUnit());
-        AngularSpeed bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        var bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(bz2);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bg.getBuffer(), bias1, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), biasX, 0.0);
         assertEquals(biasTriad1.getValueY(), biasY, 0.0);
         assertEquals(biasTriad1.getValueZ(), biasZ, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
@@ -1143,15 +1129,14 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testConstructor16() throws WrongSizeException {
-        final Collection<FrameBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final double biasX = bg.getElementAtIndex(0);
-        final double biasY = bg.getElementAtIndex(1);
-        final double biasZ = bg.getElementAtIndex(2);
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(measurements, biasX, biasY, biasZ,
-                        true, this);
+    void testConstructor16() throws WrongSizeException {
+        final var measurements = Collections.<FrameBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var biasX = bg.getElementAtIndex(0);
+        final var biasY = bg.getElementAtIndex(1);
+        final var biasZ = bg.getElementAtIndex(2);
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(measurements,
+                biasX, biasY, biasZ, true, this);
 
         // check default values
         assertSame(measurements, calibrator.getMeasurements());
@@ -1164,39 +1149,39 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
         assertEquals(biasX, calibrator.getBiasX(), 0.0);
         assertEquals(biasY, calibrator.getBiasY(), 0.0);
         assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed bx1 = calibrator.getBiasAngularSpeedX();
+        final var bx1 = calibrator.getBiasAngularSpeedX();
         assertEquals(bx1.getValue().doubleValue(), biasX, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bx1.getUnit());
-        final AngularSpeed bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(bx2);
         assertEquals(bx1, bx2);
-        final AngularSpeed by1 = calibrator.getBiasAngularSpeedY();
+        final var by1 = calibrator.getBiasAngularSpeedY();
         assertEquals(by1.getValue().doubleValue(), biasY, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, by1.getUnit());
-        final AngularSpeed by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedY(by2);
         assertEquals(by1, by2);
-        final AngularSpeed bz1 = calibrator.getBiasAngularSpeedZ();
+        final var bz1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(bz1.getValue().doubleValue(), biasZ, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bz1.getUnit());
-        AngularSpeed bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        var bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(bz2);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bg.getBuffer(), bias1, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), biasX, 0.0);
         assertEquals(biasTriad1.getValueY(), biasY, 0.0);
         assertEquals(biasTriad1.getValueZ(), biasZ, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
@@ -1217,16 +1202,15 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testConstructor17() throws WrongSizeException {
-        final Matrix bg = generateBg();
-        final double biasX = bg.getElementAtIndex(0);
-        final double biasY = bg.getElementAtIndex(1);
-        final double biasZ = bg.getElementAtIndex(2);
-        final AngularSpeed bx = new AngularSpeed(biasX, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed by = new AngularSpeed(biasY, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed bz = new AngularSpeed(biasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(bx, by, bz);
+    void testConstructor17() throws WrongSizeException {
+        final var bg = generateBg();
+        final var biasX = bg.getElementAtIndex(0);
+        final var biasY = bg.getElementAtIndex(1);
+        final var biasZ = bg.getElementAtIndex(2);
+        final var bx = new AngularSpeed(biasX, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var by = new AngularSpeed(biasY, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bz = new AngularSpeed(biasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(bx, by, bz);
 
         // check default values
         assertNull(calibrator.getMeasurements());
@@ -1240,43 +1224,43 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
         assertEquals(biasX, calibrator.getBiasX(), 0.0);
         assertEquals(biasY, calibrator.getBiasY(), 0.0);
         assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed bx1 = calibrator.getBiasAngularSpeedX();
+        final var bx1 = calibrator.getBiasAngularSpeedX();
         assertEquals(bx1.getValue().doubleValue(), biasX, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bx1.getUnit());
-        final AngularSpeed bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(bx2);
         assertEquals(bx1, bx2);
-        final AngularSpeed by1 = calibrator.getBiasAngularSpeedY();
+        final var by1 = calibrator.getBiasAngularSpeedY();
         assertEquals(by1.getValue().doubleValue(), biasY, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, by1.getUnit());
-        final AngularSpeed by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedY(by2);
         assertEquals(by1, by2);
-        final AngularSpeed bz1 = calibrator.getBiasAngularSpeedZ();
+        final var bz1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(bz1.getValue().doubleValue(), biasZ, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bz1.getUnit());
-        AngularSpeed bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        var bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(bz2);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bg.getBuffer(), bias1, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
         assertEquals(KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
                 calibrator.getMinimumRequiredMeasurementsOrSequences());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), biasX, 0.0);
         assertEquals(biasTriad1.getValueY(), biasY, 0.0);
         assertEquals(biasTriad1.getValueZ(), biasZ, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertNull(calibrator.getEstimatedMg());
@@ -1293,16 +1277,15 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testConstructor18() throws WrongSizeException {
-        final Matrix bg = generateBg();
-        final double biasX = bg.getElementAtIndex(0);
-        final double biasY = bg.getElementAtIndex(1);
-        final double biasZ = bg.getElementAtIndex(2);
-        final AngularSpeed bx = new AngularSpeed(biasX, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed by = new AngularSpeed(biasY, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed bz = new AngularSpeed(biasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(bx, by, bz, this);
+    void testConstructor18() throws WrongSizeException {
+        final var bg = generateBg();
+        final var biasX = bg.getElementAtIndex(0);
+        final var biasY = bg.getElementAtIndex(1);
+        final var biasZ = bg.getElementAtIndex(2);
+        final var bx = new AngularSpeed(biasX, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var by = new AngularSpeed(biasY, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bz = new AngularSpeed(biasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(bx, by, bz, this);
 
         // check default values
         assertNull(calibrator.getMeasurements());
@@ -1316,39 +1299,39 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
         assertEquals(biasX, calibrator.getBiasX(), 0.0);
         assertEquals(biasY, calibrator.getBiasY(), 0.0);
         assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed bx1 = calibrator.getBiasAngularSpeedX();
+        final var bx1 = calibrator.getBiasAngularSpeedX();
         assertEquals(bx1.getValue().doubleValue(), biasX, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bx1.getUnit());
-        final AngularSpeed bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(bx2);
         assertEquals(bx1, bx2);
-        final AngularSpeed by1 = calibrator.getBiasAngularSpeedY();
+        final var by1 = calibrator.getBiasAngularSpeedY();
         assertEquals(by1.getValue().doubleValue(), biasY, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, by1.getUnit());
-        final AngularSpeed by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedY(by2);
         assertEquals(by1, by2);
-        final AngularSpeed bz1 = calibrator.getBiasAngularSpeedZ();
+        final var bz1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(bz1.getValue().doubleValue(), biasZ, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bz1.getUnit());
-        AngularSpeed bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        var bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(bz2);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bg.getBuffer(), bias1, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), biasX, 0.0);
         assertEquals(biasTriad1.getValueY(), biasY, 0.0);
         assertEquals(biasTriad1.getValueZ(), biasZ, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
@@ -1369,17 +1352,16 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testConstructor19() throws WrongSizeException {
-        final Collection<FrameBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final double biasX = bg.getElementAtIndex(0);
-        final double biasY = bg.getElementAtIndex(1);
-        final double biasZ = bg.getElementAtIndex(2);
-        final AngularSpeed bx = new AngularSpeed(biasX, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed by = new AngularSpeed(biasY, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed bz = new AngularSpeed(biasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(measurements, bx, by, bz);
+    void testConstructor19() throws WrongSizeException {
+        final var measurements = Collections.<FrameBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var biasX = bg.getElementAtIndex(0);
+        final var biasY = bg.getElementAtIndex(1);
+        final var biasZ = bg.getElementAtIndex(2);
+        final var bx = new AngularSpeed(biasX, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var by = new AngularSpeed(biasY, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bz = new AngularSpeed(biasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(measurements, bx, by, bz);
 
         // check default values
         assertSame(measurements, calibrator.getMeasurements());
@@ -1393,39 +1375,39 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
         assertEquals(biasX, calibrator.getBiasX(), 0.0);
         assertEquals(biasY, calibrator.getBiasY(), 0.0);
         assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed bx1 = calibrator.getBiasAngularSpeedX();
+        final var bx1 = calibrator.getBiasAngularSpeedX();
         assertEquals(bx1.getValue().doubleValue(), biasX, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bx1.getUnit());
-        final AngularSpeed bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(bx2);
         assertEquals(bx1, bx2);
-        final AngularSpeed by1 = calibrator.getBiasAngularSpeedY();
+        final var by1 = calibrator.getBiasAngularSpeedY();
         assertEquals(by1.getValue().doubleValue(), biasY, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, by1.getUnit());
-        final AngularSpeed by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedY(by2);
         assertEquals(by1, by2);
-        final AngularSpeed bz1 = calibrator.getBiasAngularSpeedZ();
+        final var bz1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(bz1.getValue().doubleValue(), biasZ, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bz1.getUnit());
-        AngularSpeed bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        var bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(bz2);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bg.getBuffer(), bias1, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), biasX, 0.0);
         assertEquals(biasTriad1.getValueY(), biasY, 0.0);
         assertEquals(biasTriad1.getValueZ(), biasZ, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
@@ -1446,17 +1428,17 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testConstructor20() throws WrongSizeException {
-        final Collection<FrameBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final double biasX = bg.getElementAtIndex(0);
-        final double biasY = bg.getElementAtIndex(1);
-        final double biasZ = bg.getElementAtIndex(2);
-        final AngularSpeed bx = new AngularSpeed(biasX, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed by = new AngularSpeed(biasY, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed bz = new AngularSpeed(biasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(measurements, bx, by, bz, this);
+    void testConstructor20() throws WrongSizeException {
+        final var measurements = Collections.<FrameBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var biasX = bg.getElementAtIndex(0);
+        final var biasY = bg.getElementAtIndex(1);
+        final var biasZ = bg.getElementAtIndex(2);
+        final var bx = new AngularSpeed(biasX, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var by = new AngularSpeed(biasY, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bz = new AngularSpeed(biasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(measurements, bx, by, bz,
+                this);
 
         // check default values
         assertSame(measurements, calibrator.getMeasurements());
@@ -1470,39 +1452,39 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
         assertEquals(biasX, calibrator.getBiasX(), 0.0);
         assertEquals(biasY, calibrator.getBiasY(), 0.0);
         assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed bx1 = calibrator.getBiasAngularSpeedX();
+        final var bx1 = calibrator.getBiasAngularSpeedX();
         assertEquals(bx1.getValue().doubleValue(), biasX, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bx1.getUnit());
-        final AngularSpeed bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(bx2);
         assertEquals(bx1, bx2);
-        final AngularSpeed by1 = calibrator.getBiasAngularSpeedY();
+        final var by1 = calibrator.getBiasAngularSpeedY();
         assertEquals(by1.getValue().doubleValue(), biasY, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, by1.getUnit());
-        final AngularSpeed by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedY(by2);
         assertEquals(by1, by2);
-        final AngularSpeed bz1 = calibrator.getBiasAngularSpeedZ();
+        final var bz1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(bz1.getValue().doubleValue(), biasZ, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bz1.getUnit());
-        AngularSpeed bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        var bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(bz2);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bg.getBuffer(), bias1, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), biasX, 0.0);
         assertEquals(biasTriad1.getValueY(), biasY, 0.0);
         assertEquals(biasTriad1.getValueZ(), biasZ, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
@@ -1523,16 +1505,16 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testConstructor21() throws WrongSizeException {
-        final Matrix bg = generateBg();
-        final double biasX = bg.getElementAtIndex(0);
-        final double biasY = bg.getElementAtIndex(1);
-        final double biasZ = bg.getElementAtIndex(2);
-        final AngularSpeed bx = new AngularSpeed(biasX, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed by = new AngularSpeed(biasY, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed bz = new AngularSpeed(biasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(bx, by, bz, true);
+    void testConstructor21() throws WrongSizeException {
+        final var bg = generateBg();
+        final var biasX = bg.getElementAtIndex(0);
+        final var biasY = bg.getElementAtIndex(1);
+        final var biasZ = bg.getElementAtIndex(2);
+        final var bx = new AngularSpeed(biasX, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var by = new AngularSpeed(biasY, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bz = new AngularSpeed(biasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(bx, by, bz,
+                true);
 
         // check default values
         assertNull(calibrator.getMeasurements());
@@ -1545,39 +1527,39 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
         assertEquals(biasX, calibrator.getBiasX(), 0.0);
         assertEquals(biasY, calibrator.getBiasY(), 0.0);
         assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed bx1 = calibrator.getBiasAngularSpeedX();
+        final var bx1 = calibrator.getBiasAngularSpeedX();
         assertEquals(bx1.getValue().doubleValue(), biasX, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bx1.getUnit());
-        final AngularSpeed bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(bx2);
         assertEquals(bx1, bx2);
-        final AngularSpeed by1 = calibrator.getBiasAngularSpeedY();
+        final var by1 = calibrator.getBiasAngularSpeedY();
         assertEquals(by1.getValue().doubleValue(), biasY, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, by1.getUnit());
-        final AngularSpeed by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedY(by2);
         assertEquals(by1, by2);
-        final AngularSpeed bz1 = calibrator.getBiasAngularSpeedZ();
+        final var bz1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(bz1.getValue().doubleValue(), biasZ, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bz1.getUnit());
-        AngularSpeed bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        var bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(bz2);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bg.getBuffer(), bias1, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), biasX, 0.0);
         assertEquals(biasTriad1.getValueY(), biasY, 0.0);
         assertEquals(biasTriad1.getValueZ(), biasZ, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
@@ -1598,17 +1580,16 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testConstructor22() throws WrongSizeException {
-        final Matrix bg = generateBg();
-        final double biasX = bg.getElementAtIndex(0);
-        final double biasY = bg.getElementAtIndex(1);
-        final double biasZ = bg.getElementAtIndex(2);
-        final AngularSpeed bx = new AngularSpeed(biasX, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed by = new AngularSpeed(biasY, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed bz = new AngularSpeed(biasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(bx, by, bz, true,
-                        this);
+    void testConstructor22() throws WrongSizeException {
+        final var bg = generateBg();
+        final var biasX = bg.getElementAtIndex(0);
+        final var biasY = bg.getElementAtIndex(1);
+        final var biasZ = bg.getElementAtIndex(2);
+        final var bx = new AngularSpeed(biasX, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var by = new AngularSpeed(biasY, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bz = new AngularSpeed(biasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(bx, by, bz,
+                true, this);
 
         // check default values
         assertNull(calibrator.getMeasurements());
@@ -1621,39 +1602,39 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
         assertEquals(biasX, calibrator.getBiasX(), 0.0);
         assertEquals(biasY, calibrator.getBiasY(), 0.0);
         assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed bx1 = calibrator.getBiasAngularSpeedX();
+        final var bx1 = calibrator.getBiasAngularSpeedX();
         assertEquals(bx1.getValue().doubleValue(), biasX, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bx1.getUnit());
-        final AngularSpeed bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(bx2);
         assertEquals(bx1, bx2);
-        final AngularSpeed by1 = calibrator.getBiasAngularSpeedY();
+        final var by1 = calibrator.getBiasAngularSpeedY();
         assertEquals(by1.getValue().doubleValue(), biasY, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, by1.getUnit());
-        final AngularSpeed by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedY(by2);
         assertEquals(by1, by2);
-        final AngularSpeed bz1 = calibrator.getBiasAngularSpeedZ();
+        final var bz1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(bz1.getValue().doubleValue(), biasZ, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bz1.getUnit());
-        AngularSpeed bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        var bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(bz2);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bg.getBuffer(), bias1, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), biasX, 0.0);
         assertEquals(biasTriad1.getValueY(), biasY, 0.0);
         assertEquals(biasTriad1.getValueZ(), biasZ, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
@@ -1674,18 +1655,17 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testConstructor23() throws WrongSizeException {
-        final Collection<FrameBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final double biasX = bg.getElementAtIndex(0);
-        final double biasY = bg.getElementAtIndex(1);
-        final double biasZ = bg.getElementAtIndex(2);
-        final AngularSpeed bx = new AngularSpeed(biasX, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed by = new AngularSpeed(biasY, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed bz = new AngularSpeed(biasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(measurements, bx, by, bz,
-                        true);
+    void testConstructor23() throws WrongSizeException {
+        final var measurements = Collections.<FrameBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var biasX = bg.getElementAtIndex(0);
+        final var biasY = bg.getElementAtIndex(1);
+        final var biasZ = bg.getElementAtIndex(2);
+        final var bx = new AngularSpeed(biasX, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var by = new AngularSpeed(biasY, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bz = new AngularSpeed(biasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(measurements, bx, by, bz,
+                true);
 
         // check default values
         assertSame(measurements, calibrator.getMeasurements());
@@ -1698,39 +1678,39 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
         assertEquals(biasX, calibrator.getBiasX(), 0.0);
         assertEquals(biasY, calibrator.getBiasY(), 0.0);
         assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed bx1 = calibrator.getBiasAngularSpeedX();
+        final var bx1 = calibrator.getBiasAngularSpeedX();
         assertEquals(bx1.getValue().doubleValue(), biasX, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bx1.getUnit());
-        final AngularSpeed bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(bx2);
         assertEquals(bx1, bx2);
-        final AngularSpeed by1 = calibrator.getBiasAngularSpeedY();
+        final var by1 = calibrator.getBiasAngularSpeedY();
         assertEquals(by1.getValue().doubleValue(), biasY, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, by1.getUnit());
-        final AngularSpeed by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedY(by2);
         assertEquals(by1, by2);
-        final AngularSpeed bz1 = calibrator.getBiasAngularSpeedZ();
+        final var bz1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(bz1.getValue().doubleValue(), biasZ, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bz1.getUnit());
-        AngularSpeed bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        var bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(bz2);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bg.getBuffer(), bias1, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), biasX, 0.0);
         assertEquals(biasTriad1.getValueY(), biasY, 0.0);
         assertEquals(biasTriad1.getValueZ(), biasZ, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
@@ -1751,18 +1731,17 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testConstructor24() throws WrongSizeException {
-        final Collection<FrameBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final double biasX = bg.getElementAtIndex(0);
-        final double biasY = bg.getElementAtIndex(1);
-        final double biasZ = bg.getElementAtIndex(2);
-        final AngularSpeed bx = new AngularSpeed(biasX, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed by = new AngularSpeed(biasY, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed bz = new AngularSpeed(biasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(measurements, bx, by, bz,
-                        true, this);
+    void testConstructor24() throws WrongSizeException {
+        final var measurements = Collections.<FrameBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var biasX = bg.getElementAtIndex(0);
+        final var biasY = bg.getElementAtIndex(1);
+        final var biasZ = bg.getElementAtIndex(2);
+        final var bx = new AngularSpeed(biasX, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var by = new AngularSpeed(biasY, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bz = new AngularSpeed(biasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(measurements, bx, by, bz,
+                true, this);
 
         // check default values
         assertSame(measurements, calibrator.getMeasurements());
@@ -1775,39 +1754,39 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
         assertEquals(biasX, calibrator.getBiasX(), 0.0);
         assertEquals(biasY, calibrator.getBiasY(), 0.0);
         assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed bx1 = calibrator.getBiasAngularSpeedX();
+        final var bx1 = calibrator.getBiasAngularSpeedX();
         assertEquals(bx1.getValue().doubleValue(), biasX, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bx1.getUnit());
-        final AngularSpeed bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(bx2);
         assertEquals(bx1, bx2);
-        final AngularSpeed by1 = calibrator.getBiasAngularSpeedY();
+        final var by1 = calibrator.getBiasAngularSpeedY();
         assertEquals(by1.getValue().doubleValue(), biasY, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, by1.getUnit());
-        final AngularSpeed by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var by2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedY(by2);
         assertEquals(by1, by2);
-        final AngularSpeed bz1 = calibrator.getBiasAngularSpeedZ();
+        final var bz1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(bz1.getValue().doubleValue(), biasZ, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bz1.getUnit());
-        AngularSpeed bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        var bz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(bz2);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bg.getBuffer(), bias1, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), biasX, 0.0);
         assertEquals(biasTriad1.getValueY(), biasY, 0.0);
         assertEquals(biasTriad1.getValueZ(), biasZ, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
@@ -1828,15 +1807,14 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testGetSetMeasurements() throws LockedException {
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator();
+    void testGetSetMeasurements() throws LockedException {
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator();
 
         // check default value
         assertNull(calibrator.getMeasurements());
 
         // set new value
-        final Collection<FrameBodyKinematics> measurements = Collections.emptyList();
+        final var measurements = Collections.<FrameBodyKinematics>emptyList();
         calibrator.setMeasurements(measurements);
 
         // check
@@ -1844,9 +1822,8 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testIsSetCommonAxisUsed() throws LockedException {
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator();
+    void testIsSetCommonAxisUsed() throws LockedException {
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator();
 
         // check default value
         assertFalse(calibrator.isCommonAxisUsed());
@@ -1859,9 +1836,8 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testGetSetListener() throws LockedException {
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator();
+    void testGetSetListener() throws LockedException {
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator();
 
         // check default value
         assertNull(calibrator.getListener());
@@ -1870,20 +1846,19 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
         calibrator.setListener(this);
 
         // check
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
-    public void testGetSetBiasX() throws LockedException {
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator();
+    void testGetSetBiasX() throws LockedException {
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
 
         // set new value
-        final Matrix bg = generateBg();
-        final double biasX = bg.getElementAtIndex(0);
+        final var bg = generateBg();
+        final var biasX = bg.getElementAtIndex(0);
 
         calibrator.setBiasX(biasX);
 
@@ -1892,16 +1867,15 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testGetSetBiasY() throws LockedException {
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator();
+    void testGetSetBiasY() throws LockedException {
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getBiasY(), 0.0);
 
         // set new value
-        final Matrix bg = generateBg();
-        final double biasY = bg.getElementAtIndex(1);
+        final var bg = generateBg();
+        final var biasY = bg.getElementAtIndex(1);
 
         calibrator.setBiasY(biasY);
 
@@ -1910,16 +1884,15 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testGetSetBiasZ() throws LockedException {
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator();
+    void testGetSetBiasZ() throws LockedException {
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
 
         // set new value
-        final Matrix bg = generateBg();
-        final double biasZ = bg.getElementAtIndex(2);
+        final var bg = generateBg();
+        final var biasZ = bg.getElementAtIndex(2);
 
         calibrator.setBiasZ(biasZ);
 
@@ -1928,25 +1901,24 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testGetSetBiasAngularSpeedX() throws LockedException {
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator();
+    void testGetSetBiasAngularSpeedX() throws LockedException {
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator();
 
         // check default value
-        final AngularSpeed bx1 = calibrator.getBiasAngularSpeedX();
+        final var bx1 = calibrator.getBiasAngularSpeedX();
         assertEquals(0.0, bx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bx1.getUnit());
 
         // set new value
-        final Matrix bg = generateBg();
-        final double biasX = bg.getElementAtIndex(0);
-        final AngularSpeed bx2 = new AngularSpeed(biasX, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bg = generateBg();
+        final var biasX = bg.getElementAtIndex(0);
+        final var bx2 = new AngularSpeed(biasX, AngularSpeedUnit.RADIANS_PER_SECOND);
 
         calibrator.setBiasX(bx2);
 
         // check
-        final AngularSpeed bx3 = calibrator.getBiasAngularSpeedX();
-        final AngularSpeed bx4 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bx3 = calibrator.getBiasAngularSpeedX();
+        final var bx4 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(bx4);
 
         assertEquals(bx2, bx3);
@@ -1954,25 +1926,24 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testGetSetBiasAngularSpeedY() throws LockedException {
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator();
+    void testGetSetBiasAngularSpeedY() throws LockedException {
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator();
 
         // check default value
-        final AngularSpeed by1 = calibrator.getBiasAngularSpeedY();
+        final var by1 = calibrator.getBiasAngularSpeedY();
         assertEquals(0.0, by1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, by1.getUnit());
 
         // set new value
-        final Matrix bg = generateBg();
-        final double biasY = bg.getElementAtIndex(1);
-        final AngularSpeed by2 = new AngularSpeed(biasY, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bg = generateBg();
+        final var biasY = bg.getElementAtIndex(1);
+        final var by2 = new AngularSpeed(biasY, AngularSpeedUnit.RADIANS_PER_SECOND);
 
         calibrator.setBiasY(by2);
 
         // check
-        final AngularSpeed by3 = calibrator.getBiasAngularSpeedY();
-        final AngularSpeed by4 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var by3 = calibrator.getBiasAngularSpeedY();
+        final var by4 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedY(by4);
 
         assertEquals(by2, by3);
@@ -1980,25 +1951,24 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testGetSetBiasAngularSpeedZ() throws LockedException {
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator();
+    void testGetSetBiasAngularSpeedZ() throws LockedException {
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator();
 
         // check default value
-        final AngularSpeed bz1 = calibrator.getBiasAngularSpeedZ();
+        final var bz1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(0.0, bz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bz1.getUnit());
 
         // set new value
-        final Matrix bg = generateBg();
-        final double biasZ = bg.getElementAtIndex(2);
-        final AngularSpeed bz2 = new AngularSpeed(biasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bg = generateBg();
+        final var biasZ = bg.getElementAtIndex(2);
+        final var bz2 = new AngularSpeed(biasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
 
         calibrator.setBiasZ(bz2);
 
         // check
-        final AngularSpeed bz3 = calibrator.getBiasAngularSpeedZ();
-        final AngularSpeed bz4 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bz3 = calibrator.getBiasAngularSpeedZ();
+        final var bz4 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(bz4);
 
         assertEquals(bz2, bz3);
@@ -2006,9 +1976,8 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testSetBiasCoordinates1() throws LockedException {
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator();
+    void testSetBiasCoordinates1() throws LockedException {
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
@@ -2016,10 +1985,10 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
 
         // set new value
-        final Matrix bg = generateBg();
-        final double biasX = bg.getElementAtIndex(0);
-        final double biasY = bg.getElementAtIndex(1);
-        final double biasZ = bg.getElementAtIndex(2);
+        final var bg = generateBg();
+        final var biasX = bg.getElementAtIndex(0);
+        final var biasY = bg.getElementAtIndex(1);
+        final var biasZ = bg.getElementAtIndex(2);
 
         calibrator.setBiasCoordinates(biasX, biasY, biasZ);
 
@@ -2030,9 +1999,8 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testSetBiasCoordinates2() throws LockedException {
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator();
+    void testSetBiasCoordinates2() throws LockedException {
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
@@ -2040,14 +2008,14 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
 
         // set new value
-        final Matrix bg = generateBg();
-        final double biasX = bg.getElementAtIndex(0);
-        final double biasY = bg.getElementAtIndex(1);
-        final double biasZ = bg.getElementAtIndex(2);
+        final var bg = generateBg();
+        final var biasX = bg.getElementAtIndex(0);
+        final var biasY = bg.getElementAtIndex(1);
+        final var biasZ = bg.getElementAtIndex(2);
 
-        final AngularSpeed bx = new AngularSpeed(biasX, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed by = new AngularSpeed(biasY, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed bz = new AngularSpeed(biasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bx = new AngularSpeed(biasX, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var by = new AngularSpeed(biasY, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bz = new AngularSpeed(biasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
 
         calibrator.setBiasCoordinates(bx, by, bz);
 
@@ -2058,23 +2026,22 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testGetSetBias() throws LockedException {
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator();
+    void testGetSetBias() throws LockedException {
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator();
 
         // check default value
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(new double[3], bias1, 0.0);
 
         // set new value
-        final Matrix bg = generateBg();
-        final double[] bias2 = bg.getBuffer();
+        final var bg = generateBg();
+        final var bias2 = bg.getBuffer();
 
         calibrator.setBias(bias2);
 
         // check
-        final double[] bias3 = calibrator.getBias();
-        final double[] bias4 = new double[3];
+        final var bias3 = calibrator.getBias();
+        final var bias4 = new double[3];
         calibrator.getBias(bias4);
 
         assertArrayEquals(bias2, bias3, 0.0);
@@ -2086,22 +2053,21 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testGetSetBiasAsMatrix() throws WrongSizeException, LockedException {
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator();
+    void testGetSetBiasAsMatrix() throws WrongSizeException, LockedException {
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator();
 
         // check default value
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(new Matrix(3, 1), bg1);
 
         // set new value
-        final Matrix bg2 = generateBg();
+        final var bg2 = generateBg();
 
         calibrator.setBias(bg2);
 
         // check
-        final Matrix bg3 = calibrator.getBiasAsMatrix();
-        final Matrix bg4 = new Matrix(3, 1);
+        final var bg3 = calibrator.getBiasAsMatrix();
+        final var bg4 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg4);
 
         assertEquals(bg2, bg3);
@@ -2119,27 +2085,26 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testGetSetBiasAsTriad() throws LockedException {
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator();
+    void testGetSetBiasAsTriad() throws LockedException {
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator();
 
         // check default values
-        final AngularSpeedTriad triad1 = calibrator.getBiasAsTriad();
+        final var triad1 = calibrator.getBiasAsTriad();
         assertEquals(0.0, triad1.getValueX(), 0.0);
         assertEquals(0.0, triad1.getValueY(), 0.0);
         assertEquals(0.0, triad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, triad1.getUnit());
 
         // set new value
-        final Matrix bg = generateBg();
-        final AngularSpeedTriad triad2 = new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bg = generateBg();
+        final var triad2 = new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND);
         triad2.setValueCoordinates(bg);
 
         calibrator.setBias(triad2);
 
         // check
-        final AngularSpeedTriad triad3 = calibrator.getBiasAsTriad();
-        final AngularSpeedTriad triad4 = new AngularSpeedTriad();
+        final var triad3 = calibrator.getBiasAsTriad();
+        final var triad4 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(triad4);
 
         assertEquals(triad2, triad3);
@@ -2147,85 +2112,84 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testCalibrateMultipleOrientationsForGeneralCaseWithMinimumMeasuresAndNoNoise()
-            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException, LockedException,
+    void testCalibrateMultipleOrientationsForGeneralCaseWithMinimumMeasuresAndNoNoise() throws WrongSizeException,
+            InvalidSourceAndDestinationFrameTypeException, LockedException,
             NotReadyException, CalibrationException {
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMaGeneral();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMaGeneral();
+        final var mg = generateMg();
+        final var gg = generateGg();
 
         // when using minimum number of measurements we must not add any noise so that
         // a solution is found. When adding more measurements, certain noise can be added
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
-                accelQuantLevel, gyroQuantLevel);
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
+        
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-        final Random random = new Random();
-        final UniformRandomizer randomizer = new UniformRandomizer(random);
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+        final var random = new Random();
+        final var measurements = new ArrayList<FrameBodyKinematics>();
+        for (var i = 0; i < KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS; i++) {
 
-        final List<FrameBodyKinematics> measurements = new ArrayList<>();
-        for (int i = 0; i < KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS; i++) {
-
-            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+            final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME, 
                     FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-            final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+            final var nedFrame = new NEDFrame(nedPosition, nedC);
+            final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
             // compute ground-truth kinematics that should be generated at provided
             // position, velocity and orientation
-            final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
-                    TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
+            final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, 
+                    ecefFrame, ecefFrame);
 
             // apply known calibration parameters to distort ground-truth and generate a
             // measured kinematics sample
-            final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+            final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
                     trueKinematics, errors, random);
 
-            final FrameBodyKinematics measurement = new FrameBodyKinematics(measuredKinematics, ecefFrame, ecefFrame,
+            final var measurement = new FrameBodyKinematics(measuredKinematics, ecefFrame, ecefFrame,
                     TIME_INTERVAL_SECONDS);
             measurements.add(measurement);
         }
 
-        final double biasX = bg.getElementAtIndex(0);
-        final double biasY = bg.getElementAtIndex(1);
-        final double biasZ = bg.getElementAtIndex(2);
+        final var biasX = bg.getElementAtIndex(0);
+        final var biasY = bg.getElementAtIndex(1);
+        final var biasZ = bg.getElementAtIndex(2);
 
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(measurements, biasX, biasY, biasZ,
-                        false, this);
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(measurements, 
+                biasX, biasY, biasZ, false, this);
 
         // estimate
         reset();
         assertTrue(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(0, mCalibrateStart);
-        assertEquals(0, mCalibrateEnd);
+        assertEquals(0, calibrateStart);
+        assertEquals(0, calibrateEnd);
 
         calibrator.calibrate();
 
         // check
         assertTrue(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(1, mCalibrateStart);
-        assertEquals(1, mCalibrateEnd);
+        assertEquals(1, calibrateStart);
+        assertEquals(1, calibrateEnd);
 
-        final Matrix estimatedMg = calibrator.getEstimatedMg();
-        final Matrix estimatedGg = calibrator.getEstimatedGg();
+        final var estimatedMg = calibrator.getEstimatedMg();
+        final var estimatedGg = calibrator.getEstimatedGg();
 
         assertTrue(mg.equals(estimatedMg, ABSOLUTE_ERROR));
         assertTrue(gg.equals(estimatedGg, ABSOLUTE_ERROR));
@@ -2234,88 +2198,85 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testCalibrateMultipleOrientationsForGeneralCaseWithNoiseLargeNumberOfMeasurements()
-            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException, LockedException,
-            NotReadyException, CalibrationException {
+    void testCalibrateMultipleOrientationsForGeneralCaseWithNoiseLargeNumberOfMeasurements() throws WrongSizeException,
+            InvalidSourceAndDestinationFrameTypeException, LockedException, NotReadyException, CalibrationException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Matrix ba = generateBa();
-            final Matrix bg = generateBg();
-            final Matrix ma = generateMaGeneral();
-            final Matrix mg = generateMg();
-            final Matrix gg = generateGg();
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var ba = generateBa();
+            final var bg = generateBg();
+            final var ma = generateMaGeneral();
+            final var mg = generateMg();
+            final var gg = generateGg();
 
             // when using minimum number of measurements we must not add any noise so that
             // a solution is found. When adding more measurements, certain noise can be added
-            final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-            final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-            final double accelQuantLevel = 0.0;
-            final double gyroQuantLevel = 0.0;
+            final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+            final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+            final var accelQuantLevel = 0.0;
+            final var gyroQuantLevel = 0.0;
 
-            final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
-                    accelQuantLevel, gyroQuantLevel);
+            final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel, 
+                    gyroQuantLevel);
+            
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+            final var random = new Random();
+            final var measurements = new ArrayList<FrameBodyKinematics>();
+            for (var i = 0; i < LARGE_MEASUREMENT_NUMBER; i++) {
 
-            final List<FrameBodyKinematics> measurements = new ArrayList<>();
-            for (int i = 0; i < LARGE_MEASUREMENT_NUMBER; i++) {
+                final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME, 
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw,
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
-
-                final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+                final var nedFrame = new NEDFrame(nedPosition, nedC);
+                final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
                 // compute ground-truth kinematics that should be generated at provided
                 // position, velocity and orientation
-                final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
-                        TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
+                final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS,
+                        ecefFrame, ecefFrame);
 
                 // apply known calibration parameters to distort ground-truth and generate a
                 // measured kinematics sample
-                final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                        trueKinematics, errors, random);
+                final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics,
+                        errors, random);
 
-                final FrameBodyKinematics measurement = new FrameBodyKinematics(measuredKinematics, ecefFrame,
-                        ecefFrame, TIME_INTERVAL_SECONDS);
+                final var measurement = new FrameBodyKinematics(measuredKinematics, ecefFrame, ecefFrame,
+                        TIME_INTERVAL_SECONDS);
                 measurements.add(measurement);
             }
 
-            final double biasX = bg.getElementAtIndex(0);
-            final double biasY = bg.getElementAtIndex(1);
-            final double biasZ = bg.getElementAtIndex(2);
+            final var biasX = bg.getElementAtIndex(0);
+            final var biasY = bg.getElementAtIndex(1);
+            final var biasZ = bg.getElementAtIndex(2);
 
-            final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                    new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(measurements, biasX, biasY, biasZ,
-                            false, this);
+            final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(measurements,
+                    biasX, biasY, biasZ, false, this);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
 
-            final Matrix estimatedMg = calibrator.getEstimatedMg();
-            final Matrix estimatedGg = calibrator.getEstimatedGg();
+            final var estimatedMg = calibrator.getEstimatedMg();
+            final var estimatedGg = calibrator.getEstimatedGg();
 
             if (!mg.equals(estimatedMg, VERY_LARGE_ABSOLUTE_ERROR)) {
                 continue;
@@ -2336,77 +2297,74 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testCalibrateMultiplePositionsForGeneralCaseWithMinimumMeasuresAndNoNoise() throws WrongSizeException,
+    void testCalibrateMultiplePositionsForGeneralCaseWithMinimumMeasuresAndNoNoise() throws WrongSizeException,
             InvalidSourceAndDestinationFrameTypeException, LockedException, NotReadyException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Matrix ba = generateBa();
-            final Matrix bg = generateBg();
-            final Matrix ma = generateMaGeneral();
-            final Matrix mg = generateMg();
-            final Matrix gg = generateGg();
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var ba = generateBa();
+            final var bg = generateBg();
+            final var ma = generateMaGeneral();
+            final var mg = generateMg();
+            final var gg = generateGg();
 
             // when using minimum number of measurements we must not add any noise so that
             // a solution is found. When adding more measurements, certain noise can be added
-            final double accelNoiseRootPSD = 0.0;
-            final double gyroNoiseRootPSD = 0.0;
-            final double accelQuantLevel = 0.0;
-            final double gyroQuantLevel = 0.0;
+            final var accelNoiseRootPSD = 0.0;
+            final var gyroNoiseRootPSD = 0.0;
+            final var accelQuantLevel = 0.0;
+            final var gyroQuantLevel = 0.0;
 
-            final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
-                    accelQuantLevel, gyroQuantLevel);
+            final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                    gyroQuantLevel);
 
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double roll = 0.0;
-            final double pitch = 0.0;
-            final double yaw = 0.0;
-            final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+            final var randomizer = new UniformRandomizer();
+            final var roll = 0.0;
+            final var pitch = 0.0;
+            final var yaw = 0.0;
+            final var nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
                     FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final List<FrameBodyKinematics> measurements = new ArrayList<>();
-            for (int i = 0; i < KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS; i++) {
+            final var random = new Random();
+            final var measurements = new ArrayList<FrameBodyKinematics>();
+            for (var i = 0; i < KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS; i++) {
 
-                final double latitude = Math.toRadians(
-                        randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-                final double longitude = Math.toRadians(
-                        randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-                final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-                final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+                final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+                final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+                final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+                final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-                final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+                final var nedFrame = new NEDFrame(nedPosition, nedC);
+                final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
                 // compute ground-truth kinematics that should be generated at provided
                 // position, velocity and orientation
-                final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
                         TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
                 // apply known calibration parameters to distort ground-truth and generate a
                 // measured kinematics sample
-                final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                        trueKinematics, errors, random);
+                final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics,
+                        errors, random);
 
-                final FrameBodyKinematics measurement = new FrameBodyKinematics(measuredKinematics, ecefFrame,
-                        ecefFrame, TIME_INTERVAL_SECONDS);
+                final var measurement = new FrameBodyKinematics(measuredKinematics, ecefFrame, ecefFrame,
+                        TIME_INTERVAL_SECONDS);
                 measurements.add(measurement);
             }
 
-            final double biasX = bg.getElementAtIndex(0);
-            final double biasY = bg.getElementAtIndex(1);
-            final double biasZ = bg.getElementAtIndex(2);
+            final var biasX = bg.getElementAtIndex(0);
+            final var biasY = bg.getElementAtIndex(1);
+            final var biasZ = bg.getElementAtIndex(2);
 
-            final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                    new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(measurements, biasX, biasY, biasZ,
-                            false, this);
+            final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(measurements,
+                    biasX, biasY, biasZ, false, this);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
 
             try {
                 calibrator.calibrate();
@@ -2417,11 +2375,11 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
 
-            final Matrix estimatedMg = calibrator.getEstimatedMg();
-            final Matrix estimatedGg = calibrator.getEstimatedGg();
+            final var estimatedMg = calibrator.getEstimatedMg();
+            final var estimatedGg = calibrator.getEstimatedGg();
 
             if (!mg.equals(estimatedMg, LARGE_ABSOLUTE_ERROR)) {
                 continue;
@@ -2442,85 +2400,83 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testCalibrateMultipleOrientationsForCommonAxisCaseWithMinimumMeasuresAndNoNoise()
-            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException, LockedException,
-            NotReadyException, CalibrationException {
+    void testCalibrateMultipleOrientationsForCommonAxisCaseWithMinimumMeasuresAndNoNoise() throws WrongSizeException,
+            InvalidSourceAndDestinationFrameTypeException, LockedException, NotReadyException, CalibrationException {
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMaCommonAxis();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMaCommonAxis();
+        final var mg = generateMg();
+        final var gg = generateGg();
 
         // when using minimum number of measurements we must not add any noise so that
         // a solution is found. When adding more measurements, certain noise can be added
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final Random random = new Random();
-        final UniformRandomizer randomizer = new UniformRandomizer(random);
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-        final List<FrameBodyKinematics> measurements = new ArrayList<>();
-        for (int i = 0; i < KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS; i++) {
+        final var random = new Random();
+        final var measurements = new ArrayList<FrameBodyKinematics>();
+        for (var i = 0; i < KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS; i++) {
 
-            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+            final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
                     FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-            final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+            final var nedFrame = new NEDFrame(nedPosition, nedC);
+            final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
             // compute ground-truth kinematics that should be generated at provided
             // position, velocity and orientation
-            final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
-                    TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
+            final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS,
+                    ecefFrame, ecefFrame);
 
             // apply known calibration parameters to distort ground-truth and generate a
             // measured kinematics sample
-            final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                    trueKinematics, errors, random);
+            final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics,
+                    errors, random);
 
-            final FrameBodyKinematics measurement = new FrameBodyKinematics(measuredKinematics, ecefFrame, ecefFrame,
+            final var measurement = new FrameBodyKinematics(measuredKinematics, ecefFrame, ecefFrame,
                     TIME_INTERVAL_SECONDS);
             measurements.add(measurement);
         }
 
-        final double biasX = bg.getElementAtIndex(0);
-        final double biasY = bg.getElementAtIndex(1);
-        final double biasZ = bg.getElementAtIndex(2);
+        final var biasX = bg.getElementAtIndex(0);
+        final var biasY = bg.getElementAtIndex(1);
+        final var biasZ = bg.getElementAtIndex(2);
 
-        final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(measurements, biasX, biasY, biasZ,
-                        true, this);
+        final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(measurements,
+                biasX, biasY, biasZ, true, this);
 
         // estimate
         reset();
         assertTrue(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(0, mCalibrateStart);
-        assertEquals(0, mCalibrateEnd);
+        assertEquals(0, calibrateStart);
+        assertEquals(0, calibrateEnd);
 
         calibrator.calibrate();
 
         // check
         assertTrue(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(1, mCalibrateStart);
-        assertEquals(1, mCalibrateEnd);
+        assertEquals(1, calibrateStart);
+        assertEquals(1, calibrateEnd);
 
-        final Matrix estimatedMg = calibrator.getEstimatedMg();
-        final Matrix estimatedGg = calibrator.getEstimatedGg();
+        final var estimatedMg = calibrator.getEstimatedMg();
+        final var estimatedGg = calibrator.getEstimatedGg();
 
         assertTrue(mg.equals(estimatedMg, ABSOLUTE_ERROR));
         assertTrue(gg.equals(estimatedGg, ABSOLUTE_ERROR));
@@ -2529,88 +2485,86 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testCalibrateMultipleOrientationsForCommonAxisCaseWithNoiseLargeNumberOfMeasurements()
+    void testCalibrateMultipleOrientationsForCommonAxisCaseWithNoiseLargeNumberOfMeasurements()
             throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException, LockedException,
             NotReadyException, CalibrationException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Matrix ba = generateBa();
-            final Matrix bg = generateBg();
-            final Matrix ma = generateMaCommonAxis();
-            final Matrix mg = generateMg();
-            final Matrix gg = generateGg();
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var ba = generateBa();
+            final var bg = generateBg();
+            final var ma = generateMaCommonAxis();
+            final var mg = generateMg();
+            final var gg = generateGg();
 
             // when using minimum number of measurements we must not add any noise so that
             // a solution is found. When adding more measurements, certain noise can be added
-            final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-            final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-            final double accelQuantLevel = 0.0;
-            final double gyroQuantLevel = 0.0;
+            final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+            final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+            final var accelQuantLevel = 0.0;
+            final var gyroQuantLevel = 0.0;
 
-            final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
-                    accelQuantLevel, gyroQuantLevel);
+            final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                    gyroQuantLevel);
 
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final List<FrameBodyKinematics> measurements = new ArrayList<>();
-            for (int i = 0; i < LARGE_MEASUREMENT_NUMBER; i++) {
+            final var random = new Random();
+            final var measurements = new ArrayList<FrameBodyKinematics>();
+            for (var i = 0; i < LARGE_MEASUREMENT_NUMBER; i++) {
 
-                final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw,
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+                final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+                final var nedFrame = new NEDFrame(nedPosition, nedC);
+                final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
                 // compute ground-truth kinematics that should be generated at provided
                 // position, velocity and orientation
-                final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
                         TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
                 // apply known calibration parameters to distort ground-truth and generate a
                 // measured kinematics sample
-                final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                        trueKinematics, errors, random);
+                final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics,
+                        errors, random);
 
-                final FrameBodyKinematics measurement = new FrameBodyKinematics(measuredKinematics, ecefFrame,
-                        ecefFrame, TIME_INTERVAL_SECONDS);
+                final var measurement = new FrameBodyKinematics(measuredKinematics, ecefFrame, ecefFrame,
+                        TIME_INTERVAL_SECONDS);
                 measurements.add(measurement);
             }
 
-            final double biasX = bg.getElementAtIndex(0);
-            final double biasY = bg.getElementAtIndex(1);
-            final double biasZ = bg.getElementAtIndex(2);
+            final var biasX = bg.getElementAtIndex(0);
+            final var biasY = bg.getElementAtIndex(1);
+            final var biasZ = bg.getElementAtIndex(2);
 
-            final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                    new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(measurements, biasX, biasY, biasZ,
-                            true, this);
+            final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(measurements,
+                    biasX, biasY, biasZ, true, this);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
 
-            final Matrix estimatedMg = calibrator.getEstimatedMg();
-            final Matrix estimatedGg = calibrator.getEstimatedGg();
+            final var estimatedMg = calibrator.getEstimatedMg();
+            final var estimatedGg = calibrator.getEstimatedGg();
 
             if (!mg.equals(estimatedMg, VERY_LARGE_ABSOLUTE_ERROR)) {
                 continue;
@@ -2631,87 +2585,85 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testCalibrateMultiplePositionsForCommonAxisCaseWithMinimumMeasuresAndNoNoise()
-            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException, LockedException,
-            NotReadyException, CalibrationException {
+    void testCalibrateMultiplePositionsForCommonAxisCaseWithMinimumMeasuresAndNoNoise() throws WrongSizeException,
+            InvalidSourceAndDestinationFrameTypeException, LockedException, NotReadyException, CalibrationException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Matrix ba = generateBa();
-            final Matrix bg = generateBg();
-            final Matrix ma = generateMaCommonAxis();
-            final Matrix mg = generateMg();
-            final Matrix gg = generateGg();
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var ba = generateBa();
+            final var bg = generateBg();
+            final var ma = generateMaCommonAxis();
+            final var mg = generateMg();
+            final var gg = generateGg();
 
             // when using minimum number of measurements we must not add any noise so that
             // a solution is found. When adding more measurements, certain noise can be added
-            final double accelNoiseRootPSD = 0.0;
-            final double gyroNoiseRootPSD = 0.0;
-            final double accelQuantLevel = 0.0;
-            final double gyroQuantLevel = 0.0;
+            final var accelNoiseRootPSD = 0.0;
+            final var gyroNoiseRootPSD = 0.0;
+            final var accelQuantLevel = 0.0;
+            final var gyroQuantLevel = 0.0;
 
-            final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
-                    accelQuantLevel, gyroQuantLevel);
+            final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                    gyroQuantLevel);
 
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double roll = 0.0;
-            final double pitch = 0.0;
-            final double yaw = 0.0;
-            final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+            final var randomizer = new UniformRandomizer();
+            final var roll = 0.0;
+            final var pitch = 0.0;
+            final var yaw = 0.0;
+            final var nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
                     FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final List<FrameBodyKinematics> measurements = new ArrayList<>();
-            for (int i = 0; i < KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS; i++) {
+            final var random = new Random();
+            final var measurements = new ArrayList<FrameBodyKinematics>();
+            for (var i = 0; i < KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS; i++) {
 
-                final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-                final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-                final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-                final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+                final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+                final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+                final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+                final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-                final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+                final var nedFrame = new NEDFrame(nedPosition, nedC);
+                final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
                 // compute ground-truth kinematics that should be generated at provided
                 // position, velocity and orientation
-                final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
                         TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
                 // apply known calibration parameters to distort ground-truth and generate a
                 // measured kinematics sample
-                final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                        trueKinematics, errors, random);
+                final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics,
+                        errors, random);
 
-                final FrameBodyKinematics measurement = new FrameBodyKinematics(measuredKinematics, ecefFrame,
-                        ecefFrame, TIME_INTERVAL_SECONDS);
+                final var measurement = new FrameBodyKinematics(measuredKinematics, ecefFrame, ecefFrame,
+                        TIME_INTERVAL_SECONDS);
                 measurements.add(measurement);
             }
 
-            final double biasX = bg.getElementAtIndex(0);
-            final double biasY = bg.getElementAtIndex(1);
-            final double biasZ = bg.getElementAtIndex(2);
+            final var biasX = bg.getElementAtIndex(0);
+            final var biasY = bg.getElementAtIndex(1);
+            final var biasZ = bg.getElementAtIndex(2);
 
-            final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                    new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(measurements, biasX, biasY, biasZ,
-                            true, this);
+            final var calibrator = new KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(measurements,
+                    biasX, biasY, biasZ, true, this);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
 
-            final Matrix estimatedMg = calibrator.getEstimatedMg();
-            final Matrix estimatedGg = calibrator.getEstimatedGg();
+            final var estimatedMg = calibrator.getEstimatedMg();
+            final var estimatedGg = calibrator.getEstimatedGg();
 
             if (!mg.equals(estimatedMg, LARGE_ABSOLUTE_ERROR)) {
                 continue;
@@ -2734,18 +2686,18 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     @Override
     public void onCalibrateStart(final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator) {
         checkLocked(calibrator);
-        mCalibrateStart++;
+        calibrateStart++;
     }
 
     @Override
     public void onCalibrateEnd(final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator) {
         checkLocked(calibrator);
-        mCalibrateEnd++;
+        calibrateEnd++;
     }
 
     private void reset() {
-        mCalibrateStart = 0;
-        mCalibrateEnd = 0;
+        calibrateStart = 0;
+        calibrateEnd = 0;
     }
 
     private static void checkLocked(final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator calibrator) {
@@ -2798,7 +2750,7 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     private static Matrix generateMaGeneral() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
+        final var result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 500e-6, -300e-6, 200e-6,
                 -150e-6, -600e-6, 250e-6,
@@ -2809,7 +2761,7 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     private static Matrix generateMaCommonAxis() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
+        final var result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 500e-6, -300e-6, 200e-6,
                 0.0, -600e-6, 250e-6,
@@ -2820,7 +2772,7 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     private static Matrix generateMg() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
+        final var result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 400e-6, -300e-6, 250e-6,
                 0.0, -300e-6, -150e-6,
@@ -2831,8 +2783,8 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorTest implemen
     }
 
     private static Matrix generateGg() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
-        final double tmp = DEG_TO_RAD / (3600 * 9.80665);
+        final var result = new Matrix(3, 3);
+        final var tmp = DEG_TO_RAD / (3600 * 9.80665);
         result.fromArray(new double[]{
                 0.9 * tmp, -1.1 * tmp, -0.6 * tmp,
                 -0.5 * tmp, 1.9 * tmp, -1.6 * tmp,

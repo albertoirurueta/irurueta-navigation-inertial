@@ -25,7 +25,6 @@ import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
 import com.irurueta.navigation.inertial.calibration.BodyMagneticFluxDensityGenerator;
 import com.irurueta.navigation.inertial.calibration.MagneticFluxDensityTriad;
 import com.irurueta.navigation.inertial.estimators.BodyMagneticFluxDensityEstimator;
-import com.irurueta.navigation.inertial.wmm.NEDMagneticFluxDensity;
 import com.irurueta.navigation.inertial.wmm.WMMEarthMagneticFluxDensityEstimator;
 import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.statistics.UniformRandomizer;
@@ -33,18 +32,16 @@ import com.irurueta.units.MagneticFluxDensity;
 import com.irurueta.units.MagneticFluxDensityUnit;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeUnit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
-import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
+class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements 
         WindowedMagneticFluxDensityTriadNoiseEstimatorListener {
 
     private static final double MIN_HARD_IRON = -1e-5;
@@ -83,25 +80,24 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
         END_TIMESTAMP_MILLIS = END_CALENDAR.getTimeInMillis();
     }
 
-    private int mStart;
-    private int mTriadAdded;
-    private int mWindowFilled;
-    private int mReset;
+    private int start;
+    private int triadAdded;
+    private int windowFilled;
+    private int reset;
 
     @Test
-    public void testConstructor1() {
-        final WindowedMagneticFluxDensityTriadNoiseEstimator estimator =
-                new WindowedMagneticFluxDensityTriadNoiseEstimator();
+    void testConstructor1() {
+        final var estimator = new WindowedMagneticFluxDensityTriadNoiseEstimator();
 
         // check default values
         assertEquals(WindowedMagneticFluxDensityTriadNoiseEstimator.DEFAULT_WINDOW_SIZE, estimator.getWindowSize());
         assertEquals(WindowedMagneticFluxDensityTriadNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
                 estimator.getTimeInterval(), 0.0);
-        final Time time1 = estimator.getTimeIntervalAsTime();
+        final var time1 = estimator.getTimeIntervalAsTime();
         assertEquals(WindowedMagneticFluxDensityTriadNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
                 time1.getValue().doubleValue(), 0.0);
         assertEquals(TimeUnit.SECOND, time1.getUnit());
-        final Time time2 = new Time(0.0, TimeUnit.HOUR);
+        final var time2 = new Time(0.0, TimeUnit.HOUR);
         estimator.getTimeIntervalAsTime(time2);
         assertEquals(time1, time2);
         assertNull(estimator.getListener());
@@ -110,85 +106,85 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
         assertNull(estimator.getLastWindowedTriad());
         assertFalse(estimator.getLastWindowedTriad(null));
         assertEquals(0.0, estimator.getAvgX(), 0.0);
-        final MagneticFluxDensity avgX1 = estimator.getAvgXAsMeasurement();
+        final var avgX1 = estimator.getAvgXAsMeasurement();
         assertEquals(0.0, avgX1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, avgX1.getUnit());
-        final MagneticFluxDensity avgX2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var avgX2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getAvgXAsMeasurement(avgX2);
         assertEquals(avgX1, avgX2);
         assertEquals(0.0, estimator.getAvgY(), 0.0);
-        final MagneticFluxDensity avgY1 = estimator.getAvgYAsMeasurement();
+        final var avgY1 = estimator.getAvgYAsMeasurement();
         assertEquals(0.0, avgY1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, avgY1.getUnit());
-        final MagneticFluxDensity avgY2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var avgY2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getAvgYAsMeasurement(avgY2);
         assertEquals(avgY1, avgY2);
         assertEquals(0.0, estimator.getAvgZ(), 0.0);
-        final MagneticFluxDensity avgZ1 = estimator.getAvgZAsMeasurement();
+        final var avgZ1 = estimator.getAvgZAsMeasurement();
         assertEquals(0.0, avgZ1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, avgZ1.getUnit());
-        final MagneticFluxDensity avgZ2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var avgZ2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getAvgZAsMeasurement(avgZ2);
         assertEquals(avgZ1, avgZ2);
-        final MagneticFluxDensityTriad triad1 = estimator.getAvgTriad();
+        final var triad1 = estimator.getAvgTriad();
         assertEquals(0.0, triad1.getValueX(), 0.0);
         assertEquals(0.0, triad1.getValueY(), 0.0);
         assertEquals(0.0, triad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, triad1.getUnit());
-        final MagneticFluxDensityTriad triad2 = new MagneticFluxDensityTriad();
+        final var triad2 = new MagneticFluxDensityTriad();
         estimator.getAvgTriad(triad2);
         assertEquals(triad1, triad2);
         assertEquals(0.0, estimator.getAvgNorm(), 0.0);
-        final MagneticFluxDensity norm1 = estimator.getAvgNormAsMeasurement();
+        final var norm1 = estimator.getAvgNormAsMeasurement();
         assertEquals(0.0, norm1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, norm1.getUnit());
-        final MagneticFluxDensity norm2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var norm2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getAvgNormAsMeasurement(norm2);
         assertEquals(norm1, norm2);
         assertEquals(0.0, estimator.getVarianceX(), 0.0);
         assertEquals(0.0, estimator.getVarianceY(), 0.0);
         assertEquals(0.0, estimator.getVarianceZ(), 0.0);
         assertEquals(0.0, estimator.getStandardDeviationX(), 0.0);
-        final MagneticFluxDensity stdX1 = estimator.getStandardDeviationXAsMeasurement();
+        final var stdX1 = estimator.getStandardDeviationXAsMeasurement();
         assertEquals(0.0, stdX1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, stdX1.getUnit());
-        final MagneticFluxDensity stdX2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var stdX2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getStandardDeviationXAsMeasurement(stdX2);
         assertEquals(stdX1, stdX2);
         assertEquals(0.0, estimator.getStandardDeviationY(), 0.0);
-        final MagneticFluxDensity stdY1 = estimator.getStandardDeviationYAsMeasurement();
+        final var stdY1 = estimator.getStandardDeviationYAsMeasurement();
         assertEquals(0.0, stdY1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, stdY1.getUnit());
-        final MagneticFluxDensity stdY2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var stdY2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getStandardDeviationYAsMeasurement(stdY2);
         assertEquals(stdY1, stdY2);
         assertEquals(0.0, estimator.getStandardDeviationZ(), 0.0);
-        final MagneticFluxDensity stdZ1 = estimator.getStandardDeviationZAsMeasurement();
+        final var stdZ1 = estimator.getStandardDeviationZAsMeasurement();
         assertEquals(0.0, stdZ1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, stdZ1.getUnit());
-        final MagneticFluxDensity stdZ2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var stdZ2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getStandardDeviationZAsMeasurement(stdZ2);
         assertEquals(stdZ1, stdZ2);
-        final MagneticFluxDensityTriad stdTriad1 = estimator.getStandardDeviationTriad();
+        final var stdTriad1 = estimator.getStandardDeviationTriad();
         assertEquals(0.0, stdTriad1.getValueX(), 0.0);
         assertEquals(0.0, stdTriad1.getValueY(), 0.0);
         assertEquals(0.0, stdTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, stdTriad1.getUnit());
-        final MagneticFluxDensityTriad stdTriad2 = new MagneticFluxDensityTriad();
+        final var stdTriad2 = new MagneticFluxDensityTriad();
         estimator.getStandardDeviationTriad(stdTriad2);
         assertEquals(stdTriad1, stdTriad2);
         assertEquals(0.0, estimator.getStandardDeviationNorm(), 0.0);
-        final MagneticFluxDensity stdNorm1 = estimator.getStandardDeviationNormAsMeasurement();
+        final var stdNorm1 = estimator.getStandardDeviationNormAsMeasurement();
         assertEquals(0.0, stdNorm1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, stdNorm1.getUnit());
-        final MagneticFluxDensity stdNorm2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var stdNorm2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getStandardDeviationNormAsMeasurement(stdNorm2);
         assertEquals(stdNorm1, stdNorm2);
         assertEquals(0.0, estimator.getAverageStandardDeviation(), 0.0);
-        final MagneticFluxDensity avgStd1 = estimator.getAverageStandardDeviationAsMeasurement();
+        final var avgStd1 = estimator.getAverageStandardDeviationAsMeasurement();
         assertEquals(0.0, avgStd1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, avgStd1.getUnit());
-        final MagneticFluxDensity avgStd2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var avgStd2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getAverageStandardDeviationAsMeasurement(avgStd2);
         assertEquals(avgStd1, avgStd2);
         assertEquals(0.0, estimator.getPsdX(), 0.0);
@@ -206,19 +202,18 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
     }
 
     @Test
-    public void testConstructor2() {
-        final WindowedMagneticFluxDensityTriadNoiseEstimator estimator =
-                new WindowedMagneticFluxDensityTriadNoiseEstimator(this);
+    void testConstructor2() {
+        final var estimator = new WindowedMagneticFluxDensityTriadNoiseEstimator(this);
 
         // check default values
         assertEquals(WindowedMagneticFluxDensityTriadNoiseEstimator.DEFAULT_WINDOW_SIZE, estimator.getWindowSize());
         assertEquals(WindowedMagneticFluxDensityTriadNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
                 estimator.getTimeInterval(), 0.0);
-        final Time time1 = estimator.getTimeIntervalAsTime();
+        final var time1 = estimator.getTimeIntervalAsTime();
         assertEquals(WindowedMagneticFluxDensityTriadNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
                 time1.getValue().doubleValue(), 0.0);
         assertEquals(TimeUnit.SECOND, time1.getUnit());
-        final Time time2 = new Time(0.0, TimeUnit.HOUR);
+        final var time2 = new Time(0.0, TimeUnit.HOUR);
         estimator.getTimeIntervalAsTime(time2);
         assertEquals(time1, time2);
         assertSame(this, estimator.getListener());
@@ -227,85 +222,85 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
         assertNull(estimator.getLastWindowedTriad());
         assertFalse(estimator.getLastWindowedTriad(null));
         assertEquals(0.0, estimator.getAvgX(), 0.0);
-        final MagneticFluxDensity avgX1 = estimator.getAvgXAsMeasurement();
+        final var avgX1 = estimator.getAvgXAsMeasurement();
         assertEquals(0.0, avgX1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, avgX1.getUnit());
-        final MagneticFluxDensity avgX2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var avgX2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getAvgXAsMeasurement(avgX2);
         assertEquals(avgX1, avgX2);
         assertEquals(0.0, estimator.getAvgY(), 0.0);
-        final MagneticFluxDensity avgY1 = estimator.getAvgYAsMeasurement();
+        final var avgY1 = estimator.getAvgYAsMeasurement();
         assertEquals(0.0, avgY1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, avgY1.getUnit());
-        final MagneticFluxDensity avgY2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var avgY2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getAvgYAsMeasurement(avgY2);
         assertEquals(avgY1, avgY2);
         assertEquals(0.0, estimator.getAvgZ(), 0.0);
-        final MagneticFluxDensity avgZ1 = estimator.getAvgZAsMeasurement();
+        final var avgZ1 = estimator.getAvgZAsMeasurement();
         assertEquals(0.0, avgZ1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, avgZ1.getUnit());
-        final MagneticFluxDensity avgZ2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var avgZ2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getAvgZAsMeasurement(avgZ2);
         assertEquals(avgZ1, avgZ2);
-        final MagneticFluxDensityTriad triad1 = estimator.getAvgTriad();
+        final var triad1 = estimator.getAvgTriad();
         assertEquals(0.0, triad1.getValueX(), 0.0);
         assertEquals(0.0, triad1.getValueY(), 0.0);
         assertEquals(0.0, triad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, triad1.getUnit());
-        final MagneticFluxDensityTriad triad2 = new MagneticFluxDensityTriad();
+        final var triad2 = new MagneticFluxDensityTriad();
         estimator.getAvgTriad(triad2);
         assertEquals(triad1, triad2);
         assertEquals(0.0, estimator.getAvgNorm(), 0.0);
-        final MagneticFluxDensity norm1 = estimator.getAvgNormAsMeasurement();
+        final var norm1 = estimator.getAvgNormAsMeasurement();
         assertEquals(0.0, norm1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, norm1.getUnit());
-        final MagneticFluxDensity norm2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var norm2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getAvgNormAsMeasurement(norm2);
         assertEquals(norm1, norm2);
         assertEquals(0.0, estimator.getVarianceX(), 0.0);
         assertEquals(0.0, estimator.getVarianceY(), 0.0);
         assertEquals(0.0, estimator.getVarianceZ(), 0.0);
         assertEquals(0.0, estimator.getStandardDeviationX(), 0.0);
-        final MagneticFluxDensity stdX1 = estimator.getStandardDeviationXAsMeasurement();
+        final var stdX1 = estimator.getStandardDeviationXAsMeasurement();
         assertEquals(0.0, stdX1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, stdX1.getUnit());
-        final MagneticFluxDensity stdX2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var stdX2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getStandardDeviationXAsMeasurement(stdX2);
         assertEquals(stdX1, stdX2);
         assertEquals(0.0, estimator.getStandardDeviationY(), 0.0);
-        final MagneticFluxDensity stdY1 = estimator.getStandardDeviationYAsMeasurement();
+        final var stdY1 = estimator.getStandardDeviationYAsMeasurement();
         assertEquals(0.0, stdY1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, stdY1.getUnit());
-        final MagneticFluxDensity stdY2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var stdY2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getStandardDeviationYAsMeasurement(stdY2);
         assertEquals(stdY1, stdY2);
         assertEquals(0.0, estimator.getStandardDeviationZ(), 0.0);
-        final MagneticFluxDensity stdZ1 = estimator.getStandardDeviationZAsMeasurement();
+        final var stdZ1 = estimator.getStandardDeviationZAsMeasurement();
         assertEquals(0.0, stdZ1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, stdZ1.getUnit());
-        final MagneticFluxDensity stdZ2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var stdZ2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getStandardDeviationZAsMeasurement(stdZ2);
         assertEquals(stdZ1, stdZ2);
-        final MagneticFluxDensityTriad stdTriad1 = estimator.getStandardDeviationTriad();
+        final var stdTriad1 = estimator.getStandardDeviationTriad();
         assertEquals(0.0, stdTriad1.getValueX(), 0.0);
         assertEquals(0.0, stdTriad1.getValueY(), 0.0);
         assertEquals(0.0, stdTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, stdTriad1.getUnit());
-        final MagneticFluxDensityTriad stdTriad2 = new MagneticFluxDensityTriad();
+        final var stdTriad2 = new MagneticFluxDensityTriad();
         estimator.getStandardDeviationTriad(stdTriad2);
         assertEquals(stdTriad1, stdTriad2);
         assertEquals(0.0, estimator.getStandardDeviationNorm(), 0.0);
-        final MagneticFluxDensity stdNorm1 = estimator.getStandardDeviationNormAsMeasurement();
+        final var stdNorm1 = estimator.getStandardDeviationNormAsMeasurement();
         assertEquals(0.0, stdNorm1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, stdNorm1.getUnit());
-        final MagneticFluxDensity stdNorm2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var stdNorm2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getStandardDeviationNormAsMeasurement(stdNorm2);
         assertEquals(stdNorm1, stdNorm2);
         assertEquals(0.0, estimator.getAverageStandardDeviation(), 0.0);
-        final MagneticFluxDensity avgStd1 = estimator.getAverageStandardDeviationAsMeasurement();
+        final var avgStd1 = estimator.getAverageStandardDeviationAsMeasurement();
         assertEquals(0.0, avgStd1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, avgStd1.getUnit());
-        final MagneticFluxDensity avgStd2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var avgStd2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getAverageStandardDeviationAsMeasurement(avgStd2);
         assertEquals(avgStd1, avgStd2);
         assertEquals(0.0, estimator.getPsdX(), 0.0);
@@ -323,14 +318,13 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
     }
 
     @Test
-    public void testGetSetWindowSize() throws LockedException {
-        final WindowedMagneticFluxDensityTriadNoiseEstimator estimator =
-                new WindowedMagneticFluxDensityTriadNoiseEstimator();
+    void testGetSetWindowSize() throws LockedException {
+        final var estimator = new WindowedMagneticFluxDensityTriadNoiseEstimator();
 
         // check default value
         assertEquals(WindowedMagneticFluxDensityTriadNoiseEstimator.DEFAULT_WINDOW_SIZE, estimator.getWindowSize());
 
-        // set new value
+        // set a new value
         estimator.setWindowSize(3);
 
         // check
@@ -342,15 +336,14 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
     }
 
     @Test
-    public void testGetSetTimeInterval() throws LockedException {
-        final WindowedMagneticFluxDensityTriadNoiseEstimator estimator =
-                new WindowedMagneticFluxDensityTriadNoiseEstimator();
+    void testGetSetTimeInterval() throws LockedException {
+        final var estimator = new WindowedMagneticFluxDensityTriadNoiseEstimator();
 
         // check default value
         assertEquals(WindowedMagneticFluxDensityTriadNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
                 estimator.getTimeInterval(), 0.0);
 
-        // set new value
+        // set a new value
         estimator.setTimeInterval(1.0);
 
         // check
@@ -361,23 +354,22 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
     }
 
     @Test
-    public void testGetSetTimeIntervalAsTime() throws LockedException {
-        final WindowedMagneticFluxDensityTriadNoiseEstimator estimator =
-                new WindowedMagneticFluxDensityTriadNoiseEstimator();
+    void testGetSetTimeIntervalAsTime() throws LockedException {
+        final var estimator = new WindowedMagneticFluxDensityTriadNoiseEstimator();
 
         // check default value
-        final Time time1 = estimator.getTimeIntervalAsTime();
+        final var time1 = estimator.getTimeIntervalAsTime();
         assertEquals(WindowedMagneticFluxDensityTriadNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
                 time1.getValue().doubleValue(), 0.0);
         assertEquals(TimeUnit.SECOND, time1.getUnit());
 
-        // set new value
-        final Time time2 = new Time(500, TimeUnit.MILLISECOND);
+        // set a new value
+        final var time2 = new Time(500, TimeUnit.MILLISECOND);
         estimator.setTimeInterval(time2);
 
         // check
-        final Time time3 = estimator.getTimeIntervalAsTime();
-        final Time time4 = new Time(0.0, TimeUnit.SECOND);
+        final var time3 = estimator.getTimeIntervalAsTime();
+        final var time4 = new Time(0.0, TimeUnit.SECOND);
         estimator.getTimeIntervalAsTime(time4);
 
         assertTrue(time2.equals(time3, ABSOLUTE_ERROR));
@@ -385,14 +377,13 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
     }
 
     @Test
-    public void testGetSetListener() throws LockedException {
-        final WindowedMagneticFluxDensityTriadNoiseEstimator estimator =
-                new WindowedMagneticFluxDensityTriadNoiseEstimator();
+    void testGetSetListener() throws LockedException {
+        final var estimator = new WindowedMagneticFluxDensityTriadNoiseEstimator();
 
         // check default value
         assertNull(estimator.getListener());
 
-        // set new value
+        // set a new value
         estimator.setListener(this);
 
         // check
@@ -400,49 +391,47 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
     }
 
     @Test
-    public void testAddTriadAndProcessAndThenReset1() throws LockedException, IOException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+    void testAddTriadAndProcessAndThenReset1() throws LockedException, IOException {
+        final var randomizer = new UniformRandomizer();
+        final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        final Matrix hardIron = Matrix.newFromArray(generateHardIron(randomizer));
-        final Matrix mm = generateSoftIronGeneral();
+        final var hardIron = Matrix.newFromArray(generateHardIron(randomizer));
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
-                MAGNETOMETER_NOISE_STD);
+        final var noiseRandomizer = new GaussianRandomizer(0.0, MAGNETOMETER_NOISE_STD);
 
-        final NEDPosition position = createPosition(randomizer);
-        final CoordinateTransformation cnb = generateBodyC(randomizer);
-        final Date timestamp = new Date(createTimestamp(randomizer));
+        final var position = createPosition(randomizer);
+        final var cnb = generateBodyC(randomizer);
+        final var timestamp = new Date(createTimestamp(randomizer));
 
-        final WindowedMagneticFluxDensityTriadNoiseEstimator estimator =
-                new WindowedMagneticFluxDensityTriadNoiseEstimator(this);
+        final var estimator = new WindowedMagneticFluxDensityTriadNoiseEstimator(this);
 
         reset();
-        assertEquals(0, mStart);
-        assertEquals(0, mTriadAdded);
-        assertEquals(0, mWindowFilled);
-        assertEquals(0, mReset);
+        assertEquals(0, start);
+        assertEquals(0, triadAdded);
+        assertEquals(0, windowFilled);
+        assertEquals(0, reset);
         assertFalse(estimator.isWindowFilled());
         assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertNull(estimator.getFirstWindowedTriad());
         assertNull(estimator.getLastWindowedTriad());
         assertFalse(estimator.isRunning());
 
-        final int windowSize = estimator.getWindowSize();
-        final double timeInterval = estimator.getTimeInterval();
-        final MagneticFluxDensityTriad firstTriad = new MagneticFluxDensityTriad();
-        final MagneticFluxDensityTriad firstTriad2 = new MagneticFluxDensityTriad();
-        final MagneticFluxDensityTriad lastTriad = new MagneticFluxDensityTriad();
+        final var windowSize = estimator.getWindowSize();
+        final var timeInterval = estimator.getTimeInterval();
+        final var firstTriad = new MagneticFluxDensityTriad();
+        final var firstTriad2 = new MagneticFluxDensityTriad();
+        final var lastTriad = new MagneticFluxDensityTriad();
         MagneticFluxDensityTriad triad = null;
         double valueX;
         double valueY;
         double valueZ;
-        double avgBx = 0.0;
-        double avgBy = 0.0;
-        double avgBz = 0.0;
-        final List<MagneticFluxDensityTriad> triads = new ArrayList<>();
-        for (int i = 0; i < windowSize; i++) {
+        var avgBx = 0.0;
+        var avgBy = 0.0;
+        var avgBz = 0.0;
+        final var triads = new ArrayList<MagneticFluxDensityTriad>();
+        for (var i = 0; i < windowSize; i++) {
             if (estimator.getFirstWindowedTriad(firstTriad)) {
                 assertEquals(firstTriad, estimator.getFirstWindowedTriad());
             }
@@ -478,19 +467,19 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
         avgBy /= windowSize;
         avgBz /= windowSize;
 
-        double varBx = 0.0;
-        double varBy = 0.0;
-        double varBz = 0.0;
-        for (int i = 0; i < windowSize; i++) {
+        var varBx = 0.0;
+        var varBy = 0.0;
+        var varBz = 0.0;
+        for (var i = 0; i < windowSize; i++) {
             triad.copyFrom(triads.get(i));
 
             valueX = triad.getValueX();
             valueY = triad.getValueY();
             valueZ = triad.getValueZ();
 
-            final double diffX = valueX - avgBx;
-            final double diffY = valueY - avgBy;
-            final double diffZ = valueZ - avgBz;
+            final var diffX = valueX - avgBx;
+            final var diffY = valueY - avgBy;
+            final var diffZ = valueZ - avgBz;
 
             varBx += diffX * diffX;
             varBy += diffY * diffY;
@@ -501,9 +490,9 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
         varBy /= (windowSize - 1);
         varBz /= (windowSize - 1);
 
-        final double stdBx = Math.sqrt(varBx);
-        final double stdBy = Math.sqrt(varBy);
-        final double stdBz = Math.sqrt(varBz);
+        final var stdBx = Math.sqrt(varBx);
+        final var stdBy = Math.sqrt(varBy);
+        final var stdBz = Math.sqrt(varBz);
 
         assertEquals(avgBx, estimator.getAvgX(), ABSOLUTE_ERROR);
         assertEquals(avgBy, estimator.getAvgY(), ABSOLUTE_ERROR);
@@ -512,7 +501,7 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
         MagneticFluxDensity b1 = estimator.getAvgXAsMeasurement();
         assertEquals(avgBx, b1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(MagneticFluxDensityUnit.TESLA, b1.getUnit());
-        final MagneticFluxDensity b2 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var b2 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getAvgXAsMeasurement(b2);
         assertEquals(b1, b2);
 
@@ -528,20 +517,20 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
         estimator.getAvgZAsMeasurement(b2);
         assertEquals(b1, b2);
 
-        final MagneticFluxDensityTriad triad1 = estimator.getAvgTriad();
+        final var triad1 = estimator.getAvgTriad();
         assertEquals(avgBx, triad1.getValueX(), ABSOLUTE_ERROR);
         assertEquals(avgBy, triad1.getValueY(), ABSOLUTE_ERROR);
         assertEquals(avgBz, triad1.getValueZ(), ABSOLUTE_ERROR);
         assertEquals(MagneticFluxDensityUnit.TESLA, triad1.getUnit());
-        final MagneticFluxDensityTriad triad2 = new MagneticFluxDensityTriad();
+        final var triad2 = new MagneticFluxDensityTriad();
         estimator.getAvgTriad(triad2);
         assertEquals(triad1, triad2);
 
         assertEquals(triad1.getNorm(), estimator.getAvgNorm(), ABSOLUTE_ERROR);
-        final MagneticFluxDensity norm1 = estimator.getAvgNormAsMeasurement();
+        final var norm1 = estimator.getAvgNormAsMeasurement();
         assertEquals(triad1.getNorm(), norm1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(MagneticFluxDensityUnit.TESLA, norm1.getUnit());
-        final MagneticFluxDensity norm2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var norm2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getAvgNormAsMeasurement(norm2);
         assertEquals(norm1, norm2);
 
@@ -553,83 +542,83 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
         assertEquals(stdBy, estimator.getStandardDeviationY(), ABSOLUTE_ERROR);
         assertEquals(stdBz, estimator.getStandardDeviationZ(), ABSOLUTE_ERROR);
 
-        final MagneticFluxDensity stdX1 = estimator.getStandardDeviationXAsMeasurement();
+        final var stdX1 = estimator.getStandardDeviationXAsMeasurement();
         assertEquals(stdBx, stdX1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(MagneticFluxDensityUnit.TESLA, stdX1.getUnit());
-        final MagneticFluxDensity stdX2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var stdX2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getStandardDeviationXAsMeasurement(stdX2);
         assertEquals(stdX1, stdX2);
 
-        final MagneticFluxDensity stdY1 = estimator.getStandardDeviationYAsMeasurement();
+        final var stdY1 = estimator.getStandardDeviationYAsMeasurement();
         assertEquals(stdBy, stdY1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(MagneticFluxDensityUnit.TESLA, stdY1.getUnit());
-        final MagneticFluxDensity stdY2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var stdY2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getStandardDeviationYAsMeasurement(stdY2);
         assertEquals(stdY1, stdY2);
 
-        final MagneticFluxDensity stdZ1 = estimator.getStandardDeviationZAsMeasurement();
+        final var stdZ1 = estimator.getStandardDeviationZAsMeasurement();
         assertEquals(stdBz, stdZ1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(MagneticFluxDensityUnit.TESLA, stdZ1.getUnit());
-        final MagneticFluxDensity stdZ2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var stdZ2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getStandardDeviationZAsMeasurement(stdZ2);
         assertEquals(stdZ1, stdZ2);
 
-        final MagneticFluxDensityTriad stdTriad1 = estimator.getStandardDeviationTriad();
+        final var stdTriad1 = estimator.getStandardDeviationTriad();
         assertEquals(stdBx, stdTriad1.getValueX(), 0.0);
         assertEquals(stdBy, stdTriad1.getValueY(), 0.0);
         assertEquals(stdBz, stdTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, stdTriad1.getUnit());
-        final MagneticFluxDensityTriad stdTriad2 = new MagneticFluxDensityTriad();
+        final var stdTriad2 = new MagneticFluxDensityTriad();
         estimator.getStandardDeviationTriad(stdTriad2);
         assertEquals(stdTriad1, stdTriad2);
 
         assertEquals(stdTriad1.getNorm(), estimator.getStandardDeviationNorm(), ABSOLUTE_ERROR);
-        final MagneticFluxDensity stdNorm1 = estimator.getStandardDeviationNormAsMeasurement();
+        final var stdNorm1 = estimator.getStandardDeviationNormAsMeasurement();
         assertEquals(stdTriad1.getNorm(), stdNorm1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(MagneticFluxDensityUnit.TESLA, stdNorm1.getUnit());
-        final MagneticFluxDensity stdNorm2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var stdNorm2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getStandardDeviationNormAsMeasurement(stdNorm2);
         assertEquals(stdNorm1, stdNorm2);
 
-        final double avgStd = (stdBx + stdBy + stdBz) / 3.0;
+        final var avgStd = (stdBx + stdBy + stdBz) / 3.0;
         assertEquals(avgStd, estimator.getAverageStandardDeviation(), ABSOLUTE_ERROR);
-        final MagneticFluxDensity avgStd1 = estimator.getAverageStandardDeviationAsMeasurement();
+        final var avgStd1 = estimator.getAverageStandardDeviationAsMeasurement();
         assertEquals(avgStd, avgStd1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(MagneticFluxDensityUnit.TESLA, avgStd1.getUnit());
-        final MagneticFluxDensity avgStd2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var avgStd2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getAverageStandardDeviationAsMeasurement(avgStd2);
         assertEquals(avgStd1, avgStd2);
 
-        final double psdX = varBx * timeInterval;
-        final double psdY = varBy * timeInterval;
-        final double psdZ = varBz * timeInterval;
+        final var psdX = varBx * timeInterval;
+        final var psdY = varBy * timeInterval;
+        final var psdZ = varBz * timeInterval;
 
         assertEquals(psdX, estimator.getPsdX(), ABSOLUTE_ERROR);
         assertEquals(psdY, estimator.getPsdY(), ABSOLUTE_ERROR);
         assertEquals(psdZ, estimator.getPsdZ(), ABSOLUTE_ERROR);
 
-        final double rootPsdX = Math.sqrt(psdX);
-        final double rootPsdY = Math.sqrt(psdY);
-        final double rootPsdZ = Math.sqrt(psdZ);
+        final var rootPsdX = Math.sqrt(psdX);
+        final var rootPsdY = Math.sqrt(psdY);
+        final var rootPsdZ = Math.sqrt(psdZ);
 
         assertEquals(rootPsdX, estimator.getRootPsdX(), ABSOLUTE_ERROR);
         assertEquals(rootPsdY, estimator.getRootPsdY(), ABSOLUTE_ERROR);
         assertEquals(rootPsdZ, estimator.getRootPsdZ(), ABSOLUTE_ERROR);
 
-        final double avgPsd = (psdX + psdY + psdZ) / 3.0;
+        final var avgPsd = (psdX + psdY + psdZ) / 3.0;
         assertEquals(avgPsd, estimator.getAvgNoisePsd(), ABSOLUTE_ERROR);
 
-        final double normRootPsd = Math.sqrt(rootPsdX * rootPsdX + rootPsdY * rootPsdY + rootPsdZ * rootPsdZ);
+        final var normRootPsd = Math.sqrt(rootPsdX * rootPsdX + rootPsdY * rootPsdY + rootPsdZ * rootPsdZ);
         assertEquals(normRootPsd, estimator.getNoiseRootPsdNorm(), ABSOLUTE_ERROR);
 
         assertEquals(windowSize, estimator.getNumberOfProcessedSamples());
         assertFalse(estimator.isRunning());
         assertTrue(estimator.isWindowFilled());
 
-        assertEquals(1, mStart);
-        assertEquals(windowSize, mTriadAdded);
-        assertEquals(1, mWindowFilled);
-        assertEquals(0, mReset);
+        assertEquals(1, start);
+        assertEquals(windowSize, triadAdded);
+        assertEquals(1, windowFilled);
+        assertEquals(0, reset);
 
         // if we add more triads, window filled is not called again
         triad = generateTriad(hardIron.getBuffer(), mm, wmmEstimator, noiseRandomizer, timestamp, position, cnb);
@@ -646,15 +635,15 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
         assertEquals(triads.get(1), estimator.getFirstWindowedTriad());
         assertEquals(triads.get(windowSize), estimator.getLastWindowedTriad());
 
-        assertEquals(1, mStart);
-        assertEquals(windowSize + 1, mTriadAdded);
-        assertEquals(1, mWindowFilled);
-        assertEquals(0, mReset);
+        assertEquals(1, start);
+        assertEquals(windowSize + 1, triadAdded);
+        assertEquals(1, windowFilled);
+        assertEquals(0, reset);
 
         // reset
         assertTrue(estimator.reset());
 
-        assertEquals(1, mReset);
+        assertEquals(1, reset);
 
         assertNull(estimator.getFirstWindowedTriad());
         assertNull(estimator.getLastWindowedTriad());
@@ -683,49 +672,47 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
     }
 
     @Test
-    public void testAddTriadAndProcessAndThenReset2() throws LockedException, IOException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+    void testAddTriadAndProcessAndThenReset2() throws LockedException, IOException {
+        final var randomizer = new UniformRandomizer();
+        final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        final Matrix hardIron = Matrix.newFromArray(generateHardIron(randomizer));
-        final Matrix mm = generateSoftIronGeneral();
+        final var hardIron = Matrix.newFromArray(generateHardIron(randomizer));
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
-                MAGNETOMETER_NOISE_STD);
+        final var noiseRandomizer = new GaussianRandomizer(0.0, MAGNETOMETER_NOISE_STD);
 
-        final NEDPosition position = createPosition(randomizer);
-        final CoordinateTransformation cnb = generateBodyC(randomizer);
-        final Date timestamp = new Date(createTimestamp(randomizer));
+        final var position = createPosition(randomizer);
+        final var cnb = generateBodyC(randomizer);
+        final var timestamp = new Date(createTimestamp(randomizer));
 
-        final WindowedMagneticFluxDensityTriadNoiseEstimator estimator =
-                new WindowedMagneticFluxDensityTriadNoiseEstimator(this);
+        final var estimator = new WindowedMagneticFluxDensityTriadNoiseEstimator(this);
 
         reset();
-        assertEquals(0, mStart);
-        assertEquals(0, mTriadAdded);
-        assertEquals(0, mWindowFilled);
-        assertEquals(0, mReset);
+        assertEquals(0, start);
+        assertEquals(0, triadAdded);
+        assertEquals(0, windowFilled);
+        assertEquals(0, reset);
         assertFalse(estimator.isWindowFilled());
         assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertNull(estimator.getFirstWindowedTriad());
         assertNull(estimator.getLastWindowedTriad());
         assertFalse(estimator.isRunning());
 
-        final int windowSize = estimator.getWindowSize();
-        final double timeInterval = estimator.getTimeInterval();
-        final MagneticFluxDensityTriad firstTriad = new MagneticFluxDensityTriad();
-        final MagneticFluxDensityTriad firstTriad2 = new MagneticFluxDensityTriad();
-        final MagneticFluxDensityTriad lastTriad = new MagneticFluxDensityTriad();
+        final var windowSize = estimator.getWindowSize();
+        final var timeInterval = estimator.getTimeInterval();
+        final var firstTriad = new MagneticFluxDensityTriad();
+        final var firstTriad2 = new MagneticFluxDensityTriad();
+        final var lastTriad = new MagneticFluxDensityTriad();
         MagneticFluxDensityTriad triad = null;
         double valueX;
         double valueY;
         double valueZ;
-        double avgBx = 0.0;
-        double avgBy = 0.0;
-        double avgBz = 0.0;
-        final List<MagneticFluxDensityTriad> triads = new ArrayList<>();
-        for (int i = 0; i < windowSize; i++) {
+        var avgBx = 0.0;
+        var avgBy = 0.0;
+        var avgBz = 0.0;
+        final var triads = new ArrayList<MagneticFluxDensityTriad>();
+        for (var i = 0; i < windowSize; i++) {
             if (estimator.getFirstWindowedTriad(firstTriad)) {
                 assertEquals(firstTriad, estimator.getFirstWindowedTriad());
             }
@@ -761,19 +748,19 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
         avgBy /= windowSize;
         avgBz /= windowSize;
 
-        double varBx = 0.0;
-        double varBy = 0.0;
-        double varBz = 0.0;
-        for (int i = 0; i < windowSize; i++) {
+        var varBx = 0.0;
+        var varBy = 0.0;
+        var varBz = 0.0;
+        for (var i = 0; i < windowSize; i++) {
             triad.copyFrom(triads.get(i));
 
             valueX = triad.getValueX();
             valueY = triad.getValueY();
             valueZ = triad.getValueZ();
 
-            final double diffX = valueX - avgBx;
-            final double diffY = valueY - avgBy;
-            final double diffZ = valueZ - avgBz;
+            final var diffX = valueX - avgBx;
+            final var diffY = valueY - avgBy;
+            final var diffZ = valueZ - avgBz;
 
             varBx += diffX * diffX;
             varBy += diffY * diffY;
@@ -784,9 +771,9 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
         varBy /= (windowSize - 1);
         varBz /= (windowSize - 1);
 
-        final double stdBx = Math.sqrt(varBx);
-        final double stdBy = Math.sqrt(varBy);
-        final double stdBz = Math.sqrt(varBz);
+        final var stdBx = Math.sqrt(varBx);
+        final var stdBy = Math.sqrt(varBy);
+        final var stdBz = Math.sqrt(varBz);
 
         assertEquals(avgBx, estimator.getAvgX(), ABSOLUTE_ERROR);
         assertEquals(avgBy, estimator.getAvgY(), ABSOLUTE_ERROR);
@@ -795,7 +782,7 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
         MagneticFluxDensity b1 = estimator.getAvgXAsMeasurement();
         assertEquals(avgBx, b1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(MagneticFluxDensityUnit.TESLA, b1.getUnit());
-        final MagneticFluxDensity b2 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var b2 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getAvgXAsMeasurement(b2);
         assertEquals(b1, b2);
 
@@ -811,20 +798,20 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
         estimator.getAvgZAsMeasurement(b2);
         assertEquals(b1, b2);
 
-        final MagneticFluxDensityTriad triad1 = estimator.getAvgTriad();
+        final var triad1 = estimator.getAvgTriad();
         assertEquals(avgBx, triad1.getValueX(), ABSOLUTE_ERROR);
         assertEquals(avgBy, triad1.getValueY(), ABSOLUTE_ERROR);
         assertEquals(avgBz, triad1.getValueZ(), ABSOLUTE_ERROR);
         assertEquals(MagneticFluxDensityUnit.TESLA, triad1.getUnit());
-        final MagneticFluxDensityTriad triad2 = new MagneticFluxDensityTriad();
+        final var triad2 = new MagneticFluxDensityTriad();
         estimator.getAvgTriad(triad2);
         assertEquals(triad1, triad2);
 
         assertEquals(triad1.getNorm(), estimator.getAvgNorm(), ABSOLUTE_ERROR);
-        final MagneticFluxDensity norm1 = estimator.getAvgNormAsMeasurement();
+        final var norm1 = estimator.getAvgNormAsMeasurement();
         assertEquals(triad1.getNorm(), norm1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(MagneticFluxDensityUnit.TESLA, norm1.getUnit());
-        final MagneticFluxDensity norm2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var norm2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getAvgNormAsMeasurement(norm2);
         assertEquals(norm1, norm2);
 
@@ -836,83 +823,83 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
         assertEquals(stdBy, estimator.getStandardDeviationY(), ABSOLUTE_ERROR);
         assertEquals(stdBz, estimator.getStandardDeviationZ(), ABSOLUTE_ERROR);
 
-        final MagneticFluxDensity stdX1 = estimator.getStandardDeviationXAsMeasurement();
+        final var stdX1 = estimator.getStandardDeviationXAsMeasurement();
         assertEquals(stdBx, stdX1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(MagneticFluxDensityUnit.TESLA, stdX1.getUnit());
-        final MagneticFluxDensity stdX2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var stdX2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getStandardDeviationXAsMeasurement(stdX2);
         assertEquals(stdX1, stdX2);
 
-        final MagneticFluxDensity stdY1 = estimator.getStandardDeviationYAsMeasurement();
+        final var stdY1 = estimator.getStandardDeviationYAsMeasurement();
         assertEquals(stdBy, stdY1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(MagneticFluxDensityUnit.TESLA, stdY1.getUnit());
-        final MagneticFluxDensity stdY2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var stdY2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getStandardDeviationYAsMeasurement(stdY2);
         assertEquals(stdY1, stdY2);
 
-        final MagneticFluxDensity stdZ1 = estimator.getStandardDeviationZAsMeasurement();
+        final var stdZ1 = estimator.getStandardDeviationZAsMeasurement();
         assertEquals(stdBz, stdZ1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(MagneticFluxDensityUnit.TESLA, stdZ1.getUnit());
-        final MagneticFluxDensity stdZ2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var stdZ2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getStandardDeviationZAsMeasurement(stdZ2);
         assertEquals(stdZ1, stdZ2);
 
-        final MagneticFluxDensityTriad stdTriad1 = estimator.getStandardDeviationTriad();
+        final var stdTriad1 = estimator.getStandardDeviationTriad();
         assertEquals(stdBx, stdTriad1.getValueX(), 0.0);
         assertEquals(stdBy, stdTriad1.getValueY(), 0.0);
         assertEquals(stdBz, stdTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, stdTriad1.getUnit());
-        final MagneticFluxDensityTriad stdTriad2 = new MagneticFluxDensityTriad();
+        final var stdTriad2 = new MagneticFluxDensityTriad();
         estimator.getStandardDeviationTriad(stdTriad2);
         assertEquals(stdTriad1, stdTriad2);
 
         assertEquals(stdTriad1.getNorm(), estimator.getStandardDeviationNorm(), ABSOLUTE_ERROR);
-        final MagneticFluxDensity stdNorm1 = estimator.getStandardDeviationNormAsMeasurement();
+        final var stdNorm1 = estimator.getStandardDeviationNormAsMeasurement();
         assertEquals(stdTriad1.getNorm(), stdNorm1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(MagneticFluxDensityUnit.TESLA, stdNorm1.getUnit());
-        final MagneticFluxDensity stdNorm2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var stdNorm2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getStandardDeviationNormAsMeasurement(stdNorm2);
         assertEquals(stdNorm1, stdNorm2);
 
-        final double avgStd = (stdBx + stdBy + stdBz) / 3.0;
+        final var avgStd = (stdBx + stdBy + stdBz) / 3.0;
         assertEquals(avgStd, estimator.getAverageStandardDeviation(), ABSOLUTE_ERROR);
-        final MagneticFluxDensity avgStd1 = estimator.getAverageStandardDeviationAsMeasurement();
+        final var avgStd1 = estimator.getAverageStandardDeviationAsMeasurement();
         assertEquals(avgStd, avgStd1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(MagneticFluxDensityUnit.TESLA, avgStd1.getUnit());
-        final MagneticFluxDensity avgStd2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var avgStd2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getAverageStandardDeviationAsMeasurement(avgStd2);
         assertEquals(avgStd1, avgStd2);
 
-        final double psdX = varBx * timeInterval;
-        final double psdY = varBy * timeInterval;
-        final double psdZ = varBz * timeInterval;
+        final var psdX = varBx * timeInterval;
+        final var psdY = varBy * timeInterval;
+        final var psdZ = varBz * timeInterval;
 
         assertEquals(psdX, estimator.getPsdX(), ABSOLUTE_ERROR);
         assertEquals(psdY, estimator.getPsdY(), ABSOLUTE_ERROR);
         assertEquals(psdZ, estimator.getPsdZ(), ABSOLUTE_ERROR);
 
-        final double rootPsdX = Math.sqrt(psdX);
-        final double rootPsdY = Math.sqrt(psdY);
-        final double rootPsdZ = Math.sqrt(psdZ);
+        final var rootPsdX = Math.sqrt(psdX);
+        final var rootPsdY = Math.sqrt(psdY);
+        final var rootPsdZ = Math.sqrt(psdZ);
 
         assertEquals(rootPsdX, estimator.getRootPsdX(), ABSOLUTE_ERROR);
         assertEquals(rootPsdY, estimator.getRootPsdY(), ABSOLUTE_ERROR);
         assertEquals(rootPsdZ, estimator.getRootPsdZ(), ABSOLUTE_ERROR);
 
-        final double avgPsd = (psdX + psdY + psdZ) / 3.0;
+        final var avgPsd = (psdX + psdY + psdZ) / 3.0;
         assertEquals(avgPsd, estimator.getAvgNoisePsd(), ABSOLUTE_ERROR);
 
-        final double normRootPsd = Math.sqrt(rootPsdX * rootPsdX + rootPsdY * rootPsdY + rootPsdZ * rootPsdZ);
+        final var normRootPsd = Math.sqrt(rootPsdX * rootPsdX + rootPsdY * rootPsdY + rootPsdZ * rootPsdZ);
         assertEquals(normRootPsd, estimator.getNoiseRootPsdNorm(), ABSOLUTE_ERROR);
 
         assertEquals(windowSize, estimator.getNumberOfProcessedSamples());
         assertFalse(estimator.isRunning());
         assertTrue(estimator.isWindowFilled());
 
-        assertEquals(1, mStart);
-        assertEquals(windowSize, mTriadAdded);
-        assertEquals(1, mWindowFilled);
-        assertEquals(0, mReset);
+        assertEquals(1, start);
+        assertEquals(windowSize, triadAdded);
+        assertEquals(1, windowFilled);
+        assertEquals(0, reset);
 
         // if we add more triads, window filled is not called again
         triad = generateTriad(hardIron.getBuffer(), mm, wmmEstimator, noiseRandomizer, timestamp, position, cnb);
@@ -929,15 +916,15 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
         assertEquals(triads.get(1), estimator.getFirstWindowedTriad());
         assertEquals(triads.get(windowSize), estimator.getLastWindowedTriad());
 
-        assertEquals(1, mStart);
-        assertEquals(windowSize + 1, mTriadAdded);
-        assertEquals(1, mWindowFilled);
-        assertEquals(0, mReset);
+        assertEquals(1, start);
+        assertEquals(windowSize + 1, triadAdded);
+        assertEquals(1, windowFilled);
+        assertEquals(0, reset);
 
         // reset
         assertTrue(estimator.reset());
 
-        assertEquals(1, mReset);
+        assertEquals(1, reset);
 
         assertNull(estimator.getFirstWindowedTriad());
         assertNull(estimator.getLastWindowedTriad());
@@ -966,49 +953,47 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
     }
 
     @Test
-    public void testAddTriadAndProcessAndThenReset3() throws LockedException, IOException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+    void testAddTriadAndProcessAndThenReset3() throws LockedException, IOException {
+        final var randomizer = new UniformRandomizer();
+        final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        final Matrix hardIron = Matrix.newFromArray(generateHardIron(randomizer));
-        final Matrix mm = generateSoftIronGeneral();
+        final var hardIron = Matrix.newFromArray(generateHardIron(randomizer));
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
-                MAGNETOMETER_NOISE_STD);
+        final var noiseRandomizer = new GaussianRandomizer(0.0, MAGNETOMETER_NOISE_STD);
 
-        final NEDPosition position = createPosition(randomizer);
-        final CoordinateTransformation cnb = generateBodyC(randomizer);
-        final Date timestamp = new Date(createTimestamp(randomizer));
+        final var position = createPosition(randomizer);
+        final var cnb = generateBodyC(randomizer);
+        final var timestamp = new Date(createTimestamp(randomizer));
 
-        final WindowedMagneticFluxDensityTriadNoiseEstimator estimator =
-                new WindowedMagneticFluxDensityTriadNoiseEstimator(this);
+        final var estimator = new WindowedMagneticFluxDensityTriadNoiseEstimator(this);
 
         reset();
-        assertEquals(0, mStart);
-        assertEquals(0, mTriadAdded);
-        assertEquals(0, mWindowFilled);
-        assertEquals(0, mReset);
+        assertEquals(0, start);
+        assertEquals(0, triadAdded);
+        assertEquals(0, windowFilled);
+        assertEquals(0, reset);
         assertFalse(estimator.isWindowFilled());
         assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertNull(estimator.getFirstWindowedTriad());
         assertNull(estimator.getLastWindowedTriad());
         assertFalse(estimator.isRunning());
 
-        final int windowSize = estimator.getWindowSize();
-        final double timeInterval = estimator.getTimeInterval();
-        final MagneticFluxDensityTriad firstTriad = new MagneticFluxDensityTriad();
-        final MagneticFluxDensityTriad firstTriad2 = new MagneticFluxDensityTriad();
-        final MagneticFluxDensityTriad lastTriad = new MagneticFluxDensityTriad();
+        final var windowSize = estimator.getWindowSize();
+        final var timeInterval = estimator.getTimeInterval();
+        final var firstTriad = new MagneticFluxDensityTriad();
+        final var firstTriad2 = new MagneticFluxDensityTriad();
+        final var lastTriad = new MagneticFluxDensityTriad();
         MagneticFluxDensityTriad triad = null;
         double valueX;
         double valueY;
         double valueZ;
-        double avgBx = 0.0;
-        double avgBy = 0.0;
-        double avgBz = 0.0;
-        final List<MagneticFluxDensityTriad> triads = new ArrayList<>();
-        for (int i = 0; i < windowSize; i++) {
+        var avgBx = 0.0;
+        var avgBy = 0.0;
+        var avgBz = 0.0;
+        final var triads = new ArrayList<MagneticFluxDensityTriad>();
+        for (var i = 0; i < windowSize; i++) {
             if (estimator.getFirstWindowedTriad(firstTriad)) {
                 assertEquals(firstTriad, estimator.getFirstWindowedTriad());
             }
@@ -1044,19 +1029,19 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
         avgBy /= windowSize;
         avgBz /= windowSize;
 
-        double varBx = 0.0;
-        double varBy = 0.0;
-        double varBz = 0.0;
-        for (int i = 0; i < windowSize; i++) {
+        var varBx = 0.0;
+        var varBy = 0.0;
+        var varBz = 0.0;
+        for (var i = 0; i < windowSize; i++) {
             triad.copyFrom(triads.get(i));
 
             valueX = triad.getValueX();
             valueY = triad.getValueY();
             valueZ = triad.getValueZ();
 
-            final double diffX = valueX - avgBx;
-            final double diffY = valueY - avgBy;
-            final double diffZ = valueZ - avgBz;
+            final var diffX = valueX - avgBx;
+            final var diffY = valueY - avgBy;
+            final var diffZ = valueZ - avgBz;
 
             varBx += diffX * diffX;
             varBy += diffY * diffY;
@@ -1067,18 +1052,18 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
         varBy /= (windowSize - 1);
         varBz /= (windowSize - 1);
 
-        final double stdBx = Math.sqrt(varBx);
-        final double stdBy = Math.sqrt(varBy);
-        final double stdBz = Math.sqrt(varBz);
+        final var stdBx = Math.sqrt(varBx);
+        final var stdBy = Math.sqrt(varBy);
+        final var stdBz = Math.sqrt(varBz);
 
         assertEquals(avgBx, estimator.getAvgX(), ABSOLUTE_ERROR);
         assertEquals(avgBy, estimator.getAvgY(), ABSOLUTE_ERROR);
         assertEquals(avgBz, estimator.getAvgZ(), ABSOLUTE_ERROR);
 
-        MagneticFluxDensity b1 = estimator.getAvgXAsMeasurement();
+        var b1 = estimator.getAvgXAsMeasurement();
         assertEquals(avgBx, b1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(MagneticFluxDensityUnit.TESLA, b1.getUnit());
-        final MagneticFluxDensity b2 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var b2 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getAvgXAsMeasurement(b2);
         assertEquals(b1, b2);
 
@@ -1094,20 +1079,20 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
         estimator.getAvgZAsMeasurement(b2);
         assertEquals(b1, b2);
 
-        final MagneticFluxDensityTriad triad1 = estimator.getAvgTriad();
+        final var triad1 = estimator.getAvgTriad();
         assertEquals(avgBx, triad1.getValueX(), ABSOLUTE_ERROR);
         assertEquals(avgBy, triad1.getValueY(), ABSOLUTE_ERROR);
         assertEquals(avgBz, triad1.getValueZ(), ABSOLUTE_ERROR);
         assertEquals(MagneticFluxDensityUnit.TESLA, triad1.getUnit());
-        final MagneticFluxDensityTriad triad2 = new MagneticFluxDensityTriad();
+        final var triad2 = new MagneticFluxDensityTriad();
         estimator.getAvgTriad(triad2);
         assertEquals(triad1, triad2);
 
         assertEquals(triad1.getNorm(), estimator.getAvgNorm(), ABSOLUTE_ERROR);
-        final MagneticFluxDensity norm1 = estimator.getAvgNormAsMeasurement();
+        final var norm1 = estimator.getAvgNormAsMeasurement();
         assertEquals(triad1.getNorm(), norm1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(MagneticFluxDensityUnit.TESLA, norm1.getUnit());
-        final MagneticFluxDensity norm2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var norm2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getAvgNormAsMeasurement(norm2);
         assertEquals(norm1, norm2);
 
@@ -1119,83 +1104,83 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
         assertEquals(stdBy, estimator.getStandardDeviationY(), ABSOLUTE_ERROR);
         assertEquals(stdBz, estimator.getStandardDeviationZ(), ABSOLUTE_ERROR);
 
-        final MagneticFluxDensity stdX1 = estimator.getStandardDeviationXAsMeasurement();
+        final var stdX1 = estimator.getStandardDeviationXAsMeasurement();
         assertEquals(stdBx, stdX1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(MagneticFluxDensityUnit.TESLA, stdX1.getUnit());
-        final MagneticFluxDensity stdX2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var stdX2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getStandardDeviationXAsMeasurement(stdX2);
         assertEquals(stdX1, stdX2);
 
-        final MagneticFluxDensity stdY1 = estimator.getStandardDeviationYAsMeasurement();
+        final var stdY1 = estimator.getStandardDeviationYAsMeasurement();
         assertEquals(stdBy, stdY1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(MagneticFluxDensityUnit.TESLA, stdY1.getUnit());
-        final MagneticFluxDensity stdY2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var stdY2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getStandardDeviationYAsMeasurement(stdY2);
         assertEquals(stdY1, stdY2);
 
-        final MagneticFluxDensity stdZ1 = estimator.getStandardDeviationZAsMeasurement();
+        final var stdZ1 = estimator.getStandardDeviationZAsMeasurement();
         assertEquals(stdBz, stdZ1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(MagneticFluxDensityUnit.TESLA, stdZ1.getUnit());
-        final MagneticFluxDensity stdZ2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var stdZ2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getStandardDeviationZAsMeasurement(stdZ2);
         assertEquals(stdZ1, stdZ2);
 
-        final MagneticFluxDensityTriad stdTriad1 = estimator.getStandardDeviationTriad();
+        final var stdTriad1 = estimator.getStandardDeviationTriad();
         assertEquals(stdBx, stdTriad1.getValueX(), 0.0);
         assertEquals(stdBy, stdTriad1.getValueY(), 0.0);
         assertEquals(stdBz, stdTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, stdTriad1.getUnit());
-        final MagneticFluxDensityTriad stdTriad2 = new MagneticFluxDensityTriad();
+        final var stdTriad2 = new MagneticFluxDensityTriad();
         estimator.getStandardDeviationTriad(stdTriad2);
         assertEquals(stdTriad1, stdTriad2);
 
         assertEquals(stdTriad1.getNorm(), estimator.getStandardDeviationNorm(), ABSOLUTE_ERROR);
-        final MagneticFluxDensity stdNorm1 = estimator.getStandardDeviationNormAsMeasurement();
+        final var stdNorm1 = estimator.getStandardDeviationNormAsMeasurement();
         assertEquals(stdTriad1.getNorm(), stdNorm1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(MagneticFluxDensityUnit.TESLA, stdNorm1.getUnit());
-        final MagneticFluxDensity stdNorm2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var stdNorm2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getStandardDeviationNormAsMeasurement(stdNorm2);
         assertEquals(stdNorm1, stdNorm2);
 
-        final double avgStd = (stdBx + stdBy + stdBz) / 3.0;
+        final var avgStd = (stdBx + stdBy + stdBz) / 3.0;
         assertEquals(avgStd, estimator.getAverageStandardDeviation(), ABSOLUTE_ERROR);
-        final MagneticFluxDensity avgStd1 = estimator.getAverageStandardDeviationAsMeasurement();
+        final var avgStd1 = estimator.getAverageStandardDeviationAsMeasurement();
         assertEquals(avgStd, avgStd1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(MagneticFluxDensityUnit.TESLA, avgStd1.getUnit());
-        final MagneticFluxDensity avgStd2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final var avgStd2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getAverageStandardDeviationAsMeasurement(avgStd2);
         assertEquals(avgStd1, avgStd2);
 
-        final double psdX = varBx * timeInterval;
-        final double psdY = varBy * timeInterval;
-        final double psdZ = varBz * timeInterval;
+        final var psdX = varBx * timeInterval;
+        final var psdY = varBy * timeInterval;
+        final var psdZ = varBz * timeInterval;
 
         assertEquals(psdX, estimator.getPsdX(), ABSOLUTE_ERROR);
         assertEquals(psdY, estimator.getPsdY(), ABSOLUTE_ERROR);
         assertEquals(psdZ, estimator.getPsdZ(), ABSOLUTE_ERROR);
 
-        final double rootPsdX = Math.sqrt(psdX);
-        final double rootPsdY = Math.sqrt(psdY);
-        final double rootPsdZ = Math.sqrt(psdZ);
+        final var rootPsdX = Math.sqrt(psdX);
+        final var rootPsdY = Math.sqrt(psdY);
+        final var rootPsdZ = Math.sqrt(psdZ);
 
         assertEquals(rootPsdX, estimator.getRootPsdX(), ABSOLUTE_ERROR);
         assertEquals(rootPsdY, estimator.getRootPsdY(), ABSOLUTE_ERROR);
         assertEquals(rootPsdZ, estimator.getRootPsdZ(), ABSOLUTE_ERROR);
 
-        final double avgPsd = (psdX + psdY + psdZ) / 3.0;
+        final var avgPsd = (psdX + psdY + psdZ) / 3.0;
         assertEquals(avgPsd, estimator.getAvgNoisePsd(), ABSOLUTE_ERROR);
 
-        final double normRootPsd = Math.sqrt(rootPsdX * rootPsdX + rootPsdY * rootPsdY + rootPsdZ * rootPsdZ);
+        final var normRootPsd = Math.sqrt(rootPsdX * rootPsdX + rootPsdY * rootPsdY + rootPsdZ * rootPsdZ);
         assertEquals(normRootPsd, estimator.getNoiseRootPsdNorm(), ABSOLUTE_ERROR);
 
         assertEquals(windowSize, estimator.getNumberOfProcessedSamples());
         assertFalse(estimator.isRunning());
         assertTrue(estimator.isWindowFilled());
 
-        assertEquals(1, mStart);
-        assertEquals(windowSize, mTriadAdded);
-        assertEquals(1, mWindowFilled);
-        assertEquals(0, mReset);
+        assertEquals(1, start);
+        assertEquals(windowSize, triadAdded);
+        assertEquals(1, windowFilled);
+        assertEquals(0, reset);
 
         // if we add more triads, window filled is not called again
         triad = generateTriad(hardIron.getBuffer(), mm, wmmEstimator, noiseRandomizer, timestamp, position, cnb);
@@ -1212,15 +1197,15 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
         assertEquals(triads.get(1), estimator.getFirstWindowedTriad());
         assertEquals(triads.get(windowSize), estimator.getLastWindowedTriad());
 
-        assertEquals(1, mStart);
-        assertEquals(windowSize + 1, mTriadAdded);
-        assertEquals(1, mWindowFilled);
-        assertEquals(0, mReset);
+        assertEquals(1, start);
+        assertEquals(windowSize + 1, triadAdded);
+        assertEquals(1, windowFilled);
+        assertEquals(0, reset);
 
         // reset
         assertTrue(estimator.reset());
 
-        assertEquals(1, mReset);
+        assertEquals(1, reset);
 
         assertNull(estimator.getFirstWindowedTriad());
         assertNull(estimator.getLastWindowedTriad());
@@ -1249,42 +1234,40 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
     }
 
     @Test
-    public void testAddTriad1() throws LockedException, IOException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+    void testAddTriad1() throws LockedException, IOException {
+        final var randomizer = new UniformRandomizer();
+        final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        final Matrix hardIron = Matrix.newFromArray(generateHardIron(randomizer));
-        final Matrix mm = generateSoftIronGeneral();
+        final var hardIron = Matrix.newFromArray(generateHardIron(randomizer));
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
-                MAGNETOMETER_NOISE_STD);
+        final var noiseRandomizer = new GaussianRandomizer(0.0, MAGNETOMETER_NOISE_STD);
 
-        final NEDPosition position = createPosition(randomizer);
-        final CoordinateTransformation cnb = generateBodyC(randomizer);
-        final Date timestamp = new Date(createTimestamp(randomizer));
+        final var position = createPosition(randomizer);
+        final var cnb = generateBodyC(randomizer);
+        final var timestamp = new Date(createTimestamp(randomizer));
 
-        final WindowedMagneticFluxDensityTriadNoiseEstimator estimator =
-                new WindowedMagneticFluxDensityTriadNoiseEstimator(this);
+        final var estimator = new WindowedMagneticFluxDensityTriadNoiseEstimator(this);
 
         reset();
-        assertEquals(0, mStart);
-        assertEquals(0, mTriadAdded);
-        assertEquals(0, mWindowFilled);
-        assertEquals(0, mReset);
+        assertEquals(0, start);
+        assertEquals(0, triadAdded);
+        assertEquals(0, windowFilled);
+        assertEquals(0, reset);
         assertFalse(estimator.isWindowFilled());
         assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertNull(estimator.getFirstWindowedTriad());
         assertNull(estimator.getLastWindowedTriad());
         assertFalse(estimator.isRunning());
 
-        final int windowSize = estimator.getWindowSize();
-        final MagneticFluxDensityTriad firstTriad = new MagneticFluxDensityTriad();
-        final MagneticFluxDensityTriad firstTriad2 = new MagneticFluxDensityTriad();
-        final MagneticFluxDensityTriad lastTriad = new MagneticFluxDensityTriad();
+        final var windowSize = estimator.getWindowSize();
+        final var firstTriad = new MagneticFluxDensityTriad();
+        final var firstTriad2 = new MagneticFluxDensityTriad();
+        final var lastTriad = new MagneticFluxDensityTriad();
         MagneticFluxDensityTriad triad = null;
-        final List<MagneticFluxDensityTriad> triads = new ArrayList<>();
-        for (int i = 0; i < windowSize; i++) {
+        final var triads = new ArrayList<MagneticFluxDensityTriad>();
+        for (var i = 0; i < windowSize; i++) {
             if (estimator.getFirstWindowedTriad(firstTriad)) {
                 assertEquals(firstTriad, estimator.getFirstWindowedTriad());
             }
@@ -1308,10 +1291,10 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
             assertFalse(estimator.isRunning());
         }
 
-        assertEquals(1, mStart);
-        assertEquals(windowSize, mTriadAdded);
-        assertEquals(1, mWindowFilled);
-        assertEquals(0, mReset);
+        assertEquals(1, start);
+        assertEquals(windowSize, triadAdded);
+        assertEquals(1, windowFilled);
+        assertEquals(0, reset);
 
         assertEquals(windowSize, triads.size());
         assertEquals(triads.get(0), estimator.getFirstWindowedTriad());
@@ -1341,42 +1324,40 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
     }
 
     @Test
-    public void testAddTriad2() throws LockedException, IOException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+    void testAddTriad2() throws LockedException, IOException {
+        final var randomizer = new UniformRandomizer();
+        final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        final Matrix hardIron = Matrix.newFromArray(generateHardIron(randomizer));
-        final Matrix mm = generateSoftIronGeneral();
+        final var hardIron = Matrix.newFromArray(generateHardIron(randomizer));
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
-                MAGNETOMETER_NOISE_STD);
+        final var noiseRandomizer = new GaussianRandomizer(0.0, MAGNETOMETER_NOISE_STD);
 
-        final NEDPosition position = createPosition(randomizer);
-        final CoordinateTransformation cnb = generateBodyC(randomizer);
-        final Date timestamp = new Date(createTimestamp(randomizer));
+        final var position = createPosition(randomizer);
+        final var cnb = generateBodyC(randomizer);
+        final var timestamp = new Date(createTimestamp(randomizer));
 
-        final WindowedMagneticFluxDensityTriadNoiseEstimator estimator =
-                new WindowedMagneticFluxDensityTriadNoiseEstimator(this);
+        final var estimator = new WindowedMagneticFluxDensityTriadNoiseEstimator(this);
 
         reset();
-        assertEquals(0, mStart);
-        assertEquals(0, mTriadAdded);
-        assertEquals(0, mWindowFilled);
-        assertEquals(0, mReset);
+        assertEquals(0, start);
+        assertEquals(0, triadAdded);
+        assertEquals(0, windowFilled);
+        assertEquals(0, reset);
         assertFalse(estimator.isWindowFilled());
         assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertNull(estimator.getFirstWindowedTriad());
         assertNull(estimator.getLastWindowedTriad());
         assertFalse(estimator.isRunning());
 
-        final int windowSize = estimator.getWindowSize();
-        final MagneticFluxDensityTriad firstTriad = new MagneticFluxDensityTriad();
-        final MagneticFluxDensityTriad firstTriad2 = new MagneticFluxDensityTriad();
-        final MagneticFluxDensityTriad lastTriad = new MagneticFluxDensityTriad();
+        final var windowSize = estimator.getWindowSize();
+        final var firstTriad = new MagneticFluxDensityTriad();
+        final var firstTriad2 = new MagneticFluxDensityTriad();
+        final var lastTriad = new MagneticFluxDensityTriad();
         MagneticFluxDensityTriad triad = null;
-        final List<MagneticFluxDensityTriad> triads = new ArrayList<>();
-        for (int i = 0; i < windowSize; i++) {
+        final var triads = new ArrayList<MagneticFluxDensityTriad>();
+        for (var i = 0; i < windowSize; i++) {
             if (estimator.getFirstWindowedTriad(firstTriad)) {
                 assertEquals(firstTriad, estimator.getFirstWindowedTriad());
             }
@@ -1400,10 +1381,10 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
             assertFalse(estimator.isRunning());
         }
 
-        assertEquals(1, mStart);
-        assertEquals(windowSize, mTriadAdded);
-        assertEquals(1, mWindowFilled);
-        assertEquals(0, mReset);
+        assertEquals(1, start);
+        assertEquals(windowSize, triadAdded);
+        assertEquals(1, windowFilled);
+        assertEquals(0, reset);
 
         assertEquals(windowSize, triads.size());
         assertEquals(triads.get(0), estimator.getFirstWindowedTriad());
@@ -1433,42 +1414,40 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
     }
 
     @Test
-    public void testAddTriad3() throws LockedException, IOException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+    void testAddTriad3() throws LockedException, IOException {
+        final var randomizer = new UniformRandomizer();
+        final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        final Matrix hardIron = Matrix.newFromArray(generateHardIron(randomizer));
-        final Matrix mm = generateSoftIronGeneral();
+        final var hardIron = Matrix.newFromArray(generateHardIron(randomizer));
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
-                MAGNETOMETER_NOISE_STD);
+        final var noiseRandomizer = new GaussianRandomizer(0.0, MAGNETOMETER_NOISE_STD);
 
-        final NEDPosition position = createPosition(randomizer);
-        final CoordinateTransformation cnb = generateBodyC(randomizer);
-        final Date timestamp = new Date(createTimestamp(randomizer));
+        final var position = createPosition(randomizer);
+        final var cnb = generateBodyC(randomizer);
+        final var timestamp = new Date(createTimestamp(randomizer));
 
-        final WindowedMagneticFluxDensityTriadNoiseEstimator estimator =
-                new WindowedMagneticFluxDensityTriadNoiseEstimator(this);
+        final var estimator = new WindowedMagneticFluxDensityTriadNoiseEstimator(this);
 
         reset();
-        assertEquals(0, mStart);
-        assertEquals(0, mTriadAdded);
-        assertEquals(0, mWindowFilled);
-        assertEquals(0, mReset);
+        assertEquals(0, start);
+        assertEquals(0, triadAdded);
+        assertEquals(0, windowFilled);
+        assertEquals(0, reset);
         assertFalse(estimator.isWindowFilled());
         assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertNull(estimator.getFirstWindowedTriad());
         assertNull(estimator.getLastWindowedTriad());
         assertFalse(estimator.isRunning());
 
-        final int windowSize = estimator.getWindowSize();
-        final MagneticFluxDensityTriad firstTriad = new MagneticFluxDensityTriad();
-        final MagneticFluxDensityTriad firstTriad2 = new MagneticFluxDensityTriad();
-        final MagneticFluxDensityTriad lastTriad = new MagneticFluxDensityTriad();
+        final var windowSize = estimator.getWindowSize();
+        final var firstTriad = new MagneticFluxDensityTriad();
+        final var firstTriad2 = new MagneticFluxDensityTriad();
+        final var lastTriad = new MagneticFluxDensityTriad();
         MagneticFluxDensityTriad triad = null;
-        final List<MagneticFluxDensityTriad> triads = new ArrayList<>();
-        for (int i = 0; i < windowSize; i++) {
+        final var triads = new ArrayList<MagneticFluxDensityTriad>();
+        for (var i = 0; i < windowSize; i++) {
             if (estimator.getFirstWindowedTriad(firstTriad)) {
                 assertEquals(firstTriad, estimator.getFirstWindowedTriad());
             }
@@ -1492,10 +1471,10 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
             assertFalse(estimator.isRunning());
         }
 
-        assertEquals(1, mStart);
-        assertEquals(windowSize, mTriadAdded);
-        assertEquals(1, mWindowFilled);
-        assertEquals(0, mReset);
+        assertEquals(1, start);
+        assertEquals(windowSize, triadAdded);
+        assertEquals(1, windowFilled);
+        assertEquals(0, reset);
 
         assertEquals(windowSize, triads.size());
         assertEquals(triads.get(0), estimator.getFirstWindowedTriad());
@@ -1527,29 +1506,29 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
     @Override
     public void onStart(final WindowedMagneticFluxDensityTriadNoiseEstimator estimator) {
         checkLocked(estimator);
-        mStart++;
+        start++;
     }
 
     @Override
     public void onTriadAdded(final WindowedMagneticFluxDensityTriadNoiseEstimator estimator) {
-        mTriadAdded++;
+        triadAdded++;
     }
 
     @Override
     public void onWindowFilled(final WindowedMagneticFluxDensityTriadNoiseEstimator estimator) {
-        mWindowFilled++;
+        windowFilled++;
     }
 
     @Override
     public void onReset(final WindowedMagneticFluxDensityTriadNoiseEstimator estimator) {
-        mReset++;
+        reset++;
     }
 
     private void reset() {
-        mStart = 0;
-        mTriadAdded = 0;
-        mWindowFilled = 0;
-        mReset = 0;
+        start = 0;
+        triadAdded = 0;
+        windowFilled = 0;
+        reset = 0;
     }
 
     private void checkLocked(final WindowedMagneticFluxDensityTriadNoiseEstimator estimator) {
@@ -1560,7 +1539,7 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
         assertThrows(LockedException.class, () -> estimator.setListener(this));
         assertThrows(LockedException.class, () -> estimator.addTriadAndProcess(null));
         assertThrows(LockedException.class, () -> estimator.addTriadAndProcess(0.0, 0.0, 0.0));
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertThrows(LockedException.class, () -> estimator.addTriadAndProcess(b, b, b));
         assertThrows(LockedException.class, () -> estimator.addTriad(null));
         assertThrows(LockedException.class, () -> estimator.addTriad(0.0, 0.0, 0.0));
@@ -1573,11 +1552,10 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
             final GaussianRandomizer noiseRandomizer, final Date timestamp, final NEDPosition position,
             final CoordinateTransformation cnb) {
 
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
+        final var earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity truthMagnetic = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
-        final BodyMagneticFluxDensity measuredMagnetic = generateMeasuredMagneticFluxDensity(truthMagnetic, hardIron,
-                softIron);
+        final var truthMagnetic = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final var measuredMagnetic = generateMeasuredMagneticFluxDensity(truthMagnetic, hardIron, softIron);
 
         if (noiseRandomizer != null) {
             measuredMagnetic.setBx(measuredMagnetic.getBx() + noiseRandomizer.nextDouble());
@@ -1589,10 +1567,9 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
     }
 
     private static CoordinateTransformation generateBodyC(final UniformRandomizer randomizer) {
-
-        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         return new CoordinateTransformation(roll, pitch, yaw1, FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
     }
@@ -1603,7 +1580,7 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
     }
 
     private static double[] generateHardIron(final UniformRandomizer randomizer) {
-        final double[] result = new double[BodyMagneticFluxDensity.COMPONENTS];
+        final var result = new double[BodyMagneticFluxDensity.COMPONENTS];
         randomizer.fill(result, MIN_HARD_IRON, MAX_HARD_IRON);
         return result;
     }
@@ -1619,9 +1596,9 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimatorTest implements
     }
 
     private static NEDPosition createPosition(final UniformRandomizer randomizer) {
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT_METERS, MAX_HEIGHT_METERS);
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT_METERS, MAX_HEIGHT_METERS);
 
         return new NEDPosition(latitude, longitude, height);
     }

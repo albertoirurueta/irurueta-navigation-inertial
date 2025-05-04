@@ -20,21 +20,19 @@ import com.irurueta.algebra.Utils;
 import com.irurueta.geometry.Quaternion;
 import com.irurueta.geometry.RotationException;
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class SuhQuaternionStepIntegratorTest {
+class SuhQuaternionStepIntegratorTest {
     private static final double TIME_INTERVAL = 0.02;
 
     private static final int NUM_SAMPLES = 50;
@@ -54,24 +52,24 @@ public class SuhQuaternionStepIntegratorTest {
     private static final double SMALL_ABSOLUTE_ERROR = 4e-4;
 
     @Test
-    public void integrate_whenOneStep_computesExpectedResult() throws RotationException {
-        final UniformRandomizer randomizer = new UniformRandomizer();
-        final double wx = Math.toRadians(randomizer.nextDouble(
+    void integrate_whenOneStep_computesExpectedResult() throws RotationException {
+        final var randomizer = new UniformRandomizer();
+        final var wx = Math.toRadians(randomizer.nextDouble(
                 MIN_ANGULAR_SPEED_DEGREES_PER_SECOND, MAX_ANGULAR_SPEED_DEGREES_PER_SECOND));
-        final double wy = Math.toRadians(randomizer.nextDouble(
+        final var wy = Math.toRadians(randomizer.nextDouble(
                 MIN_ANGULAR_SPEED_DEGREES_PER_SECOND, MAX_ANGULAR_SPEED_DEGREES_PER_SECOND));
-        final double wz = Math.toRadians(randomizer.nextDouble(
+        final var wz = Math.toRadians(randomizer.nextDouble(
                 MIN_ANGULAR_SPEED_DEGREES_PER_SECOND, MAX_ANGULAR_SPEED_DEGREES_PER_SECOND));
 
-        final Quaternion initialAttitude = getInitialAttitude();
-        final double totalTime = TIME_INTERVAL;
-        final Quaternion delta = new Quaternion(totalTime * wx, totalTime * wy, totalTime * wz);
-        final Quaternion expectedResult = initialAttitude.combineAndReturnNew(delta);
+        final var initialAttitude = getInitialAttitude();
+        final var totalTime = TIME_INTERVAL;
+        final var delta = new Quaternion(totalTime * wx, totalTime * wy, totalTime * wz);
+        final var expectedResult = initialAttitude.combineAndReturnNew(delta);
         expectedResult.normalize();
 
-        final SuhQuaternionStepIntegrator integrator = new SuhQuaternionStepIntegrator();
-        final Quaternion result1 = new Quaternion();
-        final Quaternion result2 = new Quaternion();
+        final var integrator = new SuhQuaternionStepIntegrator();
+        final var result1 = new Quaternion();
+        final var result2 = new Quaternion();
         SuhQuaternionStepIntegrator.integrationStep(initialAttitude, wx, wy, wz, wx, wy, wz, TIME_INTERVAL, result1);
         integrator.integrate(initialAttitude, wx, wy, wz, wx, wy, wz, TIME_INTERVAL, result2);
 
@@ -80,40 +78,38 @@ public class SuhQuaternionStepIntegratorTest {
     }
 
     @Test
-    public void integrate_whenMultipleSteps_computesExpectedResult()
-            throws RotationException {
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer();
-            final double wx = Math.toRadians(randomizer.nextDouble(
+    void integrate_whenMultipleSteps_computesExpectedResult() throws RotationException {
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var wx = Math.toRadians(randomizer.nextDouble(
                     MIN_ANGULAR_SPEED_DEGREES_PER_SECOND, MAX_ANGULAR_SPEED_DEGREES_PER_SECOND));
-            final double wy = Math.toRadians(randomizer.nextDouble(
+            final var wy = Math.toRadians(randomizer.nextDouble(
                     MIN_ANGULAR_SPEED_DEGREES_PER_SECOND, MAX_ANGULAR_SPEED_DEGREES_PER_SECOND));
-            final double wz = Math.toRadians(randomizer.nextDouble(
+            final var wz = Math.toRadians(randomizer.nextDouble(
                     MIN_ANGULAR_SPEED_DEGREES_PER_SECOND, MAX_ANGULAR_SPEED_DEGREES_PER_SECOND));
 
-            final Quaternion initialAttitude = getInitialAttitude();
-            final double totalTime = NUM_SAMPLES * TIME_INTERVAL;
-            final Quaternion delta = new Quaternion(totalTime * wx, totalTime * wy, totalTime * wz);
-            final Quaternion expectedResult = initialAttitude.combineAndReturnNew(delta);
+            final var initialAttitude = getInitialAttitude();
+            final var totalTime = NUM_SAMPLES * TIME_INTERVAL;
+            final var delta = new Quaternion(totalTime * wx, totalTime * wy, totalTime * wz);
+            final var expectedResult = initialAttitude.combineAndReturnNew(delta);
             expectedResult.normalize();
 
-            final SuhQuaternionStepIntegrator integrator = new SuhQuaternionStepIntegrator();
-            final Quaternion result1 = new Quaternion(initialAttitude);
-            final Quaternion result2 = new Quaternion(initialAttitude);
-            for (int i = 0; i < NUM_SAMPLES; i++) {
+            final var integrator = new SuhQuaternionStepIntegrator();
+            final var result1 = new Quaternion(initialAttitude);
+            final var result2 = new Quaternion(initialAttitude);
+            for (var i = 0; i < NUM_SAMPLES; i++) {
                 SuhQuaternionStepIntegrator.integrationStep(result1, wx, wy, wz, wx, wy, wz, TIME_INTERVAL, result1);
                 integrator.integrate(result2, wx, wy, wz, wx, wy, wz, TIME_INTERVAL, result2);
             }
 
             assertEquals(result1, result2);
 
-            final double[] resultEulerAngles = result1.toEulerAngles();
-            final double[] expectedEulerAngles = expectedResult.toEulerAngles();
-            final double[] diffAngles = ArrayUtils.subtractAndReturnNew(
-                    expectedEulerAngles, resultEulerAngles);
-            Logger.getLogger(SuhQuaternionStepIntegratorTest.class.getName())
-                    .log(Level.INFO, "Error euler angles: " + Arrays.toString(diffAngles));
+            final var resultEulerAngles = result1.toEulerAngles();
+            final var expectedEulerAngles = expectedResult.toEulerAngles();
+            final var diffAngles = ArrayUtils.subtractAndReturnNew(expectedEulerAngles, resultEulerAngles);
+            Logger.getLogger(SuhQuaternionStepIntegratorTest.class.getName()).log(Level.INFO,
+                    String.format("Error euler angles: %s", Arrays.toString(diffAngles)));
 
             if (!expectedResult.equals(result1, ABSOLUTE_ERROR)) {
                 continue;
@@ -127,43 +123,43 @@ public class SuhQuaternionStepIntegratorTest {
     }
 
     @Test
-    public void compareErrors_whenNoNoise_haveExpectedRelativeAccuracy() throws RotationException {
-        int numValid = 0;
-        double avgError1 = 0.0;
-        double avgError2 = 0.0;
-        double avgError3 = 0.0;
-        double avgError4 = 0.0;
-        double avgError5 = 0.0;
-        double avgError6 = 0.0;
-        int num = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer();
-            final double wx = Math.toRadians(randomizer.nextDouble(
+    void compareErrors_whenNoNoise_haveExpectedRelativeAccuracy() throws RotationException {
+        var numValid = 0;
+        var avgError1 = 0.0;
+        var avgError2 = 0.0;
+        var avgError3 = 0.0;
+        var avgError4 = 0.0;
+        var avgError5 = 0.0;
+        var avgError6 = 0.0;
+        var num = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var wx = Math.toRadians(randomizer.nextDouble(
                     MIN_ANGULAR_SPEED_DEGREES_PER_SECOND, MAX_ANGULAR_SPEED_DEGREES_PER_SECOND));
-            final double wy = Math.toRadians(randomizer.nextDouble(
+            final var wy = Math.toRadians(randomizer.nextDouble(
                     MIN_ANGULAR_SPEED_DEGREES_PER_SECOND, MAX_ANGULAR_SPEED_DEGREES_PER_SECOND));
-            final double wz = Math.toRadians(randomizer.nextDouble(
+            final var wz = Math.toRadians(randomizer.nextDouble(
                     MIN_ANGULAR_SPEED_DEGREES_PER_SECOND, MAX_ANGULAR_SPEED_DEGREES_PER_SECOND));
 
-            final Quaternion initialAttitude = getInitialAttitude();
-            final double totalTime = NUM_SAMPLES * TIME_INTERVAL;
-            final Quaternion delta = new Quaternion(totalTime * wx, totalTime * wy, totalTime * wz);
-            final Quaternion expectedResult = initialAttitude.combineAndReturnNew(delta);
+            final var initialAttitude = getInitialAttitude();
+            final var totalTime = NUM_SAMPLES * TIME_INTERVAL;
+            final var delta = new Quaternion(totalTime * wx, totalTime * wy, totalTime * wz);
+            final var expectedResult = initialAttitude.combineAndReturnNew(delta);
             expectedResult.normalize();
 
-            final SuhQuaternionStepIntegrator suhIntegrator = new SuhQuaternionStepIntegrator();
-            final TrawnyQuaternionStepIntegrator trawnyIntegrator = new TrawnyQuaternionStepIntegrator();
-            final YuanQuaternionStepIntegrator yuanIntegrator = new YuanQuaternionStepIntegrator();
-            final EulerQuaternionStepIntegrator eulerIntegrator = new EulerQuaternionStepIntegrator();
-            final MidPointQuaternionStepIntegrator midPointIntegrator = new MidPointQuaternionStepIntegrator();
-            final RungeKuttaQuaternionStepIntegrator rungeKuttaIntegrator = new RungeKuttaQuaternionStepIntegrator();
-            final Quaternion result1 = new Quaternion(initialAttitude);
-            final Quaternion result2 = new Quaternion(initialAttitude);
-            final Quaternion result3 = new Quaternion(initialAttitude);
-            final Quaternion result4 = new Quaternion(initialAttitude);
-            final Quaternion result5 = new Quaternion(initialAttitude);
-            final Quaternion result6 = new Quaternion(initialAttitude);
-            for (int i = 0; i < NUM_SAMPLES; i++) {
+            final var suhIntegrator = new SuhQuaternionStepIntegrator();
+            final var trawnyIntegrator = new TrawnyQuaternionStepIntegrator();
+            final var yuanIntegrator = new YuanQuaternionStepIntegrator();
+            final var eulerIntegrator = new EulerQuaternionStepIntegrator();
+            final var midPointIntegrator = new MidPointQuaternionStepIntegrator();
+            final var rungeKuttaIntegrator = new RungeKuttaQuaternionStepIntegrator();
+            final var result1 = new Quaternion(initialAttitude);
+            final var result2 = new Quaternion(initialAttitude);
+            final var result3 = new Quaternion(initialAttitude);
+            final var result4 = new Quaternion(initialAttitude);
+            final var result5 = new Quaternion(initialAttitude);
+            final var result6 = new Quaternion(initialAttitude);
+            for (var i = 0; i < NUM_SAMPLES; i++) {
                 suhIntegrator.integrate(result1, wx, wy, wz, wx, wy, wz, TIME_INTERVAL, result1);
                 trawnyIntegrator.integrate(result2, wx, wy, wz, wx, wy, wz, TIME_INTERVAL, result2);
                 yuanIntegrator.integrate(result3, wx, wy, wz, wx, wy, wz, TIME_INTERVAL, result3);
@@ -172,42 +168,40 @@ public class SuhQuaternionStepIntegratorTest {
                 rungeKuttaIntegrator.integrate(result6, wx, wy, wz, wx, wy, wz, TIME_INTERVAL, result6);
             }
 
-            final double[] resultSuhAngles = result1.toEulerAngles();
-            final double[] resultTrawnyEulerAngles = result2.toEulerAngles();
-            final double[] resultYuanAngles = result2.toEulerAngles();
-            final double[] resultEulerAngles = result3.toEulerAngles();
-            final double[] resultMidPointEulerAngles = result4.toEulerAngles();
-            final double[] resultRungeKuttaEulerAngles = result5.toEulerAngles();
+            final var resultSuhAngles = result1.toEulerAngles();
+            final var resultTrawnyEulerAngles = result2.toEulerAngles();
+            final var resultYuanAngles = result2.toEulerAngles();
+            final var resultEulerAngles = result3.toEulerAngles();
+            final var resultMidPointEulerAngles = result4.toEulerAngles();
+            final var resultRungeKuttaEulerAngles = result5.toEulerAngles();
 
-            final double[] expectedEulerAngles = expectedResult.toEulerAngles();
-            final double[] diffAngles1 = ArrayUtils.subtractAndReturnNew(expectedEulerAngles, resultSuhAngles);
-            final double[] diffAngles2 = ArrayUtils.subtractAndReturnNew(expectedEulerAngles, resultTrawnyEulerAngles);
-            final double[] diffAngles3 = ArrayUtils.subtractAndReturnNew(expectedEulerAngles, resultYuanAngles);
-            final double[] diffAngles4 = ArrayUtils.subtractAndReturnNew(expectedEulerAngles, resultEulerAngles);
-            final double[] diffAngles5 = ArrayUtils.subtractAndReturnNew(expectedEulerAngles,
-                    resultMidPointEulerAngles);
-            final double[] diffAngles6 = ArrayUtils.subtractAndReturnNew(expectedEulerAngles,
-                    resultRungeKuttaEulerAngles);
+            final var expectedEulerAngles = expectedResult.toEulerAngles();
+            final var diffAngles1 = ArrayUtils.subtractAndReturnNew(expectedEulerAngles, resultSuhAngles);
+            final var diffAngles2 = ArrayUtils.subtractAndReturnNew(expectedEulerAngles, resultTrawnyEulerAngles);
+            final var diffAngles3 = ArrayUtils.subtractAndReturnNew(expectedEulerAngles, resultYuanAngles);
+            final var diffAngles4 = ArrayUtils.subtractAndReturnNew(expectedEulerAngles, resultEulerAngles);
+            final var diffAngles5 = ArrayUtils.subtractAndReturnNew(expectedEulerAngles, resultMidPointEulerAngles);
+            final var diffAngles6 = ArrayUtils.subtractAndReturnNew(expectedEulerAngles, resultRungeKuttaEulerAngles);
 
-            final double error1 = Utils.normF(diffAngles1);
-            final double error2 = Utils.normF(diffAngles2);
-            final double error3 = Utils.normF(diffAngles3);
-            final double error4 = Utils.normF(diffAngles4);
-            final double error5 = Utils.normF(diffAngles5);
-            final double error6 = Utils.normF(diffAngles6);
+            final var error1 = Utils.normF(diffAngles1);
+            final var error2 = Utils.normF(diffAngles2);
+            final var error3 = Utils.normF(diffAngles3);
+            final var error4 = Utils.normF(diffAngles4);
+            final var error5 = Utils.normF(diffAngles5);
+            final var error6 = Utils.normF(diffAngles6);
 
-            Logger.getLogger(SuhQuaternionStepIntegratorTest.class.getName())
-                    .log(Level.INFO, "Suh error: " + error1 + " radians");
-            Logger.getLogger(SuhQuaternionStepIntegratorTest.class.getName())
-                    .log(Level.INFO, "Trawny error: " + error2 + " radians");
-            Logger.getLogger(SuhQuaternionStepIntegratorTest.class.getName())
-                    .log(Level.INFO, "Yuan error: " + error3 + " radians");
-            Logger.getLogger(SuhQuaternionStepIntegratorTest.class.getName())
-                    .log(Level.INFO, "Euler error: " + error4 + " radians");
-            Logger.getLogger(SuhQuaternionStepIntegratorTest.class.getName())
-                    .log(Level.INFO, "Mid-point error: " + error5 + " radians");
-            Logger.getLogger(SuhQuaternionStepIntegratorTest.class.getName())
-                    .log(Level.INFO, "Runge-Kutta error: " + error6 + " radians");
+            Logger.getLogger(SuhQuaternionStepIntegratorTest.class.getName()).log(Level.INFO,
+                    String.format("Suh error: %f radians", error1));
+            Logger.getLogger(SuhQuaternionStepIntegratorTest.class.getName()).log(Level.INFO,
+                    String.format("Trawny error: %f radians", error2));
+            Logger.getLogger(SuhQuaternionStepIntegratorTest.class.getName()).log(Level.INFO,
+                    String.format("Yuan error: %f radians", error3));
+            Logger.getLogger(SuhQuaternionStepIntegratorTest.class.getName()).log(Level.INFO,
+                    String.format("Euler error: %f radians", error4));
+            Logger.getLogger(SuhQuaternionStepIntegratorTest.class.getName()).log(Level.INFO,
+                    String.format("Mid-point error: %f radians", error5));
+            Logger.getLogger(SuhQuaternionStepIntegratorTest.class.getName()).log(Level.INFO,
+                    String.format("Runge-Kutta error: %f radians", error6));
 
             avgError1 += error1;
             avgError2 += error2;
@@ -217,8 +211,7 @@ public class SuhQuaternionStepIntegratorTest {
             avgError6 += error6;
             num++;
 
-            if (error1 < error2 || error1 < error3 || error1 < error4 || error1 < error5
-                    || error1 < error6) {
+            if (error1 < error2 || error1 < error3 || error1 < error4 || error1 < error5 || error1 < error6) {
                 continue;
             }
 
@@ -241,7 +234,7 @@ public class SuhQuaternionStepIntegratorTest {
         avgError5 /= num;
         avgError6 /= num;
 
-        final Map<String, Double> map = new HashMap<>();
+        final var map = new HashMap<String, Double>();
         map.put("Suh", avgError1);
         map.put("Trawny", avgError2);
         map.put("Yuan", avgError3);
@@ -249,20 +242,20 @@ public class SuhQuaternionStepIntegratorTest {
         map.put("Mid-point", avgError5);
         map.put("Runga-Kutta", avgError6);
 
-        final List<String> methodsList = new ArrayList<>(map.entrySet()).stream()
+        final var methodsList = new ArrayList<>(map.entrySet()).stream()
                 .sorted(Map.Entry.comparingByValue())
                 .map(entry -> entry.getKey() + ": " + entry.getValue())
-                .collect(Collectors.toList());
-        final String methods = String.join(", ", methodsList);
-        Logger.getLogger(SuhQuaternionStepIntegratorTest.class.getName())
-                .log(Level.INFO, "Methods (ordered more accurate to less accurate): " + methods);
+                .toList();
+        final var methods = String.join(", ", methodsList);
+        Logger.getLogger(SuhQuaternionStepIntegratorTest.class.getName()).log(Level.INFO,
+                String.format("Methods (ordered more accurate to less accurate): %s", methods));
     }
 
     private static Quaternion getInitialAttitude() {
-        final UniformRandomizer randomizer = new UniformRandomizer();
-        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var randomizer = new UniformRandomizer();
+        final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
         return new Quaternion(roll, pitch, yaw);
     }
 }

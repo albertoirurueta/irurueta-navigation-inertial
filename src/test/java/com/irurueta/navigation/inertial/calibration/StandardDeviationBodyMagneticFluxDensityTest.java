@@ -18,15 +18,13 @@ package com.irurueta.navigation.inertial.calibration;
 import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
 import com.irurueta.navigation.inertial.SerializationHelper;
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class StandardDeviationBodyMagneticFluxDensityTest {
+class StandardDeviationBodyMagneticFluxDensityTest {
 
     private static final double MIN_MAGNETIC_FLUX_DENSITY = -70e-6;
     private static final double MAX_MAGNETIC_FLUX_DENSITY = 70e-6;
@@ -34,16 +32,16 @@ public class StandardDeviationBodyMagneticFluxDensityTest {
     private static final double THRESHOLD = 1e-6;
 
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         // test empty constructor
-        StandardDeviationBodyMagneticFluxDensity stdMagnetic = new StandardDeviationBodyMagneticFluxDensity();
+        var stdMagnetic = new StandardDeviationBodyMagneticFluxDensity();
 
         // check default values
         assertNull(stdMagnetic.getMagneticFluxDensity());
         assertEquals(0.0, stdMagnetic.getMagneticFluxDensityStandardDeviation(), 0.0);
 
         // test constructor with magnetic flux density
-        final BodyMagneticFluxDensity magneticFluxDensity = new BodyMagneticFluxDensity();
+        final var magneticFluxDensity = new BodyMagneticFluxDensity();
         stdMagnetic = new StandardDeviationBodyMagneticFluxDensity(magneticFluxDensity);
 
         // check default values
@@ -51,8 +49,8 @@ public class StandardDeviationBodyMagneticFluxDensityTest {
         assertEquals(0.0, stdMagnetic.getMagneticFluxDensityStandardDeviation(), 0.0);
 
         // test constructor with standard deviation
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double std = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final var randomizer = new UniformRandomizer();
+        final var std = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
         stdMagnetic = new StandardDeviationBodyMagneticFluxDensity(std);
 
         // check default values
@@ -77,24 +75,24 @@ public class StandardDeviationBodyMagneticFluxDensityTest {
         // test copy constructor
         stdMagnetic = new StandardDeviationBodyMagneticFluxDensity(magneticFluxDensity, std);
 
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic2 = new StandardDeviationBodyMagneticFluxDensity(
+        final var stdMagnetic2 = new StandardDeviationBodyMagneticFluxDensity(
                 stdMagnetic);
 
         // check
         assertEquals(stdMagnetic.getMagneticFluxDensity(), stdMagnetic2.getMagneticFluxDensity());
-        assertEquals(stdMagnetic.getMagneticFluxDensityStandardDeviation(),
+        assertEquals(stdMagnetic.getMagneticFluxDensityStandardDeviation(), 
                 stdMagnetic2.getMagneticFluxDensityStandardDeviation(), 0.0);
     }
 
     @Test
-    public void testGetSetMagneticFluxDensity() {
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic = new StandardDeviationBodyMagneticFluxDensity();
+    void testGetSetMagneticFluxDensity() {
+        final var stdMagnetic = new StandardDeviationBodyMagneticFluxDensity();
 
         // check default value
         assertNull(stdMagnetic.getMagneticFluxDensity());
 
         // set new value
-        final BodyMagneticFluxDensity magneticFluxDensity = new BodyMagneticFluxDensity();
+        final var magneticFluxDensity = new BodyMagneticFluxDensity();
         stdMagnetic.setMagneticFluxDensity(magneticFluxDensity);
 
         // check
@@ -102,15 +100,15 @@ public class StandardDeviationBodyMagneticFluxDensityTest {
     }
 
     @Test
-    public void testGetSetMagneticFluxDensityStandardDeviation() {
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic = new StandardDeviationBodyMagneticFluxDensity();
+    void testGetSetMagneticFluxDensityStandardDeviation() {
+        final var stdMagnetic = new StandardDeviationBodyMagneticFluxDensity();
 
         // check default value
         assertEquals(0.0, stdMagnetic.getMagneticFluxDensityStandardDeviation(), 0.0);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double std = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final var randomizer = new UniformRandomizer();
+        final var std = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
         stdMagnetic.setMagneticFluxDensityStandardDeviation(std);
 
         // check
@@ -121,18 +119,17 @@ public class StandardDeviationBodyMagneticFluxDensityTest {
     }
 
     @Test
-    public void testCopyFromWhenBodyMagneticFluxDensityIsAvailableAtSourceAndDestinationIsEmpty() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double bx = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
-        final double by = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
-        final double bz = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
-        final double std = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
-        final BodyMagneticFluxDensity magneticFluxDensity = new BodyMagneticFluxDensity(bx, by, bz);
+    void testCopyFromWhenBodyMagneticFluxDensityIsAvailableAtSourceAndDestinationIsEmpty() {
+        final var randomizer = new UniformRandomizer();
+        final var bx = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final var by = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final var bz = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final var std = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final var magneticFluxDensity = new BodyMagneticFluxDensity(bx, by, bz);
 
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic1 = new StandardDeviationBodyMagneticFluxDensity(
-                magneticFluxDensity, std);
+        final var stdMagnetic1 = new StandardDeviationBodyMagneticFluxDensity(magneticFluxDensity, std);
 
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic2 = new StandardDeviationBodyMagneticFluxDensity();
+        final var stdMagnetic2 = new StandardDeviationBodyMagneticFluxDensity();
 
         stdMagnetic2.copyFrom(stdMagnetic1);
 
@@ -144,18 +141,17 @@ public class StandardDeviationBodyMagneticFluxDensityTest {
     }
 
     @Test
-    public void testCopyFromWhenBodyMagneticFluxDensityIsAvailableAtDestinationAndSourceIsEmpty() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double bx = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
-        final double by = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
-        final double bz = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
-        final double std = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
-        final BodyMagneticFluxDensity magneticFluxDensity = new BodyMagneticFluxDensity(bx, by, bz);
+    void testCopyFromWhenBodyMagneticFluxDensityIsAvailableAtDestinationAndSourceIsEmpty() {
+        final var randomizer = new UniformRandomizer();
+        final var bx = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final var by = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final var bz = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final var std = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final var magneticFluxDensity = new BodyMagneticFluxDensity(bx, by, bz);
 
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic1 = new StandardDeviationBodyMagneticFluxDensity();
+        final var stdMagnetic1 = new StandardDeviationBodyMagneticFluxDensity();
 
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic2 = new StandardDeviationBodyMagneticFluxDensity(
-                magneticFluxDensity, std);
+        final var stdMagnetic2 = new StandardDeviationBodyMagneticFluxDensity(magneticFluxDensity, std);
 
         stdMagnetic2.copyFrom(stdMagnetic1);
 
@@ -165,25 +161,23 @@ public class StandardDeviationBodyMagneticFluxDensityTest {
     }
 
     @Test
-    public void testCopyFromWhenBodyMagneticFluxDensityIsAvailableAtSourceAndDestination() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double bx1 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
-        final double by1 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
-        final double bz1 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
-        final double std1 = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
-        final BodyMagneticFluxDensity magneticFluxDensity1 = new BodyMagneticFluxDensity(bx1, by1, bz1);
+    void testCopyFromWhenBodyMagneticFluxDensityIsAvailableAtSourceAndDestination() {
+        final var randomizer = new UniformRandomizer();
+        final var bx1 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final var by1 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final var bz1 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final var std1 = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final var magneticFluxDensity1 = new BodyMagneticFluxDensity(bx1, by1, bz1);
 
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic1 = new StandardDeviationBodyMagneticFluxDensity(
-                magneticFluxDensity1, std1);
+        final var stdMagnetic1 = new StandardDeviationBodyMagneticFluxDensity(magneticFluxDensity1, std1);
 
-        final double bx2 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
-        final double by2 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
-        final double bz2 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
-        final double std2 = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
-        final BodyMagneticFluxDensity magneticFluxDensity2 = new BodyMagneticFluxDensity(bx2, by2, bz2);
+        final var bx2 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final var by2 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final var bz2 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final var std2 = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final var magneticFluxDensity2 = new BodyMagneticFluxDensity(bx2, by2, bz2);
 
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic2 = new StandardDeviationBodyMagneticFluxDensity(
-                magneticFluxDensity2, std2);
+        final var stdMagnetic2 = new StandardDeviationBodyMagneticFluxDensity(magneticFluxDensity2, std2);
 
         stdMagnetic2.copyFrom(stdMagnetic1);
 
@@ -195,25 +189,23 @@ public class StandardDeviationBodyMagneticFluxDensityTest {
     }
 
     @Test
-    public void testCopyTo() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double bx1 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
-        final double by1 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
-        final double bz1 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
-        final double std1 = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
-        final BodyMagneticFluxDensity magneticFluxDensity1 = new BodyMagneticFluxDensity(bx1, by1, bz1);
+    void testCopyTo() {
+        final var randomizer = new UniformRandomizer();
+        final var bx1 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final var by1 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final var bz1 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final var std1 = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final var magneticFluxDensity1 = new BodyMagneticFluxDensity(bx1, by1, bz1);
 
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic1 = new StandardDeviationBodyMagneticFluxDensity(
-                magneticFluxDensity1, std1);
+        final var stdMagnetic1 = new StandardDeviationBodyMagneticFluxDensity(magneticFluxDensity1, std1);
 
-        final double bx2 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
-        final double by2 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
-        final double bz2 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
-        final double std2 = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
-        final BodyMagneticFluxDensity magneticFluxDensity2 = new BodyMagneticFluxDensity(bx2, by2, bz2);
+        final var bx2 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final var by2 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final var bz2 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final var std2 = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final var magneticFluxDensity2 = new BodyMagneticFluxDensity(bx2, by2, bz2);
 
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic2 = new StandardDeviationBodyMagneticFluxDensity(
-                magneticFluxDensity2, std2);
+        final var stdMagnetic2 = new StandardDeviationBodyMagneticFluxDensity(magneticFluxDensity2, std2);
 
         stdMagnetic1.copyFrom(stdMagnetic2);
 
@@ -225,61 +217,55 @@ public class StandardDeviationBodyMagneticFluxDensityTest {
     }
 
     @Test
-    public void testHashCode() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double bx = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
-        final double by = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
-        final double bz = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
-        final double std = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
-        final BodyMagneticFluxDensity magneticFluxDensity = new BodyMagneticFluxDensity(bx, by, bz);
+    void testHashCode() {
+        final var randomizer = new UniformRandomizer();
+        final var bx = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final var by = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final var bz = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final var std = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final var magneticFluxDensity = new BodyMagneticFluxDensity(bx, by, bz);
 
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic1 = new StandardDeviationBodyMagneticFluxDensity(
-                magneticFluxDensity, std);
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic2 = new StandardDeviationBodyMagneticFluxDensity(
-                magneticFluxDensity, std);
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic3 = new StandardDeviationBodyMagneticFluxDensity();
+        final var stdMagnetic1 = new StandardDeviationBodyMagneticFluxDensity(magneticFluxDensity, std);
+        final var stdMagnetic2 = new StandardDeviationBodyMagneticFluxDensity(magneticFluxDensity, std);
+        final var stdMagnetic3 = new StandardDeviationBodyMagneticFluxDensity();
 
         assertEquals(stdMagnetic1.hashCode(), stdMagnetic2.hashCode());
         assertNotEquals(stdMagnetic1.hashCode(), stdMagnetic3.hashCode());
     }
 
     @Test
-    public void testEquals() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double bx = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
-        final double by = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
-        final double bz = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
-        final double std = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
-        final BodyMagneticFluxDensity magneticFluxDensity = new BodyMagneticFluxDensity(bx, by, bz);
+    void testEquals() {
+        final var randomizer = new UniformRandomizer();
+        final var bx = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final var by = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final var bz = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final var std = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final var magneticFluxDensity = new BodyMagneticFluxDensity(bx, by, bz);
 
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic1 = new StandardDeviationBodyMagneticFluxDensity(
-                magneticFluxDensity, std);
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic2 = new StandardDeviationBodyMagneticFluxDensity(
-                magneticFluxDensity, std);
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic3 = new StandardDeviationBodyMagneticFluxDensity();
+        final var stdMagnetic1 = new StandardDeviationBodyMagneticFluxDensity(magneticFluxDensity, std);
+        final var stdMagnetic2 = new StandardDeviationBodyMagneticFluxDensity(magneticFluxDensity, std);
+        final var stdMagnetic3 = new StandardDeviationBodyMagneticFluxDensity();
 
         //noinspection EqualsWithItself
         assertEquals(stdMagnetic1, stdMagnetic1);
         assertTrue(stdMagnetic1.equals(stdMagnetic2));
         assertFalse(stdMagnetic1.equals(stdMagnetic3));
-        assertNotEquals(stdMagnetic1, null);
-        assertNotEquals(stdMagnetic1, new Object());
+        assertNotEquals(null, stdMagnetic1);
+        assertNotEquals(new Object(), stdMagnetic1);
     }
 
     @Test
-    public void testEqualsWithThreshold() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double bx = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
-        final double by = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
-        final double bz = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
-        final double std = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
-        final BodyMagneticFluxDensity magneticFluxDensity = new BodyMagneticFluxDensity(bx, by, bz);
+    void testEqualsWithThreshold() {
+        final var randomizer = new UniformRandomizer();
+        final var bx = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final var by = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final var bz = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final var std = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final var magneticFluxDensity = new BodyMagneticFluxDensity(bx, by, bz);
 
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic1 = new StandardDeviationBodyMagneticFluxDensity(
-                magneticFluxDensity, std);
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic2 = new StandardDeviationBodyMagneticFluxDensity(
-                magneticFluxDensity, std);
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic3 = new StandardDeviationBodyMagneticFluxDensity();
+        final var stdMagnetic1 = new StandardDeviationBodyMagneticFluxDensity(magneticFluxDensity, std);
+        final var stdMagnetic2 = new StandardDeviationBodyMagneticFluxDensity(magneticFluxDensity, std);
+        final var stdMagnetic3 = new StandardDeviationBodyMagneticFluxDensity();
 
         assertTrue(stdMagnetic1.equals(stdMagnetic1, THRESHOLD));
         assertTrue(stdMagnetic1.equals(stdMagnetic2, THRESHOLD));
@@ -288,46 +274,44 @@ public class StandardDeviationBodyMagneticFluxDensityTest {
     }
 
     @Test
-    public void testClone() throws CloneNotSupportedException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double bx = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
-        final double by = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
-        final double bz = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
-        final double std = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
-        final BodyMagneticFluxDensity magneticFluxDensity = new BodyMagneticFluxDensity(bx, by, bz);
+    void testClone() throws CloneNotSupportedException {
+        final var randomizer = new UniformRandomizer();
+        final var bx = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final var by = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final var bz = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final var std = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final var magneticFluxDensity = new BodyMagneticFluxDensity(bx, by, bz);
 
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic1 = new StandardDeviationBodyMagneticFluxDensity(
-                magneticFluxDensity, std);
+        final var stdMagnetic1 = new StandardDeviationBodyMagneticFluxDensity(magneticFluxDensity, std);
 
-        final Object stdMagnetic2 = stdMagnetic1.clone();
+        final var stdMagnetic2 = stdMagnetic1.clone();
 
         // check
         assertEquals(stdMagnetic1, stdMagnetic2);
     }
 
     @Test
-    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double bx = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
-        final double by = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
-        final double bz = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
-        final double std = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
-        final BodyMagneticFluxDensity magneticFluxDensity = new BodyMagneticFluxDensity(bx, by, bz);
+    void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final var randomizer = new UniformRandomizer();
+        final var bx = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final var by = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final var bz = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final var std = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final var magneticFluxDensity = new BodyMagneticFluxDensity(bx, by, bz);
 
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic1 = new StandardDeviationBodyMagneticFluxDensity(
-                magneticFluxDensity, std);
+        final var stdMagnetic1 = new StandardDeviationBodyMagneticFluxDensity(magneticFluxDensity, std);
 
-        final byte[] bytes = SerializationHelper.serialize(stdMagnetic1);
+        final var bytes = SerializationHelper.serialize(stdMagnetic1);
 
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic2 = SerializationHelper.deserialize(bytes);
+        final var stdMagnetic2 = SerializationHelper.deserialize(bytes);
 
         assertEquals(stdMagnetic1, stdMagnetic2);
         assertNotSame(stdMagnetic1, stdMagnetic2);
     }
 
     @Test
-    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
-        final Field field = StandardDeviationBodyMagneticFluxDensity.class.getDeclaredField("serialVersionUID");
+    void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final var field = StandardDeviationBodyMagneticFluxDensity.class.getDeclaredField("serialVersionUID");
         field.setAccessible(true);
 
         assertEquals(0L, field.get(null));

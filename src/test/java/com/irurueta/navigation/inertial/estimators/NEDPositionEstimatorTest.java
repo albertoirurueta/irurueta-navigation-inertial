@@ -26,14 +26,11 @@ import com.irurueta.units.Speed;
 import com.irurueta.units.SpeedUnit;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeUnit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import java.util.Random;
+import static org.junit.jupiter.api.Assertions.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-public class NEDPositionEstimatorTest {
+class NEDPositionEstimatorTest {
 
     private static final double TIME_INTERVAL_SECONDS = 0.02;
 
@@ -50,104 +47,104 @@ public class NEDPositionEstimatorTest {
     private static final double LARGE_ABSOLUTE_ERROR = 1e-7;
 
     @Test
-    public void testEstimate() {
+    void testEstimate() {
 
-        final NEDPositionEstimator estimator = new NEDPositionEstimator();
+        final var estimator = new NEDPositionEstimator();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double oldLatitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double oldLongitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double oldHeight = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var randomizer = new UniformRandomizer();
+        final var oldLatitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var oldLongitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var oldHeight = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-        final double oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-        final double vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-        final NEDPosition result1 = new NEDPosition();
+        final var result1 = new NEDPosition();
         estimator.estimate(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, vn, ve, vd,
                 result1);
 
-        final Time timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
-        final NEDPosition result2 = new NEDPosition();
-        estimator.estimate(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, vn, ve, vd,
+        final var timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
+        final var result2 = new NEDPosition();
+        estimator.estimate(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, vn, ve, vd, 
                 result2);
 
-        final Angle oldLatitudeAngle = new Angle(oldLatitude, AngleUnit.RADIANS);
-        final Angle oldLongitudeAngle = new Angle(oldLongitude, AngleUnit.RADIANS);
-        final Distance oldHeightDistance = new Distance(oldHeight, DistanceUnit.METER);
+        final var oldLatitudeAngle = new Angle(oldLatitude, AngleUnit.RADIANS);
+        final var oldLongitudeAngle = new Angle(oldLongitude, AngleUnit.RADIANS);
+        final var oldHeightDistance = new Distance(oldHeight, DistanceUnit.METER);
 
-        final Speed oldSpeedN = new Speed(oldVn, SpeedUnit.METERS_PER_SECOND);
-        final Speed oldSpeedE = new Speed(oldVe, SpeedUnit.METERS_PER_SECOND);
-        final Speed oldSpeedD = new Speed(oldVd, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedN = new Speed(oldVn, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedE = new Speed(oldVe, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedD = new Speed(oldVd, SpeedUnit.METERS_PER_SECOND);
 
-        final Speed speedN = new Speed(vn, SpeedUnit.METERS_PER_SECOND);
-        final Speed speedE = new Speed(ve, SpeedUnit.METERS_PER_SECOND);
-        final Speed speedD = new Speed(vd, SpeedUnit.METERS_PER_SECOND);
+        final var speedN = new Speed(vn, SpeedUnit.METERS_PER_SECOND);
+        final var speedE = new Speed(ve, SpeedUnit.METERS_PER_SECOND);
+        final var speedD = new Speed(vd, SpeedUnit.METERS_PER_SECOND);
 
-        final NEDPosition result3 = new NEDPosition();
+        final var result3 = new NEDPosition();
         estimator.estimate(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance,
                 oldSpeedN, oldSpeedE, oldSpeedD, speedN, speedE, speedD, result3);
 
-        final NEDPosition result4 = new NEDPosition();
+        final var result4 = new NEDPosition();
         estimator.estimate(timeInterval, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance,
                 oldSpeedN, oldSpeedE, oldSpeedD, speedN, speedE, speedD, result4);
 
-        final NEDPosition result5 = new NEDPosition();
-        estimator.estimate(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance,
+        final var result5 = new NEDPosition();
+        estimator.estimate(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, 
                 oldVn, oldVe, oldVd, vn, ve, vd, result5);
 
-        final NEDPosition result6 = new NEDPosition();
+        final var result6 = new NEDPosition();
         estimator.estimate(timeInterval, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldVn, oldVe, oldVd,
                 vn, ve, vd, result6);
 
-        final NEDPosition result7 = new NEDPosition();
+        final var result7 = new NEDPosition();
         estimator.estimate(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, oldHeight, oldSpeedN, oldSpeedE, oldSpeedD,
                 speedN, speedE, speedD, result7);
 
-        final NEDPosition result8 = new NEDPosition();
+        final var result8 = new NEDPosition();
         estimator.estimate(timeInterval, oldLatitude, oldLongitude, oldHeight, oldSpeedN, oldSpeedE, oldSpeedD,
                 speedN, speedE, speedD, result8);
 
-        final NEDPosition oldPosition = new NEDPosition(oldLatitude, oldLongitude, oldHeight);
-        final NEDPosition result9 = new NEDPosition();
+        final var oldPosition = new NEDPosition(oldLatitude, oldLongitude, oldHeight);
+        final var result9 = new NEDPosition();
         estimator.estimate(TIME_INTERVAL_SECONDS, oldPosition, oldVn, oldVe, oldVd, vn, ve, vd, result9);
 
-        final NEDPosition result10 = new NEDPosition();
+        final var result10 = new NEDPosition();
         estimator.estimate(timeInterval, oldPosition, oldVn, oldVe, oldVd, vn, ve, vd, result10);
 
-        final NEDPosition result11 = new NEDPosition();
+        final var result11 = new NEDPosition();
         estimator.estimate(TIME_INTERVAL_SECONDS, oldPosition, oldSpeedN, oldSpeedE, oldSpeedD, speedN, speedE, speedD,
                 result11);
 
-        final NEDPosition result12 = new NEDPosition();
-        estimator.estimate(timeInterval, oldPosition, oldSpeedN, oldSpeedE, oldSpeedD, speedN, speedE, speedD,
+        final var result12 = new NEDPosition();
+        estimator.estimate(timeInterval, oldPosition, oldSpeedN, oldSpeedE, oldSpeedD, speedN, speedE, speedD, 
                 result12);
 
-        final NEDVelocity oldVelocity = new NEDVelocity(oldVn, oldVe, oldVd);
-        final NEDVelocity velocity = new NEDVelocity(vn, ve, vd);
-        final NEDPosition result13 = new NEDPosition();
+        final var oldVelocity = new NEDVelocity(oldVn, oldVe, oldVd);
+        final var velocity = new NEDVelocity(vn, ve, vd);
+        final var result13 = new NEDPosition();
         estimator.estimate(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, oldHeight, oldVelocity, velocity,
                 result13);
 
-        final NEDPosition result14 = new NEDPosition();
+        final var result14 = new NEDPosition();
         estimator.estimate(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVelocity, velocity, result14);
 
-        final NEDPosition result15 = new NEDPosition();
+        final var result15 = new NEDPosition();
         estimator.estimate(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldVelocity,
                 velocity, result15);
 
-        final NEDPosition result16 = new NEDPosition();
+        final var result16 = new NEDPosition();
         estimator.estimate(timeInterval, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldVelocity, velocity,
                 result16);
 
-        final NEDPosition result17 = new NEDPosition();
+        final var result17 = new NEDPosition();
         estimator.estimate(TIME_INTERVAL_SECONDS, oldPosition, oldVelocity, velocity, result17);
 
-        final NEDPosition result18 = new NEDPosition();
+        final var result18 = new NEDPosition();
         estimator.estimate(timeInterval, oldPosition, oldVelocity, velocity, result18);
 
         // check
@@ -171,91 +168,89 @@ public class NEDPositionEstimatorTest {
     }
 
     @Test
-    public void testEstimateAndReturnNew() {
-        final NEDPositionEstimator estimator = new NEDPositionEstimator();
+    void testEstimateAndReturnNew() {
+        final var estimator = new NEDPositionEstimator();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double oldLatitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double oldLongitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double oldHeight = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var randomizer = new UniformRandomizer();
+        final var oldLatitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var oldLongitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var oldHeight = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-        final double oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-        final double vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-        final NEDPosition result1 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS,
-                oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, vn, ve, vd);
-
-        final Time timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
-        final NEDPosition result2 = estimator.estimateAndReturnNew(timeInterval, oldLatitude, oldLongitude, oldHeight,
+        final var result1 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, oldHeight,
                 oldVn, oldVe, oldVd, vn, ve, vd);
 
-        final Angle oldLatitudeAngle = new Angle(oldLatitude, AngleUnit.RADIANS);
-        final Angle oldLongitudeAngle = new Angle(oldLongitude, AngleUnit.RADIANS);
-        final Distance oldHeightDistance = new Distance(oldHeight, DistanceUnit.METER);
+        final var timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
+        final var result2 = estimator.estimateAndReturnNew(timeInterval, oldLatitude, oldLongitude, oldHeight,
+                oldVn, oldVe, oldVd, vn, ve, vd);
 
-        final Speed oldSpeedN = new Speed(oldVn, SpeedUnit.METERS_PER_SECOND);
-        final Speed oldSpeedE = new Speed(oldVe, SpeedUnit.METERS_PER_SECOND);
-        final Speed oldSpeedD = new Speed(oldVd, SpeedUnit.METERS_PER_SECOND);
+        final var oldLatitudeAngle = new Angle(oldLatitude, AngleUnit.RADIANS);
+        final var oldLongitudeAngle = new Angle(oldLongitude, AngleUnit.RADIANS);
+        final var oldHeightDistance = new Distance(oldHeight, DistanceUnit.METER);
 
-        final Speed speedN = new Speed(vn, SpeedUnit.METERS_PER_SECOND);
-        final Speed speedE = new Speed(ve, SpeedUnit.METERS_PER_SECOND);
-        final Speed speedD = new Speed(vd, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedN = new Speed(oldVn, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedE = new Speed(oldVe, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedD = new Speed(oldVd, SpeedUnit.METERS_PER_SECOND);
 
-        final NEDPosition result3 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var speedN = new Speed(vn, SpeedUnit.METERS_PER_SECOND);
+        final var speedE = new Speed(ve, SpeedUnit.METERS_PER_SECOND);
+        final var speedD = new Speed(vd, SpeedUnit.METERS_PER_SECOND);
+
+        final var result3 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS,
                 oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldSpeedN, oldSpeedE, oldSpeedD,
                 speedN, speedE, speedD);
 
-        final NEDPosition result4 = estimator.estimateAndReturnNew(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
+        final var result4 = estimator.estimateAndReturnNew(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldSpeedN, oldSpeedE, oldSpeedD, speedN, speedE, speedD);
 
-        final NEDPosition result5 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result5 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS,
                 oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldVn, oldVe, oldVd, vn, ve, vd);
 
-        final NEDPosition result6 = estimator.estimateAndReturnNew(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
+        final var result6 = estimator.estimateAndReturnNew(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldVn, oldVe, oldVd, vn, ve, vd);
 
-        final NEDPosition result7 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude,
-                oldHeight, oldSpeedN, oldSpeedE, oldSpeedD, speedN, speedE, speedD);
-
-        final NEDPosition result8 = estimator.estimateAndReturnNew(timeInterval, oldLatitude, oldLongitude, oldHeight,
+        final var result7 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, oldHeight,
                 oldSpeedN, oldSpeedE, oldSpeedD, speedN, speedE, speedD);
 
-        final NEDPosition oldPosition = new NEDPosition(oldLatitude, oldLongitude, oldHeight);
-        final NEDPosition result9 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition,
-                oldVn, oldVe, oldVd, vn, ve, vd);
+        final var result8 = estimator.estimateAndReturnNew(timeInterval, oldLatitude, oldLongitude, oldHeight,
+                oldSpeedN, oldSpeedE, oldSpeedD, speedN, speedE, speedD);
 
-        final NEDPosition result10 = estimator.estimateAndReturnNew(timeInterval, oldPosition, oldVn, oldVe, oldVd,
+        final var oldPosition = new NEDPosition(oldLatitude, oldLongitude, oldHeight);
+        final var result9 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldVn, oldVe, oldVd,
                 vn, ve, vd);
 
-        final NEDPosition result11 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition,
+        final var result10 = estimator.estimateAndReturnNew(timeInterval, oldPosition, oldVn, oldVe, oldVd, vn, ve, vd);
+
+        final var result11 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition,
                 oldSpeedN, oldSpeedE, oldSpeedD, speedN, speedE, speedD);
 
-        final NEDPosition result12 = estimator.estimateAndReturnNew(timeInterval, oldPosition,
-                oldSpeedN, oldSpeedE, oldSpeedD, speedN, speedE, speedD);
+        final var result12 = estimator.estimateAndReturnNew(timeInterval, oldPosition, oldSpeedN, oldSpeedE, oldSpeedD,
+                speedN, speedE, speedD);
 
-        final NEDVelocity oldVelocity = new NEDVelocity(oldVn, oldVe, oldVd);
-        final NEDVelocity velocity = new NEDVelocity(vn, ve, vd);
-        final NEDPosition result13 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS,
-                oldLatitude, oldLongitude, oldHeight, oldVelocity, velocity);
-
-        final NEDPosition result14 = estimator.estimateAndReturnNew(timeInterval, oldLatitude, oldLongitude, oldHeight,
+        final var oldVelocity = new NEDVelocity(oldVn, oldVe, oldVd);
+        final var velocity = new NEDVelocity(vn, ve, vd);
+        final var result13 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, oldHeight,
                 oldVelocity, velocity);
 
-        final NEDPosition result15 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result14 = estimator.estimateAndReturnNew(timeInterval, oldLatitude, oldLongitude, oldHeight,
+                oldVelocity, velocity);
+
+        final var result15 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS,
                 oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldVelocity, velocity);
 
-        final NEDPosition result16 = estimator.estimateAndReturnNew(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
+        final var result16 = estimator.estimateAndReturnNew(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldVelocity, velocity);
 
-        final NEDPosition result17 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldVelocity,
-                velocity);
+        final var result17 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldVelocity, velocity);
 
-        final NEDPosition result18 = estimator.estimateAndReturnNew(timeInterval, oldPosition, oldVelocity, velocity);
+        final var result18 = estimator.estimateAndReturnNew(timeInterval, oldPosition, oldVelocity, velocity);
 
         // check
         assertEquals(result1, result2);
@@ -278,104 +273,104 @@ public class NEDPositionEstimatorTest {
     }
 
     @Test
-    public void testEstimatePosition() {
+    void testEstimatePosition() {
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double oldLatitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double oldLongitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double oldHeight = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var randomizer = new UniformRandomizer();
+        final var oldLatitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var oldLongitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var oldHeight = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-        final double oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-        final double vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-        final NEDPosition result1 = new NEDPosition();
+        final var result1 = new NEDPosition();
         NEDPositionEstimator.estimatePosition(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, oldHeight,
                 oldVn, oldVe, oldVd, vn, ve, vd, result1);
 
-        final Time timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
-        final NEDPosition result2 = new NEDPosition();
+        final var timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
+        final var result2 = new NEDPosition();
         NEDPositionEstimator.estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd,
                 vn, ve, vd, result2);
 
-        final Angle oldLatitudeAngle = new Angle(oldLatitude, AngleUnit.RADIANS);
-        final Angle oldLongitudeAngle = new Angle(oldLongitude, AngleUnit.RADIANS);
-        final Distance oldHeightDistance = new Distance(oldHeight, DistanceUnit.METER);
+        final var oldLatitudeAngle = new Angle(oldLatitude, AngleUnit.RADIANS);
+        final var oldLongitudeAngle = new Angle(oldLongitude, AngleUnit.RADIANS);
+        final var oldHeightDistance = new Distance(oldHeight, DistanceUnit.METER);
 
-        final Speed oldSpeedN = new Speed(oldVn, SpeedUnit.METERS_PER_SECOND);
-        final Speed oldSpeedE = new Speed(oldVe, SpeedUnit.METERS_PER_SECOND);
-        final Speed oldSpeedD = new Speed(oldVd, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedN = new Speed(oldVn, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedE = new Speed(oldVe, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedD = new Speed(oldVd, SpeedUnit.METERS_PER_SECOND);
 
-        final Speed speedN = new Speed(vn, SpeedUnit.METERS_PER_SECOND);
-        final Speed speedE = new Speed(ve, SpeedUnit.METERS_PER_SECOND);
-        final Speed speedD = new Speed(vd, SpeedUnit.METERS_PER_SECOND);
+        final var speedN = new Speed(vn, SpeedUnit.METERS_PER_SECOND);
+        final var speedE = new Speed(ve, SpeedUnit.METERS_PER_SECOND);
+        final var speedD = new Speed(vd, SpeedUnit.METERS_PER_SECOND);
 
-        final NEDPosition result3 = new NEDPosition();
+        final var result3 = new NEDPosition();
         NEDPositionEstimator.estimatePosition(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldSpeedN, oldSpeedE, oldSpeedD, speedN, speedE, speedD, result3);
 
-        final NEDPosition result4 = new NEDPosition();
+        final var result4 = new NEDPosition();
         NEDPositionEstimator.estimatePosition(timeInterval, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance,
                 oldSpeedN, oldSpeedE, oldSpeedD, speedN, speedE, speedD, result4);
 
-        final NEDPosition result5 = new NEDPosition();
+        final var result5 = new NEDPosition();
         NEDPositionEstimator.estimatePosition(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldVn, oldVe, oldVd, vn, ve, vd, result5);
 
-        final NEDPosition result6 = new NEDPosition();
+        final var result6 = new NEDPosition();
         NEDPositionEstimator.estimatePosition(timeInterval, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance,
                 oldVn, oldVe, oldVd, vn, ve, vd, result6);
 
-        final NEDPosition result7 = new NEDPosition();
-        NEDPositionEstimator.estimatePosition(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude,
-                oldHeight, oldSpeedN, oldSpeedE, oldSpeedD, speedN, speedE, speedD, result7);
+        final var result7 = new NEDPosition();
+        NEDPositionEstimator.estimatePosition(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, oldHeight,
+                oldSpeedN, oldSpeedE, oldSpeedD, speedN, speedE, speedD, result7);
 
-        final NEDPosition result8 = new NEDPosition();
+        final var result8 = new NEDPosition();
         NEDPositionEstimator.estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,
                 oldSpeedN, oldSpeedE, oldSpeedD, speedN, speedE, speedD, result8);
 
-        final NEDPosition oldPosition = new NEDPosition(oldLatitude, oldLongitude, oldHeight);
-        final NEDPosition result9 = new NEDPosition();
-        NEDPositionEstimator.estimatePosition(TIME_INTERVAL_SECONDS, oldPosition, oldVn, oldVe, oldVd,
-                vn, ve, vd, result9);
+        final var oldPosition = new NEDPosition(oldLatitude, oldLongitude, oldHeight);
+        final var result9 = new NEDPosition();
+        NEDPositionEstimator.estimatePosition(TIME_INTERVAL_SECONDS, oldPosition, oldVn, oldVe, oldVd, vn, ve, vd,
+                result9);
 
-        final NEDPosition result10 = new NEDPosition();
+        final var result10 = new NEDPosition();
         NEDPositionEstimator.estimatePosition(timeInterval, oldPosition, oldVn, oldVe, oldVd, vn, ve, vd, result10);
 
-        final NEDPosition result11 = new NEDPosition();
+        final var result11 = new NEDPosition();
         NEDPositionEstimator.estimatePosition(TIME_INTERVAL_SECONDS, oldPosition, oldSpeedN, oldSpeedE, oldSpeedD,
                 speedN, speedE, speedD, result11);
 
-        final NEDPosition result12 = new NEDPosition();
+        final var result12 = new NEDPosition();
         NEDPositionEstimator.estimatePosition(timeInterval, oldPosition, oldSpeedN, oldSpeedE, oldSpeedD,
                 speedN, speedE, speedD, result12);
 
-        final NEDVelocity oldVelocity = new NEDVelocity(oldVn, oldVe, oldVd);
-        final NEDVelocity velocity = new NEDVelocity(vn, ve, vd);
-        final NEDPosition result13 = new NEDPosition();
+        final var oldVelocity = new NEDVelocity(oldVn, oldVe, oldVd);
+        final var velocity = new NEDVelocity(vn, ve, vd);
+        final var result13 = new NEDPosition();
         NEDPositionEstimator.estimatePosition(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, oldHeight,
                 oldVelocity, velocity, result13);
 
-        final NEDPosition result14 = new NEDPosition();
+        final var result14 = new NEDPosition();
         NEDPositionEstimator.estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,
                 oldVelocity, velocity, result14);
 
-        final NEDPosition result15 = new NEDPosition();
+        final var result15 = new NEDPosition();
         NEDPositionEstimator.estimatePosition(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldVelocity, velocity, result15);
 
-        final NEDPosition result16 = new NEDPosition();
+        final var result16 = new NEDPosition();
         NEDPositionEstimator.estimatePosition(timeInterval, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance,
                 oldVelocity, velocity, result16);
 
-        final NEDPosition result17 = new NEDPosition();
+        final var result17 = new NEDPosition();
         NEDPositionEstimator.estimatePosition(TIME_INTERVAL_SECONDS, oldPosition, oldVelocity, velocity, result17);
 
-        final NEDPosition result18 = new NEDPosition();
+        final var result18 = new NEDPosition();
         NEDPositionEstimator.estimatePosition(timeInterval, oldPosition, oldVelocity, velocity, result18);
 
         // check
@@ -399,91 +394,91 @@ public class NEDPositionEstimatorTest {
     }
 
     @Test
-    public void testEstimatePositionAndReturnNew() {
+    void testEstimatePositionAndReturnNew() {
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double oldLatitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double oldLongitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double oldHeight = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var randomizer = new UniformRandomizer();
+        final var oldLatitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var oldLongitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var oldHeight = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-        final double oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-        final double vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-        final NEDPosition result1 = NEDPositionEstimator.estimatePositionAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result1 = NEDPositionEstimator.estimatePositionAndReturnNew(TIME_INTERVAL_SECONDS,
                 oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, vn, ve, vd);
 
-        final Time timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
-        final NEDPosition result2 = NEDPositionEstimator.estimatePositionAndReturnNew(timeInterval,
+        final var timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
+        final var result2 = NEDPositionEstimator.estimatePositionAndReturnNew(timeInterval,
                 oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, vn, ve, vd);
 
-        final Angle oldLatitudeAngle = new Angle(oldLatitude, AngleUnit.RADIANS);
-        final Angle oldLongitudeAngle = new Angle(oldLongitude, AngleUnit.RADIANS);
-        final Distance oldHeightDistance = new Distance(oldHeight, DistanceUnit.METER);
+        final var oldLatitudeAngle = new Angle(oldLatitude, AngleUnit.RADIANS);
+        final var oldLongitudeAngle = new Angle(oldLongitude, AngleUnit.RADIANS);
+        final var oldHeightDistance = new Distance(oldHeight, DistanceUnit.METER);
 
-        final Speed oldSpeedN = new Speed(oldVn, SpeedUnit.METERS_PER_SECOND);
-        final Speed oldSpeedE = new Speed(oldVe, SpeedUnit.METERS_PER_SECOND);
-        final Speed oldSpeedD = new Speed(oldVd, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedN = new Speed(oldVn, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedE = new Speed(oldVe, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedD = new Speed(oldVd, SpeedUnit.METERS_PER_SECOND);
 
-        final Speed speedN = new Speed(vn, SpeedUnit.METERS_PER_SECOND);
-        final Speed speedE = new Speed(ve, SpeedUnit.METERS_PER_SECOND);
-        final Speed speedD = new Speed(vd, SpeedUnit.METERS_PER_SECOND);
+        final var speedN = new Speed(vn, SpeedUnit.METERS_PER_SECOND);
+        final var speedE = new Speed(ve, SpeedUnit.METERS_PER_SECOND);
+        final var speedD = new Speed(vd, SpeedUnit.METERS_PER_SECOND);
 
-        final NEDPosition result3 = NEDPositionEstimator.estimatePositionAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result3 = NEDPositionEstimator.estimatePositionAndReturnNew(TIME_INTERVAL_SECONDS,
                 oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldSpeedN, oldSpeedE, oldSpeedD,
                 speedN, speedE, speedD);
 
-        final NEDPosition result4 = NEDPositionEstimator.estimatePositionAndReturnNew(timeInterval,
+        final var result4 = NEDPositionEstimator.estimatePositionAndReturnNew(timeInterval,
                 oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldSpeedN, oldSpeedE, oldSpeedD,
                 speedN, speedE, speedD);
 
-        final NEDPosition result5 = NEDPositionEstimator.estimatePositionAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result5 = NEDPositionEstimator.estimatePositionAndReturnNew(TIME_INTERVAL_SECONDS,
                 oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldVn, oldVe, oldVd, vn, ve, vd);
 
-        final NEDPosition result6 = NEDPositionEstimator.estimatePositionAndReturnNew(timeInterval,
+        final var result6 = NEDPositionEstimator.estimatePositionAndReturnNew(timeInterval,
                 oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldVn, oldVe, oldVd, vn, ve, vd);
 
-        final NEDPosition result7 = NEDPositionEstimator.estimatePositionAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result7 = NEDPositionEstimator.estimatePositionAndReturnNew(TIME_INTERVAL_SECONDS,
                 oldLatitude, oldLongitude, oldHeight, oldSpeedN, oldSpeedE, oldSpeedD, speedN, speedE, speedD);
 
-        final NEDPosition result8 = NEDPositionEstimator.estimatePositionAndReturnNew(timeInterval,
+        final var result8 = NEDPositionEstimator.estimatePositionAndReturnNew(timeInterval,
                 oldLatitude, oldLongitude, oldHeight, oldSpeedN, oldSpeedE, oldSpeedD, speedN, speedE, speedD);
 
-        final NEDPosition oldPosition = new NEDPosition(oldLatitude, oldLongitude, oldHeight);
-        final NEDPosition result9 = NEDPositionEstimator.estimatePositionAndReturnNew(
-                TIME_INTERVAL_SECONDS, oldPosition, oldVn, oldVe, oldVd, vn, ve, vd);
-
-        final NEDPosition result10 = NEDPositionEstimator.estimatePositionAndReturnNew(timeInterval, oldPosition,
+        final var oldPosition = new NEDPosition(oldLatitude, oldLongitude, oldHeight);
+        final var result9 = NEDPositionEstimator.estimatePositionAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition,
                 oldVn, oldVe, oldVd, vn, ve, vd);
 
-        final NEDPosition result11 = NEDPositionEstimator.estimatePositionAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result10 = NEDPositionEstimator.estimatePositionAndReturnNew(timeInterval, oldPosition,
+                oldVn, oldVe, oldVd, vn, ve, vd);
+
+        final var result11 = NEDPositionEstimator.estimatePositionAndReturnNew(TIME_INTERVAL_SECONDS,
                 oldPosition, oldSpeedN, oldSpeedE, oldSpeedD, speedN, speedE, speedD);
 
-        final NEDPosition result12 = NEDPositionEstimator.estimatePositionAndReturnNew(timeInterval, oldPosition,
+        final var result12 = NEDPositionEstimator.estimatePositionAndReturnNew(timeInterval, oldPosition,
                 oldSpeedN, oldSpeedE, oldSpeedD, speedN, speedE, speedD);
 
-        final NEDVelocity oldVelocity = new NEDVelocity(oldVn, oldVe, oldVd);
-        final NEDVelocity velocity = new NEDVelocity(vn, ve, vd);
-        final NEDPosition result13 = NEDPositionEstimator.estimatePositionAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var oldVelocity = new NEDVelocity(oldVn, oldVe, oldVd);
+        final var velocity = new NEDVelocity(vn, ve, vd);
+        final var result13 = NEDPositionEstimator.estimatePositionAndReturnNew(TIME_INTERVAL_SECONDS,
                 oldLatitude, oldLongitude, oldHeight, oldVelocity, velocity);
 
-        final NEDPosition result14 = NEDPositionEstimator.estimatePositionAndReturnNew(timeInterval,
+        final var result14 = NEDPositionEstimator.estimatePositionAndReturnNew(timeInterval,
                 oldLatitude, oldLongitude, oldHeight, oldVelocity, velocity);
 
-        final NEDPosition result15 = NEDPositionEstimator.estimatePositionAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result15 = NEDPositionEstimator.estimatePositionAndReturnNew(TIME_INTERVAL_SECONDS,
                 oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldVelocity, velocity);
 
-        final NEDPosition result16 = NEDPositionEstimator.estimatePositionAndReturnNew(timeInterval,
+        final var result16 = NEDPositionEstimator.estimatePositionAndReturnNew(timeInterval,
                 oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldVelocity, velocity);
 
-        final NEDPosition result17 = NEDPositionEstimator.estimatePositionAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result17 = NEDPositionEstimator.estimatePositionAndReturnNew(TIME_INTERVAL_SECONDS,
                 oldPosition, oldVelocity, velocity);
 
-        final NEDPosition result18 = NEDPositionEstimator.estimatePositionAndReturnNew(timeInterval,
+        final var result18 = NEDPositionEstimator.estimatePositionAndReturnNew(timeInterval,
                 oldPosition, oldVelocity, velocity);
 
         // check
@@ -506,43 +501,43 @@ public class NEDPositionEstimatorTest {
         assertEquals(result1, result18);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testEstimateWithNegativeTimeIntervalThrowsIllegalArgumentException() {
+    @Test
+    void testEstimateWithNegativeTimeIntervalThrowsIllegalArgumentException() {
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double oldLatitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double oldLongitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double oldHeight = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var randomizer = new UniformRandomizer();
+        final var oldLatitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var oldLongitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var oldHeight = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-        final double oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-        final double vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-        final NEDPosition result = new NEDPosition();
-        NEDPositionEstimator.estimatePosition(-TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, oldHeight,
-                oldVn, oldVe, oldVd, vn, ve, vd, result);
+        final var result = new NEDPosition();
+        assertThrows(IllegalArgumentException.class, () -> NEDPositionEstimator.estimatePosition(-TIME_INTERVAL_SECONDS,
+                oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, vn, ve, vd, result));
     }
 
     @Test
-    public void testEstimateWithZeroTimeInterval() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double oldLatitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double oldLongitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double oldHeight = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+    void testEstimateWithZeroTimeInterval() {
+        final var randomizer = new UniformRandomizer();
+        final var oldLatitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var oldLongitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var oldHeight = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-        final double oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-        final double vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-        final NEDPosition result = new NEDPosition();
+        final var result = new NEDPosition();
         NEDPositionEstimator.estimatePosition(0.0, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd,
                 vn, ve, vd, result);
 
@@ -552,21 +547,21 @@ public class NEDPositionEstimatorTest {
     }
 
     @Test
-    public void testEstimateWithZeroVelocity() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double oldLatitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double oldLongitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double oldHeight = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+    void testEstimateWithZeroVelocity() {
+        final var randomizer = new UniformRandomizer();
+        final var oldLatitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var oldLongitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var oldHeight = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-        final double oldVn = 0.0;
-        final double oldVe = 0.0;
-        final double oldVd = 0.0;
+        final var oldVn = 0.0;
+        final var oldVe = 0.0;
+        final var oldVd = 0.0;
 
-        final double vn = 0.0;
-        final double ve = 0.0;
-        final double vd = 0.0;
+        final var vn = 0.0;
+        final var ve = 0.0;
+        final var vd = 0.0;
 
-        final NEDPosition result = new NEDPosition();
+        final var result = new NEDPosition();
         NEDPositionEstimator.estimatePosition(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, oldHeight,
                 oldVn, oldVe, oldVd, vn, ve, vd, result);
 
@@ -576,31 +571,31 @@ public class NEDPositionEstimatorTest {
     }
 
     @Test
-    public void testCompareWithVelocityEstimator() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double oldLatitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double oldLongitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double oldHeight = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+    void testCompareWithVelocityEstimator() {
+        final var randomizer = new UniformRandomizer();
+        final var oldLatitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var oldLongitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var oldHeight = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-        final NEDPosition oldPosition = new NEDPosition(oldLatitude, oldLongitude, oldHeight);
+        final var oldPosition = new NEDPosition(oldLatitude, oldLongitude, oldHeight);
 
-        final double oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-        final NEDVelocity oldVelocity = new NEDVelocity(oldVn, oldVe, oldVd);
+        final var oldVelocity = new NEDVelocity(oldVn, oldVe, oldVd);
 
-        final double vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-        final NEDVelocity velocity = new NEDVelocity(vn, ve, vd);
+        final var velocity = new NEDVelocity(vn, ve, vd);
 
-        final NEDPosition positionResult = new NEDPosition();
+        final var positionResult = new NEDPosition();
         NEDPositionEstimator.estimatePosition(TIME_INTERVAL_SECONDS, oldPosition, oldVelocity, velocity,
                 positionResult);
 
-        final NEDVelocity velocityResult = new NEDVelocity();
+        final var velocityResult = new NEDVelocity();
         NEDVelocityEstimator.estimateVelocity(TIME_INTERVAL_SECONDS, oldPosition, oldVelocity, positionResult,
                 velocityResult);
 
@@ -609,7 +604,7 @@ public class NEDPositionEstimatorTest {
         assertEquals(velocityResult.getVd(), vd, LARGE_ABSOLUTE_ERROR);
         assertTrue(velocityResult.equals(velocity, LARGE_ABSOLUTE_ERROR));
 
-        final NEDPosition positionResult2 = NEDPositionEstimator.estimatePositionAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var positionResult2 = NEDPositionEstimator.estimatePositionAndReturnNew(TIME_INTERVAL_SECONDS,
                 oldPosition, oldVelocity, velocityResult);
 
         assertTrue(positionResult2.equals(positionResult, ABSOLUTE_ERROR));

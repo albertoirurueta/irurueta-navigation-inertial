@@ -16,7 +16,6 @@
 package com.irurueta.navigation.inertial.calibration;
 
 import com.irurueta.navigation.frames.CoordinateTransformation;
-import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
@@ -26,15 +25,13 @@ import com.irurueta.navigation.inertial.SerializationHelper;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeUnit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class FrameBodyKinematicsTest {
+class FrameBodyKinematicsTest {
 
     private static final double MIN_SPECIFIC_FORCE = -9.81;
     private static final double MAX_SPECIFIC_FORCE = 9.81;
@@ -63,9 +60,9 @@ public class FrameBodyKinematicsTest {
     private static final double THRESHOLD = 1e-6;
 
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         // test empty constructor
-        FrameBodyKinematics frameBodyKinematics = new FrameBodyKinematics();
+        var frameBodyKinematics = new FrameBodyKinematics();
 
         // check default values
         assertNull(frameBodyKinematics.getKinematics());
@@ -76,13 +73,13 @@ public class FrameBodyKinematicsTest {
         assertNull(frameBodyKinematics.getPreviousNedFrame());
         assertFalse(frameBodyKinematics.getPreviousNedFrame(null));
         assertEquals(0.0, frameBodyKinematics.getTimeInterval(), 0.0);
-        assertEquals(frameBodyKinematics.getTimeIntervalAsTime(), new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), frameBodyKinematics.getTimeIntervalAsTime());
         Time timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
-        assertEquals(timeInterval, new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), timeInterval);
 
         // test constructor with kinematics
-        final BodyKinematics kinematics = new BodyKinematics();
+        final var kinematics = new BodyKinematics();
         frameBodyKinematics = new FrameBodyKinematics(kinematics);
 
         // check default values
@@ -97,18 +94,18 @@ public class FrameBodyKinematicsTest {
         assertEquals(new Time(0.0, TimeUnit.SECOND), frameBodyKinematics.getTimeIntervalAsTime());
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
-        assertEquals(timeInterval, new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), timeInterval);
 
         // test constructor with ECEF frame
-        final NEDFrame nedFrame = new NEDFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var nedFrame = new NEDFrame();
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
         frameBodyKinematics = new FrameBodyKinematics(ecefFrame);
 
         // check default values
         assertNull(frameBodyKinematics.getKinematics());
         assertSame(ecefFrame, frameBodyKinematics.getFrame());
         assertEquals(nedFrame, frameBodyKinematics.getNedFrame());
-        NEDFrame nedFrame2 = new NEDFrame();
+        var nedFrame2 = new NEDFrame();
         assertTrue(frameBodyKinematics.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
         assertNull(frameBodyKinematics.getPreviousFrame());
@@ -118,7 +115,7 @@ public class FrameBodyKinematicsTest {
         assertEquals(new Time(0.0, TimeUnit.SECOND), frameBodyKinematics.getTimeIntervalAsTime());
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
-        assertEquals(timeInterval, new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), timeInterval);
 
         // test constructor with NED frame
         frameBodyKinematics = new FrameBodyKinematics(nedFrame);
@@ -140,8 +137,8 @@ public class FrameBodyKinematicsTest {
         assertEquals(new Time(0.0, TimeUnit.SECOND), timeInterval);
 
         // test constructor with time interval seconds
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timeIntervalSeconds = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var randomizer = new UniformRandomizer();
+        final var timeIntervalSeconds = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
 
         frameBodyKinematics = new FrameBodyKinematics(timeIntervalSeconds);
         assertNull(frameBodyKinematics.getKinematics());
@@ -160,8 +157,8 @@ public class FrameBodyKinematicsTest {
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new FrameBodyKinematics(-1.0));
 
-        // test constructor with time interval
-        final Time timeInterval2 = new Time(timeIntervalSeconds, TimeUnit.SECOND);
+        // test constructor with a time interval
+        final var timeInterval2 = new Time(timeIntervalSeconds, TimeUnit.SECOND);
 
         frameBodyKinematics = new FrameBodyKinematics(timeInterval2);
         assertNull(frameBodyKinematics.getKinematics());
@@ -178,12 +175,12 @@ public class FrameBodyKinematicsTest {
         assertEquals(timeInterval, timeInterval2);
 
         // Force IllegalArgumentException
-        final Time wrongTimeInterval = new Time(-1.0, TimeUnit.SECOND);
+        final var wrongTimeInterval = new Time(-1.0, TimeUnit.SECOND);
         assertThrows(IllegalArgumentException.class, () -> new FrameBodyKinematics(wrongTimeInterval));
 
         // test constructor with current and previous ECEF frame
-        final NEDFrame previousNedFrame = new NEDFrame();
-        final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
+        final var previousNedFrame = new NEDFrame();
+        final var previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
 
         frameBodyKinematics = new FrameBodyKinematics(ecefFrame, previousEcefFrame);
 
@@ -513,7 +510,7 @@ public class FrameBodyKinematicsTest {
         // test copy constructor
         frameBodyKinematics = new FrameBodyKinematics(kinematics, nedFrame, previousNedFrame, timeIntervalSeconds);
 
-        final FrameBodyKinematics frameBodyKinematics2 = new FrameBodyKinematics(frameBodyKinematics);
+        final var frameBodyKinematics2 = new FrameBodyKinematics(frameBodyKinematics);
 
         assertEquals(kinematics, frameBodyKinematics2.getKinematics());
         assertEquals(ecefFrame, frameBodyKinematics2.getFrame());
@@ -531,14 +528,14 @@ public class FrameBodyKinematicsTest {
     }
 
     @Test
-    public void testGetSetKinematics() {
-        final FrameBodyKinematics frameBodyKinematics = new FrameBodyKinematics();
+    void testGetSetKinematics() {
+        final var frameBodyKinematics = new FrameBodyKinematics();
 
         // check default value
         assertNull(frameBodyKinematics.getKinematics());
 
         // set new value
-        final BodyKinematics bodyKinematics = new BodyKinematics();
+        final var bodyKinematics = new BodyKinematics();
         frameBodyKinematics.setKinematics(bodyKinematics);
 
         // check
@@ -546,103 +543,103 @@ public class FrameBodyKinematicsTest {
     }
 
     @Test
-    public void testGetSetFrame() {
-        final FrameBodyKinematics frameBodyKinematics = new FrameBodyKinematics();
+    void testGetSetFrame() {
+        final var frameBodyKinematics = new FrameBodyKinematics();
 
         // check default value
         assertNull(frameBodyKinematics.getFrame());
         assertNull(frameBodyKinematics.getNedFrame());
 
         // set new value
-        final NEDFrame nedFrame = new NEDFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var nedFrame = new NEDFrame();
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
         frameBodyKinematics.setFrame(ecefFrame);
 
         // check
         assertSame(ecefFrame, frameBodyKinematics.getFrame());
         assertEquals(nedFrame, frameBodyKinematics.getNedFrame());
-        final NEDFrame nedFrame2 = new NEDFrame();
+        final var nedFrame2 = new NEDFrame();
         frameBodyKinematics.getNedFrame(nedFrame2);
         assertEquals(nedFrame, nedFrame2);
     }
 
     @Test
-    public void testGetSetNedFrame() {
-        final FrameBodyKinematics frameBodyKinematics = new FrameBodyKinematics();
+    void testGetSetNedFrame() {
+        final var frameBodyKinematics = new FrameBodyKinematics();
 
         // check default value
         assertNull(frameBodyKinematics.getNedFrame());
         assertFalse(frameBodyKinematics.getNedFrame(null));
 
         // set new value
-        final NEDFrame nedFrame = new NEDFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var nedFrame = new NEDFrame();
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
         frameBodyKinematics.setNedFrame(nedFrame);
 
         // check
         assertEquals(ecefFrame, frameBodyKinematics.getFrame());
         assertEquals(nedFrame, frameBodyKinematics.getNedFrame());
-        final NEDFrame nedFrame2 = new NEDFrame();
+        final var nedFrame2 = new NEDFrame();
         frameBodyKinematics.getNedFrame(nedFrame2);
         assertEquals(nedFrame, nedFrame2);
     }
 
     @Test
-    public void testGetSetPreviousFrame() {
-        final FrameBodyKinematics frameBodyKinematics = new FrameBodyKinematics();
+    void testGetSetPreviousFrame() {
+        final var frameBodyKinematics = new FrameBodyKinematics();
 
         // check default value
         assertNull(frameBodyKinematics.getPreviousFrame());
         assertNull(frameBodyKinematics.getPreviousNedFrame());
 
         // set new value
-        final NEDFrame nedFrame = new NEDFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var nedFrame = new NEDFrame();
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
         frameBodyKinematics.setPreviousFrame(ecefFrame);
 
         // check
         assertSame(ecefFrame, frameBodyKinematics.getPreviousFrame());
         assertEquals(nedFrame, frameBodyKinematics.getPreviousNedFrame());
-        final NEDFrame nedFrame2 = new NEDFrame();
+        final var nedFrame2 = new NEDFrame();
         frameBodyKinematics.getPreviousNedFrame(nedFrame2);
         assertEquals(nedFrame, nedFrame2);
     }
 
     @Test
-    public void testGetSetPreviousNedFrame() {
-        final FrameBodyKinematics frameBodyKinematics = new FrameBodyKinematics();
+    void testGetSetPreviousNedFrame() {
+        final var frameBodyKinematics = new FrameBodyKinematics();
 
         // check default value
         assertNull(frameBodyKinematics.getPreviousNedFrame());
         assertFalse(frameBodyKinematics.getPreviousNedFrame(null));
 
         // set new value
-        final NEDFrame nedFrame = new NEDFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var nedFrame = new NEDFrame();
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
         frameBodyKinematics.setPreviousNedFrame(nedFrame);
 
         // check
         assertEquals(ecefFrame, frameBodyKinematics.getPreviousFrame());
         assertEquals(nedFrame, frameBodyKinematics.getPreviousNedFrame());
-        final NEDFrame nedFrame2 = new NEDFrame();
+        final var nedFrame2 = new NEDFrame();
         frameBodyKinematics.getPreviousNedFrame(nedFrame2);
         assertEquals(nedFrame, nedFrame2);
     }
 
     @Test
-    public void testGetSetTimeInterval() {
-        final FrameBodyKinematics frameBodyKinematics = new FrameBodyKinematics();
+    void testGetSetTimeInterval() {
+        final var frameBodyKinematics = new FrameBodyKinematics();
 
         // check default value
         assertEquals(0.0, frameBodyKinematics.getTimeInterval(), 0.0);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var randomizer = new UniformRandomizer();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
         frameBodyKinematics.setTimeInterval(timeInterval);
 
         // check
@@ -653,23 +650,23 @@ public class FrameBodyKinematicsTest {
     }
 
     @Test
-    public void testGetSetTimeIntervalAsTime() {
-        final FrameBodyKinematics frameBodyKinematics = new FrameBodyKinematics();
+    void testGetSetTimeIntervalAsTime() {
+        final var frameBodyKinematics = new FrameBodyKinematics();
 
         // check default value
-        final Time timeInterval1 = frameBodyKinematics.getTimeIntervalAsTime();
+        final var timeInterval1 = frameBodyKinematics.getTimeIntervalAsTime();
         assertEquals(0.0, timeInterval1.getValue().doubleValue(), 0.0);
         assertEquals(TimeUnit.SECOND, timeInterval1.getUnit());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Time timeInterval2 = new Time(randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL),
+        final var randomizer = new UniformRandomizer();
+        final var timeInterval2 = new Time(randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL),
                 TimeUnit.SECOND);
         frameBodyKinematics.setTimeInterval(timeInterval2);
 
         // check
-        final Time timeInterval3 = frameBodyKinematics.getTimeIntervalAsTime();
-        final Time timeInterval4 = new Time(0.0, TimeUnit.MILLISECOND);
+        final var timeInterval3 = frameBodyKinematics.getTimeIntervalAsTime();
+        final var timeInterval4 = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval4);
 
         assertEquals(timeInterval2, timeInterval3);
@@ -677,22 +674,22 @@ public class FrameBodyKinematicsTest {
     }
 
     @Test
-    public void testCopyFromWhenBodyKinematicsAndFrameAreAvailableAtSourceAndDestinationIsEmpty()
+    void testCopyFromWhenBodyKinematicsAndFrameAreAvailableAtSourceAndDestinationIsEmpty()
             throws InvalidSourceAndDestinationFrameTypeException {
-        final BodyKinematics kinematics = createBodyKinematics();
+        final var kinematics = createBodyKinematics();
 
-        final NEDFrame nedFrame = createNedFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var nedFrame = createNedFrame();
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
-        final NEDFrame previousNedFrame = createNedFrame();
-        final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
+        final var previousNedFrame = createNedFrame();
+        final var previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var randomizer = new UniformRandomizer();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
 
-        final FrameBodyKinematics frameBodyKinematics1 = new FrameBodyKinematics(kinematics, ecefFrame,
-                previousEcefFrame, timeInterval);
-        final FrameBodyKinematics frameBodyKinematics2 = new FrameBodyKinematics();
+        final var frameBodyKinematics1 = new FrameBodyKinematics(kinematics, ecefFrame, previousEcefFrame,
+                timeInterval);
+        final var frameBodyKinematics2 = new FrameBodyKinematics();
 
         frameBodyKinematics2.copyFrom(frameBodyKinematics1);
 
@@ -704,11 +701,11 @@ public class FrameBodyKinematicsTest {
     }
 
     @Test
-    public void testCopyFromWhenOnlyBodyKinematicsAreAvailableAtSourceAndDestinationIsEmpty() {
-        final BodyKinematics kinematics = createBodyKinematics();
+    void testCopyFromWhenOnlyBodyKinematicsAreAvailableAtSourceAndDestinationIsEmpty() {
+        final var kinematics = createBodyKinematics();
 
-        final FrameBodyKinematics frameBodyKinematics1 = new FrameBodyKinematics(kinematics);
-        final FrameBodyKinematics frameBodyKinematics2 = new FrameBodyKinematics();
+        final var frameBodyKinematics1 = new FrameBodyKinematics(kinematics);
+        final var frameBodyKinematics2 = new FrameBodyKinematics();
 
         frameBodyKinematics2.copyFrom(frameBodyKinematics1);
 
@@ -718,13 +715,13 @@ public class FrameBodyKinematicsTest {
     }
 
     @Test
-    public void testCopyFromWhenOnlyFrameIsAvailableAtSourceAndDestinationIsEmpty()
+    void testCopyFromWhenOnlyFrameIsAvailableAtSourceAndDestinationIsEmpty()
             throws InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame nedFrame = createNedFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var nedFrame = createNedFrame();
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
-        final FrameBodyKinematics frameBodyKinematics1 = new FrameBodyKinematics(ecefFrame);
-        final FrameBodyKinematics frameBodyKinematics2 = new FrameBodyKinematics();
+        final var frameBodyKinematics1 = new FrameBodyKinematics(ecefFrame);
+        final var frameBodyKinematics2 = new FrameBodyKinematics();
 
         frameBodyKinematics2.copyFrom(frameBodyKinematics1);
 
@@ -734,16 +731,16 @@ public class FrameBodyKinematicsTest {
     }
 
     @Test
-    public void testCopyFromWhenOnlyCurrentAndPreviousFrameIsAvailableAtSourceAndDestinationIsEmpty()
+    void testCopyFromWhenOnlyCurrentAndPreviousFrameIsAvailableAtSourceAndDestinationIsEmpty()
             throws InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame nedFrame = createNedFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var nedFrame = createNedFrame();
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
-        final NEDFrame previousNedFrame = createNedFrame();
-        final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
+        final var previousNedFrame = createNedFrame();
+        final var previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
 
-        final FrameBodyKinematics frameBodyKinematics1 = new FrameBodyKinematics(ecefFrame, previousEcefFrame);
-        final FrameBodyKinematics frameBodyKinematics2 = new FrameBodyKinematics();
+        final var frameBodyKinematics1 = new FrameBodyKinematics(ecefFrame, previousEcefFrame);
+        final var frameBodyKinematics2 = new FrameBodyKinematics();
 
         frameBodyKinematics2.copyFrom(frameBodyKinematics1);
 
@@ -753,21 +750,21 @@ public class FrameBodyKinematicsTest {
     }
 
     @Test
-    public void testCopyFromWhenEmptySourceAndDestinationHasKinematicsCurrentAndPreviousFrameAndTimeInterval()
+    void testCopyFromWhenEmptySourceAndDestinationHasKinematicsCurrentAndPreviousFrameAndTimeInterval()
             throws InvalidSourceAndDestinationFrameTypeException {
-        final BodyKinematics kinematics = createBodyKinematics();
-        final NEDFrame nedFrame = createNedFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var kinematics = createBodyKinematics();
+        final var nedFrame = createNedFrame();
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
-        final NEDFrame previousNedFrame = createNedFrame();
-        final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
+        final var previousNedFrame = createNedFrame();
+        final var previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var randomizer = new UniformRandomizer();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
 
-        final FrameBodyKinematics frameBodyKinematics1 = new FrameBodyKinematics();
-        final FrameBodyKinematics frameBodyKinematics2 = new FrameBodyKinematics(kinematics, ecefFrame,
-                previousEcefFrame, timeInterval);
+        final var frameBodyKinematics1 = new FrameBodyKinematics();
+        final var frameBodyKinematics2 = new FrameBodyKinematics(kinematics, ecefFrame, previousEcefFrame,
+                timeInterval);
 
         frameBodyKinematics2.copyFrom(frameBodyKinematics1);
 
@@ -779,28 +776,28 @@ public class FrameBodyKinematicsTest {
     }
 
     @Test
-    public void testCopyFromWhenSourceAndDestinationHaveKinematicsCurrentAndPreviousFrameAndTimeInterval()
+    void testCopyFromWhenSourceAndDestinationHaveKinematicsCurrentAndPreviousFrameAndTimeInterval()
             throws InvalidSourceAndDestinationFrameTypeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final var randomizer = new UniformRandomizer();
 
-        final BodyKinematics kinematics1 = createBodyKinematics();
-        final NEDFrame nedFrame1 = createNedFrame();
-        final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
-        final NEDFrame previousNedFrame1 = createNedFrame();
-        final ECEFFrame previousEcefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame1);
-        final double timeInterval1 = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var kinematics1 = createBodyKinematics();
+        final var nedFrame1 = createNedFrame();
+        final var ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
+        final var previousNedFrame1 = createNedFrame();
+        final var previousEcefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame1);
+        final var timeInterval1 = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
 
-        final BodyKinematics kinematics2 = createBodyKinematics();
-        final NEDFrame nedFrame2 = createNedFrame();
-        final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
-        final NEDFrame previousNedFrame2 = createNedFrame();
-        final ECEFFrame previousEcefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame2);
-        final double timeInterval2 = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var kinematics2 = createBodyKinematics();
+        final var nedFrame2 = createNedFrame();
+        final var ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
+        final var previousNedFrame2 = createNedFrame();
+        final var previousEcefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame2);
+        final var timeInterval2 = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
 
-        final FrameBodyKinematics frameBodyKinematics1 = new FrameBodyKinematics(kinematics1, ecefFrame1,
-                previousEcefFrame1, timeInterval1);
-        final FrameBodyKinematics frameBodyKinematics2 = new FrameBodyKinematics(kinematics2, ecefFrame2,
-                previousEcefFrame2, timeInterval2);
+        final var frameBodyKinematics1 = new FrameBodyKinematics(kinematics1, ecefFrame1, previousEcefFrame1,
+                timeInterval1);
+        final var frameBodyKinematics2 = new FrameBodyKinematics(kinematics2, ecefFrame2, previousEcefFrame2,
+                timeInterval2);
 
         frameBodyKinematics2.copyFrom(frameBodyKinematics1);
 
@@ -812,27 +809,27 @@ public class FrameBodyKinematicsTest {
     }
 
     @Test
-    public void testCopyTo() throws InvalidSourceAndDestinationFrameTypeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testCopyTo() throws InvalidSourceAndDestinationFrameTypeException {
+        final var randomizer = new UniformRandomizer();
 
-        final BodyKinematics kinematics1 = createBodyKinematics();
-        final NEDFrame nedFrame1 = createNedFrame();
-        final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
-        final NEDFrame previousNedFrame1 = createNedFrame();
-        final ECEFFrame previousEcefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame1);
-        final double timeInterval1 = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var kinematics1 = createBodyKinematics();
+        final var nedFrame1 = createNedFrame();
+        final var ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
+        final var previousNedFrame1 = createNedFrame();
+        final var previousEcefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame1);
+        final var timeInterval1 = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
 
-        final BodyKinematics kinematics2 = createBodyKinematics();
-        final NEDFrame nedFrame2 = createNedFrame();
-        final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
-        final NEDFrame previousNedFrame2 = createNedFrame();
-        final ECEFFrame previousEcefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame2);
-        final double timeInterval2 = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var kinematics2 = createBodyKinematics();
+        final var nedFrame2 = createNedFrame();
+        final var ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
+        final var previousNedFrame2 = createNedFrame();
+        final var previousEcefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame2);
+        final var timeInterval2 = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
 
-        final FrameBodyKinematics frameBodyKinematics1 = new FrameBodyKinematics(kinematics1, ecefFrame1,
-                previousEcefFrame1, timeInterval1);
-        final FrameBodyKinematics frameBodyKinematics2 = new FrameBodyKinematics(kinematics2, ecefFrame2,
-                previousEcefFrame2, timeInterval2);
+        final var frameBodyKinematics1 = new FrameBodyKinematics(kinematics1, ecefFrame1, previousEcefFrame1,
+                timeInterval1);
+        final var frameBodyKinematics2 = new FrameBodyKinematics(kinematics2, ecefFrame2, previousEcefFrame2,
+                timeInterval2);
 
         frameBodyKinematics1.copyTo(frameBodyKinematics2);
 
@@ -844,42 +841,42 @@ public class FrameBodyKinematicsTest {
     }
 
     @Test
-    public void testHashCode() throws InvalidSourceAndDestinationFrameTypeException {
-        final BodyKinematics kinematics = createBodyKinematics();
-        final NEDFrame nedFrame = createNedFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
-        final NEDFrame previousNedFrame = createNedFrame();
-        final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
+    void testHashCode() throws InvalidSourceAndDestinationFrameTypeException {
+        final var kinematics = createBodyKinematics();
+        final var nedFrame = createNedFrame();
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var previousNedFrame = createNedFrame();
+        final var previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var randomizer = new UniformRandomizer();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
 
-        final FrameBodyKinematics frameBodyKinematics1 = new FrameBodyKinematics(kinematics, ecefFrame,
-                previousEcefFrame, timeInterval);
-        final FrameBodyKinematics frameBodyKinematics2 = new FrameBodyKinematics(kinematics, ecefFrame,
-                previousEcefFrame, timeInterval);
-        final FrameBodyKinematics frameBodyKinematics3 = new FrameBodyKinematics();
+        final var frameBodyKinematics1 = new FrameBodyKinematics(kinematics, ecefFrame, previousEcefFrame,
+                timeInterval);
+        final var frameBodyKinematics2 = new FrameBodyKinematics(kinematics, ecefFrame, previousEcefFrame,
+                timeInterval);
+        final var frameBodyKinematics3 = new FrameBodyKinematics();
 
         assertEquals(frameBodyKinematics1.hashCode(), frameBodyKinematics2.hashCode());
         assertNotEquals(frameBodyKinematics1.hashCode(), frameBodyKinematics3.hashCode());
     }
 
     @Test
-    public void testEquals() throws InvalidSourceAndDestinationFrameTypeException {
-        final BodyKinematics kinematics = createBodyKinematics();
-        final NEDFrame nedFrame = createNedFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
-        final NEDFrame previousNedFrame = createNedFrame();
-        final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
+    void testEquals() throws InvalidSourceAndDestinationFrameTypeException {
+        final var kinematics = createBodyKinematics();
+        final var nedFrame = createNedFrame();
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var previousNedFrame = createNedFrame();
+        final var previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var randomizer = new UniformRandomizer();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
 
-        final FrameBodyKinematics frameBodyKinematics1 = new FrameBodyKinematics(kinematics, ecefFrame,
-                previousEcefFrame, timeInterval);
-        final FrameBodyKinematics frameBodyKinematics2 = new FrameBodyKinematics(kinematics, ecefFrame,
-                previousEcefFrame, timeInterval);
-        final FrameBodyKinematics frameBodyKinematics3 = new FrameBodyKinematics();
+        final var frameBodyKinematics1 = new FrameBodyKinematics(kinematics, ecefFrame, previousEcefFrame,
+                timeInterval);
+        final var frameBodyKinematics2 = new FrameBodyKinematics(kinematics, ecefFrame, previousEcefFrame,
+                timeInterval);
+        final var frameBodyKinematics3 = new FrameBodyKinematics();
 
         //noinspection ConstantConditions,SimplifiableJUnitAssertion
         assertTrue(frameBodyKinematics1.equals((Object) frameBodyKinematics1));
@@ -888,28 +885,28 @@ public class FrameBodyKinematicsTest {
         assertTrue(frameBodyKinematics1.equals(frameBodyKinematics2));
         assertFalse(frameBodyKinematics1.equals(frameBodyKinematics3));
         //noinspection SimplifiableJUnitAssertion,ConstantConditions
-        assertNotEquals(frameBodyKinematics1, null);
+        assertNotEquals(null, frameBodyKinematics1);
         assertFalse(frameBodyKinematics1.equals(null));
         //noinspection SimplifiableJUnitAssertion
-        assertNotEquals(frameBodyKinematics1, new Object());
+        assertNotEquals(new Object(), frameBodyKinematics1);
     }
 
     @Test
-    public void testEqualsWithThreshold() throws InvalidSourceAndDestinationFrameTypeException {
-        final BodyKinematics kinematics = createBodyKinematics();
-        final NEDFrame nedFrame = createNedFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
-        final NEDFrame previousNedFrame = createNedFrame();
-        final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
+    void testEqualsWithThreshold() throws InvalidSourceAndDestinationFrameTypeException {
+        final var kinematics = createBodyKinematics();
+        final var nedFrame = createNedFrame();
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var previousNedFrame = createNedFrame();
+        final var previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var randomizer = new UniformRandomizer();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
 
-        final FrameBodyKinematics frameBodyKinematics1 = new FrameBodyKinematics(kinematics, ecefFrame,
-                previousEcefFrame, timeInterval);
-        final FrameBodyKinematics frameBodyKinematics2 = new FrameBodyKinematics(kinematics, ecefFrame,
-                previousEcefFrame, timeInterval);
-        final FrameBodyKinematics frameBodyKinematics3 = new FrameBodyKinematics();
+        final var frameBodyKinematics1 = new FrameBodyKinematics(kinematics, ecefFrame, previousEcefFrame,
+                timeInterval);
+        final var frameBodyKinematics2 = new FrameBodyKinematics(kinematics, ecefFrame, previousEcefFrame,
+                timeInterval);
+        final var frameBodyKinematics3 = new FrameBodyKinematics();
 
         assertTrue(frameBodyKinematics1.equals(frameBodyKinematics1, THRESHOLD));
         assertTrue(frameBodyKinematics1.equals(frameBodyKinematics2, THRESHOLD));
@@ -918,84 +915,84 @@ public class FrameBodyKinematicsTest {
     }
 
     @Test
-    public void testClone() throws InvalidSourceAndDestinationFrameTypeException, CloneNotSupportedException {
-        final BodyKinematics kinematics = createBodyKinematics();
-        final NEDFrame nedFrame = createNedFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
-        final NEDFrame previousNedFrame = createNedFrame();
-        final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
+    void testClone() throws InvalidSourceAndDestinationFrameTypeException, CloneNotSupportedException {
+        final var kinematics = createBodyKinematics();
+        final var nedFrame = createNedFrame();
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var previousNedFrame = createNedFrame();
+        final var previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var randomizer = new UniformRandomizer();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
 
-        final FrameBodyKinematics frameBodyKinematics1 = new FrameBodyKinematics(kinematics, ecefFrame,
-                previousEcefFrame, timeInterval);
+        final var frameBodyKinematics1 = new FrameBodyKinematics(kinematics, ecefFrame, previousEcefFrame,
+                timeInterval);
 
-        final Object frameBodyKinematics2 = frameBodyKinematics1.clone();
+        final var frameBodyKinematics2 = frameBodyKinematics1.clone();
 
         // check
         assertEquals(frameBodyKinematics1, frameBodyKinematics2);
     }
 
     @Test
-    public void testSerializeDeserialize() throws IOException, ClassNotFoundException,
+    void testSerializeDeserialize() throws IOException, ClassNotFoundException,
             InvalidSourceAndDestinationFrameTypeException {
-        final BodyKinematics kinematics = createBodyKinematics();
-        final NEDFrame nedFrame = createNedFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
-        final NEDFrame previousNedFrame = createNedFrame();
-        final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
+        final var kinematics = createBodyKinematics();
+        final var nedFrame = createNedFrame();
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var previousNedFrame = createNedFrame();
+        final var previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var randomizer = new UniformRandomizer();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
 
-        final FrameBodyKinematics frameBodyKinematics1 = new FrameBodyKinematics(kinematics, ecefFrame,
-                previousEcefFrame, timeInterval);
+        final var frameBodyKinematics1 = new FrameBodyKinematics(kinematics, ecefFrame, previousEcefFrame,
+                timeInterval);
 
-        final byte[] bytes = SerializationHelper.serialize(frameBodyKinematics1);
-        final FrameBodyKinematics frameBodyKinematics2 = SerializationHelper.deserialize(bytes);
+        final var bytes = SerializationHelper.serialize(frameBodyKinematics1);
+        final var frameBodyKinematics2 = SerializationHelper.deserialize(bytes);
 
         assertEquals(frameBodyKinematics1, frameBodyKinematics2);
         assertNotSame(frameBodyKinematics1, frameBodyKinematics2);
     }
 
     @Test
-    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
-        final Field field = FrameBodyKinematics.class.getDeclaredField("serialVersionUID");
+    void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final var field = FrameBodyKinematics.class.getDeclaredField("serialVersionUID");
         field.setAccessible(true);
 
         assertEquals(0L, field.get(null));
     }
 
     private static BodyKinematics createBodyKinematics() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var randomizer = new UniformRandomizer();
+        final var fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
 
-        final double angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
 
         return new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
     }
 
     private static NEDFrame createNedFrame() throws InvalidSourceAndDestinationFrameTypeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final var randomizer = new UniformRandomizer();
 
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-        final double vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-        final double roll = Math.toDegrees(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch = Math.toDegrees(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw = Math.toDegrees(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var roll = Math.toDegrees(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var pitch = Math.toDegrees(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var yaw = Math.toDegrees(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-        final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+        final var c = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
                 FrameType.LOCAL_NAVIGATION_FRAME);
 
         return new NEDFrame(latitude, longitude, height, vn, ve, vd, c);

@@ -85,8 +85,8 @@ public class LevelingEstimator {
      * @return pitch angle expressed in radians.
      */
     public static double getPitch(final double fx, final double fy, final double fz) {
-        final double fy2 = fy * fy;
-        final double fz2 = fz * fz;
+        final var fy2 = fy * fy;
+        final var fz2 = fz * fz;
 
         return Math.atan(fx / Math.sqrt(fy2 + fz2));
     }
@@ -113,14 +113,14 @@ public class LevelingEstimator {
             final double roll, final double pitch,
             final double angularRateX, final double angularRateY, final double angularRateZ) {
 
-        final double sinRoll = Math.sin(roll);
-        final double cosRoll = Math.cos(roll);
+        final var sinRoll = Math.sin(roll);
+        final var cosRoll = Math.cos(roll);
 
-        final double sinPitch = Math.sin(pitch);
-        final double cosPitch = Math.cos(pitch);
+        final var sinPitch = Math.sin(pitch);
+        final var cosPitch = Math.cos(pitch);
 
-        final double sinYaw = -angularRateY * cosRoll + angularRateZ * sinRoll;
-        final double cosYaw = angularRateX * cosPitch + (angularRateY * sinRoll + angularRateZ * cosRoll) * sinPitch;
+        final var sinYaw = -angularRateY * cosRoll + angularRateZ * sinRoll;
+        final var cosYaw = angularRateX * cosPitch + (angularRateY * sinRoll + angularRateZ * cosRoll) * sinPitch;
 
         return Math.atan2(sinYaw, cosYaw);
     }
@@ -147,8 +147,8 @@ public class LevelingEstimator {
     public static double getYaw(
             final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ) {
-        final double roll = getRoll(fy, fz);
-        final double pitch = getPitch(fx, fy, fz);
+        final var roll = getRoll(fy, fz);
+        final var pitch = getPitch(fx, fy, fz);
         return getYaw(roll, pitch, angularRateX, angularRateY, angularRateZ);
     }
 
@@ -218,9 +218,9 @@ public class LevelingEstimator {
         result.setSourceType(FrameType.LOCAL_NAVIGATION_FRAME);
         result.setDestinationType(FrameType.BODY_FRAME);
 
-        final double roll = getRoll(fy, fz);
-        final double pitch = getPitch(fx, fy, fz);
-        final double yaw = getYaw(roll, pitch, angularRateX, angularRateY, angularRateZ);
+        final var roll = getRoll(fy, fz);
+        final var pitch = getPitch(fx, fy, fz);
+        final var yaw = getYaw(roll, pitch, angularRateX, angularRateY, angularRateZ);
         result.setEulerAngles(roll, pitch, yaw);
     }
 
@@ -257,9 +257,9 @@ public class LevelingEstimator {
             final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ) {
 
-        final double roll = getRoll(fy, fz);
-        final double pitch = getPitch(fx, fy, fz);
-        final double yaw = getYaw(roll, pitch, angularRateX, angularRateY, angularRateZ);
+        final var roll = getRoll(fy, fz);
+        final var pitch = getPitch(fx, fy, fz);
+        final var yaw = getYaw(roll, pitch, angularRateX, angularRateY, angularRateZ);
 
         return new CoordinateTransformation(roll, pitch, yaw, FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
     }

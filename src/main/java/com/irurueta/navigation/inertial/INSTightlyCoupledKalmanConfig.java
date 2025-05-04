@@ -43,47 +43,47 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      * Gyro noise PSD (Power Spectral Density) expressed in squared radians per
      * second (rad^2/s).
      */
-    private double mGyroNoisePSD;
+    private double gyroNoisePSD;
 
     /**
      * Accelerometer noise PSD (Power Spectral Density) expressed in (m^2 * s^-3)
      */
-    private double mAccelerometerNoisePSD;
+    private double accelerometerNoisePSD;
 
     /**
      * Accelerometer bias random walk PSD (Power Spectral Density) expressed
      * in (m^2 * s^-5).
      */
-    private double mAccelerometerBiasPSD;
+    private double accelerometerBiasPSD;
 
     /**
      * Gyro bias random walk PSD (Power Spectral Density) expressed in (rad^2 * s^-3).
      */
-    private double mGyroBiasPSD;
+    private double gyroBiasPSD;
 
     /**
      * Receiver clock frequency-drift PSD (Power Spectral Density) expressed
      * in (m^2/s^3).
      */
-    private double mClockFrequencyPSD;
+    private double clockFrequencyPSD;
 
     /**
      * Receiver clock phase-drift PSD (Power Spectral Density) expressed in
      * squared meters per second (m^2/s).
      */
-    private double mClockPhasePSD;
+    private double clockPhasePSD;
 
     /**
      * Pseudo-range measurement noise SD (Standard Deviation) expressed in
      * meters (m).
      */
-    private double mPseudoRangeSD;
+    private double pseudoRangeSD;
 
     /**
      * Pseudo-range rate measurement noise SD (Standard Deviation) expressed
      * in meters per second (m/s).
      */
-    private double mRangeRateSD;
+    private double rangeRateSD;
 
     /**
      * Constructor.
@@ -165,7 +165,7 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      * @return gyro noise PSD.
      */
     public double getGyroNoisePSD() {
-        return mGyroNoisePSD;
+        return gyroNoisePSD;
     }
 
     /**
@@ -175,7 +175,7 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param gyroNoisePSD gyro noise PSD.
      */
     public void setGyroNoisePSD(final double gyroNoisePSD) {
-        mGyroNoisePSD = gyroNoisePSD;
+        this.gyroNoisePSD = gyroNoisePSD;
     }
 
     /**
@@ -184,7 +184,7 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      * @return accelerometer noise PSD.
      */
     public double getAccelerometerNoisePSD() {
-        return mAccelerometerNoisePSD;
+        return accelerometerNoisePSD;
     }
 
     /**
@@ -194,7 +194,7 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param accelerometerNoisePSD accelerometer noise PSD.
      */
     public void setAccelerometerNoisePSD(final double accelerometerNoisePSD) {
-        mAccelerometerNoisePSD = accelerometerNoisePSD;
+        this.accelerometerNoisePSD = accelerometerNoisePSD;
     }
 
     /**
@@ -204,7 +204,7 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      * @return accelerometer bias random walk PSD.
      */
     public double getAccelerometerBiasPSD() {
-        return mAccelerometerBiasPSD;
+        return accelerometerBiasPSD;
     }
 
     /**
@@ -214,7 +214,7 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param accelerometerBiasPSD accelerometer bias random walk PSD.
      */
     public void setAccelerometerBiasPSD(final double accelerometerBiasPSD) {
-        mAccelerometerBiasPSD = accelerometerBiasPSD;
+        this.accelerometerBiasPSD = accelerometerBiasPSD;
     }
 
     /**
@@ -224,7 +224,7 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      * @return gyro bias random walk PSD.
      */
     public double getGyroBiasPSD() {
-        return mGyroBiasPSD;
+        return gyroBiasPSD;
     }
 
     /**
@@ -234,7 +234,7 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param gyroBiasPSD gyro bias random walk PSD.
      */
     public void setGyroBiasPSD(final double gyroBiasPSD) {
-        mGyroBiasPSD = gyroBiasPSD;
+        this.gyroBiasPSD = gyroBiasPSD;
     }
 
     /**
@@ -244,7 +244,7 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      * @return receiver clock frequency-drift PSD.
      */
     public double getClockFrequencyPSD() {
-        return mClockFrequencyPSD;
+        return clockFrequencyPSD;
     }
 
     /**
@@ -254,7 +254,7 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param clockFrequencyPSD clock frequency-drift PSD.
      */
     public void setClockFrequencyPSD(final double clockFrequencyPSD) {
-        mClockFrequencyPSD = clockFrequencyPSD;
+        this.clockFrequencyPSD = clockFrequencyPSD;
     }
 
     /**
@@ -264,7 +264,7 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      * @return receiver clock phase-drift PSD.
      */
     public double getClockPhasePSD() {
-        return mClockPhasePSD;
+        return clockPhasePSD;
     }
 
     /**
@@ -274,7 +274,7 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param clockPhasePSD receiver clock phase-drift PSD.
      */
     public void setClockPhasePSD(final double clockPhasePSD) {
-        mClockPhasePSD = clockPhasePSD;
+        this.clockPhasePSD = clockPhasePSD;
     }
 
     /**
@@ -284,7 +284,7 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      * @return pseudo-range measurement noise SD.
      */
     public double getPseudoRangeSD() {
-        return mPseudoRangeSD;
+        return pseudoRangeSD;
     }
 
     /**
@@ -294,7 +294,7 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param pseudoRangeSD pseudo-range measurement noise SD.
      */
     public void setPseudoRangeSD(final double pseudoRangeSD) {
-        mPseudoRangeSD = pseudoRangeSD;
+        this.pseudoRangeSD = pseudoRangeSD;
     }
 
     /**
@@ -304,7 +304,7 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      * @return pseudo-range rate measurement noise SD.
      */
     public double getRangeRateSD() {
-        return mRangeRateSD;
+        return rangeRateSD;
     }
 
     /**
@@ -314,7 +314,7 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param rangeRateSD pseudo-range rate measurement noise SD.
      */
     public void setRangeRateSD(final double rangeRateSD) {
-        mRangeRateSD = rangeRateSD;
+        this.rangeRateSD = rangeRateSD;
     }
 
     /**
@@ -342,14 +342,14 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
             final double gyroNoisePSD, final double accelerometerNoisePSD, final double accelerometerBiasPSD,
             final double gyroBiasPSD, final double clockFrequencyPSD, final double clockPhasePSD,
             final double pseudoRangeSD, final double rangeRateSD) {
-        mGyroNoisePSD = gyroNoisePSD;
-        mAccelerometerNoisePSD = accelerometerNoisePSD;
-        mAccelerometerBiasPSD = accelerometerBiasPSD;
-        mGyroBiasPSD = gyroBiasPSD;
-        mClockFrequencyPSD = clockFrequencyPSD;
-        mClockPhasePSD = clockPhasePSD;
-        mPseudoRangeSD = pseudoRangeSD;
-        mRangeRateSD = rangeRateSD;
+        this.gyroNoisePSD = gyroNoisePSD;
+        this.accelerometerNoisePSD = accelerometerNoisePSD;
+        this.accelerometerBiasPSD = accelerometerBiasPSD;
+        this.gyroBiasPSD = gyroBiasPSD;
+        this.clockFrequencyPSD = clockFrequencyPSD;
+        this.clockPhasePSD = clockPhasePSD;
+        this.pseudoRangeSD = pseudoRangeSD;
+        this.rangeRateSD = rangeRateSD;
     }
 
     /**
@@ -358,7 +358,7 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param result instance where pseudo-range measurement noise SD will be stored.
      */
     public void getPseudoRangeSDDistance(final Distance result) {
-        result.setValue(mPseudoRangeSD);
+        result.setValue(pseudoRangeSD);
         result.setUnit(DistanceUnit.METER);
     }
 
@@ -368,7 +368,7 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      * @return pseudo-range measurement noise SD.
      */
     public Distance getPseudoRangeSDDistance() {
-        return new Distance(mPseudoRangeSD, DistanceUnit.METER);
+        return new Distance(pseudoRangeSD, DistanceUnit.METER);
     }
 
     /**
@@ -377,7 +377,7 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param pseudoRangeSD pseudo-range measurement noise SD.
      */
     public void setPseudoRangeSD(final Distance pseudoRangeSD) {
-        mPseudoRangeSD = DistanceConverter.convert(pseudoRangeSD.getValue().doubleValue(), pseudoRangeSD.getUnit(),
+        this.pseudoRangeSD = DistanceConverter.convert(pseudoRangeSD.getValue().doubleValue(), pseudoRangeSD.getUnit(),
                 DistanceUnit.METER);
     }
 
@@ -388,7 +388,7 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      *               stored.
      */
     public void getRangeRateSDSpeed(final Speed result) {
-        result.setValue(mRangeRateSD);
+        result.setValue(rangeRateSD);
         result.setUnit(SpeedUnit.METERS_PER_SECOND);
     }
 
@@ -398,7 +398,7 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      * @return pseudo-range rate measurement noise SD.
      */
     public Speed getRangeRateSDSpeed() {
-        return new Speed(mRangeRateSD, SpeedUnit.METERS_PER_SECOND);
+        return new Speed(rangeRateSD, SpeedUnit.METERS_PER_SECOND);
     }
 
     /**
@@ -407,7 +407,7 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param rangeRateSD pseudo-range rate measurement noise SD.
      */
     public void setRangeRateSD(final Speed rangeRateSD) {
-        mRangeRateSD = SpeedConverter.convert(rangeRateSD.getValue().doubleValue(), rangeRateSD.getUnit(),
+        this.rangeRateSD = SpeedConverter.convert(rangeRateSD.getValue().doubleValue(), rangeRateSD.getUnit(),
                 SpeedUnit.METERS_PER_SECOND);
     }
 
@@ -436,12 +436,12 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
             final double gyroNoisePSD, final double accelerometerNoisePSD, final double accelerometerBiasPSD,
             final double gyroBiasPSD, final double clockFrequencyPSD, final double clockPhasePSD,
             final Distance pseudoRangeSD, final Speed rangeRateSD) {
-        mGyroNoisePSD = gyroNoisePSD;
-        mAccelerometerNoisePSD = accelerometerNoisePSD;
-        mAccelerometerBiasPSD = accelerometerBiasPSD;
-        mGyroBiasPSD = gyroBiasPSD;
-        mClockFrequencyPSD = clockFrequencyPSD;
-        mClockPhasePSD = clockPhasePSD;
+        this.gyroNoisePSD = gyroNoisePSD;
+        this.accelerometerNoisePSD = accelerometerNoisePSD;
+        this.accelerometerBiasPSD = accelerometerBiasPSD;
+        this.gyroBiasPSD = gyroBiasPSD;
+        this.clockFrequencyPSD = clockFrequencyPSD;
+        this.clockPhasePSD = clockPhasePSD;
         setPseudoRangeSD(pseudoRangeSD);
         setRangeRateSD(rangeRateSD);
     }
@@ -452,14 +452,14 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param output destination instance where data will be copied to.
      */
     public void copyTo(final INSTightlyCoupledKalmanConfig output) {
-        output.mGyroNoisePSD = mGyroNoisePSD;
-        output.mAccelerometerNoisePSD = mAccelerometerNoisePSD;
-        output.mAccelerometerBiasPSD = mAccelerometerBiasPSD;
-        output.mGyroBiasPSD = mGyroBiasPSD;
-        output.mClockFrequencyPSD = mClockFrequencyPSD;
-        output.mClockPhasePSD = mClockPhasePSD;
-        output.mPseudoRangeSD = mPseudoRangeSD;
-        output.mRangeRateSD = mRangeRateSD;
+        output.gyroNoisePSD = gyroNoisePSD;
+        output.accelerometerNoisePSD = accelerometerNoisePSD;
+        output.accelerometerBiasPSD = accelerometerBiasPSD;
+        output.gyroBiasPSD = gyroBiasPSD;
+        output.clockFrequencyPSD = clockFrequencyPSD;
+        output.clockPhasePSD = clockPhasePSD;
+        output.pseudoRangeSD = pseudoRangeSD;
+        output.rangeRateSD = rangeRateSD;
     }
 
     /**
@@ -468,14 +468,14 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param input instance to copy data from.
      */
     public void copyFrom(final INSTightlyCoupledKalmanConfig input) {
-        mGyroNoisePSD = input.mGyroNoisePSD;
-        mAccelerometerNoisePSD = input.mAccelerometerNoisePSD;
-        mAccelerometerBiasPSD = input.mAccelerometerBiasPSD;
-        mGyroBiasPSD = input.mGyroBiasPSD;
-        mClockFrequencyPSD = input.mClockFrequencyPSD;
-        mClockPhasePSD = input.mClockPhasePSD;
-        mPseudoRangeSD = input.mPseudoRangeSD;
-        mRangeRateSD = input.mRangeRateSD;
+        gyroNoisePSD = input.gyroNoisePSD;
+        accelerometerNoisePSD = input.accelerometerNoisePSD;
+        accelerometerBiasPSD = input.accelerometerBiasPSD;
+        gyroBiasPSD = input.gyroBiasPSD;
+        clockFrequencyPSD = input.clockFrequencyPSD;
+        clockPhasePSD = input.clockPhasePSD;
+        pseudoRangeSD = input.pseudoRangeSD;
+        rangeRateSD = input.rangeRateSD;
     }
 
     /**
@@ -486,8 +486,8 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(mGyroNoisePSD, mAccelerometerNoisePSD, mAccelerometerBiasPSD, mGyroBiasPSD,
-                mClockFrequencyPSD, mClockPhasePSD, mPseudoRangeSD, mRangeRateSD);
+        return Objects.hash(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD,
+                clockPhasePSD, pseudoRangeSD, rangeRateSD);
     }
 
     /**
@@ -505,7 +505,7 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        final INSTightlyCoupledKalmanConfig other = (INSTightlyCoupledKalmanConfig) obj;
+        final var other = (INSTightlyCoupledKalmanConfig) obj;
         return equals(other);
     }
 
@@ -533,14 +533,14 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
             return false;
         }
 
-        return Math.abs(mGyroNoisePSD - other.mGyroNoisePSD) <= threshold
-                && Math.abs(mAccelerometerNoisePSD - other.mAccelerometerNoisePSD) <= threshold
-                && Math.abs(mAccelerometerBiasPSD - other.mAccelerometerBiasPSD) <= threshold
-                && Math.abs(mGyroBiasPSD - other.mGyroBiasPSD) <= threshold
-                && Math.abs(mClockFrequencyPSD - other.mClockFrequencyPSD) <= threshold
-                && Math.abs(mClockPhasePSD - other.mClockPhasePSD) <= threshold
-                && Math.abs(mPseudoRangeSD - other.mPseudoRangeSD) <= threshold
-                && Math.abs(mRangeRateSD - other.mRangeRateSD) <= threshold;
+        return Math.abs(gyroNoisePSD - other.gyroNoisePSD) <= threshold
+                && Math.abs(accelerometerNoisePSD - other.accelerometerNoisePSD) <= threshold
+                && Math.abs(accelerometerBiasPSD - other.accelerometerBiasPSD) <= threshold
+                && Math.abs(gyroBiasPSD - other.gyroBiasPSD) <= threshold
+                && Math.abs(clockFrequencyPSD - other.clockFrequencyPSD) <= threshold
+                && Math.abs(clockPhasePSD - other.clockPhasePSD) <= threshold
+                && Math.abs(pseudoRangeSD - other.pseudoRangeSD) <= threshold
+                && Math.abs(rangeRateSD - other.rangeRateSD) <= threshold;
     }
 
     /**
@@ -551,7 +551,7 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final INSTightlyCoupledKalmanConfig result = (INSTightlyCoupledKalmanConfig) super.clone();
+        final var result = (INSTightlyCoupledKalmanConfig) super.clone();
         copyTo(result);
         return result;
     }

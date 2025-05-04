@@ -20,7 +20,6 @@ import com.irurueta.algebra.Matrix;
 import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.navigation.inertial.BodyKinematics;
 import com.irurueta.statistics.UniformRandomizer;
-import com.irurueta.units.Acceleration;
 import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedUnit;
 import org.junit.Test;
@@ -46,25 +45,25 @@ public class AngularRateFixerTest {
 
     @Test
     public void testConstructor() throws WrongSizeException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
         // check default values
-        assertEquals(fixer.getBias(), new Matrix(3, 1));
-        final Matrix b = new Matrix(3, 1);
+        assertEquals(new Matrix(3, 1), fixer.getBias());
+        final var b = new Matrix(3, 1);
         fixer.getBias(b);
-        assertEquals(b, new Matrix(3, 1));
+        assertEquals(new Matrix(3, 1), b);
 
-        assertArrayEquals(fixer.getBiasArray(), new double[3], 0.0);
-        final double[] b2 = new double[3];
+        assertArrayEquals(new double[3], fixer.getBiasArray(), 0.0);
+        final var b2 = new double[3];
         fixer.getBiasArray(b2);
-        assertArrayEquals(b2, new double[3], 0.0);
+        assertArrayEquals(new double[3], b2, 0.0);
 
-        final AngularSpeedTriad triad1 = fixer.getBiasAsTriad();
+        final var triad1 = fixer.getBiasAsTriad();
         assertEquals(0.0, triad1.getValueX(), 0.0);
         assertEquals(0.0, triad1.getValueY(), 0.0);
         assertEquals(0.0, triad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, triad1.getUnit());
-        final AngularSpeedTriad triad2 = new AngularSpeedTriad();
+        final var triad2 = new AngularSpeedTriad();
         fixer.getBiasAsTriad(triad2);
         assertEquals(triad1, triad2);
 
@@ -72,29 +71,29 @@ public class AngularRateFixerTest {
         assertEquals(0.0, fixer.getBiasY(), 0.0);
         assertEquals(0.0, fixer.getBiasZ(), 0.0);
 
-        final AngularSpeed bx1 = fixer.getBiasXAsAngularSpeed();
+        final var bx1 = fixer.getBiasXAsAngularSpeed();
         assertEquals(0.0, bx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bx1.getUnit());
-        final AngularSpeed bx2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bx2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         fixer.getBiasXAsAngularSpeed(bx2);
         assertEquals(bx1, bx2);
-        final AngularSpeed by1 = fixer.getBiasYAsAngularSpeed();
+        final var by1 = fixer.getBiasYAsAngularSpeed();
         assertEquals(0.0, by1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, by1.getUnit());
-        final AngularSpeed by2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var by2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         fixer.getBiasYAsAngularSpeed(by2);
         assertEquals(by1, by2);
-        final AngularSpeed bz1 = fixer.getBiasZAsAngularSpeed();
+        final var bz1 = fixer.getBiasZAsAngularSpeed();
         assertEquals(0.0, bz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bz1.getUnit());
-        final AngularSpeed bz2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bz2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         fixer.getBiasZAsAngularSpeed(bz2);
         assertEquals(bz1, bz2);
 
         assertEquals(new Matrix(3, 3), fixer.getCrossCouplingErrors());
-        final Matrix m = new Matrix(3, 3);
+        final var m = new Matrix(3, 3);
         fixer.getCrossCouplingErrors(m);
-        assertEquals(m, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), m);
 
         assertEquals(0.0, fixer.getSx(), 0.0);
         assertEquals(0.0, fixer.getSy(), 0.0);
@@ -107,30 +106,30 @@ public class AngularRateFixerTest {
         assertEquals(0.0, fixer.getMzy(), 0.0);
 
         assertEquals(new Matrix(3, 3), fixer.getGDependantCrossBias());
-        final Matrix g = new Matrix(3, 3);
+        final var g = new Matrix(3, 3);
         fixer.getGDependantCrossBias(g);
         assertEquals(new Matrix(3, 3), g);
     }
 
     @Test
     public void testGetSetBias() throws WrongSizeException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
         // check default value
-        final Matrix b1 = fixer.getBias();
-        final Matrix b2 = new Matrix(1, 1);
+        final var b1 = fixer.getBias();
+        final var b2 = new Matrix(1, 1);
         fixer.getBias(b2);
 
-        assertEquals(b1, new Matrix(3, 1));
+        assertEquals(new Matrix(3, 1), b1);
         assertEquals(b1, b2);
 
         // set new value
-        final Matrix b3 = generateBg();
+        final var b3 = generateBg();
         fixer.setBias(b3);
 
         // check
-        final Matrix b4 = fixer.getBias();
-        final Matrix b5 = new Matrix(3, 1);
+        final var b4 = fixer.getBias();
+        final var b5 = new Matrix(3, 1);
         fixer.getBias(b5);
 
         assertEquals(b3, b4);
@@ -145,23 +144,23 @@ public class AngularRateFixerTest {
 
     @Test
     public void testGetSetBiasArray() {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
         // check default value
-        final double[] b1 = fixer.getBiasArray();
-        final double[] b2 = new double[3];
+        final var b1 = fixer.getBiasArray();
+        final var b2 = new double[3];
         fixer.getBiasArray(b2);
 
-        assertArrayEquals(b1, new double[3], 0.0);
+        assertArrayEquals(new double[3], b1, 0.0);
         assertArrayEquals(b1, b2, 0.0);
 
         // set new value
-        final double[] b3 = generateBg().getBuffer();
+        final var b3 = generateBg().getBuffer();
         fixer.setBias(b3);
 
         // check
-        final double[] b4 = fixer.getBiasArray();
-        final double[] b5 = new double[3];
+        final var b4 = fixer.getBiasArray();
+        final var b5 = new double[3];
         fixer.getBiasArray(b5);
 
         assertArrayEquals(b3, b4, 0.0);
@@ -174,23 +173,23 @@ public class AngularRateFixerTest {
 
     @Test
     public void testGetSetBiasTriad() {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
         // check default value
-        final AngularSpeedTriad triad1 = fixer.getBiasAsTriad();
+        final var triad1 = fixer.getBiasAsTriad();
         assertEquals(0.0, triad1.getValueX(), 0.0);
         assertEquals(0.0, triad1.getValueY(), 0.0);
         assertEquals(0.0, triad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, triad1.getUnit());
 
         // set new value
-        final AngularSpeedTriad triad2 = new AngularSpeedTriad();
+        final var triad2 = new AngularSpeedTriad();
         triad2.setValueCoordinates(generateBg());
         fixer.setBias(triad2);
 
         // check
-        final AngularSpeedTriad triad3 = fixer.getBiasAsTriad();
-        final AngularSpeedTriad triad4 = new AngularSpeedTriad();
+        final var triad3 = fixer.getBiasAsTriad();
+        final var triad4 = new AngularSpeedTriad();
         fixer.getBiasAsTriad(triad4);
 
         assertEquals(triad2, triad3);
@@ -199,14 +198,14 @@ public class AngularRateFixerTest {
 
     @Test
     public void testGetSetBiasX() {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
         // check default value
         assertEquals(0.0, fixer.getBiasX(), 0.0);
 
         // set new value
-        final Matrix b = generateBg();
-        final double bx = b.getElementAtIndex(0);
+        final var b = generateBg();
+        final var bx = b.getElementAtIndex(0);
         fixer.setBiasX(bx);
 
         // check
@@ -215,14 +214,14 @@ public class AngularRateFixerTest {
 
     @Test
     public void testGetSetBiasY() {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
         // check default value
         assertEquals(0.0, fixer.getBiasY(), 0.0);
 
         // set new value
-        final Matrix b = generateBg();
-        final double by = b.getElementAtIndex(1);
+        final var b = generateBg();
+        final var by = b.getElementAtIndex(1);
         fixer.setBiasY(by);
 
         // check
@@ -231,14 +230,14 @@ public class AngularRateFixerTest {
 
     @Test
     public void testGetSetBiasZ() {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
         // check default value
         assertEquals(0.0, fixer.getBiasZ(), 0.0);
 
         // set new value
-        final Matrix b = generateBg();
-        final double bz = b.getElementAtIndex(2);
+        final var b = generateBg();
+        final var bz = b.getElementAtIndex(2);
         fixer.setBiasZ(bz);
 
         // check
@@ -247,7 +246,7 @@ public class AngularRateFixerTest {
 
     @Test
     public void testSetBias1() {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
         // check default values
         assertEquals(0.0, fixer.getBiasX(), 0.0);
@@ -255,10 +254,10 @@ public class AngularRateFixerTest {
         assertEquals(0.0, fixer.getBiasZ(), 0.0);
 
         // set new values
-        final Matrix b = generateBg();
-        final double bx = b.getElementAtIndex(0);
-        final double by = b.getElementAtIndex(1);
-        final double bz = b.getElementAtIndex(2);
+        final var b = generateBg();
+        final var bx = b.getElementAtIndex(0);
+        final var by = b.getElementAtIndex(1);
+        final var bz = b.getElementAtIndex(2);
         fixer.setBias(bx, by, bz);
 
         // check
@@ -269,22 +268,22 @@ public class AngularRateFixerTest {
 
     @Test
     public void testGetSetBiasXAsAngularSpeed() {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
         // check default value
-        final AngularSpeed bx1 = fixer.getBiasXAsAngularSpeed();
+        final var bx1 = fixer.getBiasXAsAngularSpeed();
         assertEquals(0.0, bx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bx1.getUnit());
 
         // set new value
-        final Matrix b = generateBg();
-        final double bx = b.getElementAtIndex(0);
-        final AngularSpeed bx2 = new AngularSpeed(bx, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var b = generateBg();
+        final var bx = b.getElementAtIndex(0);
+        final var bx2 = new AngularSpeed(bx, AngularSpeedUnit.RADIANS_PER_SECOND);
         fixer.setBiasX(bx2);
 
         // check
-        final AngularSpeed bx3 = fixer.getBiasXAsAngularSpeed();
-        final AngularSpeed bx4 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bx3 = fixer.getBiasXAsAngularSpeed();
+        final var bx4 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         fixer.getBiasXAsAngularSpeed(bx4);
 
         assertEquals(bx2, bx3);
@@ -293,22 +292,22 @@ public class AngularRateFixerTest {
 
     @Test
     public void testGetSetBiasYAsAngularSpeed() {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
         // check default value
-        final AngularSpeed by1 = fixer.getBiasYAsAngularSpeed();
+        final var by1 = fixer.getBiasYAsAngularSpeed();
         assertEquals(0.0, by1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, by1.getUnit());
 
         // set new value
-        final Matrix b = generateBg();
-        final double by = b.getElementAtIndex(1);
-        final AngularSpeed by2 = new AngularSpeed(by, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var b = generateBg();
+        final var by = b.getElementAtIndex(1);
+        final var by2 = new AngularSpeed(by, AngularSpeedUnit.RADIANS_PER_SECOND);
         fixer.setBiasY(by2);
 
         // check
-        final AngularSpeed by3 = fixer.getBiasYAsAngularSpeed();
-        final AngularSpeed by4 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var by3 = fixer.getBiasYAsAngularSpeed();
+        final var by4 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         fixer.getBiasYAsAngularSpeed(by4);
 
         assertEquals(by2, by3);
@@ -317,22 +316,22 @@ public class AngularRateFixerTest {
 
     @Test
     public void testGetSetBiasZAsAngularSpeed() {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
         // check default value
-        final AngularSpeed bz1 = fixer.getBiasZAsAngularSpeed();
+        final var bz1 = fixer.getBiasZAsAngularSpeed();
         assertEquals(0.0, bz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bz1.getUnit());
 
         // set new value
-        final Matrix b = generateBg();
-        final double bz = b.getElementAtIndex(2);
-        final AngularSpeed bz2 = new AngularSpeed(bz, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var b = generateBg();
+        final var bz = b.getElementAtIndex(2);
+        final var bz2 = new AngularSpeed(bz, AngularSpeedUnit.RADIANS_PER_SECOND);
         fixer.setBiasZ(bz2);
 
         // check
-        final AngularSpeed bz3 = fixer.getBiasZAsAngularSpeed();
-        final AngularSpeed bz4 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var bz3 = fixer.getBiasZAsAngularSpeed();
+        final var bz4 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         fixer.getBiasZAsAngularSpeed(bz4);
 
         assertEquals(bz2, bz3);
@@ -341,35 +340,35 @@ public class AngularRateFixerTest {
 
     @Test
     public void testGetSetBias2() {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
         // check default values
-        final AngularSpeed bx1 = fixer.getBiasXAsAngularSpeed();
+        final var bx1 = fixer.getBiasXAsAngularSpeed();
         assertEquals(0.0, bx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bx1.getUnit());
 
-        final AngularSpeed by1 = fixer.getBiasYAsAngularSpeed();
+        final var by1 = fixer.getBiasYAsAngularSpeed();
         assertEquals(0.0, by1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, by1.getUnit());
 
-        final AngularSpeed bz1 = fixer.getBiasZAsAngularSpeed();
+        final var bz1 = fixer.getBiasZAsAngularSpeed();
         assertEquals(0.0, bz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bz1.getUnit());
 
         // set new values
-        final Matrix b = generateBg();
-        final double bx = b.getElementAtIndex(0);
-        final double by = b.getElementAtIndex(1);
-        final double bz = b.getElementAtIndex(2);
-        final AngularSpeed bx2 = new AngularSpeed(bx, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed by2 = new AngularSpeed(by, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed bz2 = new AngularSpeed(bz, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var b = generateBg();
+        final var bx = b.getElementAtIndex(0);
+        final var by = b.getElementAtIndex(1);
+        final var bz = b.getElementAtIndex(2);
+        final var bx2 = new AngularSpeed(bx, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var by2 = new AngularSpeed(by, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bz2 = new AngularSpeed(bz, AngularSpeedUnit.RADIANS_PER_SECOND);
         fixer.setBias(bx2, by2, bz2);
 
         // check
-        final AngularSpeed bx3 = fixer.getBiasXAsAngularSpeed();
-        final AngularSpeed by3 = fixer.getBiasYAsAngularSpeed();
-        final AngularSpeed bz3 = fixer.getBiasZAsAngularSpeed();
+        final var bx3 = fixer.getBiasXAsAngularSpeed();
+        final var by3 = fixer.getBiasYAsAngularSpeed();
+        final var bz3 = fixer.getBiasZAsAngularSpeed();
 
         assertEquals(bx2, bx3);
         assertEquals(by2, by3);
@@ -378,33 +377,33 @@ public class AngularRateFixerTest {
 
     @Test
     public void testGetSetCrossCouplingErrors() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
         // check default values
-        final Matrix m1 = fixer.getCrossCouplingErrors();
-        final Matrix m2 = new Matrix(1, 1);
+        final var m1 = fixer.getCrossCouplingErrors();
+        final var m2 = new Matrix(1, 1);
         fixer.getCrossCouplingErrors(m2);
 
-        assertEquals(m1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), m1);
         assertEquals(m1, m2);
 
         // set new values
-        final Matrix m3 = generateMg();
-        final double sx = m3.getElementAt(0, 0);
-        final double sy = m3.getElementAt(1, 1);
-        final double sz = m3.getElementAt(2, 2);
-        final double mxy = m3.getElementAt(0, 1);
-        final double mxz = m3.getElementAt(0, 2);
-        final double myx = m3.getElementAt(1, 0);
-        final double myz = m3.getElementAt(1, 2);
-        final double mzx = m3.getElementAt(2, 0);
-        final double mzy = m3.getElementAt(2, 1);
+        final var m3 = generateMg();
+        final var sx = m3.getElementAt(0, 0);
+        final var sy = m3.getElementAt(1, 1);
+        final var sz = m3.getElementAt(2, 2);
+        final var mxy = m3.getElementAt(0, 1);
+        final var mxz = m3.getElementAt(0, 2);
+        final var myx = m3.getElementAt(1, 0);
+        final var myz = m3.getElementAt(1, 2);
+        final var mzx = m3.getElementAt(2, 0);
+        final var mzy = m3.getElementAt(2, 1);
 
         fixer.setCrossCouplingErrors(m3);
 
         // check
-        final Matrix m4 = fixer.getCrossCouplingErrors();
-        final Matrix m5 = new Matrix(3, 3);
+        final var m4 = fixer.getCrossCouplingErrors();
+        final var m5 = new Matrix(3, 3);
         fixer.getCrossCouplingErrors(m5);
 
         assertEquals(m3, m4);
@@ -427,21 +426,21 @@ public class AngularRateFixerTest {
         assertThrows(IllegalArgumentException.class, () -> fixer.setCrossCouplingErrors(m7));
 
         // Force AlgebraException
-        final Matrix wrong = Matrix.identity(3, 3);
+        final var wrong = Matrix.identity(3, 3);
         wrong.multiplyByScalar(-1.0);
         assertThrows(AlgebraException.class, () -> fixer.setCrossCouplingErrors(wrong));
     }
 
     @Test
     public void testGetSetSx() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
         // check default value
         assertEquals(0.0, fixer.getSx(), 0.0);
 
         // set new value
-        final Matrix m = generateMg();
-        final double sx = m.getElementAt(0, 0);
+        final var m = generateMg();
+        final var sx = m.getElementAt(0, 0);
 
         fixer.setSx(sx);
 
@@ -451,14 +450,14 @@ public class AngularRateFixerTest {
 
     @Test
     public void testGetSetSy() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
         // check default value
         assertEquals(0.0, fixer.getSy(), 0.0);
 
         // set new value
-        final Matrix m = generateMg();
-        final double sy = m.getElementAt(1, 1);
+        final var m = generateMg();
+        final var sy = m.getElementAt(1, 1);
 
         fixer.setSy(sy);
 
@@ -468,14 +467,14 @@ public class AngularRateFixerTest {
 
     @Test
     public void testGetSetSz() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
         // check default value
         assertEquals(0.0, fixer.getSz(), 0.0);
 
         // set new value
-        final Matrix m = generateMg();
-        final double sz = m.getElementAt(2, 2);
+        final var m = generateMg();
+        final var sz = m.getElementAt(2, 2);
 
         fixer.setSz(sz);
 
@@ -485,14 +484,14 @@ public class AngularRateFixerTest {
 
     @Test
     public void testGetSetMxy() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
         // check default value
         assertEquals(0.0, fixer.getMxy(), 0.0);
 
         // set new value
-        final Matrix m = generateMg();
-        final double mxy = m.getElementAt(0, 1);
+        final var m = generateMg();
+        final var mxy = m.getElementAt(0, 1);
 
         fixer.setMxy(mxy);
 
@@ -502,14 +501,14 @@ public class AngularRateFixerTest {
 
     @Test
     public void testGetSetMxz() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
         // check default value
         assertEquals(0.0, fixer.getMxz(), 0.0);
 
         // set new value
-        final Matrix m = generateMg();
-        final double mxz = m.getElementAt(0, 2);
+        final var m = generateMg();
+        final var mxz = m.getElementAt(0, 2);
 
         fixer.setMxz(mxz);
 
@@ -519,14 +518,14 @@ public class AngularRateFixerTest {
 
     @Test
     public void testGetSetMyx() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
         // check default value
         assertEquals(0.0, fixer.getMyx(), 0.0);
 
         // set new value
-        final Matrix m = generateMg();
-        final double myx = m.getElementAt(1, 0);
+        final var m = generateMg();
+        final var myx = m.getElementAt(1, 0);
 
         fixer.setMyx(myx);
 
@@ -536,14 +535,14 @@ public class AngularRateFixerTest {
 
     @Test
     public void testGetSetMyz() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
         // check default value
         assertEquals(0.0, fixer.getMyz(), 0.0);
 
         // set new value
-        final Matrix m = generateMg();
-        final double myz = m.getElementAt(1, 2);
+        final var m = generateMg();
+        final var myz = m.getElementAt(1, 2);
 
         fixer.setMyz(myz);
 
@@ -553,14 +552,14 @@ public class AngularRateFixerTest {
 
     @Test
     public void testGetSetMzx() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
         // check default value
         assertEquals(0.0, fixer.getMzx(), 0.0);
 
         // set new value
-        final Matrix m = generateMg();
-        final double mzx = m.getElementAt(2, 0);
+        final var m = generateMg();
+        final var mzx = m.getElementAt(2, 0);
 
         fixer.setMzx(mzx);
 
@@ -570,14 +569,14 @@ public class AngularRateFixerTest {
 
     @Test
     public void testGetSetMzy() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
         // check default value
         assertEquals(0.0, fixer.getMzy(), 0.0);
 
         // set new value
-        final Matrix m = generateMg();
-        final double mzy = m.getElementAt(2, 1);
+        final var m = generateMg();
+        final var mzy = m.getElementAt(2, 1);
 
         fixer.setMzy(mzy);
 
@@ -587,7 +586,7 @@ public class AngularRateFixerTest {
 
     @Test
     public void testSetScalingFactors() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
         // check default values
         assertEquals(0.0, fixer.getSx(), 0.0);
@@ -595,10 +594,10 @@ public class AngularRateFixerTest {
         assertEquals(0.0, fixer.getSz(), 0.0);
 
         // set new values
-        final Matrix m = generateMg();
-        final double sx = m.getElementAt(0, 0);
-        final double sy = m.getElementAt(1, 1);
-        final double sz = m.getElementAt(2, 2);
+        final var m = generateMg();
+        final var sx = m.getElementAt(0, 0);
+        final var sy = m.getElementAt(1, 1);
+        final var sz = m.getElementAt(2, 2);
 
         fixer.setScalingFactors(sx, sy, sz);
 
@@ -610,7 +609,7 @@ public class AngularRateFixerTest {
 
     @Test
     public void testSetCrossCouplingErrors() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
         // check default values
         assertEquals(0.0, fixer.getMxy(), 0.0);
@@ -621,13 +620,13 @@ public class AngularRateFixerTest {
         assertEquals(0.0, fixer.getMzy(), 0.0);
 
         // set new values
-        final Matrix m = generateMg();
-        final double mxy = m.getElementAt(0, 1);
-        final double mxz = m.getElementAt(0, 2);
-        final double myx = m.getElementAt(1, 0);
-        final double myz = m.getElementAt(1, 2);
-        final double mzx = m.getElementAt(2, 0);
-        final double mzy = m.getElementAt(2, 1);
+        final var m = generateMg();
+        final var mxy = m.getElementAt(0, 1);
+        final var mxz = m.getElementAt(0, 2);
+        final var myx = m.getElementAt(1, 0);
+        final var myz = m.getElementAt(1, 2);
+        final var mzx = m.getElementAt(2, 0);
+        final var mzy = m.getElementAt(2, 1);
 
         fixer.setCrossCouplingErrors(mxy, mxz, myx, myz, mzx, mzy);
 
@@ -642,7 +641,7 @@ public class AngularRateFixerTest {
 
     @Test
     public void testSetScalingFactorsAndCrossCouplingErrors() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
         // check default values
         assertEquals(0.0, fixer.getSx(), 0.0);
@@ -656,16 +655,16 @@ public class AngularRateFixerTest {
         assertEquals(0.0, fixer.getMzy(), 0.0);
 
         // set new values
-        final Matrix m = generateMg();
-        final double sx = m.getElementAt(0, 0);
-        final double sy = m.getElementAt(1, 1);
-        final double sz = m.getElementAt(2, 2);
-        final double mxy = m.getElementAt(0, 1);
-        final double mxz = m.getElementAt(0, 2);
-        final double myx = m.getElementAt(1, 0);
-        final double myz = m.getElementAt(1, 2);
-        final double mzx = m.getElementAt(2, 0);
-        final double mzy = m.getElementAt(2, 1);
+        final var m = generateMg();
+        final var sx = m.getElementAt(0, 0);
+        final var sy = m.getElementAt(1, 1);
+        final var sz = m.getElementAt(2, 2);
+        final var mxy = m.getElementAt(0, 1);
+        final var mxz = m.getElementAt(0, 2);
+        final var myx = m.getElementAt(1, 0);
+        final var myz = m.getElementAt(1, 2);
+        final var mzx = m.getElementAt(2, 0);
+        final var mzy = m.getElementAt(2, 1);
 
         fixer.setScalingFactorsAndCrossCouplingErrors(sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy);
 
@@ -683,24 +682,24 @@ public class AngularRateFixerTest {
 
     @Test
     public void testGetSetGDependantCrossBias() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
         // check default values
-        final Matrix g1 = fixer.getGDependantCrossBias();
-        final Matrix g2 = new Matrix(1, 1);
+        final var g1 = fixer.getGDependantCrossBias();
+        final var g2 = new Matrix(1, 1);
         fixer.getGDependantCrossBias(g2);
 
         assertEquals(new Matrix(3, 3), g1);
         assertEquals(g1, g2);
 
         // set new values
-        final Matrix g3 = generateGg();
+        final var g3 = generateGg();
 
         fixer.setGDependantCrossBias(g3);
 
         // check
-        final Matrix g4 = fixer.getGDependantCrossBias();
-        final Matrix g5 = new Matrix(3, 3);
+        final var g4 = fixer.getGDependantCrossBias();
+        final var g5 = new Matrix(3, 3);
         fixer.getGDependantCrossBias(g5);
 
         assertEquals(g3, g4);
@@ -715,43 +714,43 @@ public class AngularRateFixerTest {
 
     @Test
     public void testFix1() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
         fixer.setBias(bg);
         fixer.setCrossCouplingErrors(mg);
         fixer.setGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var randomizer = new UniformRandomizer(new Random());
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
-        final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
+        final var trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, new Random());
+        final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                new Random());
 
-        final AngularSpeedTriad measuredAngularRate = measuredKinematics.getAngularRateTriad();
-        final AccelerationTriad trueF = trueKinematics.getSpecificForceTriad();
+        final var measuredAngularRate = measuredKinematics.getAngularRateTriad();
+        final var trueF = trueKinematics.getSpecificForceTriad();
 
-        final double[] result = new double[AngularSpeedTriad.COMPONENTS];
+        final var result = new double[AngularSpeedTriad.COMPONENTS];
         fixer.fix(measuredAngularRate, trueF, result);
 
         // check
@@ -765,43 +764,43 @@ public class AngularRateFixerTest {
 
     @Test
     public void testFix2() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
         fixer.setBias(bg);
         fixer.setCrossCouplingErrors(mg);
         fixer.setGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var randomizer = new UniformRandomizer(new Random());
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
-        final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
+        final var trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, new Random());
+        final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                new Random());
 
-        final AngularSpeedTriad measuredAngularRate = measuredKinematics.getAngularRateTriad();
-        final AccelerationTriad trueF = trueKinematics.getSpecificForceTriad();
+        final var measuredAngularRate = measuredKinematics.getAngularRateTriad();
+        final var trueF = trueKinematics.getSpecificForceTriad();
 
-        final Matrix result = new Matrix(AngularSpeedTriad.COMPONENTS, 1);
+        final var result = new Matrix(AngularSpeedTriad.COMPONENTS, 1);
         fixer.fix(measuredAngularRate, trueF, result);
 
         // check
@@ -818,43 +817,43 @@ public class AngularRateFixerTest {
 
     @Test
     public void testFix3() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
         fixer.setBias(bg);
         fixer.setCrossCouplingErrors(mg);
         fixer.setGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var randomizer = new UniformRandomizer(new Random());
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
-        final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
+        final var trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, new Random());
+        final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                new Random());
 
-        final AngularSpeedTriad measuredAngularRate = measuredKinematics.getAngularRateTriad();
-        final AccelerationTriad trueF = trueKinematics.getSpecificForceTriad();
+        final var measuredAngularRate = measuredKinematics.getAngularRateTriad();
+        final var trueF = trueKinematics.getSpecificForceTriad();
 
-        final AngularSpeedTriad result = new AngularSpeedTriad();
+        final var result = new AngularSpeedTriad();
         fixer.fix(measuredAngularRate, trueF, result);
 
         // check
@@ -866,47 +865,47 @@ public class AngularRateFixerTest {
 
     @Test
     public void testFix4() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
         fixer.setBias(bg);
         fixer.setCrossCouplingErrors(mg);
         fixer.setGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var randomizer = new UniformRandomizer(new Random());
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
-        final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
+        final var trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, new Random());
+        final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                new Random());
 
-        final AngularSpeed measuredAngularRateX = measuredKinematics.getAngularSpeedX();
-        final AngularSpeed measuredAngularSpeedY = measuredKinematics.getAngularSpeedY();
-        final AngularSpeed measuredAngularSpeedZ = measuredKinematics.getAngularSpeedZ();
-        final Acceleration trueFx = trueKinematics.getSpecificForceX();
-        final Acceleration trueFy = trueKinematics.getSpecificForceY();
-        final Acceleration trueFz = trueKinematics.getSpecificForceZ();
+        final var measuredAngularRateX = measuredKinematics.getAngularSpeedX();
+        final var measuredAngularSpeedY = measuredKinematics.getAngularSpeedY();
+        final var measuredAngularSpeedZ = measuredKinematics.getAngularSpeedZ();
+        final var trueFx = trueKinematics.getSpecificForceX();
+        final var trueFy = trueKinematics.getSpecificForceY();
+        final var trueFz = trueKinematics.getSpecificForceZ();
 
-        final AngularSpeedTriad result = new AngularSpeedTriad();
+        final var result = new AngularSpeedTriad();
         fixer.fix(measuredAngularRateX, measuredAngularSpeedY, measuredAngularSpeedZ, trueFx, trueFy, trueFz, result);
 
         // check
@@ -918,44 +917,44 @@ public class AngularRateFixerTest {
 
     @Test
     public void testFix5() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
         fixer.setBias(bg);
         fixer.setCrossCouplingErrors(mg);
         fixer.setGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var randomizer = new UniformRandomizer(new Random());
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
-        final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
+        final var trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, new Random());
+        final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                new Random());
 
-        final double[] measuredAngularRate = measuredKinematics.asAngularRateArray();
-        final double[] trueF = trueKinematics.asSpecificForceArray();
+        final var measuredAngularRate = measuredKinematics.asAngularRateArray();
+        final var trueF = trueKinematics.asSpecificForceArray();
 
-        final double[] result1 = new double[BodyKinematics.COMPONENTS];
-        final double[] result2 = new double[BodyKinematics.COMPONENTS];
+        final var result1 = new double[BodyKinematics.COMPONENTS];
+        final var result2 = new double[BodyKinematics.COMPONENTS];
         fixer.fix(measuredAngularRate, trueF, result1);
         fixer.fix(measuredAngularRate, trueF, bg, mg, gg, result2);
 
@@ -973,44 +972,44 @@ public class AngularRateFixerTest {
 
     @Test
     public void testFix6() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
         fixer.setBias(bg);
         fixer.setCrossCouplingErrors(mg);
         fixer.setGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var randomizer = new UniformRandomizer(new Random());
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
-        final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
+        final var trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, new Random());
+        final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                new Random());
 
-        final Matrix measuredAngularRate = measuredKinematics.asAngularRateMatrix();
-        final Matrix trueF = trueKinematics.asSpecificForceMatrix();
+        final var measuredAngularRate = measuredKinematics.asAngularRateMatrix();
+        final var trueF = trueKinematics.asSpecificForceMatrix();
 
-        final double[] result1 = new double[BodyKinematics.COMPONENTS];
-        final double[] result2 = new double[BodyKinematics.COMPONENTS];
+        final var result1 = new double[BodyKinematics.COMPONENTS];
+        final var result2 = new double[BodyKinematics.COMPONENTS];
         fixer.fix(measuredAngularRate, trueF, result1);
         fixer.fix(measuredAngularRate, trueF, bg, mg, gg, result2);
 
@@ -1034,44 +1033,44 @@ public class AngularRateFixerTest {
 
     @Test
     public void testFix7() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
         fixer.setBias(bg);
         fixer.setCrossCouplingErrors(mg);
         fixer.setGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var randomizer = new UniformRandomizer(new Random());
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
-        final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
+        final var trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, new Random());
+        final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                new Random());
 
-        final Matrix measuredAngularRate = measuredKinematics.asAngularRateMatrix();
-        final Matrix trueF = trueKinematics.asSpecificForceMatrix();
+        final var measuredAngularRate = measuredKinematics.asAngularRateMatrix();
+        final var trueF = trueKinematics.asSpecificForceMatrix();
 
-        final Matrix result1 = new Matrix(BodyKinematics.COMPONENTS, 1);
-        final Matrix result2 = new Matrix(BodyKinematics.COMPONENTS, 1);
+        final var result1 = new Matrix(BodyKinematics.COMPONENTS, 1);
+        final var result2 = new Matrix(BodyKinematics.COMPONENTS, 1);
         fixer.fix(measuredAngularRate, trueF, result1);
         fixer.fix(measuredAngularRate, trueF, bg, mg, gg, result2);
 
@@ -1098,52 +1097,52 @@ public class AngularRateFixerTest {
 
     @Test
     public void testFix8() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
         fixer.setBias(bg);
         fixer.setCrossCouplingErrors(mg);
         fixer.setGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var randomizer = new UniformRandomizer(new Random());
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
-        final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
+        final var trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, new Random());
+        final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                new Random());
 
-        final double measuredAngularRateX = measuredKinematics.getAngularRateX();
-        final double measuredAngularRateY = measuredKinematics.getAngularRateY();
-        final double measuredAngularRateZ = measuredKinematics.getAngularRateZ();
-        final double trueFx = trueKinematics.getFx();
-        final double trueFy = trueKinematics.getFy();
-        final double trueFz = trueKinematics.getFz();
+        final var measuredAngularRateX = measuredKinematics.getAngularRateX();
+        final var measuredAngularRateY = measuredKinematics.getAngularRateY();
+        final var measuredAngularRateZ = measuredKinematics.getAngularRateZ();
+        final var trueFx = trueKinematics.getFx();
+        final var trueFy = trueKinematics.getFy();
+        final var trueFz = trueKinematics.getFz();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double[] result1 = new double[BodyKinematics.COMPONENTS];
-        final double[] result2 = new double[BodyKinematics.COMPONENTS];
+        final var result1 = new double[BodyKinematics.COMPONENTS];
+        final var result2 = new double[BodyKinematics.COMPONENTS];
         fixer.fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz,
                 bgx, bgy, bgz, mg, gg, result1);
         fixer.fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz, result2);
@@ -1161,52 +1160,52 @@ public class AngularRateFixerTest {
 
     @Test
     public void testFix9() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
         fixer.setBias(bg);
         fixer.setCrossCouplingErrors(mg);
         fixer.setGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var randomizer = new UniformRandomizer(new Random());
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
-        final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
+        final var trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, new Random());
+        final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                new Random());
 
-        final double measuredAngularRateX = measuredKinematics.getAngularRateX();
-        final double measuredAngularRateY = measuredKinematics.getAngularRateY();
-        final double measuredAngularRateZ = measuredKinematics.getAngularRateZ();
-        final double trueFx = trueKinematics.getFx();
-        final double trueFy = trueKinematics.getFy();
-        final double trueFz = trueKinematics.getFz();
+        final var measuredAngularRateX = measuredKinematics.getAngularRateX();
+        final var measuredAngularRateY = measuredKinematics.getAngularRateY();
+        final var measuredAngularRateZ = measuredKinematics.getAngularRateZ();
+        final var trueFx = trueKinematics.getFx();
+        final var trueFy = trueKinematics.getFy();
+        final var trueFz = trueKinematics.getFz();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final Matrix result1 = new Matrix(BodyKinematics.COMPONENTS, 1);
-        final Matrix result2 = new Matrix(BodyKinematics.COMPONENTS, 1);
+        final var result1 = new Matrix(BodyKinematics.COMPONENTS, 1);
+        final var result2 = new Matrix(BodyKinematics.COMPONENTS, 1);
         fixer.fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz, result1);
         fixer.fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz,
                 bgx, bgy, bgz, mg, gg, result2);
@@ -1228,38 +1227,38 @@ public class AngularRateFixerTest {
 
     @Test
     public void testFix10() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var randomizer = new UniformRandomizer(new Random());
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
-        final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
+        final var trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, new Random());
+        final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                new Random());
 
-        final double[] measuredAngularRate = measuredKinematics.asAngularRateArray();
-        final double[] trueF = trueKinematics.asSpecificForceArray();
+        final var measuredAngularRate = measuredKinematics.asAngularRateArray();
+        final var trueF = trueKinematics.asSpecificForceArray();
 
-        final double[] result = new double[BodyKinematics.COMPONENTS];
+        final var result = new double[BodyKinematics.COMPONENTS];
         fixer.fix(measuredAngularRate, trueF, bg, mg, gg, result);
 
         // check
@@ -1289,39 +1288,39 @@ public class AngularRateFixerTest {
 
     @Test
     public void testFix11() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var randomizer = new UniformRandomizer(new Random());
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
-        final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
+        final var trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, new Random());
+        final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                new Random());
 
-        final Matrix measuredAngularRate = measuredKinematics.asAngularRateMatrix();
-        final Matrix trueF = trueKinematics.asSpecificForceMatrix();
+        final var measuredAngularRate = measuredKinematics.asAngularRateMatrix();
+        final var trueF = trueKinematics.asSpecificForceMatrix();
 
-        final double[] result = new double[BodyKinematics.COMPONENTS];
+        final var result = new double[BodyKinematics.COMPONENTS];
         fixer.fix(measuredAngularRate, trueF, bg, mg, gg, result);
 
         // check
@@ -1350,45 +1349,45 @@ public class AngularRateFixerTest {
         assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, trueF, bg, mg, m9, result));
         final var m10 = new Matrix(3, 1);
         assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, trueF, bg, mg, m10, result));
-        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, trueF,
-                bg, mg, gg, new double[1]));
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, trueF, bg, mg, gg,
+                new double[1]));
     }
 
     @Test
     public void testFix12() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var randomizer = new UniformRandomizer(new Random());
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
-        final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
+        final var trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, new Random());
+        final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                new Random());
 
-        final Matrix measuredAngularRate = measuredKinematics.asAngularRateMatrix();
-        final Matrix trueF = trueKinematics.asSpecificForceMatrix();
+        final var measuredAngularRate = measuredKinematics.asAngularRateMatrix();
+        final var trueF = trueKinematics.asSpecificForceMatrix();
 
-        final Matrix result = new Matrix(BodyKinematics.COMPONENTS, 1);
+        final var result = new Matrix(BodyKinematics.COMPONENTS, 1);
         fixer.fix(measuredAngularRate, trueF, bg, mg, gg, result);
 
         // check
@@ -1425,47 +1424,47 @@ public class AngularRateFixerTest {
 
     @Test
     public void testFix13() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var randomizer = new UniformRandomizer(new Random());
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
-        final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
+        final var trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, new Random());
+        final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                new Random());
 
-        final double measuredAngularRateX = measuredKinematics.getAngularRateX();
-        final double measuredAngularRateY = measuredKinematics.getAngularRateY();
-        final double measuredAngularRateZ = measuredKinematics.getAngularRateZ();
-        final double trueFx = trueKinematics.getFx();
-        final double trueFy = trueKinematics.getFy();
-        final double trueFz = trueKinematics.getFz();
+        final var measuredAngularRateX = measuredKinematics.getAngularRateX();
+        final var measuredAngularRateY = measuredKinematics.getAngularRateY();
+        final var measuredAngularRateZ = measuredKinematics.getAngularRateZ();
+        final var trueFx = trueKinematics.getFx();
+        final var trueFy = trueKinematics.getFy();
+        final var trueFz = trueKinematics.getFz();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double[] result = new double[BodyKinematics.COMPONENTS];
+        final var result = new double[BodyKinematics.COMPONENTS];
         fixer.fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz,
                 bgx, bgy, bgz, mg, gg, result);
 
@@ -1498,47 +1497,47 @@ public class AngularRateFixerTest {
 
     @Test
     public void testFix14() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var randomizer = new UniformRandomizer(new Random());
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
-        final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
+        final var trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, new Random());
+        final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                new Random());
 
-        final double measuredAngularRateX = measuredKinematics.getAngularRateX();
-        final double measuredAngularRateY = measuredKinematics.getAngularRateY();
-        final double measuredAngularRateZ = measuredKinematics.getAngularRateZ();
-        final double trueFx = trueKinematics.getFx();
-        final double trueFy = trueKinematics.getFy();
-        final double trueFz = trueKinematics.getFz();
+        final var measuredAngularRateX = measuredKinematics.getAngularRateX();
+        final var measuredAngularRateY = measuredKinematics.getAngularRateY();
+        final var measuredAngularRateZ = measuredKinematics.getAngularRateZ();
+        final var trueFx = trueKinematics.getFx();
+        final var trueFy = trueKinematics.getFy();
+        final var trueFz = trueKinematics.getFz();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final Matrix result = new Matrix(BodyKinematics.COMPONENTS, 1);
+        final var result = new Matrix(BodyKinematics.COMPONENTS, 1);
         fixer.fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz,
                 bgx, bgy, bgz, mg, gg, result);
 
@@ -1576,67 +1575,67 @@ public class AngularRateFixerTest {
 
     @Test
     public void testFix15() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var randomizer = new UniformRandomizer(new Random());
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
-        final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
+        final var trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, new Random());
+        final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                new Random());
 
-        final double measuredAngularRateX = measuredKinematics.getAngularRateX();
-        final double measuredAngularRateY = measuredKinematics.getAngularRateY();
-        final double measuredAngularRateZ = measuredKinematics.getAngularRateZ();
-        final double trueFx = trueKinematics.getFx();
-        final double trueFy = trueKinematics.getFy();
-        final double trueFz = trueKinematics.getFz();
+        final var measuredAngularRateX = measuredKinematics.getAngularRateX();
+        final var measuredAngularRateY = measuredKinematics.getAngularRateY();
+        final var measuredAngularRateZ = measuredKinematics.getAngularRateZ();
+        final var trueFx = trueKinematics.getFx();
+        final var trueFy = trueKinematics.getFy();
+        final var trueFz = trueKinematics.getFz();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double sx = mg.getElementAt(0, 0);
-        final double myx = mg.getElementAt(1, 0);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mxy = mg.getElementAt(0, 1);
-        final double sy = mg.getElementAt(1, 1);
-        final double mzy = mg.getElementAt(2, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myz = mg.getElementAt(1, 2);
-        final double sz = mg.getElementAt(2, 2);
+        final var sx = mg.getElementAt(0, 0);
+        final var myx = mg.getElementAt(1, 0);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mxy = mg.getElementAt(0, 1);
+        final var sy = mg.getElementAt(1, 1);
+        final var mzy = mg.getElementAt(2, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myz = mg.getElementAt(1, 2);
+        final var sz = mg.getElementAt(2, 2);
 
-        final double g11 = gg.getElementAt(0, 0);
-        final double g21 = gg.getElementAt(1, 0);
-        final double g31 = gg.getElementAt(2, 0);
-        final double g12 = gg.getElementAt(0, 1);
-        final double g22 = gg.getElementAt(1, 1);
-        final double g32 = gg.getElementAt(2, 1);
-        final double g13 = gg.getElementAt(0, 2);
-        final double g23 = gg.getElementAt(1, 2);
-        final double g33 = gg.getElementAt(2, 2);
+        final var g11 = gg.getElementAt(0, 0);
+        final var g21 = gg.getElementAt(1, 0);
+        final var g31 = gg.getElementAt(2, 0);
+        final var g12 = gg.getElementAt(0, 1);
+        final var g22 = gg.getElementAt(1, 1);
+        final var g32 = gg.getElementAt(2, 1);
+        final var g13 = gg.getElementAt(0, 2);
+        final var g23 = gg.getElementAt(1, 2);
+        final var g33 = gg.getElementAt(2, 2);
 
-        final double[] result = new double[BodyKinematics.COMPONENTS];
+        final var result = new double[BodyKinematics.COMPONENTS];
         fixer.fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz,
                 bgx, bgy, bgz, sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy, g11, g21, g31, g12, g22, g32, g13, g23, g33,
                 result);
@@ -1655,67 +1654,67 @@ public class AngularRateFixerTest {
 
     @Test
     public void testFix16() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var randomizer = new UniformRandomizer(new Random());
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
-        final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
+        final var trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, new Random());
+        final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                new Random());
 
-        final double measuredAngularRateX = measuredKinematics.getAngularRateX();
-        final double measuredAngularRateY = measuredKinematics.getAngularRateY();
-        final double measuredAngularRateZ = measuredKinematics.getAngularRateZ();
-        final double trueFx = trueKinematics.getFx();
-        final double trueFy = trueKinematics.getFy();
-        final double trueFz = trueKinematics.getFz();
+        final var measuredAngularRateX = measuredKinematics.getAngularRateX();
+        final var measuredAngularRateY = measuredKinematics.getAngularRateY();
+        final var measuredAngularRateZ = measuredKinematics.getAngularRateZ();
+        final var trueFx = trueKinematics.getFx();
+        final var trueFy = trueKinematics.getFy();
+        final var trueFz = trueKinematics.getFz();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double sx = mg.getElementAt(0, 0);
-        final double myx = mg.getElementAt(1, 0);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mxy = mg.getElementAt(0, 1);
-        final double sy = mg.getElementAt(1, 1);
-        final double mzy = mg.getElementAt(2, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myz = mg.getElementAt(1, 2);
-        final double sz = mg.getElementAt(2, 2);
+        final var sx = mg.getElementAt(0, 0);
+        final var myx = mg.getElementAt(1, 0);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mxy = mg.getElementAt(0, 1);
+        final var sy = mg.getElementAt(1, 1);
+        final var mzy = mg.getElementAt(2, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myz = mg.getElementAt(1, 2);
+        final var sz = mg.getElementAt(2, 2);
 
-        final double g11 = gg.getElementAt(0, 0);
-        final double g21 = gg.getElementAt(1, 0);
-        final double g31 = gg.getElementAt(2, 0);
-        final double g12 = gg.getElementAt(0, 1);
-        final double g22 = gg.getElementAt(1, 1);
-        final double g32 = gg.getElementAt(2, 1);
-        final double g13 = gg.getElementAt(0, 2);
-        final double g23 = gg.getElementAt(1, 2);
-        final double g33 = gg.getElementAt(2, 2);
+        final var g11 = gg.getElementAt(0, 0);
+        final var g21 = gg.getElementAt(1, 0);
+        final var g31 = gg.getElementAt(2, 0);
+        final var g12 = gg.getElementAt(0, 1);
+        final var g22 = gg.getElementAt(1, 1);
+        final var g32 = gg.getElementAt(2, 1);
+        final var g13 = gg.getElementAt(0, 2);
+        final var g23 = gg.getElementAt(1, 2);
+        final var g33 = gg.getElementAt(2, 2);
 
-        final Matrix result = new Matrix(BodyKinematics.COMPONENTS, 1);
+        final var result = new Matrix(BodyKinematics.COMPONENTS, 1);
         fixer.fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz,
                 bgx, bgy, bgz, sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy, g11, g21, g31, g12, g22, g32, g13, g23, g33,
                 result);
@@ -1738,43 +1737,43 @@ public class AngularRateFixerTest {
 
     @Test
     public void testFixAndReturnNew1() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
         fixer.setBias(bg);
         fixer.setCrossCouplingErrors(mg);
         fixer.setGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var randomizer = new UniformRandomizer(new Random());
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
-        final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
+        final var trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, new Random());
+        final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                new Random());
 
-        final AngularSpeedTriad measuredAngularRate = measuredKinematics.getAngularRateTriad();
-        final AccelerationTriad trueF = trueKinematics.getSpecificForceTriad();
+        final var measuredAngularRate = measuredKinematics.getAngularRateTriad();
+        final var trueF = trueKinematics.getSpecificForceTriad();
 
-        final AngularSpeedTriad result = fixer.fixAndReturnNew(measuredAngularRate, trueF);
+        final var result = fixer.fixAndReturnNew(measuredAngularRate, trueF);
 
         // check
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, result.getUnit());
@@ -1785,48 +1784,48 @@ public class AngularRateFixerTest {
 
     @Test
     public void testFixAndReturnNew2() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
         fixer.setBias(bg);
         fixer.setCrossCouplingErrors(mg);
         fixer.setGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var randomizer = new UniformRandomizer(new Random());
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
-        final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
+        final var trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, new Random());
+        final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                new Random());
 
-        final AngularSpeed measuredAngularRateX = measuredKinematics.getAngularSpeedX();
-        final AngularSpeed measuredAngularSpeedY = measuredKinematics.getAngularSpeedY();
-        final AngularSpeed measuredAngularSpeedZ = measuredKinematics.getAngularSpeedZ();
-        final Acceleration trueFx = trueKinematics.getSpecificForceX();
-        final Acceleration trueFy = trueKinematics.getSpecificForceY();
-        final Acceleration trueFz = trueKinematics.getSpecificForceZ();
+        final var measuredAngularRateX = measuredKinematics.getAngularSpeedX();
+        final var measuredAngularSpeedY = measuredKinematics.getAngularSpeedY();
+        final var measuredAngularSpeedZ = measuredKinematics.getAngularSpeedZ();
+        final var trueFx = trueKinematics.getSpecificForceX();
+        final var trueFy = trueKinematics.getSpecificForceY();
+        final var trueFz = trueKinematics.getSpecificForceZ();
 
-        final AngularSpeedTriad result = fixer.fixAndReturnNew(
-                measuredAngularRateX, measuredAngularSpeedY, measuredAngularSpeedZ, trueFx, trueFy, trueFz);
+        final var result = fixer.fixAndReturnNew(measuredAngularRateX, measuredAngularSpeedY, measuredAngularSpeedZ,
+                trueFx, trueFy, trueFz);
 
         // check
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, result.getUnit());
@@ -1837,44 +1836,44 @@ public class AngularRateFixerTest {
 
     @Test
     public void testFixAndReturnNew3() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
         fixer.setBias(bg);
         fixer.setCrossCouplingErrors(mg);
         fixer.setGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var randomizer = new UniformRandomizer(new Random());
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
-        final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
+        final var trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, new Random());
+        final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                new Random());
 
-        final double[] measuredAngularRate = measuredKinematics.asAngularRateArray();
-        final double[] trueF = trueKinematics.asSpecificForceArray();
+        final var measuredAngularRate = measuredKinematics.asAngularRateArray();
+        final var trueF = trueKinematics.asSpecificForceArray();
 
-        final double[] result1 = fixer.fixAndReturnNew(measuredAngularRate, trueF);
-        final double[] result2 = fixer.fixAndReturnNew(measuredAngularRate, trueF, bg, mg, gg);
+        final var result1 = fixer.fixAndReturnNew(measuredAngularRate, trueF);
+        final var result2 = fixer.fixAndReturnNew(measuredAngularRate, trueF, bg, mg, gg);
 
         // check
         assertArrayEquals(result1, result2, 0.0);
@@ -1889,44 +1888,44 @@ public class AngularRateFixerTest {
 
     @Test
     public void testFixAndReturnNew4() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
         fixer.setBias(bg);
         fixer.setCrossCouplingErrors(mg);
         fixer.setGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var randomizer = new UniformRandomizer(new Random());
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
-        final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
+        final var trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, new Random());
+        final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                new Random());
 
-        final Matrix measuredAngularRate = measuredKinematics.asAngularRateMatrix();
-        final Matrix trueF = trueKinematics.asSpecificForceMatrix();
+        final var measuredAngularRate = measuredKinematics.asAngularRateMatrix();
+        final var trueF = trueKinematics.asSpecificForceMatrix();
 
-        final double[] result1 = fixer.fixAndReturnNew(measuredAngularRate, trueF);
-        final double[] result2 = fixer.fixAndReturnNew(measuredAngularRate, trueF, bg, mg, gg);
+        final var result1 = fixer.fixAndReturnNew(measuredAngularRate, trueF);
+        final var result2 = fixer.fixAndReturnNew(measuredAngularRate, trueF, bg, mg, gg);
 
         // check
         assertArrayEquals(result1, result2, 0.0);
@@ -1947,44 +1946,44 @@ public class AngularRateFixerTest {
 
     @Test
     public void testFixAndReturnNewMatrix1() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
         fixer.setBias(bg);
         fixer.setCrossCouplingErrors(mg);
         fixer.setGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var randomizer = new UniformRandomizer(new Random());
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
-        final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
+        final var trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, new Random());
+        final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                new Random());
 
-        final Matrix measuredAngularRate = measuredKinematics.asAngularRateMatrix();
-        final Matrix trueF = trueKinematics.asSpecificForceMatrix();
+        final var measuredAngularRate = measuredKinematics.asAngularRateMatrix();
+        final var trueF = trueKinematics.asSpecificForceMatrix();
 
-        final Matrix result1 = fixer.fixAndReturnNewMatrix(measuredAngularRate, trueF);
-        final Matrix result2 = fixer.fixAndReturnNewMatrix(measuredAngularRate, trueF, bg, mg, gg);
+        final var result1 = fixer.fixAndReturnNewMatrix(measuredAngularRate, trueF);
+        final var result2 = fixer.fixAndReturnNewMatrix(measuredAngularRate, trueF, bg, mg, gg);
 
         // check
         assertEquals(result1, result2);
@@ -2005,53 +2004,53 @@ public class AngularRateFixerTest {
 
     @Test
     public void testFixAndReturnNew5() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
         fixer.setBias(bg);
         fixer.setCrossCouplingErrors(mg);
         fixer.setGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var randomizer = new UniformRandomizer(new Random());
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
-        final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
+        final var trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, new Random());
+        final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                new Random());
 
-        final double measuredAngularRateX = measuredKinematics.getAngularRateX();
-        final double measuredAngularRateY = measuredKinematics.getAngularRateY();
-        final double measuredAngularRateZ = measuredKinematics.getAngularRateZ();
-        final double trueFx = trueKinematics.getFx();
-        final double trueFy = trueKinematics.getFy();
-        final double trueFz = trueKinematics.getFz();
+        final var measuredAngularRateX = measuredKinematics.getAngularRateX();
+        final var measuredAngularRateY = measuredKinematics.getAngularRateY();
+        final var measuredAngularRateZ = measuredKinematics.getAngularRateZ();
+        final var trueFx = trueKinematics.getFx();
+        final var trueFy = trueKinematics.getFy();
+        final var trueFz = trueKinematics.getFz();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double[] result1 = fixer.fixAndReturnNew(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
+        final var result1 = fixer.fixAndReturnNew(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
                 trueFx, trueFy, trueFz);
-        final double[] result2 = fixer.fixAndReturnNew(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
+        final var result2 = fixer.fixAndReturnNew(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
                 trueFx, trueFy, trueFz, bgx, bgy, bgz, mg, gg);
 
         // check
@@ -2063,53 +2062,53 @@ public class AngularRateFixerTest {
 
     @Test
     public void testFixAndReturnNewMatrix2() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
         fixer.setBias(bg);
         fixer.setCrossCouplingErrors(mg);
         fixer.setGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var randomizer = new UniformRandomizer(new Random());
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
-        final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
+        final var trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, new Random());
+        final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                new Random());
 
-        final double measuredAngularRateX = measuredKinematics.getAngularRateX();
-        final double measuredAngularRateY = measuredKinematics.getAngularRateY();
-        final double measuredAngularRateZ = measuredKinematics.getAngularRateZ();
-        final double trueFx = trueKinematics.getFx();
-        final double trueFy = trueKinematics.getFy();
-        final double trueFz = trueKinematics.getFz();
+        final var measuredAngularRateX = measuredKinematics.getAngularRateX();
+        final var measuredAngularRateY = measuredKinematics.getAngularRateY();
+        final var measuredAngularRateZ = measuredKinematics.getAngularRateZ();
+        final var trueFx = trueKinematics.getFx();
+        final var trueFy = trueKinematics.getFy();
+        final var trueFz = trueKinematics.getFz();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final Matrix result1 = fixer.fixAndReturnNewMatrix(measuredAngularRateX, measuredAngularRateY,
+        final var result1 = fixer.fixAndReturnNewMatrix(measuredAngularRateX, measuredAngularRateY,
                 measuredAngularRateZ, trueFx, trueFy, trueFz);
-        final Matrix result2 = fixer.fixAndReturnNewMatrix(measuredAngularRateX, measuredAngularRateY,
+        final var result2 = fixer.fixAndReturnNewMatrix(measuredAngularRateX, measuredAngularRateY,
                 measuredAngularRateZ, trueFx, trueFy, trueFz, bgx, bgy, bgz, mg, gg);
 
         // check
@@ -2121,39 +2120,39 @@ public class AngularRateFixerTest {
 
     @Test
     public void testFixAndReturnNew6() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var randomizer = new UniformRandomizer(new Random());
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
-        final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
+        final var trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, new Random());
+        final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                new Random());
 
-        final double[] measuredAngularRate = measuredKinematics.asAngularRateArray();
-        final double[] trueF = trueKinematics.asSpecificForceArray();
+        final var measuredAngularRate = measuredKinematics.asAngularRateArray();
+        final var trueF = trueKinematics.asSpecificForceArray();
 
-        final double[] result = fixer.fixAndReturnNew(measuredAngularRate, trueF, bg, mg, gg);
+        final var result = fixer.fixAndReturnNew(measuredAngularRate, trueF, bg, mg, gg);
 
         // check
         assertEquals(omegaX, result[0], ABSOLUTE_ERROR);
@@ -2186,39 +2185,39 @@ public class AngularRateFixerTest {
 
     @Test
     public void testFixAndReturnNew7() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var randomizer = new UniformRandomizer(new Random());
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
-        final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
+        final var trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, new Random());
+        final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                new Random());
 
-        final Matrix measuredAngularRate = measuredKinematics.asAngularRateMatrix();
-        final Matrix trueF = trueKinematics.asSpecificForceMatrix();
+        final var measuredAngularRate = measuredKinematics.asAngularRateMatrix();
+        final var trueF = trueKinematics.asSpecificForceMatrix();
 
-        final double[] result = fixer.fixAndReturnNew(measuredAngularRate, trueF, bg, mg, gg);
+        final var result = fixer.fixAndReturnNew(measuredAngularRate, trueF, bg, mg, gg);
 
         // check
         assertEquals(omegaX, result[0], ABSOLUTE_ERROR);
@@ -2256,39 +2255,39 @@ public class AngularRateFixerTest {
 
     @Test
     public void testFixAndReturnNewMatrix3() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var randomizer = new UniformRandomizer(new Random());
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
-        final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
+        final var trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, new Random());
+        final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                new Random());
 
-        final Matrix measuredAngularRate = measuredKinematics.asAngularRateMatrix();
-        final Matrix trueF = trueKinematics.asSpecificForceMatrix();
+        final var measuredAngularRate = measuredKinematics.asAngularRateMatrix();
+        final var trueF = trueKinematics.asSpecificForceMatrix();
 
-        final Matrix result = fixer.fixAndReturnNewMatrix(measuredAngularRate, trueF, bg, mg, gg);
+        final var result = fixer.fixAndReturnNewMatrix(measuredAngularRate, trueF, bg, mg, gg);
 
         // check
         assertEquals(omegaX, result.getElementAtIndex(0), ABSOLUTE_ERROR);
@@ -2328,47 +2327,47 @@ public class AngularRateFixerTest {
 
     @Test
     public void testFixAndReturnNew8() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var randomizer = new UniformRandomizer(new Random());
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
-        final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
+        final var trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, new Random());
+        final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                new Random());
 
-        final double measuredAngularRateX = measuredKinematics.getAngularRateX();
-        final double measuredAngularRateY = measuredKinematics.getAngularRateY();
-        final double measuredAngularRateZ = measuredKinematics.getAngularRateZ();
-        final double trueFx = trueKinematics.getFx();
-        final double trueFy = trueKinematics.getFy();
-        final double trueFz = trueKinematics.getFz();
+        final var measuredAngularRateX = measuredKinematics.getAngularRateX();
+        final var measuredAngularRateY = measuredKinematics.getAngularRateY();
+        final var measuredAngularRateZ = measuredKinematics.getAngularRateZ();
+        final var trueFx = trueKinematics.getFx();
+        final var trueFy = trueKinematics.getFy();
+        final var trueFz = trueKinematics.getFz();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double[] result = fixer.fixAndReturnNew(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
+        final var result = fixer.fixAndReturnNew(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
                 trueFx, trueFy, trueFz, bgx, bgy, bgz, mg, gg);
 
         // check
@@ -2397,49 +2396,48 @@ public class AngularRateFixerTest {
 
     @Test
     public void testFixAndReturnNewMatrix4() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var randomizer = new UniformRandomizer(new Random());
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
-        final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
+        final var trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, new Random());
+        final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                new Random());
 
-        final double measuredAngularRateX = measuredKinematics.getAngularRateX();
-        final double measuredAngularRateY = measuredKinematics.getAngularRateY();
-        final double measuredAngularRateZ = measuredKinematics.getAngularRateZ();
-        final double trueFx = trueKinematics.getFx();
-        final double trueFy = trueKinematics.getFy();
-        final double trueFz = trueKinematics.getFz();
+        final var measuredAngularRateX = measuredKinematics.getAngularRateX();
+        final var measuredAngularRateY = measuredKinematics.getAngularRateY();
+        final var measuredAngularRateZ = measuredKinematics.getAngularRateZ();
+        final var trueFx = trueKinematics.getFx();
+        final var trueFy = trueKinematics.getFy();
+        final var trueFz = trueKinematics.getFz();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final Matrix result = fixer.fixAndReturnNewMatrix(
-                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz,
-                bgx, bgy, bgz, mg, gg);
+        final var result = fixer.fixAndReturnNewMatrix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
+                trueFx, trueFy, trueFz, bgx, bgy, bgz, mg, gg);
 
         // check
         assertEquals(omegaX, result.getElementAtIndex(0), ABSOLUTE_ERROR);
@@ -2467,69 +2465,69 @@ public class AngularRateFixerTest {
 
     @Test
     public void testFixAndReturnNew9() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var randomizer = new UniformRandomizer(new Random());
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
-        final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
+        final var trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, new Random());
+        final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                new Random());
 
-        final double measuredAngularRateX = measuredKinematics.getAngularRateX();
-        final double measuredAngularRateY = measuredKinematics.getAngularRateY();
-        final double measuredAngularRateZ = measuredKinematics.getAngularRateZ();
-        final double trueFx = trueKinematics.getFx();
-        final double trueFy = trueKinematics.getFy();
-        final double trueFz = trueKinematics.getFz();
+        final var measuredAngularRateX = measuredKinematics.getAngularRateX();
+        final var measuredAngularRateY = measuredKinematics.getAngularRateY();
+        final var measuredAngularRateZ = measuredKinematics.getAngularRateZ();
+        final var trueFx = trueKinematics.getFx();
+        final var trueFy = trueKinematics.getFy();
+        final var trueFz = trueKinematics.getFz();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double sx = mg.getElementAt(0, 0);
-        final double myx = mg.getElementAt(1, 0);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mxy = mg.getElementAt(0, 1);
-        final double sy = mg.getElementAt(1, 1);
-        final double mzy = mg.getElementAt(2, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myz = mg.getElementAt(1, 2);
-        final double sz = mg.getElementAt(2, 2);
+        final var sx = mg.getElementAt(0, 0);
+        final var myx = mg.getElementAt(1, 0);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mxy = mg.getElementAt(0, 1);
+        final var sy = mg.getElementAt(1, 1);
+        final var mzy = mg.getElementAt(2, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myz = mg.getElementAt(1, 2);
+        final var sz = mg.getElementAt(2, 2);
 
-        final double g11 = gg.getElementAt(0, 0);
-        final double g21 = gg.getElementAt(1, 0);
-        final double g31 = gg.getElementAt(2, 0);
-        final double g12 = gg.getElementAt(0, 1);
-        final double g22 = gg.getElementAt(1, 1);
-        final double g32 = gg.getElementAt(2, 1);
-        final double g13 = gg.getElementAt(0, 2);
-        final double g23 = gg.getElementAt(1, 2);
-        final double g33 = gg.getElementAt(2, 2);
+        final var g11 = gg.getElementAt(0, 0);
+        final var g21 = gg.getElementAt(1, 0);
+        final var g31 = gg.getElementAt(2, 0);
+        final var g12 = gg.getElementAt(0, 1);
+        final var g22 = gg.getElementAt(1, 1);
+        final var g32 = gg.getElementAt(2, 1);
+        final var g13 = gg.getElementAt(0, 2);
+        final var g23 = gg.getElementAt(1, 2);
+        final var g33 = gg.getElementAt(2, 2);
 
-        final double[] result = fixer.fixAndReturnNew(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                trueFx, trueFy, trueFz, bgx, bgy, bgz, sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy,
-                g11, g21, g31, g12, g22, g32, g13, g23, g33);
+        final var result = fixer.fixAndReturnNew(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
+                trueFx, trueFy, trueFz, bgx, bgy, bgz, sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy, g11, g21, g31,
+                g12, g22, g32, g13, g23, g33);
 
         // check
         assertEquals(omegaX, result[0], ABSOLUTE_ERROR);
@@ -2539,69 +2537,69 @@ public class AngularRateFixerTest {
 
     @Test
     public void testFixAndReturnNewMatrix5() throws AlgebraException {
-        final AngularRateFixer fixer = new AngularRateFixer();
+        final var fixer = new AngularRateFixer();
 
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = 0.0;
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var randomizer = new UniformRandomizer(new Random());
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
-        final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
-        final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
+        final var omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
+        final var trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, new Random());
+        final var measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                new Random());
 
-        final double measuredAngularRateX = measuredKinematics.getAngularRateX();
-        final double measuredAngularRateY = measuredKinematics.getAngularRateY();
-        final double measuredAngularRateZ = measuredKinematics.getAngularRateZ();
-        final double trueFx = trueKinematics.getFx();
-        final double trueFy = trueKinematics.getFy();
-        final double trueFz = trueKinematics.getFz();
+        final var measuredAngularRateX = measuredKinematics.getAngularRateX();
+        final var measuredAngularRateY = measuredKinematics.getAngularRateY();
+        final var measuredAngularRateZ = measuredKinematics.getAngularRateZ();
+        final var trueFx = trueKinematics.getFx();
+        final var trueFy = trueKinematics.getFy();
+        final var trueFz = trueKinematics.getFz();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
 
-        final double sx = mg.getElementAt(0, 0);
-        final double myx = mg.getElementAt(1, 0);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mxy = mg.getElementAt(0, 1);
-        final double sy = mg.getElementAt(1, 1);
-        final double mzy = mg.getElementAt(2, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myz = mg.getElementAt(1, 2);
-        final double sz = mg.getElementAt(2, 2);
+        final var sx = mg.getElementAt(0, 0);
+        final var myx = mg.getElementAt(1, 0);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mxy = mg.getElementAt(0, 1);
+        final var sy = mg.getElementAt(1, 1);
+        final var mzy = mg.getElementAt(2, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myz = mg.getElementAt(1, 2);
+        final var sz = mg.getElementAt(2, 2);
 
-        final double g11 = gg.getElementAt(0, 0);
-        final double g21 = gg.getElementAt(1, 0);
-        final double g31 = gg.getElementAt(2, 0);
-        final double g12 = gg.getElementAt(0, 1);
-        final double g22 = gg.getElementAt(1, 1);
-        final double g32 = gg.getElementAt(2, 1);
-        final double g13 = gg.getElementAt(0, 2);
-        final double g23 = gg.getElementAt(1, 2);
-        final double g33 = gg.getElementAt(2, 2);
+        final var g11 = gg.getElementAt(0, 0);
+        final var g21 = gg.getElementAt(1, 0);
+        final var g31 = gg.getElementAt(2, 0);
+        final var g12 = gg.getElementAt(0, 1);
+        final var g22 = gg.getElementAt(1, 1);
+        final var g32 = gg.getElementAt(2, 1);
+        final var g13 = gg.getElementAt(0, 2);
+        final var g23 = gg.getElementAt(1, 2);
+        final var g33 = gg.getElementAt(2, 2);
 
-        final Matrix result = fixer.fixAndReturnNewMatrix(
-                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz, bgx, bgy, bgz,
-                sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy, g11, g21, g31, g12, g22, g32, g13, g23, g33);
+        final var result = fixer.fixAndReturnNewMatrix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
+                trueFx, trueFy, trueFz, bgx, bgy, bgz, sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy, g11, g21, g31,
+                g12, g22, g32, g13, g23, g33);
 
         // check
         assertEquals(omegaX, result.getElementAtIndex(0), ABSOLUTE_ERROR);
@@ -2624,7 +2622,7 @@ public class AngularRateFixerTest {
     }
 
     private static Matrix generateMa() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
+        final var result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 500e-6, -300e-6, 200e-6,
                 -150e-6, -600e-6, 250e-6,
@@ -2635,7 +2633,7 @@ public class AngularRateFixerTest {
     }
 
     private static Matrix generateMg() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
+        final var result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 400e-6, -300e-6, 250e-6,
                 0.0, -300e-6, -150e-6,
@@ -2646,8 +2644,8 @@ public class AngularRateFixerTest {
     }
 
     private static Matrix generateGg() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
-        final double tmp = DEG_TO_RAD / (3600 * 9.80665);
+        final var result = new Matrix(3, 3);
+        final var tmp = DEG_TO_RAD / (3600 * 9.80665);
         result.fromArray(new double[]{
                 0.9 * tmp, -1.1 * tmp, -0.6 * tmp,
                 -0.5 * tmp, 1.9 * tmp, -1.6 * tmp,

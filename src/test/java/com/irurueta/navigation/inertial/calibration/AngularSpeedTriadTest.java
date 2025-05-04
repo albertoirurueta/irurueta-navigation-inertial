@@ -21,21 +21,19 @@ import com.irurueta.navigation.inertial.SerializationHelper;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedUnit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class AngularSpeedTriadTest {
+class AngularSpeedTriadTest {
 
     private static final double ABSOLUTE_ERROR = 1e-12;
 
     @Test
-    public void testConstructor1() throws WrongSizeException {
-        final AngularSpeedTriad triad = new AngularSpeedTriad();
+    void testConstructor1() throws WrongSizeException {
+        final var triad = new AngularSpeedTriad();
 
         // check
         assertEquals(0.0, triad.getValueX(), 0.0);
@@ -43,39 +41,39 @@ public class AngularSpeedTriadTest {
         assertEquals(0.0, triad.getValueZ(), 0.0);
         assertEquals(AngularSpeedTriad.DEFAULT_UNIT, triad.getUnit());
         assertArrayEquals(new double[3], triad.getValuesAsArray(), 0.0);
-        final double[] values = new double[3];
+        final var values = new double[3];
         triad.getValuesAsArray(values);
         assertArrayEquals(new double[3], values, 0.0);
         assertEquals(new Matrix(3, 1), triad.getValuesAsMatrix());
-        final Matrix v = new Matrix(3, 1);
+        final var v = new Matrix(3, 1);
         triad.getValuesAsMatrix(v);
         assertEquals(new Matrix(3, 1), v);
-        final AngularSpeed vx1 = triad.getMeasurementX();
+        final var vx1 = triad.getMeasurementX();
         assertEquals(0.0, vx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, vx1.getUnit());
-        final AngularSpeed vx2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var vx2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         triad.getMeasurementX(vx2);
         assertEquals(0.0, vx2.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, vx2.getUnit());
-        final AngularSpeed vy1 = triad.getMeasurementY();
+        final var vy1 = triad.getMeasurementY();
         assertEquals(0.0, vy1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, vy1.getUnit());
-        final AngularSpeed vy2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var vy2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         triad.getMeasurementY(vy2);
         assertEquals(0.0, vy2.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, vy2.getUnit());
-        final AngularSpeed vz1 = triad.getMeasurementZ();
+        final var vz1 = triad.getMeasurementZ();
         assertEquals(0.0, vz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, vz1.getUnit());
-        final AngularSpeed vz2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var vz2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         triad.getMeasurementZ(vz2);
         assertEquals(0.0, vz2.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, vz2.getUnit());
     }
 
     @Test
-    public void testConstructor2() throws WrongSizeException {
-        final AngularSpeedTriad triad = new AngularSpeedTriad(AngularSpeedUnit.DEGREES_PER_SECOND);
+    void testConstructor2() throws WrongSizeException {
+        final var triad = new AngularSpeedTriad(AngularSpeedUnit.DEGREES_PER_SECOND);
 
         // check
         assertEquals(0.0, triad.getValueX(), 0.0);
@@ -83,47 +81,47 @@ public class AngularSpeedTriadTest {
         assertEquals(0.0, triad.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.DEGREES_PER_SECOND, triad.getUnit());
         assertArrayEquals(new double[3], triad.getValuesAsArray(), 0.0);
-        final double[] values = new double[3];
+        final var values = new double[3];
         triad.getValuesAsArray(values);
         assertArrayEquals(new double[3], values, 0.0);
         assertEquals(new Matrix(3, 1), triad.getValuesAsMatrix());
-        final Matrix v = new Matrix(3, 1);
+        final var v = new Matrix(3, 1);
         triad.getValuesAsMatrix(v);
         assertEquals(new Matrix(3, 1), v);
-        final AngularSpeed vx1 = triad.getMeasurementX();
+        final var vx1 = triad.getMeasurementX();
         assertEquals(0.0, vx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.DEGREES_PER_SECOND, vx1.getUnit());
-        final AngularSpeed vx2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var vx2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         triad.getMeasurementX(vx2);
         assertEquals(0.0, vx2.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.DEGREES_PER_SECOND, vx2.getUnit());
-        final AngularSpeed vy1 = triad.getMeasurementY();
+        final var vy1 = triad.getMeasurementY();
         assertEquals(0.0, vy1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.DEGREES_PER_SECOND, vy1.getUnit());
-        final AngularSpeed vy2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var vy2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         triad.getMeasurementY(vy2);
         assertEquals(0.0, vy2.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.DEGREES_PER_SECOND, vy2.getUnit());
-        final AngularSpeed vz1 = triad.getMeasurementZ();
+        final var vz1 = triad.getMeasurementZ();
         assertEquals(0.0, vz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.DEGREES_PER_SECOND, vz1.getUnit());
-        final AngularSpeed vz2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var vz2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         triad.getMeasurementZ(vz2);
         assertEquals(0.0, vz2.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.DEGREES_PER_SECOND, vz2.getUnit());
     }
 
     @Test
-    public void testConstructor3() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testConstructor3() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final double[] values1 = new double[]{valueX, valueY, valueZ};
-        final Matrix v1 = Matrix.newFromArray(values1);
+        final var values1 = new double[]{valueX, valueY, valueZ};
+        final var v1 = Matrix.newFromArray(values1);
 
-        final AngularSpeedTriad triad = new AngularSpeedTriad(valueX, valueY, valueZ);
+        final var triad = new AngularSpeedTriad(valueX, valueY, valueZ);
 
         // check
         assertEquals(valueX, triad.getValueX(), 0.0);
@@ -131,48 +129,47 @@ public class AngularSpeedTriadTest {
         assertEquals(valueZ, triad.getValueZ(), 0.0);
         assertEquals(AngularSpeedTriad.DEFAULT_UNIT, triad.getUnit());
         assertArrayEquals(new double[]{valueX, valueY, valueZ}, triad.getValuesAsArray(), 0.0);
-        final double[] values2 = new double[3];
+        final var values2 = new double[3];
         triad.getValuesAsArray(values2);
         assertArrayEquals(values1, values2, 0.0);
         assertEquals(v1, triad.getValuesAsMatrix());
-        final Matrix v2 = new Matrix(3, 1);
+        final var v2 = new Matrix(3, 1);
         triad.getValuesAsMatrix(v2);
         assertEquals(v1, v2);
-        final AngularSpeed vx1 = triad.getMeasurementX();
+        final var vx1 = triad.getMeasurementX();
         assertEquals(valueX, vx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, vx1.getUnit());
-        final AngularSpeed vx2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var vx2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         triad.getMeasurementX(vx2);
         assertEquals(valueX, vx2.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, vx2.getUnit());
-        final AngularSpeed vy1 = triad.getMeasurementY();
+        final var vy1 = triad.getMeasurementY();
         assertEquals(valueY, vy1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, vy1.getUnit());
-        final AngularSpeed vy2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var vy2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         triad.getMeasurementY(vy2);
         assertEquals(valueY, vy2.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, vy2.getUnit());
-        final AngularSpeed vz1 = triad.getMeasurementZ();
+        final var vz1 = triad.getMeasurementZ();
         assertEquals(valueZ, vz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, vz1.getUnit());
-        final AngularSpeed vz2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var vz2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         triad.getMeasurementZ(vz2);
         assertEquals(valueZ, vz2.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, vz2.getUnit());
     }
 
     @Test
-    public void testConstructor4() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testConstructor4() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final double[] values1 = new double[]{valueX, valueY, valueZ};
-        final Matrix v1 = Matrix.newFromArray(values1);
+        final var values1 = new double[]{valueX, valueY, valueZ};
+        final var v1 = Matrix.newFromArray(values1);
 
-        final AngularSpeedTriad triad = new AngularSpeedTriad(AngularSpeedUnit.DEGREES_PER_SECOND,
-                valueX, valueY, valueZ);
+        final var triad = new AngularSpeedTriad(AngularSpeedUnit.DEGREES_PER_SECOND, valueX, valueY, valueZ);
 
         // check
         assertEquals(valueX, triad.getValueX(), 0.0);
@@ -180,51 +177,51 @@ public class AngularSpeedTriadTest {
         assertEquals(valueZ, triad.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.DEGREES_PER_SECOND, triad.getUnit());
         assertArrayEquals(new double[]{valueX, valueY, valueZ}, triad.getValuesAsArray(), 0.0);
-        final double[] values2 = new double[3];
+        final var values2 = new double[3];
         triad.getValuesAsArray(values2);
         assertArrayEquals(values1, values2, 0.0);
         assertEquals(v1, triad.getValuesAsMatrix());
-        final Matrix v2 = new Matrix(3, 1);
+        final var v2 = new Matrix(3, 1);
         triad.getValuesAsMatrix(v2);
         assertEquals(v1, v2);
-        final AngularSpeed vx1 = triad.getMeasurementX();
+        final var vx1 = triad.getMeasurementX();
         assertEquals(valueX, vx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.DEGREES_PER_SECOND, vx1.getUnit());
-        final AngularSpeed vx2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var vx2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         triad.getMeasurementX(vx2);
         assertEquals(valueX, vx2.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.DEGREES_PER_SECOND, vx2.getUnit());
-        final AngularSpeed vy1 = triad.getMeasurementY();
+        final var vy1 = triad.getMeasurementY();
         assertEquals(valueY, vy1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.DEGREES_PER_SECOND, vy1.getUnit());
-        final AngularSpeed vy2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var vy2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         triad.getMeasurementY(vy2);
         assertEquals(valueY, vy2.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.DEGREES_PER_SECOND, vy2.getUnit());
-        final AngularSpeed vz1 = triad.getMeasurementZ();
+        final var vz1 = triad.getMeasurementZ();
         assertEquals(valueZ, vz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.DEGREES_PER_SECOND, vz1.getUnit());
-        final AngularSpeed vz2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var vz2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         triad.getMeasurementZ(vz2);
         assertEquals(valueZ, vz2.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.DEGREES_PER_SECOND, vz2.getUnit());
     }
 
     @Test
-    public void testConstructor5() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testConstructor5() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final AngularSpeed mx = new AngularSpeed(valueX, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed my = new AngularSpeed(valueY, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed mz = new AngularSpeed(valueZ, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var mx = new AngularSpeed(valueX, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var my = new AngularSpeed(valueY, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var mz = new AngularSpeed(valueZ, AngularSpeedUnit.RADIANS_PER_SECOND);
 
-        final double[] values1 = new double[]{valueX, valueY, valueZ};
-        final Matrix v1 = Matrix.newFromArray(values1);
+        final var values1 = new double[]{valueX, valueY, valueZ};
+        final var v1 = Matrix.newFromArray(values1);
 
-        final AngularSpeedTriad triad = new AngularSpeedTriad(mx, my, mz);
+        final var triad = new AngularSpeedTriad(mx, my, mz);
 
         // check
         assertEquals(valueX, triad.getValueX(), 0.0);
@@ -232,45 +229,45 @@ public class AngularSpeedTriadTest {
         assertEquals(valueZ, triad.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, triad.getUnit());
         assertArrayEquals(new double[]{valueX, valueY, valueZ}, triad.getValuesAsArray(), 0.0);
-        final double[] values2 = new double[3];
+        final var values2 = new double[3];
         triad.getValuesAsArray(values2);
         assertArrayEquals(values1, values2, 0.0);
         assertEquals(v1, triad.getValuesAsMatrix());
-        final Matrix v2 = new Matrix(3, 1);
+        final var v2 = new Matrix(3, 1);
         triad.getValuesAsMatrix(v2);
         assertEquals(v1, v2);
-        final AngularSpeed vx1 = triad.getMeasurementX();
+        final var vx1 = triad.getMeasurementX();
         assertEquals(valueX, vx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, vx1.getUnit());
-        final AngularSpeed vx2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var vx2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         triad.getMeasurementX(vx2);
         assertEquals(valueX, vx2.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, vx2.getUnit());
-        final AngularSpeed vy1 = triad.getMeasurementY();
+        final var vy1 = triad.getMeasurementY();
         assertEquals(valueY, vy1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, vy1.getUnit());
-        final AngularSpeed vy2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var vy2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         triad.getMeasurementY(vy2);
         assertEquals(valueY, vy2.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, vy2.getUnit());
-        final AngularSpeed vz1 = triad.getMeasurementZ();
+        final var vz1 = triad.getMeasurementZ();
         assertEquals(valueZ, vz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, vz1.getUnit());
-        final AngularSpeed vz2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var vz2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         triad.getMeasurementZ(vz2);
         assertEquals(valueZ, vz2.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, vz2.getUnit());
     }
 
     @Test
-    public void testConstructor6() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testConstructor6() {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final AngularSpeedTriad triad1 = new AngularSpeedTriad(valueX, valueY, valueZ);
-        final AngularSpeedTriad triad2 = new AngularSpeedTriad(triad1);
+        final var triad1 = new AngularSpeedTriad(valueX, valueY, valueZ);
+        final var triad2 = new AngularSpeedTriad(triad1);
 
         // check
         assertEquals(valueX, triad2.getValueX(), 0.0);
@@ -280,15 +277,15 @@ public class AngularSpeedTriadTest {
     }
 
     @Test
-    public void testGetSetValueX() {
-        final AngularSpeedTriad triad = new AngularSpeedTriad();
+    void testGetSetValueX() {
+        final var triad = new AngularSpeedTriad();
 
         // check default value
         assertEquals(0.0, triad.getValueX(), 0.0);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
 
         triad.setValueX(valueX);
 
@@ -297,15 +294,15 @@ public class AngularSpeedTriadTest {
     }
 
     @Test
-    public void testGetSetValueY() {
-        final AngularSpeedTriad triad = new AngularSpeedTriad();
+    void testGetSetValueY() {
+        final var triad = new AngularSpeedTriad();
 
         // check default value
         assertEquals(0.0, triad.getValueY(), 0.0);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueY = randomizer.nextDouble();
+        final var randomizer = new UniformRandomizer();
+        final var valueY = randomizer.nextDouble();
 
         triad.setValueY(valueY);
 
@@ -314,15 +311,15 @@ public class AngularSpeedTriadTest {
     }
 
     @Test
-    public void testGetSetValueZ() {
-        final AngularSpeedTriad triad = new AngularSpeedTriad();
+    void testGetSetValueZ() {
+        final var triad = new AngularSpeedTriad();
 
         // check default value
         assertEquals(0.0, triad.getValueZ(), 0.0);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueZ = randomizer.nextDouble();
+        final var randomizer = new UniformRandomizer();
+        final var valueZ = randomizer.nextDouble();
 
         triad.setValueZ(valueZ);
 
@@ -331,8 +328,8 @@ public class AngularSpeedTriadTest {
     }
 
     @Test
-    public void testSetValueCoordinates() {
-        final AngularSpeedTriad triad = new AngularSpeedTriad();
+    void testSetValueCoordinates() {
+        final var triad = new AngularSpeedTriad();
 
         // check default value
         assertEquals(0.0, triad.getValueX(), 0.0);
@@ -340,10 +337,10 @@ public class AngularSpeedTriadTest {
         assertEquals(0.0, triad.getValueZ(), 0.0);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
         triad.setValueCoordinates(valueX, valueY, valueZ);
 
@@ -354,8 +351,8 @@ public class AngularSpeedTriadTest {
     }
 
     @Test
-    public void testGetSetUnit() {
-        final AngularSpeedTriad triad = new AngularSpeedTriad();
+    void testGetSetUnit() {
+        final var triad = new AngularSpeedTriad();
 
         // check default value
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, triad.getUnit());
@@ -371,8 +368,8 @@ public class AngularSpeedTriadTest {
     }
 
     @Test
-    public void testSetValueCoordinatesAndUnit() {
-        final AngularSpeedTriad triad = new AngularSpeedTriad();
+    void testSetValueCoordinatesAndUnit() {
+        final var triad = new AngularSpeedTriad();
 
         // check default values
         assertEquals(0.0, triad.getValueX(), 0.0);
@@ -381,10 +378,10 @@ public class AngularSpeedTriadTest {
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, triad.getUnit());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
         triad.setValueCoordinatesAndUnit(valueX, valueY, valueZ, AngularSpeedUnit.DEGREES_PER_SECOND);
 
@@ -400,22 +397,22 @@ public class AngularSpeedTriadTest {
     }
 
     @Test
-    public void testGetSetValuesAsArray() {
-        final AngularSpeedTriad triad = new AngularSpeedTriad();
+    void testGetSetValuesAsArray() {
+        final var triad = new AngularSpeedTriad();
 
         // check default value
         assertArrayEquals(new double[3], triad.getValuesAsArray(), 0.0);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] values1 = new double[3];
+        final var randomizer = new UniformRandomizer();
+        final var values1 = new double[3];
         randomizer.fill(values1);
 
         triad.setValueCoordinates(values1);
 
         // check
-        final double[] values2 = triad.getValuesAsArray();
-        final double[] values3 = new double[3];
+        final var values2 = triad.getValuesAsArray();
+        final var values3 = new double[3];
         triad.getValuesAsArray(values3);
 
         assertArrayEquals(values1, values2, 0.0);
@@ -427,20 +424,20 @@ public class AngularSpeedTriadTest {
     }
 
     @Test
-    public void testGetSetValuesAsMatrix() throws WrongSizeException {
-        final AngularSpeedTriad triad = new AngularSpeedTriad();
+    void testGetSetValuesAsMatrix() throws WrongSizeException {
+        final var triad = new AngularSpeedTriad();
 
         // check default value
         assertEquals(new Matrix(3, 1), triad.getValuesAsMatrix());
 
         // set new value
-        final Matrix values1 = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+        final var values1 = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
 
         triad.setValueCoordinates(values1);
 
         // check
-        final Matrix values2 = triad.getValuesAsMatrix();
-        final Matrix values3 = new Matrix(3, 1);
+        final var values2 = triad.getValuesAsMatrix();
+        final var values3 = new Matrix(3, 1);
         triad.getValuesAsMatrix(values3);
 
         assertEquals(values1, values2);
@@ -458,24 +455,24 @@ public class AngularSpeedTriadTest {
     }
 
     @Test
-    public void testGetSetMeasurementX() {
-        final AngularSpeedTriad triad = new AngularSpeedTriad();
+    void testGetSetMeasurementX() {
+        final var triad = new AngularSpeedTriad();
 
         // check default value
-        final AngularSpeed mx1 = triad.getMeasurementX();
+        final var mx1 = triad.getMeasurementX();
         assertEquals(0.0, mx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, mx1.getUnit());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final AngularSpeed mx2 = new AngularSpeed(valueX, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var mx2 = new AngularSpeed(valueX, AngularSpeedUnit.RADIANS_PER_SECOND);
 
         triad.setMeasurementX(mx2);
 
         // check
-        final AngularSpeed mx3 = triad.getMeasurementX();
-        final AngularSpeed mx4 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var mx3 = triad.getMeasurementX();
+        final var mx4 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         triad.getMeasurementX(mx4);
 
         assertEquals(mx2, mx3);
@@ -483,24 +480,24 @@ public class AngularSpeedTriadTest {
     }
 
     @Test
-    public void testGetSetMeasurementY() {
-        final AngularSpeedTriad triad = new AngularSpeedTriad();
+    void testGetSetMeasurementY() {
+        final var triad = new AngularSpeedTriad();
 
         // check default value
-        final AngularSpeed my1 = triad.getMeasurementY();
+        final var my1 = triad.getMeasurementY();
         assertEquals(0.0, my1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, my1.getUnit());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueY = randomizer.nextDouble();
-        final AngularSpeed my2 = new AngularSpeed(valueY, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var valueY = randomizer.nextDouble();
+        final var my2 = new AngularSpeed(valueY, AngularSpeedUnit.RADIANS_PER_SECOND);
 
         triad.setMeasurementY(my2);
 
         // check
-        final AngularSpeed my3 = triad.getMeasurementY();
-        final AngularSpeed my4 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var my3 = triad.getMeasurementY();
+        final var my4 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         triad.getMeasurementY(my4);
 
         assertEquals(my2, my3);
@@ -508,24 +505,24 @@ public class AngularSpeedTriadTest {
     }
 
     @Test
-    public void testGetSetMeasurementZ() {
-        final AngularSpeedTriad triad = new AngularSpeedTriad();
+    void testGetSetMeasurementZ() {
+        final var triad = new AngularSpeedTriad();
 
         // check default value
-        final AngularSpeed mz1 = triad.getMeasurementZ();
+        final var mz1 = triad.getMeasurementZ();
         assertEquals(0.0, mz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, mz1.getUnit());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueZ = randomizer.nextDouble();
-        final AngularSpeed mz2 = new AngularSpeed(valueZ, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var valueZ = randomizer.nextDouble();
+        final var mz2 = new AngularSpeed(valueZ, AngularSpeedUnit.RADIANS_PER_SECOND);
 
         triad.setMeasurementZ(mz2);
 
         // check
-        final AngularSpeed mz3 = triad.getMeasurementZ();
-        final AngularSpeed mz4 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var mz3 = triad.getMeasurementZ();
+        final var mz4 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         triad.getMeasurementZ(mz4);
 
         assertEquals(mz2, mz3);
@@ -533,13 +530,13 @@ public class AngularSpeedTriadTest {
     }
 
     @Test
-    public void testSetMeasurementCoordinates() {
-        final AngularSpeedTriad triad = new AngularSpeedTriad();
+    void testSetMeasurementCoordinates() {
+        final var triad = new AngularSpeedTriad();
 
         // check default values
-        final AngularSpeed mx1 = triad.getMeasurementX();
-        final AngularSpeed my1 = triad.getMeasurementY();
-        final AngularSpeed mz1 = triad.getMeasurementZ();
+        final var mx1 = triad.getMeasurementX();
+        final var my1 = triad.getMeasurementY();
+        final var mz1 = triad.getMeasurementZ();
 
         assertEquals(0.0, mx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, mx1.getUnit());
@@ -549,20 +546,20 @@ public class AngularSpeedTriadTest {
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, mz1.getUnit());
 
         // set new values
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
-        final AngularSpeed mx2 = new AngularSpeed(valueX, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed my2 = new AngularSpeed(valueY, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed mz2 = new AngularSpeed(valueZ, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
+        final var mx2 = new AngularSpeed(valueX, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var my2 = new AngularSpeed(valueY, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var mz2 = new AngularSpeed(valueZ, AngularSpeedUnit.RADIANS_PER_SECOND);
 
         triad.setMeasurementCoordinates(mx2, my2, mz2);
 
         // check
-        final AngularSpeed mx3 = triad.getMeasurementX();
-        final AngularSpeed my3 = triad.getMeasurementY();
-        final AngularSpeed mz3 = triad.getMeasurementZ();
+        final var mx3 = triad.getMeasurementX();
+        final var my3 = triad.getMeasurementY();
+        final var mz3 = triad.getMeasurementZ();
 
         assertEquals(mx2, mx3);
         assertEquals(my2, my3);
@@ -570,14 +567,14 @@ public class AngularSpeedTriadTest {
     }
 
     @Test
-    public void testCopyTo() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testCopyTo() {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final AngularSpeedTriad triad1 = new AngularSpeedTriad(valueX, valueY, valueZ);
-        final AngularSpeedTriad triad2 = new AngularSpeedTriad(AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var triad1 = new AngularSpeedTriad(valueX, valueY, valueZ);
+        final var triad2 = new AngularSpeedTriad(AngularSpeedUnit.DEGREES_PER_SECOND);
 
         triad1.copyTo(triad2);
 
@@ -589,14 +586,14 @@ public class AngularSpeedTriadTest {
     }
 
     @Test
-    public void testCopyFrom() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testCopyFrom() {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final AngularSpeedTriad triad1 = new AngularSpeedTriad(valueX, valueY, valueZ);
-        final AngularSpeedTriad triad2 = new AngularSpeedTriad(AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var triad1 = new AngularSpeedTriad(valueX, valueY, valueZ);
+        final var triad2 = new AngularSpeedTriad(AngularSpeedUnit.DEGREES_PER_SECOND);
 
         triad2.copyFrom(triad1);
 
@@ -608,30 +605,30 @@ public class AngularSpeedTriadTest {
     }
 
     @Test
-    public void testHashCode() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testHashCode() {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final AngularSpeedTriad triad1 = new AngularSpeedTriad(valueX, valueY, valueZ);
-        final AngularSpeedTriad triad2 = new AngularSpeedTriad(triad1);
-        final AngularSpeedTriad triad3 = new AngularSpeedTriad();
+        final var triad1 = new AngularSpeedTriad(valueX, valueY, valueZ);
+        final var triad2 = new AngularSpeedTriad(triad1);
+        final var triad3 = new AngularSpeedTriad();
 
         assertEquals(triad1.hashCode(), triad2.hashCode());
         assertNotEquals(triad1.hashCode(), triad3.hashCode());
     }
 
     @Test
-    public void testEquals1() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testEquals1() {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final AngularSpeedTriad triad1 = new AngularSpeedTriad(valueX, valueY, valueZ);
-        final AngularSpeedTriad triad2 = new AngularSpeedTriad(triad1);
-        final AngularSpeedTriad triad3 = new AngularSpeedTriad();
+        final var triad1 = new AngularSpeedTriad(valueX, valueY, valueZ);
+        final var triad2 = new AngularSpeedTriad(triad1);
+        final var triad3 = new AngularSpeedTriad();
 
         assertTrue(triad1.equals(triad2));
         assertTrue(triad2.equals(triad1));
@@ -645,15 +642,15 @@ public class AngularSpeedTriadTest {
     }
 
     @Test
-    public void testEquals2() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testEquals2() {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final AngularSpeedTriad triad1 = new AngularSpeedTriad(valueX, valueY, valueZ);
-        final AngularSpeedTriad triad2 = new AngularSpeedTriad(triad1);
-        final AngularSpeedTriad triad3 = new AngularSpeedTriad();
+        final var triad1 = new AngularSpeedTriad(valueX, valueY, valueZ);
+        final var triad2 = new AngularSpeedTriad(triad1);
+        final var triad3 = new AngularSpeedTriad();
 
         assertTrue(triad1.equals(triad2, ABSOLUTE_ERROR));
         assertTrue(triad2.equals(triad1, ABSOLUTE_ERROR));
@@ -665,77 +662,77 @@ public class AngularSpeedTriadTest {
     }
 
     @Test
-    public void testEquals3() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testEquals3() {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final AngularSpeedTriad triad1 = new AngularSpeedTriad(valueX, valueY, valueZ);
-        final AngularSpeedTriad triad2 = new AngularSpeedTriad(triad1);
-        final AngularSpeedTriad triad3 = new AngularSpeedTriad();
-        final Object obj = new Object();
+        final var triad1 = new AngularSpeedTriad(valueX, valueY, valueZ);
+        final var triad2 = new AngularSpeedTriad(triad1);
+        final var triad3 = new AngularSpeedTriad();
+        final var obj = new Object();
 
         assertEquals(triad1, triad2);
         assertNotEquals(triad1, triad3);
         assertNotEquals(triad1, obj);
-        assertNotEquals(triad1, null);
+        assertNotEquals(null, triad1);
     }
 
     @Test
-    public void testClone() throws CloneNotSupportedException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testClone() throws CloneNotSupportedException {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final AngularSpeedTriad triad1 = new AngularSpeedTriad(valueX, valueY, valueZ);
-        final AngularSpeedTriad triad2 = (AngularSpeedTriad) triad1.clone();
+        final var triad1 = new AngularSpeedTriad(valueX, valueY, valueZ);
+        final var triad2 = (AngularSpeedTriad) triad1.clone();
 
         assertEquals(triad1, triad2);
     }
 
     @Test
-    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final AngularSpeedTriad triad1 = new AngularSpeedTriad(valueX, valueY, valueZ);
+        final var triad1 = new AngularSpeedTriad(valueX, valueY, valueZ);
 
-        final byte[] bytes = SerializationHelper.serialize(triad1);
-        final AngularSpeedTriad triad2 = SerializationHelper.deserialize(bytes);
+        final var bytes = SerializationHelper.serialize(triad1);
+        final var triad2 = SerializationHelper.deserialize(bytes);
 
         assertEquals(triad1, triad2);
         assertNotSame(triad1, triad2);
     }
 
     @Test
-    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
-        final Field field = AngularSpeedTriad.class.getDeclaredField("serialVersionUID");
+    void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final var field = AngularSpeedTriad.class.getDeclaredField("serialVersionUID");
         field.setAccessible(true);
 
         assertEquals(0L, field.get(null));
     }
 
     @Test
-    public void testGetNorm() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testGetNorm() {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final AngularSpeedTriad triad = new AngularSpeedTriad(valueX, valueY, valueZ);
+        final var triad = new AngularSpeedTriad(valueX, valueY, valueZ);
 
-        final double sqrNorm = valueX * valueX + valueY * valueY + valueZ * valueZ;
-        final double norm = Math.sqrt(sqrNorm);
+        final var sqrNorm = valueX * valueX + valueY * valueY + valueZ * valueZ;
+        final var norm = Math.sqrt(sqrNorm);
 
         assertEquals(sqrNorm, triad.getSqrNorm(), 0.0);
         assertEquals(norm, triad.getNorm(), 0.0);
 
-        final AngularSpeed w1 = triad.getMeasurementNorm();
-        final AngularSpeed w2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var w1 = triad.getMeasurementNorm();
+        final var w2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         triad.getMeasurementNorm(w2);
 
         assertEquals(norm, w1.getValue().doubleValue(), 0.0);

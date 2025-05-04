@@ -21,20 +21,18 @@ import com.irurueta.units.Angle;
 import com.irurueta.units.AngleUnit;
 import com.irurueta.units.Distance;
 import com.irurueta.units.DistanceUnit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class WMMEarthMagneticFluxDensityEstimatorTest {
+class WMMEarthMagneticFluxDensityEstimatorTest {
 
-    private static final String FILE_PATH =
-            "./src/main/resources/com/irurueta/navigation/inertial/wmm/wmm.cof";
+    private static final String FILE_PATH = "./src/main/resources/com/irurueta/navigation/inertial/wmm/wmm.cof";
 
     private static final double TO_NANO = 1e9;
 
@@ -68,468 +66,467 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
     }
 
     @Test
-    public void testConstants() {
+    void testConstants() {
         assertEquals(5e-3, WMMEarthMagneticFluxDensityEstimator.ANGLE_ACCURACY_DEGREES, 0.0);
-        assertEquals(WMMEarthMagneticFluxDensityEstimator.ANGLE_ACCURACY_RADIANS,
+        assertEquals(WMMEarthMagneticFluxDensityEstimator.ANGLE_ACCURACY_RADIANS, 
                 Math.toRadians(WMMEarthMagneticFluxDensityEstimator.ANGLE_ACCURACY_DEGREES), 0.0);
         assertEquals(5e-2, WMMEarthMagneticFluxDensityEstimator.INTENSITY_ACCURACY, 0.0);
     }
 
     @Test
-    public void testConstructor() throws IOException {
-        final WMMEarthMagneticFluxDensityEstimator estimator1 = new WMMEarthMagneticFluxDensityEstimator();
+    void testConstructor() throws IOException {
+        final var estimator1 = new WMMEarthMagneticFluxDensityEstimator();
         assertNotNull(estimator1);
         assertNotNull(estimator1.getModel());
 
         final WorldMagneticModel model = WMMLoader.loadFromFile(FILE_PATH);
-        final WMMEarthMagneticFluxDensityEstimator estimator2 = new WMMEarthMagneticFluxDensityEstimator(model);
+        final var estimator2 = new WMMEarthMagneticFluxDensityEstimator(model);
         assertNotNull(estimator2);
         assertSame(estimator2.getModel(), model);
 
         // Force NullPointerException
-        //noinspection DataFlowIssue
         assertThrows(NullPointerException.class, () -> new WMMEarthMagneticFluxDensityEstimator(null));
     }
 
     @Test
-    public void testDeclinationModel() throws IOException {
-        final WMMEarthMagneticFluxDensityEstimator estimator = new WMMEarthMagneticFluxDensityEstimator();
+    void testDeclinationModel() throws IOException {
+        final var estimator = new WMMEarthMagneticFluxDensityEstimator();
 
+        assertEquals(-112.41, Math.toDegrees(estimator.getDeclination(Math.toRadians(89.0), 
+                Math.toRadians(-121.0), 28e3, 2020.0)), ANGLE_ERROR);
         assertEquals(-112.41, Math.toDegrees(estimator.getDeclination(Math.toRadians(89.0),
-                        Math.toRadians(-121.0), 28e3, 2020.0)), ANGLE_ERROR);
-        assertEquals(-112.41, Math.toDegrees(estimator.getDeclination(Math.toRadians(89.0),
-                        Math.toRadians(-121.0), 28e3, 2020.0)), ANGLE_ERROR);
+                Math.toRadians(-121.0), 28e3, 2020.0)), ANGLE_ERROR);
         assertEquals(-112.39, Math.toDegrees(estimator.getDeclination(Math.toRadians(89.0),
-                        Math.toRadians(-121.0), 27e3, 2020.0)), ANGLE_ERROR);
+                Math.toRadians(-121.0), 27e3, 2020.0)), ANGLE_ERROR);
         assertEquals(-37.40, Math.toDegrees(estimator.getDeclination(Math.toRadians(80.0),
-                        Math.toRadians(-96), 48e3, 2020.0)), ANGLE_ERROR);
+                Math.toRadians(-96), 48e3, 2020.0)), ANGLE_ERROR);
         assertEquals(51.30, Math.toDegrees(estimator.getDeclination(Math.toRadians(82.0),
-                        Math.toRadians(87.0), 54e3, 2020.0)), ANGLE_ERROR);
+                Math.toRadians(87.0), 54e3, 2020.0)), ANGLE_ERROR);
         assertEquals(0.71, Math.toDegrees(estimator.getDeclination(Math.toRadians(43.0),
-                        Math.toRadians(93.0), 65e3, 2020.0)), ANGLE_ERROR);
-        assertEquals(-5.78, Math.toDegrees(estimator.getDeclination(Math.toRadians(-33.0),
-                        Math.toRadians(109.0), 51e3, 2020.0)), ANGLE_ERROR);
+                Math.toRadians(93.0), 65e3, 2020.0)), ANGLE_ERROR);
+        assertEquals(-5.78, Math.toDegrees(estimator.getDeclination(Math.toRadians(-33.0), 
+                Math.toRadians(109.0), 51e3, 2020.0)), ANGLE_ERROR);
         assertEquals(-15.79, Math.toDegrees(estimator.getDeclination(Math.toRadians(-59.0),
-                        Math.toRadians(-8.0), 39e3, 2020.0)), ANGLE_ERROR);
+                Math.toRadians(-8.0), 39e3, 2020.0)), ANGLE_ERROR);
         assertEquals(28.10, Math.toDegrees(estimator.getDeclination(Math.toRadians(-50.0),
-                        Math.toRadians(-103.0), 3e3, 2020.0)), ANGLE_ERROR);
+                Math.toRadians(-103.0), 3e3, 2020.0)), ANGLE_ERROR);
         assertEquals(15.82, Math.toDegrees(estimator.getDeclination(Math.toRadians(-29.0),
-                        Math.toRadians(-110.0), 94e3, 2020.0)), ANGLE_ERROR);
+                Math.toRadians(-110.0), 94e3, 2020.0)), ANGLE_ERROR);
         assertEquals(0.12, Math.toDegrees(estimator.getDeclination(Math.toRadians(14.0),
-                        Math.toRadians(143.0), 66e3, 2020.0)), ANGLE_ERROR);
-        assertEquals(1.05, Math.toDegrees(estimator.getDeclination(Math.toRadians(0.0),
-                        Math.toRadians(21.0), 18e3, 2020.0)), ANGLE_ERROR);
+                Math.toRadians(143.0), 66e3, 2020.0)), ANGLE_ERROR);
+        assertEquals(1.05, Math.toDegrees(estimator.getDeclination(0.0,
+                Math.toRadians(21.0), 18e3, 2020.0)), ANGLE_ERROR);
 
         assertEquals(20.16, Math.toDegrees(estimator.getDeclination(Math.toRadians(-36.0),
-                        Math.toRadians(-137.0), 6e3, 2020.5)), ANGLE_ERROR);
+                Math.toRadians(-137.0), 6e3, 2020.5)), ANGLE_ERROR);
         assertEquals(0.43, Math.toDegrees(estimator.getDeclination(Math.toRadians(26.0),
-                        Math.toRadians(81.0), 63e3, 2020.5)), ANGLE_ERROR);
+                Math.toRadians(81.0), 63e3, 2020.5)), ANGLE_ERROR);
         assertEquals(13.39, Math.toDegrees(estimator.getDeclination(Math.toRadians(38.0),
-                        Math.toRadians(-144.0), 69e3, 2020.5)), ANGLE_ERROR);
+                Math.toRadians(-144.0), 69e3, 2020.5)), ANGLE_ERROR);
         assertEquals(57.40, Math.toDegrees(estimator.getDeclination(Math.toRadians(-70.0),
-                        Math.toRadians(-133.0), 50e3, 2020.5)), ANGLE_ERROR);
+                Math.toRadians(-133.0), 50e3, 2020.5)), ANGLE_ERROR);
         assertEquals(15.39, Math.toDegrees(estimator.getDeclination(Math.toRadians(-52.0),
-                        Math.toRadians(-75.0), 8e3, 2020.5)), ANGLE_ERROR);
+                Math.toRadians(-75.0), 8e3, 2020.5)), ANGLE_ERROR);
         assertEquals(-32.56, Math.toDegrees(estimator.getDeclination(Math.toRadians(-66.0),
-                        Math.toRadians(17.0), 8e3, 2020.5)), ANGLE_ERROR);
+                Math.toRadians(17.0), 8e3, 2020.5)), ANGLE_ERROR);
         assertEquals(9.15, Math.toDegrees(estimator.getDeclination(Math.toRadians(-37.0),
-                        Math.toRadians(140.0), 22e3, 2020.5)), ANGLE_ERROR);
+                Math.toRadians(140.0), 22e3, 2020.5)), ANGLE_ERROR);
         assertEquals(10.83, Math.toDegrees(estimator.getDeclination(Math.toRadians(-12.0),
-                        Math.toRadians(-129.0), 40e3, 2020.5)), ANGLE_ERROR);
+                Math.toRadians(-129.0), 40e3, 2020.5)), ANGLE_ERROR);
         assertEquals(11.46, Math.toDegrees(estimator.getDeclination(Math.toRadians(33.0),
-                        Math.toRadians(-118.0), 44e3, 2020.5)), ANGLE_ERROR);
+                Math.toRadians(-118.0), 44e3, 2020.5)), ANGLE_ERROR);
         assertEquals(28.65, Math.toDegrees(estimator.getDeclination(Math.toRadians(-81.0),
-                        Math.toRadians(-67.0), 50e3, 2020.5)), ANGLE_ERROR);
+                Math.toRadians(-67.0), 50e3, 2020.5)), ANGLE_ERROR);
 
         assertEquals(-22.29, Math.toDegrees(estimator.getDeclination(Math.toRadians(-57.0),
-                        Math.toRadians(3.0), 74e3, 2021.0)), ANGLE_ERROR);
+                Math.toRadians(3.0), 74e3, 2021.0)), ANGLE_ERROR);
         assertEquals(14.02, Math.toDegrees(estimator.getDeclination(Math.toRadians(-24.0),
-                        Math.toRadians(-122.0), 46e3, 2021.0)), ANGLE_ERROR);
+                Math.toRadians(-122.0), 46e3, 2021.0)), ANGLE_ERROR);
         assertEquals(1.08, Math.toDegrees(estimator.getDeclination(Math.toRadians(23.0),
-                        Math.toRadians(63.0), 69e3, 2021.0)), ANGLE_ERROR);
+                Math.toRadians(63.0), 69e3, 2021.0)), ANGLE_ERROR);
         assertEquals(9.74, Math.toDegrees(estimator.getDeclination(Math.toRadians(-3.0),
-                        Math.toRadians(-147.0), 33e3, 2021.0)), ANGLE_ERROR);
+                Math.toRadians(-147.0), 33e3, 2021.0)), ANGLE_ERROR);
         assertEquals(-6.05, Math.toDegrees(estimator.getDeclination(Math.toRadians(-72.0),
-                        Math.toRadians(-22.0), 47e3, 2021.0)), ANGLE_ERROR);
+                Math.toRadians(-22.0), 47e3, 2021.0)), ANGLE_ERROR);
         assertEquals(-1.71, Math.toDegrees(estimator.getDeclination(Math.toRadians(-14.0),
-                        Math.toRadians(99.0), 62e3, 2021.0)), ANGLE_ERROR);
+                Math.toRadians(99.0), 62e3, 2021.0)), ANGLE_ERROR);
         assertEquals(-36.71, Math.toDegrees(estimator.getDeclination(Math.toRadians(86.0),
-                        Math.toRadians(-46.0), 83e3, 2021.0)), ANGLE_ERROR);
+                Math.toRadians(-46.0), 83e3, 2021.0)), ANGLE_ERROR);
         assertEquals(-80.81, Math.toDegrees(estimator.getDeclination(Math.toRadians(-64.0),
-                        Math.toRadians(87.0), 82e3, 2021.0)), ANGLE_ERROR);
+                Math.toRadians(87.0), 82e3, 2021.0)), ANGLE_ERROR);
         assertEquals(-14.32, Math.toDegrees(estimator.getDeclination(Math.toRadians(-19.0),
-                        Math.toRadians(43.0), 34e3, 2021.0)), ANGLE_ERROR);
+                Math.toRadians(43.0), 34e3, 2021.0)), ANGLE_ERROR);
         assertEquals(-59.03, Math.toDegrees(estimator.getDeclination(Math.toRadians(-81.0),
-                        Math.toRadians(40.0), 56e3, 2021.0)), ANGLE_ERROR);
+                Math.toRadians(40.0), 56e3, 2021.0)), ANGLE_ERROR);
 
-        assertEquals(-3.41, Math.toDegrees(estimator.getDeclination(Math.toRadians(0.0),
-                        Math.toRadians(80.0), 14e3, 2021.5)), ANGLE_ERROR);
+        assertEquals(-3.41, Math.toDegrees(estimator.getDeclination(0.0,
+                Math.toRadians(80.0), 14e3, 2021.5)), ANGLE_ERROR);
         assertEquals(30.36, Math.toDegrees(estimator.getDeclination(Math.toRadians(-82.0),
-                        Math.toRadians(-68.0), 12e3, 2021.5)), ANGLE_ERROR);
+                Math.toRadians(-68.0), 12e3, 2021.5)), ANGLE_ERROR);
         assertEquals(-11.54, Math.toDegrees(estimator.getDeclination(Math.toRadians(-46.0),
-                        Math.toRadians(-42.0), 44e3, 2021.5)), ANGLE_ERROR);
+                Math.toRadians(-42.0), 44e3, 2021.5)), ANGLE_ERROR);
         assertEquals(1.23, Math.toDegrees(estimator.getDeclination(Math.toRadians(17.0),
-                        Math.toRadians(52.0), 43e3, 2021.5)), ANGLE_ERROR);
+                Math.toRadians(52.0), 43e3, 2021.5)), ANGLE_ERROR);
         assertEquals(-1.71, Math.toDegrees(estimator.getDeclination(Math.toRadians(10.0),
-                        Math.toRadians(78.0), 64e3, 2021.5)), ANGLE_ERROR);
+                Math.toRadians(78.0), 64e3, 2021.5)), ANGLE_ERROR);
         assertEquals(12.36, Math.toDegrees(estimator.getDeclination(Math.toRadians(33.0),
-                        Math.toRadians(-145.0), 12e3, 2021.5)), ANGLE_ERROR);
+                Math.toRadians(-145.0), 12e3, 2021.5)), ANGLE_ERROR);
         assertEquals(-136.34, Math.toDegrees(estimator.getDeclination(Math.toRadians(-79.0),
-                        Math.toRadians(115.0), 12e3, 2021.5)), ANGLE_ERROR);
+                Math.toRadians(115.0), 12e3, 2021.5)), ANGLE_ERROR);
         assertEquals(18.10, Math.toDegrees(estimator.getDeclination(Math.toRadians(-33.0),
-                        Math.toRadians(-114), 14e3, 2021.5)), ANGLE_ERROR);
+                Math.toRadians(-114), 14e3, 2021.5)), ANGLE_ERROR);
         assertEquals(2.13, Math.toDegrees(estimator.getDeclination(Math.toRadians(29.0),
-                        Math.toRadians(66.0), 19e3, 2021.5)), ANGLE_ERROR);
+                Math.toRadians(66.0), 19e3, 2021.5)), ANGLE_ERROR);
         assertEquals(10.11, Math.toDegrees(estimator.getDeclination(Math.toRadians(-11.0),
-                        Math.toRadians(167.0), 86e3, 2021.5)), ANGLE_ERROR);
+                Math.toRadians(167.0), 86e3, 2021.5)), ANGLE_ERROR);
 
         assertEquals(-16.99, Math.toDegrees(estimator.getDeclination(Math.toRadians(-66.0),
-                        Math.toRadians(-5.0), 37e3, 2022.0)), ANGLE_ERROR);
+                Math.toRadians(-5.0), 37e3, 2022.0)), ANGLE_ERROR);
         assertEquals(15.47, Math.toDegrees(estimator.getDeclination(Math.toRadians(72.0),
-                        Math.toRadians(-115.0), 67e3, 2022.0)), ANGLE_ERROR);
+                Math.toRadians(-115.0), 67e3, 2022.0)), ANGLE_ERROR);
         assertEquals(6.56, Math.toDegrees(estimator.getDeclination(Math.toRadians(22.0),
-                        Math.toRadians(174.0), 44e3, 2022.0)), ANGLE_ERROR);
+                Math.toRadians(174.0), 44e3, 2022.0)), ANGLE_ERROR);
         assertEquals(1.43, Math.toDegrees(estimator.getDeclination(Math.toRadians(54.0),
-                        Math.toRadians(178.0), 54e3, 2022.0)), ANGLE_ERROR);
+                Math.toRadians(178.0), 54e3, 2022.0)), ANGLE_ERROR);
         assertEquals(-47.43, Math.toDegrees(estimator.getDeclination(Math.toRadians(-43.0),
-                        Math.toRadians(50.0), 57e3, 2022.0)), ANGLE_ERROR);
+                Math.toRadians(50.0), 57e3, 2022.0)), ANGLE_ERROR);
         assertEquals(24.32, Math.toDegrees(estimator.getDeclination(Math.toRadians(-43.0),
-                        Math.toRadians(-111.0), 44e3, 2022.0)), ANGLE_ERROR);
+                Math.toRadians(-111.0), 44e3, 2022.0)), ANGLE_ERROR);
         assertEquals(57.08, Math.toDegrees(estimator.getDeclination(Math.toRadians(-63.0),
-                        Math.toRadians(178.0), 12e3, 2022.0)), ANGLE_ERROR);
+                Math.toRadians(178.0), 12e3, 2022.0)), ANGLE_ERROR);
         assertEquals(8.76, Math.toDegrees(estimator.getDeclination(Math.toRadians(27.0),
-                        Math.toRadians(-169.0), 38e3, 2022.0)), ANGLE_ERROR);
+                Math.toRadians(-169.0), 38e3, 2022.0)), ANGLE_ERROR);
         assertEquals(-17.63, Math.toDegrees(estimator.getDeclination(Math.toRadians(59.0),
-                        Math.toRadians(-77.0), 61e3, 2022.0)), ANGLE_ERROR);
+                Math.toRadians(-77.0), 61e3, 2022.0)), ANGLE_ERROR);
         assertEquals(-14.09, Math.toDegrees(estimator.getDeclination(Math.toRadians(-47.0),
-                        Math.toRadians(-32.0), 67e3, 2022.0)), ANGLE_ERROR);
+                Math.toRadians(-32.0), 67e3, 2022.0)), ANGLE_ERROR);
 
         assertEquals(18.95, Math.toDegrees(estimator.getDeclination(Math.toRadians(62.0),
-                        Math.toRadians(53.0), 8e3, 2022.5)), ANGLE_ERROR);
+                Math.toRadians(53.0), 8e3, 2022.5)), ANGLE_ERROR);
         assertEquals(-15.94, Math.toDegrees(estimator.getDeclination(Math.toRadians(-68.0),
-                        Math.toRadians(-7.0), 77e3, 2022.5)), ANGLE_ERROR);
+                Math.toRadians(-7.0), 77e3, 2022.5)), ANGLE_ERROR);
         assertEquals(7.79, Math.toDegrees(estimator.getDeclination(Math.toRadians(-5.0),
-                        Math.toRadians(159.0), 98e3, 2022.5)), ANGLE_ERROR);
+                Math.toRadians(159.0), 98e3, 2022.5)), ANGLE_ERROR);
         assertEquals(15.68, Math.toDegrees(estimator.getDeclination(Math.toRadians(-29.0),
-                        Math.toRadians(-107.0), 34e3, 2022.5)), ANGLE_ERROR);
+                Math.toRadians(-107.0), 34e3, 2022.5)), ANGLE_ERROR);
         assertEquals(1.78, Math.toDegrees(estimator.getDeclination(Math.toRadians(27.0),
-                        Math.toRadians(65.0), 60e3, 2022.5)), ANGLE_ERROR);
+                Math.toRadians(65.0), 60e3, 2022.5)), ANGLE_ERROR);
         assertEquals(-101.49, Math.toDegrees(estimator.getDeclination(Math.toRadians(-72.0),
-                        Math.toRadians(95.0), 73e3, 2022.5)), ANGLE_ERROR);
+                Math.toRadians(95.0), 73e3, 2022.5)), ANGLE_ERROR);
         assertEquals(18.38, Math.toDegrees(estimator.getDeclination(Math.toRadians(-46.0),
-                        Math.toRadians(-85.0), 96e3, 2022.5)), ANGLE_ERROR);
+                Math.toRadians(-85.0), 96e3, 2022.5)), ANGLE_ERROR);
         assertEquals(-16.65, Math.toDegrees(estimator.getDeclination(Math.toRadians(-13.0),
-                        Math.toRadians(-59.0), 0e3, 2022.5)), ANGLE_ERROR);
+                Math.toRadians(-59.0), 0e3, 2022.5)), ANGLE_ERROR);
         assertEquals(1.92, Math.toDegrees(estimator.getDeclination(Math.toRadians(66.0),
-                        Math.toRadians(-178), 16e3, 2022.5)), ANGLE_ERROR);
+                Math.toRadians(-178), 16e3, 2022.5)), ANGLE_ERROR);
         assertEquals(-64.66, Math.toDegrees(estimator.getDeclination(Math.toRadians(-87.0),
-                        Math.toRadians(38.0), 72e3, 2022.5)), ANGLE_ERROR);
+                Math.toRadians(38.0), 72e3, 2022.5)), ANGLE_ERROR);
 
         assertEquals(5.20, Math.toDegrees(estimator.getDeclination(Math.toRadians(20.0),
-                        Math.toRadians(167.0), 49e3, 2023.0)), ANGLE_ERROR);
+                Math.toRadians(167.0), 49e3, 2023.0)), ANGLE_ERROR);
         assertEquals(-7.26, Math.toDegrees(estimator.getDeclination(Math.toRadians(5.0),
-                        Math.toRadians(-13.0), 71e3, 2023.0)), ANGLE_ERROR);
+                Math.toRadians(-13.0), 71e3, 2023.0)), ANGLE_ERROR);
         assertEquals(-0.56, Math.toDegrees(estimator.getDeclination(Math.toRadians(14.0),
-                        Math.toRadians(65.0), 95e3, 2023.0)), ANGLE_ERROR);
+                Math.toRadians(65.0), 95e3, 2023.0)), ANGLE_ERROR);
         assertEquals(41.76, Math.toDegrees(estimator.getDeclination(Math.toRadians(-85.0),
-                        Math.toRadians(-79.0), 86e3, 2023.0)), ANGLE_ERROR);
+                Math.toRadians(-79.0), 86e3, 2023.0)), ANGLE_ERROR);
         assertEquals(-3.87, Math.toDegrees(estimator.getDeclination(Math.toRadians(-36.0),
-                        Math.toRadians(-64.0), 30e3, 2023.0)), ANGLE_ERROR);
+                Math.toRadians(-64.0), 30e3, 2023.0)), ANGLE_ERROR);
         assertEquals(-14.54, Math.toDegrees(estimator.getDeclination(Math.toRadians(79.0),
-                        Math.toRadians(125.0), 75e3, 2023.0)), ANGLE_ERROR);
+                Math.toRadians(125.0), 75e3, 2023.0)), ANGLE_ERROR);
         assertEquals(-15.22, Math.toDegrees(estimator.getDeclination(Math.toRadians(6.0),
-                        Math.toRadians(-32.0), 21e3, 2023.0)), ANGLE_ERROR);
+                Math.toRadians(-32.0), 21e3, 2023.0)), ANGLE_ERROR);
         assertEquals(30.36, Math.toDegrees(estimator.getDeclination(Math.toRadians(-76.0),
-                        Math.toRadians(-75.0), 1e3, 2023.0)), ANGLE_ERROR);
+                Math.toRadians(-75.0), 1e3, 2023.0)), ANGLE_ERROR);
         assertEquals(-11.94, Math.toDegrees(estimator.getDeclination(Math.toRadians(-46),
-                        Math.toRadians(-41.0), 45e3, 2023.0)), ANGLE_ERROR);
+                Math.toRadians(-41.0), 45e3, 2023.0)), ANGLE_ERROR);
         assertEquals(-24.12, Math.toDegrees(estimator.getDeclination(Math.toRadians(-22.0),
-                        Math.toRadians(-21.0), 11e3, 2023.0)), ANGLE_ERROR);
+                Math.toRadians(-21.0), 11e3, 2023.0)), ANGLE_ERROR);
 
         assertEquals(16.20, Math.toDegrees(estimator.getDeclination(Math.toRadians(54.0),
-                        Math.toRadians(-120.0), 28e3, 2023.5)), ANGLE_ERROR);
+                Math.toRadians(-120.0), 28e3, 2023.5)), ANGLE_ERROR);
         assertEquals(40.48, Math.toDegrees(estimator.getDeclination(Math.toRadians(-58.0),
-                        Math.toRadians(156.0), 68e3, 2023.5)), ANGLE_ERROR);
+                Math.toRadians(156.0), 68e3, 2023.5)), ANGLE_ERROR);
         assertEquals(29.86, Math.toDegrees(estimator.getDeclination(Math.toRadians(-65.0),
-                        Math.toRadians(-88.0), 39e3, 2023.5)), ANGLE_ERROR);
+                Math.toRadians(-88.0), 39e3, 2023.5)), ANGLE_ERROR);
         assertEquals(-13.98, Math.toDegrees(estimator.getDeclination(Math.toRadians(-23.0),
-                        Math.toRadians(81.0), 27e3, 2023.5)), ANGLE_ERROR);
+                Math.toRadians(81.0), 27e3, 2023.5)), ANGLE_ERROR);
         assertEquals(1.08, Math.toDegrees(estimator.getDeclination(Math.toRadians(34.0),
-                        Math.toRadians(0.0), 11e3, 2023.5)), ANGLE_ERROR);
+                0.0, 11e3, 2023.5)), ANGLE_ERROR);
         assertEquals(-66.98, Math.toDegrees(estimator.getDeclination(Math.toRadians(-62.0),
-                        Math.toRadians(65.0), 72e3, 2023.5)), ANGLE_ERROR);
+                Math.toRadians(65.0), 72e3, 2023.5)), ANGLE_ERROR);
         assertEquals(61.19, Math.toDegrees(estimator.getDeclination(Math.toRadians(86.0),
-                        Math.toRadians(70.0), 55e3, 2023.5)), ANGLE_ERROR);
+                Math.toRadians(70.0), 55e3, 2023.5)), ANGLE_ERROR);
         assertEquals(0.36, Math.toDegrees(estimator.getDeclination(Math.toRadians(32.0),
-                        Math.toRadians(163.0), 59e3, 2023.5)), ANGLE_ERROR);
+                Math.toRadians(163.0), 59e3, 2023.5)), ANGLE_ERROR);
         assertEquals(-9.39, Math.toDegrees(estimator.getDeclination(Math.toRadians(48.0),
-                        Math.toRadians(148.0), 65e3, 2023.5)), ANGLE_ERROR);
+                Math.toRadians(148.0), 65e3, 2023.5)), ANGLE_ERROR);
         assertEquals(4.49, Math.toDegrees(estimator.getDeclination(Math.toRadians(30.0),
-                        Math.toRadians(28.0), 95e3, 2023.5)), ANGLE_ERROR);
+                Math.toRadians(28.0), 95e3, 2023.5)), ANGLE_ERROR);
 
         assertEquals(8.86, Math.toDegrees(estimator.getDeclination(Math.toRadians(-60.0),
-                        Math.toRadians(-59.0), 95e3, 2024.0)), ANGLE_ERROR);
+                Math.toRadians(-59.0), 95e3, 2024.0)), ANGLE_ERROR);
         assertEquals(-54.29, Math.toDegrees(estimator.getDeclination(Math.toRadians(-70.0),
-                        Math.toRadians(42.0), 95e3, 2024.0)), ANGLE_ERROR);
+                Math.toRadians(42.0), 95e3, 2024.0)), ANGLE_ERROR);
         assertEquals(-82.22, Math.toDegrees(estimator.getDeclination(Math.toRadians(87.0),
-                        Math.toRadians(-154.0), 50e3, 2024.0)), ANGLE_ERROR);
+                Math.toRadians(-154.0), 50e3, 2024.0)), ANGLE_ERROR);
         assertEquals(3.94, Math.toDegrees(estimator.getDeclination(Math.toRadians(32.0),
-                        Math.toRadians(19.0), 58e3, 2024.0)), ANGLE_ERROR);
+                Math.toRadians(19.0), 58e3, 2024.0)), ANGLE_ERROR);
         assertEquals(-2.62, Math.toDegrees(estimator.getDeclination(Math.toRadians(34.0),
-                        Math.toRadians(-13.0), 57e3, 2024.0)), ANGLE_ERROR);
+                Math.toRadians(-13.0), 57e3, 2024.0)), ANGLE_ERROR);
         assertEquals(-63.51, Math.toDegrees(estimator.getDeclination(Math.toRadians(-76.0),
-                        Math.toRadians(49.0), 38e3, 2024.0)), ANGLE_ERROR);
+                Math.toRadians(49.0), 38e3, 2024.0)), ANGLE_ERROR);
         assertEquals(31.57, Math.toDegrees(estimator.getDeclination(Math.toRadians(-50.0),
-                        Math.toRadians(-179.0), 49e3, 2024.0)), ANGLE_ERROR);
+                Math.toRadians(-179.0), 49e3, 2024.0)), ANGLE_ERROR);
         assertEquals(38.07, Math.toDegrees(estimator.getDeclination(Math.toRadians(-55.0),
-                        Math.toRadians(-171.0), 90e3, 2024.0)), ANGLE_ERROR);
+                Math.toRadians(-171.0), 90e3, 2024.0)), ANGLE_ERROR);
         assertEquals(-5.00, Math.toDegrees(estimator.getDeclination(Math.toRadians(42.0),
-                        Math.toRadians(-19.0), 41e3, 2024.0)), ANGLE_ERROR);
+                Math.toRadians(-19.0), 41e3, 2024.0)), ANGLE_ERROR);
         assertEquals(-6.60, Math.toDegrees(estimator.getDeclination(Math.toRadians(46.0),
-                        Math.toRadians(-22.0), 19e3, 2024.0)), ANGLE_ERROR);
+                Math.toRadians(-22.0), 19e3, 2024.0)), ANGLE_ERROR);
 
         assertEquals(9.21, Math.toDegrees(estimator.getDeclination(Math.toRadians(13.0),
-                        Math.toRadians(-132.0), 31e3, 2024.5)), ANGLE_ERROR);
+                Math.toRadians(-132.0), 31e3, 2024.5)), ANGLE_ERROR);
         assertEquals(7.16, Math.toDegrees(estimator.getDeclination(Math.toRadians(-2.0),
-                        Math.toRadians(158.0), 93e3, 2024.5)), ANGLE_ERROR);
+                Math.toRadians(158.0), 93e3, 2024.5)), ANGLE_ERROR);
         assertEquals(-55.63, Math.toDegrees(estimator.getDeclination(Math.toRadians(-76.0),
-                        Math.toRadians(40.0), 51e3, 2024.5)), ANGLE_ERROR);
+                Math.toRadians(40.0), 51e3, 2024.5)), ANGLE_ERROR);
         assertEquals(10.52, Math.toDegrees(estimator.getDeclination(Math.toRadians(22.0),
-                        Math.toRadians(-132.0), 64e3, 2024.5)), ANGLE_ERROR);
+                Math.toRadians(-132.0), 64e3, 2024.5)), ANGLE_ERROR);
         assertEquals(-62.60, Math.toDegrees(estimator.getDeclination(Math.toRadians(-65.0),
-                        Math.toRadians(55.0), 26e3, 2024.5)), ANGLE_ERROR);
+                Math.toRadians(55.0), 26e3, 2024.5)), ANGLE_ERROR);
         assertEquals(-13.34, Math.toDegrees(estimator.getDeclination(Math.toRadians(-21.0),
-                        Math.toRadians(32.0), 66e3, 2024.5)), ANGLE_ERROR);
+                Math.toRadians(32.0), 66e3, 2024.5)), ANGLE_ERROR);
         assertEquals(9.39, Math.toDegrees(estimator.getDeclination(Math.toRadians(9.0),
-                        Math.toRadians(-172.0), 18e3, 2024.5)), ANGLE_ERROR);
+                Math.toRadians(-172.0), 18e3, 2024.5)), ANGLE_ERROR);
         assertEquals(29.81, Math.toDegrees(estimator.getDeclination(Math.toRadians(88.0),
-                        Math.toRadians(26.0), 63e3, 2024.5)), ANGLE_ERROR);
+                Math.toRadians(26.0), 63e3, 2024.5)), ANGLE_ERROR);
         assertEquals(0.61, Math.toDegrees(estimator.getDeclination(Math.toRadians(17.0),
-                        Math.toRadians(5.0), 33e3, 2024.5)), ANGLE_ERROR);
+                Math.toRadians(5.0), 33e3, 2024.5)), ANGLE_ERROR);
         assertEquals(4.63, Math.toDegrees(estimator.getDeclination(Math.toRadians(-18.0),
-                        Math.toRadians(138.0), 77e3, 2024.5)), ANGLE_ERROR);
+                Math.toRadians(138.0), 77e3, 2024.5)), ANGLE_ERROR);
     }
 
     @Test
-    public void testDipModel() throws IOException {
-        final WMMEarthMagneticFluxDensityEstimator estimator = new WMMEarthMagneticFluxDensityEstimator();
+    void testDipModel() throws IOException {
+        final var estimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        assertEquals(88.46, Math.toDegrees(estimator.getDip(Math.toRadians(89.0),
-                        Math.toRadians(-121.0), 28e3, 2020.0)), ANGLE_ERROR);
+        assertEquals(88.46, Math.toDegrees(estimator.getDip(Math.toRadians(89.0), 
+                Math.toRadians(-121.0), 28e3, 2020.0)), ANGLE_ERROR);
         assertEquals(88.03, Math.toDegrees(estimator.getDip(Math.toRadians(80.0),
-                        Math.toRadians(-96.0), 48e3, 2020.0)), ANGLE_ERROR);
+                Math.toRadians(-96.0), 48e3, 2020.0)), ANGLE_ERROR);
         assertEquals(87.48, Math.toDegrees(estimator.getDip(Math.toRadians(82.0),
-                        Math.toRadians(87.0), 54e3, 2020.0)), ANGLE_ERROR);
+                Math.toRadians(87.0), 54e3, 2020.0)), ANGLE_ERROR);
         assertEquals(63.87, Math.toDegrees(estimator.getDip(Math.toRadians(43.0),
-                        Math.toRadians(93.0), 65e3, 2020.0)), ANGLE_ERROR);
+                Math.toRadians(93.0), 65e3, 2020.0)), ANGLE_ERROR);
         assertEquals(-67.64, Math.toDegrees(estimator.getDip(Math.toRadians(-33.0),
-                        Math.toRadians(109.0), 51e3, 2020.0)), ANGLE_ERROR);
+                Math.toRadians(109.0), 51e3, 2020.0)), ANGLE_ERROR);
         assertEquals(-58.82, Math.toDegrees(estimator.getDip(Math.toRadians(-59.0),
-                        Math.toRadians(-8.0), 39e3, 2020.0)), ANGLE_ERROR);
+                Math.toRadians(-8.0), 39e3, 2020.0)), ANGLE_ERROR);
         assertEquals(-55.01, Math.toDegrees(estimator.getDip(Math.toRadians(-50.0),
-                        Math.toRadians(-103.0), 3e3, 2020.0)), ANGLE_ERROR);
+                Math.toRadians(-103.0), 3e3, 2020.0)), ANGLE_ERROR);
         assertEquals(-38.38, Math.toDegrees(estimator.getDip(Math.toRadians(-29.0),
-                        Math.toRadians(-110.0), 94e3, 2020.0)), ANGLE_ERROR);
+                Math.toRadians(-110.0), 94e3, 2020.0)), ANGLE_ERROR);
         assertEquals(13.08, Math.toDegrees(estimator.getDip(Math.toRadians(14.0),
-                        Math.toRadians(143.0), 66e3, 2020.0)), ANGLE_ERROR);
-        assertEquals(-26.46, Math.toDegrees(estimator.getDip(Math.toRadians(0.0),
-                        Math.toRadians(21.0), 18e3, 2020.0)), ANGLE_ERROR);
+                Math.toRadians(143.0), 66e3, 2020.0)), ANGLE_ERROR);
+        assertEquals(-26.46, Math.toDegrees(estimator.getDip(0.0,
+                Math.toRadians(21.0), 18e3, 2020.0)), ANGLE_ERROR);
 
         assertEquals(-52.21, Math.toDegrees(estimator.getDip(Math.toRadians(-36.0),
-                        Math.toRadians(-137), 6e3, 2020.5)), ANGLE_ERROR);
+                Math.toRadians(-137), 6e3, 2020.5)), ANGLE_ERROR);
         assertEquals(40.84, Math.toDegrees(estimator.getDip(Math.toRadians(26.0),
-                        Math.toRadians(81.0), 63e3, 2020.5)), ANGLE_ERROR);
+                Math.toRadians(81.0), 63e3, 2020.5)), ANGLE_ERROR);
         assertEquals(56.99, Math.toDegrees(estimator.getDip(Math.toRadians(38.0),
-                        Math.toRadians(-144.0), 69e3, 2020.5)), ANGLE_ERROR);
+                Math.toRadians(-144.0), 69e3, 2020.5)), ANGLE_ERROR);
         assertEquals(-72.18, Math.toDegrees(estimator.getDip(Math.toRadians(-70.0),
-                        Math.toRadians(-133.0), 50e3, 2020.5)), ANGLE_ERROR);
+                Math.toRadians(-133.0), 50e3, 2020.5)), ANGLE_ERROR);
         assertEquals(-49.50, Math.toDegrees(estimator.getDip(Math.toRadians(-52.0),
-                        Math.toRadians(-75.0), 8e3, 2020.5)), ANGLE_ERROR);
+                Math.toRadians(-75.0), 8e3, 2020.5)), ANGLE_ERROR);
         assertEquals(-59.78, Math.toDegrees(estimator.getDip(Math.toRadians(-66.0),
-                        Math.toRadians(17.0), 8e3, 2020.5)), ANGLE_ERROR);
+                Math.toRadians(17.0), 8e3, 2020.5)), ANGLE_ERROR);
         assertEquals(-68.61, Math.toDegrees(estimator.getDip(Math.toRadians(-37.0),
-                        Math.toRadians(140.0), 22e3, 2020.5)), ANGLE_ERROR);
+                Math.toRadians(140.0), 22e3, 2020.5)), ANGLE_ERROR);
         assertEquals(-15.68, Math.toDegrees(estimator.getDip(Math.toRadians(-12.0),
-                        Math.toRadians(-129.0), 40e3, 2020.5)), ANGLE_ERROR);
+                Math.toRadians(-129.0), 40e3, 2020.5)), ANGLE_ERROR);
         assertEquals(57.97, Math.toDegrees(estimator.getDip(Math.toRadians(33.0),
-                        Math.toRadians(-118.0), 44e3, 2020.5)), ANGLE_ERROR);
+                Math.toRadians(-118.0), 44e3, 2020.5)), ANGLE_ERROR);
         assertEquals(-67.74, Math.toDegrees(estimator.getDip(Math.toRadians(-81.0),
-                        Math.toRadians(-67.0), 50e3, 2020.5)), ANGLE_ERROR);
+                Math.toRadians(-67.0), 50e3, 2020.5)), ANGLE_ERROR);
 
         assertEquals(-59.07, Math.toDegrees(estimator.getDip(Math.toRadians(-57.0),
-                        Math.toRadians(3.0), 74e3, 2021.0)), ANGLE_ERROR);
+                Math.toRadians(3.0), 74e3, 2021.0)), ANGLE_ERROR);
         assertEquals(-34.29, Math.toDegrees(estimator.getDip(Math.toRadians(-24.0),
-                        Math.toRadians(-122.0), 46e3, 2021.0)), ANGLE_ERROR);
+                Math.toRadians(-122.0), 46e3, 2021.0)), ANGLE_ERROR);
         assertEquals(35.82, Math.toDegrees(estimator.getDip(Math.toRadians(23.0),
-                        Math.toRadians(63.0), 69e3, 2021.0)), ANGLE_ERROR);
+                Math.toRadians(63.0), 69e3, 2021.0)), ANGLE_ERROR);
         assertEquals(-2.35, Math.toDegrees(estimator.getDip(Math.toRadians(-3.0),
-                        Math.toRadians(-147.0), 33e3, 2021.0)), ANGLE_ERROR);
+                Math.toRadians(-147.0), 33e3, 2021.0)), ANGLE_ERROR);
         assertEquals(-61.27, Math.toDegrees(estimator.getDip(Math.toRadians(-72.0),
-                        Math.toRadians(-22.0), 47e3, 2021.0)), ANGLE_ERROR);
+                Math.toRadians(-22.0), 47e3, 2021.0)), ANGLE_ERROR);
         assertEquals(-45.11, Math.toDegrees(estimator.getDip(Math.toRadians(-14.0),
-                        Math.toRadians(99.0), 62e3, 2021.0)), ANGLE_ERROR);
+                Math.toRadians(99.0), 62e3, 2021.0)), ANGLE_ERROR);
         assertEquals(86.83, Math.toDegrees(estimator.getDip(Math.toRadians(86.0),
-                        Math.toRadians(-46.0), 83e3, 2021.0)), ANGLE_ERROR);
+                Math.toRadians(-46.0), 83e3, 2021.0)), ANGLE_ERROR);
         assertEquals(-75.25, Math.toDegrees(estimator.getDip(Math.toRadians(-64.0),
-                        Math.toRadians(87.0), 82e3, 2021.0)), ANGLE_ERROR);
+                Math.toRadians(87.0), 82e3, 2021.0)), ANGLE_ERROR);
         assertEquals(-52.47, Math.toDegrees(estimator.getDip(Math.toRadians(-19.0),
-                        Math.toRadians(43.0), 34e3, 2021.0)), ANGLE_ERROR);
+                Math.toRadians(43.0), 34e3, 2021.0)), ANGLE_ERROR);
         assertEquals(-68.54, Math.toDegrees(estimator.getDip(Math.toRadians(-81.0),
-                        Math.toRadians(40.0), 56e3, 2021.0)), ANGLE_ERROR);
+                Math.toRadians(40.0), 56e3, 2021.0)), ANGLE_ERROR);
 
-        assertEquals(-17.32, Math.toDegrees(estimator.getDip(Math.toRadians(0.0),
-                        Math.toRadians(80.0), 14e3, 2021.5)), ANGLE_ERROR);
+        assertEquals(-17.32, Math.toDegrees(estimator.getDip(0.0,
+                Math.toRadians(80.0), 14e3, 2021.5)), ANGLE_ERROR);
         assertEquals(-68.18, Math.toDegrees(estimator.getDip(Math.toRadians(-82.0),
-                        Math.toRadians(-68.0), 12e3, 2021.5)), ANGLE_ERROR);
+                Math.toRadians(-68.0), 12e3, 2021.5)), ANGLE_ERROR);
         assertEquals(-53.82, Math.toDegrees(estimator.getDip(Math.toRadians(-46.0),
-                        Math.toRadians(-42.0), 44e3, 2021.5)), ANGLE_ERROR);
+                Math.toRadians(-42.0), 44e3, 2021.5)), ANGLE_ERROR);
         assertEquals(23.87, Math.toDegrees(estimator.getDip(Math.toRadians(17.0),
-                        Math.toRadians(52.0), 43e3, 2021.5)), ANGLE_ERROR);
+                Math.toRadians(52.0), 43e3, 2021.5)), ANGLE_ERROR);
         assertEquals(7.37, Math.toDegrees(estimator.getDip(Math.toRadians(10.0),
-                        Math.toRadians(78.0), 64e3, 2021.5)), ANGLE_ERROR);
+                Math.toRadians(78.0), 64e3, 2021.5)), ANGLE_ERROR);
         assertEquals(52.51, Math.toDegrees(estimator.getDip(Math.toRadians(33.0),
-                        Math.toRadians(-145.0), 12e3, 2021.5)), ANGLE_ERROR);
+                Math.toRadians(-145.0), 12e3, 2021.5)), ANGLE_ERROR);
         assertEquals(-77.43, Math.toDegrees(estimator.getDip(Math.toRadians(-79.0),
-                        Math.toRadians(115.0), 12e3, 2021.5)), ANGLE_ERROR);
+                Math.toRadians(115.0), 12e3, 2021.5)), ANGLE_ERROR);
         assertEquals(-44.23, Math.toDegrees(estimator.getDip(Math.toRadians(-33.0),
-                        Math.toRadians(-114.0), 14e3, 2021.5)), ANGLE_ERROR);
+                Math.toRadians(-114.0), 14e3, 2021.5)), ANGLE_ERROR);
         assertEquals(45.97, Math.toDegrees(estimator.getDip(Math.toRadians(29.0),
-                        Math.toRadians(66.0), 19e3, 2021.5)), ANGLE_ERROR);
+                Math.toRadians(66.0), 19e3, 2021.5)), ANGLE_ERROR);
         assertEquals(-31.45, Math.toDegrees(estimator.getDip(Math.toRadians(-11.0),
-                        Math.toRadians(167.0), 86e3, 2021.5)), ANGLE_ERROR);
+                Math.toRadians(167.0), 86e3, 2021.5)), ANGLE_ERROR);
 
         assertEquals(-59.27, Math.toDegrees(estimator.getDip(Math.toRadians(-66.0),
-                        Math.toRadians(-5.0), 37e3, 2022.0)), ANGLE_ERROR);
+                Math.toRadians(-5.0), 37e3, 2022.0)), ANGLE_ERROR);
         assertEquals(85.19, Math.toDegrees(estimator.getDip(Math.toRadians(72.0),
-                        Math.toRadians(-115.0), 67e3, 2022.0)), ANGLE_ERROR);
+                Math.toRadians(-115.0), 67e3, 2022.0)), ANGLE_ERROR);
         assertEquals(31.91, Math.toDegrees(estimator.getDip(Math.toRadians(22.0),
-                        Math.toRadians(174.0), 44e3, 2022.0)), ANGLE_ERROR);
+                Math.toRadians(174.0), 44e3, 2022.0)), ANGLE_ERROR);
         assertEquals(65.41, Math.toDegrees(estimator.getDip(Math.toRadians(54.0),
-                        Math.toRadians(178.0), 54e3, 2022.0)), ANGLE_ERROR);
+                Math.toRadians(178.0), 54e3, 2022.0)), ANGLE_ERROR);
         assertEquals(-62.96, Math.toDegrees(estimator.getDip(Math.toRadians(-43.0),
-                        Math.toRadians(50.0), 57e3, 2022.0)), ANGLE_ERROR);
+                Math.toRadians(50.0), 57e3, 2022.0)), ANGLE_ERROR);
         assertEquals(-52.71, Math.toDegrees(estimator.getDip(Math.toRadians(-43.0),
-                        Math.toRadians(-111.0), 44e3, 2022.0)), ANGLE_ERROR);
+                Math.toRadians(-111.0), 44e3, 2022.0)), ANGLE_ERROR);
         assertEquals(-79.33, Math.toDegrees(estimator.getDip(Math.toRadians(-63.0),
-                        Math.toRadians(178.0), 12e3, 2022.0)), ANGLE_ERROR);
+                Math.toRadians(178.0), 12e3, 2022.0)), ANGLE_ERROR);
         assertEquals(42.60, Math.toDegrees(estimator.getDip(Math.toRadians(27.0),
-                        Math.toRadians(-169.0), 38e3, 2022.0)), ANGLE_ERROR);
+                Math.toRadians(-169.0), 38e3, 2022.0)), ANGLE_ERROR);
         assertEquals(79.04, Math.toDegrees(estimator.getDip(Math.toRadians(59.0),
-                        Math.toRadians(-77.0), 61e3, 2022.0)), ANGLE_ERROR);
+                Math.toRadians(-77.0), 61e3, 2022.0)), ANGLE_ERROR);
         assertEquals(-57.63, Math.toDegrees(estimator.getDip(Math.toRadians(-47.0),
-                        Math.toRadians(-32.0), 67e3, 2022.0)), ANGLE_ERROR);
+                Math.toRadians(-32.0), 67e3, 2022.0)), ANGLE_ERROR);
 
         assertEquals(76.54, Math.toDegrees(estimator.getDip(Math.toRadians(62.0),
-                        Math.toRadians(53.0), 8e3, 2022.5)), ANGLE_ERROR);
+                Math.toRadians(53.0), 8e3, 2022.5)), ANGLE_ERROR);
         assertEquals(-60.00, Math.toDegrees(estimator.getDip(Math.toRadians(-68.0),
-                        Math.toRadians(-7.0), 77e3, 2022.5)), ANGLE_ERROR);
+                Math.toRadians(-7.0), 77e3, 2022.5)), ANGLE_ERROR);
         assertEquals(-23.04, Math.toDegrees(estimator.getDip(Math.toRadians(-5.0),
-                        Math.toRadians(159.0), 98e3, 2022.5)), ANGLE_ERROR);
+                Math.toRadians(159.0), 98e3, 2022.5)), ANGLE_ERROR);
         assertEquals(-37.65, Math.toDegrees(estimator.getDip(Math.toRadians(-29.0),
-                        Math.toRadians(-107.0), 34e3, 2022.5)), ANGLE_ERROR);
+                Math.toRadians(-107.0), 34e3, 2022.5)), ANGLE_ERROR);
         assertEquals(42.84, Math.toDegrees(estimator.getDip(Math.toRadians(27.0),
-                        Math.toRadians(65.0), 60e3, 2022.5)), ANGLE_ERROR);
+                Math.toRadians(65.0), 60e3, 2022.5)), ANGLE_ERROR);
         assertEquals(-76.44, Math.toDegrees(estimator.getDip(Math.toRadians(-72.0),
-                        Math.toRadians(95.0), 73e3, 2022.5)), ANGLE_ERROR);
+                Math.toRadians(95.0), 73e3, 2022.5)), ANGLE_ERROR);
         assertEquals(-47.38, Math.toDegrees(estimator.getDip(Math.toRadians(-46.0),
-                        Math.toRadians(-85.0), 96e3, 2022.5)), ANGLE_ERROR);
+                Math.toRadians(-85.0), 96e3, 2022.5)), ANGLE_ERROR);
         assertEquals(-13.41, Math.toDegrees(estimator.getDip(Math.toRadians(-13.0),
-                        Math.toRadians(-59.0), 0e3, 2022.5)), ANGLE_ERROR);
+                Math.toRadians(-59.0), 0e3, 2022.5)), ANGLE_ERROR);
         assertEquals(75.67, Math.toDegrees(estimator.getDip(Math.toRadians(66.0),
-                        Math.toRadians(-178.0), 16e3, 2022.5)), ANGLE_ERROR);
+                Math.toRadians(-178.0), 16e3, 2022.5)), ANGLE_ERROR);
         assertEquals(-71.05, Math.toDegrees(estimator.getDip(Math.toRadians(-87.0),
-                        Math.toRadians(38.0), 72e3, 2022.5)), ANGLE_ERROR);
+                Math.toRadians(38.0), 72e3, 2022.5)), ANGLE_ERROR);
 
         assertEquals(26.85, Math.toDegrees(estimator.getDip(Math.toRadians(20.0),
-                        Math.toRadians(167.0), 49e3, 2023.0)), ANGLE_ERROR);
+                Math.toRadians(167.0), 49e3, 2023.0)), ANGLE_ERROR);
         assertEquals(-17.38, Math.toDegrees(estimator.getDip(Math.toRadians(5.0),
-                        Math.toRadians(-13.0), 71e3, 2023.0)), ANGLE_ERROR);
+                Math.toRadians(-13.0), 71e3, 2023.0)), ANGLE_ERROR);
         assertEquals(17.52, Math.toDegrees(estimator.getDip(Math.toRadians(14.0),
-                        Math.toRadians(65.0), 95e3, 2023.0)), ANGLE_ERROR);
+                Math.toRadians(65.0), 95e3, 2023.0)), ANGLE_ERROR);
         assertEquals(-70.36, Math.toDegrees(estimator.getDip(Math.toRadians(-85.0),
-                        Math.toRadians(-79.0), 86e3, 2023.0)), ANGLE_ERROR);
+                Math.toRadians(-79.0), 86e3, 2023.0)), ANGLE_ERROR);
         assertEquals(-39.40, Math.toDegrees(estimator.getDip(Math.toRadians(-36.0),
-                        Math.toRadians(-64.0), 30e3, 2023.0)), ANGLE_ERROR);
+                Math.toRadians(-64.0), 30e3, 2023.0)), ANGLE_ERROR);
         assertEquals(87.30, Math.toDegrees(estimator.getDip(Math.toRadians(79.0),
-                        Math.toRadians(125.0), 75e3, 2023.0)), ANGLE_ERROR);
+                Math.toRadians(125.0), 75e3, 2023.0)), ANGLE_ERROR);
         assertEquals(-7.26, Math.toDegrees(estimator.getDip(Math.toRadians(6.0),
-                        Math.toRadians(-32.0), 21e3, 2023.0)), ANGLE_ERROR);
+                Math.toRadians(-32.0), 21e3, 2023.0)), ANGLE_ERROR);
         assertEquals(-65.32, Math.toDegrees(estimator.getDip(Math.toRadians(-76.0),
-                        Math.toRadians(-75.0), 1e3, 2023.0)), ANGLE_ERROR);
+                Math.toRadians(-75.0), 1e3, 2023.0)), ANGLE_ERROR);
         assertEquals(-54.45, Math.toDegrees(estimator.getDip(Math.toRadians(-46.0),
-                        Math.toRadians(-41.0), 45e3, 2023.0)), ANGLE_ERROR);
+                Math.toRadians(-41.0), 45e3, 2023.0)), ANGLE_ERROR);
         assertEquals(-56.82, Math.toDegrees(estimator.getDip(Math.toRadians(-22.0),
-                        Math.toRadians(-21.0), 11e3, 2023.0)), ANGLE_ERROR);
+                Math.toRadians(-21.0), 11e3, 2023.0)), ANGLE_ERROR);
 
         assertEquals(74.02, Math.toDegrees(estimator.getDip(Math.toRadians(54.0),
-                        Math.toRadians(-120.0), 28e3, 2023.5)), ANGLE_ERROR);
+                Math.toRadians(-120.0), 28e3, 2023.5)), ANGLE_ERROR);
         assertEquals(-81.60, Math.toDegrees(estimator.getDip(Math.toRadians(-58.0),
-                        Math.toRadians(156.0), 68e3, 2023.5)), ANGLE_ERROR);
+                Math.toRadians(156.0), 68e3, 2023.5)), ANGLE_ERROR);
         assertEquals(-60.29, Math.toDegrees(estimator.getDip(Math.toRadians(-65.0),
-                        Math.toRadians(-88.0), 39e3, 2023.5)), ANGLE_ERROR);
+                Math.toRadians(-88.0), 39e3, 2023.5)), ANGLE_ERROR);
         assertEquals(-58.52, Math.toDegrees(estimator.getDip(Math.toRadians(-23.0),
-                        Math.toRadians(81.0), 27e3, 2023.5)), ANGLE_ERROR);
+                Math.toRadians(81.0), 27e3, 2023.5)), ANGLE_ERROR);
         assertEquals(46.69, Math.toDegrees(estimator.getDip(Math.toRadians(34.0),
-                        Math.toRadians(0.0), 11e3, 2023.5)), ANGLE_ERROR);
+                0.0, 11e3, 2023.5)), ANGLE_ERROR);
         assertEquals(-68.38, Math.toDegrees(estimator.getDip(Math.toRadians(-62.0),
-                        Math.toRadians(65.0), 72e3, 2023.5)), ANGLE_ERROR);
+                Math.toRadians(65.0), 72e3, 2023.5)), ANGLE_ERROR);
         assertEquals(87.51, Math.toDegrees(estimator.getDip(Math.toRadians(86.0),
-                        Math.toRadians(70.0), 55e3, 2023.5)), ANGLE_ERROR);
+                Math.toRadians(70.0), 55e3, 2023.5)), ANGLE_ERROR);
         assertEquals(43.05, Math.toDegrees(estimator.getDip(Math.toRadians(32.0),
-                        Math.toRadians(163.0), 59e3, 2023.5)), ANGLE_ERROR);
+                Math.toRadians(163.0), 59e3, 2023.5)), ANGLE_ERROR);
         assertEquals(61.70, Math.toDegrees(estimator.getDip(Math.toRadians(48.0),
-                        Math.toRadians(148.0), 65e3, 2023.5)), ANGLE_ERROR);
+                Math.toRadians(148.0), 65e3, 2023.5)), ANGLE_ERROR);
         assertEquals(44.12, Math.toDegrees(estimator.getDip(Math.toRadians(30.0),
-                        Math.toRadians(28.0), 95e3, 2023.5)), ANGLE_ERROR);
+                Math.toRadians(28.0), 95e3, 2023.5)), ANGLE_ERROR);
 
         assertEquals(-55.03, Math.toDegrees(estimator.getDip(Math.toRadians(-60.0),
-                        Math.toRadians(-59.0), 95e3, 2024.0)), ANGLE_ERROR);
+                Math.toRadians(-59.0), 95e3, 2024.0)), ANGLE_ERROR);
         assertEquals(-64.59, Math.toDegrees(estimator.getDip(Math.toRadians(-70.0),
-                        Math.toRadians(42.0), 95e3, 2024.0)), ANGLE_ERROR);
+                Math.toRadians(42.0), 95e3, 2024.0)), ANGLE_ERROR);
         assertEquals(89.39, Math.toDegrees(estimator.getDip(Math.toRadians(87.0),
-                        Math.toRadians(-154.0), 50e3, 2024.0)), ANGLE_ERROR);
+                Math.toRadians(-154.0), 50e3, 2024.0)), ANGLE_ERROR);
         assertEquals(45.89, Math.toDegrees(estimator.getDip(Math.toRadians(32.0),
-                        Math.toRadians(19.0), 58e3, 2024.0)), ANGLE_ERROR);
+                Math.toRadians(19.0), 58e3, 2024.0)), ANGLE_ERROR);
         assertEquals(45.83, Math.toDegrees(estimator.getDip(Math.toRadians(34.0),
-                        Math.toRadians(-13.0), 57e3, 2024.0)), ANGLE_ERROR);
+                Math.toRadians(-13.0), 57e3, 2024.0)), ANGLE_ERROR);
         assertEquals(-67.40, Math.toDegrees(estimator.getDip(Math.toRadians(-76.0),
-                        Math.toRadians(49.0), 38e3, 2024.0)), ANGLE_ERROR);
+                Math.toRadians(49.0), 38e3, 2024.0)), ANGLE_ERROR);
         assertEquals(-71.40, Math.toDegrees(estimator.getDip(Math.toRadians(-50.0),
-                        Math.toRadians(-179.0), 49e3, 2024.0)), ANGLE_ERROR);
+                Math.toRadians(-179.0), 49e3, 2024.0)), ANGLE_ERROR);
         assertEquals(-72.91, Math.toDegrees(estimator.getDip(Math.toRadians(-55.0),
-                        Math.toRadians(-171.0), 90e3, 2024.0)), ANGLE_ERROR);
+                Math.toRadians(-171.0), 90e3, 2024.0)), ANGLE_ERROR);
         assertEquals(56.57, Math.toDegrees(estimator.getDip(Math.toRadians(42.0),
-                        Math.toRadians(-19.0), 41e3, 2024.0)), ANGLE_ERROR);
+                Math.toRadians(-19.0), 41e3, 2024.0)), ANGLE_ERROR);
         assertEquals(61.04, Math.toDegrees(estimator.getDip(Math.toRadians(46.0),
-                        Math.toRadians(-22.0), 19e3, 2024.0)), ANGLE_ERROR);
+                Math.toRadians(-22.0), 19e3, 2024.0)), ANGLE_ERROR);
 
         assertEquals(31.51, Math.toDegrees(estimator.getDip(Math.toRadians(13.0),
-                        Math.toRadians(-132.0), 31e3, 2024.5)), ANGLE_ERROR);
+                Math.toRadians(-132.0), 31e3, 2024.5)), ANGLE_ERROR);
         assertEquals(-17.78, Math.toDegrees(estimator.getDip(Math.toRadians(-2.0),
-                        Math.toRadians(158.0), 93e3, 2024.5)), ANGLE_ERROR);
+                Math.toRadians(158.0), 93e3, 2024.5)), ANGLE_ERROR);
         assertEquals(-66.27, Math.toDegrees(estimator.getDip(Math.toRadians(-76.0),
-                        Math.toRadians(40.0), 51e3, 2024.5)), ANGLE_ERROR);
+                Math.toRadians(40.0), 51e3, 2024.5)), ANGLE_ERROR);
         assertEquals(43.88, Math.toDegrees(estimator.getDip(Math.toRadians(22.0),
-                        Math.toRadians(-132.0), 64e3, 2024.5)), ANGLE_ERROR);
+                Math.toRadians(-132.0), 64e3, 2024.5)), ANGLE_ERROR);
         assertEquals(-65.67, Math.toDegrees(estimator.getDip(Math.toRadians(-65.0),
-                        Math.toRadians(55.0), 26e3, 2024.5)), ANGLE_ERROR);
+                Math.toRadians(55.0), 26e3, 2024.5)), ANGLE_ERROR);
         assertEquals(-56.95, Math.toDegrees(estimator.getDip(Math.toRadians(-21.0),
-                        Math.toRadians(32.0), 66e3, 2024.5)), ANGLE_ERROR);
+                Math.toRadians(32.0), 66e3, 2024.5)), ANGLE_ERROR);
         assertEquals(15.78, Math.toDegrees(estimator.getDip(Math.toRadians(9.0),
-                        Math.toRadians(-172.0), 18e3, 2024.5)), ANGLE_ERROR);
+                Math.toRadians(-172.0), 18e3, 2024.5)), ANGLE_ERROR);
         assertEquals(87.38, Math.toDegrees(estimator.getDip(Math.toRadians(88.0),
-                        Math.toRadians(26.0), 63e3, 2024.5)), ANGLE_ERROR);
+                Math.toRadians(26.0), 63e3, 2024.5)), ANGLE_ERROR);
         assertEquals(13.58, Math.toDegrees(estimator.getDip(Math.toRadians(17.0),
-                        Math.toRadians(5.0), 33e3, 2024.5)), ANGLE_ERROR);
+                Math.toRadians(5.0), 33e3, 2024.5)), ANGLE_ERROR);
         assertEquals(-47.71, Math.toDegrees(estimator.getDip(Math.toRadians(-18.0),
-                        Math.toRadians(138.0), 77e3, 2024.5)), ANGLE_ERROR);
+                Math.toRadians(138.0), 77e3, 2024.5)), ANGLE_ERROR);
     }
 
     @Test
-    public void testHorizontalIntensityModel() throws IOException {
-        final WMMEarthMagneticFluxDensityEstimator estimator = new WMMEarthMagneticFluxDensityEstimator();
+    void testHorizontalIntensityModel() throws IOException {
+        final var estimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        assertEquals(1510.0, estimator.getHorizontalIntensity(Math.toRadians(89.0),
+        assertEquals(1510.0, estimator.getHorizontalIntensity(Math.toRadians(89.0), 
                 Math.toRadians(-121.0), 28e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
         assertEquals(1910.8, estimator.getHorizontalIntensity(Math.toRadians(80.0),
                 Math.toRadians(-96.0), 48e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
@@ -548,7 +545,7 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
         assertEquals(34916.9, estimator.getHorizontalIntensity(
                 Math.toRadians(14.0), Math.toRadians(143.0), 66e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
         assertEquals(29316.1, estimator.getHorizontalIntensity(
-                Math.toRadians(0.0), Math.toRadians(21.0), 18e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
+                0.0, Math.toRadians(21.0), 18e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
 
         assertEquals(25511.4, estimator.getHorizontalIntensity(
                 Math.toRadians(-36.0), Math.toRadians(-137.0), 6e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
@@ -592,7 +589,7 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
         assertEquals(17872.0, estimator.getHorizontalIntensity(
                 Math.toRadians(-81.0), Math.toRadians(40.0), 56e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(39316.2, estimator.getHorizontalIntensity(Math.toRadians(0.0),
+        assertEquals(39316.2, estimator.getHorizontalIntensity(0.0,
                 Math.toRadians(80.0), 14e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
         assertEquals(18536.8, estimator.getHorizontalIntensity(Math.toRadians(-82.0),
                 Math.toRadians(-68.0), 12e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
@@ -610,92 +607,92 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 Math.toRadians(-33.0), Math.toRadians(-114.0), 14e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
         assertEquals(32640.6, estimator.getHorizontalIntensity(
                 Math.toRadians(29.0), Math.toRadians(66.0), 19e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(33191.7, estimator.getHorizontalIntensity(Math.toRadians(-11.0), Math.toRadians(167.0),
-                86e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(33191.7, estimator.getHorizontalIntensity(Math.toRadians(-11.0), 
+                Math.toRadians(167.0), 86e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(17152.6, estimator.getHorizontalIntensity(Math.toRadians(-66.0), Math.toRadians(-5.0),
-                37e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(4703.2, estimator.getHorizontalIntensity(Math.toRadians(72.0), Math.toRadians(-115.0),
-                67e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(28859.7, estimator.getHorizontalIntensity(Math.toRadians(22.0), Math.toRadians(174.0),
-                44e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(20631.2, estimator.getHorizontalIntensity(Math.toRadians(54.0), Math.toRadians(178.0),
-                54e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(16769.3, estimator.getHorizontalIntensity(Math.toRadians(-43.0), Math.toRadians(50.0),
-                57e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(22656.4, estimator.getHorizontalIntensity(Math.toRadians(-43.0), Math.toRadians(-111.0),
-                44e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(11577.2, estimator.getHorizontalIntensity(Math.toRadians(-63.0), Math.toRadians(178.0),
-                12e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(26202.3, estimator.getHorizontalIntensity(Math.toRadians(27.0), Math.toRadians(-169.0),
-                38e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(10595.8, estimator.getHorizontalIntensity(Math.toRadians(59.0), Math.toRadians(-77.0),
-                61e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(13056.5, estimator.getHorizontalIntensity(Math.toRadians(-47.0), Math.toRadians(-32.0),
-                67e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(17152.6, estimator.getHorizontalIntensity(Math.toRadians(-66.0), 
+                Math.toRadians(-5.0), 37e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(4703.2, estimator.getHorizontalIntensity(Math.toRadians(72.0), 
+                Math.toRadians(-115.0), 67e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(28859.7, estimator.getHorizontalIntensity(Math.toRadians(22.0), 
+                Math.toRadians(174.0), 44e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(20631.2, estimator.getHorizontalIntensity(Math.toRadians(54.0), 
+                Math.toRadians(178.0), 54e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(16769.3, estimator.getHorizontalIntensity(Math.toRadians(-43.0), 
+                Math.toRadians(50.0), 57e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(22656.4, estimator.getHorizontalIntensity(Math.toRadians(-43.0), 
+                Math.toRadians(-111.0), 44e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(11577.2, estimator.getHorizontalIntensity(Math.toRadians(-63.0), 
+                Math.toRadians(178.0), 12e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(26202.3, estimator.getHorizontalIntensity(Math.toRadians(27.0), 
+                Math.toRadians(-169.0), 38e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(10595.8, estimator.getHorizontalIntensity(Math.toRadians(59.0), 
+                Math.toRadians(-77.0), 61e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(13056.5, estimator.getHorizontalIntensity(Math.toRadians(-47.0), 
+                Math.toRadians(-32.0), 67e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(13043.3, estimator.getHorizontalIntensity(Math.toRadians(62.0), Math.toRadians(53.0),
-                8e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(17268.3, estimator.getHorizontalIntensity(Math.toRadians(-68.0), Math.toRadians(-7.0),
-                77e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(33927.0, estimator.getHorizontalIntensity(Math.toRadians(-5.0), Math.toRadians(159.0),
-                98e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(24657.0, estimator.getHorizontalIntensity(Math.toRadians(-29.0), Math.toRadians(-107.0),
-                34e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(32954.8, estimator.getHorizontalIntensity(Math.toRadians(27.0), Math.toRadians(65.0),
-                60e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(13362.8, estimator.getHorizontalIntensity(Math.toRadians(-72.0), Math.toRadians(95.0),
-                73e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(20165.1, estimator.getHorizontalIntensity(Math.toRadians(-46.0), Math.toRadians(-85.0),
-                96e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(22751.7, estimator.getHorizontalIntensity(Math.toRadians(-13.0), Math.toRadians(-59.0),
-                0e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(13812.2, estimator.getHorizontalIntensity(Math.toRadians(66.0), Math.toRadians(-178.0),
-                16e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(16666.4, estimator.getHorizontalIntensity(Math.toRadians(-87.0), Math.toRadians(38.0),
-                72e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(13043.3, estimator.getHorizontalIntensity(Math.toRadians(62.0), 
+                Math.toRadians(53.0), 8e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(17268.3, estimator.getHorizontalIntensity(Math.toRadians(-68.0), 
+                Math.toRadians(-7.0), 77e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(33927.0, estimator.getHorizontalIntensity(Math.toRadians(-5.0), 
+                Math.toRadians(159.0), 98e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(24657.0, estimator.getHorizontalIntensity(Math.toRadians(-29.0), 
+                Math.toRadians(-107.0), 34e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(32954.8, estimator.getHorizontalIntensity(Math.toRadians(27.0), 
+                Math.toRadians(65.0), 60e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(13362.8, estimator.getHorizontalIntensity(Math.toRadians(-72.0), 
+                Math.toRadians(95.0), 73e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(20165.1, estimator.getHorizontalIntensity(Math.toRadians(-46.0), 
+                Math.toRadians(-85.0), 96e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(22751.7, estimator.getHorizontalIntensity(Math.toRadians(-13.0), 
+                Math.toRadians(-59.0), 0e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(13812.2, estimator.getHorizontalIntensity(Math.toRadians(66.0), 
+                Math.toRadians(-178.0), 16e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(16666.4, estimator.getHorizontalIntensity(Math.toRadians(-87.0), 
+                Math.toRadians(38.0), 72e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(30223.6, estimator.getHorizontalIntensity(Math.toRadians(20.0), Math.toRadians(167.0),
-                49e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(28445.5, estimator.getHorizontalIntensity(Math.toRadians(5.0), Math.toRadians(-13.0),
-                71e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(36805.8, estimator.getHorizontalIntensity(Math.toRadians(14.0), Math.toRadians(65.0),
-                95e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(16888.7, estimator.getHorizontalIntensity(Math.toRadians(-85.0), Math.toRadians(-79.0),
-                86e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(17735.3, estimator.getHorizontalIntensity(Math.toRadians(-36.0), Math.toRadians(-64.0),
-                30e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(2692.1, estimator.getHorizontalIntensity(Math.toRadians(79.0), Math.toRadians(125.0),
-                75e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(28634.3, estimator.getHorizontalIntensity(Math.toRadians(6.0), Math.toRadians(-32.0),
-                21e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(19700.9, estimator.getHorizontalIntensity(Math.toRadians(-76.0), Math.toRadians(-75.0),
-                1e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(14187.4, estimator.getHorizontalIntensity(Math.toRadians(-46.0), Math.toRadians(-41.0),
-                45e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(13972.9, estimator.getHorizontalIntensity(Math.toRadians(-22.0), Math.toRadians(-21),
-                11e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(30223.6, estimator.getHorizontalIntensity(Math.toRadians(20.0), 
+                Math.toRadians(167.0), 49e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(28445.5, estimator.getHorizontalIntensity(Math.toRadians(5.0), 
+                Math.toRadians(-13.0), 71e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(36805.8, estimator.getHorizontalIntensity(Math.toRadians(14.0), 
+                Math.toRadians(65.0), 95e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(16888.7, estimator.getHorizontalIntensity(Math.toRadians(-85.0), 
+                Math.toRadians(-79.0), 86e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(17735.3, estimator.getHorizontalIntensity(Math.toRadians(-36.0), 
+                Math.toRadians(-64.0), 30e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(2692.1, estimator.getHorizontalIntensity(Math.toRadians(79.0), 
+                Math.toRadians(125.0), 75e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(28634.3, estimator.getHorizontalIntensity(Math.toRadians(6.0), 
+                Math.toRadians(-32.0), 21e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(19700.9, estimator.getHorizontalIntensity(Math.toRadians(-76.0), 
+                Math.toRadians(-75.0), 1e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(14187.4, estimator.getHorizontalIntensity(Math.toRadians(-46.0), 
+                Math.toRadians(-41.0), 45e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(13972.9, estimator.getHorizontalIntensity(Math.toRadians(-22.0), 
+                Math.toRadians(-21), 11e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(15158.8, estimator.getHorizontalIntensity(Math.toRadians(54.0), Math.toRadians(-120.0),
-                28e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(9223.1, estimator.getHorizontalIntensity(Math.toRadians(-58.0), Math.toRadians(156.0),
-                68e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(20783.0, estimator.getHorizontalIntensity(Math.toRadians(-65.0), Math.toRadians(-88.0),
-                39e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(25568.2, estimator.getHorizontalIntensity(Math.toRadians(-23.0), Math.toRadians(81.0),
-                27e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(29038.8, estimator.getHorizontalIntensity(Math.toRadians(34.0), Math.toRadians(0.0),
-                11e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(17485.0, estimator.getHorizontalIntensity(Math.toRadians(-62.0), Math.toRadians(65.0),
-                72e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(2424.9, estimator.getHorizontalIntensity(Math.toRadians(86.0), Math.toRadians(70.0),
-                55e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(28170.6, estimator.getHorizontalIntensity(Math.toRadians(32.0), Math.toRadians(163.0),
-                59e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(23673.8, estimator.getHorizontalIntensity(Math.toRadians(48.0), Math.toRadians(148.0),
-                65e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(29754.7, estimator.getHorizontalIntensity(Math.toRadians(30.0), Math.toRadians(28.0),
-                95e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(15158.8, estimator.getHorizontalIntensity(Math.toRadians(54.0), 
+                Math.toRadians(-120.0), 28e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(9223.1, estimator.getHorizontalIntensity(Math.toRadians(-58.0), 
+                Math.toRadians(156.0), 68e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(20783.0, estimator.getHorizontalIntensity(Math.toRadians(-65.0), 
+                Math.toRadians(-88.0), 39e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(25568.2, estimator.getHorizontalIntensity(Math.toRadians(-23.0), 
+                Math.toRadians(81.0), 27e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(29038.8, estimator.getHorizontalIntensity(Math.toRadians(34.0), 
+                0.0, 11e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(17485.0, estimator.getHorizontalIntensity(Math.toRadians(-62.0), 
+                Math.toRadians(65.0), 72e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(2424.9, estimator.getHorizontalIntensity(Math.toRadians(86.0), 
+                Math.toRadians(70.0), 55e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(28170.6, estimator.getHorizontalIntensity(Math.toRadians(32.0), 
+                Math.toRadians(163.0), 59e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(23673.8, estimator.getHorizontalIntensity(Math.toRadians(48.0), 
+                Math.toRadians(148.0), 65e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(29754.7, estimator.getHorizontalIntensity(Math.toRadians(30.0), 
+                Math.toRadians(28.0), 95e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
 
         assertEquals(18317.9, estimator.getHorizontalIntensity(
                 Math.toRadians(-60.0), Math.toRadians(-59.0), 95e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
@@ -741,8 +738,8 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
     }
 
     @Test
-    public void testNorthIntensityModel() throws IOException {
-        final WMMEarthMagneticFluxDensityEstimator estimator = new WMMEarthMagneticFluxDensityEstimator();
+    void testNorthIntensityModel() throws IOException {
+        final var estimator = new WMMEarthMagneticFluxDensityEstimator();
 
         assertEquals(-575.7, estimator.getNorthIntensity(
                 Math.toRadians(89.0), Math.toRadians(-121.0), 28e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
@@ -763,7 +760,7 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
         assertEquals(34916.8, estimator.getNorthIntensity(
                 Math.toRadians(14.0), Math.toRadians(143.0), 66e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
         assertEquals(29311.2, estimator.getNorthIntensity(
-                Math.toRadians(0.0), Math.toRadians(21.0), 18e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
+                0.0, Math.toRadians(21.0), 18e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
 
         assertEquals(23948.6, estimator.getNorthIntensity(
                 Math.toRadians(-36.0), Math.toRadians(-137.0), 6e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
@@ -808,7 +805,7 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 Math.toRadians(-81.0), Math.toRadians(40.0), 56e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
 
         assertEquals(39246.6, estimator.getNorthIntensity(
-                Math.toRadians(0.0), Math.toRadians(80.0), 14e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
+                0.0, Math.toRadians(80.0), 14e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
         assertEquals(15995.1, estimator.getNorthIntensity(
                 Math.toRadians(-82.0), Math.toRadians(-68.0), 12e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
         assertEquals(14159.0, estimator.getNorthIntensity(
@@ -900,7 +897,7 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
         assertEquals(24811.0, estimator.getNorthIntensity(
                 Math.toRadians(-23.0), Math.toRadians(81.0), 27e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
         assertEquals(29033.7, estimator.getNorthIntensity(
-                Math.toRadians(34), Math.toRadians(0.0), 11e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
+                Math.toRadians(34), 0.0, 11e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
         assertEquals(6836.8, estimator.getNorthIntensity(
                 Math.toRadians(-62.0), Math.toRadians(65.0), 72e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
         assertEquals(1168.7, estimator.getNorthIntensity(
@@ -958,8 +955,8 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
     }
 
     @Test
-    public void testEastIntensityModel() throws IOException {
-        final WMMEarthMagneticFluxDensityEstimator estimator = new WMMEarthMagneticFluxDensityEstimator();
+    void testEastIntensityModel() throws IOException {
+        final var estimator = new WMMEarthMagneticFluxDensityEstimator();
 
         assertEquals(-1396.0, estimator.getEastIntensity(
                 Math.toRadians(89.0), Math.toRadians(-121.0), 28e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
@@ -980,7 +977,7 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
         assertEquals(70.2, estimator.getEastIntensity(
                 Math.toRadians(14.0), Math.toRadians(143.0), 66e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
         assertEquals(536.0, estimator.getEastIntensity(
-                Math.toRadians(0.0), Math.toRadians(21.0), 18e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
+                0.0, Math.toRadians(21.0), 18e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
 
         assertEquals(8791.9, estimator.getEastIntensity(
                 Math.toRadians(-36.0), Math.toRadians(-137.0), 6e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
@@ -1025,7 +1022,7 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 Math.toRadians(-81.0), Math.toRadians(40.0), 56e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
 
         assertEquals(-2338.9, estimator.getEastIntensity(
-                Math.toRadians(0.0), Math.toRadians(80.0), 14e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
+                0.0, Math.toRadians(80.0), 14e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
         assertEquals(9368.5, estimator.getEastIntensity(
                 Math.toRadians(-82.0), Math.toRadians(-68.0), 12e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
         assertEquals(-2889.8, estimator.getEastIntensity(
@@ -1117,7 +1114,7 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
         assertEquals(-6176.1, estimator.getEastIntensity(
                 Math.toRadians(-23.0), Math.toRadians(81.0), 27e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
         assertEquals(545.3, estimator.getEastIntensity(
-                Math.toRadians(34.0), Math.toRadians(0.0), 11e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
+                Math.toRadians(34.0), 0.0, 11e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
         assertEquals(-16092.9, estimator.getEastIntensity(
                 Math.toRadians(-62.0), Math.toRadians(65.0), 72e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
         assertEquals(2124.7, estimator.getEastIntensity(
@@ -1175,8 +1172,8 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
     }
 
     @Test
-    public void testVerticalIntensityModel() throws IOException {
-        final WMMEarthMagneticFluxDensityEstimator estimator = new WMMEarthMagneticFluxDensityEstimator();
+    void testVerticalIntensityModel() throws IOException {
+        final var estimator = new WMMEarthMagneticFluxDensityEstimator();
 
         assertEquals(56082.3, estimator.getVerticalIntensity(
                 Math.toRadians(89.0), Math.toRadians(-121.0), 28e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
@@ -1197,7 +1194,7 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
         assertEquals(8114.9, estimator.getVerticalIntensity(
                 Math.toRadians(14.0), Math.toRadians(143.0), 66e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
         assertEquals(-14589.0, estimator.getVerticalIntensity(
-                Math.toRadians(0.0), Math.toRadians(21.0), 18e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
+                0.0, Math.toRadians(21.0), 18e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
 
         assertEquals(-32897.6, estimator.getVerticalIntensity(
                 Math.toRadians(-36.0), Math.toRadians(-137.0), 6e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
@@ -1242,7 +1239,7 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 Math.toRadians(-81.0), Math.toRadians(40.0), 56e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
 
         assertEquals(-12258.0, estimator.getVerticalIntensity(
-                Math.toRadians(0.0), Math.toRadians(80.0), 14e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
+                0.0, Math.toRadians(80.0), 14e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
         assertEquals(-46308.7, estimator.getVerticalIntensity(
                 Math.toRadians(-82.0), Math.toRadians(-68.0), 12e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
         assertEquals(-19762.2, estimator.getVerticalIntensity(
@@ -1336,7 +1333,7 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
         assertEquals(-41759.2, estimator.getVerticalIntensity(
                 Math.toRadians(-23.0), Math.toRadians(81.0), 27e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
         assertEquals(30807.0, estimator.getVerticalIntensity(
-                Math.toRadians(34.0), Math.toRadians(0.0), 11e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
+                Math.toRadians(34.0), 0.0, 11e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
         assertEquals(-44111.8, estimator.getVerticalIntensity(
                 Math.toRadians(-62.0), Math.toRadians(65.0), 72e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
         assertEquals(55750.6, estimator.getVerticalIntensity(
@@ -1392,8 +1389,8 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
     }
 
     @Test
-    public void testIntensityModel() throws IOException {
-        final WMMEarthMagneticFluxDensityEstimator estimator = new WMMEarthMagneticFluxDensityEstimator();
+    void testIntensityModel() throws IOException {
+        final var estimator = new WMMEarthMagneticFluxDensityEstimator();
 
         assertEquals(56102.7, estimator.getIntensity(
                 Math.toRadians(89.0), Math.toRadians(-121.0), 28e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
@@ -1414,7 +1411,7 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
         assertEquals(35847.5, estimator.getIntensity(
                 Math.toRadians(14.0), Math.toRadians(143.0), 66e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
         assertEquals(32745.6, estimator.getIntensity(
-                Math.toRadians(0.0), Math.toRadians(21.0), 18e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
+                0.0, Math.toRadians(21.0), 18e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
 
         assertEquals(41630.3, estimator.getIntensity(
                 Math.toRadians(-36.0), Math.toRadians(-137.0), 6e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
@@ -1461,7 +1458,7 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 Math.toRadians(-81.0), Math.toRadians(40.0), 56e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
 
         assertEquals(41182.8, estimator.getIntensity(
-                Math.toRadians(0.0), Math.toRadians(80.0), 14e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
+                0.0, Math.toRadians(80.0), 14e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
         assertEquals(49880.9, estimator.getIntensity(
                 Math.toRadians(-82.0), Math.toRadians(-68.0), 12e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
         assertEquals(24482.1, estimator.getIntensity(
@@ -1553,7 +1550,7 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
         assertEquals(48965.0, estimator.getIntensity(
                 Math.toRadians(-23.0), Math.toRadians(81.0), 27e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
         assertEquals(42335.9, estimator.getIntensity(
-                Math.toRadians(34.0), Math.toRadians(0.0), 11e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
+                Math.toRadians(34.0), 0.0, 11e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
         assertEquals(47450.8, estimator.getIntensity(
                 Math.toRadians(-62.0), Math.toRadians(65.0), 72e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
         assertEquals(55803.4, estimator.getIntensity(
@@ -1609,41 +1606,41 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
     }
 
     @Test
-    public void testConvertTime() {
-        final GregorianCalendar cal = new GregorianCalendar(2010, Calendar.JANUARY, 1);
+    void testConvertTime() {
+        final var cal = new GregorianCalendar(2010, Calendar.JANUARY, 1);
         assertEquals(2010.0, WMMEarthMagneticFluxDensityEstimator.convertTime(cal), 0.0);
 
         // the full day of July 1, 0 hours into 2 July
-        final GregorianCalendar cal2 = new GregorianCalendar(2012, Calendar.JULY, 2);
+        final var cal2 = new GregorianCalendar(2012, Calendar.JULY, 2);
         assertTrue(cal2.isLeapYear(2012));
         assertEquals(2012.5, WMMEarthMagneticFluxDensityEstimator.convertTime(cal2), 0.0);
 
-        final GregorianCalendar cal3 = new GregorianCalendar(2013, Calendar.APRIL, 14);
+        final var cal3 = new GregorianCalendar(2013, Calendar.APRIL, 14);
         assertFalse(cal3.isLeapYear(2013));
         assertEquals(2013.282, WMMEarthMagneticFluxDensityEstimator.convertTime(cal3), TIME_ERROR);
     }
 
     @Test
-    public void testGetDeclinationWithDefaultTimeAndHeight() throws IOException {
-        final NEDPosition position = createPosition();
-        final double latitude = position.getLatitude();
-        final double longitude = position.getLongitude();
-        final Angle latitudeAngle = new Angle(latitude, AngleUnit.RADIANS);
-        final Angle longitudeAngle = new Angle(longitude, AngleUnit.RADIANS);
+    void testGetDeclinationWithDefaultTimeAndHeight() throws IOException {
+        final var position = createPosition();
+        final var latitude = position.getLatitude();
+        final var longitude = position.getLongitude();
+        final var latitudeAngle = new Angle(latitude, AngleUnit.RADIANS);
+        final var longitudeAngle = new Angle(longitude, AngleUnit.RADIANS);
 
-        final WMMEarthMagneticFluxDensityEstimator estimator = new WMMEarthMagneticFluxDensityEstimator();
+        final var estimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        final double declination1 = estimator.getDeclination(latitude, longitude);
-        final double declination2 = estimator.getDeclination(latitudeAngle, longitudeAngle);
+        final var declination1 = estimator.getDeclination(latitude, longitude);
+        final var declination2 = estimator.getDeclination(latitudeAngle, longitudeAngle);
 
         assertEquals(declination1, declination2, 0.0);
 
-        final Angle result1 = new Angle(0.0, AngleUnit.DEGREES);
+        final var result1 = new Angle(0.0, AngleUnit.DEGREES);
         estimator.getDeclinationAsAngle(latitude, longitude, result1);
-        final Angle result2 = estimator.getDeclinationAsAngle(latitude, longitude);
-        final Angle result3 = new Angle(0.0, AngleUnit.DEGREES);
+        final var result2 = estimator.getDeclinationAsAngle(latitude, longitude);
+        final var result3 = new Angle(0.0, AngleUnit.DEGREES);
         estimator.getDeclinationAsAngle(latitudeAngle, longitudeAngle, result3);
-        final Angle result4 = estimator.getDeclinationAsAngle(latitudeAngle, longitudeAngle);
+        final var result4 = estimator.getDeclinationAsAngle(latitudeAngle, longitudeAngle);
 
         assertEquals(declination1, result1.getValue().doubleValue(), 0.0);
         assertEquals(AngleUnit.RADIANS, result1.getUnit());
@@ -1653,31 +1650,31 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
     }
 
     @Test
-    public void testGetDeclination() throws IOException {
-        final NEDPosition position = createPosition();
-        final double latitude = position.getLatitude();
-        final double longitude = position.getLongitude();
-        final double height = position.getHeight();
-        final Angle latitudeAngle = new Angle(latitude, AngleUnit.RADIANS);
-        final Angle longitudeAngle = new Angle(longitude, AngleUnit.RADIANS);
-        final Distance heightDistance = new Distance(height, DistanceUnit.METER);
+    void testGetDeclination() throws IOException {
+        final var position = createPosition();
+        final var latitude = position.getLatitude();
+        final var longitude = position.getLongitude();
+        final var height = position.getHeight();
+        final var latitudeAngle = new Angle(latitude, AngleUnit.RADIANS);
+        final var longitudeAngle = new Angle(longitude, AngleUnit.RADIANS);
+        final var heightDistance = new Distance(height, DistanceUnit.METER);
 
-        final long timestamp = createTimestamp();
-        final Date date = createDate(timestamp);
-        final GregorianCalendar calendar = createCalendar(timestamp);
-        final double year = createYear(calendar);
+        final var timestamp = createTimestamp();
+        final var date = createDate(timestamp);
+        final var calendar = createCalendar(timestamp);
+        final var year = createYear(calendar);
 
-        final WMMEarthMagneticFluxDensityEstimator estimator = new WMMEarthMagneticFluxDensityEstimator();
+        final var estimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        final double declination1 = estimator.getDeclination(latitude, longitude, height, year);
-        final double declination2 = estimator.getDeclination(latitude, longitude, height, calendar);
-        final double declination3 = estimator.getDeclination(latitude, longitude, height, date);
-        final double declination4 = estimator.getDeclination(latitudeAngle, longitudeAngle, heightDistance, year);
-        final double declination5 = estimator.getDeclination(latitudeAngle, longitudeAngle, heightDistance, calendar);
-        final double declination6 = estimator.getDeclination(latitudeAngle, longitudeAngle, heightDistance, date);
-        final double declination7 = estimator.getDeclination(position, year);
-        final double declination8 = estimator.getDeclination(position, calendar);
-        final double declination9 = estimator.getDeclination(position, date);
+        final var declination1 = estimator.getDeclination(latitude, longitude, height, year);
+        final var declination2 = estimator.getDeclination(latitude, longitude, height, calendar);
+        final var declination3 = estimator.getDeclination(latitude, longitude, height, date);
+        final var declination4 = estimator.getDeclination(latitudeAngle, longitudeAngle, heightDistance, year);
+        final var declination5 = estimator.getDeclination(latitudeAngle, longitudeAngle, heightDistance, calendar);
+        final var declination6 = estimator.getDeclination(latitudeAngle, longitudeAngle, heightDistance, date);
+        final var declination7 = estimator.getDeclination(position, year);
+        final var declination8 = estimator.getDeclination(position, calendar);
+        final var declination9 = estimator.getDeclination(position, date);
 
         assertEquals(declination1, declination2, 0.0);
         assertEquals(declination1, declination3, 0.0);
@@ -1688,33 +1685,33 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
         assertEquals(declination1, declination8, 0.0);
         assertEquals(declination1, declination9, 0.0);
 
-        final Angle result1 = new Angle(0.0, AngleUnit.DEGREES);
+        final var result1 = new Angle(0.0, AngleUnit.DEGREES);
         estimator.getDeclinationAsAngle(latitude, longitude, height, year, result1);
-        final Angle result2 = estimator.getDeclinationAsAngle(latitude, longitude, height, year);
-        final Angle result3 = new Angle(0.0, AngleUnit.DEGREES);
+        final var result2 = estimator.getDeclinationAsAngle(latitude, longitude, height, year);
+        final var result3 = new Angle(0.0, AngleUnit.DEGREES);
         estimator.getDeclinationAsAngle(latitude, longitude, height, calendar, result3);
-        final Angle result4 = estimator.getDeclinationAsAngle(latitude, longitude, height, calendar);
-        final Angle result5 = new Angle(0.0, AngleUnit.DEGREES);
+        final var result4 = estimator.getDeclinationAsAngle(latitude, longitude, height, calendar);
+        final var result5 = new Angle(0.0, AngleUnit.DEGREES);
         estimator.getDeclinationAsAngle(latitude, longitude, height, date, result5);
-        final Angle result6 = estimator.getDeclinationAsAngle(latitude, longitude, height, date);
-        final Angle result7 = new Angle(0.0, AngleUnit.DEGREES);
+        final var result6 = estimator.getDeclinationAsAngle(latitude, longitude, height, date);
+        final var result7 = new Angle(0.0, AngleUnit.DEGREES);
         estimator.getDeclinationAsAngle(latitudeAngle, longitudeAngle, heightDistance, year, result7);
-        final Angle result8 = estimator.getDeclinationAsAngle(latitudeAngle, longitudeAngle, heightDistance, year);
-        final Angle result9 = new Angle(0.0, AngleUnit.DEGREES);
+        final var result8 = estimator.getDeclinationAsAngle(latitudeAngle, longitudeAngle, heightDistance, year);
+        final var result9 = new Angle(0.0, AngleUnit.DEGREES);
         estimator.getDeclinationAsAngle(latitudeAngle, longitudeAngle, heightDistance, calendar, result9);
-        final Angle result10 = estimator.getDeclinationAsAngle(latitudeAngle, longitudeAngle, heightDistance, calendar);
-        final Angle result11 = new Angle(0.0, AngleUnit.DEGREES);
+        final var result10 = estimator.getDeclinationAsAngle(latitudeAngle, longitudeAngle, heightDistance, calendar);
+        final var result11 = new Angle(0.0, AngleUnit.DEGREES);
         estimator.getDeclinationAsAngle(latitudeAngle, longitudeAngle, heightDistance, date, result11);
-        final Angle result12 = estimator.getDeclinationAsAngle(latitudeAngle, longitudeAngle, heightDistance, date);
-        final Angle result13 = new Angle(0.0, AngleUnit.DEGREES);
+        final var result12 = estimator.getDeclinationAsAngle(latitudeAngle, longitudeAngle, heightDistance, date);
+        final var result13 = new Angle(0.0, AngleUnit.DEGREES);
         estimator.getDeclinationAsAngle(position, year, result13);
-        final Angle result14 = estimator.getDeclinationAsAngle(position, year);
-        final Angle result15 = new Angle(0.0, AngleUnit.DEGREES);
+        final var result14 = estimator.getDeclinationAsAngle(position, year);
+        final var result15 = new Angle(0.0, AngleUnit.DEGREES);
         estimator.getDeclinationAsAngle(position, calendar, result15);
-        final Angle result16 = estimator.getDeclinationAsAngle(position, calendar);
-        final Angle result17 = new Angle(0.0, AngleUnit.DEGREES);
+        final var result16 = estimator.getDeclinationAsAngle(position, calendar);
+        final var result17 = new Angle(0.0, AngleUnit.DEGREES);
         estimator.getDeclinationAsAngle(position, date, result17);
-        final Angle result18 = estimator.getDeclinationAsAngle(position, date);
+        final var result18 = estimator.getDeclinationAsAngle(position, date);
 
         assertEquals(result1.getValue().doubleValue(), declination1, 0.0);
         assertEquals(AngleUnit.RADIANS, result1.getUnit());
@@ -1738,26 +1735,26 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
     }
 
     @Test
-    public void testGetDipWithDefaultTimeAndHeight() throws IOException {
-        final NEDPosition position = createPosition();
-        final double latitude = position.getLatitude();
-        final double longitude = position.getLongitude();
-        final Angle latitudeAngle = new Angle(latitude, AngleUnit.RADIANS);
-        final Angle longitudeAngle = new Angle(longitude, AngleUnit.RADIANS);
+    void testGetDipWithDefaultTimeAndHeight() throws IOException {
+        final var position = createPosition();
+        final var latitude = position.getLatitude();
+        final var longitude = position.getLongitude();
+        final var latitudeAngle = new Angle(latitude, AngleUnit.RADIANS);
+        final var longitudeAngle = new Angle(longitude, AngleUnit.RADIANS);
 
-        final WMMEarthMagneticFluxDensityEstimator estimator = new WMMEarthMagneticFluxDensityEstimator();
+        final var estimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        final double dip1 = estimator.getDip(latitude, longitude);
-        final double dip2 = estimator.getDip(latitudeAngle, longitudeAngle);
+        final var dip1 = estimator.getDip(latitude, longitude);
+        final var dip2 = estimator.getDip(latitudeAngle, longitudeAngle);
 
         assertEquals(dip1, dip2, 0.0);
 
-        final Angle result1 = new Angle(0.0, AngleUnit.DEGREES);
+        final var result1 = new Angle(0.0, AngleUnit.DEGREES);
         estimator.getDipAsAngle(latitude, longitude, result1);
-        final Angle result2 = estimator.getDipAsAngle(latitude, longitude);
-        final Angle result3 = new Angle(0.0, AngleUnit.DEGREES);
+        final var result2 = estimator.getDipAsAngle(latitude, longitude);
+        final var result3 = new Angle(0.0, AngleUnit.DEGREES);
         estimator.getDipAsAngle(latitudeAngle, longitudeAngle, result3);
-        final Angle result4 = estimator.getDipAsAngle(latitudeAngle, longitudeAngle);
+        final var result4 = estimator.getDipAsAngle(latitudeAngle, longitudeAngle);
 
         assertEquals(result1.getValue().doubleValue(), dip1, 0.0);
         assertEquals(AngleUnit.RADIANS, result1.getUnit());
@@ -1767,31 +1764,31 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
     }
 
     @Test
-    public void testGetDip() throws IOException {
-        final NEDPosition position = createPosition();
-        final double latitude = position.getLatitude();
-        final double longitude = position.getLongitude();
-        final double height = position.getHeight();
-        final Angle latitudeAngle = new Angle(latitude, AngleUnit.RADIANS);
-        final Angle longitudeAngle = new Angle(longitude, AngleUnit.RADIANS);
-        final Distance heightDistance = new Distance(height, DistanceUnit.METER);
+    void testGetDip() throws IOException {
+        final var position = createPosition();
+        final var latitude = position.getLatitude();
+        final var longitude = position.getLongitude();
+        final var height = position.getHeight();
+        final var latitudeAngle = new Angle(latitude, AngleUnit.RADIANS);
+        final var longitudeAngle = new Angle(longitude, AngleUnit.RADIANS);
+        final var heightDistance = new Distance(height, DistanceUnit.METER);
 
-        final long timestamp = createTimestamp();
-        final Date date = createDate(timestamp);
-        final GregorianCalendar calendar = createCalendar(timestamp);
-        final double year = createYear(calendar);
+        final var timestamp = createTimestamp();
+        final var date = createDate(timestamp);
+        final var calendar = createCalendar(timestamp);
+        final var year = createYear(calendar);
 
-        final WMMEarthMagneticFluxDensityEstimator estimator = new WMMEarthMagneticFluxDensityEstimator();
+        final var estimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        final double dip1 = estimator.getDip(latitude, longitude, height, year);
-        final double dip2 = estimator.getDip(latitude, longitude, height, calendar);
-        final double dip3 = estimator.getDip(latitude, longitude, height, date);
-        final double dip4 = estimator.getDip(latitudeAngle, longitudeAngle, heightDistance, year);
-        final double dip5 = estimator.getDip(latitudeAngle, longitudeAngle, heightDistance, calendar);
-        final double dip6 = estimator.getDip(latitudeAngle, longitudeAngle, heightDistance, date);
-        final double dip7 = estimator.getDip(position, year);
-        final double dip8 = estimator.getDip(position, calendar);
-        final double dip9 = estimator.getDip(position, date);
+        final var dip1 = estimator.getDip(latitude, longitude, height, year);
+        final var dip2 = estimator.getDip(latitude, longitude, height, calendar);
+        final var dip3 = estimator.getDip(latitude, longitude, height, date);
+        final var dip4 = estimator.getDip(latitudeAngle, longitudeAngle, heightDistance, year);
+        final var dip5 = estimator.getDip(latitudeAngle, longitudeAngle, heightDistance, calendar);
+        final var dip6 = estimator.getDip(latitudeAngle, longitudeAngle, heightDistance, date);
+        final var dip7 = estimator.getDip(position, year);
+        final var dip8 = estimator.getDip(position, calendar);
+        final var dip9 = estimator.getDip(position, date);
 
         assertEquals(dip1, dip2, 0.0);
         assertEquals(dip1, dip3, 0.0);
@@ -1802,33 +1799,33 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
         assertEquals(dip1, dip8, 0.0);
         assertEquals(dip1, dip9, 0.0);
 
-        final Angle result1 = new Angle(0.0, AngleUnit.DEGREES);
+        final var result1 = new Angle(0.0, AngleUnit.DEGREES);
         estimator.getDipAsAngle(latitude, longitude, height, year, result1);
-        final Angle result2 = estimator.getDipAsAngle(latitude, longitude, height, year);
-        final Angle result3 = new Angle(0.0, AngleUnit.DEGREES);
+        final var result2 = estimator.getDipAsAngle(latitude, longitude, height, year);
+        final var result3 = new Angle(0.0, AngleUnit.DEGREES);
         estimator.getDipAsAngle(latitude, longitude, height, calendar, result3);
-        final Angle result4 = estimator.getDipAsAngle(latitude, longitude, height, calendar);
-        final Angle result5 = new Angle(0.0, AngleUnit.DEGREES);
+        final var result4 = estimator.getDipAsAngle(latitude, longitude, height, calendar);
+        final var result5 = new Angle(0.0, AngleUnit.DEGREES);
         estimator.getDipAsAngle(latitude, longitude, height, date, result5);
-        final Angle result6 = estimator.getDipAsAngle(latitude, longitude, height, date);
-        final Angle result7 = new Angle(0.0, AngleUnit.DEGREES);
+        final var result6 = estimator.getDipAsAngle(latitude, longitude, height, date);
+        final var result7 = new Angle(0.0, AngleUnit.DEGREES);
         estimator.getDipAsAngle(latitudeAngle, longitudeAngle, heightDistance, year, result7);
-        final Angle result8 = estimator.getDipAsAngle(latitudeAngle, longitudeAngle, heightDistance, year);
-        final Angle result9 = new Angle(0.0, AngleUnit.DEGREES);
+        final var result8 = estimator.getDipAsAngle(latitudeAngle, longitudeAngle, heightDistance, year);
+        final var result9 = new Angle(0.0, AngleUnit.DEGREES);
         estimator.getDipAsAngle(latitudeAngle, longitudeAngle, heightDistance, calendar, result9);
-        final Angle result10 = estimator.getDipAsAngle(latitudeAngle, longitudeAngle, heightDistance, calendar);
-        final Angle result11 = new Angle(0.0, AngleUnit.DEGREES);
+        final var result10 = estimator.getDipAsAngle(latitudeAngle, longitudeAngle, heightDistance, calendar);
+        final var result11 = new Angle(0.0, AngleUnit.DEGREES);
         estimator.getDipAsAngle(latitudeAngle, longitudeAngle, heightDistance, date, result11);
-        final Angle result12 = estimator.getDipAsAngle(latitudeAngle, longitudeAngle, heightDistance, date);
-        final Angle result13 = new Angle(0.0, AngleUnit.DEGREES);
+        final var result12 = estimator.getDipAsAngle(latitudeAngle, longitudeAngle, heightDistance, date);
+        final var result13 = new Angle(0.0, AngleUnit.DEGREES);
         estimator.getDipAsAngle(position, year, result13);
-        final Angle result14 = estimator.getDipAsAngle(position, year);
-        final Angle result15 = new Angle(0.0, AngleUnit.DEGREES);
+        final var result14 = estimator.getDipAsAngle(position, year);
+        final var result15 = new Angle(0.0, AngleUnit.DEGREES);
         estimator.getDipAsAngle(position, calendar, result15);
-        final Angle result16 = estimator.getDipAsAngle(position, calendar);
-        final Angle result17 = new Angle(0.0, AngleUnit.DEGREES);
+        final var result16 = estimator.getDipAsAngle(position, calendar);
+        final var result17 = new Angle(0.0, AngleUnit.DEGREES);
         estimator.getDipAsAngle(position, date, result17);
-        final Angle result18 = estimator.getDipAsAngle(position, date);
+        final var result18 = estimator.getDipAsAngle(position, date);
 
         assertEquals(dip1, result1.getValue().doubleValue(), 0.0);
         assertEquals(AngleUnit.RADIANS, result1.getUnit());
@@ -1852,47 +1849,47 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
     }
 
     @Test
-    public void testGetIntensityWithDefaultTimeAndHeight() throws IOException {
-        final NEDPosition position = createPosition();
-        final double latitude = position.getLatitude();
-        final double longitude = position.getLongitude();
-        final Angle latitudeAngle = new Angle(latitude, AngleUnit.RADIANS);
-        final Angle longitudeAngle = new Angle(longitude, AngleUnit.RADIANS);
+    void testGetIntensityWithDefaultTimeAndHeight() throws IOException {
+        final var position = createPosition();
+        final var latitude = position.getLatitude();
+        final var longitude = position.getLongitude();
+        final var latitudeAngle = new Angle(latitude, AngleUnit.RADIANS);
+        final var longitudeAngle = new Angle(longitude, AngleUnit.RADIANS);
 
-        final WMMEarthMagneticFluxDensityEstimator estimator = new WMMEarthMagneticFluxDensityEstimator();
+        final var estimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        final double intensity1 = estimator.getIntensity(latitude, longitude);
-        final double intensity2 = estimator.getIntensity(latitudeAngle, longitudeAngle);
+        final var intensity1 = estimator.getIntensity(latitude, longitude);
+        final var intensity2 = estimator.getIntensity(latitudeAngle, longitudeAngle);
 
         assertEquals(intensity1, intensity2, 0.0);
     }
 
     @Test
-    public void testGetIntensity() throws IOException {
-        final NEDPosition position = createPosition();
-        final double latitude = position.getLatitude();
-        final double longitude = position.getLongitude();
-        final double height = position.getHeight();
-        final Angle latitudeAngle = new Angle(latitude, AngleUnit.RADIANS);
-        final Angle longitudeAngle = new Angle(longitude, AngleUnit.RADIANS);
-        final Distance heightDistance = new Distance(height, DistanceUnit.METER);
+    void testGetIntensity() throws IOException {
+        final var position = createPosition();
+        final var latitude = position.getLatitude();
+        final var longitude = position.getLongitude();
+        final var height = position.getHeight();
+        final var latitudeAngle = new Angle(latitude, AngleUnit.RADIANS);
+        final var longitudeAngle = new Angle(longitude, AngleUnit.RADIANS);
+        final var heightDistance = new Distance(height, DistanceUnit.METER);
 
-        final long timestamp = createTimestamp();
-        final Date date = createDate(timestamp);
-        final GregorianCalendar calendar = createCalendar(timestamp);
-        final double year = createYear(calendar);
+        final var timestamp = createTimestamp();
+        final var date = createDate(timestamp);
+        final var calendar = createCalendar(timestamp);
+        final var year = createYear(calendar);
 
-        final WMMEarthMagneticFluxDensityEstimator estimator = new WMMEarthMagneticFluxDensityEstimator();
+        final var estimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        final double intensity1 = estimator.getIntensity(latitude, longitude, height, year);
-        final double intensity2 = estimator.getIntensity(latitude, longitude, height, calendar);
-        final double intensity3 = estimator.getIntensity(latitude, longitude, height, date);
-        final double intensity4 = estimator.getIntensity(latitudeAngle, longitudeAngle, heightDistance, year);
-        final double intensity5 = estimator.getIntensity(latitudeAngle, longitudeAngle, heightDistance, calendar);
-        final double intensity6 = estimator.getIntensity(latitudeAngle, longitudeAngle, heightDistance, date);
-        final double intensity7 = estimator.getIntensity(position, year);
-        final double intensity8 = estimator.getIntensity(position, calendar);
-        final double intensity9 = estimator.getIntensity(position, date);
+        final var intensity1 = estimator.getIntensity(latitude, longitude, height, year);
+        final var intensity2 = estimator.getIntensity(latitude, longitude, height, calendar);
+        final var intensity3 = estimator.getIntensity(latitude, longitude, height, date);
+        final var intensity4 = estimator.getIntensity(latitudeAngle, longitudeAngle, heightDistance, year);
+        final var intensity5 = estimator.getIntensity(latitudeAngle, longitudeAngle, heightDistance, calendar);
+        final var intensity6 = estimator.getIntensity(latitudeAngle, longitudeAngle, heightDistance, date);
+        final var intensity7 = estimator.getIntensity(position, year);
+        final var intensity8 = estimator.getIntensity(position, calendar);
+        final var intensity9 = estimator.getIntensity(position, date);
 
         assertEquals(intensity1, intensity2, 0.0);
         assertEquals(intensity1, intensity2, 0.0);
@@ -1906,48 +1903,48 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
     }
 
     @Test
-    public void testGetHorizontalIntensityWithDefaultTimeAndHeight() throws IOException {
-        final NEDPosition position = createPosition();
-        final double latitude = position.getLatitude();
-        final double longitude = position.getLongitude();
-        final Angle latitudeAngle = new Angle(latitude, AngleUnit.RADIANS);
-        final Angle longitudeAngle = new Angle(longitude, AngleUnit.RADIANS);
+    void testGetHorizontalIntensityWithDefaultTimeAndHeight() throws IOException {
+        final var position = createPosition();
+        final var latitude = position.getLatitude();
+        final var longitude = position.getLongitude();
+        final var latitudeAngle = new Angle(latitude, AngleUnit.RADIANS);
+        final var longitudeAngle = new Angle(longitude, AngleUnit.RADIANS);
 
-        final WMMEarthMagneticFluxDensityEstimator estimator = new WMMEarthMagneticFluxDensityEstimator();
+        final var estimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        final double intensity1 = estimator.getHorizontalIntensity(latitude, longitude);
-        final double intensity2 = estimator.getHorizontalIntensity(latitudeAngle, longitudeAngle);
+        final var intensity1 = estimator.getHorizontalIntensity(latitude, longitude);
+        final var intensity2 = estimator.getHorizontalIntensity(latitudeAngle, longitudeAngle);
 
         assertEquals(intensity1, intensity2, 0.0);
     }
 
     @Test
-    public void testGetHorizontalIntensity() throws IOException {
-        final NEDPosition position = createPosition();
-        final double latitude = position.getLatitude();
-        final double longitude = position.getLongitude();
-        final double height = position.getHeight();
-        final Angle latitudeAngle = new Angle(latitude, AngleUnit.RADIANS);
-        final Angle longitudeAngle = new Angle(longitude, AngleUnit.RADIANS);
-        final Distance heightDistance = new Distance(height, DistanceUnit.METER);
+    void testGetHorizontalIntensity() throws IOException {
+        final var position = createPosition();
+        final var latitude = position.getLatitude();
+        final var longitude = position.getLongitude();
+        final var height = position.getHeight();
+        final var latitudeAngle = new Angle(latitude, AngleUnit.RADIANS);
+        final var longitudeAngle = new Angle(longitude, AngleUnit.RADIANS);
+        final var heightDistance = new Distance(height, DistanceUnit.METER);
 
-        final long timestamp = createTimestamp();
-        final Date date = createDate(timestamp);
-        final GregorianCalendar calendar = createCalendar(timestamp);
-        final double year = createYear(calendar);
+        final var timestamp = createTimestamp();
+        final var date = createDate(timestamp);
+        final var calendar = createCalendar(timestamp);
+        final var year = createYear(calendar);
 
-        final WMMEarthMagneticFluxDensityEstimator estimator = new WMMEarthMagneticFluxDensityEstimator();
+        final var estimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        final double intensity1 = estimator.getHorizontalIntensity(latitude, longitude, height, year);
-        final double intensity2 = estimator.getHorizontalIntensity(latitude, longitude, height, calendar);
-        final double intensity3 = estimator.getHorizontalIntensity(latitude, longitude, height, date);
-        final double intensity4 = estimator.getHorizontalIntensity(latitudeAngle, longitudeAngle, heightDistance, year);
-        final double intensity5 = estimator.getHorizontalIntensity(latitudeAngle, longitudeAngle, heightDistance,
+        final var intensity1 = estimator.getHorizontalIntensity(latitude, longitude, height, year);
+        final var intensity2 = estimator.getHorizontalIntensity(latitude, longitude, height, calendar);
+        final var intensity3 = estimator.getHorizontalIntensity(latitude, longitude, height, date);
+        final var intensity4 = estimator.getHorizontalIntensity(latitudeAngle, longitudeAngle, heightDistance, year);
+        final var intensity5 = estimator.getHorizontalIntensity(latitudeAngle, longitudeAngle, heightDistance, 
                 calendar);
-        final double intensity6 = estimator.getHorizontalIntensity(latitudeAngle, longitudeAngle, heightDistance, date);
-        final double intensity7 = estimator.getHorizontalIntensity(position, year);
-        final double intensity8 = estimator.getHorizontalIntensity(position, calendar);
-        final double intensity9 = estimator.getHorizontalIntensity(position, date);
+        final var intensity6 = estimator.getHorizontalIntensity(latitudeAngle, longitudeAngle, heightDistance, date);
+        final var intensity7 = estimator.getHorizontalIntensity(position, year);
+        final var intensity8 = estimator.getHorizontalIntensity(position, calendar);
+        final var intensity9 = estimator.getHorizontalIntensity(position, date);
 
         assertEquals(intensity1, intensity2, 0.0);
         assertEquals(intensity1, intensity2, 0.0);
@@ -1961,48 +1958,47 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
     }
 
     @Test
-    public void testGetVerticalIntensityWithDefaultTimeAndHeight() throws IOException {
-        final NEDPosition position = createPosition();
-        final double latitude = position.getLatitude();
-        final double longitude = position.getLongitude();
-        final Angle latitudeAngle = new Angle(latitude, AngleUnit.RADIANS);
-        final Angle longitudeAngle = new Angle(longitude, AngleUnit.RADIANS);
+    void testGetVerticalIntensityWithDefaultTimeAndHeight() throws IOException {
+        final var position = createPosition();
+        final var latitude = position.getLatitude();
+        final var longitude = position.getLongitude();
+        final var latitudeAngle = new Angle(latitude, AngleUnit.RADIANS);
+        final var longitudeAngle = new Angle(longitude, AngleUnit.RADIANS);
 
-        final WMMEarthMagneticFluxDensityEstimator estimator = new WMMEarthMagneticFluxDensityEstimator();
+        final var estimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        final double intensity1 = estimator.getVerticalIntensity(latitude, longitude);
-        final double intensity2 = estimator.getVerticalIntensity(latitudeAngle, longitudeAngle);
+        final var intensity1 = estimator.getVerticalIntensity(latitude, longitude);
+        final var intensity2 = estimator.getVerticalIntensity(latitudeAngle, longitudeAngle);
 
         assertEquals(intensity1, intensity2, 0.0);
     }
 
     @Test
-    public void testGetVerticalIntensity() throws IOException {
-        final NEDPosition position = createPosition();
-        final double latitude = position.getLatitude();
-        final double longitude = position.getLongitude();
-        final double height = position.getHeight();
-        final Angle latitudeAngle = new Angle(latitude, AngleUnit.RADIANS);
-        final Angle longitudeAngle = new Angle(longitude, AngleUnit.RADIANS);
-        final Distance heightDistance = new Distance(height, DistanceUnit.METER);
+    void testGetVerticalIntensity() throws IOException {
+        final var position = createPosition();
+        final var latitude = position.getLatitude();
+        final var longitude = position.getLongitude();
+        final var height = position.getHeight();
+        final var latitudeAngle = new Angle(latitude, AngleUnit.RADIANS);
+        final var longitudeAngle = new Angle(longitude, AngleUnit.RADIANS);
+        final var heightDistance = new Distance(height, DistanceUnit.METER);
 
-        final long timestamp = createTimestamp();
-        final Date date = createDate(timestamp);
-        final GregorianCalendar calendar = createCalendar(timestamp);
-        final double year = createYear(calendar);
+        final var timestamp = createTimestamp();
+        final var date = createDate(timestamp);
+        final var calendar = createCalendar(timestamp);
+        final var year = createYear(calendar);
 
-        final WMMEarthMagneticFluxDensityEstimator estimator = new WMMEarthMagneticFluxDensityEstimator();
+        final var estimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        final double intensity1 = estimator.getVerticalIntensity(latitude, longitude, height, year);
-        final double intensity2 = estimator.getVerticalIntensity(latitude, longitude, height, calendar);
-        final double intensity3 = estimator.getVerticalIntensity(latitude, longitude, height, date);
-        final double intensity4 = estimator.getVerticalIntensity(latitudeAngle, longitudeAngle, heightDistance, year);
-        final double intensity5 = estimator.getVerticalIntensity(latitudeAngle, longitudeAngle, heightDistance,
-                calendar);
-        final double intensity6 = estimator.getVerticalIntensity(latitudeAngle, longitudeAngle, heightDistance, date);
-        final double intensity7 = estimator.getVerticalIntensity(position, year);
-        final double intensity8 = estimator.getVerticalIntensity(position, calendar);
-        final double intensity9 = estimator.getVerticalIntensity(position, date);
+        final var intensity1 = estimator.getVerticalIntensity(latitude, longitude, height, year);
+        final var intensity2 = estimator.getVerticalIntensity(latitude, longitude, height, calendar);
+        final var intensity3 = estimator.getVerticalIntensity(latitude, longitude, height, date);
+        final var intensity4 = estimator.getVerticalIntensity(latitudeAngle, longitudeAngle, heightDistance, year);
+        final var intensity5 = estimator.getVerticalIntensity(latitudeAngle, longitudeAngle, heightDistance, calendar);
+        final var intensity6 = estimator.getVerticalIntensity(latitudeAngle, longitudeAngle, heightDistance, date);
+        final var intensity7 = estimator.getVerticalIntensity(position, year);
+        final var intensity8 = estimator.getVerticalIntensity(position, calendar);
+        final var intensity9 = estimator.getVerticalIntensity(position, date);
 
         assertEquals(intensity1, intensity2, 0.0);
         assertEquals(intensity1, intensity2, 0.0);
@@ -2016,47 +2012,47 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
     }
 
     @Test
-    public void testGetNorthIntensityWithDefaultTimeAndHeight() throws IOException {
-        final NEDPosition position = createPosition();
-        final double latitude = position.getLatitude();
-        final double longitude = position.getLongitude();
-        final Angle latitudeAngle = new Angle(latitude, AngleUnit.RADIANS);
-        final Angle longitudeAngle = new Angle(longitude, AngleUnit.RADIANS);
+    void testGetNorthIntensityWithDefaultTimeAndHeight() throws IOException {
+        final var position = createPosition();
+        final var latitude = position.getLatitude();
+        final var longitude = position.getLongitude();
+        final var latitudeAngle = new Angle(latitude, AngleUnit.RADIANS);
+        final var longitudeAngle = new Angle(longitude, AngleUnit.RADIANS);
 
-        final WMMEarthMagneticFluxDensityEstimator estimator = new WMMEarthMagneticFluxDensityEstimator();
+        final var estimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        final double intensity1 = estimator.getNorthIntensity(latitude, longitude);
-        final double intensity2 = estimator.getNorthIntensity(latitudeAngle, longitudeAngle);
+        final var intensity1 = estimator.getNorthIntensity(latitude, longitude);
+        final var intensity2 = estimator.getNorthIntensity(latitudeAngle, longitudeAngle);
 
         assertEquals(intensity1, intensity2, 0.0);
     }
 
     @Test
-    public void testGetNorthIntensity() throws IOException {
-        final NEDPosition position = createPosition();
-        final double latitude = position.getLatitude();
-        final double longitude = position.getLongitude();
-        final double height = position.getHeight();
-        final Angle latitudeAngle = new Angle(latitude, AngleUnit.RADIANS);
-        final Angle longitudeAngle = new Angle(longitude, AngleUnit.RADIANS);
-        final Distance heightDistance = new Distance(height, DistanceUnit.METER);
+    void testGetNorthIntensity() throws IOException {
+        final var position = createPosition();
+        final var latitude = position.getLatitude();
+        final var longitude = position.getLongitude();
+        final var height = position.getHeight();
+        final var latitudeAngle = new Angle(latitude, AngleUnit.RADIANS);
+        final var longitudeAngle = new Angle(longitude, AngleUnit.RADIANS);
+        final var heightDistance = new Distance(height, DistanceUnit.METER);
 
-        final long timestamp = createTimestamp();
-        final Date date = createDate(timestamp);
-        final GregorianCalendar calendar = createCalendar(timestamp);
-        final double year = createYear(calendar);
+        final var timestamp = createTimestamp();
+        final var date = createDate(timestamp);
+        final var calendar = createCalendar(timestamp);
+        final var year = createYear(calendar);
 
-        final WMMEarthMagneticFluxDensityEstimator estimator = new WMMEarthMagneticFluxDensityEstimator();
+        final var estimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        final double intensity1 = estimator.getNorthIntensity(latitude, longitude, height, year);
-        final double intensity2 = estimator.getNorthIntensity(latitude, longitude, height, calendar);
-        final double intensity3 = estimator.getNorthIntensity(latitude, longitude, height, date);
-        final double intensity4 = estimator.getNorthIntensity(latitudeAngle, longitudeAngle, heightDistance, year);
-        final double intensity5 = estimator.getNorthIntensity(latitudeAngle, longitudeAngle, heightDistance, calendar);
-        final double intensity6 = estimator.getNorthIntensity(latitudeAngle, longitudeAngle, heightDistance, date);
-        final double intensity7 = estimator.getNorthIntensity(position, year);
-        final double intensity8 = estimator.getNorthIntensity(position, calendar);
-        final double intensity9 = estimator.getNorthIntensity(position, date);
+        final var intensity1 = estimator.getNorthIntensity(latitude, longitude, height, year);
+        final var intensity2 = estimator.getNorthIntensity(latitude, longitude, height, calendar);
+        final var intensity3 = estimator.getNorthIntensity(latitude, longitude, height, date);
+        final var intensity4 = estimator.getNorthIntensity(latitudeAngle, longitudeAngle, heightDistance, year);
+        final var intensity5 = estimator.getNorthIntensity(latitudeAngle, longitudeAngle, heightDistance, calendar);
+        final var intensity6 = estimator.getNorthIntensity(latitudeAngle, longitudeAngle, heightDistance, date);
+        final var intensity7 = estimator.getNorthIntensity(position, year);
+        final var intensity8 = estimator.getNorthIntensity(position, calendar);
+        final var intensity9 = estimator.getNorthIntensity(position, date);
 
         assertEquals(intensity1, intensity2, 0.0);
         assertEquals(intensity1, intensity2, 0.0);
@@ -2070,47 +2066,47 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
     }
 
     @Test
-    public void testGetEastIntensityWithDefaultTimeAndHeight() throws IOException {
-        final NEDPosition position = createPosition();
-        final double latitude = position.getLatitude();
-        final double longitude = position.getLongitude();
-        final Angle latitudeAngle = new Angle(latitude, AngleUnit.RADIANS);
-        final Angle longitudeAngle = new Angle(longitude, AngleUnit.RADIANS);
+    void testGetEastIntensityWithDefaultTimeAndHeight() throws IOException {
+        final var position = createPosition();
+        final var latitude = position.getLatitude();
+        final var longitude = position.getLongitude();
+        final var latitudeAngle = new Angle(latitude, AngleUnit.RADIANS);
+        final var longitudeAngle = new Angle(longitude, AngleUnit.RADIANS);
 
-        final WMMEarthMagneticFluxDensityEstimator estimator = new WMMEarthMagneticFluxDensityEstimator();
+        final var estimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        final double intensity1 = estimator.getEastIntensity(latitude, longitude);
-        final double intensity2 = estimator.getEastIntensity(latitudeAngle, longitudeAngle);
+        final var intensity1 = estimator.getEastIntensity(latitude, longitude);
+        final var intensity2 = estimator.getEastIntensity(latitudeAngle, longitudeAngle);
 
         assertEquals(intensity1, intensity2, 0.0);
     }
 
     @Test
-    public void testGetEastIntensity() throws IOException {
-        final NEDPosition position = createPosition();
-        final double latitude = position.getLatitude();
-        final double longitude = position.getLongitude();
-        final double height = position.getHeight();
-        final Angle latitudeAngle = new Angle(latitude, AngleUnit.RADIANS);
-        final Angle longitudeAngle = new Angle(longitude, AngleUnit.RADIANS);
-        final Distance heightDistance = new Distance(height, DistanceUnit.METER);
+    void testGetEastIntensity() throws IOException {
+        final var position = createPosition();
+        final var latitude = position.getLatitude();
+        final var longitude = position.getLongitude();
+        final var height = position.getHeight();
+        final var latitudeAngle = new Angle(latitude, AngleUnit.RADIANS);
+        final var longitudeAngle = new Angle(longitude, AngleUnit.RADIANS);
+        final var heightDistance = new Distance(height, DistanceUnit.METER);
 
-        final long timestamp = createTimestamp();
-        final Date date = createDate(timestamp);
-        final GregorianCalendar calendar = createCalendar(timestamp);
-        final double year = createYear(calendar);
+        final var timestamp = createTimestamp();
+        final var date = createDate(timestamp);
+        final var calendar = createCalendar(timestamp);
+        final var year = createYear(calendar);
 
-        final WMMEarthMagneticFluxDensityEstimator estimator = new WMMEarthMagneticFluxDensityEstimator();
+        final var estimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        final double intensity1 = estimator.getEastIntensity(latitude, longitude, height, year);
-        final double intensity2 = estimator.getEastIntensity(latitude, longitude, height, calendar);
-        final double intensity3 = estimator.getEastIntensity(latitude, longitude, height, date);
-        final double intensity4 = estimator.getEastIntensity(latitudeAngle, longitudeAngle, heightDistance, year);
-        final double intensity5 = estimator.getEastIntensity(latitudeAngle, longitudeAngle, heightDistance, calendar);
-        final double intensity6 = estimator.getEastIntensity(latitudeAngle, longitudeAngle, heightDistance, date);
-        final double intensity7 = estimator.getEastIntensity(position, year);
-        final double intensity8 = estimator.getEastIntensity(position, calendar);
-        final double intensity9 = estimator.getEastIntensity(position, date);
+        final var intensity1 = estimator.getEastIntensity(latitude, longitude, height, year);
+        final var intensity2 = estimator.getEastIntensity(latitude, longitude, height, calendar);
+        final var intensity3 = estimator.getEastIntensity(latitude, longitude, height, date);
+        final var intensity4 = estimator.getEastIntensity(latitudeAngle, longitudeAngle, heightDistance, year);
+        final var intensity5 = estimator.getEastIntensity(latitudeAngle, longitudeAngle, heightDistance, calendar);
+        final var intensity6 = estimator.getEastIntensity(latitudeAngle, longitudeAngle, heightDistance, date);
+        final var intensity7 = estimator.getEastIntensity(position, year);
+        final var intensity8 = estimator.getEastIntensity(position, calendar);
+        final var intensity9 = estimator.getEastIntensity(position, date);
 
         assertEquals(intensity1, intensity2, 0.0);
         assertEquals(intensity1, intensity2, 0.0);
@@ -2124,140 +2120,140 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
     }
 
     @Test
-    public void testEstimate1() throws IOException {
-        final NEDPosition position = createPosition();
-        final double latitude = position.getLatitude();
-        final double longitude = position.getLongitude();
-        final Angle latitudeAngle = new Angle(latitude, AngleUnit.RADIANS);
-        final Angle longitudeAngle = new Angle(longitude, AngleUnit.RADIANS);
+    void testEstimate1() throws IOException {
+        final var position = createPosition();
+        final var latitude = position.getLatitude();
+        final var longitude = position.getLongitude();
+        final var latitudeAngle = new Angle(latitude, AngleUnit.RADIANS);
+        final var longitudeAngle = new Angle(longitude, AngleUnit.RADIANS);
 
-        final WMMEarthMagneticFluxDensityEstimator estimator = new WMMEarthMagneticFluxDensityEstimator();
+        final var estimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        final double bn = estimator.getNorthIntensity(latitude, longitude);
-        final double be = estimator.getEastIntensity(latitude, longitude);
-        final double bd = estimator.getVerticalIntensity(latitude, longitude);
+        final var bn = estimator.getNorthIntensity(latitude, longitude);
+        final var be = estimator.getEastIntensity(latitude, longitude);
+        final var bd = estimator.getVerticalIntensity(latitude, longitude);
 
-        final NEDMagneticFluxDensity b1 = new NEDMagneticFluxDensity();
+        final var b1 = new NEDMagneticFluxDensity();
         estimator.estimate(latitude, longitude, b1);
 
         assertEquals(bn, b1.getBn(), ABSOLUTE_ERROR);
         assertEquals(be, b1.getBe(), ABSOLUTE_ERROR);
         assertEquals(bd, b1.getBd(), ABSOLUTE_ERROR);
 
-        final NEDMagneticFluxDensity b2 = estimator.estimate(latitude, longitude);
+        final var b2 = estimator.estimate(latitude, longitude);
         assertEquals(b1, b2);
 
-        final NEDMagneticFluxDensity b3 = new NEDMagneticFluxDensity();
+        final var b3 = new NEDMagneticFluxDensity();
         estimator.estimate(latitudeAngle, longitudeAngle, b3);
         assertEquals(b1, b3);
 
-        final NEDMagneticFluxDensity b4 = estimator.estimate(latitudeAngle, longitudeAngle);
+        final var b4 = estimator.estimate(latitudeAngle, longitudeAngle);
         assertEquals(b1, b4);
     }
 
     @Test
-    public void testEstimate2() throws IOException {
-        final NEDPosition position = createPosition();
-        final double latitude = position.getLatitude();
-        final double longitude = position.getLongitude();
-        final double height = position.getHeight();
-        final Angle latitudeAngle = new Angle(latitude, AngleUnit.RADIANS);
-        final Angle longitudeAngle = new Angle(longitude, AngleUnit.RADIANS);
-        final Distance heightDistance = new Distance(height, DistanceUnit.METER);
+    void testEstimate2() throws IOException {
+        final var position = createPosition();
+        final var latitude = position.getLatitude();
+        final var longitude = position.getLongitude();
+        final var height = position.getHeight();
+        final var latitudeAngle = new Angle(latitude, AngleUnit.RADIANS);
+        final var longitudeAngle = new Angle(longitude, AngleUnit.RADIANS);
+        final var heightDistance = new Distance(height, DistanceUnit.METER);
 
-        final long timestamp = createTimestamp();
-        final Date date = createDate(timestamp);
-        final GregorianCalendar calendar = createCalendar(timestamp);
-        final double year = createYear(calendar);
+        final var timestamp = createTimestamp();
+        final var date = createDate(timestamp);
+        final var calendar = createCalendar(timestamp);
+        final var year = createYear(calendar);
 
-        final WMMEarthMagneticFluxDensityEstimator estimator = new WMMEarthMagneticFluxDensityEstimator();
+        final var estimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        final double bn = estimator.getNorthIntensity(latitude, longitude, height, year);
-        final double be = estimator.getEastIntensity(latitude, longitude, height, year);
-        final double bd = estimator.getVerticalIntensity(latitude, longitude, height, year);
+        final var bn = estimator.getNorthIntensity(latitude, longitude, height, year);
+        final var be = estimator.getEastIntensity(latitude, longitude, height, year);
+        final var bd = estimator.getVerticalIntensity(latitude, longitude, height, year);
 
-        final NEDMagneticFluxDensity b1 = new NEDMagneticFluxDensity();
+        final var b1 = new NEDMagneticFluxDensity();
         estimator.estimate(latitude, longitude, height, year, b1);
 
         assertEquals(bn, b1.getBn(), ABSOLUTE_ERROR);
         assertEquals(be, b1.getBe(), ABSOLUTE_ERROR);
         assertEquals(bd, b1.getBd(), ABSOLUTE_ERROR);
 
-        final NEDMagneticFluxDensity b2 = estimator.estimate(latitude, longitude, height, year);
+        final var b2 = estimator.estimate(latitude, longitude, height, year);
         assertEquals(b1, b2);
 
-        final NEDMagneticFluxDensity b3 = new NEDMagneticFluxDensity();
+        final var b3 = new NEDMagneticFluxDensity();
         estimator.estimate(latitude, longitude, height, calendar, b3);
         assertEquals(b1, b3);
 
-        final NEDMagneticFluxDensity b4 = estimator.estimate(latitude, longitude, height, calendar);
+        final var b4 = estimator.estimate(latitude, longitude, height, calendar);
         assertEquals(b1, b4);
 
-        final NEDMagneticFluxDensity b5 = new NEDMagneticFluxDensity();
+        final var b5 = new NEDMagneticFluxDensity();
         estimator.estimate(latitude, longitude, height, date, b5);
         assertEquals(b1, b5);
 
-        final NEDMagneticFluxDensity b6 = estimator.estimate(latitude, longitude, height, date);
+        final var b6 = estimator.estimate(latitude, longitude, height, date);
         assertEquals(b1, b6);
 
-        final NEDMagneticFluxDensity b7 = new NEDMagneticFluxDensity();
+        final var b7 = new NEDMagneticFluxDensity();
         estimator.estimate(latitudeAngle, longitudeAngle, heightDistance, year, b7);
         assertEquals(b1, b7);
 
-        final NEDMagneticFluxDensity b8 = estimator.estimate(latitudeAngle, longitudeAngle, heightDistance, year);
+        final var b8 = estimator.estimate(latitudeAngle, longitudeAngle, heightDistance, year);
         assertEquals(b1, b8);
 
-        final NEDMagneticFluxDensity b9 = new NEDMagneticFluxDensity();
+        final var b9 = new NEDMagneticFluxDensity();
         estimator.estimate(latitudeAngle, longitudeAngle, heightDistance, calendar, b9);
         assertEquals(b1, b9);
 
-        final NEDMagneticFluxDensity b10 = estimator.estimate(latitudeAngle, longitudeAngle, heightDistance, calendar);
+        final var b10 = estimator.estimate(latitudeAngle, longitudeAngle, heightDistance, calendar);
         assertEquals(b1, b10);
 
-        final NEDMagneticFluxDensity b11 = new NEDMagneticFluxDensity();
+        final var b11 = new NEDMagneticFluxDensity();
         estimator.estimate(latitudeAngle, longitudeAngle, heightDistance, date, b11);
         assertEquals(b1, b11);
 
-        final NEDMagneticFluxDensity b12 = estimator.estimate(latitudeAngle, longitudeAngle, heightDistance, date);
+        final var b12 = estimator.estimate(latitudeAngle, longitudeAngle, heightDistance, date);
         assertEquals(b1, b12);
 
-        final NEDMagneticFluxDensity b13 = new NEDMagneticFluxDensity();
+        final var b13 = new NEDMagneticFluxDensity();
         estimator.estimate(position, year, b13);
         assertEquals(b1, b13);
 
-        final NEDMagneticFluxDensity b14 = estimator.estimate(position, year);
+        final var b14 = estimator.estimate(position, year);
         assertEquals(b1, b14);
 
-        final NEDMagneticFluxDensity b15 = new NEDMagneticFluxDensity();
+        final var b15 = new NEDMagneticFluxDensity();
         estimator.estimate(position, calendar, b15);
         assertEquals(b1, b15);
 
-        final NEDMagneticFluxDensity b16 = estimator.estimate(position, calendar);
+        final var b16 = estimator.estimate(position, calendar);
         assertEquals(b1, b16);
 
-        final NEDMagneticFluxDensity b17 = new NEDMagneticFluxDensity();
+        final var b17 = new NEDMagneticFluxDensity();
         estimator.estimate(position, date, b17);
         assertEquals(b1, b17);
 
-        final NEDMagneticFluxDensity b18 = estimator.estimate(position, date);
+        final var b18 = estimator.estimate(position, date);
         assertEquals(b1, b18);
     }
 
-    public static double createYear(final GregorianCalendar calendar) {
+    private static double createYear(final GregorianCalendar calendar) {
         return WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
     }
 
     private static NEDPosition createPosition() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT_METERS, MAX_HEIGHT_METERS);
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT_METERS, MAX_HEIGHT_METERS);
 
         return new NEDPosition(latitude, longitude, height);
     }
 
     private static long createTimestamp() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final var randomizer = new UniformRandomizer();
         return randomizer.nextLong(START_TIMESTAMP_MILLIS, END_TIMESTAMP_MILLIS);
     }
 
@@ -2266,7 +2262,7 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
     }
 
     private static GregorianCalendar createCalendar(final long timestamp) {
-        final GregorianCalendar calendar = new GregorianCalendar();
+        final var calendar = new GregorianCalendar();
         calendar.setTimeInMillis(timestamp);
         return calendar;
     }

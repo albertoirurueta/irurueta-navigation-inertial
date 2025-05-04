@@ -235,7 +235,7 @@ public class AccelerationTriad extends Triad<AccelerationUnit, Acceleration> imp
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final AccelerationTriad result = (AccelerationTriad) super.clone();
+        final var result = (AccelerationTriad) super.clone();
         copyTo(result);
         return result;
     }
