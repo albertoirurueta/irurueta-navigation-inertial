@@ -30,7 +30,7 @@ Latest release:
 <dependency>
     <groupId>com.irurueta</groupId>
     <artifactId>irurueta-navigation-inertial</artifactId>
-    <version>1.5.1</version>
+    <version>1.6.1</version>
     <scope>compile</scope>
 </dependency>
 ```
@@ -40,7 +40,7 @@ Latest snapshot:
 <dependency>
     <groupId>com.irurueta</groupId>
     <artifactId>irurueta-navigation-inertial</artifactId>
-    <version>1.6.0-SNAPSHOT</version>
+    <version>1.7.0-SNAPSHOT</version>
     <scope>compile</scope>
 </dependency>
 ```
