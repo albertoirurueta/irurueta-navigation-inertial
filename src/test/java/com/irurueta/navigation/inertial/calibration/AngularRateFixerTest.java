@@ -22,13 +22,13 @@ import com.irurueta.navigation.inertial.BodyKinematics;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedUnit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class AngularRateFixerTest {
+class AngularRateFixerTest {
 
     private static final double TIME_INTERVAL_SECONDS = 0.02;
 
@@ -44,7 +44,7 @@ public class AngularRateFixerTest {
     private static final double ABSOLUTE_ERROR = 1e-12;
 
     @Test
-    public void testConstructor() throws WrongSizeException {
+    void testConstructor() throws WrongSizeException {
         final var fixer = new AngularRateFixer();
 
         // check default values
@@ -112,7 +112,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testGetSetBias() throws WrongSizeException {
+    void testGetSetBias() throws WrongSizeException {
         final var fixer = new AngularRateFixer();
 
         // check default value
@@ -143,7 +143,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testGetSetBiasArray() {
+    void testGetSetBiasArray() {
         final var fixer = new AngularRateFixer();
 
         // check default value
@@ -172,7 +172,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testGetSetBiasTriad() {
+    void testGetSetBiasTriad() {
         final var fixer = new AngularRateFixer();
 
         // check default value
@@ -197,7 +197,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testGetSetBiasX() {
+    void testGetSetBiasX() {
         final var fixer = new AngularRateFixer();
 
         // check default value
@@ -213,7 +213,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testGetSetBiasY() {
+    void testGetSetBiasY() {
         final var fixer = new AngularRateFixer();
 
         // check default value
@@ -229,7 +229,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testGetSetBiasZ() {
+    void testGetSetBiasZ() {
         final var fixer = new AngularRateFixer();
 
         // check default value
@@ -245,7 +245,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testSetBias1() {
+    void testSetBias1() {
         final var fixer = new AngularRateFixer();
 
         // check default values
@@ -267,7 +267,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testGetSetBiasXAsAngularSpeed() {
+    void testGetSetBiasXAsAngularSpeed() {
         final var fixer = new AngularRateFixer();
 
         // check default value
@@ -291,7 +291,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testGetSetBiasYAsAngularSpeed() {
+    void testGetSetBiasYAsAngularSpeed() {
         final var fixer = new AngularRateFixer();
 
         // check default value
@@ -315,7 +315,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testGetSetBiasZAsAngularSpeed() {
+    void testGetSetBiasZAsAngularSpeed() {
         final var fixer = new AngularRateFixer();
 
         // check default value
@@ -339,7 +339,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testGetSetBias2() {
+    void testGetSetBias2() {
         final var fixer = new AngularRateFixer();
 
         // check default values
@@ -376,7 +376,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testGetSetCrossCouplingErrors() throws AlgebraException {
+    void testGetSetCrossCouplingErrors() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         // check default values
@@ -432,7 +432,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testGetSetSx() throws AlgebraException {
+    void testGetSetSx() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         // check default value
@@ -449,7 +449,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testGetSetSy() throws AlgebraException {
+    void testGetSetSy() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         // check default value
@@ -466,7 +466,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testGetSetSz() throws AlgebraException {
+    void testGetSetSz() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         // check default value
@@ -483,7 +483,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testGetSetMxy() throws AlgebraException {
+    void testGetSetMxy() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         // check default value
@@ -500,7 +500,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testGetSetMxz() throws AlgebraException {
+    void testGetSetMxz() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         // check default value
@@ -517,7 +517,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testGetSetMyx() throws AlgebraException {
+    void testGetSetMyx() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         // check default value
@@ -534,7 +534,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testGetSetMyz() throws AlgebraException {
+    void testGetSetMyz() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         // check default value
@@ -551,7 +551,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testGetSetMzx() throws AlgebraException {
+    void testGetSetMzx() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         // check default value
@@ -568,7 +568,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testGetSetMzy() throws AlgebraException {
+    void testGetSetMzy() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         // check default value
@@ -585,7 +585,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testSetScalingFactors() throws AlgebraException {
+    void testSetScalingFactors() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         // check default values
@@ -608,7 +608,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testSetCrossCouplingErrors() throws AlgebraException {
+    void testSetCrossCouplingErrors() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         // check default values
@@ -640,7 +640,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testSetScalingFactorsAndCrossCouplingErrors() throws AlgebraException {
+    void testSetScalingFactorsAndCrossCouplingErrors() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         // check default values
@@ -681,7 +681,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testGetSetGDependantCrossBias() throws AlgebraException {
+    void testGetSetGDependantCrossBias() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         // check default values
@@ -713,7 +713,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testFix1() throws AlgebraException {
+    void testFix1() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         final var ba = generateBa();
@@ -763,7 +763,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testFix2() throws AlgebraException {
+    void testFix2() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         final var ba = generateBa();
@@ -816,7 +816,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testFix3() throws AlgebraException {
+    void testFix3() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         final var ba = generateBa();
@@ -864,7 +864,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testFix4() throws AlgebraException {
+    void testFix4() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         final var ba = generateBa();
@@ -916,7 +916,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testFix5() throws AlgebraException {
+    void testFix5() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         final var ba = generateBa();
@@ -971,7 +971,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testFix6() throws AlgebraException {
+    void testFix6() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         final var ba = generateBa();
@@ -1032,7 +1032,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testFix7() throws AlgebraException {
+    void testFix7() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         final var ba = generateBa();
@@ -1096,7 +1096,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testFix8() throws AlgebraException {
+    void testFix8() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         final var ba = generateBa();
@@ -1159,7 +1159,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testFix9() throws AlgebraException {
+    void testFix9() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         final var ba = generateBa();
@@ -1226,7 +1226,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testFix10() throws AlgebraException {
+    void testFix10() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         final var ba = generateBa();
@@ -1287,7 +1287,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testFix11() throws AlgebraException {
+    void testFix11() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         final var ba = generateBa();
@@ -1354,7 +1354,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testFix12() throws AlgebraException {
+    void testFix12() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         final var ba = generateBa();
@@ -1423,7 +1423,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testFix13() throws AlgebraException {
+    void testFix13() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         final var ba = generateBa();
@@ -1496,7 +1496,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testFix14() throws AlgebraException {
+    void testFix14() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         final var ba = generateBa();
@@ -1574,7 +1574,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testFix15() throws AlgebraException {
+    void testFix15() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         final var ba = generateBa();
@@ -1653,7 +1653,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testFix16() throws AlgebraException {
+    void testFix16() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         final var ba = generateBa();
@@ -1736,7 +1736,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testFixAndReturnNew1() throws AlgebraException {
+    void testFixAndReturnNew1() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         final var ba = generateBa();
@@ -1783,7 +1783,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testFixAndReturnNew2() throws AlgebraException {
+    void testFixAndReturnNew2() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         final var ba = generateBa();
@@ -1835,7 +1835,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testFixAndReturnNew3() throws AlgebraException {
+    void testFixAndReturnNew3() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         final var ba = generateBa();
@@ -1887,7 +1887,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testFixAndReturnNew4() throws AlgebraException {
+    void testFixAndReturnNew4() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         final var ba = generateBa();
@@ -1945,7 +1945,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testFixAndReturnNewMatrix1() throws AlgebraException {
+    void testFixAndReturnNewMatrix1() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         final var ba = generateBa();
@@ -2003,7 +2003,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testFixAndReturnNew5() throws AlgebraException {
+    void testFixAndReturnNew5() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         final var ba = generateBa();
@@ -2061,7 +2061,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testFixAndReturnNewMatrix2() throws AlgebraException {
+    void testFixAndReturnNewMatrix2() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         final var ba = generateBa();
@@ -2119,7 +2119,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testFixAndReturnNew6() throws AlgebraException {
+    void testFixAndReturnNew6() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         final var ba = generateBa();
@@ -2184,7 +2184,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testFixAndReturnNew7() throws AlgebraException {
+    void testFixAndReturnNew7() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         final var ba = generateBa();
@@ -2254,7 +2254,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testFixAndReturnNewMatrix3() throws AlgebraException {
+    void testFixAndReturnNewMatrix3() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         final var ba = generateBa();
@@ -2326,7 +2326,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testFixAndReturnNew8() throws AlgebraException {
+    void testFixAndReturnNew8() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         final var ba = generateBa();
@@ -2395,7 +2395,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testFixAndReturnNewMatrix4() throws AlgebraException {
+    void testFixAndReturnNewMatrix4() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         final var ba = generateBa();
@@ -2464,7 +2464,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testFixAndReturnNew9() throws AlgebraException {
+    void testFixAndReturnNew9() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         final var ba = generateBa();
@@ -2536,7 +2536,7 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testFixAndReturnNewMatrix5() throws AlgebraException {
+    void testFixAndReturnNewMatrix5() throws AlgebraException {
         final var fixer = new AngularRateFixer();
 
         final var ba = generateBa();

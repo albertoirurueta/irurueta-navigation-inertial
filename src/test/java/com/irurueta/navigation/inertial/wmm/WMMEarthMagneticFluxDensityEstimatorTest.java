@@ -58,8 +58,8 @@ class WMMEarthMagneticFluxDensityEstimatorTest {
     private static final long END_TIMESTAMP_MILLIS;
 
     static {
-        START_CALENDAR.set(2020, Calendar.JANUARY, 1, 0, 0, 0);
-        END_CALENDAR.set(2025, Calendar.DECEMBER, 31, 23, 59, 59);
+        START_CALENDAR.set(2025, Calendar.JANUARY, 1, 0, 0, 0);
+        END_CALENDAR.set(2030, Calendar.DECEMBER, 31, 23, 59, 59);
 
         START_TIMESTAMP_MILLIS = START_CALENDAR.getTimeInMillis();
         END_TIMESTAMP_MILLIS = END_CALENDAR.getTimeInMillis();
@@ -68,7 +68,7 @@ class WMMEarthMagneticFluxDensityEstimatorTest {
     @Test
     void testConstants() {
         assertEquals(5e-3, WMMEarthMagneticFluxDensityEstimator.ANGLE_ACCURACY_DEGREES, 0.0);
-        assertEquals(WMMEarthMagneticFluxDensityEstimator.ANGLE_ACCURACY_RADIANS, 
+        assertEquals(WMMEarthMagneticFluxDensityEstimator.ANGLE_ACCURACY_RADIANS,
                 Math.toRadians(WMMEarthMagneticFluxDensityEstimator.ANGLE_ACCURACY_DEGREES), 0.0);
         assertEquals(5e-2, WMMEarthMagneticFluxDensityEstimator.INTENSITY_ACCURACY, 0.0);
     }
@@ -79,7 +79,7 @@ class WMMEarthMagneticFluxDensityEstimatorTest {
         assertNotNull(estimator1);
         assertNotNull(estimator1.getModel());
 
-        final WorldMagneticModel model = WMMLoader.loadFromFile(FILE_PATH);
+        final var model = WMMLoader.loadFromFile(FILE_PATH);
         final var estimator2 = new WMMEarthMagneticFluxDensityEstimator(model);
         assertNotNull(estimator2);
         assertSame(estimator2.getModel(), model);
@@ -89,237 +89,269 @@ class WMMEarthMagneticFluxDensityEstimatorTest {
     }
 
     @Test
-    void testDeclinationModel() throws IOException {
+    void testDeclinationModel2020() throws IOException {
         final var estimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        assertEquals(-112.41, Math.toDegrees(estimator.getDeclination(Math.toRadians(89.0), 
+        assertEquals(-112.46, Math.toDegrees(estimator.getDeclination(Math.toRadians(89.0),
                 Math.toRadians(-121.0), 28e3, 2020.0)), ANGLE_ERROR);
-        assertEquals(-112.41, Math.toDegrees(estimator.getDeclination(Math.toRadians(89.0),
+        assertEquals(-112.46, Math.toDegrees(estimator.getDeclination(Math.toRadians(89.0),
                 Math.toRadians(-121.0), 28e3, 2020.0)), ANGLE_ERROR);
-        assertEquals(-112.39, Math.toDegrees(estimator.getDeclination(Math.toRadians(89.0),
+        assertEquals(-112.44, Math.toDegrees(estimator.getDeclination(Math.toRadians(89.0),
                 Math.toRadians(-121.0), 27e3, 2020.0)), ANGLE_ERROR);
-        assertEquals(-37.40, Math.toDegrees(estimator.getDeclination(Math.toRadians(80.0),
+        assertEquals(-37.03, Math.toDegrees(estimator.getDeclination(Math.toRadians(80.0),
                 Math.toRadians(-96), 48e3, 2020.0)), ANGLE_ERROR);
-        assertEquals(51.30, Math.toDegrees(estimator.getDeclination(Math.toRadians(82.0),
+        assertEquals(50.78, Math.toDegrees(estimator.getDeclination(Math.toRadians(82.0),
                 Math.toRadians(87.0), 54e3, 2020.0)), ANGLE_ERROR);
-        assertEquals(0.71, Math.toDegrees(estimator.getDeclination(Math.toRadians(43.0),
+        assertEquals(0.60, Math.toDegrees(estimator.getDeclination(Math.toRadians(43.0),
                 Math.toRadians(93.0), 65e3, 2020.0)), ANGLE_ERROR);
-        assertEquals(-5.78, Math.toDegrees(estimator.getDeclination(Math.toRadians(-33.0), 
+        assertEquals(-5.84, Math.toDegrees(estimator.getDeclination(Math.toRadians(-33.0),
                 Math.toRadians(109.0), 51e3, 2020.0)), ANGLE_ERROR);
-        assertEquals(-15.79, Math.toDegrees(estimator.getDeclination(Math.toRadians(-59.0),
+        assertEquals(-15.80, Math.toDegrees(estimator.getDeclination(Math.toRadians(-59.0),
                 Math.toRadians(-8.0), 39e3, 2020.0)), ANGLE_ERROR);
-        assertEquals(28.10, Math.toDegrees(estimator.getDeclination(Math.toRadians(-50.0),
+        assertEquals(28.11, Math.toDegrees(estimator.getDeclination(Math.toRadians(-50.0),
                 Math.toRadians(-103.0), 3e3, 2020.0)), ANGLE_ERROR);
-        assertEquals(15.82, Math.toDegrees(estimator.getDeclination(Math.toRadians(-29.0),
+        assertEquals(15.79, Math.toDegrees(estimator.getDeclination(Math.toRadians(-29.0),
                 Math.toRadians(-110.0), 94e3, 2020.0)), ANGLE_ERROR);
-        assertEquals(0.12, Math.toDegrees(estimator.getDeclination(Math.toRadians(14.0),
+        assertEquals(0.08, Math.toDegrees(estimator.getDeclination(Math.toRadians(14.0),
                 Math.toRadians(143.0), 66e3, 2020.0)), ANGLE_ERROR);
-        assertEquals(1.05, Math.toDegrees(estimator.getDeclination(0.0,
+        assertEquals(1.14, Math.toDegrees(estimator.getDeclination(0.0,
                 Math.toRadians(21.0), 18e3, 2020.0)), ANGLE_ERROR);
 
-        assertEquals(20.16, Math.toDegrees(estimator.getDeclination(Math.toRadians(-36.0),
+        assertEquals(20.15, Math.toDegrees(estimator.getDeclination(Math.toRadians(-36.0),
                 Math.toRadians(-137.0), 6e3, 2020.5)), ANGLE_ERROR);
-        assertEquals(0.43, Math.toDegrees(estimator.getDeclination(Math.toRadians(26.0),
+        assertEquals(0.41, Math.toDegrees(estimator.getDeclination(Math.toRadians(26.0),
                 Math.toRadians(81.0), 63e3, 2020.5)), ANGLE_ERROR);
-        assertEquals(13.39, Math.toDegrees(estimator.getDeclination(Math.toRadians(38.0),
+        assertEquals(13.45, Math.toDegrees(estimator.getDeclination(Math.toRadians(38.0),
                 Math.toRadians(-144.0), 69e3, 2020.5)), ANGLE_ERROR);
-        assertEquals(57.40, Math.toDegrees(estimator.getDeclination(Math.toRadians(-70.0),
+        assertEquals(57.39, Math.toDegrees(estimator.getDeclination(Math.toRadians(-70.0),
                 Math.toRadians(-133.0), 50e3, 2020.5)), ANGLE_ERROR);
-        assertEquals(15.39, Math.toDegrees(estimator.getDeclination(Math.toRadians(-52.0),
+        assertEquals(15.40, Math.toDegrees(estimator.getDeclination(Math.toRadians(-52.0),
                 Math.toRadians(-75.0), 8e3, 2020.5)), ANGLE_ERROR);
-        assertEquals(-32.56, Math.toDegrees(estimator.getDeclination(Math.toRadians(-66.0),
+        assertEquals(-32.58, Math.toDegrees(estimator.getDeclination(Math.toRadians(-66.0),
                 Math.toRadians(17.0), 8e3, 2020.5)), ANGLE_ERROR);
-        assertEquals(9.15, Math.toDegrees(estimator.getDeclination(Math.toRadians(-37.0),
+        assertEquals(9.14, Math.toDegrees(estimator.getDeclination(Math.toRadians(-37.0),
                 Math.toRadians(140.0), 22e3, 2020.5)), ANGLE_ERROR);
-        assertEquals(10.83, Math.toDegrees(estimator.getDeclination(Math.toRadians(-12.0),
+        assertEquals(10.80, Math.toDegrees(estimator.getDeclination(Math.toRadians(-12.0),
                 Math.toRadians(-129.0), 40e3, 2020.5)), ANGLE_ERROR);
-        assertEquals(11.46, Math.toDegrees(estimator.getDeclination(Math.toRadians(33.0),
+        assertEquals(11.47, Math.toDegrees(estimator.getDeclination(Math.toRadians(33.0),
                 Math.toRadians(-118.0), 44e3, 2020.5)), ANGLE_ERROR);
-        assertEquals(28.65, Math.toDegrees(estimator.getDeclination(Math.toRadians(-81.0),
+        assertEquals(28.62, Math.toDegrees(estimator.getDeclination(Math.toRadians(-81.0),
                 Math.toRadians(-67.0), 50e3, 2020.5)), ANGLE_ERROR);
 
-        assertEquals(-22.29, Math.toDegrees(estimator.getDeclination(Math.toRadians(-57.0),
+        assertEquals(-22.32, Math.toDegrees(estimator.getDeclination(Math.toRadians(-57.0),
                 Math.toRadians(3.0), 74e3, 2021.0)), ANGLE_ERROR);
-        assertEquals(14.02, Math.toDegrees(estimator.getDeclination(Math.toRadians(-24.0),
+        assertEquals(14.01, Math.toDegrees(estimator.getDeclination(Math.toRadians(-24.0),
                 Math.toRadians(-122.0), 46e3, 2021.0)), ANGLE_ERROR);
-        assertEquals(1.08, Math.toDegrees(estimator.getDeclination(Math.toRadians(23.0),
+        assertEquals(1.11, Math.toDegrees(estimator.getDeclination(Math.toRadians(23.0),
                 Math.toRadians(63.0), 69e3, 2021.0)), ANGLE_ERROR);
         assertEquals(9.74, Math.toDegrees(estimator.getDeclination(Math.toRadians(-3.0),
                 Math.toRadians(-147.0), 33e3, 2021.0)), ANGLE_ERROR);
-        assertEquals(-6.05, Math.toDegrees(estimator.getDeclination(Math.toRadians(-72.0),
+        assertEquals(-6.08, Math.toDegrees(estimator.getDeclination(Math.toRadians(-72.0),
                 Math.toRadians(-22.0), 47e3, 2021.0)), ANGLE_ERROR);
-        assertEquals(-1.71, Math.toDegrees(estimator.getDeclination(Math.toRadians(-14.0),
+        assertEquals(-1.74, Math.toDegrees(estimator.getDeclination(Math.toRadians(-14.0),
                 Math.toRadians(99.0), 62e3, 2021.0)), ANGLE_ERROR);
-        assertEquals(-36.71, Math.toDegrees(estimator.getDeclination(Math.toRadians(86.0),
+        assertEquals(-36.73, Math.toDegrees(estimator.getDeclination(Math.toRadians(86.0),
                 Math.toRadians(-46.0), 83e3, 2021.0)), ANGLE_ERROR);
         assertEquals(-80.81, Math.toDegrees(estimator.getDeclination(Math.toRadians(-64.0),
                 Math.toRadians(87.0), 82e3, 2021.0)), ANGLE_ERROR);
-        assertEquals(-14.32, Math.toDegrees(estimator.getDeclination(Math.toRadians(-19.0),
+        assertEquals(-14.29, Math.toDegrees(estimator.getDeclination(Math.toRadians(-19.0),
                 Math.toRadians(43.0), 34e3, 2021.0)), ANGLE_ERROR);
-        assertEquals(-59.03, Math.toDegrees(estimator.getDeclination(Math.toRadians(-81.0),
+        assertEquals(-59.04, Math.toDegrees(estimator.getDeclination(Math.toRadians(-81.0),
                 Math.toRadians(40.0), 56e3, 2021.0)), ANGLE_ERROR);
 
-        assertEquals(-3.41, Math.toDegrees(estimator.getDeclination(0.0,
+        assertEquals(-3.38, Math.toDegrees(estimator.getDeclination(0.0,
                 Math.toRadians(80.0), 14e3, 2021.5)), ANGLE_ERROR);
-        assertEquals(30.36, Math.toDegrees(estimator.getDeclination(Math.toRadians(-82.0),
+        assertEquals(30.31, Math.toDegrees(estimator.getDeclination(Math.toRadians(-82.0),
                 Math.toRadians(-68.0), 12e3, 2021.5)), ANGLE_ERROR);
-        assertEquals(-11.54, Math.toDegrees(estimator.getDeclination(Math.toRadians(-46.0),
+        assertEquals(-11.55, Math.toDegrees(estimator.getDeclination(Math.toRadians(-46.0),
                 Math.toRadians(-42.0), 44e3, 2021.5)), ANGLE_ERROR);
-        assertEquals(1.23, Math.toDegrees(estimator.getDeclination(Math.toRadians(17.0),
+        assertEquals(1.24, Math.toDegrees(estimator.getDeclination(Math.toRadians(17.0),
                 Math.toRadians(52.0), 43e3, 2021.5)), ANGLE_ERROR);
-        assertEquals(-1.71, Math.toDegrees(estimator.getDeclination(Math.toRadians(10.0),
+        assertEquals(-1.68, Math.toDegrees(estimator.getDeclination(Math.toRadians(10.0),
                 Math.toRadians(78.0), 64e3, 2021.5)), ANGLE_ERROR);
-        assertEquals(12.36, Math.toDegrees(estimator.getDeclination(Math.toRadians(33.0),
+        assertEquals(12.39, Math.toDegrees(estimator.getDeclination(Math.toRadians(33.0),
                 Math.toRadians(-145.0), 12e3, 2021.5)), ANGLE_ERROR);
-        assertEquals(-136.34, Math.toDegrees(estimator.getDeclination(Math.toRadians(-79.0),
+        assertEquals(-136.36, Math.toDegrees(estimator.getDeclination(Math.toRadians(-79.0),
                 Math.toRadians(115.0), 12e3, 2021.5)), ANGLE_ERROR);
-        assertEquals(18.10, Math.toDegrees(estimator.getDeclination(Math.toRadians(-33.0),
+        assertEquals(18.12, Math.toDegrees(estimator.getDeclination(Math.toRadians(-33.0),
                 Math.toRadians(-114), 14e3, 2021.5)), ANGLE_ERROR);
-        assertEquals(2.13, Math.toDegrees(estimator.getDeclination(Math.toRadians(29.0),
+        assertEquals(2.15, Math.toDegrees(estimator.getDeclination(Math.toRadians(29.0),
                 Math.toRadians(66.0), 19e3, 2021.5)), ANGLE_ERROR);
-        assertEquals(10.11, Math.toDegrees(estimator.getDeclination(Math.toRadians(-11.0),
+        assertEquals(10.17, Math.toDegrees(estimator.getDeclination(Math.toRadians(-11.0),
                 Math.toRadians(167.0), 86e3, 2021.5)), ANGLE_ERROR);
 
-        assertEquals(-16.99, Math.toDegrees(estimator.getDeclination(Math.toRadians(-66.0),
+        assertEquals(-17.00, Math.toDegrees(estimator.getDeclination(Math.toRadians(-66.0),
                 Math.toRadians(-5.0), 37e3, 2022.0)), ANGLE_ERROR);
-        assertEquals(15.47, Math.toDegrees(estimator.getDeclination(Math.toRadians(72.0),
+        assertEquals(15.42, Math.toDegrees(estimator.getDeclination(Math.toRadians(72.0),
                 Math.toRadians(-115.0), 67e3, 2022.0)), ANGLE_ERROR);
-        assertEquals(6.56, Math.toDegrees(estimator.getDeclination(Math.toRadians(22.0),
+        assertEquals(6.59, Math.toDegrees(estimator.getDeclination(Math.toRadians(22.0),
                 Math.toRadians(174.0), 44e3, 2022.0)), ANGLE_ERROR);
-        assertEquals(1.43, Math.toDegrees(estimator.getDeclination(Math.toRadians(54.0),
+        assertEquals(1.48, Math.toDegrees(estimator.getDeclination(Math.toRadians(54.0),
                 Math.toRadians(178.0), 54e3, 2022.0)), ANGLE_ERROR);
-        assertEquals(-47.43, Math.toDegrees(estimator.getDeclination(Math.toRadians(-43.0),
+        assertEquals(-47.44, Math.toDegrees(estimator.getDeclination(Math.toRadians(-43.0),
                 Math.toRadians(50.0), 57e3, 2022.0)), ANGLE_ERROR);
-        assertEquals(24.32, Math.toDegrees(estimator.getDeclination(Math.toRadians(-43.0),
+        assertEquals(24.34, Math.toDegrees(estimator.getDeclination(Math.toRadians(-43.0),
                 Math.toRadians(-111.0), 44e3, 2022.0)), ANGLE_ERROR);
-        assertEquals(57.08, Math.toDegrees(estimator.getDeclination(Math.toRadians(-63.0),
+        assertEquals(57.10, Math.toDegrees(estimator.getDeclination(Math.toRadians(-63.0),
                 Math.toRadians(178.0), 12e3, 2022.0)), ANGLE_ERROR);
-        assertEquals(8.76, Math.toDegrees(estimator.getDeclination(Math.toRadians(27.0),
+        assertEquals(8.78, Math.toDegrees(estimator.getDeclination(Math.toRadians(27.0),
                 Math.toRadians(-169.0), 38e3, 2022.0)), ANGLE_ERROR);
-        assertEquals(-17.63, Math.toDegrees(estimator.getDeclination(Math.toRadians(59.0),
+        assertEquals(-17.66, Math.toDegrees(estimator.getDeclination(Math.toRadians(59.0),
                 Math.toRadians(-77.0), 61e3, 2022.0)), ANGLE_ERROR);
         assertEquals(-14.09, Math.toDegrees(estimator.getDeclination(Math.toRadians(-47.0),
                 Math.toRadians(-32.0), 67e3, 2022.0)), ANGLE_ERROR);
 
-        assertEquals(18.95, Math.toDegrees(estimator.getDeclination(Math.toRadians(62.0),
+        assertEquals(18.90, Math.toDegrees(estimator.getDeclination(Math.toRadians(62.0),
                 Math.toRadians(53.0), 8e3, 2022.5)), ANGLE_ERROR);
-        assertEquals(-15.94, Math.toDegrees(estimator.getDeclination(Math.toRadians(-68.0),
+        assertEquals(-15.95, Math.toDegrees(estimator.getDeclination(Math.toRadians(-68.0),
                 Math.toRadians(-7.0), 77e3, 2022.5)), ANGLE_ERROR);
-        assertEquals(7.79, Math.toDegrees(estimator.getDeclination(Math.toRadians(-5.0),
+        assertEquals(7.82, Math.toDegrees(estimator.getDeclination(Math.toRadians(-5.0),
                 Math.toRadians(159.0), 98e3, 2022.5)), ANGLE_ERROR);
-        assertEquals(15.68, Math.toDegrees(estimator.getDeclination(Math.toRadians(-29.0),
+        assertEquals(15.73, Math.toDegrees(estimator.getDeclination(Math.toRadians(-29.0),
                 Math.toRadians(-107.0), 34e3, 2022.5)), ANGLE_ERROR);
-        assertEquals(1.78, Math.toDegrees(estimator.getDeclination(Math.toRadians(27.0),
+        assertEquals(1.77, Math.toDegrees(estimator.getDeclination(Math.toRadians(27.0),
                 Math.toRadians(65.0), 60e3, 2022.5)), ANGLE_ERROR);
-        assertEquals(-101.49, Math.toDegrees(estimator.getDeclination(Math.toRadians(-72.0),
+        assertEquals(-101.47, Math.toDegrees(estimator.getDeclination(Math.toRadians(-72.0),
                 Math.toRadians(95.0), 73e3, 2022.5)), ANGLE_ERROR);
         assertEquals(18.38, Math.toDegrees(estimator.getDeclination(Math.toRadians(-46.0),
                 Math.toRadians(-85.0), 96e3, 2022.5)), ANGLE_ERROR);
-        assertEquals(-16.65, Math.toDegrees(estimator.getDeclination(Math.toRadians(-13.0),
+        assertEquals(-16.63, Math.toDegrees(estimator.getDeclination(Math.toRadians(-13.0),
                 Math.toRadians(-59.0), 0e3, 2022.5)), ANGLE_ERROR);
-        assertEquals(1.92, Math.toDegrees(estimator.getDeclination(Math.toRadians(66.0),
+        assertEquals(2.01, Math.toDegrees(estimator.getDeclination(Math.toRadians(66.0),
                 Math.toRadians(-178), 16e3, 2022.5)), ANGLE_ERROR);
-        assertEquals(-64.66, Math.toDegrees(estimator.getDeclination(Math.toRadians(-87.0),
+        assertEquals(-64.70, Math.toDegrees(estimator.getDeclination(Math.toRadians(-87.0),
                 Math.toRadians(38.0), 72e3, 2022.5)), ANGLE_ERROR);
 
         assertEquals(5.20, Math.toDegrees(estimator.getDeclination(Math.toRadians(20.0),
                 Math.toRadians(167.0), 49e3, 2023.0)), ANGLE_ERROR);
-        assertEquals(-7.26, Math.toDegrees(estimator.getDeclination(Math.toRadians(5.0),
+        assertEquals(-7.30, Math.toDegrees(estimator.getDeclination(Math.toRadians(5.0),
                 Math.toRadians(-13.0), 71e3, 2023.0)), ANGLE_ERROR);
-        assertEquals(-0.56, Math.toDegrees(estimator.getDeclination(Math.toRadians(14.0),
+        assertEquals(-0.57, Math.toDegrees(estimator.getDeclination(Math.toRadians(14.0),
                 Math.toRadians(65.0), 95e3, 2023.0)), ANGLE_ERROR);
-        assertEquals(41.76, Math.toDegrees(estimator.getDeclination(Math.toRadians(-85.0),
+        assertEquals(41.70, Math.toDegrees(estimator.getDeclination(Math.toRadians(-85.0),
                 Math.toRadians(-79.0), 86e3, 2023.0)), ANGLE_ERROR);
-        assertEquals(-3.87, Math.toDegrees(estimator.getDeclination(Math.toRadians(-36.0),
+        assertEquals(-3.86, Math.toDegrees(estimator.getDeclination(Math.toRadians(-36.0),
                 Math.toRadians(-64.0), 30e3, 2023.0)), ANGLE_ERROR);
-        assertEquals(-14.54, Math.toDegrees(estimator.getDeclination(Math.toRadians(79.0),
+        assertEquals(-14.23, Math.toDegrees(estimator.getDeclination(Math.toRadians(79.0),
                 Math.toRadians(125.0), 75e3, 2023.0)), ANGLE_ERROR);
         assertEquals(-15.22, Math.toDegrees(estimator.getDeclination(Math.toRadians(6.0),
                 Math.toRadians(-32.0), 21e3, 2023.0)), ANGLE_ERROR);
-        assertEquals(30.36, Math.toDegrees(estimator.getDeclination(Math.toRadians(-76.0),
+        assertEquals(30.30, Math.toDegrees(estimator.getDeclination(Math.toRadians(-76.0),
                 Math.toRadians(-75.0), 1e3, 2023.0)), ANGLE_ERROR);
-        assertEquals(-11.94, Math.toDegrees(estimator.getDeclination(Math.toRadians(-46),
+        assertEquals(-11.91, Math.toDegrees(estimator.getDeclination(Math.toRadians(-46),
                 Math.toRadians(-41.0), 45e3, 2023.0)), ANGLE_ERROR);
-        assertEquals(-24.12, Math.toDegrees(estimator.getDeclination(Math.toRadians(-22.0),
+        assertEquals(-24.09, Math.toDegrees(estimator.getDeclination(Math.toRadians(-22.0),
                 Math.toRadians(-21.0), 11e3, 2023.0)), ANGLE_ERROR);
 
-        assertEquals(16.20, Math.toDegrees(estimator.getDeclination(Math.toRadians(54.0),
+        assertEquals(16.17, Math.toDegrees(estimator.getDeclination(Math.toRadians(54.0),
                 Math.toRadians(-120.0), 28e3, 2023.5)), ANGLE_ERROR);
-        assertEquals(40.48, Math.toDegrees(estimator.getDeclination(Math.toRadians(-58.0),
+        assertEquals(40.47, Math.toDegrees(estimator.getDeclination(Math.toRadians(-58.0),
                 Math.toRadians(156.0), 68e3, 2023.5)), ANGLE_ERROR);
-        assertEquals(29.86, Math.toDegrees(estimator.getDeclination(Math.toRadians(-65.0),
+        assertEquals(29.82, Math.toDegrees(estimator.getDeclination(Math.toRadians(-65.0),
                 Math.toRadians(-88.0), 39e3, 2023.5)), ANGLE_ERROR);
-        assertEquals(-13.98, Math.toDegrees(estimator.getDeclination(Math.toRadians(-23.0),
+        assertEquals(-13.92, Math.toDegrees(estimator.getDeclination(Math.toRadians(-23.0),
                 Math.toRadians(81.0), 27e3, 2023.5)), ANGLE_ERROR);
-        assertEquals(1.08, Math.toDegrees(estimator.getDeclination(Math.toRadians(34.0),
+        assertEquals(1.01, Math.toDegrees(estimator.getDeclination(Math.toRadians(34.0),
                 0.0, 11e3, 2023.5)), ANGLE_ERROR);
-        assertEquals(-66.98, Math.toDegrees(estimator.getDeclination(Math.toRadians(-62.0),
+        assertEquals(-66.99, Math.toDegrees(estimator.getDeclination(Math.toRadians(-62.0),
                 Math.toRadians(65.0), 72e3, 2023.5)), ANGLE_ERROR);
-        assertEquals(61.19, Math.toDegrees(estimator.getDeclination(Math.toRadians(86.0),
+        assertEquals(61.14, Math.toDegrees(estimator.getDeclination(Math.toRadians(86.0),
                 Math.toRadians(70.0), 55e3, 2023.5)), ANGLE_ERROR);
-        assertEquals(0.36, Math.toDegrees(estimator.getDeclination(Math.toRadians(32.0),
+        assertEquals(0.37, Math.toDegrees(estimator.getDeclination(Math.toRadians(32.0),
                 Math.toRadians(163.0), 59e3, 2023.5)), ANGLE_ERROR);
-        assertEquals(-9.39, Math.toDegrees(estimator.getDeclination(Math.toRadians(48.0),
+        assertEquals(-9.35, Math.toDegrees(estimator.getDeclination(Math.toRadians(48.0),
                 Math.toRadians(148.0), 65e3, 2023.5)), ANGLE_ERROR);
-        assertEquals(4.49, Math.toDegrees(estimator.getDeclination(Math.toRadians(30.0),
+        assertEquals(4.39, Math.toDegrees(estimator.getDeclination(Math.toRadians(30.0),
                 Math.toRadians(28.0), 95e3, 2023.5)), ANGLE_ERROR);
 
-        assertEquals(8.86, Math.toDegrees(estimator.getDeclination(Math.toRadians(-60.0),
+        assertEquals(8.84, Math.toDegrees(estimator.getDeclination(Math.toRadians(-60.0),
                 Math.toRadians(-59.0), 95e3, 2024.0)), ANGLE_ERROR);
-        assertEquals(-54.29, Math.toDegrees(estimator.getDeclination(Math.toRadians(-70.0),
+        assertEquals(-54.27, Math.toDegrees(estimator.getDeclination(Math.toRadians(-70.0),
                 Math.toRadians(42.0), 95e3, 2024.0)), ANGLE_ERROR);
-        assertEquals(-82.22, Math.toDegrees(estimator.getDeclination(Math.toRadians(87.0),
+        assertEquals(-85.27, Math.toDegrees(estimator.getDeclination(Math.toRadians(87.0),
                 Math.toRadians(-154.0), 50e3, 2024.0)), ANGLE_ERROR);
-        assertEquals(3.94, Math.toDegrees(estimator.getDeclination(Math.toRadians(32.0),
+        assertEquals(3.82, Math.toDegrees(estimator.getDeclination(Math.toRadians(32.0),
                 Math.toRadians(19.0), 58e3, 2024.0)), ANGLE_ERROR);
-        assertEquals(-2.62, Math.toDegrees(estimator.getDeclination(Math.toRadians(34.0),
+        assertEquals(-2.67, Math.toDegrees(estimator.getDeclination(Math.toRadians(34.0),
                 Math.toRadians(-13.0), 57e3, 2024.0)), ANGLE_ERROR);
-        assertEquals(-63.51, Math.toDegrees(estimator.getDeclination(Math.toRadians(-76.0),
+        assertEquals(-63.48, Math.toDegrees(estimator.getDeclination(Math.toRadians(-76.0),
                 Math.toRadians(49.0), 38e3, 2024.0)), ANGLE_ERROR);
-        assertEquals(31.57, Math.toDegrees(estimator.getDeclination(Math.toRadians(-50.0),
+        assertEquals(31.55, Math.toDegrees(estimator.getDeclination(Math.toRadians(-50.0),
                 Math.toRadians(-179.0), 49e3, 2024.0)), ANGLE_ERROR);
-        assertEquals(38.07, Math.toDegrees(estimator.getDeclination(Math.toRadians(-55.0),
+        assertEquals(38.06, Math.toDegrees(estimator.getDeclination(Math.toRadians(-55.0),
                 Math.toRadians(-171.0), 90e3, 2024.0)), ANGLE_ERROR);
-        assertEquals(-5.00, Math.toDegrees(estimator.getDeclination(Math.toRadians(42.0),
+        assertEquals(-5.03, Math.toDegrees(estimator.getDeclination(Math.toRadians(42.0),
                 Math.toRadians(-19.0), 41e3, 2024.0)), ANGLE_ERROR);
-        assertEquals(-6.60, Math.toDegrees(estimator.getDeclination(Math.toRadians(46.0),
+        assertEquals(-6.64, Math.toDegrees(estimator.getDeclination(Math.toRadians(46.0),
                 Math.toRadians(-22.0), 19e3, 2024.0)), ANGLE_ERROR);
 
-        assertEquals(9.21, Math.toDegrees(estimator.getDeclination(Math.toRadians(13.0),
+        assertEquals(9.23, Math.toDegrees(estimator.getDeclination(Math.toRadians(13.0),
                 Math.toRadians(-132.0), 31e3, 2024.5)), ANGLE_ERROR);
-        assertEquals(7.16, Math.toDegrees(estimator.getDeclination(Math.toRadians(-2.0),
+        assertEquals(7.14, Math.toDegrees(estimator.getDeclination(Math.toRadians(-2.0),
                 Math.toRadians(158.0), 93e3, 2024.5)), ANGLE_ERROR);
-        assertEquals(-55.63, Math.toDegrees(estimator.getDeclination(Math.toRadians(-76.0),
+        assertEquals(-55.60, Math.toDegrees(estimator.getDeclination(Math.toRadians(-76.0),
                 Math.toRadians(40.0), 51e3, 2024.5)), ANGLE_ERROR);
-        assertEquals(10.52, Math.toDegrees(estimator.getDeclination(Math.toRadians(22.0),
+        assertEquals(10.51, Math.toDegrees(estimator.getDeclination(Math.toRadians(22.0),
                 Math.toRadians(-132.0), 64e3, 2024.5)), ANGLE_ERROR);
-        assertEquals(-62.60, Math.toDegrees(estimator.getDeclination(Math.toRadians(-65.0),
+        assertEquals(-62.58, Math.toDegrees(estimator.getDeclination(Math.toRadians(-65.0),
                 Math.toRadians(55.0), 26e3, 2024.5)), ANGLE_ERROR);
-        assertEquals(-13.34, Math.toDegrees(estimator.getDeclination(Math.toRadians(-21.0),
+        assertEquals(-13.62, Math.toDegrees(estimator.getDeclination(Math.toRadians(-21.0),
                 Math.toRadians(32.0), 66e3, 2024.5)), ANGLE_ERROR);
-        assertEquals(9.39, Math.toDegrees(estimator.getDeclination(Math.toRadians(9.0),
+        assertEquals(9.24, Math.toDegrees(estimator.getDeclination(Math.toRadians(9.0),
                 Math.toRadians(-172.0), 18e3, 2024.5)), ANGLE_ERROR);
-        assertEquals(29.81, Math.toDegrees(estimator.getDeclination(Math.toRadians(88.0),
+        assertEquals(29.69, Math.toDegrees(estimator.getDeclination(Math.toRadians(88.0),
                 Math.toRadians(26.0), 63e3, 2024.5)), ANGLE_ERROR);
-        assertEquals(0.61, Math.toDegrees(estimator.getDeclination(Math.toRadians(17.0),
+        assertEquals(0.50, Math.toDegrees(estimator.getDeclination(Math.toRadians(17.0),
                 Math.toRadians(5.0), 33e3, 2024.5)), ANGLE_ERROR);
-        assertEquals(4.63, Math.toDegrees(estimator.getDeclination(Math.toRadians(-18.0),
+        assertEquals(4.64, Math.toDegrees(estimator.getDeclination(Math.toRadians(-18.0),
                 Math.toRadians(138.0), 77e3, 2024.5)), ANGLE_ERROR);
     }
 
     @Test
-    void testDipModel() throws IOException {
+    void testDeclinationModel2025() throws IOException {
+        // test values correspond to D (Deg) column in WMM test values document
         final var estimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        assertEquals(88.46, Math.toDegrees(estimator.getDip(Math.toRadians(89.0), 
+        assertEquals(1.28, Math.toDegrees(estimator.getDeclination(Math.toRadians(80.0),
+                Math.toRadians(0), 0.0, 2025.0)), ANGLE_ERROR);
+        assertEquals(-0.16, Math.toDegrees(estimator.getDeclination(Math.toRadians(0.0),
+                Math.toRadians(120.0), 0.0, 2025.0)), ANGLE_ERROR);
+        assertEquals(68.78, Math.toDegrees(estimator.getDeclination(Math.toRadians(-80.0),
+                Math.toRadians(240.0), 0.0, 2025.0)), ANGLE_ERROR);
+        assertEquals(0.85, Math.toDegrees(estimator.getDeclination(Math.toRadians(80.0),
+                Math.toRadians(0.0), 100e3, 2025.0)), ANGLE_ERROR);
+        assertEquals(-0.15, Math.toDegrees(estimator.getDeclination(Math.toRadians(0.0),
+                Math.toRadians(120.0), 100e3, 2025.0)), ANGLE_ERROR);
+        assertEquals(68.21, Math.toDegrees(estimator.getDeclination(Math.toRadians(-80.0),
+                Math.toRadians(240.0), 100e3, 2025.0)), ANGLE_ERROR);
+
+        assertEquals(2.59, Math.toDegrees(estimator.getDeclination(Math.toRadians(80.0),
+                Math.toRadians(0.0), 0.0, 2027.5)), ANGLE_ERROR);
+        assertEquals(-0.24, Math.toDegrees(estimator.getDeclination(Math.toRadians(0.0),
+                Math.toRadians(120.0), 0.0, 2027.5)), ANGLE_ERROR);
+        assertEquals(68.49, Math.toDegrees(estimator.getDeclination(Math.toRadians(-80.0),
+                Math.toRadians(240.0), 0.0, 2027.5)), ANGLE_ERROR);
+        assertEquals(2.16, Math.toDegrees(estimator.getDeclination(Math.toRadians(80.0),
+                Math.toRadians(0.0), 100e3, 2027.5)), ANGLE_ERROR);
+        assertEquals(-0.23, Math.toDegrees(estimator.getDeclination(Math.toRadians(0.0),
+                Math.toRadians(120.0), 100e3, 2027.5)), ANGLE_ERROR);
+        assertEquals(67.93, Math.toDegrees(estimator.getDeclination(Math.toRadians(-80.0),
+                Math.toRadians(240.0), 100e3, 2027.5)), ANGLE_ERROR);
+    }
+
+    @Test
+    void testDipModel2020() throws IOException {
+        final var estimator = new WMMEarthMagneticFluxDensityEstimator();
+
+        assertEquals(88.48, Math.toDegrees(estimator.getDip(Math.toRadians(89.0),
                 Math.toRadians(-121.0), 28e3, 2020.0)), ANGLE_ERROR);
-        assertEquals(88.03, Math.toDegrees(estimator.getDip(Math.toRadians(80.0),
+        assertEquals(88.04, Math.toDegrees(estimator.getDip(Math.toRadians(80.0),
                 Math.toRadians(-96.0), 48e3, 2020.0)), ANGLE_ERROR);
-        assertEquals(87.48, Math.toDegrees(estimator.getDip(Math.toRadians(82.0),
+        assertEquals(87.49, Math.toDegrees(estimator.getDip(Math.toRadians(82.0),
                 Math.toRadians(87.0), 54e3, 2020.0)), ANGLE_ERROR);
-        assertEquals(63.87, Math.toDegrees(estimator.getDip(Math.toRadians(43.0),
+        assertEquals(63.94, Math.toDegrees(estimator.getDip(Math.toRadians(43.0),
                 Math.toRadians(93.0), 65e3, 2020.0)), ANGLE_ERROR);
-        assertEquals(-67.64, Math.toDegrees(estimator.getDip(Math.toRadians(-33.0),
+        assertEquals(-67.63, Math.toDegrees(estimator.getDip(Math.toRadians(-33.0),
                 Math.toRadians(109.0), 51e3, 2020.0)), ANGLE_ERROR);
         assertEquals(-58.82, Math.toDegrees(estimator.getDip(Math.toRadians(-59.0),
                 Math.toRadians(-8.0), 39e3, 2020.0)), ANGLE_ERROR);
@@ -327,1282 +359,1475 @@ class WMMEarthMagneticFluxDensityEstimatorTest {
                 Math.toRadians(-103.0), 3e3, 2020.0)), ANGLE_ERROR);
         assertEquals(-38.38, Math.toDegrees(estimator.getDip(Math.toRadians(-29.0),
                 Math.toRadians(-110.0), 94e3, 2020.0)), ANGLE_ERROR);
-        assertEquals(13.08, Math.toDegrees(estimator.getDip(Math.toRadians(14.0),
+        assertEquals(12.84, Math.toDegrees(estimator.getDip(Math.toRadians(14.0),
                 Math.toRadians(143.0), 66e3, 2020.0)), ANGLE_ERROR);
-        assertEquals(-26.46, Math.toDegrees(estimator.getDip(0.0,
+        assertEquals(-26.45, Math.toDegrees(estimator.getDip(0.0,
                 Math.toRadians(21.0), 18e3, 2020.0)), ANGLE_ERROR);
 
-        assertEquals(-52.21, Math.toDegrees(estimator.getDip(Math.toRadians(-36.0),
+        assertEquals(-52.18, Math.toDegrees(estimator.getDip(Math.toRadians(-36.0),
                 Math.toRadians(-137), 6e3, 2020.5)), ANGLE_ERROR);
-        assertEquals(40.84, Math.toDegrees(estimator.getDip(Math.toRadians(26.0),
+        assertEquals(40.96, Math.toDegrees(estimator.getDip(Math.toRadians(26.0),
                 Math.toRadians(81.0), 63e3, 2020.5)), ANGLE_ERROR);
-        assertEquals(56.99, Math.toDegrees(estimator.getDip(Math.toRadians(38.0),
+        assertEquals(57.01, Math.toDegrees(estimator.getDip(Math.toRadians(38.0),
                 Math.toRadians(-144.0), 69e3, 2020.5)), ANGLE_ERROR);
-        assertEquals(-72.18, Math.toDegrees(estimator.getDip(Math.toRadians(-70.0),
+        assertEquals(-72.17, Math.toDegrees(estimator.getDip(Math.toRadians(-70.0),
                 Math.toRadians(-133.0), 50e3, 2020.5)), ANGLE_ERROR);
-        assertEquals(-49.50, Math.toDegrees(estimator.getDip(Math.toRadians(-52.0),
+        assertEquals(-49.49, Math.toDegrees(estimator.getDip(Math.toRadians(-52.0),
                 Math.toRadians(-75.0), 8e3, 2020.5)), ANGLE_ERROR);
-        assertEquals(-59.78, Math.toDegrees(estimator.getDip(Math.toRadians(-66.0),
+        assertEquals(-59.76, Math.toDegrees(estimator.getDip(Math.toRadians(-66.0),
                 Math.toRadians(17.0), 8e3, 2020.5)), ANGLE_ERROR);
-        assertEquals(-68.61, Math.toDegrees(estimator.getDip(Math.toRadians(-37.0),
+        assertEquals(-68.64, Math.toDegrees(estimator.getDip(Math.toRadians(-37.0),
                 Math.toRadians(140.0), 22e3, 2020.5)), ANGLE_ERROR);
-        assertEquals(-15.68, Math.toDegrees(estimator.getDip(Math.toRadians(-12.0),
+        assertEquals(-15.62, Math.toDegrees(estimator.getDip(Math.toRadians(-12.0),
                 Math.toRadians(-129.0), 40e3, 2020.5)), ANGLE_ERROR);
-        assertEquals(57.97, Math.toDegrees(estimator.getDip(Math.toRadians(33.0),
+        assertEquals(57.99, Math.toDegrees(estimator.getDip(Math.toRadians(33.0),
                 Math.toRadians(-118.0), 44e3, 2020.5)), ANGLE_ERROR);
-        assertEquals(-67.74, Math.toDegrees(estimator.getDip(Math.toRadians(-81.0),
+        assertEquals(-67.71, Math.toDegrees(estimator.getDip(Math.toRadians(-81.0),
                 Math.toRadians(-67.0), 50e3, 2020.5)), ANGLE_ERROR);
 
-        assertEquals(-59.07, Math.toDegrees(estimator.getDip(Math.toRadians(-57.0),
+        assertEquals(-59.06, Math.toDegrees(estimator.getDip(Math.toRadians(-57.0),
                 Math.toRadians(3.0), 74e3, 2021.0)), ANGLE_ERROR);
-        assertEquals(-34.29, Math.toDegrees(estimator.getDip(Math.toRadians(-24.0),
+        assertEquals(-34.26, Math.toDegrees(estimator.getDip(Math.toRadians(-24.0),
                 Math.toRadians(-122.0), 46e3, 2021.0)), ANGLE_ERROR);
-        assertEquals(35.82, Math.toDegrees(estimator.getDip(Math.toRadians(23.0),
+        assertEquals(35.87, Math.toDegrees(estimator.getDip(Math.toRadians(23.0),
                 Math.toRadians(63.0), 69e3, 2021.0)), ANGLE_ERROR);
-        assertEquals(-2.35, Math.toDegrees(estimator.getDip(Math.toRadians(-3.0),
+        assertEquals(-2.31, Math.toDegrees(estimator.getDip(Math.toRadians(-3.0),
                 Math.toRadians(-147.0), 33e3, 2021.0)), ANGLE_ERROR);
-        assertEquals(-61.27, Math.toDegrees(estimator.getDip(Math.toRadians(-72.0),
+        assertEquals(-61.24, Math.toDegrees(estimator.getDip(Math.toRadians(-72.0),
                 Math.toRadians(-22.0), 47e3, 2021.0)), ANGLE_ERROR);
-        assertEquals(-45.11, Math.toDegrees(estimator.getDip(Math.toRadians(-14.0),
+        assertEquals(-45.06, Math.toDegrees(estimator.getDip(Math.toRadians(-14.0),
                 Math.toRadians(99.0), 62e3, 2021.0)), ANGLE_ERROR);
         assertEquals(86.83, Math.toDegrees(estimator.getDip(Math.toRadians(86.0),
                 Math.toRadians(-46.0), 83e3, 2021.0)), ANGLE_ERROR);
         assertEquals(-75.25, Math.toDegrees(estimator.getDip(Math.toRadians(-64.0),
                 Math.toRadians(87.0), 82e3, 2021.0)), ANGLE_ERROR);
-        assertEquals(-52.47, Math.toDegrees(estimator.getDip(Math.toRadians(-19.0),
+        assertEquals(-52.45, Math.toDegrees(estimator.getDip(Math.toRadians(-19.0),
                 Math.toRadians(43.0), 34e3, 2021.0)), ANGLE_ERROR);
-        assertEquals(-68.54, Math.toDegrees(estimator.getDip(Math.toRadians(-81.0),
+        assertEquals(-68.53, Math.toDegrees(estimator.getDip(Math.toRadians(-81.0),
                 Math.toRadians(40.0), 56e3, 2021.0)), ANGLE_ERROR);
 
-        assertEquals(-17.32, Math.toDegrees(estimator.getDip(0.0,
+        assertEquals(-17.26, Math.toDegrees(estimator.getDip(0.0,
                 Math.toRadians(80.0), 14e3, 2021.5)), ANGLE_ERROR);
-        assertEquals(-68.18, Math.toDegrees(estimator.getDip(Math.toRadians(-82.0),
+        assertEquals(-68.17, Math.toDegrees(estimator.getDip(Math.toRadians(-82.0),
                 Math.toRadians(-68.0), 12e3, 2021.5)), ANGLE_ERROR);
-        assertEquals(-53.82, Math.toDegrees(estimator.getDip(Math.toRadians(-46.0),
+        assertEquals(-53.80, Math.toDegrees(estimator.getDip(Math.toRadians(-46.0),
                 Math.toRadians(-42.0), 44e3, 2021.5)), ANGLE_ERROR);
         assertEquals(23.87, Math.toDegrees(estimator.getDip(Math.toRadians(17.0),
                 Math.toRadians(52.0), 43e3, 2021.5)), ANGLE_ERROR);
-        assertEquals(7.37, Math.toDegrees(estimator.getDip(Math.toRadians(10.0),
+        assertEquals(7.43, Math.toDegrees(estimator.getDip(Math.toRadians(10.0),
                 Math.toRadians(78.0), 64e3, 2021.5)), ANGLE_ERROR);
         assertEquals(52.51, Math.toDegrees(estimator.getDip(Math.toRadians(33.0),
                 Math.toRadians(-145.0), 12e3, 2021.5)), ANGLE_ERROR);
-        assertEquals(-77.43, Math.toDegrees(estimator.getDip(Math.toRadians(-79.0),
+        assertEquals(-77.44, Math.toDegrees(estimator.getDip(Math.toRadians(-79.0),
                 Math.toRadians(115.0), 12e3, 2021.5)), ANGLE_ERROR);
-        assertEquals(-44.23, Math.toDegrees(estimator.getDip(Math.toRadians(-33.0),
+        assertEquals(-44.22, Math.toDegrees(estimator.getDip(Math.toRadians(-33.0),
                 Math.toRadians(-114.0), 14e3, 2021.5)), ANGLE_ERROR);
-        assertEquals(45.97, Math.toDegrees(estimator.getDip(Math.toRadians(29.0),
+        assertEquals(45.98, Math.toDegrees(estimator.getDip(Math.toRadians(29.0),
                 Math.toRadians(66.0), 19e3, 2021.5)), ANGLE_ERROR);
-        assertEquals(-31.45, Math.toDegrees(estimator.getDip(Math.toRadians(-11.0),
+        assertEquals(-31.47, Math.toDegrees(estimator.getDip(Math.toRadians(-11.0),
                 Math.toRadians(167.0), 86e3, 2021.5)), ANGLE_ERROR);
 
-        assertEquals(-59.27, Math.toDegrees(estimator.getDip(Math.toRadians(-66.0),
+        assertEquals(-59.24, Math.toDegrees(estimator.getDip(Math.toRadians(-66.0),
                 Math.toRadians(-5.0), 37e3, 2022.0)), ANGLE_ERROR);
-        assertEquals(85.19, Math.toDegrees(estimator.getDip(Math.toRadians(72.0),
+        assertEquals(85.20, Math.toDegrees(estimator.getDip(Math.toRadians(72.0),
                 Math.toRadians(-115.0), 67e3, 2022.0)), ANGLE_ERROR);
-        assertEquals(31.91, Math.toDegrees(estimator.getDip(Math.toRadians(22.0),
+        assertEquals(31.89, Math.toDegrees(estimator.getDip(Math.toRadians(22.0),
                 Math.toRadians(174.0), 44e3, 2022.0)), ANGLE_ERROR);
-        assertEquals(65.41, Math.toDegrees(estimator.getDip(Math.toRadians(54.0),
+        assertEquals(65.39, Math.toDegrees(estimator.getDip(Math.toRadians(54.0),
                 Math.toRadians(178.0), 54e3, 2022.0)), ANGLE_ERROR);
         assertEquals(-62.96, Math.toDegrees(estimator.getDip(Math.toRadians(-43.0),
                 Math.toRadians(50.0), 57e3, 2022.0)), ANGLE_ERROR);
-        assertEquals(-52.71, Math.toDegrees(estimator.getDip(Math.toRadians(-43.0),
+        assertEquals(-52.69, Math.toDegrees(estimator.getDip(Math.toRadians(-43.0),
                 Math.toRadians(-111.0), 44e3, 2022.0)), ANGLE_ERROR);
-        assertEquals(-79.33, Math.toDegrees(estimator.getDip(Math.toRadians(-63.0),
+        assertEquals(-79.32, Math.toDegrees(estimator.getDip(Math.toRadians(-63.0),
                 Math.toRadians(178.0), 12e3, 2022.0)), ANGLE_ERROR);
         assertEquals(42.60, Math.toDegrees(estimator.getDip(Math.toRadians(27.0),
                 Math.toRadians(-169.0), 38e3, 2022.0)), ANGLE_ERROR);
-        assertEquals(79.04, Math.toDegrees(estimator.getDip(Math.toRadians(59.0),
+        assertEquals(79.05, Math.toDegrees(estimator.getDip(Math.toRadians(59.0),
                 Math.toRadians(-77.0), 61e3, 2022.0)), ANGLE_ERROR);
-        assertEquals(-57.63, Math.toDegrees(estimator.getDip(Math.toRadians(-47.0),
+        assertEquals(-57.59, Math.toDegrees(estimator.getDip(Math.toRadians(-47.0),
                 Math.toRadians(-32.0), 67e3, 2022.0)), ANGLE_ERROR);
 
-        assertEquals(76.54, Math.toDegrees(estimator.getDip(Math.toRadians(62.0),
+        assertEquals(76.52, Math.toDegrees(estimator.getDip(Math.toRadians(62.0),
                 Math.toRadians(53.0), 8e3, 2022.5)), ANGLE_ERROR);
-        assertEquals(-60.00, Math.toDegrees(estimator.getDip(Math.toRadians(-68.0),
+        assertEquals(-59.98, Math.toDegrees(estimator.getDip(Math.toRadians(-68.0),
                 Math.toRadians(-7.0), 77e3, 2022.5)), ANGLE_ERROR);
         assertEquals(-23.04, Math.toDegrees(estimator.getDip(Math.toRadians(-5.0),
                 Math.toRadians(159.0), 98e3, 2022.5)), ANGLE_ERROR);
-        assertEquals(-37.65, Math.toDegrees(estimator.getDip(Math.toRadians(-29.0),
+        assertEquals(-37.60, Math.toDegrees(estimator.getDip(Math.toRadians(-29.0),
                 Math.toRadians(-107.0), 34e3, 2022.5)), ANGLE_ERROR);
-        assertEquals(42.84, Math.toDegrees(estimator.getDip(Math.toRadians(27.0),
+        assertEquals(42.78, Math.toDegrees(estimator.getDip(Math.toRadians(27.0),
                 Math.toRadians(65.0), 60e3, 2022.5)), ANGLE_ERROR);
-        assertEquals(-76.44, Math.toDegrees(estimator.getDip(Math.toRadians(-72.0),
+        assertEquals(-76.46, Math.toDegrees(estimator.getDip(Math.toRadians(-72.0),
                 Math.toRadians(95.0), 73e3, 2022.5)), ANGLE_ERROR);
-        assertEquals(-47.38, Math.toDegrees(estimator.getDip(Math.toRadians(-46.0),
+        assertEquals(-47.34, Math.toDegrees(estimator.getDip(Math.toRadians(-46.0),
                 Math.toRadians(-85.0), 96e3, 2022.5)), ANGLE_ERROR);
-        assertEquals(-13.41, Math.toDegrees(estimator.getDip(Math.toRadians(-13.0),
+        assertEquals(-13.34, Math.toDegrees(estimator.getDip(Math.toRadians(-13.0),
                 Math.toRadians(-59.0), 0e3, 2022.5)), ANGLE_ERROR);
-        assertEquals(75.67, Math.toDegrees(estimator.getDip(Math.toRadians(66.0),
+        assertEquals(75.65, Math.toDegrees(estimator.getDip(Math.toRadians(66.0),
                 Math.toRadians(-178.0), 16e3, 2022.5)), ANGLE_ERROR);
-        assertEquals(-71.05, Math.toDegrees(estimator.getDip(Math.toRadians(-87.0),
+        assertEquals(-71.07, Math.toDegrees(estimator.getDip(Math.toRadians(-87.0),
                 Math.toRadians(38.0), 72e3, 2022.5)), ANGLE_ERROR);
 
-        assertEquals(26.85, Math.toDegrees(estimator.getDip(Math.toRadians(20.0),
+        assertEquals(26.88, Math.toDegrees(estimator.getDip(Math.toRadians(20.0),
                 Math.toRadians(167.0), 49e3, 2023.0)), ANGLE_ERROR);
-        assertEquals(-17.38, Math.toDegrees(estimator.getDip(Math.toRadians(5.0),
+        assertEquals(-17.29, Math.toDegrees(estimator.getDip(Math.toRadians(5.0),
                 Math.toRadians(-13.0), 71e3, 2023.0)), ANGLE_ERROR);
-        assertEquals(17.52, Math.toDegrees(estimator.getDip(Math.toRadians(14.0),
+        assertEquals(17.38, Math.toDegrees(estimator.getDip(Math.toRadians(14.0),
                 Math.toRadians(65.0), 95e3, 2023.0)), ANGLE_ERROR);
-        assertEquals(-70.36, Math.toDegrees(estimator.getDip(Math.toRadians(-85.0),
+        assertEquals(-70.37, Math.toDegrees(estimator.getDip(Math.toRadians(-85.0),
                 Math.toRadians(-79.0), 86e3, 2023.0)), ANGLE_ERROR);
-        assertEquals(-39.40, Math.toDegrees(estimator.getDip(Math.toRadians(-36.0),
+        assertEquals(-39.32, Math.toDegrees(estimator.getDip(Math.toRadians(-36.0),
                 Math.toRadians(-64.0), 30e3, 2023.0)), ANGLE_ERROR);
         assertEquals(87.30, Math.toDegrees(estimator.getDip(Math.toRadians(79.0),
                 Math.toRadians(125.0), 75e3, 2023.0)), ANGLE_ERROR);
-        assertEquals(-7.26, Math.toDegrees(estimator.getDip(Math.toRadians(6.0),
+        assertEquals(-7.14, Math.toDegrees(estimator.getDip(Math.toRadians(6.0),
                 Math.toRadians(-32.0), 21e3, 2023.0)), ANGLE_ERROR);
-        assertEquals(-65.32, Math.toDegrees(estimator.getDip(Math.toRadians(-76.0),
+        assertEquals(-65.31, Math.toDegrees(estimator.getDip(Math.toRadians(-76.0),
                 Math.toRadians(-75.0), 1e3, 2023.0)), ANGLE_ERROR);
-        assertEquals(-54.45, Math.toDegrees(estimator.getDip(Math.toRadians(-46.0),
+        assertEquals(-54.38, Math.toDegrees(estimator.getDip(Math.toRadians(-46.0),
                 Math.toRadians(-41.0), 45e3, 2023.0)), ANGLE_ERROR);
-        assertEquals(-56.82, Math.toDegrees(estimator.getDip(Math.toRadians(-22.0),
+        assertEquals(-56.69, Math.toDegrees(estimator.getDip(Math.toRadians(-22.0),
                 Math.toRadians(-21.0), 11e3, 2023.0)), ANGLE_ERROR);
 
-        assertEquals(74.02, Math.toDegrees(estimator.getDip(Math.toRadians(54.0),
+        assertEquals(74.00, Math.toDegrees(estimator.getDip(Math.toRadians(54.0),
                 Math.toRadians(-120.0), 28e3, 2023.5)), ANGLE_ERROR);
-        assertEquals(-81.60, Math.toDegrees(estimator.getDip(Math.toRadians(-58.0),
+        assertEquals(-81.59, Math.toDegrees(estimator.getDip(Math.toRadians(-58.0),
                 Math.toRadians(156.0), 68e3, 2023.5)), ANGLE_ERROR);
-        assertEquals(-60.29, Math.toDegrees(estimator.getDip(Math.toRadians(-65.0),
+        assertEquals(-60.27, Math.toDegrees(estimator.getDip(Math.toRadians(-65.0),
                 Math.toRadians(-88.0), 39e3, 2023.5)), ANGLE_ERROR);
-        assertEquals(-58.52, Math.toDegrees(estimator.getDip(Math.toRadians(-23.0),
+        assertEquals(-58.54, Math.toDegrees(estimator.getDip(Math.toRadians(-23.0),
                 Math.toRadians(81.0), 27e3, 2023.5)), ANGLE_ERROR);
-        assertEquals(46.69, Math.toDegrees(estimator.getDip(Math.toRadians(34.0),
+        assertEquals(46.72, Math.toDegrees(estimator.getDip(Math.toRadians(34.0),
                 0.0, 11e3, 2023.5)), ANGLE_ERROR);
-        assertEquals(-68.38, Math.toDegrees(estimator.getDip(Math.toRadians(-62.0),
+        assertEquals(-68.39, Math.toDegrees(estimator.getDip(Math.toRadians(-62.0),
                 Math.toRadians(65.0), 72e3, 2023.5)), ANGLE_ERROR);
-        assertEquals(87.51, Math.toDegrees(estimator.getDip(Math.toRadians(86.0),
+        assertEquals(87.48, Math.toDegrees(estimator.getDip(Math.toRadians(86.0),
                 Math.toRadians(70.0), 55e3, 2023.5)), ANGLE_ERROR);
-        assertEquals(43.05, Math.toDegrees(estimator.getDip(Math.toRadians(32.0),
+        assertEquals(43.07, Math.toDegrees(estimator.getDip(Math.toRadians(32.0),
                 Math.toRadians(163.0), 59e3, 2023.5)), ANGLE_ERROR);
         assertEquals(61.70, Math.toDegrees(estimator.getDip(Math.toRadians(48.0),
                 Math.toRadians(148.0), 65e3, 2023.5)), ANGLE_ERROR);
-        assertEquals(44.12, Math.toDegrees(estimator.getDip(Math.toRadians(30.0),
+        assertEquals(44.09, Math.toDegrees(estimator.getDip(Math.toRadians(30.0),
                 Math.toRadians(28.0), 95e3, 2023.5)), ANGLE_ERROR);
 
-        assertEquals(-55.03, Math.toDegrees(estimator.getDip(Math.toRadians(-60.0),
+        assertEquals(-55.00, Math.toDegrees(estimator.getDip(Math.toRadians(-60.0),
                 Math.toRadians(-59.0), 95e3, 2024.0)), ANGLE_ERROR);
-        assertEquals(-64.59, Math.toDegrees(estimator.getDip(Math.toRadians(-70.0),
+        assertEquals(-64.60, Math.toDegrees(estimator.getDip(Math.toRadians(-70.0),
                 Math.toRadians(42.0), 95e3, 2024.0)), ANGLE_ERROR);
-        assertEquals(89.39, Math.toDegrees(estimator.getDip(Math.toRadians(87.0),
+        assertEquals(89.38, Math.toDegrees(estimator.getDip(Math.toRadians(87.0),
                 Math.toRadians(-154.0), 50e3, 2024.0)), ANGLE_ERROR);
-        assertEquals(45.89, Math.toDegrees(estimator.getDip(Math.toRadians(32.0),
+        assertEquals(45.88, Math.toDegrees(estimator.getDip(Math.toRadians(32.0),
                 Math.toRadians(19.0), 58e3, 2024.0)), ANGLE_ERROR);
-        assertEquals(45.83, Math.toDegrees(estimator.getDip(Math.toRadians(34.0),
+        assertEquals(45.87, Math.toDegrees(estimator.getDip(Math.toRadians(34.0),
                 Math.toRadians(-13.0), 57e3, 2024.0)), ANGLE_ERROR);
-        assertEquals(-67.40, Math.toDegrees(estimator.getDip(Math.toRadians(-76.0),
+        assertEquals(-67.42, Math.toDegrees(estimator.getDip(Math.toRadians(-76.0),
                 Math.toRadians(49.0), 38e3, 2024.0)), ANGLE_ERROR);
         assertEquals(-71.40, Math.toDegrees(estimator.getDip(Math.toRadians(-50.0),
                 Math.toRadians(-179.0), 49e3, 2024.0)), ANGLE_ERROR);
         assertEquals(-72.91, Math.toDegrees(estimator.getDip(Math.toRadians(-55.0),
                 Math.toRadians(-171.0), 90e3, 2024.0)), ANGLE_ERROR);
-        assertEquals(56.57, Math.toDegrees(estimator.getDip(Math.toRadians(42.0),
+        assertEquals(56.60, Math.toDegrees(estimator.getDip(Math.toRadians(42.0),
                 Math.toRadians(-19.0), 41e3, 2024.0)), ANGLE_ERROR);
-        assertEquals(61.04, Math.toDegrees(estimator.getDip(Math.toRadians(46.0),
+        assertEquals(61.06, Math.toDegrees(estimator.getDip(Math.toRadians(46.0),
                 Math.toRadians(-22.0), 19e3, 2024.0)), ANGLE_ERROR);
 
-        assertEquals(31.51, Math.toDegrees(estimator.getDip(Math.toRadians(13.0),
+        assertEquals(31.28, Math.toDegrees(estimator.getDip(Math.toRadians(13.0),
                 Math.toRadians(-132.0), 31e3, 2024.5)), ANGLE_ERROR);
-        assertEquals(-17.78, Math.toDegrees(estimator.getDip(Math.toRadians(-2.0),
+        assertEquals(-17.65, Math.toDegrees(estimator.getDip(Math.toRadians(-2.0),
                 Math.toRadians(158.0), 93e3, 2024.5)), ANGLE_ERROR);
-        assertEquals(-66.27, Math.toDegrees(estimator.getDip(Math.toRadians(-76.0),
+        assertEquals(-66.29, Math.toDegrees(estimator.getDip(Math.toRadians(-76.0),
                 Math.toRadians(40.0), 51e3, 2024.5)), ANGLE_ERROR);
-        assertEquals(43.88, Math.toDegrees(estimator.getDip(Math.toRadians(22.0),
+        assertEquals(43.71, Math.toDegrees(estimator.getDip(Math.toRadians(22.0),
                 Math.toRadians(-132.0), 64e3, 2024.5)), ANGLE_ERROR);
-        assertEquals(-65.67, Math.toDegrees(estimator.getDip(Math.toRadians(-65.0),
+        assertEquals(-65.69, Math.toDegrees(estimator.getDip(Math.toRadians(-65.0),
                 Math.toRadians(55.0), 26e3, 2024.5)), ANGLE_ERROR);
-        assertEquals(-56.95, Math.toDegrees(estimator.getDip(Math.toRadians(-21.0),
+        assertEquals(-57.06, Math.toDegrees(estimator.getDip(Math.toRadians(-21.0),
                 Math.toRadians(32.0), 66e3, 2024.5)), ANGLE_ERROR);
-        assertEquals(15.78, Math.toDegrees(estimator.getDip(Math.toRadians(9.0),
+        assertEquals(15.77, Math.toDegrees(estimator.getDip(Math.toRadians(9.0),
                 Math.toRadians(-172.0), 18e3, 2024.5)), ANGLE_ERROR);
-        assertEquals(87.38, Math.toDegrees(estimator.getDip(Math.toRadians(88.0),
+        assertEquals(87.34, Math.toDegrees(estimator.getDip(Math.toRadians(88.0),
                 Math.toRadians(26.0), 63e3, 2024.5)), ANGLE_ERROR);
-        assertEquals(13.58, Math.toDegrees(estimator.getDip(Math.toRadians(17.0),
+        assertEquals(13.64, Math.toDegrees(estimator.getDip(Math.toRadians(17.0),
                 Math.toRadians(5.0), 33e3, 2024.5)), ANGLE_ERROR);
-        assertEquals(-47.71, Math.toDegrees(estimator.getDip(Math.toRadians(-18.0),
+        assertEquals(-47.61, Math.toDegrees(estimator.getDip(Math.toRadians(-18.0),
                 Math.toRadians(138.0), 77e3, 2024.5)), ANGLE_ERROR);
     }
 
     @Test
-    void testHorizontalIntensityModel() throws IOException {
+    void testDipModel2025() throws IOException {
+        // test values correspond to I (Deg) column in WMM test values document
         final var estimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        assertEquals(1510.0, estimator.getHorizontalIntensity(Math.toRadians(89.0), 
+        assertEquals(83.21, Math.toDegrees(estimator.getDip(Math.toRadians(80.0),
+                Math.toRadians(0.0), 0.0, 2025.0)), ANGLE_ERROR);
+        assertEquals(-14.93, Math.toDegrees(estimator.getDip(Math.toRadians(0.0),
+                Math.toRadians(120.0), 0.0, 2025.0)), ANGLE_ERROR);
+        assertEquals(-72.0, Math.toDegrees(estimator.getDip(Math.toRadians(-80.0),
+                Math.toRadians(240.0), 0.0, 2025.0)), ANGLE_ERROR);
+        assertEquals(83.26, Math.toDegrees(estimator.getDip(Math.toRadians(80.0),
+                Math.toRadians(0.0), 100e3, 2025.0)), ANGLE_ERROR);
+        assertEquals(-15.08, Math.toDegrees(estimator.getDip(Math.toRadians(0.0),
+                Math.toRadians(120.0), 100e3, 2025.0)), ANGLE_ERROR);
+        assertEquals(-72.19, Math.toDegrees(estimator.getDip(Math.toRadians(-80.0),
+                Math.toRadians(240.0), 100e3, 2025.0)), ANGLE_ERROR);
+
+        assertEquals(83.24, Math.toDegrees(estimator.getDip(Math.toRadians(80.0),
+                Math.toRadians(0.0), 0.0, 2027.5)), ANGLE_ERROR);
+        assertEquals(-14.65, Math.toDegrees(estimator.getDip(Math.toRadians(0.0),
+                Math.toRadians(120.0), 0.0, 2027.5)), ANGLE_ERROR);
+        assertEquals(-71.92, Math.toDegrees(estimator.getDip(Math.toRadians(-80.0),
+                Math.toRadians(240.0), 0.0, 2027.5)), ANGLE_ERROR);
+        assertEquals(83.29, Math.toDegrees(estimator.getDip(Math.toRadians(80.0),
+                Math.toRadians(0.0), 100e3, 2027.5)), ANGLE_ERROR);
+        assertEquals(-14.81, Math.toDegrees(estimator.getDip(Math.toRadians(0.0),
+                Math.toRadians(120.0), 100e3, 2027.5)), ANGLE_ERROR);
+        assertEquals(-72.10, Math.toDegrees(estimator.getDip(Math.toRadians(-80.0),
+                Math.toRadians(240.0), 100e3, 2027.5)), ANGLE_ERROR);
+    }
+
+    @Test
+    void testHorizontalIntensityModel2020() throws IOException {
+        final var estimator = new WMMEarthMagneticFluxDensityEstimator();
+
+        assertEquals(1489.24, estimator.getHorizontalIntensity(Math.toRadians(89.0),
                 Math.toRadians(-121.0), 28e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(1910.8, estimator.getHorizontalIntensity(Math.toRadians(80.0),
+        assertEquals(1901.61, estimator.getHorizontalIntensity(Math.toRadians(80.0),
                 Math.toRadians(-96.0), 48e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(2487.8, estimator.getHorizontalIntensity(
+        assertEquals(2479.65, estimator.getHorizontalIntensity(
                 Math.toRadians(82.0), Math.toRadians(87.0), 54e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(24377.2, estimator.getHorizontalIntensity(
+        assertEquals(24320.49, estimator.getHorizontalIntensity(
                 Math.toRadians(43.0), Math.toRadians(93.0), 65e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(21666.6, estimator.getHorizontalIntensity(
+        assertEquals(21689.41, estimator.getHorizontalIntensity(
                 Math.toRadians(-33.0), Math.toRadians(109.0), 51e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(14933.4, estimator.getHorizontalIntensity(
+        assertEquals(14922.65, estimator.getHorizontalIntensity(
                 Math.toRadians(-59.0), Math.toRadians(-8.0), 39e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(22315.5, estimator.getHorizontalIntensity(
+        assertEquals(22316.83, estimator.getHorizontalIntensity(
                 Math.toRadians(-50.0), Math.toRadians(-103.0), 3e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(24392.0, estimator.getHorizontalIntensity(
+        assertEquals(24394.27, estimator.getHorizontalIntensity(
                 Math.toRadians(-29.0), Math.toRadians(-110.0), 94e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(34916.9, estimator.getHorizontalIntensity(
+        assertEquals(34949.80, estimator.getHorizontalIntensity(
                 Math.toRadians(14.0), Math.toRadians(143.0), 66e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(29316.1, estimator.getHorizontalIntensity(
+        assertEquals(29326.16, estimator.getHorizontalIntensity(
                 0.0, Math.toRadians(21.0), 18e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(25511.4, estimator.getHorizontalIntensity(
+        assertEquals(25525.61, estimator.getHorizontalIntensity(
                 Math.toRadians(-36.0), Math.toRadians(-137.0), 6e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(34738.7, estimator.getHorizontalIntensity(
+        assertEquals(34702.32, estimator.getHorizontalIntensity(
                 Math.toRadians(26.0), Math.toRadians(81.0), 63e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(23279.9, estimator.getHorizontalIntensity(
+        assertEquals(23267.06, estimator.getHorizontalIntensity(
                 Math.toRadians(38.0), Math.toRadians(-144.0), 69e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(16597.2, estimator.getHorizontalIntensity(
+        assertEquals(16613.84, estimator.getHorizontalIntensity(
                 Math.toRadians(-70.0), Math.toRadians(-133.0), 50e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(20299.7, estimator.getHorizontalIntensity(
+        assertEquals(20298.75, estimator.getHorizontalIntensity(
                 Math.toRadians(-52.0), Math.toRadians(-75.0), 8e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(18089.7, estimator.getHorizontalIntensity(
+        assertEquals(18105.35, estimator.getHorizontalIntensity(
                 Math.toRadians(-66.0), Math.toRadians(17.0), 8e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(21705.2, estimator.getHorizontalIntensity(
+        assertEquals(21686.95, estimator.getHorizontalIntensity(
                 Math.toRadians(-37.0), Math.toRadians(140.0), 22e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(29295.6, estimator.getHorizontalIntensity(
+        assertEquals(29301.82, estimator.getHorizontalIntensity(
                 Math.toRadians(-12.0), Math.toRadians(-129.0), 40e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(23890.9, estimator.getHorizontalIntensity(
+        assertEquals(23887.76, estimator.getHorizontalIntensity(
                 Math.toRadians(33.0), Math.toRadians(-118.0), 44e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(18332.1, estimator.getHorizontalIntensity(
+        assertEquals(18357.80, estimator.getHorizontalIntensity(
                 Math.toRadians(-81.0), Math.toRadians(-67.0), 50e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(14296.6, estimator.getHorizontalIntensity(
+        assertEquals(14297.56, estimator.getHorizontalIntensity(
                 Math.toRadians(-57.0), Math.toRadians(3.0), 74e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(26836.5, estimator.getHorizontalIntensity(
+        assertEquals(26841.07, estimator.getHorizontalIntensity(
                 Math.toRadians(-24.0), Math.toRadians(-122.0), 46e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(34456.5, estimator.getHorizontalIntensity(
+        assertEquals(34446.60, estimator.getHorizontalIntensity(
                 Math.toRadians(23.0), Math.toRadians(63.0), 69e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(31138.6, estimator.getHorizontalIntensity(
+        assertEquals(31139.48, estimator.getHorizontalIntensity(
                 Math.toRadians(-3.0), Math.toRadians(-147.0), 33e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(18455.7, estimator.getHorizontalIntensity(
+        assertEquals(18472.38, estimator.getHorizontalIntensity(
                 Math.toRadians(-72.0), Math.toRadians(-22.0), 47e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(33227.7, estimator.getHorizontalIntensity(
+        assertEquals(33254.98, estimator.getHorizontalIntensity(
                 Math.toRadians(-14.0), Math.toRadians(99.0), 62e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(3004.8, estimator.getHorizontalIntensity(
+        assertEquals(3000.94, estimator.getHorizontalIntensity(
                 Math.toRadians(86.0), Math.toRadians(-46.0), 83e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(14087.8, estimator.getHorizontalIntensity(
+        assertEquals(14091.82, estimator.getHorizontalIntensity(
                 Math.toRadians(-64.0), Math.toRadians(87.0), 82e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(19947.3, estimator.getHorizontalIntensity(
+        assertEquals(19958.76, estimator.getHorizontalIntensity(
                 Math.toRadians(-19.0), Math.toRadians(43.0), 34e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(17872.0, estimator.getHorizontalIntensity(
+        assertEquals(17885.94, estimator.getHorizontalIntensity(
                 Math.toRadians(-81.0), Math.toRadians(40.0), 56e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(39316.2, estimator.getHorizontalIntensity(0.0,
+        assertEquals(39321.48, estimator.getHorizontalIntensity(0.0,
                 Math.toRadians(80.0), 14e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(18536.8, estimator.getHorizontalIntensity(Math.toRadians(-82.0),
+        assertEquals(18553.84, estimator.getHorizontalIntensity(Math.toRadians(-82.0),
                 Math.toRadians(-68.0), 12e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(14450.9, estimator.getHorizontalIntensity(
+        assertEquals(14456.79, estimator.getHorizontalIntensity(
                 Math.toRadians(-46.0), Math.toRadians(-42.0), 44e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(35904.4, estimator.getHorizontalIntensity(
+        assertEquals(35900.94, estimator.getHorizontalIntensity(
                 Math.toRadians(17.0), Math.toRadians(52.0), 43e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(39311.5, estimator.getHorizontalIntensity(
+        assertEquals(39302.87, estimator.getHorizontalIntensity(
                 Math.toRadians(10.0), Math.toRadians(78.0), 64e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(24878.3, estimator.getHorizontalIntensity(
+        assertEquals(24877.86, estimator.getHorizontalIntensity(
                 Math.toRadians(33.0), Math.toRadians(-145.0), 12e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(12997.3, estimator.getHorizontalIntensity(
+        assertEquals(12989.03, estimator.getHorizontalIntensity(
                 Math.toRadians(-79.0), Math.toRadians(115.0), 12e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(24820.9, estimator.getHorizontalIntensity(
+        assertEquals(24827.20, estimator.getHorizontalIntensity(
                 Math.toRadians(-33.0), Math.toRadians(-114.0), 14e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(32640.6, estimator.getHorizontalIntensity(
+        assertEquals(32631.44, estimator.getHorizontalIntensity(
                 Math.toRadians(29.0), Math.toRadians(66.0), 19e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(33191.7, estimator.getHorizontalIntensity(Math.toRadians(-11.0), 
+        assertEquals(33188.54, estimator.getHorizontalIntensity(Math.toRadians(-11.0),
                 Math.toRadians(167.0), 86e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(17152.6, estimator.getHorizontalIntensity(Math.toRadians(-66.0), 
+        assertEquals(17170.34, estimator.getHorizontalIntensity(Math.toRadians(-66.0),
                 Math.toRadians(-5.0), 37e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(4703.2, estimator.getHorizontalIntensity(Math.toRadians(72.0), 
+        assertEquals(4696.01, estimator.getHorizontalIntensity(Math.toRadians(72.0),
                 Math.toRadians(-115.0), 67e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(28859.7, estimator.getHorizontalIntensity(Math.toRadians(22.0), 
+        assertEquals(28853.48, estimator.getHorizontalIntensity(Math.toRadians(22.0),
                 Math.toRadians(174.0), 44e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(20631.2, estimator.getHorizontalIntensity(Math.toRadians(54.0), 
+        assertEquals(20638.93, estimator.getHorizontalIntensity(Math.toRadians(54.0),
                 Math.toRadians(178.0), 54e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(16769.3, estimator.getHorizontalIntensity(Math.toRadians(-43.0), 
+        assertEquals(16773.57, estimator.getHorizontalIntensity(Math.toRadians(-43.0),
                 Math.toRadians(50.0), 57e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(22656.4, estimator.getHorizontalIntensity(Math.toRadians(-43.0), 
+        assertEquals(22662.77, estimator.getHorizontalIntensity(Math.toRadians(-43.0),
                 Math.toRadians(-111.0), 44e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(11577.2, estimator.getHorizontalIntensity(Math.toRadians(-63.0), 
+        assertEquals(11584.97, estimator.getHorizontalIntensity(Math.toRadians(-63.0),
                 Math.toRadians(178.0), 12e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(26202.3, estimator.getHorizontalIntensity(Math.toRadians(27.0), 
+        assertEquals(26202.78, estimator.getHorizontalIntensity(Math.toRadians(27.0),
                 Math.toRadians(-169.0), 38e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(10595.8, estimator.getHorizontalIntensity(Math.toRadians(59.0), 
+        assertEquals(10588.73, estimator.getHorizontalIntensity(Math.toRadians(59.0),
                 Math.toRadians(-77.0), 61e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(13056.5, estimator.getHorizontalIntensity(Math.toRadians(-47.0), 
+        assertEquals(13068.78, estimator.getHorizontalIntensity(Math.toRadians(-47.0),
                 Math.toRadians(-32.0), 67e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(13043.3, estimator.getHorizontalIntensity(Math.toRadians(62.0), 
+        assertEquals(13062.66, estimator.getHorizontalIntensity(Math.toRadians(62.0),
                 Math.toRadians(53.0), 8e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(17268.3, estimator.getHorizontalIntensity(Math.toRadians(-68.0), 
+        assertEquals(17288.51, estimator.getHorizontalIntensity(Math.toRadians(-68.0),
                 Math.toRadians(-7.0), 77e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(33927.0, estimator.getHorizontalIntensity(Math.toRadians(-5.0), 
+        assertEquals(33916.26, estimator.getHorizontalIntensity(Math.toRadians(-5.0),
                 Math.toRadians(159.0), 98e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(24657.0, estimator.getHorizontalIntensity(Math.toRadians(-29.0), 
+        assertEquals(24667.76, estimator.getHorizontalIntensity(Math.toRadians(-29.0),
                 Math.toRadians(-107.0), 34e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(32954.8, estimator.getHorizontalIntensity(Math.toRadians(27.0), 
+        assertEquals(32962.51, estimator.getHorizontalIntensity(Math.toRadians(27.0),
                 Math.toRadians(65.0), 60e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(13362.8, estimator.getHorizontalIntensity(Math.toRadians(-72.0), 
+        assertEquals(13351.76, estimator.getHorizontalIntensity(Math.toRadians(-72.0),
                 Math.toRadians(95.0), 73e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(20165.1, estimator.getHorizontalIntensity(Math.toRadians(-46.0), 
+        assertEquals(20181.23, estimator.getHorizontalIntensity(Math.toRadians(-46.0),
                 Math.toRadians(-85.0), 96e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(22751.7, estimator.getHorizontalIntensity(Math.toRadians(-13.0), 
+        assertEquals(22748.40, estimator.getHorizontalIntensity(Math.toRadians(-13.0),
                 Math.toRadians(-59.0), 0e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(13812.2, estimator.getHorizontalIntensity(Math.toRadians(66.0), 
+        assertEquals(13833.66, estimator.getHorizontalIntensity(Math.toRadians(66.0),
                 Math.toRadians(-178.0), 16e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(16666.4, estimator.getHorizontalIntensity(Math.toRadians(-87.0), 
+        assertEquals(16660.39, estimator.getHorizontalIntensity(Math.toRadians(-87.0),
                 Math.toRadians(38.0), 72e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(30223.6, estimator.getHorizontalIntensity(Math.toRadians(20.0), 
+        assertEquals(30203.82, estimator.getHorizontalIntensity(Math.toRadians(20.0),
                 Math.toRadians(167.0), 49e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(28445.5, estimator.getHorizontalIntensity(Math.toRadians(5.0), 
+        assertEquals(28416.81, estimator.getHorizontalIntensity(Math.toRadians(5.0),
                 Math.toRadians(-13.0), 71e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(36805.8, estimator.getHorizontalIntensity(Math.toRadians(14.0), 
+        assertEquals(36788.89, estimator.getHorizontalIntensity(Math.toRadians(14.0),
                 Math.toRadians(65.0), 95e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(16888.7, estimator.getHorizontalIntensity(Math.toRadians(-85.0), 
+        assertEquals(16885.51, estimator.getHorizontalIntensity(Math.toRadians(-85.0),
                 Math.toRadians(-79.0), 86e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(17735.3, estimator.getHorizontalIntensity(Math.toRadians(-36.0), 
+        assertEquals(17748.96, estimator.getHorizontalIntensity(Math.toRadians(-36.0),
                 Math.toRadians(-64.0), 30e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(2692.1, estimator.getHorizontalIntensity(Math.toRadians(79.0), 
+        assertEquals(2696.26, estimator.getHorizontalIntensity(Math.toRadians(79.0),
                 Math.toRadians(125.0), 75e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(28634.3, estimator.getHorizontalIntensity(Math.toRadians(6.0), 
+        assertEquals(28601.69, estimator.getHorizontalIntensity(Math.toRadians(6.0),
                 Math.toRadians(-32.0), 21e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(19700.9, estimator.getHorizontalIntensity(Math.toRadians(-76.0), 
+        assertEquals(19712.46, estimator.getHorizontalIntensity(Math.toRadians(-76.0),
                 Math.toRadians(-75.0), 1e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(14187.4, estimator.getHorizontalIntensity(Math.toRadians(-46.0), 
+        assertEquals(14211.29, estimator.getHorizontalIntensity(Math.toRadians(-46.0),
                 Math.toRadians(-41.0), 45e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(13972.9, estimator.getHorizontalIntensity(Math.toRadians(-22.0), 
+        assertEquals(13992.67, estimator.getHorizontalIntensity(Math.toRadians(-22.0),
                 Math.toRadians(-21), 11e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(15158.8, estimator.getHorizontalIntensity(Math.toRadians(54.0), 
+        assertEquals(15183.36, estimator.getHorizontalIntensity(Math.toRadians(54.0),
                 Math.toRadians(-120.0), 28e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(9223.1, estimator.getHorizontalIntensity(Math.toRadians(-58.0), 
+        assertEquals(9228.26, estimator.getHorizontalIntensity(Math.toRadians(-58.0),
                 Math.toRadians(156.0), 68e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(20783.0, estimator.getHorizontalIntensity(Math.toRadians(-65.0), 
+        assertEquals(20793.19, estimator.getHorizontalIntensity(Math.toRadians(-65.0),
                 Math.toRadians(-88.0), 39e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(25568.2, estimator.getHorizontalIntensity(Math.toRadians(-23.0), 
+        assertEquals(25533.82, estimator.getHorizontalIntensity(Math.toRadians(-23.0),
                 Math.toRadians(81.0), 27e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(29038.8, estimator.getHorizontalIntensity(Math.toRadians(34.0), 
+        assertEquals(29013.67, estimator.getHorizontalIntensity(Math.toRadians(34.0),
                 0.0, 11e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(17485.0, estimator.getHorizontalIntensity(Math.toRadians(-62.0), 
+        assertEquals(17476.39, estimator.getHorizontalIntensity(Math.toRadians(-62.0),
                 Math.toRadians(65.0), 72e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(2424.9, estimator.getHorizontalIntensity(Math.toRadians(86.0), 
+        assertEquals(2452.16, estimator.getHorizontalIntensity(Math.toRadians(86.0),
                 Math.toRadians(70.0), 55e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(28170.6, estimator.getHorizontalIntensity(Math.toRadians(32.0), 
+        assertEquals(28152.41, estimator.getHorizontalIntensity(Math.toRadians(32.0),
                 Math.toRadians(163.0), 59e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(23673.8, estimator.getHorizontalIntensity(Math.toRadians(48.0), 
+        assertEquals(23671.22, estimator.getHorizontalIntensity(Math.toRadians(48.0),
                 Math.toRadians(148.0), 65e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(29754.7, estimator.getHorizontalIntensity(Math.toRadians(30.0), 
+        assertEquals(29744.79, estimator.getHorizontalIntensity(Math.toRadians(30.0),
                 Math.toRadians(28.0), 95e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(18317.9, estimator.getHorizontalIntensity(
+        assertEquals(18344.24, estimator.getHorizontalIntensity(
                 Math.toRadians(-60.0), Math.toRadians(-59.0), 95e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(18188.3, estimator.getHorizontalIntensity(
+        assertEquals(18186.37, estimator.getHorizontalIntensity(
                 Math.toRadians(-70.0), Math.toRadians(42.0), 95e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(597.9, estimator.getHorizontalIntensity(
+        assertEquals(605.0402581120115, estimator.getHorizontalIntensity(
                 Math.toRadians(87.0), Math.toRadians(-154.0), 50e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(29401.0, estimator.getHorizontalIntensity(
+        assertEquals(29382.38, estimator.getHorizontalIntensity(
                 Math.toRadians(32.0), Math.toRadians(19.0), 58e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(28188.3, estimator.getHorizontalIntensity(
+        assertEquals(28153.87, estimator.getHorizontalIntensity(
                 Math.toRadians(34.0), Math.toRadians(-13.0), 57e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(18425.8, estimator.getHorizontalIntensity(
+        assertEquals(18414.65, estimator.getHorizontalIntensity(
                 Math.toRadians(-76.0), Math.toRadians(49.0), 38e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(18112.2, estimator.getHorizontalIntensity(
+        assertEquals(18107.00, estimator.getHorizontalIntensity(
                 Math.toRadians(-50.0), Math.toRadians(-179.0), 49e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(16409.7, estimator.getHorizontalIntensity(
+        assertEquals(16404.29, estimator.getHorizontalIntensity(
                 Math.toRadians(-55.0), Math.toRadians(-171.0), 90e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(24410.2, estimator.getHorizontalIntensity(
+        assertEquals(24382.98, estimator.getHorizontalIntensity(
                 Math.toRadians(42.0), Math.toRadians(-19.0), 41e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(22534.0, estimator.getHorizontalIntensity(
+        assertEquals(22508.38, estimator.getHorizontalIntensity(
                 Math.toRadians(46.0), Math.toRadians(-22.0), 19e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(28413.4, estimator.getHorizontalIntensity(
+        assertEquals(28433.21, estimator.getHorizontalIntensity(
                 Math.toRadians(13.0), Math.toRadians(-132.0), 31e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(34124.3, estimator.getHorizontalIntensity(
+        assertEquals(34108.06, estimator.getHorizontalIntensity(
                 Math.toRadians(-2.0), Math.toRadians(158.0), 93e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(18529.2, estimator.getHorizontalIntensity(
+        assertEquals(18518.30, estimator.getHorizontalIntensity(
                 Math.toRadians(-76.0), Math.toRadians(40.0), 51e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(26250.1, estimator.getHorizontalIntensity(
+        assertEquals(26293.20, estimator.getHorizontalIntensity(
                 Math.toRadians(22.0), Math.toRadians(-132.0), 64e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(18702.1, estimator.getHorizontalIntensity(
+        assertEquals(18690.95, estimator.getHorizontalIntensity(
                 Math.toRadians(-65.0), Math.toRadians(55.0), 26e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(15940.8, estimator.getHorizontalIntensity(
+        assertEquals(15914.15, estimator.getHorizontalIntensity(
                 Math.toRadians(-21.0), Math.toRadians(32.0), 66e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(31031.6, estimator.getHorizontalIntensity(
+        assertEquals(31008.20, estimator.getHorizontalIntensity(
                 Math.toRadians(9.0), Math.toRadians(-172.0), 18e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(2523.6, estimator.getHorizontalIntensity(
+        assertEquals(2563.25, estimator.getHorizontalIntensity(
                 Math.toRadians(88.0), Math.toRadians(26.0), 63e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(34062.9, estimator.getHorizontalIntensity(
+        assertEquals(34011.43, estimator.getHorizontalIntensity(
                 Math.toRadians(17.0), Math.toRadians(5.0), 33e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(31825.9, estimator.getHorizontalIntensity(
+        assertEquals(31843.29, estimator.getHorizontalIntensity(
                 Math.toRadians(-18.0), Math.toRadians(138.0), 77e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
     }
 
     @Test
-    void testNorthIntensityModel() throws IOException {
+    void testHorizontalIntensityModel2025() throws IOException {
+        // test values correspond to H (nT) column in WMM test values document
         final var estimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        assertEquals(-575.7, estimator.getNorthIntensity(
+        assertEquals(6523.2, estimator.getHorizontalIntensity(Math.toRadians(80.0),
+                Math.toRadians(0.0), 0.0, 2025.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(39677.9, estimator.getHorizontalIntensity(Math.toRadians(0.0),
+                Math.toRadians(120.0), 0.0, 2025.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(16898.1, estimator.getHorizontalIntensity(Math.toRadians(-80.0),
+                Math.toRadians(240.0), 0.0, 2025.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(6216.7, estimator.getHorizontalIntensity(Math.toRadians(80.0),
+                Math.toRadians(0.0), 100e3, 2025.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(37688.7, estimator.getHorizontalIntensity(Math.toRadians(0.0),
+                Math.toRadians(120.0), 100e3, 2025.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(15917.1, estimator.getHorizontalIntensity(Math.toRadians(-80.0),
+                Math.toRadians(240.0), 100e3, 2025.0) * TO_NANO, INTENSITY_ERROR);
+
+        assertEquals(6507.5, estimator.getHorizontalIntensity(Math.toRadians(80.0),
+                Math.toRadians(0.0), 0.0, 2027.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(39702.0, estimator.getHorizontalIntensity(Math.toRadians(0.0),
+                Math.toRadians(120.0), 0.0, 2027.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(16908.3, estimator.getHorizontalIntensity(Math.toRadians(-80.0),
+                Math.toRadians(240.0), 0.0, 2027.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(6201.1, estimator.getHorizontalIntensity(Math.toRadians(80.0),
+                Math.toRadians(0.0), 100e3, 2027.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(37711.8, estimator.getHorizontalIntensity(Math.toRadians(0.0),
+                Math.toRadians(120.0), 100e3, 2027.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(15927.0, estimator.getHorizontalIntensity(Math.toRadians(-80.0),
+                Math.toRadians(240.0), 100e3, 2027.5) * TO_NANO, INTENSITY_ERROR);
+    }
+
+    @Test
+    void testNorthIntensityModel2020() throws IOException {
+        final var estimator = new WMMEarthMagneticFluxDensityEstimator();
+
+        assertEquals(-569.01, estimator.getNorthIntensity(
                 Math.toRadians(89.0), Math.toRadians(-121.0), 28e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
         assertEquals(1518.0, estimator.getNorthIntensity(
                 Math.toRadians(80.0), Math.toRadians(-96.0), 48e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(1555.6, estimator.getNorthIntensity(
+        assertEquals(1568.00, estimator.getNorthIntensity(
                 Math.toRadians(82.0), Math.toRadians(87.0), 54e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(24375.3, estimator.getNorthIntensity(
+        assertEquals(24319.18, estimator.getNorthIntensity(
                 Math.toRadians(43.0), Math.toRadians(93.0), 65e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(21556.3, estimator.getNorthIntensity(
+        assertEquals(21576.68, estimator.getNorthIntensity(
                 Math.toRadians(-33.0), Math.toRadians(109.0), 51e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(14369.9, estimator.getNorthIntensity(
+        assertEquals(14358.57, estimator.getNorthIntensity(
                 Math.toRadians(-59.0), Math.toRadians(-8), 39e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(19684.4, estimator.getNorthIntensity(
+        assertEquals(19683.62, estimator.getNorthIntensity(
                 Math.toRadians(-50.0), Math.toRadians(-103.0), 3e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(23467.8, estimator.getNorthIntensity(
+        assertEquals(23473.45, estimator.getNorthIntensity(
                 Math.toRadians(-29.0), Math.toRadians(-110.0), 94e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(34916.8, estimator.getNorthIntensity(
+        assertEquals(34949.76, estimator.getNorthIntensity(
                 Math.toRadians(14.0), Math.toRadians(143.0), 66e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(29311.2, estimator.getNorthIntensity(
+        assertEquals(29320.37, estimator.getNorthIntensity(
                 0.0, Math.toRadians(21.0), 18e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(23948.6, estimator.getNorthIntensity(
+        assertEquals(23963.00, estimator.getNorthIntensity(
                 Math.toRadians(-36.0), Math.toRadians(-137.0), 6e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(34737.7, estimator.getNorthIntensity(
+        assertEquals(34701.41, estimator.getNorthIntensity(
                 Math.toRadians(26.0), Math.toRadians(81.0), 63e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(22647.3, estimator.getNorthIntensity(
+        assertEquals(22628.77, estimator.getNorthIntensity(
                 Math.toRadians(38.0), Math.toRadians(-144.0), 69e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(8943.1, estimator.getNorthIntensity(
+        assertEquals(8953.37, estimator.getNorthIntensity(
                 Math.toRadians(-70.0), Math.toRadians(-133.0), 50e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(19571.7, estimator.getNorthIntensity(
+        assertEquals(19570.30, estimator.getNorthIntensity(
                 Math.toRadians(-52.0), Math.toRadians(-75.0), 8e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(15247.0, estimator.getNorthIntensity(
+        assertEquals(15257.10, estimator.getNorthIntensity(
                 Math.toRadians(-66.0), Math.toRadians(17.0), 8e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(21429.0, estimator.getNorthIntensity(
+        assertEquals(21411.62, estimator.getNorthIntensity(
                 Math.toRadians(-37.0), Math.toRadians(140.0), 22e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(28773.9, estimator.getNorthIntensity(
+        assertEquals(28782.41, estimator.getNorthIntensity(
                 Math.toRadians(-12.0), Math.toRadians(-129.0), 40e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(23414.3, estimator.getNorthIntensity(
+        assertEquals(23410.32, estimator.getNorthIntensity(
                 Math.toRadians(33.0), Math.toRadians(-118.0), 44e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(16087.9, estimator.getNorthIntensity(
+        assertEquals(16114.64, estimator.getNorthIntensity(
                 Math.toRadians(-81.0), Math.toRadians(-67.0), 50e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(13228.0, estimator.getNorthIntensity(
+        assertEquals(13226.48, estimator.getNorthIntensity(
                 Math.toRadians(-57.0), Math.toRadians(3.0), 74e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(26037.0, estimator.getNorthIntensity(
+        assertEquals(26042.82, estimator.getNorthIntensity(
                 Math.toRadians(-24.0), Math.toRadians(-122.0), 46e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(34450.4, estimator.getNorthIntensity(
+        assertEquals(34440.16, estimator.getNorthIntensity(
                 Math.toRadians(23.0), Math.toRadians(63.0), 69e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(30690.1, estimator.getNorthIntensity(
+        assertEquals(30690.47, estimator.getNorthIntensity(
                 Math.toRadians(-3.0), Math.toRadians(-147.0), 33e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(18352.8, estimator.getNorthIntensity(
+        assertEquals(18368.53, estimator.getNorthIntensity(
                 Math.toRadians(-72.0), Math.toRadians(-22.0), 47e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(33213.0, estimator.getNorthIntensity(
+        assertEquals(33239.63, estimator.getNorthIntensity(
                 Math.toRadians(-14.0), Math.toRadians(99.0), 62e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(2408.8, estimator.getNorthIntensity(
+        assertEquals(2405.14, estimator.getNorthIntensity(
                 Math.toRadians(86.0), Math.toRadians(-46.0), 83e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(2249.5, estimator.getNorthIntensity(
+        assertEquals(2249.69, estimator.getNorthIntensity(
                 Math.toRadians(-64.0), Math.toRadians(87.0), 82e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(19327.6, estimator.getNorthIntensity(
+        assertEquals(19341.10, estimator.getNorthIntensity(
                 Math.toRadians(-19.0), Math.toRadians(43.0), 34e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(9198.0, estimator.getNorthIntensity(
+        assertEquals(9201.77, estimator.getNorthIntensity(
                 Math.toRadians(-81.0), Math.toRadians(40.0), 56e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(39246.6, estimator.getNorthIntensity(
+        assertEquals(39253.06, estimator.getNorthIntensity(
                 0.0, Math.toRadians(80.0), 14e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(15995.1, estimator.getNorthIntensity(
+        assertEquals(16016.96, estimator.getNorthIntensity(
                 Math.toRadians(-82.0), Math.toRadians(-68.0), 12e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(14159.0, estimator.getNorthIntensity(
+        assertEquals(14163.87, estimator.getNorthIntensity(
                 Math.toRadians(-46.0), Math.toRadians(-42.0), 44e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(35896.1, estimator.getNorthIntensity(
+        assertEquals(35892.47, estimator.getNorthIntensity(
                 Math.toRadians(17.0), Math.toRadians(52.0), 43e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(39294.0, estimator.getNorthIntensity(
+        assertEquals(39285.94, estimator.getNorthIntensity(
                 Math.toRadians(10.0), Math.toRadians(78.0), 64e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(24301.2, estimator.getNorthIntensity(
+        assertEquals(24298.62, estimator.getNorthIntensity(
                 Math.toRadians(33.0), Math.toRadians(-145.0), 12e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-9403.6, estimator.getNorthIntensity(
+        assertEquals(-9400.74, estimator.getNorthIntensity(
                 Math.toRadians(-79.0), Math.toRadians(115.0), 12e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(23592.3, estimator.getNorthIntensity(
+        assertEquals(23596.33, estimator.getNorthIntensity(
                 Math.toRadians(-33.0), Math.toRadians(-114.0), 14e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(32618.0, estimator.getNorthIntensity(
+        assertEquals(32608.56, estimator.getNorthIntensity(
                 Math.toRadians(29.0), Math.toRadians(66.0), 19e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(32676.0, estimator.getNorthIntensity(
+        assertEquals(32667.21, estimator.getNorthIntensity(
                 Math.toRadians(-11.0), Math.toRadians(167.0), 86e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(16404.3, estimator.getNorthIntensity(
+        assertEquals(16420.02, estimator.getNorthIntensity(
                 Math.toRadians(-66.0), Math.toRadians(-5.0), 37e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(4532.7, estimator.getNorthIntensity(
+        assertEquals(4527.01, estimator.getNorthIntensity(
                 Math.toRadians(72.0), Math.toRadians(-115.0), 67e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(28671.0, estimator.getNorthIntensity(
+        assertEquals(28663.07, estimator.getNorthIntensity(
                 Math.toRadians(22.0), Math.toRadians(174.0), 44e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(20624.8, estimator.getNorthIntensity(
+        assertEquals(20632.06, estimator.getNorthIntensity(
                 Math.toRadians(54.0), Math.toRadians(178.0), 54e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(11344.6, estimator.getNorthIntensity(
+        assertEquals(11344.45, estimator.getNorthIntensity(
                 Math.toRadians(-43.0), Math.toRadians(50.0), 57e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(20646.1, estimator.getNorthIntensity(
+        assertEquals(20648.98, estimator.getNorthIntensity(
                 Math.toRadians(-43.0), Math.toRadians(-111.0), 44e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(6292.0, estimator.getNorthIntensity(
+        assertEquals(6292.51, estimator.getNorthIntensity(
                 Math.toRadians(-63.0), Math.toRadians(178.0), 12e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(25896.5, estimator.getNorthIntensity(
+        assertEquals(25895.94, estimator.getNorthIntensity(
                 Math.toRadians(27.0), Math.toRadians(-169.0), 38e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(10098.3, estimator.getNorthIntensity(
+        assertEquals(10089.60, estimator.getNorthIntensity(
                 Math.toRadians(59.0), Math.toRadians(-77.0), 61e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(12663.7, estimator.getNorthIntensity(
+        assertEquals(12675.72, estimator.getNorthIntensity(
                 Math.toRadians(-47.0), Math.toRadians(-32.0), 67e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(12336.1, estimator.getNorthIntensity(
+        assertEquals(12358.70, estimator.getNorthIntensity(
                 Math.toRadians(62.0), Math.toRadians(53.0), 8e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(16604.7, estimator.getNorthIntensity(
+        assertEquals(16622.96, estimator.getNorthIntensity(
                 Math.toRadians(-68.0), Math.toRadians(-7.0), 77e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(33613.6, estimator.getNorthIntensity(
+        assertEquals(33600.90, estimator.getNorthIntensity(
                 Math.toRadians(-5.0), Math.toRadians(159.0), 98e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(23739.9, estimator.getNorthIntensity(
+        assertEquals(23744.08, estimator.getNorthIntensity(
                 Math.toRadians(-29.0), Math.toRadians(-107.0), 34e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(32938.8, estimator.getNorthIntensity(
+        assertEquals(32946.83, estimator.getNorthIntensity(
                 Math.toRadians(27.0), Math.toRadians(65.0), 60e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-2661.0, estimator.getNorthIntensity(
+        assertEquals(-2655.06, estimator.getNorthIntensity(
                 Math.toRadians(-72.0), Math.toRadians(95.0), 73e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(19136.4, estimator.getNorthIntensity(
+        assertEquals(19151.99, estimator.getNorthIntensity(
                 Math.toRadians(-46.0), Math.toRadians(-85.0), 96e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(21797.3, estimator.getNorthIntensity(
+        assertEquals(21796.35, estimator.getNorthIntensity(
                 Math.toRadians(-13.0), Math.toRadians(-59.0), 0e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(13804.5, estimator.getNorthIntensity(
+        assertEquals(13825.18, estimator.getNorthIntensity(
                 Math.toRadians(66.0), Math.toRadians(-178.0), 16e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(7132.3, estimator.getNorthIntensity(
+        assertEquals(7121.06, estimator.getNorthIntensity(
                 Math.toRadians(-87.0), Math.toRadians(38.0), 72e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(30099.4, estimator.getNorthIntensity(
+        assertEquals(30079.35, estimator.getNorthIntensity(
                 Math.toRadians(20.0), Math.toRadians(167.0), 49e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(28217.7, estimator.getNorthIntensity(
+        assertEquals(28186.31, estimator.getNorthIntensity(
                 Math.toRadians(5.0), Math.toRadians(-13.0), 71e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(36804.1, estimator.getNorthIntensity(
+        assertEquals(36787.06, estimator.getNorthIntensity(
                 Math.toRadians(14.0), Math.toRadians(65.0), 95e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(12598.0, estimator.getNorthIntensity(
+        assertEquals(12608.27, estimator.getNorthIntensity(
                 Math.toRadians(-85.0), Math.toRadians(-79.0), 86e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(17694.8, estimator.getNorthIntensity(
+        assertEquals(17708.76, estimator.getNorthIntensity(
                 Math.toRadians(-36.0), Math.toRadians(-64.0), 30e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(2605.8, estimator.getNorthIntensity(
+        assertEquals(2613.59, estimator.getNorthIntensity(
                 Math.toRadians(79.0), Math.toRadians(125.0), 75e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(27630.5, estimator.getNorthIntensity(
+        assertEquals(27598.37, estimator.getNorthIntensity(
                 Math.toRadians(6.0), Math.toRadians(-32.0), 21e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(16998.9, estimator.getNorthIntensity(
+        assertEquals(17019.42, estimator.getNorthIntensity(
                 Math.toRadians(-76.0), Math.toRadians(-75.0), 1e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(13880.3, estimator.getNorthIntensity(
+        assertEquals(13905.21, estimator.getNorthIntensity(
                 Math.toRadians(-46.0), Math.toRadians(-41.0), 45e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(12752.8, estimator.getNorthIntensity(
+        assertEquals(12773.91, estimator.getNorthIntensity(
                 Math.toRadians(-22.0), Math.toRadians(-21.0), 11e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(14556.6, estimator.getNorthIntensity(
+        assertEquals(14582.49, estimator.getNorthIntensity(
                 Math.toRadians(54.0), Math.toRadians(-120.0), 28e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(7015.1, estimator.getNorthIntensity(
+        assertEquals(7020.10, estimator.getNorthIntensity(
                 Math.toRadians(-58.0), Math.toRadians(156.0), 68e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(18024.0, estimator.getNorthIntensity(
+        assertEquals(18039.41, estimator.getNorthIntensity(
                 Math.toRadians(-65.0), Math.toRadians(-88.0), 39e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(24811.0, estimator.getNorthIntensity(
+        assertEquals(24783.62, estimator.getNorthIntensity(
                 Math.toRadians(-23.0), Math.toRadians(81.0), 27e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(29033.7, estimator.getNorthIntensity(
+        assertEquals(29009.12, estimator.getNorthIntensity(
                 Math.toRadians(34), 0.0, 11e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(6836.8, estimator.getNorthIntensity(
+        assertEquals(6831.97, estimator.getNorthIntensity(
                 Math.toRadians(-62.0), Math.toRadians(65.0), 72e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(1168.7, estimator.getNorthIntensity(
+        assertEquals(1183.45, estimator.getNorthIntensity(
                 Math.toRadians(86.0), Math.toRadians(70.0), 55e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(28170.0, estimator.getNorthIntensity(
+        assertEquals(28151.82, estimator.getNorthIntensity(
                 Math.toRadians(32.0), Math.toRadians(163.0), 59e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(23356.8, estimator.getNorthIntensity(
+        assertEquals(23356.90, estimator.getNorthIntensity(
                 Math.toRadians(48.0), Math.toRadians(148.0), 65e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(29663.3, estimator.getNorthIntensity(
+        assertEquals(29657.60, estimator.getNorthIntensity(
                 Math.toRadians(30.0), Math.toRadians(28.0), 95e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(18099.3, estimator.getNorthIntensity(
+        assertEquals(18126.12, estimator.getNorthIntensity(
                 Math.toRadians(-60.0), Math.toRadians(-59.0), 95e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(10615.3, estimator.getNorthIntensity(
+        assertEquals(10621.33, estimator.getNorthIntensity(
                 Math.toRadians(-70.0), Math.toRadians(42.0), 95e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(80.9, estimator.getNorthIntensity(
+        assertEquals(49.86, estimator.getNorthIntensity(
                 Math.toRadians(87.0), Math.toRadians(-154.0), 50e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(29331.6, estimator.getNorthIntensity(
+        assertEquals(29316.97, estimator.getNorthIntensity(
                 Math.toRadians(32.0), Math.toRadians(19.0), 58e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(28158.7, estimator.getNorthIntensity(
+        assertEquals(28123.39, estimator.getNorthIntensity(
                 Math.toRadians(34.0), Math.toRadians(-13.0), 57e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(8218.0, estimator.getNorthIntensity(
+        assertEquals(8223.09, estimator.getNorthIntensity(
                 Math.toRadians(-76.0), Math.toRadians(49.0), 38e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(15431.4, estimator.getNorthIntensity(
+        assertEquals(15429.70, estimator.getNorthIntensity(
                 Math.toRadians(-50.0), Math.toRadians(-179.0), 49e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(12918.7, estimator.getNorthIntensity(
+        assertEquals(12916.12, estimator.getNorthIntensity(
                 Math.toRadians(-55.0), Math.toRadians(-171.0), 90e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(24317.3, estimator.getNorthIntensity(
+        assertEquals(24288.90, estimator.getNorthIntensity(
                 Math.toRadians(42.0), Math.toRadians(-19.0), 41e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(22384.7, estimator.getNorthIntensity(
+        assertEquals(22357.56, estimator.getNorthIntensity(
                 Math.toRadians(46.0), Math.toRadians(-22.0), 19e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(28046.9, estimator.getNorthIntensity(
+        assertEquals(28064.99, estimator.getNorthIntensity(
                 Math.toRadians(13.0), Math.toRadians(-132.0), 31e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(33858.1, estimator.getNorthIntensity(
+        assertEquals(33843.26, estimator.getNorthIntensity(
                 Math.toRadians(-2.0), Math.toRadians(158.0), 93e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(10459.6, estimator.getNorthIntensity(
+        assertEquals(10463.37, estimator.getNorthIntensity(
                 Math.toRadians(-76.0), Math.toRadians(40.0), 51e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(25808.9, estimator.getNorthIntensity(
+        assertEquals(25851.87, estimator.getNorthIntensity(
                 Math.toRadians(22.0), Math.toRadians(-132.0), 64e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(8607.6, estimator.getNorthIntensity(
+        assertEquals(8605.94, estimator.getNorthIntensity(
                 Math.toRadians(-65.0), Math.toRadians(55.0), 26e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(15510.7, estimator.getNorthIntensity(
+        assertEquals(15466.32, estimator.getNorthIntensity(
                 Math.toRadians(-21.0), Math.toRadians(32.0), 66e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(15510.7, estimator.getNorthIntensity(
+        assertEquals(15466.32, estimator.getNorthIntensity(
                 Math.toRadians(-21.0), Math.toRadians(32.0), 66e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(30615.4, estimator.getNorthIntensity(
+        assertEquals(30605.55, estimator.getNorthIntensity(
                 Math.toRadians(9.0), Math.toRadians(-172.0), 18e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(2189.6, estimator.getNorthIntensity(
+        assertEquals(2226.75, estimator.getNorthIntensity(
                 Math.toRadians(88.0), Math.toRadians(26.0), 63e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(34060.9, estimator.getNorthIntensity(
+        assertEquals(34010.13, estimator.getNorthIntensity(
                 Math.toRadians(17.0), Math.toRadians(5.0), 33e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(31722.0, estimator.getNorthIntensity(
+        assertEquals(31739.14, estimator.getNorthIntensity(
                 Math.toRadians(-18.0), Math.toRadians(138.0), 77e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
     }
 
     @Test
-    void testEastIntensityModel() throws IOException {
+    void testNorthIntensityModel2025() throws IOException {
+        // test values correspond to X (nT) column in WMM test values document
         final var estimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        assertEquals(-1396.0, estimator.getEastIntensity(
+        assertEquals(6521.6, estimator.getNorthIntensity(
+                Math.toRadians(80.0), Math.toRadians(0.0), 0.0, 2025.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(39677.8, estimator.getNorthIntensity(
+                Math.toRadians(0.0), Math.toRadians(120.0), 0.0, 2025.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(6117.5, estimator.getNorthIntensity(
+                Math.toRadians(-80.0), Math.toRadians(240.0), 0.0, 2025.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(6216, estimator.getNorthIntensity(
+                Math.toRadians(80.0), Math.toRadians(0.0), 100e3, 2025.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(37688.6, estimator.getNorthIntensity(
+                Math.toRadians(0.0), Math.toRadians(120.0), 100e3, 2025.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(5907.6, estimator.getNorthIntensity(
+                Math.toRadians(-80.0), Math.toRadians(240.0), 100e3, 2025.0) * TO_NANO, INTENSITY_ERROR);
+
+        assertEquals(6500.8, estimator.getNorthIntensity(
+                Math.toRadians(80.0), Math.toRadians(0.0), 0.0, 2027.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(39701.6, estimator.getNorthIntensity(
+                Math.toRadians(0.0), Math.toRadians(120.0), 0.0, 2027.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(6200.7, estimator.getNorthIntensity(
+                Math.toRadians(-80.0), Math.toRadians(240.0), 0.0, 2027.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(6196.7, estimator.getNorthIntensity(
+                Math.toRadians(80.0), Math.toRadians(0.0), 100e3, 2027.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(37711.5, estimator.getNorthIntensity(
+                Math.toRadians(0.0), Math.toRadians(120.0), 100e3, 2027.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(5984, estimator.getNorthIntensity(
+                Math.toRadians(-80.0), Math.toRadians(240.0), 100e3, 2027.5) * TO_NANO, INTENSITY_ERROR);
+    }
+
+    @Test
+    void testEastIntensityModel2020() throws IOException {
+        final var estimator = new WMMEarthMagneticFluxDensityEstimator();
+
+        assertEquals(-1376.25, estimator.getEastIntensity(
                 Math.toRadians(89.0), Math.toRadians(-121.0), 28e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-1160.5, estimator.getEastIntensity(
+        assertEquals(-1145.34, estimator.getEastIntensity(
                 Math.toRadians(80.0), Math.toRadians(-96.0), 48e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(1941.4, estimator.getEastIntensity(
+        assertEquals(1920.96, estimator.getEastIntensity(
                 Math.toRadians(82.0), Math.toRadians(87.0), 54e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(303.2, estimator.getEastIntensity(
+        assertEquals(252.70, estimator.getEastIntensity(
                 Math.toRadians(43.0), Math.toRadians(93.0), 65e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-2183.2, estimator.getEastIntensity(
+        assertEquals(-2208.53, estimator.getEastIntensity(
                 Math.toRadians(-33.0), Math.toRadians(109.0), 51e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-4063.3, estimator.getEastIntensity(
+        assertEquals(-4064.10, estimator.getEastIntensity(
                 Math.toRadians(-59.0), Math.toRadians(-8.0), 39e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(10512.2, estimator.getEastIntensity(
+        assertEquals(10516.47, estimator.getEastIntensity(
                 Math.toRadians(-50.0), Math.toRadians(-103.0), 3e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(6650.9, estimator.getEastIntensity(
+        assertEquals(6639.09, estimator.getEastIntensity(
                 Math.toRadians(-29.0), Math.toRadians(-110.0), 94e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(70.2, estimator.getEastIntensity(
+        assertEquals(51.82, estimator.getEastIntensity(
                 Math.toRadians(14.0), Math.toRadians(143.0), 66e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(536.0, estimator.getEastIntensity(
+        assertEquals(582.75, estimator.getEastIntensity(
                 0.0, Math.toRadians(21.0), 18e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(8791.9, estimator.getEastIntensity(
+        assertEquals(8793.81, estimator.getEastIntensity(
                 Math.toRadians(-36.0), Math.toRadians(-137.0), 6e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(259.2, estimator.getEastIntensity(
+        assertEquals(251.27, estimator.getEastIntensity(
                 Math.toRadians(26.0), Math.toRadians(81.0), 63e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(5390.0, estimator.getEastIntensity(
+        assertEquals(5412.47, estimator.getEastIntensity(
                 Math.toRadians(38.0), Math.toRadians(-144.0), 69e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(13981.7, estimator.getEastIntensity(
+        assertEquals(13994.89, estimator.getEastIntensity(
                 Math.toRadians(-70.0), Math.toRadians(-133.0), 50e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(5387.5, estimator.getEastIntensity(
+        assertEquals(5389.09, estimator.getEastIntensity(
                 Math.toRadians(-52.0), Math.toRadians(-75.0), 8e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-9734.8, estimator.getEastIntensity(
+        assertEquals(-9748.05, estimator.getEastIntensity(
                 Math.toRadians(-66.0), Math.toRadians(17.0), 8e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(3451.3, estimator.getEastIntensity(
+        assertEquals(3444.75, estimator.getEastIntensity(
                 Math.toRadians(-37.0), Math.toRadians(140.0), 22e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(5503.9, estimator.getEastIntensity(
+        assertEquals(5492.65, estimator.getEastIntensity(
                 Math.toRadians(-12.0), Math.toRadians(-129.0), 40e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(4748.3, estimator.getEastIntensity(
+        assertEquals(4752.05, estimator.getEastIntensity(
                 Math.toRadians(33.0), Math.toRadians(-118.0), 44e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(8788.9, estimator.getEastIntensity(
+        assertEquals(8793.58, estimator.getEastIntensity(
                 Math.toRadians(-81.0), Math.toRadians(-67.0), 50e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(-5423.3, estimator.getEastIntensity(
+        assertEquals(-5429.58, estimator.getEastIntensity(
                 Math.toRadians(-57.0), Math.toRadians(3.0), 74e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(6501.8, estimator.getEastIntensity(
+        assertEquals(6497.29, estimator.getEastIntensity(
                 Math.toRadians(-24.0), Math.toRadians(-122.0), 46e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(646.9, estimator.getEastIntensity(
+        assertEquals(665.73, estimator.getEastIntensity(
                 Math.toRadians(23.0), Math.toRadians(63.0), 69e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(5265.7, estimator.getEastIntensity(
+        assertEquals(5268.98, estimator.getEastIntensity(
                 Math.toRadians(-3.0), Math.toRadians(-147.0), 33e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-1946.6, estimator.getEastIntensity(
+        assertEquals(-1955.94, estimator.getEastIntensity(
                 Math.toRadians(-72.0), Math.toRadians(-22.0), 47e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-990.3, estimator.getEastIntensity(
+        assertEquals(-1010.24, estimator.getEastIntensity(
                 Math.toRadians(-14.0), Math.toRadians(99.0), 62e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-1796.2, estimator.getEastIntensity(
+        assertEquals(-1794.70, estimator.getEastIntensity(
                 Math.toRadians(86.0), Math.toRadians(-46.0), 83e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-13907.0, estimator.getEastIntensity(
+        assertEquals(-13911.09, estimator.getEastIntensity(
                 Math.toRadians(-64.0), Math.toRadians(87.0), 82e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-4933.5, estimator.getEastIntensity(
+        assertEquals(-4926.86, estimator.getEastIntensity(
                 Math.toRadians(-19.0), Math.toRadians(43.0), 34e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-15323.4, estimator.getEastIntensity(
+        assertEquals(-15337.35, estimator.getEastIntensity(
                 Math.toRadians(-81.0), Math.toRadians(40.0), 56e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(-2338.9, estimator.getEastIntensity(
+        assertEquals(-2318.56, estimator.getEastIntensity(
                 0.0, Math.toRadians(80.0), 14e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(9368.5, estimator.getEastIntensity(
+        assertEquals(9364.94, estimator.getEastIntensity(
                 Math.toRadians(-82.0), Math.toRadians(-68.0), 12e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-2889.8, estimator.getEastIntensity(
+        assertEquals(-2895.40, estimator.getEastIntensity(
                 Math.toRadians(-46.0), Math.toRadians(-42.0), 44e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(773.7, estimator.getEastIntensity(
+        assertEquals(779.64, estimator.getEastIntensity(
                 Math.toRadians(17.0), Math.toRadians(52.0), 43e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-1172.2, estimator.getEastIntensity(
+        assertEquals(-1153.73, estimator.getEastIntensity(
                 Math.toRadians(10.0), Math.toRadians(78.0), 64e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(5327.4, estimator.getEastIntensity(
+        assertEquals(5337.13, estimator.getEastIntensity(
                 Math.toRadians(33.0), Math.toRadians(-145.0), 12e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-8972.3, estimator.getEastIntensity(
+        assertEquals(-8963.31, estimator.getEastIntensity(
                 Math.toRadians(-79.0), Math.toRadians(115.0), 12e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(7712.3, estimator.getEastIntensity(
+        assertEquals(7720.32, estimator.getEastIntensity(
                 Math.toRadians(-33.0), Math.toRadians(-114.0), 14e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(1215.2, estimator.getEastIntensity(
+        assertEquals(1221.67, estimator.getEastIntensity(
                 Math.toRadians(29.0), Math.toRadians(66.0), 19e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(5828.1, estimator.getEastIntensity(
+        assertEquals(5859.42, estimator.getEastIntensity(
                 Math.toRadians(-11.0), Math.toRadians(167.0), 86e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(-5011.2, estimator.getEastIntensity(
+        assertEquals(-5020.29, estimator.getEastIntensity(
                 Math.toRadians(-66.0), Math.toRadians(-5.0), 37e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(1254.7, estimator.getEastIntensity(
+        assertEquals(1248.48, estimator.getEastIntensity(
                 Math.toRadians(72.0), Math.toRadians(-115.0), 67e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(3294.9, estimator.getEastIntensity(
+        assertEquals(3309.29, estimator.getEastIntensity(
                 Math.toRadians(22.0), Math.toRadians(174.0), 44e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(514.8, estimator.getEastIntensity(
+        assertEquals(532.41, estimator.getEastIntensity(
                 Math.toRadians(54.0), Math.toRadians(178.0), 54e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-12349.5, estimator.getEastIntensity(
+        assertEquals(-12355.403556651096, estimator.getEastIntensity(
                 Math.toRadians(-43.0), Math.toRadians(50.0), 57e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(9330.1, estimator.getEastIntensity(
+        assertEquals(9339.20, estimator.getEastIntensity(
                 Math.toRadians(-43.0), Math.toRadians(-111.0), 44e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(9718.1, estimator.getEastIntensity(
+        assertEquals(9727.06, estimator.getEastIntensity(
                 Math.toRadians(-63.0), Math.toRadians(178.0), 12e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(3991.3, estimator.getEastIntensity(
+        assertEquals(3998.23, estimator.getEastIntensity(
                 Math.toRadians(27.0), Math.toRadians(-169.0), 38e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-3208.9, estimator.getEastIntensity(
+        assertEquals(-3212.65, estimator.getEastIntensity(
                 Math.toRadians(59.0), Math.toRadians(-77.0), 61e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-3178.2, estimator.getEastIntensity(
+        assertEquals(-3181.04, estimator.getEastIntensity(
                 Math.toRadians(-47.0), Math.toRadians(-32.0), 67e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(4236.6, estimator.getEastIntensity(
+        assertEquals(4230.32, estimator.getEastIntensity(
                 Math.toRadians(62.0), Math.toRadians(53.0), 8e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-4741.2, estimator.getEastIntensity(
+        assertEquals(-4750.78, estimator.getEastIntensity(
                 Math.toRadians(-68.0), Math.toRadians(-7.0), 77e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(4601.1, estimator.getEastIntensity(
+        assertEquals(4614.30, estimator.getEastIntensity(
                 Math.toRadians(-5.0), Math.toRadians(159.0), 98e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(6662.3, estimator.getEastIntensity(
+        assertEquals(6687.08, estimator.getEastIntensity(
                 Math.toRadians(-29.0), Math.toRadians(-107.0), 34e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(1025.8, estimator.getEastIntensity(
+        assertEquals(1016.59, estimator.getEastIntensity(
                 Math.toRadians(27.0), Math.toRadians(65.0), 60e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-13095.2, estimator.getEastIntensity(
+        assertEquals(-13085.11, estimator.getEastIntensity(
                 Math.toRadians(-72.0), Math.toRadians(95.0), 73e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(6358.2, estimator.getEastIntensity(
+        assertEquals(6362.67, estimator.getEastIntensity(
                 Math.toRadians(-46.0), Math.toRadians(-85.0), 96e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-6520.6, estimator.getEastIntensity(
+        assertEquals(-6512.21, estimator.getEastIntensity(
                 Math.toRadians(-13.0), Math.toRadians(-59.0), 0e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(463.2, estimator.getEastIntensity(
+        assertEquals(484.23, estimator.getEastIntensity(
                 Math.toRadians(66.0), Math.toRadians(-178.0), 16e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-15063.2, estimator.getEastIntensity(
+        assertEquals(-15061.84, estimator.getEastIntensity(
                 Math.toRadians(-87.0), Math.toRadians(38.0), 72e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(2737.4, estimator.getEastIntensity(
+        assertEquals(2739.25, estimator.getEastIntensity(
                 Math.toRadians(20.0), Math.toRadians(167.0), 49e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-3592.6, estimator.getEastIntensity(
+        assertEquals(-3612.05, estimator.getEastIntensity(
                 Math.toRadians(5.0), Math.toRadians(-13.0), 71e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-356.8, estimator.getEastIntensity(
+        assertEquals(-367.05, estimator.getEastIntensity(
                 Math.toRadians(14.0), Math.toRadians(65.0), 95e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(11248.0, estimator.getEastIntensity(
+        assertEquals(11231.74, estimator.getEastIntensity(
                 Math.toRadians(-85.0), Math.toRadians(-79.0), 86e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-1198.1, estimator.getEastIntensity(
+        assertEquals(-1193.97, estimator.getEastIntensity(
                 Math.toRadians(-36.0), Math.toRadians(-64.0), 30e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-676.0, estimator.getEastIntensity(
+        assertEquals(-662.55, estimator.getEastIntensity(
                 Math.toRadians(79.0), Math.toRadians(125.0), 75e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-7515.0, estimator.getEastIntensity(
+        assertEquals(-7509.10, estimator.getEastIntensity(
                 Math.toRadians(6.0), Math.toRadians(-32.0), 21e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(9958.1, estimator.getEastIntensity(
+        assertEquals(9945.85, estimator.getEastIntensity(
                 Math.toRadians(-76.0), Math.toRadians(-75.0), 1e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-2936.1, estimator.getEastIntensity(
+        assertEquals(-2933.59, estimator.getEastIntensity(
                 Math.toRadians(-46), Math.toRadians(-41.0), 45e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-5710.4, estimator.getEastIntensity(
+        assertEquals(-5711.57, estimator.getEastIntensity(
                 Math.toRadians(-22.0), Math.toRadians(-21.0), 11e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(4230.3, estimator.getEastIntensity(
+        assertEquals(4229.11, estimator.getEastIntensity(
                 Math.toRadians(54.0), Math.toRadians(-120.0), 28e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(5987.8, estimator.getEastIntensity(
+        assertEquals(5989.91, estimator.getEastIntensity(
                 Math.toRadians(-58.0), Math.toRadians(156.0), 68e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(10347.2, estimator.getEastIntensity(
+        assertEquals(10341.00, estimator.getEastIntensity(
                 Math.toRadians(-65.0), Math.toRadians(-88.0), 39e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-6176.1, estimator.getEastIntensity(
+        assertEquals(-6143.93, estimator.getEastIntensity(
                 Math.toRadians(-23.0), Math.toRadians(81.0), 27e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(545.3, estimator.getEastIntensity(
+        assertEquals(513.86, estimator.getEastIntensity(
                 Math.toRadians(34.0), 0.0, 11e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-16092.9, estimator.getEastIntensity(
+        assertEquals(-16085.66, estimator.getEastIntensity(
                 Math.toRadians(-62.0), Math.toRadians(65.0), 72e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(2124.7, estimator.getEastIntensity(
+        assertEquals(2147.68, estimator.getEastIntensity(
                 Math.toRadians(86.0), Math.toRadians(70.0), 55e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(176.0, estimator.getEastIntensity(
+        assertEquals(181.91, estimator.getEastIntensity(
                 Math.toRadians(32.0), Math.toRadians(163.0), 59e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-3861.2, estimator.getEastIntensity(
+        assertEquals(-3844.69, estimator.getEastIntensity(
                 Math.toRadians(48.0), Math.toRadians(148.0), 65e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(2331.2, estimator.getEastIntensity(
+        assertEquals(2275.91, estimator.getEastIntensity(
                 Math.toRadians(30.0), Math.toRadians(28.0), 95e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(2821.2, estimator.getEastIntensity(
+        assertEquals(2820.44, estimator.getEastIntensity(
                 Math.toRadians(-60.0), Math.toRadians(-59.0), 95e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-14769.3, estimator.getEastIntensity(
+        assertEquals(-14762.49, estimator.getEastIntensity(
                 Math.toRadians(-70.0), Math.toRadians(42.0), 95e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-592.4, estimator.getEastIntensity(
+        assertEquals(-602.98, estimator.getEastIntensity(
                 Math.toRadians(87.0), Math.toRadians(-154.0), 50e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(2019.5, estimator.getEastIntensity(
+        assertEquals(1959.46, estimator.getEastIntensity(
                 Math.toRadians(32.0), Math.toRadians(19.0), 58e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-1290.8, estimator.getEastIntensity(
+        assertEquals(-1309.64, estimator.getEastIntensity(
                 Math.toRadians(34.0), Math.toRadians(-13.0), 57e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-16491.7, estimator.getEastIntensity(
+        assertEquals(-16476.65, estimator.getEastIntensity(
                 Math.toRadians(-76.0), Math.toRadians(49.0), 38e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(9482.7, estimator.getEastIntensity(
+        assertEquals(9475.63, estimator.getEastIntensity(
                 Math.toRadians(-50.0), Math.toRadians(-179.0), 49e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(10118.6, estimator.getEastIntensity(
+        assertEquals(10113.08, estimator.getEastIntensity(
                 Math.toRadians(-55.0), Math.toRadians(-171.0), 90e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-2127.0, estimator.getEastIntensity(
+        assertEquals(-2139.95, estimator.getEastIntensity(
                 Math.toRadians(42.0), Math.toRadians(-19.0), 41e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-2590.4, estimator.getEastIntensity(
+        assertEquals(-2601.27, estimator.getEastIntensity(
                 Math.toRadians(46.0), Math.toRadians(-22.0), 19e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(4548.8, estimator.getEastIntensity(
+        assertEquals(4561.08, estimator.getEastIntensity(
                 Math.toRadians(13.0), Math.toRadians(-132.0), 31e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(4253.5, estimator.getEastIntensity(
+        assertEquals(4241.88, estimator.getEastIntensity(
                 Math.toRadians(-2.0), Math.toRadians(158.0), 93e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-15294.7, estimator.getEastIntensity(
+        assertEquals(-15278.92, estimator.getEastIntensity(
                 Math.toRadians(-76.0), Math.toRadians(40.0), 51e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(4792.5, estimator.getEastIntensity(
+        assertEquals(4797.22, estimator.getEastIntensity(
                 Math.toRadians(22.0), Math.toRadians(-132.0), 64e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-16603.5, estimator.getEastIntensity(
+        assertEquals(-16591.85, estimator.getEastIntensity(
                 Math.toRadians(-65.0), Math.toRadians(55.0), 26e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-3677.9, estimator.getEastIntensity(
+        assertEquals(-3748.76, estimator.getEastIntensity(
                 Math.toRadians(-21.0), Math.toRadians(32.0), 66e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-3677.9, estimator.getEastIntensity(
+        assertEquals(-3748.76, estimator.getEastIntensity(
                 Math.toRadians(-21.0), Math.toRadians(32.0), 66e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(5065.5, estimator.getEastIntensity(
+        assertEquals(4980.85, estimator.getEastIntensity(
                 Math.toRadians(9.0), Math.toRadians(-172.0), 18e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(1254.6, estimator.getEastIntensity(
+        assertEquals(1269.59, estimator.getEastIntensity(
                 Math.toRadians(88.0), Math.toRadians(26.0), 63e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(362.9, estimator.getEastIntensity(
+        assertEquals(297.72, estimator.getEastIntensity(
                 Math.toRadians(17.0), Math.toRadians(5.0), 33e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(2569.6, estimator.getEastIntensity(
+        assertEquals(2573.27, estimator.getEastIntensity(
                 Math.toRadians(-18.0), Math.toRadians(138.0), 77e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
     }
 
     @Test
-    void testVerticalIntensityModel() throws IOException {
+    void testEastIntensityModel2025() throws IOException {
+        // test values correspond to Y (nT) column in WMM test values document
         final var estimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        assertEquals(56082.3, estimator.getVerticalIntensity(
+        assertEquals(145.9, estimator.getEastIntensity(
+                Math.toRadians(80.0), Math.toRadians(0.0), 0.0, 2025.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(-109.6, estimator.getEastIntensity(
+                Math.toRadians(0.0), Math.toRadians(120.0), 0.0, 2025.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(15751.9, estimator.getEastIntensity(
+                Math.toRadians(-80.0), Math.toRadians(240.0), 0.0, 2025.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(92.4, estimator.getEastIntensity(
+                Math.toRadians(80.0), Math.toRadians(0.0), 100e3, 2025.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(-96.2, estimator.getEastIntensity(
+                Math.toRadians(0.0), Math.toRadians(120.0), 100e3, 2025.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(14780.3, estimator.getEastIntensity(
+                Math.toRadians(-80.0), Math.toRadians(240.0), 100e3, 2025.0) * TO_NANO, INTENSITY_ERROR);
+
+        assertEquals(294.5, estimator.getEastIntensity(
+                Math.toRadians(80.0), Math.toRadians(0.0), 0.0, 2027.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(-167.4, estimator.getEastIntensity(
+                Math.toRadians(0.0), Math.toRadians(120.0), 0.0, 2027.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(15730.3, estimator.getEastIntensity(
+                Math.toRadians(-80.0), Math.toRadians(240.0), 0.0, 2027.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(233.8, estimator.getEastIntensity(
+                Math.toRadians(80.0), Math.toRadians(0.0), 100e3, 2027.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(-148.7, estimator.getEastIntensity(
+                Math.toRadians(0.0), Math.toRadians(120.0), 100e3, 2027.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(14760.1, estimator.getEastIntensity(
+                Math.toRadians(-80.0), Math.toRadians(240.0), 100e3, 2027.5) * TO_NANO, INTENSITY_ERROR);
+
+    }
+
+    @Test
+    void testVerticalIntensityModel2020() throws IOException {
+        final var estimator = new WMMEarthMagneticFluxDensityEstimator();
+
+        assertEquals(56103.91, estimator.getVerticalIntensity(
                 Math.toRadians(89.0), Math.toRadians(-121.0), 28e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(55671.9, estimator.getVerticalIntensity(
+        assertEquals(55683.79, estimator.getVerticalIntensity(
                 Math.toRadians(80.0), Math.toRadians(-96.0), 48e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(56520.5, estimator.getVerticalIntensity(
+        assertEquals(56535.10, estimator.getVerticalIntensity(
                 Math.toRadians(82.0), Math.toRadians(87.0), 54e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(49691.4, estimator.getVerticalIntensity(
+        assertEquals(49735.93, estimator.getVerticalIntensity(
                 Math.toRadians(43.0), Math.toRadians(93.0), 65e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-52676.0, estimator.getVerticalIntensity(
+        assertEquals(-52693.33, estimator.getVerticalIntensity(
                 Math.toRadians(-33.0), Math.toRadians(109.0), 51e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-24679.0, estimator.getVerticalIntensity(
+        assertEquals(-24663.85, estimator.getVerticalIntensity(
                 Math.toRadians(-59.0), Math.toRadians(-8.0), 39e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-31883.6, estimator.getVerticalIntensity(
+        assertEquals(-31882.32, estimator.getVerticalIntensity(
                 Math.toRadians(-50.0), Math.toRadians(-103.0), 3e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-19320.7, estimator.getVerticalIntensity(
+        assertEquals(-19323.70, estimator.getVerticalIntensity(
                 Math.toRadians(-29.0), Math.toRadians(-110.0), 94e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(8114.9, estimator.getVerticalIntensity(
+        assertEquals(7966.37, estimator.getVerticalIntensity(
                 Math.toRadians(14.0), Math.toRadians(143.0), 66e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-14589.0, estimator.getVerticalIntensity(
+        assertEquals(-14589.63, estimator.getVerticalIntensity(
                 0.0, Math.toRadians(21.0), 18e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(-32897.6, estimator.getVerticalIntensity(
+        assertEquals(-32882.36, estimator.getVerticalIntensity(
                 Math.toRadians(-36.0), Math.toRadians(-137.0), 6e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(30023.4, estimator.getVerticalIntensity(
+        assertEquals(30126.44, estimator.getVerticalIntensity(
                 Math.toRadians(26.0), Math.toRadians(81.0), 63e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(35831.9, estimator.getVerticalIntensity(
+        assertEquals(35836.61, estimator.getVerticalIntensity(
                 Math.toRadians(38.0), Math.toRadians(-144.0), 69e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-51628.5, estimator.getVerticalIntensity(
+        assertEquals(-51643.35, estimator.getVerticalIntensity(
                 Math.toRadians(-70.0), Math.toRadians(-133.0), 50e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-23769.0, estimator.getVerticalIntensity(
+        assertEquals(-23756.54, estimator.getVerticalIntensity(
                 Math.toRadians(-52.0), Math.toRadians(-75.0), 8e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-31062.0, estimator.getVerticalIntensity(
+        assertEquals(-31054.04, estimator.getVerticalIntensity(
                 Math.toRadians(-66.0), Math.toRadians(17.0), 8e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-55415.6, estimator.getVerticalIntensity(
+        assertEquals(-55450.86, estimator.getVerticalIntensity(
                 Math.toRadians(-37.0), Math.toRadians(140.0), 22e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-8221.8, estimator.getVerticalIntensity(
+        assertEquals(-8189.87, estimator.getVerticalIntensity(
                 Math.toRadians(-12.0), Math.toRadians(-129.0), 40e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(38184.5, estimator.getVerticalIntensity(
+        assertEquals(38220.58, estimator.getVerticalIntensity(
                 Math.toRadians(33.0), Math.toRadians(-118.0), 44e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-44780.8, estimator.getVerticalIntensity(
+        assertEquals(-44787.10, estimator.getVerticalIntensity(
                 Math.toRadians(-81.0), Math.toRadians(-67.0), 50e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(-23859.2, estimator.getVerticalIntensity(
+        assertEquals(-23851.09, estimator.getVerticalIntensity(
                 Math.toRadians(-57.0), Math.toRadians(3.0), 74e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-18297.4, estimator.getVerticalIntensity(
+        assertEquals(-18285.57, estimator.getVerticalIntensity(
                 Math.toRadians(-24.0), Math.toRadians(-122.0), 46e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(24869.2, estimator.getVerticalIntensity(
+        assertEquals(24908.11, estimator.getVerticalIntensity(
                 Math.toRadians(23.0), Math.toRadians(63.0), 69e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-1277.4, estimator.getVerticalIntensity(
+        assertEquals(-1253.42, estimator.getVerticalIntensity(
                 Math.toRadians(-3.0), Math.toRadians(-147.0), 33e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-33665.0, estimator.getVerticalIntensity(
+        assertEquals(-33661.73, estimator.getVerticalIntensity(
                 Math.toRadians(-72.0), Math.toRadians(-22.0), 47e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-33354.0, estimator.getVerticalIntensity(
+        assertEquals(-33327.91, estimator.getVerticalIntensity(
                 Math.toRadians(-14.0), Math.toRadians(99.0), 62e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(54184.7, estimator.getVerticalIntensity(
+        assertEquals(54201.54, estimator.getVerticalIntensity(
                 Math.toRadians(86.0), Math.toRadians(-46.0), 83e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-53526.9, estimator.getVerticalIntensity(
+        assertEquals(-53540.40, estimator.getVerticalIntensity(
                 Math.toRadians(-64.0), Math.toRadians(87.0), 82e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-25969.5, estimator.getVerticalIntensity(
+        assertEquals(-25962.84, estimator.getVerticalIntensity(
                 Math.toRadians(-19.0), Math.toRadians(43.0), 34e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-45453.8, estimator.getVerticalIntensity(
+        assertEquals(-45481.66, estimator.getVerticalIntensity(
                 Math.toRadians(-81.0), Math.toRadians(40.0), 56e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(-12258.0, estimator.getVerticalIntensity(
+        assertEquals(-12216.61, estimator.getVerticalIntensity(
                 0.0, Math.toRadians(80.0), 14e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-46308.7, estimator.getVerticalIntensity(
+        assertEquals(-46323.93, estimator.getVerticalIntensity(
                 Math.toRadians(-82.0), Math.toRadians(-68.0), 12e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-19762.2, estimator.getVerticalIntensity(
+        assertEquals(-19752.42, estimator.getVerticalIntensity(
                 Math.toRadians(-46.0), Math.toRadians(-42.0), 44e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(15885.6, estimator.getVerticalIntensity(
+        assertEquals(15883.37, estimator.getVerticalIntensity(
                 Math.toRadians(17.0), Math.toRadians(52.0), 43e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(5088.1, estimator.getVerticalIntensity(
+        assertEquals(5122.25, estimator.getVerticalIntensity(
                 Math.toRadians(10.0), Math.toRadians(78.0), 64e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(32429.3, estimator.getVerticalIntensity(
+        assertEquals(32428.02, estimator.getVerticalIntensity(
                 Math.toRadians(33.0), Math.toRadians(-145.0), 12e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-58271.0, estimator.getVerticalIntensity(
+        assertEquals(-58289.44, estimator.getVerticalIntensity(
                 Math.toRadians(-79.0), Math.toRadians(115.0), 12e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-24163.1, estimator.getVerticalIntensity(
+        assertEquals(-24157.40, estimator.getVerticalIntensity(
                 Math.toRadians(-33.0), Math.toRadians(-114.0), 14e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(33763.7, estimator.getVerticalIntensity(
+        assertEquals(33769.68, estimator.getVerticalIntensity(
                 Math.toRadians(29.0), Math.toRadians(66.0), 19e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-20299.1, estimator.getVerticalIntensity(
+        assertEquals(-20316.11, estimator.getVerticalIntensity(
                 Math.toRadians(-11.0), Math.toRadians(167.0), 86e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(-28849.5, estimator.getVerticalIntensity(
+        assertEquals(-28851.72, estimator.getVerticalIntensity(
                 Math.toRadians(-66.0), Math.toRadians(-5.0), 37e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(55923.4, estimator.getVerticalIntensity(
+        assertEquals(55944.06, estimator.getVerticalIntensity(
                 Math.toRadians(72.0), Math.toRadians(-115.0), 67e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(17967.2, estimator.getVerticalIntensity(
+        assertEquals(17953.03, estimator.getVerticalIntensity(
                 Math.toRadians(22.0), Math.toRadians(174.0), 44e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(45076.8, estimator.getVerticalIntensity(
+        assertEquals(45057.46, estimator.getVerticalIntensity(
                 Math.toRadians(54.0), Math.toRadians(178.0), 54e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-32850.3, estimator.getVerticalIntensity(
+        assertEquals(-32859.78, estimator.getVerticalIntensity(
                 Math.toRadians(-43.0), Math.toRadians(50.0), 57e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-29747.5, estimator.getVerticalIntensity(
+        assertEquals(-29740.46, estimator.getVerticalIntensity(
                 Math.toRadians(-43.0), Math.toRadians(-111.0), 44e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-61429.1, estimator.getVerticalIntensity(
+        assertEquals(-61422.27, estimator.getVerticalIntensity(
                 Math.toRadians(-63.0), Math.toRadians(178.0), 12e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(24097.4, estimator.getVerticalIntensity(
+        assertEquals(24091.37, estimator.getVerticalIntensity(
                 Math.toRadians(27.0), Math.toRadians(-169.0), 38e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(54735.3, estimator.getVerticalIntensity(
+        assertEquals(54735.93, estimator.getVerticalIntensity(
                 Math.toRadians(59.0), Math.toRadians(-77.0), 61e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-20600.9, estimator.getVerticalIntensity(
+        assertEquals(-20588.43, estimator.getVerticalIntensity(
                 Math.toRadians(-47.0), Math.toRadians(-32.0), 67e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(54498.1, estimator.getVerticalIntensity(
+        assertEquals(54479.79, estimator.getVerticalIntensity(
                 Math.toRadians(62.0), Math.toRadians(53.0), 8e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-29908.6, estimator.getVerticalIntensity(
+        assertEquals(-29918.88, estimator.getVerticalIntensity(
                 Math.toRadians(-68.0), Math.toRadians(-7.0), 77e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-14426.9, estimator.getVerticalIntensity(
+        assertEquals(-14424.69, estimator.getVerticalIntensity(
                 Math.toRadians(-5.0), Math.toRadians(159.0), 98e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-14426.9, estimator.getVerticalIntensity(
+        assertEquals(-14424.69, estimator.getVerticalIntensity(
                 Math.toRadians(-5.0), Math.toRadians(159.0), 98e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-19023.5, estimator.getVerticalIntensity(
+        assertEquals(-18996.17, estimator.getVerticalIntensity(
                 Math.toRadians(-29.0), Math.toRadians(-107.0), 34e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(30561.3, estimator.getVerticalIntensity(
+        assertEquals(30499.46, estimator.getVerticalIntensity(
                 Math.toRadians(27.0), Math.toRadians(65.0), 60e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-55423.4, estimator.getVerticalIntensity(
+        assertEquals(-55430.18, estimator.getVerticalIntensity(
                 Math.toRadians(-72.0), Math.toRadians(95.0), 73e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-21915.4, estimator.getVerticalIntensity(
+        assertEquals(-21899.93, estimator.getVerticalIntensity(
                 Math.toRadians(-46.0), Math.toRadians(-85.0), 96e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-5425.9, estimator.getVerticalIntensity(
+        assertEquals(-5396.18, estimator.getVerticalIntensity(
                 Math.toRadians(-13.0), Math.toRadians(-59.0), 0e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(54055.4, estimator.getVerticalIntensity(
+        assertEquals(54058.15, estimator.getVerticalIntensity(
                 Math.toRadians(66.0), Math.toRadians(-178.0), 16e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-48550.5, estimator.getVerticalIntensity(
+        assertEquals(-48579.53, estimator.getVerticalIntensity(
                 Math.toRadians(-87.0), Math.toRadians(38.0), 72e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(15301.2, estimator.getVerticalIntensity(
+        assertEquals(15309.25, estimator.getVerticalIntensity(
                 Math.toRadians(20.0), Math.toRadians(167.0), 49e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-8905.8, estimator.getVerticalIntensity(
+        assertEquals(-8846.18, estimator.getVerticalIntensity(
                 Math.toRadians(5.0), Math.toRadians(-13.0), 71e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(11616.0, estimator.getVerticalIntensity(
+        assertEquals(11513.54, estimator.getVerticalIntensity(
                 Math.toRadians(14.0), Math.toRadians(65.0), 95e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-47331.2, estimator.getVerticalIntensity(
+        assertEquals(-47353.39, estimator.getVerticalIntensity(
                 Math.toRadians(-85.0), Math.toRadians(-79.0), 86e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-14566.5, estimator.getVerticalIntensity(
+        assertEquals(-14536.66, estimator.getVerticalIntensity(
                 Math.toRadians(-36.0), Math.toRadians(-64.0), 30e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(57085.9, estimator.getVerticalIntensity(
+        assertEquals(57113.34, estimator.getVerticalIntensity(
                 Math.toRadians(79.0), Math.toRadians(125.0), 75e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-3646.9, estimator.getVerticalIntensity(
+        assertEquals(-3582.78, estimator.getVerticalIntensity(
                 Math.toRadians(6.0), Math.toRadians(-32.0), 21e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-42873.8, estimator.getVerticalIntensity(
+        assertEquals(-42884.71, estimator.getVerticalIntensity(
                 Math.toRadians(-76.0), Math.toRadians(-75.0), 1e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-19853.0, estimator.getVerticalIntensity(
+        assertEquals(-19832.07, estimator.getVerticalIntensity(
                 Math.toRadians(-46.0), Math.toRadians(-41.0), 45e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-21372.4, estimator.getVerticalIntensity(
+        assertEquals(-21293.83, estimator.getVerticalIntensity(
                 Math.toRadians(-22.0), Math.toRadians(-21.0), 11e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(52945.6, estimator.getVerticalIntensity(
+        assertEquals(52950.92, estimator.getVerticalIntensity(
                 Math.toRadians(54.0), Math.toRadians(-120.0), 28e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-62459.5, estimator.getVerticalIntensity(
+        assertEquals(-62443.54, estimator.getVerticalIntensity(
                 Math.toRadians(-58.0), Math.toRadians(156.0), 68e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-36415.6, estimator.getVerticalIntensity(
+        assertEquals(-36408.46, estimator.getVerticalIntensity(
                 Math.toRadians(-65.0), Math.toRadians(-88.0), 39e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-41759.2, estimator.getVerticalIntensity(
+        assertEquals(-41730.68, estimator.getVerticalIntensity(
                 Math.toRadians(-23.0), Math.toRadians(81.0), 27e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(30807.0, estimator.getVerticalIntensity(
+        assertEquals(30807.14, estimator.getVerticalIntensity(
                 Math.toRadians(34.0), 0.0, 11e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-44111.8, estimator.getVerticalIntensity(
+        assertEquals(-44113.52, estimator.getVerticalIntensity(
                 Math.toRadians(-62.0), Math.toRadians(65.0), 72e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(55750.6, estimator.getVerticalIntensity(
+        assertEquals(55764.08, estimator.getVerticalIntensity(
                 Math.toRadians(86.0), Math.toRadians(70.0), 55e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(26318.3, estimator.getVerticalIntensity(
+        assertEquals(26321.18, estimator.getVerticalIntensity(
                 Math.toRadians(32.0), Math.toRadians(163.0), 59e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(43968.0, estimator.getVerticalIntensity(
+        assertEquals(43956.00, estimator.getVerticalIntensity(
                 Math.toRadians(48.0), Math.toRadians(148.0), 65e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(28857.6, estimator.getVerticalIntensity(
+        assertEquals(28817.59, estimator.getVerticalIntensity(
                 Math.toRadians(30.0), Math.toRadians(28.0), 95e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(-26193.2, estimator.getVerticalIntensity(
+        assertEquals(-26197.70, estimator.getVerticalIntensity(
                 Math.toRadians(-60.0), Math.toRadians(-59.0), 95e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-38293.4, estimator.getVerticalIntensity(
+        assertEquals(-38308.95, estimator.getVerticalIntensity(
                 Math.toRadians(-70.0), Math.toRadians(42.0), 95e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(55904.6, estimator.getVerticalIntensity(
+        assertEquals(55925.28, estimator.getVerticalIntensity(
                 Math.toRadians(87.0), Math.toRadians(-154.0), 50e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(30329.8, estimator.getVerticalIntensity(
+        assertEquals(30302.26, estimator.getVerticalIntensity(
                 Math.toRadians(32.0), Math.toRadians(19.0), 58e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(29015.5, estimator.getVerticalIntensity(
+        assertEquals(29024.48, estimator.getVerticalIntensity(
                 Math.toRadians(34.0), Math.toRadians(-13.0), 57e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-44260.7, estimator.getVerticalIntensity(
+        assertEquals(-44287.00, estimator.getVerticalIntensity(
                 Math.toRadians(-76.0), Math.toRadians(49.0), 38e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-53818.3, estimator.getVerticalIntensity(
+        assertEquals(-53792.43, estimator.getVerticalIntensity(
                 Math.toRadians(-50.0), Math.toRadians(-179.0), 49e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-53373.5, estimator.getVerticalIntensity(
+        assertEquals(-53346.86, estimator.getVerticalIntensity(
                 Math.toRadians(-55.0), Math.toRadians(-171.0), 90e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(36981.3, estimator.getVerticalIntensity(
+        assertEquals(36984.14, estimator.getVerticalIntensity(
                 Math.toRadians(42.0), Math.toRadians(-19.0), 41e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(40713.3, estimator.getVerticalIntensity(
+        assertEquals(40713.44, estimator.getVerticalIntensity(
                 Math.toRadians(46.0), Math.toRadians(-22.0), 19e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(17417.2, estimator.getVerticalIntensity(
+        assertEquals(17276.28, estimator.getVerticalIntensity(
                 Math.toRadians(13.0), Math.toRadians(-132.0), 31e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-10940.3, estimator.getVerticalIntensity(
+        assertEquals(-10851.77, estimator.getVerticalIntensity(
                 Math.toRadians(-2.0), Math.toRadians(158.0), 93e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-42141.5, estimator.getVerticalIntensity(
+        assertEquals(-42172.82, estimator.getVerticalIntensity(
                 Math.toRadians(-76.0), Math.toRadians(40.0), 51e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(25239.1, estimator.getVerticalIntensity(
+        assertEquals(25136.44, estimator.getVerticalIntensity(
                 Math.toRadians(22.0), Math.toRadians(-132.0), 64e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-41366.0, estimator.getVerticalIntensity(
+        assertEquals(-41367.58, estimator.getVerticalIntensity(
                 Math.toRadians(-65.0), Math.toRadians(55.0), 26e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-24502.7, estimator.getVerticalIntensity(
+        assertEquals(-24565.80, estimator.getVerticalIntensity(
                 Math.toRadians(-21.0), Math.toRadians(32.0), 66e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(8768.5, estimator.getVerticalIntensity(
+        assertEquals(8755.23, estimator.getVerticalIntensity(
                 Math.toRadians(9.0), Math.toRadians(-172.0), 18e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(55156.1, estimator.getVerticalIntensity(
+        assertEquals(55161.20, estimator.getVerticalIntensity(
                 Math.toRadians(88.0), Math.toRadians(26.0), 63e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(8230.6, estimator.getVerticalIntensity(
+        assertEquals(8252.36, estimator.getVerticalIntensity(
                 Math.toRadians(17.0), Math.toRadians(5.0), 33e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(-34986.2, estimator.getVerticalIntensity(
+        assertEquals(-34888.71, estimator.getVerticalIntensity(
                 Math.toRadians(-18.0), Math.toRadians(138.0), 77e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
     }
 
     @Test
-    void testIntensityModel() throws IOException {
+    void testVerticalIntensityModel2025() throws IOException {
+        // test values correspond to Z (nT) column in WMM test values document
         final var estimator = new WMMEarthMagneticFluxDensityEstimator();
 
-        assertEquals(56102.7, estimator.getIntensity(
+        assertEquals(54791.5, estimator.getVerticalIntensity(
+                Math.toRadians(80.0), Math.toRadians(0.0), 0.0, 2025.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(-10580.2, estimator.getVerticalIntensity(
+                Math.toRadians(0.0), Math.toRadians(120.0), 0.0, 2025.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(-52022.5, estimator.getVerticalIntensity(
+                Math.toRadians(-80.0), Math.toRadians(240.0), 0.0, 2025.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(52598.8, estimator.getVerticalIntensity(
+                Math.toRadians(80.0), Math.toRadians(0.0), 100e3, 2025.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(-10152.1, estimator.getVerticalIntensity(
+                Math.toRadians(0.0), Math.toRadians(120.0), 100e3, 2025.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(-49540.7, estimator.getVerticalIntensity(
+                Math.toRadians(-80.0), Math.toRadians(240.0), 100e3, 2025.0) * TO_NANO, INTENSITY_ERROR);
+
+        assertEquals(54869.4, estimator.getVerticalIntensity(
+                Math.toRadians(80.0), Math.toRadians(0.0), 0.0, 2027.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(-10381.8, estimator.getVerticalIntensity(
+                Math.toRadians(0.0), Math.toRadians(120.0), 0.0, 2027.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(-51783.7, estimator.getVerticalIntensity(
+                Math.toRadians(-80.0), Math.toRadians(240.0), 0.0, 2027.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(52670.5, estimator.getVerticalIntensity(
+                Math.toRadians(80.0), Math.toRadians(0.0), 100e3, 2027.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(-9969.8, estimator.getVerticalIntensity(
+                Math.toRadians(0.0), Math.toRadians(120.0), 100e3, 2027.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(-49317.7, estimator.getVerticalIntensity(
+                Math.toRadians(-80.0), Math.toRadians(240.0), 100e3, 2027.5) * TO_NANO, INTENSITY_ERROR);
+    }
+
+    @Test
+    void testIntensityModel2020() throws IOException {
+        final var estimator = new WMMEarthMagneticFluxDensityEstimator();
+
+        assertEquals(56123.67, estimator.getIntensity(
                 Math.toRadians(89.0), Math.toRadians(-121.0), 28e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(55704.7, estimator.getIntensity(
+        assertEquals(55716.25, estimator.getIntensity(
                 Math.toRadians(80.0), Math.toRadians(-96.0), 48e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(56575.2, estimator.getIntensity(
+        assertEquals(56589.45, estimator.getIntensity(
                 Math.toRadians(82.0), Math.toRadians(87.0), 54e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(55348.7, estimator.getIntensity(
+        assertEquals(55363.83, estimator.getIntensity(
                 Math.toRadians(43.0), Math.toRadians(93.0), 65e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(56957.9, estimator.getIntensity(
+        assertEquals(56982.61, estimator.getIntensity(
                 Math.toRadians(-33.0), Math.toRadians(109.0), 51e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(28845.4, estimator.getIntensity(
+        assertEquals(28826.91, estimator.getIntensity(
                 Math.toRadians(-59.0), Math.toRadians(-8.0), 39e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(38917.2, estimator.getIntensity(
+        assertEquals(38916.88, estimator.getIntensity(
                 Math.toRadians(-50.0), Math.toRadians(-103.0), 3e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(31116.9, estimator.getIntensity(
+        assertEquals(31120.50, estimator.getIntensity(
                 Math.toRadians(-29.0), Math.toRadians(-110.0), 94e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(35847.5, estimator.getIntensity(
+        assertEquals(35846.22, estimator.getIntensity(
                 Math.toRadians(14.0), Math.toRadians(143.0), 66e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(32745.6, estimator.getIntensity(
+        assertEquals(32754.86, estimator.getIntensity(
                 0.0, Math.toRadians(21.0), 18e3, 2020.0) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(41630.3, estimator.getIntensity(
+        assertEquals(41626.99, estimator.getIntensity(
                 Math.toRadians(-36.0), Math.toRadians(-137.0), 6e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(45914.9, estimator.getIntensity(
+        assertEquals(45954.90, estimator.getIntensity(
                 Math.toRadians(26.0), Math.toRadians(81.0), 63e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(42730.3, estimator.getIntensity(
+        assertEquals(42727.26, estimator.getIntensity(
                 Math.toRadians(38.0), Math.toRadians(-144.0), 69e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(54230.7, estimator.getIntensity(
+        assertEquals(54249.94, estimator.getIntensity(
                 Math.toRadians(-70.0), Math.toRadians(-133.0), 50e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(31257.7, estimator.getIntensity(
+        assertEquals(31247.60, estimator.getIntensity(
                 Math.toRadians(-52.0), Math.toRadians(-75.0), 8e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(35945.6, estimator.getIntensity(
+        assertEquals(35946.59, estimator.getIntensity(
                 Math.toRadians(-66.0), Math.toRadians(17.0), 8e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(59514.7, estimator.getIntensity(
+        assertEquals(59540.92, estimator.getIntensity(
                 Math.toRadians(-37.0), Math.toRadians(140.0), 22e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(30427.4, estimator.getIntensity(
+        assertEquals(30424.84, estimator.getIntensity(
                 Math.toRadians(-12.0), Math.toRadians(-129.0), 40e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(45042.6, estimator.getIntensity(
+        assertEquals(45071.48, estimator.getIntensity(
                 Math.toRadians(33.0), Math.toRadians(-118.0), 44e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(48387.8, estimator.getIntensity(
+        assertEquals(48403.44, estimator.getIntensity(
                 Math.toRadians(-81.0), Math.toRadians(-67.0), 50e3, 2020.5) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(27814.7, estimator.getIntensity(
+        assertEquals(27808.18, estimator.getIntensity(
                 Math.toRadians(-57.0), Math.toRadians(3.0), 74e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(32480.6, estimator.getIntensity(
+        assertEquals(32477.77, estimator.getIntensity(
                 Math.toRadians(-24.0), Math.toRadians(-122.0), 46e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(42493.9, estimator.getIntensity(
+        assertEquals(42508.61, estimator.getIntensity(
                 Math.toRadians(23.0), Math.toRadians(63.0), 69e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(31164.8, estimator.getIntensity(
+        assertEquals(31164.69, estimator.getIntensity(
                 Math.toRadians(-3.0), Math.toRadians(-147.0), 33e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(38392.0, estimator.getIntensity(
+        assertEquals(38397.15, estimator.getIntensity(
                 Math.toRadians(-72.0), Math.toRadians(-22.0), 47e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(47080.5, estimator.getIntensity(
+        assertEquals(47081.24, estimator.getIntensity(
                 Math.toRadians(-14.0), Math.toRadians(99.0), 62e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(47080.5, estimator.getIntensity(
+        assertEquals(47081.24, estimator.getIntensity(
                 Math.toRadians(-14.0), Math.toRadians(99.0), 62e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(54268.0, estimator.getIntensity(
+        assertEquals(54284.56, estimator.getIntensity(
                 Math.toRadians(86.0), Math.toRadians(-46.0), 83e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(55349.8, estimator.getIntensity(
+        assertEquals(55363.83, estimator.getIntensity(
                 Math.toRadians(-64.0), Math.toRadians(87.0), 82e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(32746.2, estimator.getIntensity(
+        assertEquals(32747.84, estimator.getIntensity(
                 Math.toRadians(-19.0), Math.toRadians(43.0), 34e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(48841.2, estimator.getIntensity(
+        assertEquals(48872.16, estimator.getIntensity(
                 Math.toRadians(-81.0), Math.toRadians(40.0), 56e3, 2021.0) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(41182.8, estimator.getIntensity(
+        assertEquals(41175.53, estimator.getIntensity(
                 0.0, Math.toRadians(80.0), 14e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(49880.9, estimator.getIntensity(
+        assertEquals(49901.42, estimator.getIntensity(
                 Math.toRadians(-82.0), Math.toRadians(-68.0), 12e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(24482.1, estimator.getIntensity(
+        assertEquals(24477.68, estimator.getIntensity(
                 Math.toRadians(-46.0), Math.toRadians(-42.0), 44e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(39261.7, estimator.getIntensity(
+        assertEquals(39257.59, estimator.getIntensity(
                 Math.toRadians(17.0), Math.toRadians(52.0), 43e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(39639.4, estimator.getIntensity(
+        assertEquals(39635.25, estimator.getIntensity(
                 Math.toRadians(10.0), Math.toRadians(78.0), 64e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(40872.8, estimator.getIntensity(
+        assertEquals(40871.56, estimator.getIntensity(
                 Math.toRadians(33.0), Math.toRadians(-145.0), 12e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(59702.9, estimator.getIntensity(
+        assertEquals(59719.13, estimator.getIntensity(
                 Math.toRadians(-79.0), Math.toRadians(115.0), 12e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(34640.0, estimator.getIntensity(
+        assertEquals(34640.58, estimator.getIntensity(
                 Math.toRadians(-33.0), Math.toRadians(-114.0), 14e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(46961.7, estimator.getIntensity(
+        assertEquals(46959.58, estimator.getIntensity(
                 Math.toRadians(29.0), Math.toRadians(66.0), 19e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(38906.8, estimator.getIntensity(
+        assertEquals(38913.03, estimator.getIntensity(
                 Math.toRadians(-11.0), Math.toRadians(167.0), 86e3, 2021.5) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(33563.5, estimator.getIntensity(
+        assertEquals(33574.43, estimator.getIntensity(
                 Math.toRadians(-66.0), Math.toRadians(-5.0), 37e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(56120.8, estimator.getIntensity(
+        assertEquals(56140.81, estimator.getIntensity(
                 Math.toRadians(72.0), Math.toRadians(-115.0), 67e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(33995.6, estimator.getIntensity(
+        assertEquals(33982.85, estimator.getIntensity(
                 Math.toRadians(22.0), Math.toRadians(174.0), 44e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(49573.8, estimator.getIntensity(
+        assertEquals(49559.46, estimator.getIntensity(
                 Math.toRadians(54.0), Math.toRadians(178.0), 54e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(36883.0, estimator.getIntensity(
+        assertEquals(36893.33, estimator.getIntensity(
                 Math.toRadians(-43.0), Math.toRadians(50.0), 57e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(37392.8, estimator.getIntensity(
+        assertEquals(37391.12, estimator.getIntensity(
                 Math.toRadians(-43.0), Math.toRadians(-111.0), 44e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(62510.5, estimator.getIntensity(
+        assertEquals(62505.26, estimator.getIntensity(
                 Math.toRadians(-63.0), Math.toRadians(178.0), 12e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(35598.4, estimator.getIntensity(
+        assertEquals(35594.66, estimator.getIntensity(
                 Math.toRadians(27.0), Math.toRadians(-169.0), 38e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(55751.4, estimator.getIntensity(
+        assertEquals(55750.73, estimator.getIntensity(
                 Math.toRadians(59.0), Math.toRadians(-77.0), 61e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(24389.9, estimator.getIntensity(
+        assertEquals(24385.99, estimator.getIntensity(
                 Math.toRadians(-47.0), Math.toRadians(-32.0), 67e3, 2022.0) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(56037.2, estimator.getIntensity(
+        assertEquals(56023.93, estimator.getIntensity(
                 Math.toRadians(62.0), Math.toRadians(53.0), 8e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(34535.8, estimator.getIntensity(
+        assertEquals(34554.77, estimator.getIntensity(
                 Math.toRadians(-68.0), Math.toRadians(-7.0), 77e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(36867.1, estimator.getIntensity(
+        assertEquals(36856.26, estimator.getIntensity(
                 Math.toRadians(-5.0), Math.toRadians(159.0), 98e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(31142.6, estimator.getIntensity(
+        assertEquals(31134.43, estimator.getIntensity(
                 Math.toRadians(-29.0), Math.toRadians(-107.0), 34e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(44944.6, estimator.getIntensity(
+        assertEquals(44908.18, estimator.getIntensity(
                 Math.toRadians(27.0), Math.toRadians(65.0), 60e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(57011.5, estimator.getIntensity(
+        assertEquals(57015.56, estimator.getIntensity(
                 Math.toRadians(-72.0), Math.toRadians(95.0), 73e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(29781.1, estimator.getIntensity(
+        assertEquals(29780.68, estimator.getIntensity(
                 Math.toRadians(-46.0), Math.toRadians(-85.0), 96e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(23389.8, estimator.getIntensity(
+        assertEquals(23379.66, estimator.getIntensity(
                 Math.toRadians(-13.0), Math.toRadians(-59.0), 0e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(55792.1, estimator.getIntensity(
+        assertEquals(55800.12, estimator.getIntensity(
                 Math.toRadians(66.0), Math.toRadians(-178.0), 16e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(51331.5, estimator.getIntensity(
+        assertEquals(51356.97, estimator.getIntensity(
                 Math.toRadians(-87.0), Math.toRadians(38.0), 72e3, 2022.5) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(33876.1, estimator.getIntensity(
+        assertEquals(33862.13, estimator.getIntensity(
                 Math.toRadians(20.0), Math.toRadians(167.0), 49e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(29807.1, estimator.getIntensity(
+        assertEquals(29761.89, estimator.getIntensity(
                 Math.toRadians(5.0), Math.toRadians(-13.0), 71e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(38595.3, estimator.getIntensity(
+        assertEquals(38548.47, estimator.getIntensity(
                 Math.toRadians(14.0), Math.toRadians(65.0), 95e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(50254.0, estimator.getIntensity(
+        assertEquals(50273.89, estimator.getIntensity(
                 Math.toRadians(-85.0), Math.toRadians(-79.0), 86e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(22950.5, estimator.getIntensity(
+        assertEquals(22942.11, estimator.getIntensity(
                 Math.toRadians(-36.0), Math.toRadians(-64.0), 30e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(57149.3, estimator.getIntensity(
+        assertEquals(57176.95, estimator.getIntensity(
                 Math.toRadians(79.0), Math.toRadians(125.0), 75e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(28865.6, estimator.getIntensity(
+        assertEquals(28825.22, estimator.getIntensity(
                 Math.toRadians(6.0), Math.toRadians(-32.0), 21e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(47183.6, estimator.getIntensity(
+        assertEquals(47198.29, estimator.getIntensity(
                 Math.toRadians(-76.0), Math.toRadians(-75.0), 1e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(24401.3, estimator.getIntensity(
+        assertEquals(24398.19, estimator.getIntensity(
                 Math.toRadians(-46.0), Math.toRadians(-41.0), 45e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(25534.7, estimator.getIntensity(
+        assertEquals(25479.83, estimator.getIntensity(
                 Math.toRadians(-22.0), Math.toRadians(-21.0), 11e3, 2023.0) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(55072.9, estimator.getIntensity(
+        assertEquals(55084.80, estimator.getIntensity(
                 Math.toRadians(54.0), Math.toRadians(-120.0), 28e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(63136.8, estimator.getIntensity(
+        assertEquals(63121.76, estimator.getIntensity(
                 Math.toRadians(-58.0), Math.toRadians(156.0), 68e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(41928.8, estimator.getIntensity(
+        assertEquals(41927.71, estimator.getIntensity(
                 Math.toRadians(-65.0), Math.toRadians(-88.0), 39e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(48965.0, estimator.getIntensity(
+        assertEquals(48922.65, estimator.getIntensity(
                 Math.toRadians(-23.0), Math.toRadians(81.0), 27e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(42335.9, estimator.getIntensity(
+        assertEquals(42318.71, estimator.getIntensity(
                 Math.toRadians(34.0), 0.0, 11e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(47450.8, estimator.getIntensity(
+        assertEquals(47449.20, estimator.getIntensity(
                 Math.toRadians(-62.0), Math.toRadians(65.0), 72e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(55803.4, estimator.getIntensity(
+        assertEquals(55817.97, estimator.getIntensity(
                 Math.toRadians(86.0), Math.toRadians(70.0), 55e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(38551.7, estimator.getIntensity(
+        assertEquals(38540.40, estimator.getIntensity(
                 Math.toRadians(32.0), Math.toRadians(163.0), 59e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(49936.3, estimator.getIntensity(
+        assertEquals(49924.51, estimator.getIntensity(
                 Math.toRadians(48.0), Math.toRadians(148.0), 65e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(41450.1, estimator.getIntensity(
+        assertEquals(41415.05, estimator.getIntensity(
                 Math.toRadians(30.0), Math.toRadians(28.0), 95e3, 2023.5) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(31962.9, estimator.getIntensity(
+        assertEquals(31981.72, estimator.getIntensity(
                 Math.toRadians(-60.0), Math.toRadians(-59.0), 95e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(42393.4, estimator.getIntensity(
+        assertEquals(42406.60, estimator.getIntensity(
                 Math.toRadians(-70.0), Math.toRadians(42.0), 95e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(55907.8, estimator.getIntensity(
+        assertEquals(55928.55, estimator.getIntensity(
                 Math.toRadians(87.0), Math.toRadians(-154.0), 50e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(42241.2, estimator.getIntensity(
+        assertEquals(42208.43, estimator.getIntensity(
                 Math.toRadians(32.0), Math.toRadians(19.0), 58e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(40453.4, estimator.getIntensity(
+        assertEquals(40435.88, estimator.getIntensity(
                 Math.toRadians(34.0), Math.toRadians(-13.0), 57e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(47942.9, estimator.getIntensity(
+        assertEquals(47962.88, estimator.getIntensity(
                 Math.toRadians(-76.0), Math.toRadians(49.0), 38e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(56784.4, estimator.getIntensity(
+        assertEquals(56758.16, estimator.getIntensity(
                 Math.toRadians(-50.0), Math.toRadians(-179.0), 49e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(55839.2, estimator.getIntensity(
+        assertEquals(55812.08, estimator.getIntensity(
                 Math.toRadians(-55.0), Math.toRadians(-171.0), 90e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(44311.1, estimator.getIntensity(
+        assertEquals(44298.50, estimator.getIntensity(
                 Math.toRadians(42.0), Math.toRadians(-19.0), 41e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(46533.4, estimator.getIntensity(
+        assertEquals(46521.09, estimator.getIntensity(
                 Math.toRadians(46.0), Math.toRadians(-22.0), 19e3, 2024.0) * TO_NANO, INTENSITY_ERROR);
 
-        assertEquals(33326.9, estimator.getIntensity(
+        assertEquals(33270.36, estimator.getIntensity(
                 Math.toRadians(13.0), Math.toRadians(-132.0), 31e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(35835.1, estimator.getIntensity(
+        assertEquals(35792.75, estimator.getIntensity(
                 Math.toRadians(-2.0), Math.toRadians(158.0), 93e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(46035.2, estimator.getIntensity(
+        assertEquals(46059.47, estimator.getIntensity(
                 Math.toRadians(-76.0), Math.toRadians(40.0), 51e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(36415.3, estimator.getIntensity(
+        assertEquals(36375.44, estimator.getIntensity(
                 Math.toRadians(22.0), Math.toRadians(-132.0), 64e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(45397.3, estimator.getIntensity(
+        assertEquals(45394.15, estimator.getIntensity(
                 Math.toRadians(-65.0), Math.toRadians(55.0), 26e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(29231.7, estimator.getIntensity(
+        assertEquals(29270.10, estimator.getIntensity(
                 Math.toRadians(-21.0), Math.toRadians(32.0), 66e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(32246.7, estimator.getIntensity(
+        assertEquals(32220.53, estimator.getIntensity(
                 Math.toRadians(9.0), Math.toRadians(-172.0), 18e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(55213.8, estimator.getIntensity(
+        assertEquals(55220.72, estimator.getIntensity(
                 Math.toRadians(88.0), Math.toRadians(26.0), 63e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(35043.1, estimator.getIntensity(
+        assertEquals(34998.27, estimator.getIntensity(
                 Math.toRadians(17.0), Math.toRadians(5.0), 33e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
-        assertEquals(47296.1, estimator.getIntensity(
+        assertEquals(47235.76, estimator.getIntensity(
                 Math.toRadians(-18.0), Math.toRadians(138.0), 77e3, 2024.5) * TO_NANO, INTENSITY_ERROR);
+    }
+
+    @Test
+    void testIntensityModel2025() throws IOException {
+        // test values correspond to F (nT) column in WMM test values document
+        final var estimator = new WMMEarthMagneticFluxDensityEstimator();
+
+        assertEquals(55178.5, estimator.getIntensity(
+                Math.toRadians(80.0), Math.toRadians(0.0), 0.0, 2025.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(41064.3, estimator.getIntensity(
+                Math.toRadians(0.0), Math.toRadians(120.0), 0.0, 2025.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(54698.2, estimator.getIntensity(
+                Math.toRadians(-80.0), Math.toRadians(240.0), 0.0, 2025.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(52964.9, estimator.getIntensity(
+                Math.toRadians(80.0), Math.toRadians(0.0), 100e3, 2025.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(39032.1, estimator.getIntensity(
+                Math.toRadians(0.0), Math.toRadians(120.0), 100e3, 2025.0) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(52035, estimator.getIntensity(
+                Math.toRadians(-80.0), Math.toRadians(240.0), 100e3, 2025.0) * TO_NANO, INTENSITY_ERROR);
+
+        assertEquals(55253.9, estimator.getIntensity(
+                Math.toRadians(80.0), Math.toRadians(0.0), 0.0, 2027.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(41036.9, estimator.getIntensity(
+                Math.toRadians(0.0), Math.toRadians(120.0), 0.0, 2027.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(54474.2, estimator.getIntensity(
+                Math.toRadians(-80.0), Math.toRadians(240.0), 0.0, 2027.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(53034.3, estimator.getIntensity(
+                Math.toRadians(80.0), Math.toRadians(0.0), 100e3, 2027.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(39007.4, estimator.getIntensity(
+                Math.toRadians(0.0), Math.toRadians(120.0), 100e3, 2027.5) * TO_NANO, INTENSITY_ERROR);
+        assertEquals(51825.7, estimator.getIntensity(
+                Math.toRadians(-80.0), Math.toRadians(240.0), 100e3, 2027.5) * TO_NANO, INTENSITY_ERROR);
     }
 
     @Test
@@ -1939,7 +2164,7 @@ class WMMEarthMagneticFluxDensityEstimatorTest {
         final var intensity2 = estimator.getHorizontalIntensity(latitude, longitude, height, calendar);
         final var intensity3 = estimator.getHorizontalIntensity(latitude, longitude, height, date);
         final var intensity4 = estimator.getHorizontalIntensity(latitudeAngle, longitudeAngle, heightDistance, year);
-        final var intensity5 = estimator.getHorizontalIntensity(latitudeAngle, longitudeAngle, heightDistance, 
+        final var intensity5 = estimator.getHorizontalIntensity(latitudeAngle, longitudeAngle, heightDistance,
                 calendar);
         final var intensity6 = estimator.getHorizontalIntensity(latitudeAngle, longitudeAngle, heightDistance, date);
         final var intensity7 = estimator.getHorizontalIntensity(position, year);

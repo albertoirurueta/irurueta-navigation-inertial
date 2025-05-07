@@ -65,8 +65,8 @@ class AttitudeEstimatorTest {
     private static final int TIMES = 100;
 
     static {
-        START_CALENDAR.set(2020, Calendar.JANUARY, 1, 0, 0, 0);
-        END_CALENDAR.set(2025, Calendar.DECEMBER, 31, 23, 59, 59);
+        START_CALENDAR.set(2025, Calendar.JANUARY, 1, 0, 0, 0);
+        END_CALENDAR.set(2030, Calendar.DECEMBER, 31, 23, 59, 59);
 
         START_TIMESTAMP_MILLIS = START_CALENDAR.getTimeInMillis();
         END_TIMESTAMP_MILLIS = END_CALENDAR.getTimeInMillis();

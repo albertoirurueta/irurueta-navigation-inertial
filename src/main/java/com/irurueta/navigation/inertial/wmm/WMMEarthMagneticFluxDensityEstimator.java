@@ -80,7 +80,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
     private static final double FROM_NANO = 1e-9;
 
     /**
-     * Time value used in previous calculation.
+     * Time value used in the previous calculation.
      * This is used to save on calculation time if some
      * inputs don't change.
      * Old time is expressed in decimal years.
@@ -88,7 +88,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
     private Double oldTime;
 
     /**
-     * Geodetic height (a.k.a. altitude) value used in previous
+     * Geodetic height (a.k.a. altitude) value used in the previous
      * calculation.
      * This is used to save on calculation time if some
      * inputs don't change.
@@ -138,7 +138,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
     private final WorldMagneticModel model;
 
     /**
-     * The time adjusted geomagnetic gauss coefficients (nt).
+     * The time-adjusted geomagnetic gauss coefficients (nt).
      */
     private final double[][] tc = new double[N][N];
 
@@ -194,7 +194,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
     private final double b2;
 
     /**
-     * The difference between the squared semi axes.
+     * The difference between the squared semi-axes.
      * c2 = a2 - b2
      */
     private final double c2;
@@ -393,7 +393,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
     /**
      * Returns the declination from the Department of Defense geomagnetic
      * model and data, in radians.
-     * The magnetic heading + declination is the true heading of a device
+     * The magnetic heading declination is the true heading of a device
      * in terms of geographical north pole.
      *
      * @param latitude  latitude expressed in radians.
@@ -2698,7 +2698,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
             ar = ar * aor;
             for (int m = 0, D3 = 1, D4 = (n + m + D3) / D3; D4 > 0; D4--, m += D3) {
 
-                // compute un-normalized associated Legendre polynomials
+                // compute unnormalized associated Legendre polynomials
                 // and derivatives via recursion relations
                 if (oldHeight == null || height != oldHeight || oldLatitude == null || latitude != oldLatitude) {
                     if (n == m) {
@@ -2723,7 +2723,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
                     }
                 }
 
-                // time adjust the Gauss coefficients
+                // time-adjust the Gauss coefficients
 
                 if (oldTime == null || year != oldTime) {
                     tc[m][n] = model.c[m][n] + dt * model.cd[m][n];
