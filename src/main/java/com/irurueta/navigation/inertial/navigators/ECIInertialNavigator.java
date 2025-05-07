@@ -25,7 +25,6 @@ import com.irurueta.navigation.frames.ECIFrame;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.inertial.ECIGravitation;
 import com.irurueta.navigation.inertial.estimators.ECIGravitationEstimator;
 import com.irurueta.units.*;
 
@@ -3146,24 +3145,24 @@ public class ECIInertialNavigator {
         try {
             // Attitude update
             // Calculate attitude increment, magnitude, and skew-symmetric matrix
-            final Matrix alphaIbb = new Matrix(ROWS, 1);
+            final var alphaIbb = new Matrix(ROWS, 1);
             alphaIbb.setElementAtIndex(0, angularRateX * timeInterval);
             alphaIbb.setElementAtIndex(1, angularRateY * timeInterval);
             alphaIbb.setElementAtIndex(2, angularRateZ * timeInterval);
 
-            final double magAlpha = Utils.normF(alphaIbb);
-            final Matrix skewAlpha = Utils.skewMatrix(alphaIbb);
+            final var magAlpha = Utils.normF(alphaIbb);
+            final var skewAlpha = Utils.skewMatrix(alphaIbb);
 
             // Obtain coordinate transformation matrix from the new attitude to the old
             // using Rodrigues' formula, (5.73)
-            final Matrix cNewOld = Matrix.identity(ROWS, ROWS);
+            final var cNewOld = Matrix.identity(ROWS, ROWS);
             if (magAlpha > ALPHA_THRESHOLD) {
-                final double magAlpha2 = magAlpha * magAlpha;
-                final double value1 = Math.sin(magAlpha) / magAlpha;
-                final double value2 = (1.0 - Math.cos(magAlpha)) / magAlpha2;
+                final var magAlpha2 = magAlpha * magAlpha;
+                final var value1 = Math.sin(magAlpha) / magAlpha;
+                final var value2 = (1.0 - Math.cos(magAlpha)) / magAlpha2;
 
-                final Matrix tmp1 = skewAlpha.multiplyByScalarAndReturnNew(value1);
-                final Matrix tmp2 = skewAlpha.multiplyByScalarAndReturnNew(value2);
+                final var tmp1 = skewAlpha.multiplyByScalarAndReturnNew(value1);
+                final var tmp2 = skewAlpha.multiplyByScalarAndReturnNew(value2);
                 tmp2.multiply(skewAlpha);
 
                 cNewOld.add(tmp1);
@@ -3173,20 +3172,20 @@ public class ECIInertialNavigator {
             }
 
             // Update attitude
-            final Matrix oldCbi = oldC.getMatrix();
-            final Matrix cbi = oldCbi.multiplyAndReturnNew(cNewOld);
+            final var oldCbi = oldC.getMatrix();
+            final var cbi = oldCbi.multiplyAndReturnNew(cNewOld);
 
             // Specific force frame transformation
             // Calculate the average body-to-ECI-frame coordinate transformation
             // matrix over the update interval using (5.84)
             if (magAlpha > ALPHA_THRESHOLD) {
-                final Matrix tmp1 = Matrix.identity(ROWS, ROWS);
-                final double magAlpha2 = magAlpha * magAlpha;
-                final double value1 = (1.0 - Math.cos(magAlpha)) / magAlpha2;
-                final double value2 = (1.0 - Math.sin(magAlpha) / magAlpha) / magAlpha2;
+                final var tmp1 = Matrix.identity(ROWS, ROWS);
+                final var magAlpha2 = magAlpha * magAlpha;
+                final var value1 = (1.0 - Math.cos(magAlpha)) / magAlpha2;
+                final var value2 = (1.0 - Math.sin(magAlpha) / magAlpha) / magAlpha2;
 
-                final Matrix tmp2 = skewAlpha.multiplyByScalarAndReturnNew(value1);
-                final Matrix tmp3 = skewAlpha.multiplyByScalarAndReturnNew(value2);
+                final var tmp2 = skewAlpha.multiplyByScalarAndReturnNew(value1);
+                final var tmp3 = skewAlpha.multiplyByScalarAndReturnNew(value2);
                 tmp3.multiply(skewAlpha);
 
                 tmp1.add(tmp2);
@@ -3198,7 +3197,7 @@ public class ECIInertialNavigator {
             // oldCbi contains average body-to-ECI-frame (aveCbi)
 
             // Transform specific force to ECI-frame resolving axes using (5.81)
-            final Matrix fIbb = new Matrix(ROWS, 1);
+            final var fIbb = new Matrix(ROWS, 1);
             fIbb.setElementAtIndex(0, fx);
             fIbb.setElementAtIndex(1, fy);
             fIbb.setElementAtIndex(2, fz);
@@ -3208,14 +3207,13 @@ public class ECIInertialNavigator {
 
             // Update velocity
             // From (5.18) and (5.20),
-            final Matrix oldVibi = new Matrix(ROWS, 1);
+            final var oldVibi = new Matrix(ROWS, 1);
             oldVibi.setElementAtIndex(0, oldVx);
             oldVibi.setElementAtIndex(1, oldVy);
             oldVibi.setElementAtIndex(2, oldVz);
 
-            final ECIGravitation gravitation = ECIGravitationEstimator
-                    .estimateGravitationAndReturnNew(oldX, oldY, oldZ);
-            final Matrix g = gravitation.asMatrix();
+            final var gravitation = ECIGravitationEstimator.estimateGravitationAndReturnNew(oldX, oldY, oldZ);
+            final var g = gravitation.asMatrix();
 
             // fIbi + g
             oldCbi.add(g);
@@ -3224,20 +3222,20 @@ public class ECIInertialNavigator {
             oldCbi.multiplyByScalar(timeInterval);
 
             // oldVibi + timeInterval * (fIbi + g)
-            final Matrix vIbi = oldVibi.addAndReturnNew(oldCbi);
+            final var vIbi = oldVibi.addAndReturnNew(oldCbi);
 
-            final double vx = vIbi.getElementAtIndex(0);
-            final double vy = vIbi.getElementAtIndex(1);
-            final double vz = vIbi.getElementAtIndex(2);
+            final var vx = vIbi.getElementAtIndex(0);
+            final var vy = vIbi.getElementAtIndex(1);
+            final var vz = vIbi.getElementAtIndex(2);
 
             // Update cartesian position
             // From (5.23),
-            final double x = oldX + (vx + oldVx) * 0.5 * timeInterval;
-            final double y = oldY + (vy + oldVy) * 0.5 * timeInterval;
-            final double z = oldZ + (vz + oldVz) * 0.5 * timeInterval;
+            final var x = oldX + (vx + oldVx) * 0.5 * timeInterval;
+            final var y = oldY + (vy + oldVy) * 0.5 * timeInterval;
+            final var z = oldZ + (vz + oldVz) * 0.5 * timeInterval;
 
-            final CoordinateTransformation newC = new CoordinateTransformation(cbi,
-                    FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_INERTIAL_FRAME);
+            final var newC = new CoordinateTransformation(cbi, FrameType.BODY_FRAME,
+                    FrameType.EARTH_CENTERED_INERTIAL_FRAME);
 
             result.setCoordinates(x, y, z);
             result.setVelocityCoordinates(vx, vy, vz);
@@ -4826,7 +4824,7 @@ public class ECIInertialNavigator {
             final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -4880,7 +4878,7 @@ public class ECIInertialNavigator {
             final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -4917,7 +4915,7 @@ public class ECIInertialNavigator {
             final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
             final BodyKinematics kinematics) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics, result);
         return result;
     }
@@ -4953,7 +4951,7 @@ public class ECIInertialNavigator {
             final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
             final BodyKinematics kinematics) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics, result);
         return result;
     }
@@ -5002,7 +5000,7 @@ public class ECIInertialNavigator {
             final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -5052,7 +5050,7 @@ public class ECIInertialNavigator {
             final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -5084,7 +5082,7 @@ public class ECIInertialNavigator {
             final double timeInterval, final Point3D oldPosition, final CoordinateTransformation oldC,
             final double oldVx, final double oldVy, final double oldVz, final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, kinematics, result);
         return result;
     }
@@ -5115,7 +5113,7 @@ public class ECIInertialNavigator {
             final Time timeInterval, final Point3D oldPosition, final CoordinateTransformation oldC,
             final double oldVx, final double oldVy, final double oldVz, final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, kinematics, result);
         return result;
     }
@@ -5168,7 +5166,7 @@ public class ECIInertialNavigator {
             final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -5222,7 +5220,7 @@ public class ECIInertialNavigator {
             final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -5259,7 +5257,7 @@ public class ECIInertialNavigator {
             final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
             final BodyKinematics kinematics) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics, result);
         return result;
     }
@@ -5295,7 +5293,7 @@ public class ECIInertialNavigator {
             final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
             final BodyKinematics kinematics) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics, result);
         return result;
     }
@@ -5348,7 +5346,7 @@ public class ECIInertialNavigator {
             final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -5402,7 +5400,7 @@ public class ECIInertialNavigator {
             final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -5439,7 +5437,7 @@ public class ECIInertialNavigator {
             final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
             final BodyKinematics kinematics) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result);
         return result;
     }
@@ -5475,7 +5473,7 @@ public class ECIInertialNavigator {
             final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
             final BodyKinematics kinematics) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result);
         return result;
     }
@@ -5525,7 +5523,7 @@ public class ECIInertialNavigator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -5576,7 +5574,7 @@ public class ECIInertialNavigator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -5627,7 +5625,7 @@ public class ECIInertialNavigator {
             final double fx, final double fy, final double fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -5678,7 +5676,7 @@ public class ECIInertialNavigator {
             final double fx, final double fy, final double fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -5732,7 +5730,7 @@ public class ECIInertialNavigator {
             final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -5786,7 +5784,7 @@ public class ECIInertialNavigator {
             final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -5834,7 +5832,7 @@ public class ECIInertialNavigator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -5882,7 +5880,7 @@ public class ECIInertialNavigator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -5930,7 +5928,7 @@ public class ECIInertialNavigator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -5978,7 +5976,7 @@ public class ECIInertialNavigator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -6015,7 +6013,7 @@ public class ECIInertialNavigator {
             final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
             final BodyKinematics kinematics) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result);
         return result;
     }
@@ -6051,7 +6049,7 @@ public class ECIInertialNavigator {
             final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
             final BodyKinematics kinematics) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result);
         return result;
     }
@@ -6088,7 +6086,7 @@ public class ECIInertialNavigator {
             final double timeInterval, final ECIFrame oldFrame, final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
@@ -6125,7 +6123,7 @@ public class ECIInertialNavigator {
             final Time timeInterval, final ECIFrame oldFrame, final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
@@ -6145,7 +6143,7 @@ public class ECIInertialNavigator {
     public static ECIFrame navigateECIAndReturnNew(
             final double timeInterval, final ECIFrame oldFrame, final BodyKinematics kinematics)
             throws InertialNavigatorException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldFrame, kinematics, result);
         return result;
     }
@@ -6165,7 +6163,7 @@ public class ECIInertialNavigator {
     public static ECIFrame navigateECIAndReturnNew(
             final Time timeInterval, final ECIFrame oldFrame, final BodyKinematics kinematics)
             throws InertialNavigatorException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldFrame, kinematics, result);
         return result;
     }
@@ -6200,7 +6198,7 @@ public class ECIInertialNavigator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
@@ -6235,7 +6233,7 @@ public class ECIInertialNavigator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
@@ -6269,7 +6267,7 @@ public class ECIInertialNavigator {
             final double timeInterval, final ECIFrame oldFrame, final double fx, final double fy, final double fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
@@ -6303,7 +6301,7 @@ public class ECIInertialNavigator {
             final Time timeInterval, final ECIFrame oldFrame, final double fx, final double fy, final double fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
@@ -6335,7 +6333,7 @@ public class ECIInertialNavigator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
@@ -6367,7 +6365,7 @@ public class ECIInertialNavigator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException {
-        final ECIFrame result = new ECIFrame();
+        final var result = new ECIFrame();
         navigateECI(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
         return result;
     }

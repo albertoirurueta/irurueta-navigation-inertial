@@ -48,12 +48,12 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      * Standard deviation of measured specific force expressed in meters per squared
      * second (m/s^2).
      */
-    private double mSpecificForceStandardDeviation;
+    private double specificForceStandardDeviation;
 
     /**
      * Standard deviation of measured angular rate expressed in radians per second (rad/s).
      */
-    private double mAngularRateStandardDeviation;
+    private double angularRateStandardDeviation;
 
     /**
      * Constructor.
@@ -1269,7 +1269,7 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      * @return standard deviation of measured specific force.
      */
     public double getSpecificForceStandardDeviation() {
-        return mSpecificForceStandardDeviation;
+        return specificForceStandardDeviation;
     }
 
     /**
@@ -1284,7 +1284,7 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
             throw new IllegalArgumentException();
         }
 
-        mSpecificForceStandardDeviation = specificForceStandardDeviation;
+        this.specificForceStandardDeviation = specificForceStandardDeviation;
     }
 
     /**
@@ -1293,7 +1293,7 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      * @return standard deviation of measured specific force.
      */
     public Acceleration getSpecificForceStandardDeviationAsAcceleration() {
-        return new Acceleration(mSpecificForceStandardDeviation, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(specificForceStandardDeviation, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -1303,7 +1303,7 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      *               stored.
      */
     public void getSpecificForceStandardDeviationAsAcceleration(final Acceleration result) {
-        result.setValue(mSpecificForceStandardDeviation);
+        result.setValue(specificForceStandardDeviation);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -1323,7 +1323,7 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      * @return standard deviation of measured angular rate.
      */
     public double getAngularRateStandardDeviation() {
-        return mAngularRateStandardDeviation;
+        return angularRateStandardDeviation;
     }
 
     /**
@@ -1337,7 +1337,7 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
             throw new IllegalArgumentException();
         }
 
-        mAngularRateStandardDeviation = angularRateStandardDeviation;
+        this.angularRateStandardDeviation = angularRateStandardDeviation;
     }
 
     /**
@@ -1346,7 +1346,7 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      * @return standard deviation of measured angular rate.
      */
     public AngularSpeed getAngularRateStandardDeviationAsAngularSpeed() {
-        return new AngularSpeed(mAngularRateStandardDeviation, AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(angularRateStandardDeviation, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -1356,7 +1356,7 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      *               stored.
      */
     public void getAngularRateStandardDeviationAsAngularSpeed(final AngularSpeed result) {
-        result.setValue(mAngularRateStandardDeviation);
+        result.setValue(angularRateStandardDeviation);
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -1378,8 +1378,8 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
     public void copyFrom(final StandardDeviationFrameBodyKinematics input) {
         super.copyFrom(input);
 
-        mSpecificForceStandardDeviation = input.mSpecificForceStandardDeviation;
-        mAngularRateStandardDeviation = input.mAngularRateStandardDeviation;
+        specificForceStandardDeviation = input.specificForceStandardDeviation;
+        angularRateStandardDeviation = input.angularRateStandardDeviation;
     }
 
     /**
@@ -1390,8 +1390,8 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
     public void copyTo(final StandardDeviationFrameBodyKinematics output) {
         super.copyTo(output);
 
-        output.mSpecificForceStandardDeviation = mSpecificForceStandardDeviation;
-        output.mAngularRateStandardDeviation = mAngularRateStandardDeviation;
+        output.specificForceStandardDeviation = specificForceStandardDeviation;
+        output.angularRateStandardDeviation = angularRateStandardDeviation;
     }
 
     /**
@@ -1402,7 +1402,7 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), mSpecificForceStandardDeviation, mAngularRateStandardDeviation);
+        return Objects.hash(super.hashCode(), specificForceStandardDeviation, angularRateStandardDeviation);
     }
 
     /**
@@ -1425,9 +1425,9 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      * threshold), false otherwise.
      */
     public boolean equals(final StandardDeviationFrameBodyKinematics other, final double threshold) {
-        return super.equals(other, threshold) &&
-                Math.abs(mSpecificForceStandardDeviation - other.mSpecificForceStandardDeviation) <= threshold
-                && Math.abs(mAngularRateStandardDeviation - other.mAngularRateStandardDeviation) <= threshold;
+        return super.equals(other, threshold)
+                && Math.abs(specificForceStandardDeviation - other.specificForceStandardDeviation) <= threshold
+                && Math.abs(angularRateStandardDeviation - other.angularRateStandardDeviation) <= threshold;
     }
 
     /**
@@ -1465,7 +1465,7 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        final StandardDeviationFrameBodyKinematics other = (StandardDeviationFrameBodyKinematics) obj;
+        final var other = (StandardDeviationFrameBodyKinematics) obj;
         return equals(other);
     }
 
@@ -1477,7 +1477,7 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final StandardDeviationFrameBodyKinematics result = (StandardDeviationFrameBodyKinematics) super.clone();
+        final var result = (StandardDeviationFrameBodyKinematics) super.clone();
         copyTo(result);
         return result;
     }

@@ -15,12 +15,9 @@
  */
 package com.irurueta.navigation.inertial.navigators;
 
-import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.InvalidRotationMatrixException;
-import com.irurueta.geometry.Point3D;
 import com.irurueta.geometry.Quaternion;
 import com.irurueta.navigation.frames.CoordinateTransformation;
-import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
@@ -29,26 +26,21 @@ import com.irurueta.navigation.frames.NEDVelocity;
 import com.irurueta.navigation.frames.converters.ECEFtoNEDFrameConverter;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.inertial.NEDGravity;
 import com.irurueta.navigation.inertial.estimators.NEDGravityEstimator;
 import com.irurueta.navigation.inertial.estimators.NEDKinematicsEstimator;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import java.util.Random;
+import static org.junit.jupiter.api.Assertions.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-public class NEDInertialNavigatorTest {
+class NEDInertialNavigatorTest {
     private static final double TIME_INTERVAL_SECONDS = 0.02;
 
     private static final double LATITUDE_DEGREES = 41.3825;
     private static final double LONGITUDE_DEGREES = 2.176944;
     private static final double HEIGHT = 0.0;
-
-
+    
     private static final double MIN_HEIGHT = -10.0;
     private static final double MAX_HEIGHT = 10.0;
 
@@ -72,390 +64,383 @@ public class NEDInertialNavigatorTest {
 
     private static final double ACCURACY_THRESHOLD = 1e-6;
 
-    @Test(expected = InvalidSourceAndDestinationFrameTypeException.class)
-    public void testNavigateNEDWhenInvalidCoordinateTransformationMatrix()
-            throws InvalidSourceAndDestinationFrameTypeException, InertialNavigatorException {
-
-        final CoordinateTransformation c = new CoordinateTransformation(FrameType.BODY_FRAME, FrameType.BODY_FRAME);
-        final NEDFrame result = new NEDFrame();
-        NEDInertialNavigator.navigateNED(0.0, 0.0, 0.0, 0.0, c,
+    @Test
+    void testNavigateNEDWhenInvalidCoordinateTransformationMatrix() {
+        final var c = new CoordinateTransformation(FrameType.BODY_FRAME, FrameType.BODY_FRAME);
+        final var result = new NEDFrame();
+        assertThrows(InvalidSourceAndDestinationFrameTypeException.class, () -> NEDInertialNavigator.navigateNED(
+                0.0, 0.0, 0.0, 0.0, c, 0.0, 0.0, 0.0,
                 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-                0.0, 0.0, 0.0, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD,
-                result);
+                NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result));
     }
 
     @Test
-    public void testNavigate() throws InvalidRotationMatrixException, InvalidSourceAndDestinationFrameTypeException,
+    void testNavigate() throws InvalidRotationMatrixException, InvalidSourceAndDestinationFrameTypeException,
             InertialNavigatorException {
 
-        final NEDInertialNavigator navigator = new NEDInertialNavigator();
+        final var navigator = new NEDInertialNavigator();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final var randomizer = new UniformRandomizer();
 
-        final double oldLatitude = Math.toRadians(LATITUDE_DEGREES);
-        final double oldLongitude = Math.toRadians(LONGITUDE_DEGREES);
+        final var oldLatitude = Math.toRadians(LATITUDE_DEGREES);
+        final var oldLongitude = Math.toRadians(LONGITUDE_DEGREES);
 
-        final double oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final Quaternion q = new Quaternion(roll, pitch, yaw);
+        final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var q = new Quaternion(roll, pitch, yaw);
 
-        final Matrix m = q.asInhomogeneousMatrix();
-        final CoordinateTransformation oldC = new CoordinateTransformation(m, FrameType.BODY_FRAME,
-                FrameType.LOCAL_NAVIGATION_FRAME);
+        final var m = q.asInhomogeneousMatrix();
+        final var oldC = new CoordinateTransformation(m, FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
 
-        final NEDFrame oldFrame = new NEDFrame(oldLatitude, oldLongitude, HEIGHT, oldVn, oldVe, oldVd, oldC);
+        final var oldFrame = new NEDFrame(oldLatitude, oldLongitude, HEIGHT, oldVn, oldVe, oldVd, oldC);
 
-        final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
 
-        final double angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+        final var angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                 MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-        final double angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+        final var angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                 MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-        final double angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+        final var angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                 MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
 
-        final AngularSpeed angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond,
-                AngularSpeedUnit.DEGREES_PER_SECOND);
-        final AngularSpeed angularSpeedY = new AngularSpeed(angularRateYDegreesPerSecond,
-                AngularSpeedUnit.DEGREES_PER_SECOND);
-        final AngularSpeed angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond,
-                AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY = new AngularSpeed(angularRateYDegreesPerSecond, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond, AngularSpeedUnit.DEGREES_PER_SECOND);
 
-        final double angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
+        final var angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
                 angularSpeedX.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-        final double angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
+        final var angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
                 angularSpeedY.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-        final double angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
+        final var angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
                 angularSpeedZ.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
 
-        final BodyKinematics kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+        final var kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result1 = new NEDFrame();
+        final var result1 = new NEDFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, oldC, oldVn, oldVe, oldVd,
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result1);
 
-        final Time timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
-        final NEDFrame result2 = new NEDFrame();
+        final var timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
+        final var result2 = new NEDFrame();
         navigator.navigate(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result2);
 
-        final NEDPosition oldPosition = new NEDPosition(oldLatitude, oldLongitude, HEIGHT);
-        final NEDFrame result3 = new NEDFrame();
+        final var oldPosition = new NEDPosition(oldLatitude, oldLongitude, HEIGHT);
+        final var result3 = new NEDFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result3);
 
-        final NEDFrame result4 = new NEDFrame();
-        navigator.navigate(timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
+        final var result4 = new NEDFrame();
+        navigator.navigate(timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd, fx, fy, fz, 
                 angularRateX, angularRateY, angularRateZ, result4);
 
-        final NEDVelocity oldVelocity = new NEDVelocity(oldVn, oldVe, oldVd);
-        final NEDFrame result5 = new NEDFrame();
+        final var oldVelocity = new NEDVelocity(oldVn, oldVe, oldVd);
+        final var result5 = new NEDFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, oldC, oldVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result5);
 
-        final NEDFrame result6 = new NEDFrame();
+        final var result6 = new NEDFrame();
         navigator.navigate(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC, oldVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result6);
 
-        final NEDFrame result7 = new NEDFrame();
-        navigator.navigate(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVelocity, fx, fy, fz,
+        final var result7 = new NEDFrame();
+        navigator.navigate(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVelocity, fx, fy, fz, 
                 angularRateX, angularRateY, angularRateZ, result7);
 
-        final NEDFrame result8 = new NEDFrame();
-        navigator.navigate(timeInterval, oldPosition, oldC, oldVelocity, fx, fy, fz,
+        final var result8 = new NEDFrame();
+        navigator.navigate(timeInterval, oldPosition, oldC, oldVelocity, fx, fy, fz, 
                 angularRateX, angularRateY, angularRateZ, result8);
 
-        final NEDFrame result9 = new NEDFrame();
+        final var result9 = new NEDFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, oldC, oldVn, oldVe, oldVd,
                 kinematics, result9);
 
-        final NEDFrame result10 = new NEDFrame();
+        final var result10 = new NEDFrame();
         navigator.navigate(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC, oldVn, oldVe, oldVd, kinematics,
                 result10);
 
-        final NEDFrame result11 = new NEDFrame();
+        final var result11 = new NEDFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVn, oldVe, oldVd, kinematics, result11);
 
-        final NEDFrame result12 = new NEDFrame();
+        final var result12 = new NEDFrame();
         navigator.navigate(timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd, kinematics, result12);
 
-        final NEDFrame result13 = new NEDFrame();
+        final var result13 = new NEDFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, oldC, oldVelocity, kinematics,
                 result13);
 
-        final NEDFrame result14 = new NEDFrame();
+        final var result14 = new NEDFrame();
         navigator.navigate(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC, oldVelocity, kinematics, result14);
 
-        final NEDFrame result15 = new NEDFrame();
+        final var result15 = new NEDFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVelocity, kinematics, result15);
 
-        final NEDFrame result16 = new NEDFrame();
+        final var result16 = new NEDFrame();
         navigator.navigate(timeInterval, oldPosition, oldC, oldVelocity, kinematics, result16);
 
-        final Angle oldLatitudeAngle = new Angle(oldLatitude, AngleUnit.RADIANS);
-        final Angle oldLongitudeAngle = new Angle(oldLongitude, AngleUnit.RADIANS);
-        final Distance oldHeightDistance = new Distance(HEIGHT, DistanceUnit.METER);
-        final NEDFrame result17 = new NEDFrame();
-        navigator.navigate(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle,
-                oldHeightDistance, oldC, oldVn, oldVe, oldVd, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
-                result17);
+        final var oldLatitudeAngle = new Angle(oldLatitude, AngleUnit.RADIANS);
+        final var oldLongitudeAngle = new Angle(oldLongitude, AngleUnit.RADIANS);
+        final var oldHeightDistance = new Distance(HEIGHT, DistanceUnit.METER);
+        final var result17 = new NEDFrame();
+        navigator.navigate(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, 
+                oldVn, oldVe, oldVd, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result17);
 
-        final NEDFrame result18 = new NEDFrame();
-        navigator.navigate(timeInterval, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC,
+        final var result18 = new NEDFrame();
+        navigator.navigate(timeInterval, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, 
                 oldVn, oldVe, oldVd, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result18);
 
-        final NEDFrame result19 = new NEDFrame();
+        final var result19 = new NEDFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC,
                 oldVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result19);
 
-        final NEDFrame result20 = new NEDFrame();
+        final var result20 = new NEDFrame();
         navigator.navigate(timeInterval, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, oldVelocity,
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result20);
 
-        final NEDFrame result21 = new NEDFrame();
-        navigator.navigate(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC,
+        final var result21 = new NEDFrame();
+        navigator.navigate(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, 
                 oldVn, oldVe, oldVd, kinematics, result21);
 
-        final NEDFrame result22 = new NEDFrame();
-        navigator.navigate(timeInterval, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC,
+        final var result22 = new NEDFrame();
+        navigator.navigate(timeInterval, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, 
                 oldVn, oldVe, oldVd, kinematics, result22);
 
-        final NEDFrame result23 = new NEDFrame();
+        final var result23 = new NEDFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC,
                 oldVelocity, kinematics, result23);
 
-        final NEDFrame result24 = new NEDFrame();
+        final var result24 = new NEDFrame();
         navigator.navigate(timeInterval, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, oldVelocity,
                 kinematics, result24);
 
-        final Speed oldSpeedN = new Speed(oldVn, SpeedUnit.METERS_PER_SECOND);
-        final Speed oldSpeedE = new Speed(oldVe, SpeedUnit.METERS_PER_SECOND);
-        final Speed oldSpeedD = new Speed(oldVd, SpeedUnit.METERS_PER_SECOND);
-        final NEDFrame result25 = new NEDFrame();
-        navigator.navigate(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, oldC,
+        final var oldSpeedN = new Speed(oldVn, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedE = new Speed(oldVe, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedD = new Speed(oldVd, SpeedUnit.METERS_PER_SECOND);
+        final var result25 = new NEDFrame();
+        navigator.navigate(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, oldC, 
                 oldSpeedN, oldSpeedE, oldSpeedD, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result25);
 
-        final NEDFrame result26 = new NEDFrame();
+        final var result26 = new NEDFrame();
         navigator.navigate(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result26);
 
-        final NEDFrame result27 = new NEDFrame();
+        final var result27 = new NEDFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldSpeedN, oldSpeedE, oldSpeedD, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result27);
 
-        final NEDFrame result28 = new NEDFrame();
+        final var result28 = new NEDFrame();
         navigator.navigate(timeInterval, oldPosition, oldC, oldSpeedN, oldSpeedE, oldSpeedD, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result28);
 
-        final NEDFrame result29 = new NEDFrame();
-        navigator.navigate(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, oldC,
+        final var result29 = new NEDFrame();
+        navigator.navigate(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, oldC, 
                 oldSpeedN, oldSpeedE, oldSpeedD, kinematics, result29);
 
-        final NEDFrame result30 = new NEDFrame();
+        final var result30 = new NEDFrame();
         navigator.navigate(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
                 kinematics, result30);
 
-        final NEDFrame result31 = new NEDFrame();
+        final var result31 = new NEDFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldSpeedN, oldSpeedE, oldSpeedD, kinematics,
                 result31);
 
-        final NEDFrame result32 = new NEDFrame();
+        final var result32 = new NEDFrame();
         navigator.navigate(timeInterval, oldPosition, oldC, oldSpeedN, oldSpeedE, oldSpeedD, kinematics, result32);
 
-        final Acceleration accelerationX = new Acceleration(fx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration accelerationY = new Acceleration(fy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration accelerationZ = new Acceleration(fz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final NEDFrame result33 = new NEDFrame();
+        final var accelerationX = new Acceleration(fx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var accelerationY = new Acceleration(fy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var accelerationZ = new Acceleration(fz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var result33 = new NEDFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, oldC, oldVn, oldVe, oldVd,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ, result33);
 
-        final NEDFrame result34 = new NEDFrame();
+        final var result34 = new NEDFrame();
         navigator.navigate(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC, oldVn, oldVe, oldVd,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ, result34);
 
-        final NEDFrame result35 = new NEDFrame();
+        final var result35 = new NEDFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVn, oldVe, oldVd,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ, result35);
 
-        final NEDFrame result36 = new NEDFrame();
+        final var result36 = new NEDFrame();
         navigator.navigate(timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ, result36);
 
-        final NEDFrame result37 = new NEDFrame();
+        final var result37 = new NEDFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, oldC, oldVelocity,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ, result37);
 
-        final NEDFrame result38 = new NEDFrame();
+        final var result38 = new NEDFrame();
         navigator.navigate(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC, oldVelocity,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ, result38);
 
-        final NEDFrame result39 = new NEDFrame();
+        final var result39 = new NEDFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVelocity,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ, result39);
 
-        final NEDFrame result40 = new NEDFrame();
+        final var result40 = new NEDFrame();
         navigator.navigate(timeInterval, oldPosition, oldC, oldVelocity, accelerationX, accelerationY, accelerationZ,
                 angularRateX, angularRateY, angularRateZ, result40);
 
-        final NEDFrame result41 = new NEDFrame();
-        navigator.navigate(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, oldC, oldVn, oldVe, oldVd,
+        final var result41 = new NEDFrame();
+        navigator.navigate(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, oldC, oldVn, oldVe, oldVd, 
                 fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ, result41);
 
-        final NEDFrame result42 = new NEDFrame();
+        final var result42 = new NEDFrame();
         navigator.navigate(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
                 angularSpeedX, angularSpeedY, angularSpeedZ, result42);
 
-        final NEDFrame result43 = new NEDFrame();
+        final var result43 = new NEDFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
                 angularSpeedX, angularSpeedY, angularSpeedZ, result43);
 
-        final NEDFrame result44 = new NEDFrame();
-        navigator.navigate(timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
+        final var result44 = new NEDFrame();
+        navigator.navigate(timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd, fx, fy, fz, 
                 angularSpeedX, angularSpeedY, angularSpeedZ, result44);
 
-        final NEDFrame result45 = new NEDFrame();
+        final var result45 = new NEDFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, oldC, oldVelocity, fx, fy, fz,
                 angularSpeedX, angularSpeedY, angularSpeedZ, result45);
 
-        final NEDFrame result46 = new NEDFrame();
+        final var result46 = new NEDFrame();
         navigator.navigate(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC, oldVelocity, fx, fy, fz,
                 angularSpeedX, angularSpeedY, angularSpeedZ, result46);
 
-        final NEDFrame result47 = new NEDFrame();
-        navigator.navigate(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVelocity, fx, fy, fz,
+        final var result47 = new NEDFrame();
+        navigator.navigate(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVelocity, fx, fy, fz, 
                 angularSpeedX, angularSpeedY, angularSpeedZ, result47);
 
-        final NEDFrame result48 = new NEDFrame();
-        navigator.navigate(timeInterval, oldPosition, oldC, oldVelocity, fx, fy, fz,
+        final var result48 = new NEDFrame();
+        navigator.navigate(timeInterval, oldPosition, oldC, oldVelocity, fx, fy, fz, 
                 angularSpeedX, angularSpeedY, angularSpeedZ, result48);
 
-        final NEDFrame result49 = new NEDFrame();
+        final var result49 = new NEDFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC,
                 oldSpeedN, oldSpeedE, oldSpeedD, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result49);
 
-        final NEDFrame result50 = new NEDFrame();
+        final var result50 = new NEDFrame();
         navigator.navigate(timeInterval, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC,
                 oldSpeedN, oldSpeedE, oldSpeedD, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result50);
 
-        final NEDFrame result51 = new NEDFrame();
+        final var result51 = new NEDFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC,
-                oldSpeedN, oldSpeedE, oldSpeedD, accelerationX, accelerationY, accelerationZ,
+                oldSpeedN, oldSpeedE, oldSpeedD, accelerationX, accelerationY, accelerationZ, 
                 angularSpeedX, angularSpeedY, angularSpeedZ, result51);
 
-        final NEDFrame result52 = new NEDFrame();
-        navigator.navigate(timeInterval, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC,
+        final var result52 = new NEDFrame();
+        navigator.navigate(timeInterval, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, 
                 oldSpeedN, oldSpeedE, oldSpeedD, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ, result52);
 
-        final NEDFrame result53 = new NEDFrame();
-        navigator.navigate(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, oldC,
-                oldSpeedN, oldSpeedE, oldSpeedD, accelerationX, accelerationY,
+        final var result53 = new NEDFrame();
+        navigator.navigate(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, oldC, 
+                oldSpeedN, oldSpeedE, oldSpeedD, accelerationX, accelerationY, 
                 accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ, result53);
 
-        final NEDFrame result54 = new NEDFrame();
+        final var result54 = new NEDFrame();
         navigator.navigate(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ, result54);
 
-        final NEDFrame result55 = new NEDFrame();
+        final var result55 = new NEDFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ, result55);
 
-        final NEDFrame result56 = new NEDFrame();
+        final var result56 = new NEDFrame();
         navigator.navigate(timeInterval, oldPosition, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ, result56);
 
-        final NEDFrame result57 = new NEDFrame();
+        final var result57 = new NEDFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC,
                 oldVelocity, accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ,
                 result57);
 
-        final NEDFrame result58 = new NEDFrame();
+        final var result58 = new NEDFrame();
         navigator.navigate(timeInterval, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, oldVelocity,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ, result58);
 
-        final NEDFrame result59 = new NEDFrame();
-        navigator.navigate(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVelocity,
+        final var result59 = new NEDFrame();
+        navigator.navigate(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVelocity, 
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ, result59);
 
-        final NEDFrame result60 = new NEDFrame();
+        final var result60 = new NEDFrame();
         navigator.navigate(timeInterval, oldPosition, oldC, oldVelocity, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ, result60);
 
-        final NEDFrame result61 = new NEDFrame();
+        final var result61 = new NEDFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC,
                 oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ, result61);
 
-        final NEDFrame result62 = new NEDFrame();
-        navigator.navigate(timeInterval, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC,
+        final var result62 = new NEDFrame();
+        navigator.navigate(timeInterval, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, 
                 oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ, result62);
 
-        final NEDFrame result63 = new NEDFrame();
-        navigator.navigate(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVn, oldVe, oldVd,
+        final var result63 = new NEDFrame();
+        navigator.navigate(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVn, oldVe, oldVd, 
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ, result63);
 
-        final NEDFrame result64 = new NEDFrame();
-        navigator.navigate(timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd,
+        final var result64 = new NEDFrame();
+        navigator.navigate(timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd, 
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ, result64);
 
-        final NEDFrame result65 = new NEDFrame();
+        final var result65 = new NEDFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, oldC, oldVn, oldVe, oldVd,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ, result65);
 
-        final NEDFrame result66 = new NEDFrame();
+        final var result66 = new NEDFrame();
         navigator.navigate(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC, oldVn, oldVe, oldVd,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ, result66);
 
-        final NEDFrame result67 = new NEDFrame();
+        final var result67 = new NEDFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC,
                 oldSpeedN, oldSpeedE, oldSpeedD, kinematics, result67);
 
-        final NEDFrame result68 = new NEDFrame();
-        navigator.navigate(timeInterval, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC,
+        final var result68 = new NEDFrame();
+        navigator.navigate(timeInterval, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, 
                 oldSpeedN, oldSpeedE, oldSpeedD, kinematics, result68);
 
-        final NEDFrame result69 = new NEDFrame();
+        final var result69 = new NEDFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 result69);
 
-        final NEDFrame result70 = new NEDFrame();
+        final var result70 = new NEDFrame();
         navigator.navigate(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result70);
 
-        final NEDFrame result71 = new NEDFrame();
+        final var result71 = new NEDFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldFrame, kinematics, result71);
 
-        final NEDFrame result72 = new NEDFrame();
+        final var result72 = new NEDFrame();
         navigator.navigate(timeInterval, oldFrame, kinematics, result72);
 
-        final NEDFrame result73 = new NEDFrame();
+        final var result73 = new NEDFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldFrame, accelerationX, accelerationY, accelerationZ,
                 angularRateX, angularRateY, angularRateZ, result73);
 
-        final NEDFrame result74 = new NEDFrame();
-        navigator.navigate(timeInterval, oldFrame, accelerationX, accelerationY, accelerationZ,
+        final var result74 = new NEDFrame();
+        navigator.navigate(timeInterval, oldFrame, accelerationX, accelerationY, accelerationZ, 
                 angularRateX, angularRateY, angularRateZ, result74);
 
-        final NEDFrame result75 = new NEDFrame();
+        final var result75 = new NEDFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldFrame, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ,
                 result75);
 
-        final NEDFrame result76 = new NEDFrame();
+        final var result76 = new NEDFrame();
         navigator.navigate(timeInterval, oldFrame, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ, result76);
 
-        final NEDFrame result77 = new NEDFrame();
+        final var result77 = new NEDFrame();
         navigator.navigate(TIME_INTERVAL_SECONDS, oldFrame, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ, result77);
 
-        final NEDFrame result78 = new NEDFrame();
-        navigator.navigate(timeInterval, oldFrame, accelerationX, accelerationY, accelerationZ,
+        final var result78 = new NEDFrame();
+        navigator.navigate(timeInterval, oldFrame, accelerationX, accelerationY, accelerationZ, 
                 angularSpeedX, angularSpeedY, angularSpeedZ, result78);
 
         assertEquals(result1, result2);
@@ -538,322 +523,317 @@ public class NEDInertialNavigatorTest {
     }
 
     @Test
-    public void testNavigateAndReturnNew() throws InvalidRotationMatrixException,
+    void testNavigateAndReturnNew() throws InvalidRotationMatrixException, 
             InvalidSourceAndDestinationFrameTypeException, InertialNavigatorException {
 
-        final NEDInertialNavigator navigator = new NEDInertialNavigator();
+        final var navigator = new NEDInertialNavigator();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final var randomizer = new UniformRandomizer();
 
-        final double oldLatitude = Math.toRadians(LATITUDE_DEGREES);
-        final double oldLongitude = Math.toRadians(LONGITUDE_DEGREES);
+        final var oldLatitude = Math.toRadians(LATITUDE_DEGREES);
+        final var oldLongitude = Math.toRadians(LONGITUDE_DEGREES);
 
-        final double oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final Quaternion q = new Quaternion(roll, pitch, yaw);
+        final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var q = new Quaternion(roll, pitch, yaw);
 
-        final Matrix m = q.asInhomogeneousMatrix();
-        final CoordinateTransformation oldC = new CoordinateTransformation(m, FrameType.BODY_FRAME,
-                FrameType.LOCAL_NAVIGATION_FRAME);
+        final var m = q.asInhomogeneousMatrix();
+        final var oldC = new CoordinateTransformation(m, FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
 
-        final NEDFrame oldFrame = new NEDFrame(oldLatitude, oldLongitude, HEIGHT, oldVn, oldVe, oldVd, oldC);
+        final var oldFrame = new NEDFrame(oldLatitude, oldLongitude, HEIGHT, oldVn, oldVe, oldVd, oldC);
 
-        final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
 
-        final double angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+        final var angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                 MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-        final double angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+        final var angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                 MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-        final double angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+        final var angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                 MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
 
-        final AngularSpeed angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond,
-                AngularSpeedUnit.DEGREES_PER_SECOND);
-        final AngularSpeed angularSpeedY = new AngularSpeed(angularRateYDegreesPerSecond,
-                AngularSpeedUnit.DEGREES_PER_SECOND);
-        final AngularSpeed angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond,
-                AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY = new AngularSpeed(angularRateYDegreesPerSecond, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond, AngularSpeedUnit.DEGREES_PER_SECOND);
 
-        final double angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
+        final var angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
                 angularSpeedX.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-        final double angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
+        final var angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
                 angularSpeedY.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-        final double angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
+        final var angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
                 angularSpeedZ.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
 
-        final BodyKinematics kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+        final var kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result1 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude,
-                HEIGHT, oldC, oldVn, oldVe, oldVd, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+        final var result1 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, 
+                oldC, oldVn, oldVe, oldVd, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final Time timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
-        final NEDFrame result2 = navigator.navigateAndReturnNew(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC,
+        final var timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
+        final var result2 = navigator.navigateAndReturnNew(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC,
                 oldVn, oldVe, oldVd, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final NEDPosition oldPosition = new NEDPosition(oldLatitude, oldLongitude, HEIGHT);
-        final NEDFrame result3 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC,
+        final var oldPosition = new NEDPosition(oldLatitude, oldLongitude, HEIGHT);
+        final var result3 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC, 
                 oldVn, oldVe, oldVd, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result4 = navigator.navigateAndReturnNew(timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd,
+        final var result4 = navigator.navigateAndReturnNew(timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd,
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final NEDVelocity oldVelocity = new NEDVelocity(oldVn, oldVe, oldVd);
-        final NEDFrame result5 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude,
-                HEIGHT, oldC, oldVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+        final var oldVelocity = new NEDVelocity(oldVn, oldVe, oldVd);
+        final var result5 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, 
+                oldC, oldVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result6 = navigator.navigateAndReturnNew(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC,
+        final var result6 = navigator.navigateAndReturnNew(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC,
                 oldVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result7 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVelocity,
+        final var result7 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVelocity,
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result8 = navigator.navigateAndReturnNew(timeInterval, oldPosition, oldC, oldVelocity,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+        final var result8 = navigator.navigateAndReturnNew(timeInterval, oldPosition, oldC, oldVelocity, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result9 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude,
-                HEIGHT, oldC, oldVn, oldVe, oldVd, kinematics);
+        final var result9 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, 
+                oldC, oldVn, oldVe, oldVd, kinematics);
 
-        final NEDFrame result10 = navigator.navigateAndReturnNew(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC,
+        final var result10 = navigator.navigateAndReturnNew(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC,
                 oldVn, oldVe, oldVd, kinematics);
 
-        final NEDFrame result11 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC,
+        final var result11 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC, 
                 oldVn, oldVe, oldVd, kinematics);
 
-        final NEDFrame result12 = navigator.navigateAndReturnNew(timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd,
+        final var result12 = navigator.navigateAndReturnNew(timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd,
                 kinematics);
 
-        final NEDFrame result13 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude,
-                HEIGHT, oldC, oldVelocity, kinematics);
+        final var result13 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT,
+                oldC, oldVelocity, kinematics);
 
-        final NEDFrame result14 = navigator.navigateAndReturnNew(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC,
+        final var result14 = navigator.navigateAndReturnNew(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC,
                 oldVelocity, kinematics);
 
-        final NEDFrame result15 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVelocity,
+        final var result15 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVelocity,
                 kinematics);
 
-        final NEDFrame result16 = navigator.navigateAndReturnNew(timeInterval, oldPosition, oldC, oldVelocity,
-                kinematics);
+        final var result16 = navigator.navigateAndReturnNew(timeInterval, oldPosition, oldC, oldVelocity, kinematics);
 
-        final Angle oldLatitudeAngle = new Angle(oldLatitude, AngleUnit.RADIANS);
-        final Angle oldLongitudeAngle = new Angle(oldLongitude, AngleUnit.RADIANS);
-        final Distance oldHeightDistance = new Distance(HEIGHT, DistanceUnit.METER);
-        final NEDFrame result17 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var oldLatitudeAngle = new Angle(oldLatitude, AngleUnit.RADIANS);
+        final var oldLongitudeAngle = new Angle(oldLongitude, AngleUnit.RADIANS);
+        final var oldHeightDistance = new Distance(HEIGHT, DistanceUnit.METER);
+        final var result17 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, 
                 oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result18 = navigator.navigateAndReturnNew(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
+        final var result18 = navigator.navigateAndReturnNew(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldC, oldVn, oldVe, oldVd, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result19 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result19 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, 
                 oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, oldVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result20 = navigator.navigateAndReturnNew(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
+        final var result20 = navigator.navigateAndReturnNew(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldC, oldVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result21 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result21 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, 
                 oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, oldVn, oldVe, oldVd, kinematics);
 
-        final NEDFrame result22 = navigator.navigateAndReturnNew(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
+        final var result22 = navigator.navigateAndReturnNew(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldC, oldVn, oldVe, oldVd, kinematics);
 
-        final NEDFrame result23 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result23 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, 
                 oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, oldVelocity, kinematics);
 
-        final NEDFrame result24 = navigator.navigateAndReturnNew(timeInterval,
+        final var result24 = navigator.navigateAndReturnNew(timeInterval, 
                 oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, oldVelocity, kinematics);
 
-        final Speed oldSpeedN = new Speed(oldVn, SpeedUnit.METERS_PER_SECOND);
-        final Speed oldSpeedE = new Speed(oldVe, SpeedUnit.METERS_PER_SECOND);
-        final Speed oldSpeedD = new Speed(oldVd, SpeedUnit.METERS_PER_SECOND);
-        final NEDFrame result25 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude,
-                HEIGHT, oldC, oldSpeedN, oldSpeedE, oldSpeedD, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
-
-        final NEDFrame result26 = navigator.navigateAndReturnNew(timeInterval, oldLatitude, oldLongitude, HEIGHT,
+        final var oldSpeedN = new Speed(oldVn, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedE = new Speed(oldVe, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedD = new Speed(oldVd, SpeedUnit.METERS_PER_SECOND);
+        final var result25 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT,
                 oldC, oldSpeedN, oldSpeedE, oldSpeedD, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result27 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC,
+        final var result26 = navigator.navigateAndReturnNew(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC, 
                 oldSpeedN, oldSpeedE, oldSpeedD, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result28 = navigator.navigateAndReturnNew(timeInterval, oldPosition, oldC,
+        final var result27 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC, 
                 oldSpeedN, oldSpeedE, oldSpeedD, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result29 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude,
-                HEIGHT, oldC, oldSpeedN, oldSpeedE, oldSpeedD, kinematics);
+        final var result28 = navigator.navigateAndReturnNew(timeInterval, oldPosition, oldC, 
+                oldSpeedN, oldSpeedE, oldSpeedD, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result30 = navigator.navigateAndReturnNew(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC,
+        final var result29 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, 
+                oldC, oldSpeedN, oldSpeedE, oldSpeedD, kinematics);
+
+        final var result30 = navigator.navigateAndReturnNew(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC,
                 oldSpeedN, oldSpeedE, oldSpeedD, kinematics);
 
-        final NEDFrame result31 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC,
+        final var result31 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC, 
                 oldSpeedN, oldSpeedE, oldSpeedD, kinematics);
 
-        final NEDFrame result32 = navigator.navigateAndReturnNew(timeInterval, oldPosition, oldC,
+        final var result32 = navigator.navigateAndReturnNew(timeInterval, oldPosition, oldC, 
                 oldSpeedN, oldSpeedE, oldSpeedD, kinematics);
 
-        final Acceleration accelerationX = new Acceleration(fx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration accelerationY = new Acceleration(fy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration accelerationZ = new Acceleration(fz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final NEDFrame result33 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude,
-                HEIGHT, oldC, oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ,
+        final var accelerationX = new Acceleration(fx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var accelerationY = new Acceleration(fy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var accelerationZ = new Acceleration(fz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var result33 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, 
+                oldC, oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ, 
                 angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result34 = navigator.navigateAndReturnNew(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC,
-                oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ,
+        final var result34 = navigator.navigateAndReturnNew(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC,
+                oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ, 
                 angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result35 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC,
-                oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ,
+        final var result35 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC, 
+                oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ, 
                 angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result36 = navigator.navigateAndReturnNew(timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd,
+        final var result36 = navigator.navigateAndReturnNew(timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result37 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude,
-                HEIGHT, oldC, oldVelocity, accelerationX, accelerationY, accelerationZ,
+        final var result37 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT,
+                oldC, oldVelocity, accelerationX, accelerationY, accelerationZ, 
                 angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result38 = navigator.navigateAndReturnNew(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC,
+        final var result38 = navigator.navigateAndReturnNew(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC,
                 oldVelocity, accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result39 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVelocity,
+        final var result39 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVelocity,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result40 = navigator.navigateAndReturnNew(timeInterval, oldPosition, oldC, oldVelocity,
+        final var result40 = navigator.navigateAndReturnNew(timeInterval, oldPosition, oldC, oldVelocity,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result41 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude,
-                HEIGHT, oldC, oldVn, oldVe, oldVd, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
+        final var result41 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT,
+                oldC, oldVn, oldVe, oldVd, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final NEDFrame result42 = navigator.navigateAndReturnNew(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC,
+        final var result42 = navigator.navigateAndReturnNew(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC,
                 oldVn, oldVe, oldVd, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final NEDFrame result43 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVn, oldVe,
+        final var result43 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVn, oldVe,
                 oldVd, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final NEDFrame result44 = navigator.navigateAndReturnNew(timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd,
+        final var result44 = navigator.navigateAndReturnNew(timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd,
                 fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final NEDFrame result45 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude,
-                HEIGHT, oldC, oldVelocity, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
+        final var result45 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT,
+                oldC, oldVelocity, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final NEDFrame result46 = navigator.navigateAndReturnNew(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC,
+        final var result46 = navigator.navigateAndReturnNew(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC,
                 oldVelocity, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final NEDFrame result47 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVelocity,
+        final var result47 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVelocity,
                 fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final NEDFrame result48 = navigator.navigateAndReturnNew(timeInterval, oldPosition, oldC, oldVelocity,
-                fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
+        final var result48 = navigator.navigateAndReturnNew(timeInterval, oldPosition, oldC, oldVelocity, fx, fy, fz,
+                angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final NEDFrame result49 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result49 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, 
                 oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result50 = navigator.navigateAndReturnNew(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
-                oldHeightDistance, oldC, oldSpeedN, oldSpeedE, oldSpeedD, fx, fy, fz,
+        final var result50 = navigator.navigateAndReturnNew(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
+                oldHeightDistance, oldC, oldSpeedN, oldSpeedE, oldSpeedD, fx, fy, fz, 
                 angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result51 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result51 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, 
                 oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final NEDFrame result52 = navigator.navigateAndReturnNew(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
+        final var result52 = navigator.navigateAndReturnNew(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldC, oldSpeedN, oldSpeedE, oldSpeedD, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final NEDFrame result53 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude,
-                HEIGHT, oldC, oldSpeedN, oldSpeedE, oldSpeedD, accelerationX, accelerationY, accelerationZ,
+        final var result53 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT,
+                oldC, oldSpeedN, oldSpeedE, oldSpeedD, accelerationX, accelerationY, accelerationZ, 
                 angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final NEDFrame result54 = navigator.navigateAndReturnNew(timeInterval, oldLatitude, oldLongitude, HEIGHT,
-                oldC, oldSpeedN, oldSpeedE, oldSpeedD, accelerationX, accelerationY,
+        final var result54 = navigator.navigateAndReturnNew(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC, 
+                oldSpeedN, oldSpeedE, oldSpeedD, accelerationX, accelerationY, 
                 accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final NEDFrame result55 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldSpeedN,
+        final var result55 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldSpeedN,
                 oldSpeedE, oldSpeedD, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final NEDFrame result56 = navigator.navigateAndReturnNew(timeInterval, oldPosition, oldC, oldSpeedN,
-                oldSpeedE, oldSpeedD, accelerationX, accelerationY, accelerationZ,
+        final var result56 = navigator.navigateAndReturnNew(timeInterval, oldPosition, oldC, 
+                oldSpeedN, oldSpeedE, oldSpeedD, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final NEDFrame result57 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result57 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, 
                 oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, oldVelocity, accelerationX, accelerationY,
                 accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final NEDFrame result58 = navigator.navigateAndReturnNew(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
+        final var result58 = navigator.navigateAndReturnNew(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldC, oldVelocity, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final NEDFrame result59 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVelocity,
+        final var result59 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVelocity,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final NEDFrame result60 = navigator.navigateAndReturnNew(timeInterval, oldPosition, oldC, oldVelocity,
+        final var result60 = navigator.navigateAndReturnNew(timeInterval, oldPosition, oldC, oldVelocity,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final NEDFrame result61 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result61 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS,
                 oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, oldVn, oldVe, oldVd,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final NEDFrame result62 = navigator.navigateAndReturnNew(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
+        final var result62 = navigator.navigateAndReturnNew(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldC, oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final NEDFrame result63 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC,
+        final var result63 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC, 
                 oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final NEDFrame result64 = navigator.navigateAndReturnNew(timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd,
+        final var result64 = navigator.navigateAndReturnNew(timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final NEDFrame result65 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude,
-                HEIGHT, oldC, oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ,
+        final var result65 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT,
+                oldC, oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ, 
                 angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final NEDFrame result66 = navigator.navigateAndReturnNew(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC,
+        final var result66 = navigator.navigateAndReturnNew(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC,
                 oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final NEDFrame result67 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result67 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, 
                 oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
                 kinematics);
 
-        final NEDFrame result68 = navigator.navigateAndReturnNew(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
+        final var result68 = navigator.navigateAndReturnNew(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldC, oldSpeedN, oldSpeedE, oldSpeedD, kinematics);
 
-        final NEDFrame result69 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame, fx, fy, fz,
+        final var result69 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame, fx, fy, fz, 
                 angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result70 = navigator.navigateAndReturnNew(timeInterval, oldFrame, fx, fy, fz,
+        final var result70 = navigator.navigateAndReturnNew(timeInterval, oldFrame, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result71 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame, kinematics);
+        final var result71 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame, kinematics);
 
-        final NEDFrame result72 = navigator.navigateAndReturnNew(timeInterval, oldFrame, kinematics);
+        final var result72 = navigator.navigateAndReturnNew(timeInterval, oldFrame, kinematics);
 
-        final NEDFrame result73 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
+        final var result73 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame, 
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result74 = navigator.navigateAndReturnNew(timeInterval, oldFrame,
+        final var result74 = navigator.navigateAndReturnNew(timeInterval, oldFrame,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result75 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame, fx, fy, fz,
+        final var result75 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame, fx, fy, fz,
                 angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final NEDFrame result76 = navigator.navigateAndReturnNew(timeInterval, oldFrame, fx, fy, fz,
+        final var result76 = navigator.navigateAndReturnNew(timeInterval, oldFrame, fx, fy, fz,
                 angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final NEDFrame result77 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
+        final var result77 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final NEDFrame result78 = navigator.navigateAndReturnNew(timeInterval, oldFrame,
+        final var result78 = navigator.navigateAndReturnNew(timeInterval, oldFrame,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ);
 
         assertEquals(result1, result2);
@@ -936,411 +916,407 @@ public class NEDInertialNavigatorTest {
     }
 
     @Test
-    public void testNavigateNED() throws InvalidRotationMatrixException, InvalidSourceAndDestinationFrameTypeException,
+    void testNavigateNED() throws InvalidRotationMatrixException, InvalidSourceAndDestinationFrameTypeException,
             InertialNavigatorException {
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final var randomizer = new UniformRandomizer();
 
-        final double oldLatitude = Math.toRadians(LATITUDE_DEGREES);
-        final double oldLongitude = Math.toRadians(LONGITUDE_DEGREES);
+        final var oldLatitude = Math.toRadians(LATITUDE_DEGREES);
+        final var oldLongitude = Math.toRadians(LONGITUDE_DEGREES);
 
-        final double oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final Quaternion q = new Quaternion(roll, pitch, yaw);
+        final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var q = new Quaternion(roll, pitch, yaw);
 
-        final Matrix m = q.asInhomogeneousMatrix();
-        final CoordinateTransformation oldC = new CoordinateTransformation(m, FrameType.BODY_FRAME,
-                FrameType.LOCAL_NAVIGATION_FRAME);
+        final var m = q.asInhomogeneousMatrix();
+        final var oldC = new CoordinateTransformation(m, FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
 
-        final NEDFrame oldFrame = new NEDFrame(oldLatitude, oldLongitude, HEIGHT, oldVn, oldVe, oldVd, oldC);
+        final var oldFrame = new NEDFrame(oldLatitude, oldLongitude, HEIGHT, oldVn, oldVe, oldVd, oldC);
 
-        final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
 
-        final double angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+        final var angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                 MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-        final double angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+        final var angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                 MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-        final double angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+        final var angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                 MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
 
-        final AngularSpeed angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond,
-                AngularSpeedUnit.DEGREES_PER_SECOND);
-        final AngularSpeed angularSpeedY = new AngularSpeed(angularRateYDegreesPerSecond,
-                AngularSpeedUnit.DEGREES_PER_SECOND);
-        final AngularSpeed angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond,
-                AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY = new AngularSpeed(angularRateYDegreesPerSecond, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond, AngularSpeedUnit.DEGREES_PER_SECOND);
 
-        final double angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
+        final var angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
                 angularSpeedX.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-        final double angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
+        final var angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
                 angularSpeedY.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-        final double angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
+        final var angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
                 angularSpeedZ.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
 
-        final BodyKinematics kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+        final var kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result1 = new NEDFrame();
-        NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, oldC,
+        final var result1 = new NEDFrame();
+        NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, oldC, 
                 oldVn, oldVe, oldVd, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result1);
 
-        final Time timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
-        final NEDFrame result2 = new NEDFrame();
+        final var timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
+        final var result2 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC, oldVn, oldVe, oldVd,
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD,
                 result2);
 
-        final NEDPosition oldPosition = new NEDPosition(oldLatitude, oldLongitude, HEIGHT);
-        final NEDFrame result3 = new NEDFrame();
+        final var oldPosition = new NEDPosition(oldLatitude, oldLongitude, HEIGHT);
+        final var result3 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result3);
 
-        final NEDFrame result4 = new NEDFrame();
+        final var result4 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result4);
 
-        final NEDVelocity oldVelocity = new NEDVelocity(oldVn, oldVe, oldVd);
-        final NEDFrame result5 = new NEDFrame();
+        final var oldVelocity = new NEDVelocity(oldVn, oldVe, oldVd);
+        final var result5 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, oldC, oldVelocity,
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD,
                 result5);
 
-        final NEDFrame result6 = new NEDFrame();
+        final var result6 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC, oldVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result6);
 
-        final NEDFrame result7 = new NEDFrame();
+        final var result7 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result7);
 
-        final NEDFrame result8 = new NEDFrame();
+        final var result8 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldPosition, oldC, oldVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result8);
 
-        final NEDFrame result9 = new NEDFrame();
-        NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, oldC,
+        final var result9 = new NEDFrame();
+        NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, oldC, 
                 oldVn, oldVe, oldVd, kinematics, result9);
 
-        final NEDFrame result10 = new NEDFrame();
+        final var result10 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC, oldVn, oldVe, oldVd,
                 kinematics, result10);
 
-        final NEDFrame result11 = new NEDFrame();
+        final var result11 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVn, oldVe, oldVd, kinematics,
                 result11);
 
-        final NEDFrame result12 = new NEDFrame();
+        final var result12 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd, kinematics, result12);
 
-        final NEDFrame result13 = new NEDFrame();
+        final var result13 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, oldC, oldVelocity,
                 kinematics, result13);
 
-        final NEDFrame result14 = new NEDFrame();
+        final var result14 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC, oldVelocity, kinematics,
                 result14);
 
-        final NEDFrame result15 = new NEDFrame();
+        final var result15 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVelocity, kinematics, result15);
 
-        final NEDFrame result16 = new NEDFrame();
+        final var result16 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldPosition, oldC, oldVelocity, kinematics, result16);
 
-        final Angle oldLatitudeAngle = new Angle(oldLatitude, AngleUnit.RADIANS);
-        final Angle oldLongitudeAngle = new Angle(oldLongitude, AngleUnit.RADIANS);
-        final Distance oldHeightDistance = new Distance(HEIGHT, DistanceUnit.METER);
-        final NEDFrame result17 = new NEDFrame();
+        final var oldLatitudeAngle = new Angle(oldLatitude, AngleUnit.RADIANS);
+        final var oldLongitudeAngle = new Angle(oldLongitude, AngleUnit.RADIANS);
+        final var oldHeightDistance = new Distance(HEIGHT, DistanceUnit.METER);
+        final var result17 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance,
                 oldC, oldVn, oldVe, oldVd, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result17);
 
-        final NEDFrame result18 = new NEDFrame();
+        final var result18 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC,
                 oldVn, oldVe, oldVd, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result18);
 
-        final NEDFrame result19 = new NEDFrame();
+        final var result19 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance,
                 oldC, oldVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result19);
 
-        final NEDFrame result20 = new NEDFrame();
+        final var result20 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC,
                 oldVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result20);
 
-        final NEDFrame result21 = new NEDFrame();
+        final var result21 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance,
                 oldC, oldVn, oldVe, oldVd, kinematics, result21);
 
-        final NEDFrame result22 = new NEDFrame();
+        final var result22 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC,
                 oldVn, oldVe, oldVd, kinematics, result22);
 
-        final NEDFrame result23 = new NEDFrame();
+        final var result23 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance,
                 oldC, oldVelocity, kinematics, result23);
 
-        final NEDFrame result24 = new NEDFrame();
+        final var result24 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC,
                 oldVelocity, kinematics, result24);
 
-        final Speed oldSpeedN = new Speed(oldVn, SpeedUnit.METERS_PER_SECOND);
-        final Speed oldSpeedE = new Speed(oldVe, SpeedUnit.METERS_PER_SECOND);
-        final Speed oldSpeedD = new Speed(oldVd, SpeedUnit.METERS_PER_SECOND);
-        final NEDFrame result25 = new NEDFrame();
-        NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, oldC,
+        final var oldSpeedN = new Speed(oldVn, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedE = new Speed(oldVe, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedD = new Speed(oldVd, SpeedUnit.METERS_PER_SECOND);
+        final var result25 = new NEDFrame();
+        NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, oldC, 
                 oldSpeedN, oldSpeedE, oldSpeedD, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result25);
 
-        final NEDFrame result26 = new NEDFrame();
-        NEDInertialNavigator.navigateNED(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC,
+        final var result26 = new NEDFrame();
+        NEDInertialNavigator.navigateNED(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC, 
                 oldSpeedN, oldSpeedE, oldSpeedD, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result26);
 
-        final NEDFrame result27 = new NEDFrame();
+        final var result27 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD,
                 result27);
 
-        final NEDFrame result28 = new NEDFrame();
+        final var result28 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldPosition, oldC, oldSpeedN, oldSpeedE, oldSpeedD, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result28);
 
-        final NEDFrame result29 = new NEDFrame();
-        NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, oldC,
+        final var result29 = new NEDFrame();
+        NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, oldC, 
                 oldSpeedN, oldSpeedE, oldSpeedD, kinematics, result29);
 
-        final NEDFrame result30 = new NEDFrame();
-        NEDInertialNavigator.navigateNED(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC,
+        final var result30 = new NEDFrame();
+        NEDInertialNavigator.navigateNED(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC, 
                 oldSpeedN, oldSpeedE, oldSpeedD, kinematics, result30);
 
-        final NEDFrame result31 = new NEDFrame();
+        final var result31 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
                 kinematics, result31);
 
-        final NEDFrame result32 = new NEDFrame();
+        final var result32 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldPosition, oldC, oldSpeedN, oldSpeedE, oldSpeedD, kinematics,
                 result32);
 
-        final Acceleration accelerationX = new Acceleration(fx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration accelerationY = new Acceleration(fy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration accelerationZ = new Acceleration(fz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final NEDFrame result33 = new NEDFrame();
-        NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, oldC,
-                oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ,
+        final var accelerationX = new Acceleration(fx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var accelerationY = new Acceleration(fy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var accelerationZ = new Acceleration(fz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var result33 = new NEDFrame();
+        NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, oldC, 
+                oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ, 
                 angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result33);
 
-        final NEDFrame result34 = new NEDFrame();
+        final var result34 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC, oldVn, oldVe, oldVd,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result34);
 
-        final NEDFrame result35 = new NEDFrame();
+        final var result35 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVn, oldVe, oldVd,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result35);
 
-        final NEDFrame result36 = new NEDFrame();
+        final var result36 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result36);
 
-        final NEDFrame result37 = new NEDFrame();
+        final var result37 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, oldC, oldVelocity,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result37);
 
-        final NEDFrame result38 = new NEDFrame();
+        final var result38 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC, oldVelocity,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result38);
 
-        final NEDFrame result39 = new NEDFrame();
+        final var result39 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVelocity,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result39);
 
-        final NEDFrame result40 = new NEDFrame();
+        final var result40 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldPosition, oldC, oldVelocity,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result40);
 
-        final NEDFrame result41 = new NEDFrame();
+        final var result41 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, oldC,
                 oldVn, oldVe, oldVd, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result41);
 
-        final NEDFrame result42 = new NEDFrame();
+        final var result42 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC, oldVn, oldVe, oldVd,
                 fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result42);
 
-        final NEDFrame result43 = new NEDFrame();
+        final var result43 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
                 angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result43);
 
-        final NEDFrame result44 = new NEDFrame();
+        final var result44 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
                 angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result44);
 
-        final NEDFrame result45 = new NEDFrame();
+        final var result45 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, oldC, oldVelocity,
                 fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result45);
 
-        final NEDFrame result46 = new NEDFrame();
+        final var result46 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC, oldVelocity, fx, fy, fz,
                 angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result46);
 
-        final NEDFrame result47 = new NEDFrame();
+        final var result47 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVelocity, fx, fy, fz,
                 angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result47);
 
-        final NEDFrame result48 = new NEDFrame();
+        final var result48 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldPosition, oldC, oldVelocity, fx, fy, fz,
                 angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result48);
 
-        final NEDFrame result49 = new NEDFrame();
+        final var result49 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance,
                 oldC, oldSpeedN, oldSpeedE, oldSpeedD, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result49);
 
-        final NEDFrame result50 = new NEDFrame();
+        final var result50 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC,
                 oldSpeedN, oldSpeedE, oldSpeedD, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result50);
 
-        final NEDFrame result51 = new NEDFrame();
+        final var result51 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance,
                 oldC, oldSpeedN, oldSpeedE, oldSpeedD, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result51);
 
-        final NEDFrame result52 = new NEDFrame();
+        final var result52 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC,
                 oldSpeedN, oldSpeedE, oldSpeedD, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result52);
 
-        final NEDFrame result53 = new NEDFrame();
+        final var result53 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, oldC,
                 oldSpeedN, oldSpeedE, oldSpeedD, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result53);
 
-        final NEDFrame result54 = new NEDFrame();
+        final var result54 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC,
                 oldSpeedN, oldSpeedE, oldSpeedD, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result54);
 
-        final NEDFrame result55 = new NEDFrame();
+        final var result55 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result55);
 
-        final NEDFrame result56 = new NEDFrame();
+        final var result56 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldPosition, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result56);
 
-        final NEDFrame result57 = new NEDFrame();
+        final var result57 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance,
                 oldC, oldVelocity, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result57);
 
-        final NEDFrame result58 = new NEDFrame();
+        final var result58 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC,
                 oldVelocity, accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result58);
 
-        final NEDFrame result59 = new NEDFrame();
+        final var result59 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVelocity,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result59);
 
-        final NEDFrame result60 = new NEDFrame();
+        final var result60 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldPosition, oldC, oldVelocity,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result60);
 
-        final NEDFrame result61 = new NEDFrame();
+        final var result61 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance,
                 oldC, oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result61);
 
-        final NEDFrame result62 = new NEDFrame();
+        final var result62 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC,
                 oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result62);
 
-        final NEDFrame result63 = new NEDFrame();
+        final var result63 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVn, oldVe, oldVd,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result63);
 
-        final NEDFrame result64 = new NEDFrame();
+        final var result64 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result64);
 
-        final NEDFrame result65 = new NEDFrame();
-        NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, oldC,
+        final var result65 = new NEDFrame();
+        NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT, oldC, 
                 oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result65);
 
-        final NEDFrame result66 = new NEDFrame();
+        final var result66 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC, oldVn, oldVe, oldVd,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result66);
 
-        final NEDFrame result67 = new NEDFrame();
+        final var result67 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance,
                 oldC, oldSpeedN, oldSpeedE, oldSpeedD, kinematics, result67);
 
-        final NEDFrame result68 = new NEDFrame();
+        final var result68 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC,
                 oldSpeedN, oldSpeedE, oldSpeedD, kinematics, result68);
 
-        final NEDFrame result69 = new NEDFrame();
-        NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldFrame, fx, fy, fz,
+        final var result69 = new NEDFrame();
+        NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldFrame, fx, fy, fz, 
                 angularRateX, angularRateY, angularRateZ, result69);
 
-        final NEDFrame result70 = new NEDFrame();
+        final var result70 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 result70);
 
-        final NEDFrame result71 = new NEDFrame();
+        final var result71 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldFrame, kinematics, result71);
 
-        final NEDFrame result72 = new NEDFrame();
+        final var result72 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldFrame, kinematics, result72);
 
-        final NEDFrame result73 = new NEDFrame();
+        final var result73 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldFrame, accelerationX, accelerationY, accelerationZ,
                 angularRateX, angularRateY, angularRateZ, result73);
 
-        final NEDFrame result74 = new NEDFrame();
+        final var result74 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldFrame, accelerationX, accelerationY, accelerationZ,
                 angularRateX, angularRateY, angularRateZ, result74);
 
-        final NEDFrame result75 = new NEDFrame();
-        NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldFrame, fx, fy, fz,
+        final var result75 = new NEDFrame();
+        NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldFrame, fx, fy, fz, 
                 angularSpeedX, angularSpeedY, angularSpeedZ, result75);
 
-        final NEDFrame result76 = new NEDFrame();
-        NEDInertialNavigator.navigateNED(timeInterval, oldFrame, fx, fy, fz,
+        final var result76 = new NEDFrame();
+        NEDInertialNavigator.navigateNED(timeInterval, oldFrame, fx, fy, fz, 
                 angularSpeedX, angularSpeedY, angularSpeedZ, result76);
 
-        final NEDFrame result77 = new NEDFrame();
+        final var result77 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldFrame, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ, result77);
 
-        final NEDFrame result78 = new NEDFrame();
+        final var result78 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldFrame, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ, result78);
 
@@ -1424,354 +1400,347 @@ public class NEDInertialNavigatorTest {
     }
 
     @Test
-    public void testNavigateNEDAndReturnNew() throws InvalidRotationMatrixException,
+    void testNavigateNEDAndReturnNew() throws InvalidRotationMatrixException,
             InvalidSourceAndDestinationFrameTypeException, InertialNavigatorException {
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final var randomizer = new UniformRandomizer();
 
-        final double oldLatitude = Math.toRadians(LATITUDE_DEGREES);
-        final double oldLongitude = Math.toRadians(LONGITUDE_DEGREES);
+        final var oldLatitude = Math.toRadians(LATITUDE_DEGREES);
+        final var oldLongitude = Math.toRadians(LONGITUDE_DEGREES);
 
-        final double oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-        final double oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final var oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final Quaternion q = new Quaternion(roll, pitch, yaw);
+        final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var q = new Quaternion(roll, pitch, yaw);
 
-        final Matrix m = q.asInhomogeneousMatrix();
-        final CoordinateTransformation oldC = new CoordinateTransformation(m, FrameType.BODY_FRAME,
-                FrameType.LOCAL_NAVIGATION_FRAME);
+        final var m = q.asInhomogeneousMatrix();
+        final var oldC = new CoordinateTransformation(m, FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
 
-        final NEDFrame oldFrame = new NEDFrame(oldLatitude, oldLongitude, HEIGHT, oldVn, oldVe, oldVd, oldC);
+        final var oldFrame = new NEDFrame(oldLatitude, oldLongitude, HEIGHT, oldVn, oldVe, oldVd, oldC);
 
-        final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
 
-        final double angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+        final var angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                 MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-        final double angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+        final var angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                 MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-        final double angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+        final var angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                 MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
 
-        final AngularSpeed angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond,
-                AngularSpeedUnit.DEGREES_PER_SECOND);
-        final AngularSpeed angularSpeedY = new AngularSpeed(angularRateYDegreesPerSecond,
-                AngularSpeedUnit.DEGREES_PER_SECOND);
-        final AngularSpeed angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond,
-                AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY = new AngularSpeed(angularRateYDegreesPerSecond, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond, AngularSpeedUnit.DEGREES_PER_SECOND);
 
-        final double angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
+        final var angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
                 angularSpeedX.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-        final double angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
+        final var angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
                 angularSpeedY.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-        final double angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
+        final var angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
                 angularSpeedZ.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
 
-        final BodyKinematics kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+        final var kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result1 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result1 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, 
                 oldLatitude, oldLongitude, HEIGHT, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final Time timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
-        final NEDFrame result2 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldLatitude, oldLongitude,
+        final var timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
+        final var result2 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldLatitude, oldLongitude, 
                 HEIGHT, oldC, oldVn, oldVe, oldVd, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDPosition oldPosition = new NEDPosition(oldLatitude, oldLongitude, HEIGHT);
-        final NEDFrame result3 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC,
+        final var oldPosition = new NEDPosition(oldLatitude, oldLongitude, HEIGHT);
+        final var result3 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC,
                 oldVn, oldVe, oldVd, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDFrame result4 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldPosition, oldC,
+        final var result4 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldPosition, oldC,
                 oldVn, oldVe, oldVd, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDVelocity oldVelocity = new NEDVelocity(oldVn, oldVe, oldVd);
-        final NEDFrame result5 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var oldVelocity = new NEDVelocity(oldVn, oldVe, oldVd);
+        final var result5 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, 
                 oldLatitude, oldLongitude, HEIGHT, oldC, oldVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDFrame result6 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldLatitude, oldLongitude,
+        final var result6 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldLatitude, oldLongitude, 
                 HEIGHT, oldC, oldVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDFrame result7 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC,
+        final var result7 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC,
                 oldVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result8 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldPosition, oldC,
-                oldVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+        final var result8 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldPosition, oldC, oldVelocity, 
+                fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result9 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result9 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, 
                 oldLatitude, oldLongitude, HEIGHT, oldC, oldVn, oldVe, oldVd, kinematics);
 
-        final NEDFrame result10 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval,
-                oldLatitude, oldLongitude, HEIGHT, oldC, oldVn, oldVe, oldVd, kinematics);
+        final var result10 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldLatitude, oldLongitude, 
+                HEIGHT, oldC, oldVn, oldVe, oldVd, kinematics);
 
-        final NEDFrame result11 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC,
+        final var result11 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC,
                 oldVn, oldVe, oldVd, kinematics);
 
-        final NEDFrame result12 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldPosition, oldC,
+        final var result12 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldPosition, oldC, 
                 oldVn, oldVe, oldVd, kinematics);
 
-        final NEDFrame result13 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result13 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, 
                 oldLatitude, oldLongitude, HEIGHT, oldC, oldVelocity, kinematics);
 
-        final NEDFrame result14 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval,
-                oldLatitude, oldLongitude, HEIGHT, oldC, oldVelocity, kinematics);
+        final var result14 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldLatitude, oldLongitude, 
+                HEIGHT, oldC, oldVelocity, kinematics);
 
-        final NEDFrame result15 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC,
+        final var result15 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC,
                 oldVelocity, kinematics);
 
-        final NEDFrame result16 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldPosition, oldC,
+        final var result16 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldPosition, oldC,
                 oldVelocity, kinematics);
 
-        final Angle oldLatitudeAngle = new Angle(oldLatitude, AngleUnit.RADIANS);
-        final Angle oldLongitudeAngle = new Angle(oldLongitude, AngleUnit.RADIANS);
-        final Distance oldHeightDistance = new Distance(HEIGHT, DistanceUnit.METER);
-        final NEDFrame result17 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var oldLatitudeAngle = new Angle(oldLatitude, AngleUnit.RADIANS);
+        final var oldLongitudeAngle = new Angle(oldLongitude, AngleUnit.RADIANS);
+        final var oldHeightDistance = new Distance(HEIGHT, DistanceUnit.METER);
+        final var result17 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, 
                 oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDFrame result18 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval,
+        final var result18 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, 
                 oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDFrame result19 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result19 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, 
                 oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, oldVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDFrame result20 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval,
+        final var result20 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, 
                 oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, oldVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDFrame result21 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result21 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, 
                 oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, oldVn, oldVe, oldVd, kinematics);
 
-        final NEDFrame result22 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval,
+        final var result22 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval,
                 oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, oldVn, oldVe, oldVd, kinematics);
 
-        final NEDFrame result23 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result23 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS,
                 oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, oldVelocity, kinematics);
 
-        final NEDFrame result24 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval,
+        final var result24 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval,
                 oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, oldVelocity, kinematics);
 
-        final Speed oldSpeedN = new Speed(oldVn, SpeedUnit.METERS_PER_SECOND);
-        final Speed oldSpeedE = new Speed(oldVe, SpeedUnit.METERS_PER_SECOND);
-        final Speed oldSpeedD = new Speed(oldVd, SpeedUnit.METERS_PER_SECOND);
-        final NEDFrame result25 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var oldSpeedN = new Speed(oldVn, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedE = new Speed(oldVe, SpeedUnit.METERS_PER_SECOND);
+        final var oldSpeedD = new Speed(oldVd, SpeedUnit.METERS_PER_SECOND);
+        final var result25 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, 
                 oldLatitude, oldLongitude, HEIGHT, oldC, oldSpeedN, oldSpeedE, oldSpeedD, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDFrame result26 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval,
-                oldLatitude, oldLongitude, HEIGHT, oldC, oldSpeedN, oldSpeedE, oldSpeedD, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
+        final var result26 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldLatitude, oldLongitude, 
+                HEIGHT, oldC, oldSpeedN, oldSpeedE, oldSpeedD, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
+                NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDFrame result27 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC,
+        final var result27 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC,
                 oldSpeedN, oldSpeedE, oldSpeedD, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDFrame result28 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldPosition, oldC,
+        final var result28 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldPosition, oldC,
                 oldSpeedN, oldSpeedE, oldSpeedD, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDFrame result29 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result29 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, 
                 oldLatitude, oldLongitude, HEIGHT, oldC, oldSpeedN, oldSpeedE, oldSpeedD, kinematics);
 
-        final NEDFrame result30 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval,
-                oldLatitude, oldLongitude, HEIGHT, oldC, oldSpeedN, oldSpeedE, oldSpeedD, kinematics);
+        final var result30 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldLatitude, oldLongitude, 
+                HEIGHT, oldC, oldSpeedN, oldSpeedE, oldSpeedD, kinematics);
 
-        final NEDFrame result31 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC,
+        final var result31 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC,
                 oldSpeedN, oldSpeedE, oldSpeedD, kinematics);
 
-        final NEDFrame result32 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldPosition, oldC,
+        final var result32 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldPosition, oldC,
                 oldSpeedN, oldSpeedE, oldSpeedD, kinematics);
 
-        final Acceleration accelerationX = new Acceleration(fx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration accelerationY = new Acceleration(fy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration accelerationZ = new Acceleration(fz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final NEDFrame result33 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS,
-                oldLatitude, oldLongitude, HEIGHT, oldC, oldVn, oldVe, oldVd,
+        final var accelerationX = new Acceleration(fx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var accelerationY = new Acceleration(fy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var accelerationZ = new Acceleration(fz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var result33 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, 
+                oldLatitude, oldLongitude, HEIGHT, oldC, oldVn, oldVe, oldVd, 
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDFrame result34 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval,
-                oldLatitude, oldLongitude, HEIGHT, oldC, oldVn, oldVe, oldVd,
-                accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ,
-                NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
-
-        final NEDFrame result35 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC,
-                oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ,
+        final var result34 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldLatitude, oldLongitude, 
+                HEIGHT, oldC, oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ, 
                 angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDFrame result36 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldPosition, oldC,
-                oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ,
+        final var result35 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC,
+                oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ, 
                 angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDFrame result37 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result36 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldPosition, oldC, 
+                oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ, 
+                angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
+
+        final var result37 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, 
                 oldLatitude, oldLongitude, HEIGHT, oldC, oldVelocity, accelerationX, accelerationY, accelerationZ,
                 angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDFrame result38 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval,
-                oldLatitude, oldLongitude, HEIGHT, oldC, oldVelocity, accelerationX, accelerationY, accelerationZ,
+        final var result38 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldLatitude, oldLongitude, 
+                HEIGHT, oldC, oldVelocity, accelerationX, accelerationY, accelerationZ, 
                 angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDFrame result39 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC,
+        final var result39 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC,
                 oldVelocity, accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result40 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldPosition, oldC,
+        final var result40 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldPosition, oldC,
                 oldVelocity, accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result41 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS,
-                oldLatitude, oldLongitude, HEIGHT, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
+        final var result41 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, 
+                oldLatitude, oldLongitude, HEIGHT, oldC, oldVn, oldVe, oldVd, fx, fy, fz, 
                 angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDFrame result42 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval,
-                oldLatitude, oldLongitude, HEIGHT, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
-                angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
+        final var result42 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldLatitude, oldLongitude, 
+                HEIGHT, oldC, oldVn, oldVe, oldVd, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ, 
+                NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDFrame result43 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC,
+        final var result43 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC,
                 oldVn, oldVe, oldVd, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDFrame result44 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldPosition, oldC,
+        final var result44 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldPosition, oldC, 
                 oldVn, oldVe, oldVd, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDFrame result45 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS,
-                oldLatitude, oldLongitude, HEIGHT, oldC, oldVelocity, fx, fy, fz,
+        final var result45 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, 
+                oldLatitude, oldLongitude, HEIGHT, oldC, oldVelocity, fx, fy, fz, 
                 angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDFrame result46 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval,
-                oldLatitude, oldLongitude, HEIGHT, oldC, oldVelocity, fx, fy, fz,
-                angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
+        final var result46 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldLatitude, oldLongitude, 
+                HEIGHT, oldC, oldVelocity, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ, 
+                NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDFrame result47 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC,
+        final var result47 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC,
                 oldVelocity, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final NEDFrame result48 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldPosition, oldC,
-                oldVelocity, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
+        final var result48 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldPosition, oldC, oldVelocity,
+                fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final NEDFrame result49 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result49 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, 
                 oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDFrame result50 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval,
+        final var result50 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, 
                 oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDFrame result51 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result51 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS,
                 oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDFrame result52 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval,
+        final var result52 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, 
                 oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDFrame result53 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result53 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, 
                 oldLatitude, oldLongitude, HEIGHT, oldC, oldSpeedN, oldSpeedE, oldSpeedD, accelerationX, accelerationY,
                 accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDFrame result54 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldLatitude, oldLongitude,
+        final var result54 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldLatitude, oldLongitude,
                 HEIGHT, oldC, oldSpeedN, oldSpeedE, oldSpeedD, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDFrame result55 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC,
+        final var result55 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC,
                 oldSpeedN, oldSpeedE, oldSpeedD, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDFrame result56 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldPosition, oldC,
+        final var result56 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldPosition, oldC,
                 oldSpeedN, oldSpeedE, oldSpeedD, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDFrame result57 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result57 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS,
+                oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, oldVelocity, 
+                accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ,
+                NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
+
+        final var result58 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, 
                 oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, oldVelocity,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDFrame result58 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval,
-                oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, oldVelocity,
-                accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ,
-                NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
-
-        final NEDFrame result59 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC,
+        final var result59 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC,
                 oldVelocity, accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final NEDFrame result60 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldPosition, oldC,
+        final var result60 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldPosition, oldC,
                 oldVelocity, accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final NEDFrame result61 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result61 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS,
                 oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, oldVn, oldVe, oldVd,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDFrame result62 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval,
+        final var result62 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval,
                 oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, oldVn, oldVe, oldVd,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDFrame result63 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC,
+        final var result63 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldC,
+                oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ, 
+                angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
+
+        final var result64 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldPosition, oldC, 
                 oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDFrame result64 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldPosition, oldC,
-                oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ,
-                angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
-
-        final NEDFrame result65 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS,
+        final var result65 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, 
                 oldLatitude, oldLongitude, HEIGHT, oldC, oldVn, oldVe, oldVd,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ,
                 NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDFrame result66 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval,
-                oldLatitude, oldLongitude, HEIGHT, oldC, oldVn, oldVe, oldVd,
-                accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ,
-                NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
+        final var result66 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldLatitude, oldLongitude, 
+                HEIGHT, oldC, oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ, 
+                angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
-        final NEDFrame result67 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS,
-                oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
+        final var result67 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, 
+                oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, oldSpeedN, oldSpeedE, oldSpeedD, 
                 kinematics);
 
-        final NEDFrame result68 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval,
-                oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
+        final var result68 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, 
+                oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldC, oldSpeedN, oldSpeedE, oldSpeedD, 
                 kinematics);
 
-        final NEDFrame result69 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ);
-
-        final NEDFrame result70 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldFrame, fx, fy, fz,
+        final var result69 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame, fx, fy, fz, 
                 angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result71 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
-                kinematics);
+        final var result70 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldFrame, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result72 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldFrame, kinematics);
+        final var result71 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame, kinematics);
 
-        final NEDFrame result73 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
+        final var result72 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldFrame, kinematics);
+
+        final var result73 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result74 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldFrame,
+        final var result74 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldFrame,
                 accelerationX, accelerationY, accelerationZ, angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result75 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
-                fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
-
-        final NEDFrame result76 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldFrame, fx, fy, fz,
+        final var result75 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame, fx, fy, fz,
                 angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final NEDFrame result77 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
+        final var result76 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldFrame, fx, fy, fz,
+                angularSpeedX, angularSpeedY, angularSpeedZ);
+
+        final var result77 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ);
 
-        final NEDFrame result78 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldFrame,
+        final var result78 = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldFrame,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ);
 
         assertEquals(result1, result2);
@@ -1854,67 +1823,66 @@ public class NEDInertialNavigatorTest {
     }
 
     @Test
-    public void testNavigateFreeFallingBody() throws InvalidRotationMatrixException,
+    void testNavigateFreeFallingBody() throws InvalidRotationMatrixException, 
             InvalidSourceAndDestinationFrameTypeException, InertialNavigatorException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double longitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-            final double vn = 0.0;
-            final double ve = 0.0;
-            final double vd = 0.0;
+            final var vn = 0.0;
+            final var ve = 0.0;
+            final var vd = 0.0;
 
-            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final Quaternion q = new Quaternion(roll, pitch, yaw);
+            final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var q = new Quaternion(roll, pitch, yaw);
 
-            final Matrix m = q.asInhomogeneousMatrix();
-            final CoordinateTransformation c = new CoordinateTransformation(m, FrameType.BODY_FRAME,
-                    FrameType.LOCAL_NAVIGATION_FRAME);
+            final var m = q.asInhomogeneousMatrix();
+            final var c = new CoordinateTransformation(m, FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame oldFrame = new NEDFrame(latitude, longitude, height, vn, ve, vd, c);
-            final NEDGravity gravity = NEDGravityEstimator.estimateGravityAndReturnNew(latitude, height);
-            final double fx = gravity.getGn();
-            final double fy = gravity.getGe();
-            final double fz = gravity.getGd();
+            final var oldFrame = new NEDFrame(latitude, longitude, height, vn, ve, vd, c);
+            final var gravity = NEDGravityEstimator.estimateGravityAndReturnNew(latitude, height);
+            final var fx = gravity.getGn();
+            final var fy = gravity.getGe();
+            final var fz = gravity.getGd();
 
-            final double angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+            final var angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                     MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-            final double angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+            final var angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                     MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-            final double angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+            final var angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                     MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
 
-            final AngularSpeed angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond,
+            final var angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond, 
                     AngularSpeedUnit.DEGREES_PER_SECOND);
-            final AngularSpeed angularSpeedY = new AngularSpeed(angularRateYDegreesPerSecond,
+            final var angularSpeedY = new AngularSpeed(angularRateYDegreesPerSecond,
                     AngularSpeedUnit.DEGREES_PER_SECOND);
-            final AngularSpeed angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond,
+            final var angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond,
                     AngularSpeedUnit.DEGREES_PER_SECOND);
 
-            final double angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
+            final var angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
                     angularSpeedX.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-            final double angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
+            final var angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
                     angularSpeedY.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-            final double angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
+            final var angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
                     angularSpeedZ.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
 
-            final BodyKinematics kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+            final var kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-            final NEDFrame newFrame = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
+            final var newFrame = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame, 
                     kinematics);
 
-            // Because body is in free fall its latitude and longitude does not change
+            // Because the body is in free fall, its latitude and longitude does not change
             assertEquals(oldFrame.getLatitude(), newFrame.getLatitude(), ABSOLUTE_ERROR);
             assertEquals(oldFrame.getLongitude(), newFrame.getLongitude(), ABSOLUTE_ERROR);
 
-            // Since body is falling, new height is smaller than the initial one
+            // Since the body is falling, the new height is smaller than the initial one
             assertTrue(newFrame.getHeight() < oldFrame.getHeight());
 
             numValid++;
@@ -1924,63 +1892,61 @@ public class NEDInertialNavigatorTest {
     }
 
     @Test
-    public void testNavigateZeroTimeInterval() throws InvalidRotationMatrixException,
+    void testNavigateZeroTimeInterval() throws InvalidRotationMatrixException, 
             InvalidSourceAndDestinationFrameTypeException, InertialNavigatorException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double longitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-            final double vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-            final double ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-            final double vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+            final var vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+            final var ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+            final var vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final Quaternion q = new Quaternion(roll, pitch, yaw);
+            final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var q = new Quaternion(roll, pitch, yaw);
 
-            final Matrix m = q.asInhomogeneousMatrix();
-            final CoordinateTransformation c = new CoordinateTransformation(m, FrameType.BODY_FRAME,
-                    FrameType.LOCAL_NAVIGATION_FRAME);
+            final var m = q.asInhomogeneousMatrix();
+            final var c = new CoordinateTransformation(m, FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame oldFrame = new NEDFrame(latitude, longitude, height, vn, ve, vd, c);
-            final NEDGravity gravity = NEDGravityEstimator.estimateGravityAndReturnNew(latitude, height);
-            final double fx = gravity.getGn();
-            final double fy = gravity.getGe();
-            final double fz = gravity.getGd();
+            final var oldFrame = new NEDFrame(latitude, longitude, height, vn, ve, vd, c);
+            final var gravity = NEDGravityEstimator.estimateGravityAndReturnNew(latitude, height);
+            final var fx = gravity.getGn();
+            final var fy = gravity.getGe();
+            final var fz = gravity.getGd();
 
-            final double angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+            final var angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                     MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-            final double angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+            final var angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                     MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-            final double angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+            final var angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                     MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
 
-            final AngularSpeed angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond,
+            final var angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond, 
                     AngularSpeedUnit.DEGREES_PER_SECOND);
-            final AngularSpeed angularSpeedY = new AngularSpeed(angularRateYDegreesPerSecond,
+            final var angularSpeedY = new AngularSpeed(angularRateYDegreesPerSecond,
                     AngularSpeedUnit.DEGREES_PER_SECOND);
-            final AngularSpeed angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond,
+            final var angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond,
                     AngularSpeedUnit.DEGREES_PER_SECOND);
 
-            final double angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
+            final var angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
                     angularSpeedX.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-            final double angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
+            final var angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
                     angularSpeedY.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-            final double angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
+            final var angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
                     angularSpeedZ.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
 
-            final BodyKinematics kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+            final var kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-            final NEDFrame newFrame = NEDInertialNavigator.navigateNEDAndReturnNew(0.0, oldFrame,
-                    kinematics);
+            final var newFrame = NEDInertialNavigator.navigateNEDAndReturnNew(0.0, oldFrame, kinematics);
 
-            // Because time interval is zero, body hasn't moved
+            // Because the time interval is zero, the body hasn't moved
             assertEquals(oldFrame.getLatitude(), newFrame.getLatitude(), ABSOLUTE_ERROR);
             assertEquals(oldFrame.getLongitude(), newFrame.getLongitude(), ABSOLUTE_ERROR);
             assertEquals(oldFrame.getHeight(), newFrame.getHeight(), ABSOLUTE_ERROR);
@@ -1993,77 +1959,76 @@ public class NEDInertialNavigatorTest {
     }
 
     @Test
-    public void testNavigateWithInitialVelocityAndNoSpecificForce() throws InvalidRotationMatrixException,
+    void testNavigateWithInitialVelocityAndNoSpecificForce() throws InvalidRotationMatrixException,
             InvalidSourceAndDestinationFrameTypeException, InertialNavigatorException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double longitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-            final double vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-            final double ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-            final double vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+            final var vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+            final var ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+            final var vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final Quaternion q = new Quaternion(roll, pitch, yaw);
+            final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var q = new Quaternion(roll, pitch, yaw);
 
-            final Matrix m = q.asInhomogeneousMatrix();
-            final CoordinateTransformation c = new CoordinateTransformation(m, FrameType.BODY_FRAME,
-                    FrameType.LOCAL_NAVIGATION_FRAME);
+            final var m = q.asInhomogeneousMatrix();
+            final var c = new CoordinateTransformation(m, FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame oldFrame = new NEDFrame(latitude, longitude, height, vn, ve, vd, c);
+            final var oldFrame = new NEDFrame(latitude, longitude, height, vn, ve, vd, c);
 
-            final double fx = 0.0;
-            final double fy = 0.0;
-            final double fz = 0.0;
+            final var fx = 0.0;
+            final var fy = 0.0;
+            final var fz = 0.0;
 
-            final double angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+            final var angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                     MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-            final double angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+            final var angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                     MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-            final double angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+            final var angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                     MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
 
-            final AngularSpeed angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond,
+            final var angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond, 
                     AngularSpeedUnit.DEGREES_PER_SECOND);
-            final AngularSpeed angularSpeedY = new AngularSpeed(angularRateYDegreesPerSecond,
+            final var angularSpeedY = new AngularSpeed(angularRateYDegreesPerSecond,
                     AngularSpeedUnit.DEGREES_PER_SECOND);
-            final AngularSpeed angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond,
+            final var angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond,
                     AngularSpeedUnit.DEGREES_PER_SECOND);
 
-            final double angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
+            final var angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
                     angularSpeedX.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-            final double angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
+            final var angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
                     angularSpeedY.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-            final double angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
+            final var angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
                     angularSpeedZ.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
 
-            final BodyKinematics kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+            final var kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-            final NEDFrame newFrame = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
+            final var newFrame = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame, 
                     kinematics);
 
-            // Because no specific force is applied to body, it will keep its inertia
-            // (initial speed). This is approximate, since as the body moves the amount
+            // Because no specific force is applied to the body, it will keep its inertia
+            // (initial speed). This is approximate, since as the body moves, the amount
             // of gravity applied to it changes as well
-            final double oldSpeed = oldFrame.getVelocityNorm();
-            double newSpeed = newFrame.getVelocityNorm();
+            final var oldSpeed = oldFrame.getVelocityNorm();
+            final var newSpeed = newFrame.getVelocityNorm();
 
-            final ECEFFrame oldEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldFrame);
-            final ECEFFrame newEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(newFrame);
+            final var oldEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldFrame);
+            final var newEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(newFrame);
 
-            final Point3D oldPosition = oldEcefFrame.getPosition();
-            final Point3D newPosition = newEcefFrame.getPosition();
+            final var oldPosition = oldEcefFrame.getPosition();
+            final var newPosition = newEcefFrame.getPosition();
 
-            final double distance = oldPosition.distanceTo(newPosition);
+            final var distance = oldPosition.distanceTo(newPosition);
 
-            final double estimatedSpeed = distance / TIME_INTERVAL_SECONDS;
+            final var estimatedSpeed = distance / TIME_INTERVAL_SECONDS;
 
             assertEquals(estimatedSpeed, newSpeed, VERY_LARGE_ABSOLUTE_ERROR);
             assertEquals(oldSpeed, newSpeed, 2.0 * VERY_LARGE_ABSOLUTE_ERROR);
@@ -2075,64 +2040,63 @@ public class NEDInertialNavigatorTest {
     }
 
     @Test
-    public void testNavigateWithNoInitialVelocityAndNoSpecificForce() throws InvalidRotationMatrixException,
+    void testNavigateWithNoInitialVelocityAndNoSpecificForce() throws InvalidRotationMatrixException,
             InvalidSourceAndDestinationFrameTypeException, InertialNavigatorException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double longitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-            final double vn = 0.0;
-            final double ve = 0.0;
-            final double vd = 0.0;
+            final var vn = 0.0;
+            final var ve = 0.0;
+            final var vd = 0.0;
 
-            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final Quaternion q = new Quaternion(roll, pitch, yaw);
+            final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var q = new Quaternion(roll, pitch, yaw);
 
-            final Matrix m = q.asInhomogeneousMatrix();
-            final CoordinateTransformation c = new CoordinateTransformation(m, FrameType.BODY_FRAME,
-                    FrameType.LOCAL_NAVIGATION_FRAME);
+            final var m = q.asInhomogeneousMatrix();
+            final var c = new CoordinateTransformation(m, FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame oldFrame = new NEDFrame(latitude, longitude, height, vn, ve, vd, c);
+            final var oldFrame = new NEDFrame(latitude, longitude, height, vn, ve, vd, c);
 
-            final double fx = 0.0;
-            final double fy = 0.0;
-            final double fz = 0.0;
+            final var fx = 0.0;
+            final var fy = 0.0;
+            final var fz = 0.0;
 
-            final double angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+            final var angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                     MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-            final double angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+            final var angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                     MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-            final double angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+            final var angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                     MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
 
-            final AngularSpeed angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond,
+            final var angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond,
                     AngularSpeedUnit.DEGREES_PER_SECOND);
-            final AngularSpeed angularSpeedY = new AngularSpeed(angularRateYDegreesPerSecond,
+            final var angularSpeedY = new AngularSpeed(angularRateYDegreesPerSecond,
                     AngularSpeedUnit.DEGREES_PER_SECOND);
-            final AngularSpeed angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond,
+            final var angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond,
                     AngularSpeedUnit.DEGREES_PER_SECOND);
 
-            final double angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
+            final var angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
                     angularSpeedX.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-            final double angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
+            final var angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
                     angularSpeedY.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-            final double angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
+            final var angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
                     angularSpeedZ.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
 
-            final BodyKinematics kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+            final var kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-            final NEDFrame newFrame = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
+            final var newFrame = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
                     kinematics);
 
             // Because no forces are applied to the body and the body has no initial velocity,
-            // the body will remain on the same position
+            // the body will remain in the same position
             assertEquals(oldFrame.getLatitude(), newFrame.getLatitude(), ABSOLUTE_ERROR);
             assertEquals(oldFrame.getLongitude(), newFrame.getLongitude(), ABSOLUTE_ERROR);
             assertEquals(oldFrame.getHeight(), newFrame.getHeight(), VERY_LARGE_ABSOLUTE_ERROR);
@@ -2144,67 +2108,66 @@ public class NEDInertialNavigatorTest {
     }
 
     @Test
-    public void testCompareNavigations() throws InvalidRotationMatrixException,
-            InvalidSourceAndDestinationFrameTypeException, InertialNavigatorException {
+    void testCompareNavigations() throws InvalidRotationMatrixException, InvalidSourceAndDestinationFrameTypeException,
+            InertialNavigatorException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double longitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-            final double vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-            final double ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-            final double vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+            final var vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+            final var ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+            final var vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final Quaternion q = new Quaternion(roll, pitch, yaw);
+            final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var q = new Quaternion(roll, pitch, yaw);
 
-            final Matrix m = q.asInhomogeneousMatrix();
-            final CoordinateTransformation c = new CoordinateTransformation(m, FrameType.BODY_FRAME,
-                    FrameType.LOCAL_NAVIGATION_FRAME);
+            final var m = q.asInhomogeneousMatrix();
+            final var c = new CoordinateTransformation(m, FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame oldFrame = new NEDFrame(latitude, longitude, height, vn, ve, vd, c);
-            final ECEFFrame oldEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldFrame);
+            final var oldFrame = new NEDFrame(latitude, longitude, height, vn, ve, vd, c);
+            final var oldEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldFrame);
 
-            final NEDGravity gravity = NEDGravityEstimator.estimateGravityAndReturnNew(latitude, height);
-            final double fx = gravity.getGn();
-            final double fy = gravity.getGe();
-            final double fz = gravity.getGd();
+            final var gravity = NEDGravityEstimator.estimateGravityAndReturnNew(latitude, height);
+            final var fx = gravity.getGn();
+            final var fy = gravity.getGe();
+            final var fz = gravity.getGd();
 
-            final double angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+            final var angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                     MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-            final double angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+            final var angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                     MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-            final double angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+            final var angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                     MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
 
-            final AngularSpeed angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond,
+            final var angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond,
                     AngularSpeedUnit.DEGREES_PER_SECOND);
-            final AngularSpeed angularSpeedY = new AngularSpeed(angularRateYDegreesPerSecond,
+            final var angularSpeedY = new AngularSpeed(angularRateYDegreesPerSecond,
                     AngularSpeedUnit.DEGREES_PER_SECOND);
-            final AngularSpeed angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond,
+            final var angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond,
                     AngularSpeedUnit.DEGREES_PER_SECOND);
 
-            final double angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
+            final var angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
                     angularSpeedX.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-            final double angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
+            final var angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
                     angularSpeedY.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-            final double angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
+            final var angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
                     angularSpeedZ.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
 
-            final BodyKinematics kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+            final var kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-            final NEDFrame newFrame1 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
+            final var newFrame1 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
                     kinematics);
 
-            final ECEFFrame newEcefFrame = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS,
-                    oldEcefFrame, kinematics);
-            final NEDFrame newFrame2 = ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(newEcefFrame);
+            final var newEcefFrame = ECEFInertialNavigator.navigateECEFAndReturnNew(TIME_INTERVAL_SECONDS, oldEcefFrame,
+                    kinematics);
+            final var newFrame2 = ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(newEcefFrame);
 
             // compare
             assertTrue(newFrame1.equals(newFrame2, LARGE_ABSOLUTE_ERROR));
@@ -2216,34 +2179,33 @@ public class NEDInertialNavigatorTest {
     }
 
     @Test
-    public void testNavigateWhenFrameRemainsConstant() throws InvalidRotationMatrixException,
+    void testNavigateWhenFrameRemainsConstant() throws InvalidRotationMatrixException,
             InvalidSourceAndDestinationFrameTypeException, InertialNavigatorException {
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer();
 
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double longitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-            final double vn = 0.0;
-            final double ve = 0.0;
-            final double vd = 0.0;
+            final var vn = 0.0;
+            final var ve = 0.0;
+            final var vd = 0.0;
 
-            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final Quaternion q = new Quaternion(roll, pitch, yaw);
+            final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var q = new Quaternion(roll, pitch, yaw);
 
-            final Matrix m = q.asInhomogeneousMatrix();
-            final CoordinateTransformation c = new CoordinateTransformation(m, FrameType.BODY_FRAME,
-                    FrameType.LOCAL_NAVIGATION_FRAME);
+            final var m = q.asInhomogeneousMatrix();
+            final var c = new CoordinateTransformation(m, FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame oldFrame = new NEDFrame(latitude, longitude, height, vn, ve, vd, c);
-            final BodyKinematics bodyKinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(
-                    TIME_INTERVAL_SECONDS, oldFrame, oldFrame);
+            final var oldFrame = new NEDFrame(latitude, longitude, height, vn, ve, vd, c);
+            final var bodyKinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS,
+                    oldFrame, oldFrame);
 
-            final NEDFrame newFrame = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
+            final var newFrame = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
                     bodyKinematics);
 
             assertTrue(oldFrame.equals(newFrame, ABSOLUTE_ERROR));
@@ -2255,34 +2217,33 @@ public class NEDInertialNavigatorTest {
     }
 
     @Test
-    public void testNavigateWhenFrameRemainsConstant2() throws InvalidRotationMatrixException,
+    void testNavigateWhenFrameRemainsConstant2() throws InvalidRotationMatrixException,
             InvalidSourceAndDestinationFrameTypeException, InertialNavigatorException {
-        final UniformRandomizer randomizer = new UniformRandomizer();
+        final var randomizer = new UniformRandomizer();
 
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-        final double vn = 0.0;
-        final double ve = 0.0;
-        final double vd = 0.0;
+        final var vn = 0.0;
+        final var ve = 0.0;
+        final var vd = 0.0;
 
-        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final Quaternion q = new Quaternion(roll, pitch, yaw);
+        final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var q = new Quaternion(roll, pitch, yaw);
 
-        final Matrix m = q.asInhomogeneousMatrix();
-        final CoordinateTransformation c = new CoordinateTransformation(m, FrameType.BODY_FRAME,
-                FrameType.LOCAL_NAVIGATION_FRAME);
+        final var m = q.asInhomogeneousMatrix();
+        final var c = new CoordinateTransformation(m, FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
 
-        final NEDFrame oldFrame = new NEDFrame(latitude, longitude, height, vn, ve, vd, c);
-        final BodyKinematics bodyKinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(
-                TIME_INTERVAL_SECONDS, oldFrame, oldFrame);
-        final NEDFrame initialFrame = new NEDFrame(oldFrame);
+        final var oldFrame = new NEDFrame(latitude, longitude, height, vn, ve, vd, c);
+        final var bodyKinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS,
+                oldFrame, oldFrame);
+        final var initialFrame = new NEDFrame(oldFrame);
 
-        for (int t = 0; t < TIMES; t++) {
-            final NEDFrame newFrame = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
+        for (var t = 0; t < TIMES; t++) {
+            final var newFrame = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
                     bodyKinematics, ACCURACY_THRESHOLD);
 
             assertTrue(initialFrame.equals(newFrame, ABSOLUTE_ERROR));

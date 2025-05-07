@@ -19,12 +19,10 @@ import com.irurueta.algebra.Matrix;
 import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.geometry.AxisRotation3D;
 import com.irurueta.geometry.InvalidRotationMatrixException;
-import com.irurueta.geometry.Rotation3D;
 import com.irurueta.geometry.RotationException;
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.frames.CoordinateTransformation;
-import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.ECEFPosition;
 import com.irurueta.navigation.frames.ECEFVelocity;
 import com.irurueta.navigation.frames.FrameType;
@@ -35,7 +33,6 @@ import com.irurueta.navigation.frames.NEDVelocity;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.frames.converters.NEDtoECEFPositionVelocityConverter;
 import com.irurueta.navigation.geodesic.Constants;
-import com.irurueta.navigation.inertial.BodyKinematics;
 import com.irurueta.navigation.inertial.calibration.AngularSpeedTriad;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsGenerator;
 import com.irurueta.navigation.inertial.calibration.CalibrationException;
@@ -49,18 +46,15 @@ import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedUnit;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeUnit;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurntableGyroscopeCalibratorListener {
+class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurntableGyroscopeCalibratorListener {
 
     private static final double TIME_INTERVAL_SECONDS = 0.02;
 
@@ -90,43 +84,43 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
 
     private static final int TIMES = 100;
 
-    private int mCalibrateStart;
-    private int mCalibrateEnd;
+    private int calibrateStart;
+    private int calibrateEnd;
 
     @Test
-    public void testConstructor1() throws WrongSizeException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testConstructor1() throws WrongSizeException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] accelerometerBias1 = calibrator.getAccelerometerBias();
-        assertArrayEquals(accelerometerBias1, new double[3], 0.0);
-        final double[] accelerometerBias2 = new double[3];
+        final var accelerometerBias1 = calibrator.getAccelerometerBias();
+        assertArrayEquals(new double[3], accelerometerBias1, 0.0);
+        final var accelerometerBias2 = new double[3];
         calibrator.getAccelerometerBias(accelerometerBias2);
         assertArrayEquals(accelerometerBias1, accelerometerBias2, 0.0);
-        final Matrix ba1 = calibrator.getAccelerometerBiasAsMatrix();
-        assertEquals(ba1, new Matrix(3, 1));
-        final Matrix ba2 = new Matrix(3, 1);
+        final var ba1 = calibrator.getAccelerometerBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), ba1);
+        final var ba2 = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2);
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerSy(), 0.0);
@@ -137,38 +131,38 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
-        assertEquals(ma1, new Matrix(3, 3));
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = calibrator.getAccelerometerMa();
+        assertEquals(new Matrix(3, 3), ma1);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
         assertEquals(0.0, calibrator.getBiasY(), 0.0);
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed angularSpeedX1 = calibrator.getBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getBiasAngularSpeedX();
         assertEquals(0.0, angularSpeedX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
-        final AngularSpeed angularSpeedY1 = calibrator.getBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getBiasAngularSpeedY();
         assertEquals(0.0, angularSpeedY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
-        final AngularSpeed angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(0.0, angularSpeedZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(0.0, biasTriad1.getValueX(), 0.0);
         assertEquals(0.0, biasTriad1.getValueY(), 0.0);
         assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -180,39 +174,38 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = calibrator.getBias();
-        assertArrayEquals(bias1, new double[3], 0.0);
-        final double[] bias2 = new double[3];
+        final var bias1 = calibrator.getBias();
+        assertArrayEquals(new double[3], bias1, 0.0);
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
-        assertEquals(bg1, new Matrix(3, 1));
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg1 = calibrator.getBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), bg1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final Matrix mg1 = calibrator.getInitialMg();
-        assertEquals(mg1, new Matrix(3, 3));
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg1 = calibrator.getInitialMg();
+        assertEquals(new Matrix(3, 3), mg1);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
-        assertEquals(gg1, new Matrix(3, 3));
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg1 = calibrator.getInitialGg();
+        assertEquals(new Matrix(3, 3), gg1);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertEquals(Constants.EARTH_ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
-        final AngularSpeed rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
+        final var rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
         assertEquals(Constants.EARTH_ROTATION_RATE, rotationRate1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, rotationRate1.getUnit());
-        final AngularSpeed rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getTurntableRotationRateAsAngularSpeed(rotationRate2);
         assertEquals(rotationRate1, rotationRate2);
-        Assert.assertEquals(TurntableGyroscopeCalibrator.DEFAULT_TIME_INTERVAL, calibrator.getTimeInterval(),
-                0.0);
-        final Time time1 = calibrator.getTimeIntervalAsTime();
+        assertEquals(TurntableGyroscopeCalibrator.DEFAULT_TIME_INTERVAL, calibrator.getTimeInterval(), 0.0);
+        final var time1 = calibrator.getTimeIntervalAsTime();
         assertEquals(TurntableGyroscopeCalibrator.DEFAULT_TIME_INTERVAL, time1.getValue().doubleValue(), 0.0);
         assertEquals(TimeUnit.SECOND, time1.getUnit());
-        final Time time2 = new Time(0.0, TimeUnit.MILLISECOND);
+        final var time2 = new Time(0.0, TimeUnit.MILLISECOND);
         calibrator.getTimeIntervalAsTime(time2);
         assertEquals(time1, time2);
         assertNull(calibrator.getMeasurements());
@@ -246,72 +239,72 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testConstructor2() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor2() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double rotationRate = getTurntableRotationRate();
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final Collection<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final Matrix mg = generateCommonAxisMg();
-        final Matrix gg = generateGg();
+        final var rotationRate = getTurntableRotationRate();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var mg = generateCommonAxisMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
-        final double[] bias = bg.getBuffer();
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(ecefPosition,
-                rotationRate, timeInterval, measurements, bg, mg, gg);
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(ecefPosition, rotationRate, timeInterval,
+                measurements, bg, mg, gg);
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] accelerometerBias1 = calibrator.getAccelerometerBias();
-        assertArrayEquals(accelerometerBias1, new double[3], 0.0);
-        final double[] accelerometerBias2 = new double[3];
+        final var accelerometerBias1 = calibrator.getAccelerometerBias();
+        assertArrayEquals(new double[3], accelerometerBias1, 0.0);
+        final var accelerometerBias2 = new double[3];
         calibrator.getAccelerometerBias(accelerometerBias2);
         assertArrayEquals(accelerometerBias1, accelerometerBias2, 0.0);
-        final Matrix ba1 = calibrator.getAccelerometerBiasAsMatrix();
-        assertEquals(ba1, new Matrix(3, 1));
-        final Matrix ba2 = new Matrix(3, 1);
+        final var ba1 = calibrator.getAccelerometerBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), ba1);
+        final var ba2 = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2);
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerSy(), 0.0);
@@ -322,38 +315,38 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
-        assertEquals(ma1, new Matrix(3, 3));
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = calibrator.getAccelerometerMa();
+        assertEquals(new Matrix(3, 3), ma1);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getBiasX(), 0.0);
         assertEquals(bgy, calibrator.getBiasY(), 0.0);
         assertEquals(bgz, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed angularSpeedX1 = calibrator.getBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getBiasAngularSpeedX();
         assertEquals(angularSpeedX1.getValue().doubleValue(), bgx, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
-        final AngularSpeed angularSpeedY1 = calibrator.getBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getBiasAngularSpeedY();
         assertEquals(angularSpeedY1.getValue().doubleValue(), bgy, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
-        final AngularSpeed angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(angularSpeedZ1.getValue().doubleValue(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), bgx, 0.0);
         assertEquals(biasTriad1.getValueY(), bgy, 0.0);
         assertEquals(biasTriad1.getValueZ(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -365,44 +358,44 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(myz, calibrator.getInitialMyz(), 0.0);
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bias1, bias, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertEquals(rotationRate, calibrator.getTurntableRotationRate(), 0.0);
-        final AngularSpeed rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
+        final var rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
         assertEquals(rotationRate1.getValue().doubleValue(), rotationRate, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, rotationRate1.getUnit());
-        final AngularSpeed rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getTurntableRotationRateAsAngularSpeed(rotationRate2);
         assertEquals(rotationRate1, rotationRate2);
         assertEquals(timeInterval, calibrator.getTimeInterval(), 0.0);
-        final Time time1 = calibrator.getTimeIntervalAsTime();
+        final var time1 = calibrator.getTimeIntervalAsTime();
         assertEquals(time1.getValue().doubleValue(), timeInterval, 0.0);
         assertEquals(TimeUnit.SECOND, time1.getUnit());
-        final Time time2 = new Time(0.0, TimeUnit.MILLISECOND);
+        final var time2 = new Time(0.0, TimeUnit.MILLISECOND);
         calibrator.getTimeIntervalAsTime(time2);
         assertEquals(time1, time2);
         assertSame(measurements, calibrator.getMeasurements());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
-        final NEDPosition nedPosition2 = new NEDPosition();
+        final var nedPosition2 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition2));
         assertTrue(nedPosition2.equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_BODY_KINEMATICS_MEASUREMENT,
@@ -442,8 +435,8 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertThrows(IllegalArgumentException.class, () -> new KnownBiasTurntableGyroscopeCalibrator(ecefPosition,
                 rotationRate, timeInterval, measurements, m2, mg, gg));
         final var m3 = new Matrix(1, 3);
-        assertThrows(IllegalArgumentException.class, () -> new KnownBiasTurntableGyroscopeCalibrator(
-                ecefPosition, rotationRate, timeInterval, measurements, bg, m3, gg));
+        assertThrows(IllegalArgumentException.class, () -> new KnownBiasTurntableGyroscopeCalibrator(ecefPosition,
+                rotationRate, timeInterval, measurements, bg, m3, gg));
         final var m4 = new Matrix(3, 1);
         assertThrows(IllegalArgumentException.class, () -> new KnownBiasTurntableGyroscopeCalibrator(ecefPosition,
                 rotationRate, timeInterval, measurements, bg, m4, gg));
@@ -456,72 +449,72 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testConstructor3() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor3() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double rotationRate = getTurntableRotationRate();
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final Collection<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final Matrix mg = generateCommonAxisMg();
-        final Matrix gg = generateGg();
+        final var rotationRate = getTurntableRotationRate();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var mg = generateCommonAxisMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
-        final double[] bias = bg.getBuffer();
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(ecefPosition,
-                rotationRate, timeInterval, measurements, bg, mg, gg, this);
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(ecefPosition, rotationRate, timeInterval,
+                measurements, bg, mg, gg, this);
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] accelerometerBias1 = calibrator.getAccelerometerBias();
+        final var accelerometerBias1 = calibrator.getAccelerometerBias();
         assertArrayEquals(new double[3], accelerometerBias1, 0.0);
-        final double[] accelerometerBias2 = new double[3];
+        final var accelerometerBias2 = new double[3];
         calibrator.getAccelerometerBias(accelerometerBias2);
         assertArrayEquals(accelerometerBias1, accelerometerBias2, 0.0);
-        final Matrix ba1 = calibrator.getAccelerometerBiasAsMatrix();
-        assertEquals(ba1, new Matrix(3, 1));
-        final Matrix ba2 = new Matrix(3, 1);
+        final var ba1 = calibrator.getAccelerometerBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), ba1);
+        final var ba2 = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2);
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerSy(), 0.0);
@@ -532,38 +525,38 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
-        assertEquals(ma1, new Matrix(3, 3));
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = calibrator.getAccelerometerMa();
+        assertEquals(new Matrix(3, 3), ma1);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getBiasX(), 0.0);
         assertEquals(bgy, calibrator.getBiasY(), 0.0);
         assertEquals(bgz, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed angularSpeedX1 = calibrator.getBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getBiasAngularSpeedX();
         assertEquals(angularSpeedX1.getValue().doubleValue(), bgx, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
-        final AngularSpeed angularSpeedY1 = calibrator.getBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getBiasAngularSpeedY();
         assertEquals(angularSpeedY1.getValue().doubleValue(), bgy, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
-        final AngularSpeed angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(angularSpeedZ1.getValue().doubleValue(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), bgx, 0.0);
         assertEquals(biasTriad1.getValueY(), bgy, 0.0);
         assertEquals(biasTriad1.getValueZ(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -575,37 +568,37 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(myz, calibrator.getInitialMyz(), 0.0);
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bias1, bias, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertEquals(rotationRate, calibrator.getTurntableRotationRate(), 0.0);
-        final AngularSpeed rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
+        final var rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
         assertEquals(rotationRate1.getValue().doubleValue(), rotationRate, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, rotationRate1.getUnit());
-        final AngularSpeed rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getTurntableRotationRateAsAngularSpeed(rotationRate2);
         assertEquals(rotationRate1, rotationRate2);
         assertSame(measurements, calibrator.getMeasurements());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
-        final NEDPosition nedPosition2 = new NEDPosition();
+        final var nedPosition2 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition2));
         assertTrue(nedPosition2.equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_BODY_KINEMATICS_MEASUREMENT,
@@ -659,72 +652,72 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testConstructor4() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor4() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double rotationRate = getTurntableRotationRate();
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final Collection<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final Matrix mg = generateCommonAxisMg();
-        final Matrix gg = generateGg();
+        final var rotationRate = getTurntableRotationRate();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var mg = generateCommonAxisMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
-        final double[] bias = bg.getBuffer();
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(ecefPosition,
-                rotationRate, timeInterval, measurements, bias, mg, gg);
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(ecefPosition, rotationRate, timeInterval,
+                measurements, bias, mg, gg);
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] accelerometerBias1 = calibrator.getAccelerometerBias();
-        assertArrayEquals(accelerometerBias1, new double[3], 0.0);
-        final double[] accelerometerBias2 = new double[3];
+        final var accelerometerBias1 = calibrator.getAccelerometerBias();
+        assertArrayEquals(new double[3], accelerometerBias1, 0.0);
+        final var accelerometerBias2 = new double[3];
         calibrator.getAccelerometerBias(accelerometerBias2);
         assertArrayEquals(accelerometerBias1, accelerometerBias2, 0.0);
-        final Matrix ba1 = calibrator.getAccelerometerBiasAsMatrix();
-        assertEquals(ba1, new Matrix(3, 1));
-        final Matrix ba2 = new Matrix(3, 1);
+        final var ba1 = calibrator.getAccelerometerBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), ba1);
+        final var ba2 = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2);
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerSy(), 0.0);
@@ -735,38 +728,38 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
-        assertEquals(ma1, new Matrix(3, 3));
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = calibrator.getAccelerometerMa();
+        assertEquals(new Matrix(3, 3), ma1);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getBiasX(), 0.0);
         assertEquals(bgy, calibrator.getBiasY(), 0.0);
         assertEquals(bgz, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed angularSpeedX1 = calibrator.getBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getBiasAngularSpeedX();
         assertEquals(angularSpeedX1.getValue().doubleValue(), bgx, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
-        final AngularSpeed angularSpeedY1 = calibrator.getBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getBiasAngularSpeedY();
         assertEquals(angularSpeedY1.getValue().doubleValue(), bgy, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
-        final AngularSpeed angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(angularSpeedZ1.getValue().doubleValue(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), bgx, 0.0);
         assertEquals(biasTriad1.getValueY(), bgy, 0.0);
         assertEquals(biasTriad1.getValueZ(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -778,37 +771,37 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(myz, calibrator.getInitialMyz(), 0.0);
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bias1, bias, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertEquals(rotationRate, calibrator.getTurntableRotationRate(), 0.0);
-        final AngularSpeed rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
+        final var rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
         assertEquals(rotationRate1.getValue().doubleValue(), rotationRate, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, rotationRate1.getUnit());
-        final AngularSpeed rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getTurntableRotationRateAsAngularSpeed(rotationRate2);
         assertEquals(rotationRate1, rotationRate2);
         assertSame(measurements, calibrator.getMeasurements());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
-        final NEDPosition nedPosition2 = new NEDPosition();
+        final var nedPosition2 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition2));
         assertTrue(nedPosition2.equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_BODY_KINEMATICS_MEASUREMENT,
@@ -858,72 +851,72 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testConstructor5() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor5() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double rotationRate = getTurntableRotationRate();
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final Collection<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final Matrix mg = generateCommonAxisMg();
-        final Matrix gg = generateGg();
+        final var rotationRate = getTurntableRotationRate();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var mg = generateCommonAxisMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
-        final double[] bias = bg.getBuffer();
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(ecefPosition,
-                rotationRate, timeInterval, measurements, bias, mg, gg, this);
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(ecefPosition, rotationRate, timeInterval,
+                measurements, bias, mg, gg, this);
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] accelerometerBias1 = calibrator.getAccelerometerBias();
+        final var accelerometerBias1 = calibrator.getAccelerometerBias();
         assertArrayEquals(new double[3], accelerometerBias1, 0.0);
-        final double[] accelerometerBias2 = new double[3];
+        final var accelerometerBias2 = new double[3];
         calibrator.getAccelerometerBias(accelerometerBias2);
         assertArrayEquals(accelerometerBias1, accelerometerBias2, 0.0);
-        final Matrix ba1 = calibrator.getAccelerometerBiasAsMatrix();
-        assertEquals(ba1, new Matrix(3, 1));
-        final Matrix ba2 = new Matrix(3, 1);
+        final var ba1 = calibrator.getAccelerometerBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), ba1);
+        final var ba2 = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2);
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerSy(), 0.0);
@@ -934,38 +927,38 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
-        assertEquals(ma1, new Matrix(3, 3));
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = calibrator.getAccelerometerMa();
+        assertEquals(new Matrix(3, 3), ma1);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getBiasX(), 0.0);
         assertEquals(bgy, calibrator.getBiasY(), 0.0);
         assertEquals(bgz, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed angularSpeedX1 = calibrator.getBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getBiasAngularSpeedX();
         assertEquals(angularSpeedX1.getValue().doubleValue(), bgx, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
-        final AngularSpeed angularSpeedY1 = calibrator.getBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getBiasAngularSpeedY();
         assertEquals(angularSpeedY1.getValue().doubleValue(), bgy, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
-        final AngularSpeed angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(angularSpeedZ1.getValue().doubleValue(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), bgx, 0.0);
         assertEquals(biasTriad1.getValueY(), bgy, 0.0);
         assertEquals(biasTriad1.getValueZ(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -977,37 +970,37 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(myz, calibrator.getInitialMyz(), 0.0);
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bias1, bias, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertEquals(rotationRate, calibrator.getTurntableRotationRate(), 0.0);
-        final AngularSpeed rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
+        final var rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
         assertEquals(rotationRate1.getValue().doubleValue(), rotationRate, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, rotationRate1.getUnit());
-        final AngularSpeed rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getTurntableRotationRateAsAngularSpeed(rotationRate2);
         assertEquals(rotationRate1, rotationRate2);
         assertSame(measurements, calibrator.getMeasurements());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
-        final NEDPosition nedPosition2 = new NEDPosition();
+        final var nedPosition2 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition2));
         assertTrue(nedPosition2.equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_BODY_KINEMATICS_MEASUREMENT,
@@ -1057,90 +1050,90 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testConstructor6() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor6() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double rotationRate = getTurntableRotationRate();
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final Collection<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final Matrix mg = generateCommonAxisMg();
-        final Matrix gg = generateGg();
+        final var rotationRate = getTurntableRotationRate();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var mg = generateCommonAxisMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
-        final double[] bias = bg.getBuffer();
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final Matrix ba = generateBa();
-        final Matrix ma = generateMa();
-        final double[] accelerometerBias = ba.getBuffer();
+        final var ba = generateBa();
+        final var ma = generateMa();
+        final var accelerometerBias = ba.getBuffer();
 
-        final double bax = ba.getElementAtIndex(0);
-        final double bay = ba.getElementAtIndex(1);
-        final double baz = ba.getElementAtIndex(2);
+        final var bax = ba.getElementAtIndex(0);
+        final var bay = ba.getElementAtIndex(1);
+        final var baz = ba.getElementAtIndex(2);
 
-        final double asx = ma.getElementAt(0, 0);
-        final double asy = ma.getElementAt(1, 1);
-        final double asz = ma.getElementAt(2, 2);
-        final double amxy = ma.getElementAt(0, 1);
-        final double amxz = ma.getElementAt(0, 2);
-        final double amyx = ma.getElementAt(1, 0);
-        final double amyz = ma.getElementAt(1, 2);
-        final double amzx = ma.getElementAt(2, 0);
-        final double amzy = ma.getElementAt(2, 1);
+        final var asx = ma.getElementAt(0, 0);
+        final var asy = ma.getElementAt(1, 1);
+        final var asz = ma.getElementAt(2, 2);
+        final var amxy = ma.getElementAt(0, 1);
+        final var amxz = ma.getElementAt(0, 2);
+        final var amyx = ma.getElementAt(1, 0);
+        final var amyz = ma.getElementAt(1, 2);
+        final var amzx = ma.getElementAt(2, 0);
+        final var amzy = ma.getElementAt(2, 1);
 
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(ecefPosition,
-                rotationRate, timeInterval, measurements, bias, mg, gg, accelerometerBias, ma);
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(ecefPosition, rotationRate, timeInterval,
+                measurements, bias, mg, gg, accelerometerBias, ma);
 
         // check default values
         assertEquals(bax, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(bay, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(baz, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(accelerationX1.getValue().doubleValue(), bax, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(accelerationY1.getValue().doubleValue(), bay, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(accelerationZ1.getValue().doubleValue(), baz, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] accelerometerBias1 = calibrator.getAccelerometerBias();
+        final var accelerometerBias1 = calibrator.getAccelerometerBias();
         assertArrayEquals(accelerometerBias1, accelerometerBias, 0.0);
-        final double[] accelerometerBias2 = new double[3];
+        final var accelerometerBias2 = new double[3];
         calibrator.getAccelerometerBias(accelerometerBias2);
         assertArrayEquals(accelerometerBias1, accelerometerBias2, 0.0);
-        final Matrix ba1 = calibrator.getAccelerometerBiasAsMatrix();
+        final var ba1 = calibrator.getAccelerometerBiasAsMatrix();
         assertEquals(ba1, ba);
-        final Matrix ba2 = new Matrix(3, 1);
+        final var ba2 = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2);
         assertEquals(asx, calibrator.getAccelerometerSx(), 0.0);
         assertEquals(asy, calibrator.getAccelerometerSy(), 0.0);
@@ -1151,38 +1144,38 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(amyz, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(amzx, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(amzy, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
+        final var ma1 = calibrator.getAccelerometerMa();
         assertEquals(ma1, ma);
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getBiasX(), 0.0);
         assertEquals(bgy, calibrator.getBiasY(), 0.0);
         assertEquals(bgz, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed angularSpeedX1 = calibrator.getBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getBiasAngularSpeedX();
         assertEquals(angularSpeedX1.getValue().doubleValue(), bgx, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
-        final AngularSpeed angularSpeedY1 = calibrator.getBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getBiasAngularSpeedY();
         assertEquals(angularSpeedY1.getValue().doubleValue(), bgy, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
-        final AngularSpeed angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(angularSpeedZ1.getValue().doubleValue(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), bgx, 0.0);
         assertEquals(biasTriad1.getValueY(), bgy, 0.0);
         assertEquals(biasTriad1.getValueZ(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -1194,37 +1187,37 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(myz, calibrator.getInitialMyz(), 0.0);
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bias1, bias, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertEquals(rotationRate, calibrator.getTurntableRotationRate(), 0.0);
-        final AngularSpeed rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
+        final var rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
         assertEquals(rotationRate1.getValue().doubleValue(), rotationRate, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, rotationRate1.getUnit());
-        final AngularSpeed rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getTurntableRotationRateAsAngularSpeed(rotationRate2);
         assertEquals(rotationRate1, rotationRate2);
         assertSame(measurements, calibrator.getMeasurements());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
-        final NEDPosition nedPosition2 = new NEDPosition();
+        final var nedPosition2 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition2));
         assertTrue(nedPosition2.equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_BODY_KINEMATICS_MEASUREMENT,
@@ -1282,90 +1275,90 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testConstructor7() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor7() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double rotationRate = getTurntableRotationRate();
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final Collection<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final Matrix mg = generateCommonAxisMg();
-        final Matrix gg = generateGg();
+        final var rotationRate = getTurntableRotationRate();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var mg = generateCommonAxisMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
-        final double[] bias = bg.getBuffer();
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final Matrix ba = generateBa();
-        final Matrix ma = generateMa();
-        final double[] accelerometerBias = ba.getBuffer();
+        final var ba = generateBa();
+        final var ma = generateMa();
+        final var accelerometerBias = ba.getBuffer();
 
-        final double bax = ba.getElementAtIndex(0);
-        final double bay = ba.getElementAtIndex(1);
-        final double baz = ba.getElementAtIndex(2);
+        final var bax = ba.getElementAtIndex(0);
+        final var bay = ba.getElementAtIndex(1);
+        final var baz = ba.getElementAtIndex(2);
 
-        final double asx = ma.getElementAt(0, 0);
-        final double asy = ma.getElementAt(1, 1);
-        final double asz = ma.getElementAt(2, 2);
-        final double amxy = ma.getElementAt(0, 1);
-        final double amxz = ma.getElementAt(0, 2);
-        final double amyx = ma.getElementAt(1, 0);
-        final double amyz = ma.getElementAt(1, 2);
-        final double amzx = ma.getElementAt(2, 0);
-        final double amzy = ma.getElementAt(2, 1);
+        final var asx = ma.getElementAt(0, 0);
+        final var asy = ma.getElementAt(1, 1);
+        final var asz = ma.getElementAt(2, 2);
+        final var amxy = ma.getElementAt(0, 1);
+        final var amxz = ma.getElementAt(0, 2);
+        final var amyx = ma.getElementAt(1, 0);
+        final var amyz = ma.getElementAt(1, 2);
+        final var amzx = ma.getElementAt(2, 0);
+        final var amzy = ma.getElementAt(2, 1);
 
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(ecefPosition,
-                rotationRate, timeInterval, measurements, bias, mg, gg, accelerometerBias, ma, this);
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(ecefPosition, rotationRate, timeInterval,
+                measurements, bias, mg, gg, accelerometerBias, ma, this);
 
         // check default values
         assertEquals(bax, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(bay, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(baz, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(accelerationX1.getValue().doubleValue(), bax, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(accelerationY1.getValue().doubleValue(), bay, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(accelerationZ1.getValue().doubleValue(), baz, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] accelerometerBias1 = calibrator.getAccelerometerBias();
+        final var accelerometerBias1 = calibrator.getAccelerometerBias();
         assertArrayEquals(accelerometerBias1, accelerometerBias, 0.0);
-        final double[] accelerometerBias2 = new double[3];
+        final var accelerometerBias2 = new double[3];
         calibrator.getAccelerometerBias(accelerometerBias2);
         assertArrayEquals(accelerometerBias1, accelerometerBias2, 0.0);
-        final Matrix ba1 = calibrator.getAccelerometerBiasAsMatrix();
+        final var ba1 = calibrator.getAccelerometerBiasAsMatrix();
         assertEquals(ba1, ba);
-        final Matrix ba2 = new Matrix(3, 1);
+        final var ba2 = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2);
         assertEquals(asx, calibrator.getAccelerometerSx(), 0.0);
         assertEquals(asy, calibrator.getAccelerometerSy(), 0.0);
@@ -1376,38 +1369,38 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(amyz, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(amzx, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(amzy, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
+        final var ma1 = calibrator.getAccelerometerMa();
         assertEquals(ma1, ma);
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getBiasX(), 0.0);
         assertEquals(bgy, calibrator.getBiasY(), 0.0);
         assertEquals(bgz, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed angularSpeedX1 = calibrator.getBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getBiasAngularSpeedX();
         assertEquals(angularSpeedX1.getValue().doubleValue(), bgx, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
-        final AngularSpeed angularSpeedY1 = calibrator.getBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getBiasAngularSpeedY();
         assertEquals(angularSpeedY1.getValue().doubleValue(), bgy, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
-        final AngularSpeed angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(angularSpeedZ1.getValue().doubleValue(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), bgx, 0.0);
         assertEquals(biasTriad1.getValueY(), bgy, 0.0);
         assertEquals(biasTriad1.getValueZ(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -1419,37 +1412,37 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(myz, calibrator.getInitialMyz(), 0.0);
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bias1, bias, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertEquals(rotationRate, calibrator.getTurntableRotationRate(), 0.0);
-        final AngularSpeed rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
+        final var rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
         assertEquals(rotationRate1.getValue().doubleValue(), rotationRate, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, rotationRate1.getUnit());
-        final AngularSpeed rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getTurntableRotationRateAsAngularSpeed(rotationRate2);
         assertEquals(rotationRate1, rotationRate2);
         assertSame(measurements, calibrator.getMeasurements());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
-        final NEDPosition nedPosition2 = new NEDPosition();
+        final var nedPosition2 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition2));
         assertTrue(nedPosition2.equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_BODY_KINEMATICS_MEASUREMENT,
@@ -1507,90 +1500,90 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testConstructor8() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor8() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double rotationRate = getTurntableRotationRate();
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final Collection<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final Matrix mg = generateCommonAxisMg();
-        final Matrix gg = generateGg();
+        final var rotationRate = getTurntableRotationRate();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var mg = generateCommonAxisMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
-        final double[] bias = bg.getBuffer();
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final Matrix ba = generateBa();
-        final Matrix ma = generateMa();
-        final double[] accelerometerBias = ba.getBuffer();
+        final var ba = generateBa();
+        final var ma = generateMa();
+        final var accelerometerBias = ba.getBuffer();
 
-        final double bax = ba.getElementAtIndex(0);
-        final double bay = ba.getElementAtIndex(1);
-        final double baz = ba.getElementAtIndex(2);
+        final var bax = ba.getElementAtIndex(0);
+        final var bay = ba.getElementAtIndex(1);
+        final var baz = ba.getElementAtIndex(2);
 
-        final double asx = ma.getElementAt(0, 0);
-        final double asy = ma.getElementAt(1, 1);
-        final double asz = ma.getElementAt(2, 2);
-        final double amxy = ma.getElementAt(0, 1);
-        final double amxz = ma.getElementAt(0, 2);
-        final double amyx = ma.getElementAt(1, 0);
-        final double amyz = ma.getElementAt(1, 2);
-        final double amzx = ma.getElementAt(2, 0);
-        final double amzy = ma.getElementAt(2, 1);
+        final var asx = ma.getElementAt(0, 0);
+        final var asy = ma.getElementAt(1, 1);
+        final var asz = ma.getElementAt(2, 2);
+        final var amxy = ma.getElementAt(0, 1);
+        final var amxz = ma.getElementAt(0, 2);
+        final var amyx = ma.getElementAt(1, 0);
+        final var amyz = ma.getElementAt(1, 2);
+        final var amzx = ma.getElementAt(2, 0);
+        final var amzy = ma.getElementAt(2, 1);
 
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(ecefPosition,
-                rotationRate, timeInterval, measurements, bg, mg, gg, ba, ma);
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(ecefPosition, rotationRate, timeInterval,
+                measurements, bg, mg, gg, ba, ma);
 
         // check default values
         assertEquals(bax, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(bay, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(baz, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(bax, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(accelerationY1.getValue().doubleValue(), bay, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(accelerationZ1.getValue().doubleValue(), baz, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] accelerometerBias1 = calibrator.getAccelerometerBias();
+        final var accelerometerBias1 = calibrator.getAccelerometerBias();
         assertArrayEquals(accelerometerBias1, accelerometerBias, 0.0);
-        final double[] accelerometerBias2 = new double[3];
+        final var accelerometerBias2 = new double[3];
         calibrator.getAccelerometerBias(accelerometerBias2);
         assertArrayEquals(accelerometerBias1, accelerometerBias2, 0.0);
-        final Matrix ba1 = calibrator.getAccelerometerBiasAsMatrix();
+        final var ba1 = calibrator.getAccelerometerBiasAsMatrix();
         assertEquals(ba1, ba);
-        final Matrix ba2 = new Matrix(3, 1);
+        final var ba2 = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2);
         assertEquals(asx, calibrator.getAccelerometerSx(), 0.0);
         assertEquals(asy, calibrator.getAccelerometerSy(), 0.0);
@@ -1601,38 +1594,38 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(amyz, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(amzx, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(amzy, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
+        final var ma1 = calibrator.getAccelerometerMa();
         assertEquals(ma1, ma);
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getBiasX(), 0.0);
         assertEquals(bgy, calibrator.getBiasY(), 0.0);
         assertEquals(bgz, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed angularSpeedX1 = calibrator.getBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getBiasAngularSpeedX();
         assertEquals(angularSpeedX1.getValue().doubleValue(), bgx, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
-        final AngularSpeed angularSpeedY1 = calibrator.getBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getBiasAngularSpeedY();
         assertEquals(angularSpeedY1.getValue().doubleValue(), bgy, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
-        final AngularSpeed angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(angularSpeedZ1.getValue().doubleValue(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), bgx, 0.0);
         assertEquals(biasTriad1.getValueY(), bgy, 0.0);
         assertEquals(biasTriad1.getValueZ(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -1644,37 +1637,37 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(myz, calibrator.getInitialMyz(), 0.0);
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bias1, bias, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertEquals(rotationRate, calibrator.getTurntableRotationRate(), 0.0);
-        final AngularSpeed rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
+        final var rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
         assertEquals(rotationRate1.getValue().doubleValue(), rotationRate, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, rotationRate1.getUnit());
-        final AngularSpeed rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getTurntableRotationRateAsAngularSpeed(rotationRate2);
         assertEquals(rotationRate1, rotationRate2);
         assertSame(measurements, calibrator.getMeasurements());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
-        final NEDPosition nedPosition2 = new NEDPosition();
+        final var nedPosition2 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition2));
         assertTrue(nedPosition2.equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_BODY_KINEMATICS_MEASUREMENT,
@@ -1740,90 +1733,90 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testConstructor9() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor9() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double rotationRate = getTurntableRotationRate();
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final Collection<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final Matrix mg = generateCommonAxisMg();
-        final Matrix gg = generateGg();
+        final var rotationRate = getTurntableRotationRate();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var mg = generateCommonAxisMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
-        final double[] bias = bg.getBuffer();
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final Matrix ba = generateBa();
-        final Matrix ma = generateMa();
-        final double[] accelerometerBias = ba.getBuffer();
+        final var ba = generateBa();
+        final var ma = generateMa();
+        final var accelerometerBias = ba.getBuffer();
 
-        final double bax = ba.getElementAtIndex(0);
-        final double bay = ba.getElementAtIndex(1);
-        final double baz = ba.getElementAtIndex(2);
+        final var bax = ba.getElementAtIndex(0);
+        final var bay = ba.getElementAtIndex(1);
+        final var baz = ba.getElementAtIndex(2);
 
-        final double asx = ma.getElementAt(0, 0);
-        final double asy = ma.getElementAt(1, 1);
-        final double asz = ma.getElementAt(2, 2);
-        final double amxy = ma.getElementAt(0, 1);
-        final double amxz = ma.getElementAt(0, 2);
-        final double amyx = ma.getElementAt(1, 0);
-        final double amyz = ma.getElementAt(1, 2);
-        final double amzx = ma.getElementAt(2, 0);
-        final double amzy = ma.getElementAt(2, 1);
+        final var asx = ma.getElementAt(0, 0);
+        final var asy = ma.getElementAt(1, 1);
+        final var asz = ma.getElementAt(2, 2);
+        final var amxy = ma.getElementAt(0, 1);
+        final var amxz = ma.getElementAt(0, 2);
+        final var amyx = ma.getElementAt(1, 0);
+        final var amyz = ma.getElementAt(1, 2);
+        final var amzx = ma.getElementAt(2, 0);
+        final var amzy = ma.getElementAt(2, 1);
 
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(
-                ecefPosition, rotationRate, timeInterval, measurements, bg, mg, gg, ba, ma, this);
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(ecefPosition, rotationRate, timeInterval,
+                measurements, bg, mg, gg, ba, ma, this);
 
         // check default values
         assertEquals(bax, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(bay, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(baz, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(accelerationX1.getValue().doubleValue(), bax, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(accelerationY1.getValue().doubleValue(), bay, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(accelerationZ1.getValue().doubleValue(), baz, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] accelerometerBias1 = calibrator.getAccelerometerBias();
+        final var accelerometerBias1 = calibrator.getAccelerometerBias();
         assertArrayEquals(accelerometerBias1, accelerometerBias, 0.0);
-        final double[] accelerometerBias2 = new double[3];
+        final var accelerometerBias2 = new double[3];
         calibrator.getAccelerometerBias(accelerometerBias2);
         assertArrayEquals(accelerometerBias1, accelerometerBias2, 0.0);
-        final Matrix ba1 = calibrator.getAccelerometerBiasAsMatrix();
+        final var ba1 = calibrator.getAccelerometerBiasAsMatrix();
         assertEquals(ba1, ba);
-        final Matrix ba2 = new Matrix(3, 1);
+        final var ba2 = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2);
         assertEquals(asx, calibrator.getAccelerometerSx(), 0.0);
         assertEquals(asy, calibrator.getAccelerometerSy(), 0.0);
@@ -1834,38 +1827,38 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(amyz, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(amzx, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(amzy, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
+        final var ma1 = calibrator.getAccelerometerMa();
         assertEquals(ma1, ma);
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getBiasX(), 0.0);
         assertEquals(bgy, calibrator.getBiasY(), 0.0);
         assertEquals(bgz, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed angularSpeedX1 = calibrator.getBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getBiasAngularSpeedX();
         assertEquals(angularSpeedX1.getValue().doubleValue(), bgx, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
-        final AngularSpeed angularSpeedY1 = calibrator.getBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getBiasAngularSpeedY();
         assertEquals(angularSpeedY1.getValue().doubleValue(), bgy, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
-        final AngularSpeed angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(angularSpeedZ1.getValue().doubleValue(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), bgx, 0.0);
         assertEquals(biasTriad1.getValueY(), bgy, 0.0);
         assertEquals(biasTriad1.getValueZ(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -1877,37 +1870,37 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(myz, calibrator.getInitialMyz(), 0.0);
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bias1, bias, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertEquals(rotationRate, calibrator.getTurntableRotationRate(), 0.0);
-        final AngularSpeed rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
+        final var rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
         assertEquals(rotationRate1.getValue().doubleValue(), rotationRate, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, rotationRate1.getUnit());
-        final AngularSpeed rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getTurntableRotationRateAsAngularSpeed(rotationRate2);
         assertEquals(rotationRate1, rotationRate2);
         assertSame(measurements, calibrator.getMeasurements());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
-        final NEDPosition nedPosition2 = new NEDPosition();
+        final var nedPosition2 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition2));
         assertTrue(nedPosition2.equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_BODY_KINEMATICS_MEASUREMENT,
@@ -1973,73 +1966,72 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testConstructor10() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor10() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double rotationRate = getTurntableRotationRate();
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final Collection<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final Matrix mg = generateCommonAxisMg();
-        final Matrix gg = generateGg();
+        final var rotationRate = getTurntableRotationRate();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var mg = generateCommonAxisMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
-        final double[] bias = bg.getBuffer();
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(
-                ecefPosition, rotationRate, timeInterval, measurements, false,
-                false, bg, mg, gg);
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(ecefPosition, rotationRate, timeInterval,
+                measurements, false, false, bg, mg, gg);
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] accelerometerBias1 = calibrator.getAccelerometerBias();
-        assertArrayEquals(accelerometerBias1, new double[3], 0.0);
-        final double[] accelerometerBias2 = new double[3];
+        final var accelerometerBias1 = calibrator.getAccelerometerBias();
+        assertArrayEquals(new double[3], accelerometerBias1, 0.0);
+        final var accelerometerBias2 = new double[3];
         calibrator.getAccelerometerBias(accelerometerBias2);
         assertArrayEquals(accelerometerBias1, accelerometerBias2, 0.0);
-        final Matrix ba1 = calibrator.getAccelerometerBiasAsMatrix();
-        assertEquals(ba1, new Matrix(3, 1));
-        final Matrix ba2 = new Matrix(3, 1);
+        final var ba1 = calibrator.getAccelerometerBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), ba1);
+        final var ba2 = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2);
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerSy(), 0.0);
@@ -2050,38 +2042,38 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
-        assertEquals(ma1, new Matrix(3, 3));
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = calibrator.getAccelerometerMa();
+        assertEquals(new Matrix(3, 3), ma1);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getBiasX(), 0.0);
         assertEquals(bgy, calibrator.getBiasY(), 0.0);
         assertEquals(bgz, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed angularSpeedX1 = calibrator.getBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getBiasAngularSpeedX();
         assertEquals(angularSpeedX1.getValue().doubleValue(), bgx, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
-        final AngularSpeed angularSpeedY1 = calibrator.getBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getBiasAngularSpeedY();
         assertEquals(angularSpeedY1.getValue().doubleValue(), bgy, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
-        final AngularSpeed angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(angularSpeedZ1.getValue().doubleValue(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), bgx, 0.0);
         assertEquals(biasTriad1.getValueY(), bgy, 0.0);
         assertEquals(biasTriad1.getValueZ(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -2093,37 +2085,37 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(myz, calibrator.getInitialMyz(), 0.0);
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bias1, bias, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertEquals(rotationRate, calibrator.getTurntableRotationRate(), 0.0);
-        final AngularSpeed rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
+        final var rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
         assertEquals(rotationRate1.getValue().doubleValue(), rotationRate, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, rotationRate1.getUnit());
-        final AngularSpeed rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getTurntableRotationRateAsAngularSpeed(rotationRate2);
         assertEquals(rotationRate1, rotationRate2);
         assertSame(measurements, calibrator.getMeasurements());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
-        final NEDPosition nedPosition2 = new NEDPosition();
+        final var nedPosition2 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition2));
         assertTrue(nedPosition2.equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_BODY_KINEMATICS_MEASUREMENT,
@@ -2185,73 +2177,72 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testConstructor11() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor11() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double rotationRate = getTurntableRotationRate();
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final Collection<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final Matrix mg = generateCommonAxisMg();
-        final Matrix gg = generateGg();
+        final var rotationRate = getTurntableRotationRate();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var mg = generateCommonAxisMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
-        final double[] bias = bg.getBuffer();
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(
-                ecefPosition, rotationRate, timeInterval, measurements, false,
-                false, bg, mg, gg, this);
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(ecefPosition, rotationRate, timeInterval,
+                measurements, false, false, bg, mg, gg, this);
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] accelerometerBias1 = calibrator.getAccelerometerBias();
-        assertArrayEquals(accelerometerBias1, new double[3], 0.0);
-        final double[] accelerometerBias2 = new double[3];
+        final var accelerometerBias1 = calibrator.getAccelerometerBias();
+        assertArrayEquals(new double[3], accelerometerBias1, 0.0);
+        final var accelerometerBias2 = new double[3];
         calibrator.getAccelerometerBias(accelerometerBias2);
         assertArrayEquals(accelerometerBias1, accelerometerBias2, 0.0);
-        final Matrix ba1 = calibrator.getAccelerometerBiasAsMatrix();
-        assertEquals(ba1, new Matrix(3, 1));
-        final Matrix ba2 = new Matrix(3, 1);
+        final var ba1 = calibrator.getAccelerometerBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), ba1);
+        final var ba2 = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2);
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerSy(), 0.0);
@@ -2262,38 +2253,38 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
-        assertEquals(ma1, new Matrix(3, 3));
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = calibrator.getAccelerometerMa();
+        assertEquals(new Matrix(3, 3), ma1);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getBiasX(), 0.0);
         assertEquals(bgy, calibrator.getBiasY(), 0.0);
         assertEquals(bgz, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed angularSpeedX1 = calibrator.getBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getBiasAngularSpeedX();
         assertEquals(angularSpeedX1.getValue().doubleValue(), bgx, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
-        final AngularSpeed angularSpeedY1 = calibrator.getBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getBiasAngularSpeedY();
         assertEquals(angularSpeedY1.getValue().doubleValue(), bgy, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
-        final AngularSpeed angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(angularSpeedZ1.getValue().doubleValue(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), bgx, 0.0);
         assertEquals(biasTriad1.getValueY(), bgy, 0.0);
         assertEquals(biasTriad1.getValueZ(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -2305,37 +2296,37 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(myz, calibrator.getInitialMyz(), 0.0);
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bias1, bias, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertEquals(rotationRate, calibrator.getTurntableRotationRate(), 0.0);
-        final AngularSpeed rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
+        final var rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
         assertEquals(rotationRate1.getValue().doubleValue(), rotationRate, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, rotationRate1.getUnit());
-        final AngularSpeed rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getTurntableRotationRateAsAngularSpeed(rotationRate2);
         assertEquals(rotationRate1, rotationRate2);
         assertSame(measurements, calibrator.getMeasurements());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
-        final NEDPosition nedPosition2 = new NEDPosition();
+        final var nedPosition2 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition2));
         assertTrue(nedPosition2.equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_BODY_KINEMATICS_MEASUREMENT,
@@ -2397,73 +2388,72 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testConstructor12() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor12() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double rotationRate = getTurntableRotationRate();
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final Collection<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final Matrix mg = generateCommonAxisMg();
-        final Matrix gg = generateGg();
+        final var rotationRate = getTurntableRotationRate();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var mg = generateCommonAxisMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
-        final double[] bias = bg.getBuffer();
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(
-                ecefPosition, rotationRate, timeInterval, measurements, false,
-                false, bias, mg, gg);
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(ecefPosition, rotationRate, timeInterval,
+                measurements, false, false, bias, mg, gg);
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] accelerometerBias1 = calibrator.getAccelerometerBias();
-        assertArrayEquals(accelerometerBias1, new double[3], 0.0);
-        final double[] accelerometerBias2 = new double[3];
+        final var accelerometerBias1 = calibrator.getAccelerometerBias();
+        assertArrayEquals(new double[3], accelerometerBias1, 0.0);
+        final var accelerometerBias2 = new double[3];
         calibrator.getAccelerometerBias(accelerometerBias2);
         assertArrayEquals(accelerometerBias1, accelerometerBias2, 0.0);
-        final Matrix ba1 = calibrator.getAccelerometerBiasAsMatrix();
-        assertEquals(ba1, new Matrix(3, 1));
-        final Matrix ba2 = new Matrix(3, 1);
+        final var ba1 = calibrator.getAccelerometerBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), ba1);
+        final var ba2 = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2);
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerSy(), 0.0);
@@ -2474,38 +2464,38 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
-        assertEquals(ma1, new Matrix(3, 3));
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = calibrator.getAccelerometerMa();
+        assertEquals(new Matrix(3, 3), ma1);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getBiasX(), 0.0);
         assertEquals(bgy, calibrator.getBiasY(), 0.0);
         assertEquals(bgz, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed angularSpeedX1 = calibrator.getBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getBiasAngularSpeedX();
         assertEquals(angularSpeedX1.getValue().doubleValue(), bgx, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
-        final AngularSpeed angularSpeedY1 = calibrator.getBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getBiasAngularSpeedY();
         assertEquals(angularSpeedY1.getValue().doubleValue(), bgy, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
-        final AngularSpeed angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(angularSpeedZ1.getValue().doubleValue(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), bgx, 0.0);
         assertEquals(biasTriad1.getValueY(), bgy, 0.0);
         assertEquals(biasTriad1.getValueZ(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -2517,37 +2507,37 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(myz, calibrator.getInitialMyz(), 0.0);
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bias1, bias, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertEquals(rotationRate, calibrator.getTurntableRotationRate(), 0.0);
-        final AngularSpeed rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
+        final var rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
         assertEquals(rotationRate1.getValue().doubleValue(), rotationRate, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, rotationRate1.getUnit());
-        final AngularSpeed rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getTurntableRotationRateAsAngularSpeed(rotationRate2);
         assertEquals(rotationRate1, rotationRate2);
         assertSame(measurements, calibrator.getMeasurements());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
-        final NEDPosition nedPosition2 = new NEDPosition();
+        final var nedPosition2 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition2));
         assertTrue(nedPosition2.equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_BODY_KINEMATICS_MEASUREMENT,
@@ -2604,73 +2594,72 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testConstructor13() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor13() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double rotationRate = getTurntableRotationRate();
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final Collection<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final Matrix mg = generateCommonAxisMg();
-        final Matrix gg = generateGg();
+        final var rotationRate = getTurntableRotationRate();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var mg = generateCommonAxisMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
-        final double[] bias = bg.getBuffer();
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(
-                ecefPosition, rotationRate, timeInterval, measurements, false,
-                false, bias, mg, gg, this);
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(ecefPosition, rotationRate, timeInterval,
+                measurements, false, false, bias, mg, gg, this);
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] accelerometerBias1 = calibrator.getAccelerometerBias();
-        assertArrayEquals(accelerometerBias1, new double[3], 0.0);
-        final double[] accelerometerBias2 = new double[3];
+        final var accelerometerBias1 = calibrator.getAccelerometerBias();
+        assertArrayEquals(new double[3], accelerometerBias1, 0.0);
+        final var accelerometerBias2 = new double[3];
         calibrator.getAccelerometerBias(accelerometerBias2);
         assertArrayEquals(accelerometerBias1, accelerometerBias2, 0.0);
-        final Matrix ba1 = calibrator.getAccelerometerBiasAsMatrix();
-        assertEquals(ba1, new Matrix(3, 1));
-        final Matrix ba2 = new Matrix(3, 1);
+        final var ba1 = calibrator.getAccelerometerBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), ba1);
+        final var ba2 = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2);
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerSy(), 0.0);
@@ -2681,38 +2670,38 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
-        assertEquals(ma1, new Matrix(3, 3));
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = calibrator.getAccelerometerMa();
+        assertEquals(new Matrix(3, 3), ma1);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getBiasX(), 0.0);
         assertEquals(bgy, calibrator.getBiasY(), 0.0);
         assertEquals(bgz, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed angularSpeedX1 = calibrator.getBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getBiasAngularSpeedX();
         assertEquals(angularSpeedX1.getValue().doubleValue(), bgx, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
-        final AngularSpeed angularSpeedY1 = calibrator.getBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getBiasAngularSpeedY();
         assertEquals(angularSpeedY1.getValue().doubleValue(), bgy, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
-        final AngularSpeed angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(angularSpeedZ1.getValue().doubleValue(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), bgx, 0.0);
         assertEquals(biasTriad1.getValueY(), bgy, 0.0);
         assertEquals(biasTriad1.getValueZ(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -2724,37 +2713,37 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(myz, calibrator.getInitialMyz(), 0.0);
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bias1, bias, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertEquals(rotationRate, calibrator.getTurntableRotationRate(), 0.0);
-        final AngularSpeed rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
+        final var rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
         assertEquals(rotationRate1.getValue().doubleValue(), rotationRate, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, rotationRate1.getUnit());
-        final AngularSpeed rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getTurntableRotationRateAsAngularSpeed(rotationRate2);
         assertEquals(rotationRate1, rotationRate2);
         assertSame(measurements, calibrator.getMeasurements());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
-        final NEDPosition nedPosition2 = new NEDPosition();
+        final var nedPosition2 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition2));
         assertTrue(nedPosition2.equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_BODY_KINEMATICS_MEASUREMENT,
@@ -2811,91 +2800,91 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testConstructor14() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor14() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double rotationRate = getTurntableRotationRate();
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final Collection<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final Matrix mg = generateCommonAxisMg();
-        final Matrix gg = generateGg();
+        final var rotationRate = getTurntableRotationRate();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var mg = generateCommonAxisMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
-        final double[] bias = bg.getBuffer();
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final Matrix ba = generateBa();
-        final Matrix ma = generateMa();
-        final double[] accelerometerBias = ba.getBuffer();
+        final var ba = generateBa();
+        final var ma = generateMa();
+        final var accelerometerBias = ba.getBuffer();
 
-        final double bax = ba.getElementAtIndex(0);
-        final double bay = ba.getElementAtIndex(1);
-        final double baz = ba.getElementAtIndex(2);
+        final var bax = ba.getElementAtIndex(0);
+        final var bay = ba.getElementAtIndex(1);
+        final var baz = ba.getElementAtIndex(2);
 
-        final double asx = ma.getElementAt(0, 0);
-        final double asy = ma.getElementAt(1, 1);
-        final double asz = ma.getElementAt(2, 2);
-        final double amxy = ma.getElementAt(0, 1);
-        final double amxz = ma.getElementAt(0, 2);
-        final double amyx = ma.getElementAt(1, 0);
-        final double amyz = ma.getElementAt(1, 2);
-        final double amzx = ma.getElementAt(2, 0);
-        final double amzy = ma.getElementAt(2, 1);
+        final var asx = ma.getElementAt(0, 0);
+        final var asy = ma.getElementAt(1, 1);
+        final var asz = ma.getElementAt(2, 2);
+        final var amxy = ma.getElementAt(0, 1);
+        final var amxz = ma.getElementAt(0, 2);
+        final var amyx = ma.getElementAt(1, 0);
+        final var amyz = ma.getElementAt(1, 2);
+        final var amzx = ma.getElementAt(2, 0);
+        final var amzy = ma.getElementAt(2, 1);
 
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(
-                ecefPosition, rotationRate, timeInterval, measurements, false,
-                false, bias, mg, gg, accelerometerBias, ma);
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(ecefPosition, rotationRate, timeInterval,
+                measurements, false, false, bias, mg, gg, accelerometerBias,
+                ma);
 
         // check default values
         assertEquals(bax, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(bay, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(baz, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(accelerationX1.getValue().doubleValue(), bax, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(accelerationY1.getValue().doubleValue(), bay, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(accelerationZ1.getValue().doubleValue(), baz, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] accelerometerBias1 = calibrator.getAccelerometerBias();
+        final var accelerometerBias1 = calibrator.getAccelerometerBias();
         assertArrayEquals(accelerometerBias1, accelerometerBias, 0.0);
-        final double[] accelerometerBias2 = new double[3];
+        final var accelerometerBias2 = new double[3];
         calibrator.getAccelerometerBias(accelerometerBias2);
         assertArrayEquals(accelerometerBias1, accelerometerBias2, 0.0);
-        final Matrix ba1 = calibrator.getAccelerometerBiasAsMatrix();
+        final var ba1 = calibrator.getAccelerometerBiasAsMatrix();
         assertEquals(ba1, ba);
-        final Matrix ba2 = new Matrix(3, 1);
+        final var ba2 = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2);
         assertEquals(asx, calibrator.getAccelerometerSx(), 0.0);
         assertEquals(asy, calibrator.getAccelerometerSy(), 0.0);
@@ -2906,38 +2895,38 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(amyz, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(amzx, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(amzy, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
+        final var ma1 = calibrator.getAccelerometerMa();
         assertEquals(ma1, ma);
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getBiasX(), 0.0);
         assertEquals(bgy, calibrator.getBiasY(), 0.0);
         assertEquals(bgz, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed angularSpeedX1 = calibrator.getBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getBiasAngularSpeedX();
         assertEquals(angularSpeedX1.getValue().doubleValue(), bgx, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
-        final AngularSpeed angularSpeedY1 = calibrator.getBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getBiasAngularSpeedY();
         assertEquals(angularSpeedY1.getValue().doubleValue(), bgy, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
-        final AngularSpeed angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(angularSpeedZ1.getValue().doubleValue(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), bgx, 0.0);
         assertEquals(biasTriad1.getValueY(), bgy, 0.0);
         assertEquals(biasTriad1.getValueZ(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -2949,37 +2938,37 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(myz, calibrator.getInitialMyz(), 0.0);
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bias1, bias, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertEquals(rotationRate, calibrator.getTurntableRotationRate(), 0.0);
-        final AngularSpeed rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
+        final var rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
         assertEquals(rotationRate1.getValue().doubleValue(), rotationRate, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, rotationRate1.getUnit());
-        final AngularSpeed rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getTurntableRotationRateAsAngularSpeed(rotationRate2);
         assertEquals(rotationRate1, rotationRate2);
         assertSame(measurements, calibrator.getMeasurements());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
-        final NEDPosition nedPosition2 = new NEDPosition();
+        final var nedPosition2 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition2));
         assertTrue(nedPosition2.equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_BODY_KINEMATICS_MEASUREMENT,
@@ -3047,91 +3036,91 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testConstructor15() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor15() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double rotationRate = getTurntableRotationRate();
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final Collection<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final Matrix mg = generateCommonAxisMg();
-        final Matrix gg = generateGg();
+        final var rotationRate = getTurntableRotationRate();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var mg = generateCommonAxisMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
-        final double[] bias = bg.getBuffer();
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final Matrix ba = generateBa();
-        final Matrix ma = generateMa();
-        final double[] accelerometerBias = ba.getBuffer();
+        final var ba = generateBa();
+        final var ma = generateMa();
+        final var accelerometerBias = ba.getBuffer();
 
-        final double bax = ba.getElementAtIndex(0);
-        final double bay = ba.getElementAtIndex(1);
-        final double baz = ba.getElementAtIndex(2);
+        final var bax = ba.getElementAtIndex(0);
+        final var bay = ba.getElementAtIndex(1);
+        final var baz = ba.getElementAtIndex(2);
 
-        final double asx = ma.getElementAt(0, 0);
-        final double asy = ma.getElementAt(1, 1);
-        final double asz = ma.getElementAt(2, 2);
-        final double amxy = ma.getElementAt(0, 1);
-        final double amxz = ma.getElementAt(0, 2);
-        final double amyx = ma.getElementAt(1, 0);
-        final double amyz = ma.getElementAt(1, 2);
-        final double amzx = ma.getElementAt(2, 0);
-        final double amzy = ma.getElementAt(2, 1);
+        final var asx = ma.getElementAt(0, 0);
+        final var asy = ma.getElementAt(1, 1);
+        final var asz = ma.getElementAt(2, 2);
+        final var amxy = ma.getElementAt(0, 1);
+        final var amxz = ma.getElementAt(0, 2);
+        final var amyx = ma.getElementAt(1, 0);
+        final var amyz = ma.getElementAt(1, 2);
+        final var amzx = ma.getElementAt(2, 0);
+        final var amzy = ma.getElementAt(2, 1);
 
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(
-                ecefPosition, rotationRate, timeInterval, measurements, false,
-                false, bias, mg, gg, accelerometerBias, ma, this);
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(ecefPosition, rotationRate, timeInterval,
+                measurements, false, false, bias, mg, gg, accelerometerBias,
+                ma, this);
 
         // check default values
         assertEquals(bax, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(bay, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(baz, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(accelerationX1.getValue().doubleValue(), bax, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(accelerationY1.getValue().doubleValue(), bay, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(accelerationZ1.getValue().doubleValue(), baz, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] accelerometerBias1 = calibrator.getAccelerometerBias();
+        final var accelerometerBias1 = calibrator.getAccelerometerBias();
         assertArrayEquals(accelerometerBias1, accelerometerBias, 0.0);
-        final double[] accelerometerBias2 = new double[3];
+        final var accelerometerBias2 = new double[3];
         calibrator.getAccelerometerBias(accelerometerBias2);
         assertArrayEquals(accelerometerBias1, accelerometerBias2, 0.0);
-        final Matrix ba1 = calibrator.getAccelerometerBiasAsMatrix();
+        final var ba1 = calibrator.getAccelerometerBiasAsMatrix();
         assertEquals(ba1, ba);
-        final Matrix ba2 = new Matrix(3, 1);
+        final var ba2 = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2);
         assertEquals(asx, calibrator.getAccelerometerSx(), 0.0);
         assertEquals(asy, calibrator.getAccelerometerSy(), 0.0);
@@ -3142,38 +3131,38 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(amyz, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(amzx, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(amzy, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
+        final var ma1 = calibrator.getAccelerometerMa();
         assertEquals(ma1, ma);
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getBiasX(), 0.0);
         assertEquals(bgy, calibrator.getBiasY(), 0.0);
         assertEquals(bgz, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed angularSpeedX1 = calibrator.getBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getBiasAngularSpeedX();
         assertEquals(angularSpeedX1.getValue().doubleValue(), bgx, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
-        final AngularSpeed angularSpeedY1 = calibrator.getBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getBiasAngularSpeedY();
         assertEquals(angularSpeedY1.getValue().doubleValue(), bgy, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
-        final AngularSpeed angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(angularSpeedZ1.getValue().doubleValue(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), bgx, 0.0);
         assertEquals(biasTriad1.getValueY(), bgy, 0.0);
         assertEquals(biasTriad1.getValueZ(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -3185,37 +3174,37 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(myz, calibrator.getInitialMyz(), 0.0);
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bias1, bias, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertEquals(rotationRate, calibrator.getTurntableRotationRate(), 0.0);
-        final AngularSpeed rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
+        final var rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
         assertEquals(rotationRate1.getValue().doubleValue(), rotationRate, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, rotationRate1.getUnit());
-        final AngularSpeed rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getTurntableRotationRateAsAngularSpeed(rotationRate2);
         assertEquals(rotationRate1, rotationRate2);
         assertSame(measurements, calibrator.getMeasurements());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
-        final NEDPosition nedPosition2 = new NEDPosition();
+        final var nedPosition2 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition2));
         assertTrue(nedPosition2.equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_BODY_KINEMATICS_MEASUREMENT,
@@ -3283,91 +3272,90 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testConstructor16() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor16() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double rotationRate = getTurntableRotationRate();
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final Collection<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final Matrix mg = generateCommonAxisMg();
-        final Matrix gg = generateGg();
+        final var rotationRate = getTurntableRotationRate();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var mg = generateCommonAxisMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
-        final double[] bias = bg.getBuffer();
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final Matrix ba = generateBa();
-        final Matrix ma = generateMa();
-        final double[] accelerometerBias = ba.getBuffer();
+        final var ba = generateBa();
+        final var ma = generateMa();
+        final var accelerometerBias = ba.getBuffer();
 
-        final double bax = ba.getElementAtIndex(0);
-        final double bay = ba.getElementAtIndex(1);
-        final double baz = ba.getElementAtIndex(2);
+        final var bax = ba.getElementAtIndex(0);
+        final var bay = ba.getElementAtIndex(1);
+        final var baz = ba.getElementAtIndex(2);
 
-        final double asx = ma.getElementAt(0, 0);
-        final double asy = ma.getElementAt(1, 1);
-        final double asz = ma.getElementAt(2, 2);
-        final double amxy = ma.getElementAt(0, 1);
-        final double amxz = ma.getElementAt(0, 2);
-        final double amyx = ma.getElementAt(1, 0);
-        final double amyz = ma.getElementAt(1, 2);
-        final double amzx = ma.getElementAt(2, 0);
-        final double amzy = ma.getElementAt(2, 1);
+        final var asx = ma.getElementAt(0, 0);
+        final var asy = ma.getElementAt(1, 1);
+        final var asz = ma.getElementAt(2, 2);
+        final var amxy = ma.getElementAt(0, 1);
+        final var amxz = ma.getElementAt(0, 2);
+        final var amyx = ma.getElementAt(1, 0);
+        final var amyz = ma.getElementAt(1, 2);
+        final var amzx = ma.getElementAt(2, 0);
+        final var amzy = ma.getElementAt(2, 1);
 
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(
-                ecefPosition, rotationRate, timeInterval, measurements, false,
-                false, bg, mg, gg, ba, ma);
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(ecefPosition, rotationRate, timeInterval,
+                measurements, false, false, bg, mg, gg, ba, ma);
 
         // check default values
         assertEquals(bax, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(bay, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(baz, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(accelerationX1.getValue().doubleValue(), bax, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(accelerationY1.getValue().doubleValue(), bay, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(accelerationZ1.getValue().doubleValue(), baz, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] accelerometerBias1 = calibrator.getAccelerometerBias();
+        final var accelerometerBias1 = calibrator.getAccelerometerBias();
         assertArrayEquals(accelerometerBias1, accelerometerBias, 0.0);
-        final double[] accelerometerBias2 = new double[3];
+        final var accelerometerBias2 = new double[3];
         calibrator.getAccelerometerBias(accelerometerBias2);
         assertArrayEquals(accelerometerBias1, accelerometerBias2, 0.0);
-        final Matrix ba1 = calibrator.getAccelerometerBiasAsMatrix();
+        final var ba1 = calibrator.getAccelerometerBiasAsMatrix();
         assertEquals(ba1, ba);
-        final Matrix ba2 = new Matrix(3, 1);
+        final var ba2 = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2);
         assertEquals(asx, calibrator.getAccelerometerSx(), 0.0);
         assertEquals(asy, calibrator.getAccelerometerSy(), 0.0);
@@ -3378,38 +3366,38 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(amyz, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(amzx, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(amzy, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
+        final var ma1 = calibrator.getAccelerometerMa();
         assertEquals(ma1, ma);
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getBiasX(), 0.0);
         assertEquals(bgy, calibrator.getBiasY(), 0.0);
         assertEquals(bgz, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed angularSpeedX1 = calibrator.getBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getBiasAngularSpeedX();
         assertEquals(angularSpeedX1.getValue().doubleValue(), bgx, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
-        final AngularSpeed angularSpeedY1 = calibrator.getBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getBiasAngularSpeedY();
         assertEquals(angularSpeedY1.getValue().doubleValue(), bgy, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
-        final AngularSpeed angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(angularSpeedZ1.getValue().doubleValue(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), bgx, 0.0);
         assertEquals(biasTriad1.getValueY(), bgy, 0.0);
         assertEquals(biasTriad1.getValueZ(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -3421,37 +3409,37 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(myz, calibrator.getInitialMyz(), 0.0);
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bias1, bias, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertEquals(rotationRate, calibrator.getTurntableRotationRate(), 0.0);
-        final AngularSpeed rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
+        final var rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
         assertEquals(rotationRate1.getValue().doubleValue(), rotationRate, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, rotationRate1.getUnit());
-        final AngularSpeed rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getTurntableRotationRateAsAngularSpeed(rotationRate2);
         assertEquals(rotationRate1, rotationRate2);
         assertSame(measurements, calibrator.getMeasurements());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
-        final NEDPosition nedPosition2 = new NEDPosition();
+        final var nedPosition2 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition2));
         assertTrue(nedPosition2.equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_BODY_KINEMATICS_MEASUREMENT,
@@ -3495,9 +3483,9 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
                 ecefPosition, rotationRate, timeInterval, measurements, true,
                 false, m2, mg, gg, ba, ma));
         final var m3 = new Matrix(1, 3);
-        assertThrows(IllegalArgumentException.class, () -> new KnownBiasTurntableGyroscopeCalibrator(
-                ecefPosition, rotationRate, timeInterval, measurements, true,
-                false, bg, m3, gg, ba, ma));
+        assertThrows(IllegalArgumentException.class, () -> new KnownBiasTurntableGyroscopeCalibrator(ecefPosition,
+                rotationRate, timeInterval, measurements, true, false, bg,
+                m3, gg, ba, ma));
         final var m4 = new Matrix(3, 1);
         assertThrows(IllegalArgumentException.class, () -> new KnownBiasTurntableGyroscopeCalibrator(ecefPosition,
                 rotationRate, timeInterval, measurements, true, false, bg,
@@ -3529,91 +3517,90 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testConstructor17() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor17() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double rotationRate = getTurntableRotationRate();
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final Collection<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final Matrix mg = generateCommonAxisMg();
-        final Matrix gg = generateGg();
+        final var rotationRate = getTurntableRotationRate();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var mg = generateCommonAxisMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
-        final double[] bias = bg.getBuffer();
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final Matrix ba = generateBa();
-        final Matrix ma = generateMa();
-        final double[] accelerometerBias = ba.getBuffer();
+        final var ba = generateBa();
+        final var ma = generateMa();
+        final var accelerometerBias = ba.getBuffer();
 
-        final double bax = ba.getElementAtIndex(0);
-        final double bay = ba.getElementAtIndex(1);
-        final double baz = ba.getElementAtIndex(2);
+        final var bax = ba.getElementAtIndex(0);
+        final var bay = ba.getElementAtIndex(1);
+        final var baz = ba.getElementAtIndex(2);
 
-        final double asx = ma.getElementAt(0, 0);
-        final double asy = ma.getElementAt(1, 1);
-        final double asz = ma.getElementAt(2, 2);
-        final double amxy = ma.getElementAt(0, 1);
-        final double amxz = ma.getElementAt(0, 2);
-        final double amyx = ma.getElementAt(1, 0);
-        final double amyz = ma.getElementAt(1, 2);
-        final double amzx = ma.getElementAt(2, 0);
-        final double amzy = ma.getElementAt(2, 1);
+        final var asx = ma.getElementAt(0, 0);
+        final var asy = ma.getElementAt(1, 1);
+        final var asz = ma.getElementAt(2, 2);
+        final var amxy = ma.getElementAt(0, 1);
+        final var amxz = ma.getElementAt(0, 2);
+        final var amyx = ma.getElementAt(1, 0);
+        final var amyz = ma.getElementAt(1, 2);
+        final var amzx = ma.getElementAt(2, 0);
+        final var amzy = ma.getElementAt(2, 1);
 
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(ecefPosition,
-                rotationRate, timeInterval, measurements, false, false, bg,
-                mg, gg, ba, ma, this);
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(ecefPosition, rotationRate, timeInterval,
+                measurements, false, false, bg, mg, gg, ba, ma, this);
 
         // check default values
         assertEquals(bax, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(bay, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(baz, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(accelerationX1.getValue().doubleValue(), bax, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(accelerationY1.getValue().doubleValue(), bay, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(accelerationZ1.getValue().doubleValue(), baz, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] accelerometerBias1 = calibrator.getAccelerometerBias();
+        final var accelerometerBias1 = calibrator.getAccelerometerBias();
         assertArrayEquals(accelerometerBias1, accelerometerBias, 0.0);
-        final double[] accelerometerBias2 = new double[3];
+        final var accelerometerBias2 = new double[3];
         calibrator.getAccelerometerBias(accelerometerBias2);
         assertArrayEquals(accelerometerBias1, accelerometerBias2, 0.0);
-        final Matrix ba1 = calibrator.getAccelerometerBiasAsMatrix();
+        final var ba1 = calibrator.getAccelerometerBiasAsMatrix();
         assertEquals(ba1, ba);
-        final Matrix ba2 = new Matrix(3, 1);
+        final var ba2 = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2);
         assertEquals(asx, calibrator.getAccelerometerSx(), 0.0);
         assertEquals(asy, calibrator.getAccelerometerSy(), 0.0);
@@ -3624,38 +3611,38 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(amyz, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(amzx, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(amzy, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
+        final var ma1 = calibrator.getAccelerometerMa();
         assertEquals(ma1, ma);
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getBiasX(), 0.0);
         assertEquals(bgy, calibrator.getBiasY(), 0.0);
         assertEquals(bgz, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed angularSpeedX1 = calibrator.getBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getBiasAngularSpeedX();
         assertEquals(angularSpeedX1.getValue().doubleValue(), bgx, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
-        final AngularSpeed angularSpeedY1 = calibrator.getBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getBiasAngularSpeedY();
         assertEquals(angularSpeedY1.getValue().doubleValue(), bgy, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
-        final AngularSpeed angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(angularSpeedZ1.getValue().doubleValue(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), bgx, 0.0);
         assertEquals(biasTriad1.getValueY(), bgy, 0.0);
         assertEquals(biasTriad1.getValueZ(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -3667,37 +3654,37 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(myz, calibrator.getInitialMyz(), 0.0);
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bias1, bias, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertEquals(rotationRate, calibrator.getTurntableRotationRate(), 0.0);
-        final AngularSpeed rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
+        final var rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
         assertEquals(rotationRate1.getValue().doubleValue(), rotationRate, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, rotationRate1.getUnit());
-        final AngularSpeed rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getTurntableRotationRateAsAngularSpeed(rotationRate2);
         assertEquals(rotationRate1, rotationRate2);
         assertSame(measurements, calibrator.getMeasurements());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
-        final NEDPosition nedPosition2 = new NEDPosition();
+        final var nedPosition2 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition2));
         assertTrue(nedPosition2.equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_BODY_KINEMATICS_MEASUREMENT,
@@ -3775,72 +3762,72 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testConstructor18() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor18() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double rotationRate = getTurntableRotationRate();
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final Collection<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final Matrix mg = generateCommonAxisMg();
-        final Matrix gg = generateGg();
+        final var rotationRate = getTurntableRotationRate();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var mg = generateCommonAxisMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
-        final double[] bias = bg.getBuffer();
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(nedPosition,
-                rotationRate, timeInterval, measurements, bg, mg, gg);
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(nedPosition, rotationRate, timeInterval,
+                measurements, bg, mg, gg);
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] accelerometerBias1 = calibrator.getAccelerometerBias();
-        assertArrayEquals(accelerometerBias1, new double[3], 0.0);
-        final double[] accelerometerBias2 = new double[3];
+        final var accelerometerBias1 = calibrator.getAccelerometerBias();
+        assertArrayEquals(new double[3], accelerometerBias1, 0.0);
+        final var accelerometerBias2 = new double[3];
         calibrator.getAccelerometerBias(accelerometerBias2);
         assertArrayEquals(accelerometerBias1, accelerometerBias2, 0.0);
-        final Matrix ba1 = calibrator.getAccelerometerBiasAsMatrix();
-        assertEquals(ba1, new Matrix(3, 1));
-        final Matrix ba2 = new Matrix(3, 1);
+        final var ba1 = calibrator.getAccelerometerBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), ba1);
+        final var ba2 = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2);
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerSy(), 0.0);
@@ -3851,38 +3838,38 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
-        assertEquals(ma1, new Matrix(3, 3));
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = calibrator.getAccelerometerMa();
+        assertEquals(new Matrix(3, 3), ma1);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getBiasX(), 0.0);
         assertEquals(bgy, calibrator.getBiasY(), 0.0);
         assertEquals(bgz, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed angularSpeedX1 = calibrator.getBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getBiasAngularSpeedX();
         assertEquals(angularSpeedX1.getValue().doubleValue(), bgx, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
-        final AngularSpeed angularSpeedY1 = calibrator.getBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getBiasAngularSpeedY();
         assertEquals(angularSpeedY1.getValue().doubleValue(), bgy, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
-        final AngularSpeed angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(angularSpeedZ1.getValue().doubleValue(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), bgx, 0.0);
         assertEquals(biasTriad1.getValueY(), bgy, 0.0);
         assertEquals(biasTriad1.getValueZ(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -3894,37 +3881,37 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(myz, calibrator.getInitialMyz(), 0.0);
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bias1, bias, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertEquals(rotationRate, calibrator.getTurntableRotationRate(), 0.0);
-        final AngularSpeed rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
+        final var rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
         assertEquals(rotationRate1.getValue().doubleValue(), rotationRate, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, rotationRate1.getUnit());
-        final AngularSpeed rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getTurntableRotationRateAsAngularSpeed(rotationRate2);
         assertEquals(rotationRate1, rotationRate2);
         assertSame(calibrator.getMeasurements(), measurements);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
-        final NEDPosition nedPosition2 = new NEDPosition();
+        final var nedPosition2 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition2));
         assertTrue(nedPosition2.equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_BODY_KINEMATICS_MEASUREMENT,
@@ -3978,72 +3965,72 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testConstructor19() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor19() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double rotationRate = getTurntableRotationRate();
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final Collection<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final Matrix mg = generateCommonAxisMg();
-        final Matrix gg = generateGg();
+        final var rotationRate = getTurntableRotationRate();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var mg = generateCommonAxisMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
-        final double[] bias = bg.getBuffer();
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(nedPosition,
-                rotationRate, timeInterval, measurements, bg, mg, gg, this);
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(nedPosition, rotationRate, timeInterval,
+                measurements, bg, mg, gg, this);
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] accelerometerBias1 = calibrator.getAccelerometerBias();
-        assertArrayEquals(accelerometerBias1, new double[3], 0.0);
-        final double[] accelerometerBias2 = new double[3];
+        final var accelerometerBias1 = calibrator.getAccelerometerBias();
+        assertArrayEquals(new double[3], accelerometerBias1, 0.0);
+        final var accelerometerBias2 = new double[3];
         calibrator.getAccelerometerBias(accelerometerBias2);
         assertArrayEquals(accelerometerBias1, accelerometerBias2, 0.0);
-        final Matrix ba1 = calibrator.getAccelerometerBiasAsMatrix();
-        assertEquals(ba1, new Matrix(3, 1));
-        final Matrix ba2 = new Matrix(3, 1);
+        final var ba1 = calibrator.getAccelerometerBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), ba1);
+        final var ba2 = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2);
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerSy(), 0.0);
@@ -4054,38 +4041,38 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
-        assertEquals(ma1, new Matrix(3, 3));
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = calibrator.getAccelerometerMa();
+        assertEquals(new Matrix(3, 3), ma1);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getBiasX(), 0.0);
         assertEquals(bgy, calibrator.getBiasY(), 0.0);
         assertEquals(bgz, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed angularSpeedX1 = calibrator.getBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getBiasAngularSpeedX();
         assertEquals(angularSpeedX1.getValue().doubleValue(), bgx, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
-        final AngularSpeed angularSpeedY1 = calibrator.getBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getBiasAngularSpeedY();
         assertEquals(angularSpeedY1.getValue().doubleValue(), bgy, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
-        final AngularSpeed angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(angularSpeedZ1.getValue().doubleValue(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), bgx, 0.0);
         assertEquals(biasTriad1.getValueY(), bgy, 0.0);
         assertEquals(biasTriad1.getValueZ(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -4097,37 +4084,37 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(myz, calibrator.getInitialMyz(), 0.0);
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bias1, bias, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertEquals(rotationRate, calibrator.getTurntableRotationRate(), 0.0);
-        final AngularSpeed rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
+        final var rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
         assertEquals(rotationRate1.getValue().doubleValue(), rotationRate, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, rotationRate1.getUnit());
-        final AngularSpeed rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getTurntableRotationRateAsAngularSpeed(rotationRate2);
         assertEquals(rotationRate1, rotationRate2);
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
-        final NEDPosition nedPosition2 = new NEDPosition();
+        final var nedPosition2 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition2));
         assertTrue(nedPosition2.equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_BODY_KINEMATICS_MEASUREMENT,
@@ -4181,72 +4168,72 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testConstructor20() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor20() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double rotationRate = getTurntableRotationRate();
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final Collection<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final Matrix mg = generateCommonAxisMg();
-        final Matrix gg = generateGg();
+        final var rotationRate = getTurntableRotationRate();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var mg = generateCommonAxisMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
-        final double[] bias = bg.getBuffer();
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(nedPosition,
-                rotationRate, timeInterval, measurements, bias, mg, gg);
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(nedPosition, rotationRate, timeInterval,
+                measurements, bias, mg, gg);
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] accelerometerBias1 = calibrator.getAccelerometerBias();
-        assertArrayEquals(accelerometerBias1, new double[3], 0.0);
-        final double[] accelerometerBias2 = new double[3];
+        final var accelerometerBias1 = calibrator.getAccelerometerBias();
+        assertArrayEquals(new double[3], accelerometerBias1, 0.0);
+        final var accelerometerBias2 = new double[3];
         calibrator.getAccelerometerBias(accelerometerBias2);
         assertArrayEquals(accelerometerBias1, accelerometerBias2, 0.0);
-        final Matrix ba1 = calibrator.getAccelerometerBiasAsMatrix();
-        assertEquals(ba1, new Matrix(3, 1));
-        final Matrix ba2 = new Matrix(3, 1);
+        final var ba1 = calibrator.getAccelerometerBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), ba1);
+        final var ba2 = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2);
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerSy(), 0.0);
@@ -4257,38 +4244,38 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
-        assertEquals(ma1, new Matrix(3, 3));
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = calibrator.getAccelerometerMa();
+        assertEquals(new Matrix(3, 3), ma1);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgy, calibrator.getBiasY(), 0.0);
         assertEquals(bgx, calibrator.getBiasX(), 0.0);
         assertEquals(bgz, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed angularSpeedX1 = calibrator.getBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getBiasAngularSpeedX();
         assertEquals(angularSpeedX1.getValue().doubleValue(), bgx, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
-        final AngularSpeed angularSpeedY1 = calibrator.getBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getBiasAngularSpeedY();
         assertEquals(angularSpeedY1.getValue().doubleValue(), bgy, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
-        final AngularSpeed angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(angularSpeedZ1.getValue().doubleValue(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), bgx, 0.0);
         assertEquals(biasTriad1.getValueY(), bgy, 0.0);
         assertEquals(biasTriad1.getValueZ(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -4300,37 +4287,37 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(myz, calibrator.getInitialMyz(), 0.0);
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bias1, bias, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertEquals(rotationRate, calibrator.getTurntableRotationRate(), 0.0);
-        final AngularSpeed rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
+        final var rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
         assertEquals(rotationRate1.getValue().doubleValue(), rotationRate, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, rotationRate1.getUnit());
-        final AngularSpeed rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getTurntableRotationRateAsAngularSpeed(rotationRate2);
         assertEquals(rotationRate1, rotationRate2);
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
-        final NEDPosition nedPosition2 = new NEDPosition();
+        final var nedPosition2 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition2));
         assertTrue(nedPosition2.equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_BODY_KINEMATICS_MEASUREMENT,
@@ -4380,72 +4367,72 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testConstructor21() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor21() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double rotationRate = getTurntableRotationRate();
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final Collection<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final Matrix mg = generateCommonAxisMg();
-        final Matrix gg = generateGg();
+        final var rotationRate = getTurntableRotationRate();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var mg = generateCommonAxisMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
-        final double[] bias = bg.getBuffer();
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(nedPosition,
-                rotationRate, timeInterval, measurements, bias, mg, gg, this);
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(nedPosition, rotationRate, timeInterval,
+                measurements, bias, mg, gg, this);
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] accelerometerBias1 = calibrator.getAccelerometerBias();
+        final var accelerometerBias1 = calibrator.getAccelerometerBias();
         assertArrayEquals(new double[3], accelerometerBias1, 0.0);
-        final double[] accelerometerBias2 = new double[3];
+        final var accelerometerBias2 = new double[3];
         calibrator.getAccelerometerBias(accelerometerBias2);
         assertArrayEquals(accelerometerBias1, accelerometerBias2, 0.0);
-        final Matrix ba1 = calibrator.getAccelerometerBiasAsMatrix();
-        assertEquals(ba1, new Matrix(3, 1));
-        final Matrix ba2 = new Matrix(3, 1);
+        final var ba1 = calibrator.getAccelerometerBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), ba1);
+        final var ba2 = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2);
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerSy(), 0.0);
@@ -4456,38 +4443,38 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
-        assertEquals(ma1, new Matrix(3, 3));
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = calibrator.getAccelerometerMa();
+        assertEquals(new Matrix(3, 3), ma1);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getBiasX(), 0.0);
         assertEquals(bgy, calibrator.getBiasY(), 0.0);
         assertEquals(bgz, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed angularSpeedX1 = calibrator.getBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getBiasAngularSpeedX();
         assertEquals(angularSpeedX1.getValue().doubleValue(), bgx, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
-        final AngularSpeed angularSpeedY1 = calibrator.getBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getBiasAngularSpeedY();
         assertEquals(bgy, angularSpeedY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
-        final AngularSpeed angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(angularSpeedZ1.getValue().doubleValue(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), bgx, 0.0);
         assertEquals(biasTriad1.getValueY(), bgy, 0.0);
         assertEquals(biasTriad1.getValueZ(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -4499,37 +4486,37 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(myz, calibrator.getInitialMyz(), 0.0);
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bias1, bias, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertEquals(rotationRate, calibrator.getTurntableRotationRate(), 0.0);
-        final AngularSpeed rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
+        final var rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
         assertEquals(rotationRate1.getValue().doubleValue(), rotationRate, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, rotationRate1.getUnit());
-        final AngularSpeed rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getTurntableRotationRateAsAngularSpeed(rotationRate2);
         assertEquals(rotationRate1, rotationRate2);
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
-        final NEDPosition nedPosition2 = new NEDPosition();
+        final var nedPosition2 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition2));
         assertTrue(nedPosition2.equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_BODY_KINEMATICS_MEASUREMENT,
@@ -4579,90 +4566,90 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testConstructor22() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor22() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double rotationRate = getTurntableRotationRate();
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final Collection<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final Matrix mg = generateCommonAxisMg();
-        final Matrix gg = generateGg();
+        final var rotationRate = getTurntableRotationRate();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var mg = generateCommonAxisMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
-        final double[] bias = bg.getBuffer();
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final Matrix ba = generateBa();
-        final Matrix ma = generateMa();
-        final double[] accelerometerBias = ba.getBuffer();
+        final var ba = generateBa();
+        final var ma = generateMa();
+        final var accelerometerBias = ba.getBuffer();
 
-        final double bax = ba.getElementAtIndex(0);
-        final double bay = ba.getElementAtIndex(1);
-        final double baz = ba.getElementAtIndex(2);
+        final var bax = ba.getElementAtIndex(0);
+        final var bay = ba.getElementAtIndex(1);
+        final var baz = ba.getElementAtIndex(2);
 
-        final double asx = ma.getElementAt(0, 0);
-        final double asy = ma.getElementAt(1, 1);
-        final double asz = ma.getElementAt(2, 2);
-        final double amxy = ma.getElementAt(0, 1);
-        final double amxz = ma.getElementAt(0, 2);
-        final double amyx = ma.getElementAt(1, 0);
-        final double amyz = ma.getElementAt(1, 2);
-        final double amzx = ma.getElementAt(2, 0);
-        final double amzy = ma.getElementAt(2, 1);
+        final var asx = ma.getElementAt(0, 0);
+        final var asy = ma.getElementAt(1, 1);
+        final var asz = ma.getElementAt(2, 2);
+        final var amxy = ma.getElementAt(0, 1);
+        final var amxz = ma.getElementAt(0, 2);
+        final var amyx = ma.getElementAt(1, 0);
+        final var amyz = ma.getElementAt(1, 2);
+        final var amzx = ma.getElementAt(2, 0);
+        final var amzy = ma.getElementAt(2, 1);
 
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(nedPosition,
-                rotationRate, timeInterval, measurements, bias, mg, gg, accelerometerBias, ma);
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(nedPosition, rotationRate, timeInterval,
+                measurements, bias, mg, gg, accelerometerBias, ma);
 
         // check default values
         assertEquals(bax, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(bay, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(baz, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(bax, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(bay, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(accelerationZ1.getValue().doubleValue(), baz, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] accelerometerBias1 = calibrator.getAccelerometerBias();
+        final var accelerometerBias1 = calibrator.getAccelerometerBias();
         assertArrayEquals(accelerometerBias1, accelerometerBias, 0.0);
-        final double[] accelerometerBias2 = new double[3];
+        final var accelerometerBias2 = new double[3];
         calibrator.getAccelerometerBias(accelerometerBias2);
         assertArrayEquals(accelerometerBias1, accelerometerBias2, 0.0);
-        final Matrix ba1 = calibrator.getAccelerometerBiasAsMatrix();
+        final var ba1 = calibrator.getAccelerometerBiasAsMatrix();
         assertEquals(ba1, ba);
-        final Matrix ba2 = new Matrix(3, 1);
+        final var ba2 = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2);
         assertEquals(asx, calibrator.getAccelerometerSx(), 0.0);
         assertEquals(asy, calibrator.getAccelerometerSy(), 0.0);
@@ -4673,38 +4660,38 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(amyz, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(amzx, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(amzy, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
+        final var ma1 = calibrator.getAccelerometerMa();
         assertEquals(ma1, ma);
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getBiasX(), 0.0);
         assertEquals(bgy, calibrator.getBiasY(), 0.0);
         assertEquals(bgz, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed angularSpeedX1 = calibrator.getBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getBiasAngularSpeedX();
         assertEquals(angularSpeedX1.getValue().doubleValue(), bgx, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
-        final AngularSpeed angularSpeedY1 = calibrator.getBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getBiasAngularSpeedY();
         assertEquals(angularSpeedY1.getValue().doubleValue(), bgy, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
-        final AngularSpeed angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(angularSpeedZ1.getValue().doubleValue(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), bgx, 0.0);
         assertEquals(biasTriad1.getValueY(), bgy, 0.0);
         assertEquals(biasTriad1.getValueZ(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -4716,37 +4703,37 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(myz, calibrator.getInitialMyz(), 0.0);
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bias1, bias, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertEquals(rotationRate, calibrator.getTurntableRotationRate(), 0.0);
-        final AngularSpeed rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
+        final var rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
         assertEquals(rotationRate1.getValue().doubleValue(), rotationRate, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, rotationRate1.getUnit());
-        final AngularSpeed rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getTurntableRotationRateAsAngularSpeed(rotationRate2);
         assertEquals(rotationRate1, rotationRate2);
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
-        final NEDPosition nedPosition2 = new NEDPosition();
+        final var nedPosition2 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition2));
         assertTrue(nedPosition2.equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_BODY_KINEMATICS_MEASUREMENT,
@@ -4804,90 +4791,90 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testConstructor23() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor23() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double rotationRate = getTurntableRotationRate();
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final Collection<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final Matrix mg = generateCommonAxisMg();
-        final Matrix gg = generateGg();
+        final var rotationRate = getTurntableRotationRate();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var mg = generateCommonAxisMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
-        final double[] bias = bg.getBuffer();
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final Matrix ba = generateBa();
-        final Matrix ma = generateMa();
-        final double[] accelerometerBias = ba.getBuffer();
+        final var ba = generateBa();
+        final var ma = generateMa();
+        final var accelerometerBias = ba.getBuffer();
 
-        final double bax = ba.getElementAtIndex(0);
-        final double bay = ba.getElementAtIndex(1);
-        final double baz = ba.getElementAtIndex(2);
+        final var bax = ba.getElementAtIndex(0);
+        final var bay = ba.getElementAtIndex(1);
+        final var baz = ba.getElementAtIndex(2);
 
-        final double asx = ma.getElementAt(0, 0);
-        final double asy = ma.getElementAt(1, 1);
-        final double asz = ma.getElementAt(2, 2);
-        final double amxy = ma.getElementAt(0, 1);
-        final double amxz = ma.getElementAt(0, 2);
-        final double amyx = ma.getElementAt(1, 0);
-        final double amyz = ma.getElementAt(1, 2);
-        final double amzx = ma.getElementAt(2, 0);
-        final double amzy = ma.getElementAt(2, 1);
+        final var asx = ma.getElementAt(0, 0);
+        final var asy = ma.getElementAt(1, 1);
+        final var asz = ma.getElementAt(2, 2);
+        final var amxy = ma.getElementAt(0, 1);
+        final var amxz = ma.getElementAt(0, 2);
+        final var amyx = ma.getElementAt(1, 0);
+        final var amyz = ma.getElementAt(1, 2);
+        final var amzx = ma.getElementAt(2, 0);
+        final var amzy = ma.getElementAt(2, 1);
 
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(nedPosition,
-                rotationRate, timeInterval, measurements, bias, mg, gg, accelerometerBias, ma, this);
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(nedPosition, rotationRate, timeInterval,
+                measurements, bias, mg, gg, accelerometerBias, ma, this);
 
         // check default values
         assertEquals(bax, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(bay, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(baz, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(bax, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(accelerationY1.getValue().doubleValue(), bay, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(accelerationZ1.getValue().doubleValue(), baz, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] accelerometerBias1 = calibrator.getAccelerometerBias();
+        final var accelerometerBias1 = calibrator.getAccelerometerBias();
         assertArrayEquals(accelerometerBias1, accelerometerBias, 0.0);
-        final double[] accelerometerBias2 = new double[3];
+        final var accelerometerBias2 = new double[3];
         calibrator.getAccelerometerBias(accelerometerBias2);
         assertArrayEquals(accelerometerBias1, accelerometerBias2, 0.0);
-        final Matrix ba1 = calibrator.getAccelerometerBiasAsMatrix();
+        final var ba1 = calibrator.getAccelerometerBiasAsMatrix();
         assertEquals(ba1, ba);
-        final Matrix ba2 = new Matrix(3, 1);
+        final var ba2 = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2);
         assertEquals(asx, calibrator.getAccelerometerSx(), 0.0);
         assertEquals(asy, calibrator.getAccelerometerSy(), 0.0);
@@ -4898,38 +4885,38 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(amyz, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(amzx, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(amzy, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
+        final var ma1 = calibrator.getAccelerometerMa();
         assertEquals(ma1, ma);
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getBiasX(), 0.0);
         assertEquals(bgy, calibrator.getBiasY(), 0.0);
         assertEquals(bgz, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed angularSpeedX1 = calibrator.getBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getBiasAngularSpeedX();
         assertEquals(angularSpeedX1.getValue().doubleValue(), bgx, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
-        final AngularSpeed angularSpeedY1 = calibrator.getBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getBiasAngularSpeedY();
         assertEquals(angularSpeedY1.getValue().doubleValue(), bgy, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
-        final AngularSpeed angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(angularSpeedZ1.getValue().doubleValue(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bgx, biasTriad1.getValueX(), 0.0);
         assertEquals(bgy, biasTriad1.getValueY(), 0.0);
         assertEquals(bgz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -4941,37 +4928,37 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(myz, calibrator.getInitialMyz(), 0.0);
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bias1, bias, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertEquals(rotationRate, calibrator.getTurntableRotationRate(), 0.0);
-        final AngularSpeed rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
+        final var rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
         assertEquals(rotationRate1.getValue().doubleValue(), rotationRate, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, rotationRate1.getUnit());
-        final AngularSpeed rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getTurntableRotationRateAsAngularSpeed(rotationRate2);
         assertEquals(rotationRate1, rotationRate2);
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
-        final NEDPosition nedPosition2 = new NEDPosition();
+        final var nedPosition2 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition2));
         assertTrue(nedPosition2.equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_BODY_KINEMATICS_MEASUREMENT,
@@ -5029,90 +5016,90 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testConstructor24() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor24() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double rotationRate = getTurntableRotationRate();
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final Collection<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final Matrix mg = generateCommonAxisMg();
-        final Matrix gg = generateGg();
+        final var rotationRate = getTurntableRotationRate();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var mg = generateCommonAxisMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
-        final double[] bias = bg.getBuffer();
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final Matrix ba = generateBa();
-        final Matrix ma = generateMa();
-        final double[] accelerometerBias = ba.getBuffer();
+        final var ba = generateBa();
+        final var ma = generateMa();
+        final var accelerometerBias = ba.getBuffer();
 
-        final double bax = ba.getElementAtIndex(0);
-        final double bay = ba.getElementAtIndex(1);
-        final double baz = ba.getElementAtIndex(2);
+        final var bax = ba.getElementAtIndex(0);
+        final var bay = ba.getElementAtIndex(1);
+        final var baz = ba.getElementAtIndex(2);
 
-        final double asx = ma.getElementAt(0, 0);
-        final double asy = ma.getElementAt(1, 1);
-        final double asz = ma.getElementAt(2, 2);
-        final double amxy = ma.getElementAt(0, 1);
-        final double amxz = ma.getElementAt(0, 2);
-        final double amyx = ma.getElementAt(1, 0);
-        final double amyz = ma.getElementAt(1, 2);
-        final double amzx = ma.getElementAt(2, 0);
-        final double amzy = ma.getElementAt(2, 1);
+        final var asx = ma.getElementAt(0, 0);
+        final var asy = ma.getElementAt(1, 1);
+        final var asz = ma.getElementAt(2, 2);
+        final var amxy = ma.getElementAt(0, 1);
+        final var amxz = ma.getElementAt(0, 2);
+        final var amyx = ma.getElementAt(1, 0);
+        final var amyz = ma.getElementAt(1, 2);
+        final var amzx = ma.getElementAt(2, 0);
+        final var amzy = ma.getElementAt(2, 1);
 
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(nedPosition,
-                rotationRate, timeInterval, measurements, bg, mg, gg, ba, ma);
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(nedPosition, rotationRate, timeInterval,
+                measurements, bg, mg, gg, ba, ma);
 
         // check default values
         assertEquals(bax, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(bay, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(baz, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(accelerationX1.getValue().doubleValue(), bax, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(accelerationY1.getValue().doubleValue(), bay, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(accelerationZ1.getValue().doubleValue(), baz, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] accelerometerBias1 = calibrator.getAccelerometerBias();
+        final var accelerometerBias1 = calibrator.getAccelerometerBias();
         assertArrayEquals(accelerometerBias1, accelerometerBias, 0.0);
-        final double[] accelerometerBias2 = new double[3];
+        final var accelerometerBias2 = new double[3];
         calibrator.getAccelerometerBias(accelerometerBias2);
         assertArrayEquals(accelerometerBias1, accelerometerBias2, 0.0);
-        final Matrix ba1 = calibrator.getAccelerometerBiasAsMatrix();
+        final var ba1 = calibrator.getAccelerometerBiasAsMatrix();
         assertEquals(ba1, ba);
-        final Matrix ba2 = new Matrix(3, 1);
+        final var ba2 = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2);
         assertEquals(asx, calibrator.getAccelerometerSx(), 0.0);
         assertEquals(asy, calibrator.getAccelerometerSy(), 0.0);
@@ -5123,38 +5110,38 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(amyz, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(amzx, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(amzy, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
+        final var ma1 = calibrator.getAccelerometerMa();
         assertEquals(ma1, ma);
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getBiasX(), 0.0);
         assertEquals(bgy, calibrator.getBiasY(), 0.0);
         assertEquals(bgz, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed angularSpeedX1 = calibrator.getBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getBiasAngularSpeedX();
         assertEquals(angularSpeedX1.getValue().doubleValue(), bgx, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
-        final AngularSpeed angularSpeedY1 = calibrator.getBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getBiasAngularSpeedY();
         assertEquals(angularSpeedY1.getValue().doubleValue(), bgy, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
-        final AngularSpeed angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(angularSpeedZ1.getValue().doubleValue(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), bgx, 0.0);
         assertEquals(biasTriad1.getValueY(), bgy, 0.0);
         assertEquals(biasTriad1.getValueZ(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -5166,37 +5153,37 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(myz, calibrator.getInitialMyz(), 0.0);
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bias1, bias, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertEquals(rotationRate, calibrator.getTurntableRotationRate(), 0.0);
-        final AngularSpeed rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
+        final var rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
         assertEquals(rotationRate1.getValue().doubleValue(), rotationRate, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, rotationRate1.getUnit());
-        final AngularSpeed rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getTurntableRotationRateAsAngularSpeed(rotationRate2);
         assertEquals(rotationRate1, rotationRate2);
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
-        final NEDPosition nedPosition2 = new NEDPosition();
+        final var nedPosition2 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition2));
         assertTrue(nedPosition2.equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_BODY_KINEMATICS_MEASUREMENT,
@@ -5262,90 +5249,90 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testConstructor25() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor25() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double rotationRate = getTurntableRotationRate();
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final Collection<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final Matrix mg = generateCommonAxisMg();
-        final Matrix gg = generateGg();
+        final var rotationRate = getTurntableRotationRate();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var mg = generateCommonAxisMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
-        final double[] bias = bg.getBuffer();
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final Matrix ba = generateBa();
-        final Matrix ma = generateMa();
-        final double[] accelerometerBias = ba.getBuffer();
+        final var ba = generateBa();
+        final var ma = generateMa();
+        final var accelerometerBias = ba.getBuffer();
 
-        final double bax = ba.getElementAtIndex(0);
-        final double bay = ba.getElementAtIndex(1);
-        final double baz = ba.getElementAtIndex(2);
+        final var bax = ba.getElementAtIndex(0);
+        final var bay = ba.getElementAtIndex(1);
+        final var baz = ba.getElementAtIndex(2);
 
-        final double asx = ma.getElementAt(0, 0);
-        final double asy = ma.getElementAt(1, 1);
-        final double asz = ma.getElementAt(2, 2);
-        final double amxy = ma.getElementAt(0, 1);
-        final double amxz = ma.getElementAt(0, 2);
-        final double amyx = ma.getElementAt(1, 0);
-        final double amyz = ma.getElementAt(1, 2);
-        final double amzx = ma.getElementAt(2, 0);
-        final double amzy = ma.getElementAt(2, 1);
+        final var asx = ma.getElementAt(0, 0);
+        final var asy = ma.getElementAt(1, 1);
+        final var asz = ma.getElementAt(2, 2);
+        final var amxy = ma.getElementAt(0, 1);
+        final var amxz = ma.getElementAt(0, 2);
+        final var amyx = ma.getElementAt(1, 0);
+        final var amyz = ma.getElementAt(1, 2);
+        final var amzx = ma.getElementAt(2, 0);
+        final var amzy = ma.getElementAt(2, 1);
 
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(nedPosition,
-                rotationRate, timeInterval, measurements, bg, mg, gg, ba, ma, this);
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(nedPosition, rotationRate, timeInterval,
+                measurements, bg, mg, gg, ba, ma, this);
 
         // check default values
         assertEquals(bax, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(bay, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(baz, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(accelerationX1.getValue().doubleValue(), bax, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(accelerationY1.getValue().doubleValue(), bay, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(accelerationZ1.getValue().doubleValue(), baz, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] accelerometerBias1 = calibrator.getAccelerometerBias();
+        final var accelerometerBias1 = calibrator.getAccelerometerBias();
         assertArrayEquals(accelerometerBias1, accelerometerBias, 0.0);
-        final double[] accelerometerBias2 = new double[3];
+        final var accelerometerBias2 = new double[3];
         calibrator.getAccelerometerBias(accelerometerBias2);
         assertArrayEquals(accelerometerBias1, accelerometerBias2, 0.0);
-        final Matrix ba1 = calibrator.getAccelerometerBiasAsMatrix();
+        final var ba1 = calibrator.getAccelerometerBiasAsMatrix();
         assertEquals(ba1, ba);
-        final Matrix ba2 = new Matrix(3, 1);
+        final var ba2 = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2);
         assertEquals(asx, calibrator.getAccelerometerSx(), 0.0);
         assertEquals(asy, calibrator.getAccelerometerSy(), 0.0);
@@ -5356,38 +5343,38 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(amyz, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(amzx, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(amzy, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
+        final var ma1 = calibrator.getAccelerometerMa();
         assertEquals(ma1, ma);
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getBiasX(), 0.0);
         assertEquals(bgy, calibrator.getBiasY(), 0.0);
         assertEquals(bgz, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed angularSpeedX1 = calibrator.getBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getBiasAngularSpeedX();
         assertEquals(angularSpeedX1.getValue().doubleValue(), bgx, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
-        final AngularSpeed angularSpeedY1 = calibrator.getBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getBiasAngularSpeedY();
         assertEquals(angularSpeedY1.getValue().doubleValue(), bgy, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
-        final AngularSpeed angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(angularSpeedZ1.getValue().doubleValue(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), bgx, 0.0);
         assertEquals(biasTriad1.getValueY(), bgy, 0.0);
         assertEquals(biasTriad1.getValueZ(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -5399,37 +5386,37 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(myz, calibrator.getInitialMyz(), 0.0);
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bias1, bias, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertEquals(rotationRate, calibrator.getTurntableRotationRate(), 0.0);
-        final AngularSpeed rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
+        final var rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
         assertEquals(rotationRate1.getValue().doubleValue(), rotationRate, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, rotationRate1.getUnit());
-        final AngularSpeed rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getTurntableRotationRateAsAngularSpeed(rotationRate2);
         assertEquals(rotationRate1, rotationRate2);
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
-        final NEDPosition nedPosition2 = new NEDPosition();
+        final var nedPosition2 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition2));
         assertTrue(nedPosition2.equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_BODY_KINEMATICS_MEASUREMENT,
@@ -5495,73 +5482,72 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testConstructor26() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor26() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double rotationRate = getTurntableRotationRate();
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final Collection<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final Matrix mg = generateCommonAxisMg();
-        final Matrix gg = generateGg();
+        final var rotationRate = getTurntableRotationRate();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var mg = generateCommonAxisMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
-        final double[] bias = bg.getBuffer();
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(nedPosition,
-                rotationRate, timeInterval, measurements, false, false, bg,
-                mg, gg);
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(nedPosition, rotationRate, timeInterval,
+                measurements, false, false, bg, mg, gg);
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] accelerometerBias1 = calibrator.getAccelerometerBias();
-        assertArrayEquals(accelerometerBias1, new double[3], 0.0);
-        final double[] accelerometerBias2 = new double[3];
+        final var accelerometerBias1 = calibrator.getAccelerometerBias();
+        assertArrayEquals(new double[3], accelerometerBias1, 0.0);
+        final var accelerometerBias2 = new double[3];
         calibrator.getAccelerometerBias(accelerometerBias2);
         assertArrayEquals(accelerometerBias1, accelerometerBias2, 0.0);
-        final Matrix ba1 = calibrator.getAccelerometerBiasAsMatrix();
-        assertEquals(ba1, new Matrix(3, 1));
-        final Matrix ba2 = new Matrix(3, 1);
+        final var ba1 = calibrator.getAccelerometerBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), ba1);
+        final var ba2 = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2);
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerSy(), 0.0);
@@ -5572,38 +5558,38 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
-        assertEquals(ma1, new Matrix(3, 3));
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = calibrator.getAccelerometerMa();
+        assertEquals(new Matrix(3, 3), ma1);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getBiasX(), 0.0);
         assertEquals(bgy, calibrator.getBiasY(), 0.0);
         assertEquals(bgz, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed angularSpeedX1 = calibrator.getBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getBiasAngularSpeedX();
         assertEquals(angularSpeedX1.getValue().doubleValue(), bgx, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
-        final AngularSpeed angularSpeedY1 = calibrator.getBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getBiasAngularSpeedY();
         assertEquals(angularSpeedY1.getValue().doubleValue(), bgy, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
-        final AngularSpeed angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(angularSpeedZ1.getValue().doubleValue(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), bgx, 0.0);
         assertEquals(biasTriad1.getValueY(), bgy, 0.0);
         assertEquals(biasTriad1.getValueZ(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -5615,37 +5601,37 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(myz, calibrator.getInitialMyz(), 0.0);
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bias1, bias, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertEquals(rotationRate, calibrator.getTurntableRotationRate(), 0.0);
-        final AngularSpeed rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
+        final var rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
         assertEquals(rotationRate, rotationRate1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, rotationRate1.getUnit());
-        final AngularSpeed rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getTurntableRotationRateAsAngularSpeed(rotationRate2);
         assertEquals(rotationRate1, rotationRate2);
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
-        final NEDPosition nedPosition2 = new NEDPosition();
+        final var nedPosition2 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition2));
         assertTrue(nedPosition2.equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_BODY_KINEMATICS_MEASUREMENT,
@@ -5682,12 +5668,12 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
                 mg, gg));
         final var m1 = new Matrix(1, 1);
         assertThrows(IllegalArgumentException.class, () -> new KnownBiasTurntableGyroscopeCalibrator(nedPosition,
-                rotationRate, timeInterval, measurements, true, false,
-                m1, mg, gg));
+                rotationRate, timeInterval, measurements, true, false, m1,
+                mg, gg));
         final var m2 = new Matrix(3, 3);
         assertThrows(IllegalArgumentException.class, () -> new KnownBiasTurntableGyroscopeCalibrator(nedPosition,
-                rotationRate, timeInterval, measurements, true, false,
-                m2, mg, gg));
+                rotationRate, timeInterval, measurements, true, false, m2,
+                mg, gg));
         final var m3 = new Matrix(1, 3);
         assertThrows(IllegalArgumentException.class, () -> new KnownBiasTurntableGyroscopeCalibrator(nedPosition,
                 rotationRate, timeInterval, measurements, true, false, bg,
@@ -5707,73 +5693,72 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testConstructor27() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor27() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double rotationRate = getTurntableRotationRate();
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final Collection<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final Matrix mg = generateCommonAxisMg();
-        final Matrix gg = generateGg();
+        final var rotationRate = getTurntableRotationRate();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var mg = generateCommonAxisMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
-        final double[] bias = bg.getBuffer();
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(nedPosition,
-                rotationRate, timeInterval, measurements, false, false, bg,
-                mg, gg, this);
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(nedPosition, rotationRate, timeInterval,
+                measurements, false, false, bg, mg, gg, this);
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] accelerometerBias1 = calibrator.getAccelerometerBias();
-        assertArrayEquals(accelerometerBias1, new double[3], 0.0);
-        final double[] accelerometerBias2 = new double[3];
+        final var accelerometerBias1 = calibrator.getAccelerometerBias();
+        assertArrayEquals(new double[3], accelerometerBias1, 0.0);
+        final var accelerometerBias2 = new double[3];
         calibrator.getAccelerometerBias(accelerometerBias2);
         assertArrayEquals(accelerometerBias1, accelerometerBias2, 0.0);
-        final Matrix ba1 = calibrator.getAccelerometerBiasAsMatrix();
-        assertEquals(ba1, new Matrix(3, 1));
-        final Matrix ba2 = new Matrix(3, 1);
+        final var ba1 = calibrator.getAccelerometerBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), ba1);
+        final var ba2 = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2);
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerSy(), 0.0);
@@ -5784,38 +5769,38 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
-        assertEquals(ma1, new Matrix(3, 3));
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = calibrator.getAccelerometerMa();
+        assertEquals(new Matrix(3, 3), ma1);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getBiasX(), 0.0);
         assertEquals(bgy, calibrator.getBiasY(), 0.0);
         assertEquals(bgz, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed angularSpeedX1 = calibrator.getBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getBiasAngularSpeedX();
         assertEquals(angularSpeedX1.getValue().doubleValue(), bgx, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
-        final AngularSpeed angularSpeedY1 = calibrator.getBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getBiasAngularSpeedY();
         assertEquals(angularSpeedY1.getValue().doubleValue(), bgy, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
-        final AngularSpeed angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(angularSpeedZ1.getValue().doubleValue(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), bgx, 0.0);
         assertEquals(biasTriad1.getValueY(), bgy, 0.0);
         assertEquals(biasTriad1.getValueZ(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -5827,37 +5812,37 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(myz, calibrator.getInitialMyz(), 0.0);
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bias1, bias, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertEquals(rotationRate, calibrator.getTurntableRotationRate(), 0.0);
-        final AngularSpeed rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
+        final var rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
         assertEquals(rotationRate1.getValue().doubleValue(), rotationRate, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, rotationRate1.getUnit());
-        final AngularSpeed rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getTurntableRotationRateAsAngularSpeed(rotationRate2);
         assertEquals(rotationRate1, rotationRate2);
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
-        final NEDPosition nedPosition2 = new NEDPosition();
+        final var nedPosition2 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition2));
         assertTrue(nedPosition2.equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_BODY_KINEMATICS_MEASUREMENT,
@@ -5894,12 +5879,12 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
                 mg, gg, this));
         final var m1 = new Matrix(1, 1);
         assertThrows(IllegalArgumentException.class, () -> new KnownBiasTurntableGyroscopeCalibrator(nedPosition,
-                rotationRate, timeInterval, measurements, true, false,
-                m1, mg, gg, this));
+                rotationRate, timeInterval, measurements, true, false, m1,
+                mg, gg, this));
         final var m2 = new Matrix(3, 3);
         assertThrows(IllegalArgumentException.class, () -> new KnownBiasTurntableGyroscopeCalibrator(nedPosition,
-                rotationRate, timeInterval, measurements, true, false,
-                m2, mg, gg, this));
+                rotationRate, timeInterval, measurements, true, false, m2,
+                mg, gg, this));
         final var m3 = new Matrix(1, 3);
         assertThrows(IllegalArgumentException.class, () -> new KnownBiasTurntableGyroscopeCalibrator(nedPosition,
                 rotationRate, timeInterval, measurements, true, false, bg,
@@ -5919,73 +5904,72 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testConstructor28() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor28() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double rotationRate = getTurntableRotationRate();
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final Collection<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final Matrix mg = generateCommonAxisMg();
-        final Matrix gg = generateGg();
+        final var rotationRate = getTurntableRotationRate();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var mg = generateCommonAxisMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
-        final double[] bias = bg.getBuffer();
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(nedPosition,
-                rotationRate, timeInterval, measurements, false, false, bias,
-                mg, gg);
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(nedPosition, rotationRate, timeInterval,
+                measurements, false, false, bias, mg, gg);
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] accelerometerBias1 = calibrator.getAccelerometerBias();
-        assertArrayEquals(accelerometerBias1, new double[3], 0.0);
-        final double[] accelerometerBias2 = new double[3];
+        final var accelerometerBias1 = calibrator.getAccelerometerBias();
+        assertArrayEquals(new double[3], accelerometerBias1, 0.0);
+        final var accelerometerBias2 = new double[3];
         calibrator.getAccelerometerBias(accelerometerBias2);
         assertArrayEquals(accelerometerBias1, accelerometerBias2, 0.0);
-        final Matrix ba1 = calibrator.getAccelerometerBiasAsMatrix();
-        assertEquals(ba1, new Matrix(3, 1));
-        final Matrix ba2 = new Matrix(3, 1);
+        final var ba1 = calibrator.getAccelerometerBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), ba1);
+        final var ba2 = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2);
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerSy(), 0.0);
@@ -5996,38 +5980,38 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
-        assertEquals(ma1, new Matrix(3, 3));
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = calibrator.getAccelerometerMa();
+        assertEquals(new Matrix(3, 3), ma1);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getBiasX(), 0.0);
         assertEquals(bgy, calibrator.getBiasY(), 0.0);
         assertEquals(bgz, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed angularSpeedX1 = calibrator.getBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getBiasAngularSpeedX();
         assertEquals(angularSpeedX1.getValue().doubleValue(), bgx, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
-        final AngularSpeed angularSpeedY1 = calibrator.getBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getBiasAngularSpeedY();
         assertEquals(angularSpeedY1.getValue().doubleValue(), bgy, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
-        final AngularSpeed angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(angularSpeedZ1.getValue().doubleValue(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), bgx, 0.0);
         assertEquals(biasTriad1.getValueY(), bgy, 0.0);
         assertEquals(biasTriad1.getValueZ(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -6039,37 +6023,37 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(myz, calibrator.getInitialMyz(), 0.0);
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bias1, bias, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertEquals(rotationRate, calibrator.getTurntableRotationRate(), 0.0);
-        final AngularSpeed rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
+        final var rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
         assertEquals(rotationRate1.getValue().doubleValue(), rotationRate, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, rotationRate1.getUnit());
-        final AngularSpeed rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getTurntableRotationRateAsAngularSpeed(rotationRate2);
         assertEquals(rotationRate1, rotationRate2);
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
-        final NEDPosition nedPosition2 = new NEDPosition();
+        final var nedPosition2 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition2));
         assertTrue(nedPosition2.equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_BODY_KINEMATICS_MEASUREMENT,
@@ -6126,73 +6110,72 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testConstructor29() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor29() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double rotationRate = getTurntableRotationRate();
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final Collection<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final Matrix mg = generateCommonAxisMg();
-        final Matrix gg = generateGg();
+        final var rotationRate = getTurntableRotationRate();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var mg = generateCommonAxisMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
-        final double[] bias = bg.getBuffer();
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(nedPosition,
-                rotationRate, timeInterval, measurements, false, false, bias,
-                mg, gg, this);
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(nedPosition, rotationRate, timeInterval,
+                measurements, false, false, bias, mg, gg, this);
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, accelerationX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, accelerationY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, accelerationZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] accelerometerBias1 = calibrator.getAccelerometerBias();
-        assertArrayEquals(accelerometerBias1, new double[3], 0.0);
-        final double[] accelerometerBias2 = new double[3];
+        final var accelerometerBias1 = calibrator.getAccelerometerBias();
+        assertArrayEquals(new double[3], accelerometerBias1, 0.0);
+        final var accelerometerBias2 = new double[3];
         calibrator.getAccelerometerBias(accelerometerBias2);
         assertArrayEquals(accelerometerBias1, accelerometerBias2, 0.0);
-        final Matrix ba1 = calibrator.getAccelerometerBiasAsMatrix();
-        assertEquals(ba1, new Matrix(3, 1));
-        final Matrix ba2 = new Matrix(3, 1);
+        final var ba1 = calibrator.getAccelerometerBiasAsMatrix();
+        assertEquals(new Matrix(3, 1), ba1);
+        final var ba2 = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2);
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerSy(), 0.0);
@@ -6203,38 +6186,38 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
-        assertEquals(ma1, new Matrix(3, 3));
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = calibrator.getAccelerometerMa();
+        assertEquals(new Matrix(3, 3), ma1);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getBiasX(), 0.0);
         assertEquals(bgy, calibrator.getBiasY(), 0.0);
         assertEquals(bgz, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed angularSpeedX1 = calibrator.getBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getBiasAngularSpeedX();
         assertEquals(angularSpeedX1.getValue().doubleValue(), bgx, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
-        final AngularSpeed angularSpeedY1 = calibrator.getBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getBiasAngularSpeedY();
         assertEquals(angularSpeedY1.getValue().doubleValue(), bgy, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
-        final AngularSpeed angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(angularSpeedZ1.getValue().doubleValue(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), bgx, 0.0);
         assertEquals(biasTriad1.getValueY(), bgy, 0.0);
         assertEquals(biasTriad1.getValueZ(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -6246,37 +6229,37 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(myz, calibrator.getInitialMyz(), 0.0);
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bias1, bias, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertEquals(rotationRate, calibrator.getTurntableRotationRate(), 0.0);
-        final AngularSpeed rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
+        final var rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
         assertEquals(rotationRate1.getValue().doubleValue(), rotationRate, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, rotationRate1.getUnit());
-        final AngularSpeed rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getTurntableRotationRateAsAngularSpeed(rotationRate2);
         assertEquals(rotationRate1, rotationRate2);
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
-        final NEDPosition nedPosition2 = new NEDPosition();
+        final var nedPosition2 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition2));
         assertTrue(nedPosition2.equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_BODY_KINEMATICS_MEASUREMENT,
@@ -6333,91 +6316,91 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testConstructor30() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor30() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double rotationRate = getTurntableRotationRate();
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final Collection<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final Matrix mg = generateCommonAxisMg();
-        final Matrix gg = generateGg();
+        final var rotationRate = getTurntableRotationRate();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var mg = generateCommonAxisMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
-        final double[] bias = bg.getBuffer();
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final Matrix ba = generateBa();
-        final Matrix ma = generateMa();
-        final double[] accelerometerBias = ba.getBuffer();
+        final var ba = generateBa();
+        final var ma = generateMa();
+        final var accelerometerBias = ba.getBuffer();
 
-        final double bax = ba.getElementAtIndex(0);
-        final double bay = ba.getElementAtIndex(1);
-        final double baz = ba.getElementAtIndex(2);
+        final var bax = ba.getElementAtIndex(0);
+        final var bay = ba.getElementAtIndex(1);
+        final var baz = ba.getElementAtIndex(2);
 
-        final double asx = ma.getElementAt(0, 0);
-        final double asy = ma.getElementAt(1, 1);
-        final double asz = ma.getElementAt(2, 2);
-        final double amxy = ma.getElementAt(0, 1);
-        final double amxz = ma.getElementAt(0, 2);
-        final double amyx = ma.getElementAt(1, 0);
-        final double amyz = ma.getElementAt(1, 2);
-        final double amzx = ma.getElementAt(2, 0);
-        final double amzy = ma.getElementAt(2, 1);
+        final var asx = ma.getElementAt(0, 0);
+        final var asy = ma.getElementAt(1, 1);
+        final var asz = ma.getElementAt(2, 2);
+        final var amxy = ma.getElementAt(0, 1);
+        final var amxz = ma.getElementAt(0, 2);
+        final var amyx = ma.getElementAt(1, 0);
+        final var amyz = ma.getElementAt(1, 2);
+        final var amzx = ma.getElementAt(2, 0);
+        final var amzy = ma.getElementAt(2, 1);
 
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(nedPosition,
-                rotationRate, timeInterval, measurements, false, false,
-                bias, mg, gg, accelerometerBias, ma);
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(nedPosition, rotationRate, timeInterval,
+                measurements, false, false, bias, mg, gg, accelerometerBias,
+                ma);
 
         // check default values
         assertEquals(bax, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(bay, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(baz, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(accelerationX1.getValue().doubleValue(), bax, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(accelerationY1.getValue().doubleValue(), bay, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(accelerationZ1.getValue().doubleValue(), baz, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] accelerometerBias1 = calibrator.getAccelerometerBias();
+        final var accelerometerBias1 = calibrator.getAccelerometerBias();
         assertArrayEquals(accelerometerBias1, accelerometerBias, 0.0);
-        final double[] accelerometerBias2 = new double[3];
+        final var accelerometerBias2 = new double[3];
         calibrator.getAccelerometerBias(accelerometerBias2);
         assertArrayEquals(accelerometerBias1, accelerometerBias2, 0.0);
-        final Matrix ba1 = calibrator.getAccelerometerBiasAsMatrix();
+        final var ba1 = calibrator.getAccelerometerBiasAsMatrix();
         assertEquals(ba1, ba);
-        final Matrix ba2 = new Matrix(3, 1);
+        final var ba2 = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2);
         assertEquals(asx, calibrator.getAccelerometerSx(), 0.0);
         assertEquals(asy, calibrator.getAccelerometerSy(), 0.0);
@@ -6428,38 +6411,38 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(amyz, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(amzx, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(amzy, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
+        final var ma1 = calibrator.getAccelerometerMa();
         assertEquals(ma1, ma);
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getBiasX(), 0.0);
         assertEquals(bgy, calibrator.getBiasY(), 0.0);
         assertEquals(bgz, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed angularSpeedX1 = calibrator.getBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getBiasAngularSpeedX();
         assertEquals(angularSpeedX1.getValue().doubleValue(), bgx, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
-        final AngularSpeed angularSpeedY1 = calibrator.getBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getBiasAngularSpeedY();
         assertEquals(angularSpeedY1.getValue().doubleValue(), bgy, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
-        final AngularSpeed angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(angularSpeedZ1.getValue().doubleValue(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), bgx, 0.0);
         assertEquals(biasTriad1.getValueY(), bgy, 0.0);
         assertEquals(biasTriad1.getValueZ(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -6471,37 +6454,37 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(myz, calibrator.getInitialMyz(), 0.0);
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bias1, bias, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertEquals(rotationRate, calibrator.getTurntableRotationRate(), 0.0);
-        final AngularSpeed rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
+        final var rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
         assertEquals(rotationRate1.getValue().doubleValue(), rotationRate, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, rotationRate1.getUnit());
-        final AngularSpeed rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getTurntableRotationRateAsAngularSpeed(rotationRate2);
         assertEquals(rotationRate1, rotationRate2);
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
-        final NEDPosition nedPosition2 = new NEDPosition();
+        final var nedPosition2 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition2));
         assertTrue(nedPosition2.equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_BODY_KINEMATICS_MEASUREMENT,
@@ -6569,91 +6552,91 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testConstructor31() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor31() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double rotationRate = getTurntableRotationRate();
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final Collection<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final Matrix mg = generateCommonAxisMg();
-        final Matrix gg = generateGg();
+        final var rotationRate = getTurntableRotationRate();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var mg = generateCommonAxisMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
-        final double[] bias = bg.getBuffer();
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final Matrix ba = generateBa();
-        final Matrix ma = generateMa();
-        final double[] accelerometerBias = ba.getBuffer();
+        final var ba = generateBa();
+        final var ma = generateMa();
+        final var accelerometerBias = ba.getBuffer();
 
-        final double bax = ba.getElementAtIndex(0);
-        final double bay = ba.getElementAtIndex(1);
-        final double baz = ba.getElementAtIndex(2);
+        final var bax = ba.getElementAtIndex(0);
+        final var bay = ba.getElementAtIndex(1);
+        final var baz = ba.getElementAtIndex(2);
 
-        final double asx = ma.getElementAt(0, 0);
-        final double asy = ma.getElementAt(1, 1);
-        final double asz = ma.getElementAt(2, 2);
-        final double amxy = ma.getElementAt(0, 1);
-        final double amxz = ma.getElementAt(0, 2);
-        final double amyx = ma.getElementAt(1, 0);
-        final double amyz = ma.getElementAt(1, 2);
-        final double amzx = ma.getElementAt(2, 0);
-        final double amzy = ma.getElementAt(2, 1);
+        final var asx = ma.getElementAt(0, 0);
+        final var asy = ma.getElementAt(1, 1);
+        final var asz = ma.getElementAt(2, 2);
+        final var amxy = ma.getElementAt(0, 1);
+        final var amxz = ma.getElementAt(0, 2);
+        final var amyx = ma.getElementAt(1, 0);
+        final var amyz = ma.getElementAt(1, 2);
+        final var amzx = ma.getElementAt(2, 0);
+        final var amzy = ma.getElementAt(2, 1);
 
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(nedPosition,
-                rotationRate, timeInterval, measurements, false, false, bias,
-                mg, gg, accelerometerBias, ma, this);
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(nedPosition, rotationRate, timeInterval,
+                measurements, false, false, bias, mg, gg, accelerometerBias,
+                ma, this);
 
         // check default values
         assertEquals(bax, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(bay, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(baz, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(accelerationX1.getValue().doubleValue(), bax, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(accelerationY1.getValue().doubleValue(), bay, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(accelerationZ1.getValue().doubleValue(), baz, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] accelerometerBias1 = calibrator.getAccelerometerBias();
+        final var accelerometerBias1 = calibrator.getAccelerometerBias();
         assertArrayEquals(accelerometerBias1, accelerometerBias, 0.0);
-        final double[] accelerometerBias2 = new double[3];
+        final var accelerometerBias2 = new double[3];
         calibrator.getAccelerometerBias(accelerometerBias2);
         assertArrayEquals(accelerometerBias1, accelerometerBias2, 0.0);
-        final Matrix ba1 = calibrator.getAccelerometerBiasAsMatrix();
+        final var ba1 = calibrator.getAccelerometerBiasAsMatrix();
         assertEquals(ba1, ba);
-        final Matrix ba2 = new Matrix(3, 1);
+        final var ba2 = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2);
         assertEquals(asx, calibrator.getAccelerometerSx(), 0.0);
         assertEquals(asy, calibrator.getAccelerometerSy(), 0.0);
@@ -6664,38 +6647,38 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(amyz, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(amzx, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(amzy, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
+        final var ma1 = calibrator.getAccelerometerMa();
         assertEquals(ma1, ma);
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getBiasX(), 0.0);
         assertEquals(bgy, calibrator.getBiasY(), 0.0);
         assertEquals(bgz, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed angularSpeedX1 = calibrator.getBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getBiasAngularSpeedX();
         assertEquals(angularSpeedX1.getValue().doubleValue(), bgx, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
-        final AngularSpeed angularSpeedY1 = calibrator.getBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getBiasAngularSpeedY();
         assertEquals(angularSpeedY1.getValue().doubleValue(), bgy, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
-        final AngularSpeed angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(angularSpeedZ1.getValue().doubleValue(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), bgx, 0.0);
         assertEquals(biasTriad1.getValueY(), bgy, 0.0);
         assertEquals(biasTriad1.getValueZ(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -6707,37 +6690,37 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(myz, calibrator.getInitialMyz(), 0.0);
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bias1, bias, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertEquals(rotationRate, calibrator.getTurntableRotationRate(), 0.0);
-        final AngularSpeed rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
+        final var rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
         assertEquals(rotationRate1.getValue().doubleValue(), rotationRate, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, rotationRate1.getUnit());
-        final AngularSpeed rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getTurntableRotationRateAsAngularSpeed(rotationRate2);
         assertEquals(rotationRate1, rotationRate2);
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
-        final NEDPosition nedPosition2 = new NEDPosition();
+        final var nedPosition2 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition2));
         assertTrue(nedPosition2.equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_BODY_KINEMATICS_MEASUREMENT,
@@ -6805,91 +6788,90 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testConstructor32() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor32() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double rotationRate = getTurntableRotationRate();
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final Collection<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final Matrix mg = generateCommonAxisMg();
-        final Matrix gg = generateGg();
+        final var rotationRate = getTurntableRotationRate();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var mg = generateCommonAxisMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
-        final double[] bias = bg.getBuffer();
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final Matrix ba = generateBa();
-        final Matrix ma = generateMa();
-        final double[] accelerometerBias = ba.getBuffer();
+        final var ba = generateBa();
+        final var ma = generateMa();
+        final var accelerometerBias = ba.getBuffer();
 
-        final double bax = ba.getElementAtIndex(0);
-        final double bay = ba.getElementAtIndex(1);
-        final double baz = ba.getElementAtIndex(2);
+        final var bax = ba.getElementAtIndex(0);
+        final var bay = ba.getElementAtIndex(1);
+        final var baz = ba.getElementAtIndex(2);
 
-        final double asx = ma.getElementAt(0, 0);
-        final double asy = ma.getElementAt(1, 1);
-        final double asz = ma.getElementAt(2, 2);
-        final double amxy = ma.getElementAt(0, 1);
-        final double amxz = ma.getElementAt(0, 2);
-        final double amyx = ma.getElementAt(1, 0);
-        final double amyz = ma.getElementAt(1, 2);
-        final double amzx = ma.getElementAt(2, 0);
-        final double amzy = ma.getElementAt(2, 1);
+        final var asx = ma.getElementAt(0, 0);
+        final var asy = ma.getElementAt(1, 1);
+        final var asz = ma.getElementAt(2, 2);
+        final var amxy = ma.getElementAt(0, 1);
+        final var amxz = ma.getElementAt(0, 2);
+        final var amyx = ma.getElementAt(1, 0);
+        final var amyz = ma.getElementAt(1, 2);
+        final var amzx = ma.getElementAt(2, 0);
+        final var amzy = ma.getElementAt(2, 1);
 
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(nedPosition,
-                rotationRate, timeInterval, measurements, false, false, bg,
-                mg, gg, ba, ma);
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(nedPosition, rotationRate, timeInterval,
+                measurements, false, false, bg, mg, gg, ba, ma);
 
         // check default values
         assertEquals(bax, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(bay, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(baz, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(accelerationX1.getValue().doubleValue(), bax, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(accelerationY1.getValue().doubleValue(), bay, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(accelerationZ1.getValue().doubleValue(), baz, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] accelerometerBias1 = calibrator.getAccelerometerBias();
+        final var accelerometerBias1 = calibrator.getAccelerometerBias();
         assertArrayEquals(accelerometerBias1, accelerometerBias, 0.0);
-        final double[] accelerometerBias2 = new double[3];
+        final var accelerometerBias2 = new double[3];
         calibrator.getAccelerometerBias(accelerometerBias2);
         assertArrayEquals(accelerometerBias1, accelerometerBias2, 0.0);
-        final Matrix ba1 = calibrator.getAccelerometerBiasAsMatrix();
+        final var ba1 = calibrator.getAccelerometerBiasAsMatrix();
         assertEquals(ba1, ba);
-        final Matrix ba2 = new Matrix(3, 1);
+        final var ba2 = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2);
         assertEquals(asx, calibrator.getAccelerometerSx(), 0.0);
         assertEquals(asy, calibrator.getAccelerometerSy(), 0.0);
@@ -6900,38 +6882,38 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(amyz, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(amzx, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(amzy, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
+        final var ma1 = calibrator.getAccelerometerMa();
         assertEquals(ma1, ma);
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getBiasX(), 0.0);
         assertEquals(bgy, calibrator.getBiasY(), 0.0);
         assertEquals(bgz, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed angularSpeedX1 = calibrator.getBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getBiasAngularSpeedX();
         assertEquals(angularSpeedX1.getValue().doubleValue(), bgx, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
-        final AngularSpeed angularSpeedY1 = calibrator.getBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getBiasAngularSpeedY();
         assertEquals(angularSpeedY1.getValue().doubleValue(), bgy, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
-        final AngularSpeed angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(angularSpeedZ1.getValue().doubleValue(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), bgx, 0.0);
         assertEquals(biasTriad1.getValueY(), bgy, 0.0);
         assertEquals(biasTriad1.getValueZ(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -6943,37 +6925,37 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(myz, calibrator.getInitialMyz(), 0.0);
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bias1, bias, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertEquals(rotationRate, calibrator.getTurntableRotationRate(), 0.0);
-        final AngularSpeed rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
+        final var rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
         assertEquals(rotationRate1.getValue().doubleValue(), rotationRate, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, rotationRate1.getUnit());
-        final AngularSpeed rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getTurntableRotationRateAsAngularSpeed(rotationRate2);
         assertEquals(rotationRate1, rotationRate2);
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
-        final NEDPosition nedPosition2 = new NEDPosition();
+        final var nedPosition2 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition2));
         assertTrue(nedPosition2.equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_BODY_KINEMATICS_MEASUREMENT,
@@ -7048,91 +7030,90 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testConstructor33() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor33() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double rotationRate = getTurntableRotationRate();
-        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-        final Collection<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-        final Matrix bg = generateBg();
-        final Matrix mg = generateCommonAxisMg();
-        final Matrix gg = generateGg();
+        final var rotationRate = getTurntableRotationRate();
+        final var timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+        final var bg = generateBg();
+        final var mg = generateCommonAxisMg();
+        final var gg = generateGg();
 
-        final double bgx = bg.getElementAtIndex(0);
-        final double bgy = bg.getElementAtIndex(1);
-        final double bgz = bg.getElementAtIndex(2);
-        final double[] bias = bg.getBuffer();
+        final var bgx = bg.getElementAtIndex(0);
+        final var bgy = bg.getElementAtIndex(1);
+        final var bgz = bg.getElementAtIndex(2);
+        final var bias = bg.getBuffer();
 
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
-        final Matrix ba = generateBa();
-        final Matrix ma = generateMa();
-        final double[] accelerometerBias = ba.getBuffer();
+        final var ba = generateBa();
+        final var ma = generateMa();
+        final var accelerometerBias = ba.getBuffer();
 
-        final double bax = ba.getElementAtIndex(0);
-        final double bay = ba.getElementAtIndex(1);
-        final double baz = ba.getElementAtIndex(2);
+        final var bax = ba.getElementAtIndex(0);
+        final var bay = ba.getElementAtIndex(1);
+        final var baz = ba.getElementAtIndex(2);
 
-        final double asx = ma.getElementAt(0, 0);
-        final double asy = ma.getElementAt(1, 1);
-        final double asz = ma.getElementAt(2, 2);
-        final double amxy = ma.getElementAt(0, 1);
-        final double amxz = ma.getElementAt(0, 2);
-        final double amyx = ma.getElementAt(1, 0);
-        final double amyz = ma.getElementAt(1, 2);
-        final double amzx = ma.getElementAt(2, 0);
-        final double amzy = ma.getElementAt(2, 1);
+        final var asx = ma.getElementAt(0, 0);
+        final var asy = ma.getElementAt(1, 1);
+        final var asz = ma.getElementAt(2, 2);
+        final var amxy = ma.getElementAt(0, 1);
+        final var amxz = ma.getElementAt(0, 2);
+        final var amyx = ma.getElementAt(1, 0);
+        final var amyz = ma.getElementAt(1, 2);
+        final var amzx = ma.getElementAt(2, 0);
+        final var amzy = ma.getElementAt(2, 1);
 
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(nedPosition,
-                rotationRate, timeInterval, measurements, false, false,
-                bg, mg, gg, ba, ma, this);
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(nedPosition, rotationRate, timeInterval,
+                measurements, false, false, bg, mg, gg, ba, ma, this);
 
         // check default values
         assertEquals(bax, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(bay, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(baz, calibrator.getAccelerometerBiasZ(), 0.0);
-        final Acceleration accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var accelerationX1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(accelerationX1.getValue().doubleValue(), bax, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
-        final Acceleration accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationX2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(accelerationX2);
         assertEquals(accelerationX1, accelerationX2);
-        final Acceleration accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var accelerationY1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(accelerationY1.getValue().doubleValue(), bay, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
-        final Acceleration accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationY2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(accelerationY2);
         assertEquals(accelerationY1, accelerationY2);
-        final Acceleration accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var accelerationZ1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(accelerationZ1.getValue().doubleValue(), baz, 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
-        final Acceleration accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var accelerationZ2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(accelerationZ2);
         assertEquals(accelerationZ1, accelerationZ2);
-        final double[] accelerometerBias1 = calibrator.getAccelerometerBias();
+        final var accelerometerBias1 = calibrator.getAccelerometerBias();
         assertArrayEquals(accelerometerBias1, accelerometerBias, 0.0);
-        final double[] accelerometerBias2 = new double[3];
+        final var accelerometerBias2 = new double[3];
         calibrator.getAccelerometerBias(accelerometerBias2);
         assertArrayEquals(accelerometerBias1, accelerometerBias2, 0.0);
-        final Matrix ba1 = calibrator.getAccelerometerBiasAsMatrix();
+        final var ba1 = calibrator.getAccelerometerBiasAsMatrix();
         assertEquals(ba1, ba);
-        final Matrix ba2 = new Matrix(3, 1);
+        final var ba2 = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2);
         assertEquals(asx, calibrator.getAccelerometerSx(), 0.0);
         assertEquals(asy, calibrator.getAccelerometerSy(), 0.0);
@@ -7143,38 +7124,38 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(amyz, calibrator.getAccelerometerMyz(), 0.0);
         assertEquals(amzx, calibrator.getAccelerometerMzx(), 0.0);
         assertEquals(amzy, calibrator.getAccelerometerMzy(), 0.0);
-        final Matrix ma1 = calibrator.getAccelerometerMa();
+        final var ma1 = calibrator.getAccelerometerMa();
         assertEquals(ma1, ma);
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
         assertEquals(ma1, ma2);
         assertEquals(bgx, calibrator.getBiasX(), 0.0);
         assertEquals(bgy, calibrator.getBiasY(), 0.0);
         assertEquals(bgz, calibrator.getBiasZ(), 0.0);
-        final AngularSpeed angularSpeedX1 = calibrator.getBiasAngularSpeedX();
+        final var angularSpeedX1 = calibrator.getBiasAngularSpeedX();
         assertEquals(angularSpeedX1.getValue().doubleValue(), bgx, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(angularSpeedX2);
         assertEquals(angularSpeedX1, angularSpeedX2);
-        final AngularSpeed angularSpeedY1 = calibrator.getBiasAngularSpeedY();
+        final var angularSpeedY1 = calibrator.getBiasAngularSpeedY();
         assertEquals(angularSpeedY1.getValue().doubleValue(), bgy, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedY2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedY(angularSpeedY2);
         assertEquals(angularSpeedY1, angularSpeedY2);
-        final AngularSpeed angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
+        final var angularSpeedZ1 = calibrator.getBiasAngularSpeedZ();
         assertEquals(angularSpeedZ1.getValue().doubleValue(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedZ2 = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(angularSpeedZ2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
-        final AngularSpeedTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(biasTriad1.getValueX(), bgx, 0.0);
         assertEquals(biasTriad1.getValueY(), bgy, 0.0);
         assertEquals(biasTriad1.getValueZ(), bgz, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, biasTriad1.getUnit());
-        final AngularSpeedTriad biasTriad2 = new AngularSpeedTriad();
+        final var biasTriad2 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -7186,37 +7167,37 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(myz, calibrator.getInitialMyz(), 0.0);
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = calibrator.getBias();
+        final var bias1 = calibrator.getBias();
         assertArrayEquals(bias1, bias, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
+        final var bg1 = calibrator.getBiasAsMatrix();
         assertEquals(bg1, bg);
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
         assertEquals(bg1, bg2);
-        final Matrix mg1 = calibrator.getInitialMg();
+        final var mg1 = calibrator.getInitialMg();
         assertEquals(mg1, mg);
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
         assertEquals(mg1, mg2);
-        final Matrix gg1 = calibrator.getInitialGg();
+        final var gg1 = calibrator.getInitialGg();
         assertEquals(gg1, gg);
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
         assertEquals(gg1, gg2);
         assertEquals(rotationRate, calibrator.getTurntableRotationRate(), 0.0);
-        final AngularSpeed rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
+        final var rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
         assertEquals(rotationRate1.getValue().doubleValue(), rotationRate, 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, rotationRate1.getUnit());
-        final AngularSpeed rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var rotationRate2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getTurntableRotationRateAsAngularSpeed(rotationRate2);
         assertEquals(rotationRate1, rotationRate2);
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
-        final NEDPosition nedPosition2 = new NEDPosition();
+        final var nedPosition2 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition2));
         assertTrue(nedPosition2.equals(nedPosition, LARGE_ABSOLUTE_ERROR));
         assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.STANDARD_DEVIATION_BODY_KINEMATICS_MEASUREMENT,
@@ -7291,15 +7272,15 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetAccelerometerBiasX() throws LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetAccelerometerBiasX() throws LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
 
         // set new value
-        final Matrix ba = generateBa();
-        final double bax = ba.getElementAtIndex(0);
+        final var ba = generateBa();
+        final var bax = ba.getElementAtIndex(0);
 
         calibrator.setAccelerometerBiasX(bax);
 
@@ -7308,15 +7289,15 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetAccelerometerBiasY() throws LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetAccelerometerBiasY() throws LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
 
         // set new value
-        final Matrix ba = generateBa();
-        final double bay = ba.getElementAtIndex(1);
+        final var ba = generateBa();
+        final var bay = ba.getElementAtIndex(1);
 
         calibrator.setAccelerometerBiasY(bay);
 
@@ -7325,15 +7306,15 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetAccelerometerBiasZ() throws LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetAccelerometerBiasZ() throws LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
 
         // set new value
-        final Matrix ba = generateBa();
-        final double baz = ba.getElementAtIndex(2);
+        final var ba = generateBa();
+        final var baz = ba.getElementAtIndex(2);
 
         calibrator.setAccelerometerBiasZ(baz);
 
@@ -7342,89 +7323,88 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetAccelerometerBiasXAsAcceleration() throws LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetAccelerometerBiasXAsAcceleration() throws LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
-        final Acceleration acceleration1 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var acceleration1 = calibrator.getAccelerometerBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
 
         // set new value
-        final Matrix ba = generateBa();
-        final double bax = ba.getElementAtIndex(0);
-        final Acceleration acceleration2 = new Acceleration(bax, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var ba = generateBa();
+        final var bax = ba.getElementAtIndex(0);
+        final var acceleration2 = new Acceleration(bax, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.setAccelerometerBiasX(acceleration2);
 
         // check
-        final Acceleration acceleration3 = calibrator.getAccelerometerBiasXAsAcceleration();
-        final Acceleration acceleration4 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var acceleration3 = calibrator.getAccelerometerBiasXAsAcceleration();
+        final var acceleration4 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasXAsAcceleration(acceleration4);
         assertEquals(acceleration2, acceleration3);
         assertEquals(acceleration2, acceleration4);
     }
 
     @Test
-    public void testGetSetAccelerometerBiasYAsAcceleration() throws LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetAccelerometerBiasYAsAcceleration() throws LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
-        final Acceleration acceleration1 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var acceleration1 = calibrator.getAccelerometerBiasYAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
 
         // set new value
-        final Matrix ba = generateBa();
-        final double bay = ba.getElementAtIndex(1);
-        final Acceleration acceleration2 = new Acceleration(bay, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var ba = generateBa();
+        final var bay = ba.getElementAtIndex(1);
+        final var acceleration2 = new Acceleration(bay, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.setAccelerometerBiasY(acceleration2);
 
         // check
-        final Acceleration acceleration3 = calibrator.getAccelerometerBiasYAsAcceleration();
-        final Acceleration acceleration4 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var acceleration3 = calibrator.getAccelerometerBiasYAsAcceleration();
+        final var acceleration4 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasYAsAcceleration(acceleration4);
         assertEquals(acceleration2, acceleration3);
         assertEquals(acceleration2, acceleration4);
     }
 
     @Test
-    public void testGetSetAccelerometerBiasZAsAcceleration() throws LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetAccelerometerBiasZAsAcceleration() throws LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
-        final Acceleration acceleration1 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var acceleration1 = calibrator.getAccelerometerBiasZAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
 
         // set new value
-        final Matrix ba = generateBa();
-        final double baz = ba.getElementAtIndex(2);
-        final Acceleration acceleration2 = new Acceleration(baz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var ba = generateBa();
+        final var baz = ba.getElementAtIndex(2);
+        final var acceleration2 = new Acceleration(baz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.setAccelerometerBiasZ(acceleration2);
 
         // check
-        final Acceleration acceleration3 = calibrator.getAccelerometerBiasZAsAcceleration();
-        final Acceleration acceleration4 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var acceleration3 = calibrator.getAccelerometerBiasZAsAcceleration();
+        final var acceleration4 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getAccelerometerBiasZAsAcceleration(acceleration4);
         assertEquals(acceleration2, acceleration3);
         assertEquals(acceleration2, acceleration4);
     }
 
     @Test
-    public void testSetAccelerometerBias1() throws LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testSetAccelerometerBias1() throws LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasY(), 0.0);
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
-
-
+        
         // set new values
-        final Matrix ba = generateBa();
-        final double bax = ba.getElementAtIndex(0);
-        final double bay = ba.getElementAtIndex(1);
-        final double baz = ba.getElementAtIndex(2);
+        final var ba = generateBa();
+        final var bax = ba.getElementAtIndex(0);
+        final var bay = ba.getElementAtIndex(1);
+        final var baz = ba.getElementAtIndex(2);
 
         calibrator.setAccelerometerBias(bax, bay, baz);
 
@@ -7435,8 +7415,8 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testSetAccelerometerBias2() throws LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testSetAccelerometerBias2() throws LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerBiasX(), 0.0);
@@ -7444,14 +7424,14 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(0.0, calibrator.getAccelerometerBiasZ(), 0.0);
 
         // set new values
-        final Matrix ba = generateBa();
-        final double bax = ba.getElementAtIndex(0);
-        final double bay = ba.getElementAtIndex(1);
-        final double baz = ba.getElementAtIndex(2);
+        final var ba = generateBa();
+        final var bax = ba.getElementAtIndex(0);
+        final var bay = ba.getElementAtIndex(1);
+        final var baz = ba.getElementAtIndex(2);
 
-        final Acceleration accelerationX = new Acceleration(bax, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration accelerationY = new Acceleration(bay, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration accelerationZ = new Acceleration(baz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var accelerationX = new Acceleration(bax, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var accelerationY = new Acceleration(bay, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var accelerationZ = new Acceleration(baz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
         calibrator.setAccelerometerBias(accelerationX, accelerationY, accelerationZ);
 
@@ -7462,21 +7442,21 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetAccelerometerBiasArray() throws LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetAccelerometerBiasArray() throws LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
-        assertArrayEquals(calibrator.getAccelerometerBias(), new double[3], 0.0);
+        assertArrayEquals(new double[3], calibrator.getAccelerometerBias(), 0.0);
 
         // set new value
-        final Matrix ba = generateBa();
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bias = ba.getBuffer();
 
         calibrator.setAccelerometerBias(bias);
 
         // check
-        final double[] bias1 = calibrator.getAccelerometerBias();
-        final double[] bias2 = new double[3];
+        final var bias1 = calibrator.getAccelerometerBias();
+        final var bias2 = new double[3];
         calibrator.getAccelerometerBias(bias2);
 
         assertArrayEquals(bias, bias1, 0.0);
@@ -7488,19 +7468,19 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetAccelerometerBiasAsMatrix() throws WrongSizeException, LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetAccelerometerBiasAsMatrix() throws WrongSizeException, LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertEquals(new Matrix(3, 1), calibrator.getAccelerometerBiasAsMatrix());
 
         // set new value
-        final Matrix ba = generateBa();
+        final var ba = generateBa();
         calibrator.setAccelerometerBias(ba);
 
         // check
-        final Matrix ba1 = calibrator.getAccelerometerBiasAsMatrix();
-        final Matrix ba2 = new Matrix(3, 1);
+        final var ba1 = calibrator.getAccelerometerBiasAsMatrix();
+        final var ba2 = new Matrix(3, 1);
         calibrator.getAccelerometerBiasAsMatrix(ba2);
 
         assertEquals(ba, ba1);
@@ -7518,15 +7498,15 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetAccelerometerSx() throws WrongSizeException, LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetAccelerometerSx() throws WrongSizeException, LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
 
         // set new value
-        final Matrix ma = generateMa();
-        final double asx = ma.getElementAt(0, 0);
+        final var ma = generateMa();
+        final var asx = ma.getElementAt(0, 0);
 
         calibrator.setAccelerometerSx(asx);
 
@@ -7535,15 +7515,15 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetAccelerometerSy() throws WrongSizeException, LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetAccelerometerSy() throws WrongSizeException, LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getAccelerometerSy(), 0.0);
 
         // set new value
-        final Matrix ma = generateMa();
-        final double asy = ma.getElementAt(1, 1);
+        final var ma = generateMa();
+        final var asy = ma.getElementAt(1, 1);
 
         calibrator.setAccelerometerSy(asy);
 
@@ -7552,15 +7532,15 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetAccelerometerSz() throws WrongSizeException, LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetAccelerometerSz() throws WrongSizeException, LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getAccelerometerSz(), 0.0);
 
         // set new value
-        final Matrix ma = generateMa();
-        final double asz = ma.getElementAt(2, 2);
+        final var ma = generateMa();
+        final var asz = ma.getElementAt(2, 2);
 
         calibrator.setAccelerometerSz(asz);
 
@@ -7569,15 +7549,15 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetAccelerometerMxy() throws WrongSizeException, LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetAccelerometerMxy() throws WrongSizeException, LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getAccelerometerMxy(), 0.0);
 
         // set new value
-        final Matrix ma = generateMa();
-        final double amxy = ma.getElementAt(0, 1);
+        final var ma = generateMa();
+        final var amxy = ma.getElementAt(0, 1);
 
         calibrator.setAccelerometerMxy(amxy);
 
@@ -7586,15 +7566,15 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetAccelerometerMxz() throws WrongSizeException, LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetAccelerometerMxz() throws WrongSizeException, LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getAccelerometerMxz(), 0.0);
 
         // set new value
-        final Matrix ma = generateMa();
-        final double amxz = ma.getElementAt(0, 2);
+        final var ma = generateMa();
+        final var amxz = ma.getElementAt(0, 2);
 
         calibrator.setAccelerometerMxz(amxz);
 
@@ -7603,15 +7583,15 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetAccelerometerMyx() throws WrongSizeException, LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetAccelerometerMyx() throws WrongSizeException, LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getAccelerometerMyx(), 0.0);
 
         // set new value
-        final Matrix ma = generateMa();
-        final double amyx = ma.getElementAt(1, 0);
+        final var ma = generateMa();
+        final var amyx = ma.getElementAt(1, 0);
 
         calibrator.setAccelerometerMyx(amyx);
 
@@ -7620,15 +7600,15 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetAccelerometerMyz() throws WrongSizeException, LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetAccelerometerMyz() throws WrongSizeException, LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getAccelerometerMyz(), 0.0);
 
         // set new value
-        final Matrix ma = generateMa();
-        final double amyz = ma.getElementAt(1, 2);
+        final var ma = generateMa();
+        final var amyz = ma.getElementAt(1, 2);
 
         calibrator.setAccelerometerMyz(amyz);
 
@@ -7637,15 +7617,15 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetAccelerometerMzx() throws WrongSizeException, LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetAccelerometerMzx() throws WrongSizeException, LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getAccelerometerMzx(), 0.0);
 
         // set new value
-        final Matrix ma = generateMa();
-        final double amzx = ma.getElementAt(2, 0);
+        final var ma = generateMa();
+        final var amzx = ma.getElementAt(2, 0);
 
         calibrator.setAccelerometerMzx(amzx);
 
@@ -7654,15 +7634,15 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetAccelerometerMzy() throws WrongSizeException, LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetAccelerometerMzy() throws WrongSizeException, LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
 
         // set new value
-        final Matrix ma = generateMa();
-        final double amzy = ma.getElementAt(2, 1);
+        final var ma = generateMa();
+        final var amzy = ma.getElementAt(2, 1);
 
         calibrator.setAccelerometerMzy(amzy);
 
@@ -7671,8 +7651,8 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetAccelerometerScalingFactors() throws WrongSizeException, LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetAccelerometerScalingFactors() throws WrongSizeException, LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
@@ -7680,10 +7660,10 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(0.0, calibrator.getAccelerometerSz(), 0.0);
 
         // set new values
-        final Matrix ma = generateMa();
-        final double asx = ma.getElementAt(0, 0);
-        final double asy = ma.getElementAt(1, 1);
-        final double asz = ma.getElementAt(2, 2);
+        final var ma = generateMa();
+        final var asx = ma.getElementAt(0, 0);
+        final var asy = ma.getElementAt(1, 1);
+        final var asz = ma.getElementAt(2, 2);
 
         calibrator.setAccelerometerScalingFactors(asx, asy, asz);
 
@@ -7694,8 +7674,8 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetAccelerometerCrossCouplingErrors() throws WrongSizeException, LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetAccelerometerCrossCouplingErrors() throws WrongSizeException, LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerMxy(), 0.0);
@@ -7706,13 +7686,13 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
 
         // set new values
-        final Matrix ma = generateMa();
-        final double amxy = ma.getElementAt(0, 1);
-        final double amxz = ma.getElementAt(0, 2);
-        final double amyx = ma.getElementAt(1, 0);
-        final double amyz = ma.getElementAt(1, 2);
-        final double amzx = ma.getElementAt(2, 0);
-        final double amzy = ma.getElementAt(2, 1);
+        final var ma = generateMa();
+        final var amxy = ma.getElementAt(0, 1);
+        final var amxz = ma.getElementAt(0, 2);
+        final var amyx = ma.getElementAt(1, 0);
+        final var amyz = ma.getElementAt(1, 2);
+        final var amzx = ma.getElementAt(2, 0);
+        final var amzy = ma.getElementAt(2, 1);
 
         calibrator.setAccelerometerCrossCouplingErrors(amxy, amxz, amyx, amyz, amzx, amzy);
 
@@ -7726,9 +7706,8 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetAccelerometerScalingFactorsAndCrossCouplingErrors() throws WrongSizeException,
-            LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetAccelerometerScalingFactorsAndCrossCouplingErrors() throws WrongSizeException, LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
@@ -7742,16 +7721,16 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
 
         // set new values
-        final Matrix ma = generateMa();
-        final double asx = ma.getElementAt(0, 0);
-        final double asy = ma.getElementAt(1, 1);
-        final double asz = ma.getElementAt(2, 2);
-        final double amxy = ma.getElementAt(0, 1);
-        final double amxz = ma.getElementAt(0, 2);
-        final double amyx = ma.getElementAt(1, 0);
-        final double amyz = ma.getElementAt(1, 2);
-        final double amzx = ma.getElementAt(2, 0);
-        final double amzy = ma.getElementAt(2, 1);
+        final var ma = generateMa();
+        final var asx = ma.getElementAt(0, 0);
+        final var asy = ma.getElementAt(1, 1);
+        final var asz = ma.getElementAt(2, 2);
+        final var amxy = ma.getElementAt(0, 1);
+        final var amxz = ma.getElementAt(0, 2);
+        final var amyx = ma.getElementAt(1, 0);
+        final var amyz = ma.getElementAt(1, 2);
+        final var amzx = ma.getElementAt(2, 0);
+        final var amzy = ma.getElementAt(2, 1);
 
         calibrator.setAccelerometerScalingFactorsAndCrossCouplingErrors(asx, asy, asz, amxy, amxz, amyx, amyz, amzx,
                 amzy);
@@ -7769,8 +7748,8 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetAccelerometerMa() throws WrongSizeException, LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetAccelerometerMa() throws WrongSizeException, LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getAccelerometerSx(), 0.0);
@@ -7784,22 +7763,22 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(0.0, calibrator.getAccelerometerMzy(), 0.0);
 
         // set new values
-        final Matrix ma = generateMa();
-        final double asx = ma.getElementAt(0, 0);
-        final double asy = ma.getElementAt(1, 1);
-        final double asz = ma.getElementAt(2, 2);
-        final double amxy = ma.getElementAt(0, 1);
-        final double amxz = ma.getElementAt(0, 2);
-        final double amyx = ma.getElementAt(1, 0);
-        final double amyz = ma.getElementAt(1, 2);
-        final double amzx = ma.getElementAt(2, 0);
-        final double amzy = ma.getElementAt(2, 1);
+        final var ma = generateMa();
+        final var asx = ma.getElementAt(0, 0);
+        final var asy = ma.getElementAt(1, 1);
+        final var asz = ma.getElementAt(2, 2);
+        final var amxy = ma.getElementAt(0, 1);
+        final var amxz = ma.getElementAt(0, 2);
+        final var amyx = ma.getElementAt(1, 0);
+        final var amyz = ma.getElementAt(1, 2);
+        final var amzx = ma.getElementAt(2, 0);
+        final var amzy = ma.getElementAt(2, 1);
 
         calibrator.setAccelerometerMa(ma);
 
         // check
-        final Matrix ma1 = calibrator.getAccelerometerMa();
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = calibrator.getAccelerometerMa();
+        final var ma2 = new Matrix(3, 3);
         calibrator.getAccelerometerMa(ma2);
 
         assertEquals(ma, ma1);
@@ -7827,15 +7806,15 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetBiasX() throws LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetBiasX() throws LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
 
         // set new value
-        final Matrix bg = generateBg();
-        final double bx = bg.getElementAtIndex(0);
+        final var bg = generateBg();
+        final var bx = bg.getElementAtIndex(0);
 
         calibrator.setBiasX(bx);
 
@@ -7844,15 +7823,15 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetBiasY() throws LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetBiasY() throws LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getBiasY(), 0.0);
 
         // set new value
-        final Matrix bg = generateBg();
-        final double by = bg.getElementAtIndex(1);
+        final var bg = generateBg();
+        final var by = bg.getElementAtIndex(1);
 
         calibrator.setBiasY(by);
 
@@ -7861,15 +7840,15 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetBiasZ() throws LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetBiasZ() throws LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
 
         // set new value
-        final Matrix bg = generateBg();
-        final double bz = bg.getElementAtIndex(2);
+        final var bg = generateBg();
+        final var bz = bg.getElementAtIndex(2);
 
         calibrator.setBiasZ(bz);
 
@@ -7878,24 +7857,24 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetBiasAngularSpeedX() throws LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetBiasAngularSpeedX() throws LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
-        final AngularSpeed angularSpeed1 = calibrator.getBiasAngularSpeedX();
+        final var angularSpeed1 = calibrator.getBiasAngularSpeedX();
         assertEquals(0.0, angularSpeed1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeed1.getUnit());
 
         // set new value
-        final Matrix bg = generateBg();
-        final double bx = bg.getElementAtIndex(0);
-        final AngularSpeed angularSpeed2 = new AngularSpeed(bx, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bg = generateBg();
+        final var bx = bg.getElementAtIndex(0);
+        final var angularSpeed2 = new AngularSpeed(bx, AngularSpeedUnit.RADIANS_PER_SECOND);
 
         calibrator.setBiasX(angularSpeed2);
 
         // check
-        final AngularSpeed angularSpeed3 = calibrator.getBiasAngularSpeedX();
-        final AngularSpeed angularSpeed4 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeed3 = calibrator.getBiasAngularSpeedX();
+        final var angularSpeed4 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedX(angularSpeed4);
 
         assertEquals(angularSpeed2, angularSpeed3);
@@ -7903,24 +7882,24 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetBiasAngularSpeedY() throws LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetBiasAngularSpeedY() throws LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
-        final AngularSpeed angularSpeed1 = calibrator.getBiasAngularSpeedY();
+        final var angularSpeed1 = calibrator.getBiasAngularSpeedY();
         assertEquals(0.0, angularSpeed1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeed1.getUnit());
 
         // set new value
-        final Matrix bg = generateBg();
-        final double by = bg.getElementAtIndex(1);
-        final AngularSpeed angularSpeed2 = new AngularSpeed(by, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bg = generateBg();
+        final var by = bg.getElementAtIndex(1);
+        final var angularSpeed2 = new AngularSpeed(by, AngularSpeedUnit.RADIANS_PER_SECOND);
 
         calibrator.setBiasY(angularSpeed2);
 
         // check
-        final AngularSpeed angularSpeed3 = calibrator.getBiasAngularSpeedY();
-        final AngularSpeed angularSpeed4 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeed3 = calibrator.getBiasAngularSpeedY();
+        final var angularSpeed4 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedY(angularSpeed4);
 
         assertEquals(angularSpeed2, angularSpeed3);
@@ -7928,24 +7907,24 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetBiasAngularSpeedZ() throws LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetBiasAngularSpeedZ() throws LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
-        final AngularSpeed angularSpeed1 = calibrator.getBiasAngularSpeedY();
+        final var angularSpeed1 = calibrator.getBiasAngularSpeedY();
         assertEquals(0.0, angularSpeed1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeed1.getUnit());
 
         // set new value
-        final Matrix bg = generateBg();
-        final double bz = bg.getElementAtIndex(2);
-        final AngularSpeed angularSpeed2 = new AngularSpeed(bz, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bg = generateBg();
+        final var bz = bg.getElementAtIndex(2);
+        final var angularSpeed2 = new AngularSpeed(bz, AngularSpeedUnit.RADIANS_PER_SECOND);
 
         calibrator.setBiasZ(angularSpeed2);
 
         // check
-        final AngularSpeed angularSpeed3 = calibrator.getBiasAngularSpeedZ();
-        final AngularSpeed angularSpeed4 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeed3 = calibrator.getBiasAngularSpeedZ();
+        final var angularSpeed4 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getBiasAngularSpeedZ(angularSpeed4);
 
         assertEquals(angularSpeed2, angularSpeed3);
@@ -7953,8 +7932,8 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testSetBiasCoordinates1() throws LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testSetBiasCoordinates1() throws LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
@@ -7962,10 +7941,10 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
 
         // set new values
-        final Matrix bg = generateBg();
-        final double bx = bg.getElementAtIndex(0);
-        final double by = bg.getElementAtIndex(1);
-        final double bz = bg.getElementAtIndex(2);
+        final var bg = generateBg();
+        final var bx = bg.getElementAtIndex(0);
+        final var by = bg.getElementAtIndex(1);
+        final var bz = bg.getElementAtIndex(2);
 
         calibrator.setBiasCoordinates(bx, by, bz);
 
@@ -7976,8 +7955,8 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testSetBiasCoordinates2() throws LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testSetBiasCoordinates2() throws LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
@@ -7985,14 +7964,14 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
 
         // set new values
-        final Matrix bg = generateBg();
-        final double bx = bg.getElementAtIndex(0);
-        final double by = bg.getElementAtIndex(1);
-        final double bz = bg.getElementAtIndex(2);
+        final var bg = generateBg();
+        final var bx = bg.getElementAtIndex(0);
+        final var by = bg.getElementAtIndex(1);
+        final var bz = bg.getElementAtIndex(2);
 
-        final AngularSpeed angularSpeedX = new AngularSpeed(bx, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed angularSpeedY = new AngularSpeed(by, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed angularSpeedZ = new AngularSpeed(bz, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedX = new AngularSpeed(bx, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedY = new AngularSpeed(by, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedZ = new AngularSpeed(bz, AngularSpeedUnit.RADIANS_PER_SECOND);
 
         calibrator.setBiasCoordinates(angularSpeedX, angularSpeedY, angularSpeedZ);
 
@@ -8003,26 +7982,26 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetBiasAsTriad() throws LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetBiasAsTriad() throws LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default values
-        final AngularSpeedTriad triad1 = calibrator.getBiasAsTriad();
+        final var triad1 = calibrator.getBiasAsTriad();
         assertEquals(0.0, triad1.getValueX(), 0.0);
         assertEquals(0.0, triad1.getValueY(), 0.0);
         assertEquals(0.0, triad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, triad1.getUnit());
 
         // set new value
-        final Matrix bg = generateBg();
-        final AngularSpeedTriad triad2 = new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var bg = generateBg();
+        final var triad2 = new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND);
         triad2.setValueCoordinates(bg);
 
         calibrator.setBias(triad2);
 
         // check
-        final AngularSpeedTriad triad3 = calibrator.getBiasAsTriad();
-        final AngularSpeedTriad triad4 = new AngularSpeedTriad();
+        final var triad3 = calibrator.getBiasAsTriad();
+        final var triad4 = new AngularSpeedTriad();
         calibrator.getBiasAsTriad(triad4);
 
         assertEquals(triad2, triad3);
@@ -8030,15 +8009,15 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetInitialSx() throws WrongSizeException, LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetInitialSx() throws WrongSizeException, LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
 
         // set new value
-        final Matrix mg = generateCommonAxisMg();
-        final double sx = mg.getElementAt(0, 0);
+        final var mg = generateCommonAxisMg();
+        final var sx = mg.getElementAt(0, 0);
 
         calibrator.setInitialSx(sx);
 
@@ -8047,15 +8026,15 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetInitialSy() throws WrongSizeException, LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetInitialSy() throws WrongSizeException, LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialSy(), 0.0);
 
         // set new value
-        final Matrix mg = generateCommonAxisMg();
-        final double sy = mg.getElementAt(1, 1);
+        final var mg = generateCommonAxisMg();
+        final var sy = mg.getElementAt(1, 1);
 
         calibrator.setInitialSy(sy);
 
@@ -8064,15 +8043,15 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetInitialSz() throws WrongSizeException, LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetInitialSz() throws WrongSizeException, LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialSz(), 0.0);
 
         // set new value
-        final Matrix mg = generateCommonAxisMg();
-        final double sz = mg.getElementAt(2, 2);
+        final var mg = generateCommonAxisMg();
+        final var sz = mg.getElementAt(2, 2);
 
         calibrator.setInitialSz(sz);
 
@@ -8081,15 +8060,15 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetInitialMxy() throws WrongSizeException, LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetInitialMxy() throws WrongSizeException, LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
 
         // set new value
-        final Matrix mg = generateCommonAxisMg();
-        final double mxy = mg.getElementAt(0, 1);
+        final var mg = generateCommonAxisMg();
+        final var mxy = mg.getElementAt(0, 1);
 
         calibrator.setInitialMxy(mxy);
 
@@ -8098,15 +8077,15 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetInitialMxz() throws WrongSizeException, LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetInitialMxz() throws WrongSizeException, LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
 
         // set new value
-        final Matrix mg = generateCommonAxisMg();
-        final double mxz = mg.getElementAt(0, 2);
+        final var mg = generateCommonAxisMg();
+        final var mxz = mg.getElementAt(0, 2);
 
         calibrator.setInitialMxz(mxz);
 
@@ -8115,15 +8094,15 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetInitialMyx() throws WrongSizeException, LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetInitialMyx() throws WrongSizeException, LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
 
         // set new value
-        final Matrix mg = generateCommonAxisMg();
-        final double myx = mg.getElementAt(1, 0);
+        final var mg = generateCommonAxisMg();
+        final var myx = mg.getElementAt(1, 0);
 
         calibrator.setInitialMyx(myx);
 
@@ -8132,15 +8111,15 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetInitialMyz() throws WrongSizeException, LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetInitialMyz() throws WrongSizeException, LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
 
         // set new value
-        final Matrix mg = generateCommonAxisMg();
-        final double myz = mg.getElementAt(1, 2);
+        final var mg = generateCommonAxisMg();
+        final var myz = mg.getElementAt(1, 2);
 
         calibrator.setInitialMyz(myz);
 
@@ -8149,15 +8128,15 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetInitialMzx() throws WrongSizeException, LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetInitialMzx() throws WrongSizeException, LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
 
         // set new value
-        final Matrix mg = generateCommonAxisMg();
-        final double mzx = mg.getElementAt(2, 0);
+        final var mg = generateCommonAxisMg();
+        final var mzx = mg.getElementAt(2, 0);
 
         calibrator.setInitialMzx(mzx);
 
@@ -8166,15 +8145,15 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetInitialMzy() throws WrongSizeException, LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetInitialMzy() throws WrongSizeException, LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         // set new value
-        final Matrix mg = generateCommonAxisMg();
-        final double mzy = mg.getElementAt(2, 1);
+        final var mg = generateCommonAxisMg();
+        final var mzy = mg.getElementAt(2, 1);
 
         calibrator.setInitialMzy(mzy);
 
@@ -8183,8 +8162,8 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testSetInitialScalingFactors() throws WrongSizeException, LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testSetInitialScalingFactors() throws WrongSizeException, LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -8192,10 +8171,10 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(0.0, calibrator.getInitialSz(), 0.0);
 
         // set new values
-        final Matrix mg = generateCommonAxisMg();
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
+        final var mg = generateCommonAxisMg();
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
 
         calibrator.setInitialScalingFactors(sx, sy, sz);
 
@@ -8206,8 +8185,8 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testSetInitialCrossCouplingErrors() throws WrongSizeException, LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testSetInitialCrossCouplingErrors() throws WrongSizeException, LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
@@ -8218,13 +8197,13 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         // set new values
-        final Matrix mg = generateCommonAxisMg();
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var mg = generateCommonAxisMg();
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
         calibrator.setInitialCrossCouplingErrors(mxy, mxz, myx, myz, mzx, mzy);
 
@@ -8238,8 +8217,8 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testSetInitialScalingFactorsAndCrossCouplingErrors() throws WrongSizeException, LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testSetInitialScalingFactorsAndCrossCouplingErrors() throws WrongSizeException, LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -8253,16 +8232,16 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         // set new values
-        final Matrix mg = generateCommonAxisMg();
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var mg = generateCommonAxisMg();
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
         calibrator.setInitialScalingFactorsAndCrossCouplingErrors(sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy);
 
@@ -8279,21 +8258,21 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetBiasArray() throws LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetBiasArray() throws LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
-        assertArrayEquals(calibrator.getBias(), new double[3], 0.0);
+        assertArrayEquals(new double[3], calibrator.getBias(), 0.0);
 
         // set new value
-        final Matrix bg = generateBg();
-        final double[] bias = bg.getBuffer();
+        final var bg = generateBg();
+        final var bias = bg.getBuffer();
 
         calibrator.setBias(bias);
 
         // check
-        final double[] bias1 = calibrator.getBias();
-        final double[] bias2 = new double[3];
+        final var bias1 = calibrator.getBias();
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
 
         assertArrayEquals(bias, bias1, 0.0);
@@ -8305,23 +8284,23 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetBiasAsMatrix() throws WrongSizeException, LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetBiasAsMatrix() throws WrongSizeException, LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertEquals(new Matrix(3, 1), calibrator.getBiasAsMatrix());
 
         // set new value
-        final Matrix bg = generateBg();
-        final double bx = bg.getElementAtIndex(0);
-        final double by = bg.getElementAtIndex(1);
-        final double bz = bg.getElementAtIndex(2);
+        final var bg = generateBg();
+        final var bx = bg.getElementAtIndex(0);
+        final var by = bg.getElementAtIndex(1);
+        final var bz = bg.getElementAtIndex(2);
 
         calibrator.setBias(bg);
 
         // check
-        final Matrix bg1 = calibrator.getBiasAsMatrix();
-        final Matrix bg2 = new Matrix(3, 1);
+        final var bg1 = calibrator.getBiasAsMatrix();
+        final var bg2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bg2);
 
         assertEquals(bg, bg1);
@@ -8343,8 +8322,8 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetInitialMg() throws WrongSizeException, LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetInitialMg() throws WrongSizeException, LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertEquals(new Matrix(3, 3), calibrator.getInitialMg());
@@ -8360,22 +8339,22 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         // set new value
-        final Matrix mg = generateCommonAxisMg();
-        final double sx = mg.getElementAt(0, 0);
-        final double sy = mg.getElementAt(1, 1);
-        final double sz = mg.getElementAt(2, 2);
-        final double mxy = mg.getElementAt(0, 1);
-        final double mxz = mg.getElementAt(0, 2);
-        final double myx = mg.getElementAt(1, 0);
-        final double myz = mg.getElementAt(1, 2);
-        final double mzx = mg.getElementAt(2, 0);
-        final double mzy = mg.getElementAt(2, 1);
+        final var mg = generateCommonAxisMg();
+        final var sx = mg.getElementAt(0, 0);
+        final var sy = mg.getElementAt(1, 1);
+        final var sz = mg.getElementAt(2, 2);
+        final var mxy = mg.getElementAt(0, 1);
+        final var mxz = mg.getElementAt(0, 2);
+        final var myx = mg.getElementAt(1, 0);
+        final var myz = mg.getElementAt(1, 2);
+        final var mzx = mg.getElementAt(2, 0);
+        final var mzy = mg.getElementAt(2, 1);
 
         calibrator.setInitialMg(mg);
 
         // check
-        final Matrix mg1 = calibrator.getInitialMg();
-        final Matrix mg2 = new Matrix(3, 3);
+        final var mg1 = calibrator.getInitialMg();
+        final var mg2 = new Matrix(3, 3);
         calibrator.getInitialMg(mg2);
 
         assertEquals(mg, mg1);
@@ -8404,19 +8383,19 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetInitialGg() throws WrongSizeException, LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetInitialGg() throws WrongSizeException, LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertEquals(new Matrix(3, 3), calibrator.getInitialGg());
 
         // set new value
-        final Matrix gg = generateGg();
+        final var gg = generateGg();
         calibrator.setInitialGg(gg);
 
         // check
-        final Matrix gg1 = calibrator.getInitialGg();
-        final Matrix gg2 = new Matrix(3, 3);
+        final var gg1 = calibrator.getInitialGg();
+        final var gg2 = new Matrix(3, 3);
         calibrator.getInitialGg(gg2);
 
         assertEquals(gg, gg1);
@@ -8434,14 +8413,14 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetTurntableRotationRate() throws LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetTurntableRotationRate() throws LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertEquals(Constants.EARTH_ROTATION_RATE, calibrator.getTurntableRotationRate(), 0.0);
 
         // set new value
-        final double rotationRate = getTurntableRotationRate();
+        final var rotationRate = getTurntableRotationRate();
         calibrator.setTurntableRotationRate(rotationRate);
 
         // check
@@ -8452,21 +8431,21 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetTurntableRotationRateAsAngularSpeed() throws LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetTurntableRotationRateAsAngularSpeed() throws LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
-        final AngularSpeed rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
+        final var rotationRate1 = calibrator.getTurntableRotationRateAsAngularSpeed();
         assertEquals(Constants.EARTH_ROTATION_RATE, rotationRate1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, rotationRate1.getUnit());
 
         // set new value
-        final double rotationRate = getTurntableRotationRate();
-        final AngularSpeed rotationRate2 = new AngularSpeed(rotationRate, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var rotationRate = getTurntableRotationRate();
+        final var rotationRate2 = new AngularSpeed(rotationRate, AngularSpeedUnit.RADIANS_PER_SECOND);
         calibrator.setTurntableRotationRate(rotationRate2);
 
         // check
-        final AngularSpeed rotation3 = calibrator.getTurntableRotationRateAsAngularSpeed();
-        final AngularSpeed rotation4 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var rotation3 = calibrator.getTurntableRotationRateAsAngularSpeed();
+        final var rotation4 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getTurntableRotationRateAsAngularSpeed(rotation4);
 
         assertEquals(rotation3, rotation4);
@@ -8477,14 +8456,14 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetMeasurements() throws LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetMeasurements() throws LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertNull(calibrator.getMeasurements());
 
         // set new value
-        final Collection<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
         calibrator.setMeasurements(measurements);
 
         // check
@@ -8492,21 +8471,21 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetEcefPosition() throws LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetEcefPosition() throws LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertNull(calibrator.getEcefPosition());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
         calibrator.setPosition(ecefPosition);
@@ -8516,32 +8495,32 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetNedPosition() throws LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetNedPosition() throws LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertNull(calibrator.getNedPosition());
         assertFalse(calibrator.getNedPosition(null));
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
 
         calibrator.setPosition(nedPosition);
 
         // check
         assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
-        final NEDPosition position2 = new NEDPosition();
+        final var position2 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(position2));
         assertTrue(nedPosition.equals(position2, LARGE_ABSOLUTE_ERROR));
     }
 
     @Test
-    public void testIsSetCommonAxisUsed() throws LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testIsSetCommonAxisUsed() throws LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertTrue(calibrator.isCommonAxisUsed());
@@ -8554,8 +8533,8 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testIsSetGDependentCrossBiasesEstimated() throws LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testIsSetGDependentCrossBiasesEstimated() throws LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertTrue(calibrator.isGDependentCrossBiasesEstimated());
@@ -8568,8 +8547,8 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetSetListener() throws LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetSetListener() throws LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertNull(calibrator.getListener());
@@ -8582,8 +8561,8 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testGetMinimumRequiredMeasurementsOrSequences() throws LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testGetMinimumRequiredMeasurementsOrSequences() throws LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertEquals(16, calibrator.getMinimumRequiredMeasurementsOrSequences());
@@ -8616,23 +8595,23 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testIsReady() throws LockedException {
-        final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator();
+    void testIsReady() throws LockedException {
+        final var calibrator = new KnownBiasTurntableGyroscopeCalibrator();
 
         // check default value
         assertFalse(calibrator.isReady());
         assertEquals(16, calibrator.getMinimumRequiredMeasurementsOrSequences());
 
         // set empty measurements
-        final List<StandardDeviationBodyKinematics> measurements = new ArrayList<>();
+        final var measurements = new ArrayList<StandardDeviationBodyKinematics>();
         calibrator.setMeasurements(measurements);
 
         // check
         assertFalse(calibrator.isReady());
 
         // set enough measurements
-        for (int i = 0;
-             i < KnownBiasTurntableGyroscopeCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS_AND_CROSS_BIASES; i++) {
+        for (var i = 0; i < KnownBiasTurntableGyroscopeCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS_AND_CROSS_BIASES; 
+             i++) {
             measurements.add(new StandardDeviationBodyKinematics());
         }
 
@@ -8641,100 +8620,98 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testCalibrateCommonAxisAndGDependentCrossBiasesDisabledAndNoNoise() throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException, LockedException, NotReadyException,
+    void testCalibrateCommonAxisAndGDependentCrossBiasesDisabledAndNoNoise() throws WrongSizeException,
+            InvalidSourceAndDestinationFrameTypeException, LockedException, NotReadyException, 
             InvalidRotationMatrixException, RotationException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final double rotationRate = 100.0 * getTurntableRotationRate();
-            final Matrix ba = generateBa();
-            final Matrix bg = generateBg();
-            final Matrix ma = generateMa();
-            final Matrix mg = generateCommonAxisMg();
-            final Matrix gg = new Matrix(3, 3);
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var rotationRate = 100.0 * getTurntableRotationRate();
+            final var ba = generateBa();
+            final var bg = generateBg();
+            final var ma = generateMa();
+            final var mg = generateCommonAxisMg();
+            final var gg = new Matrix(3, 3);
             // when using minimum number of measurements we must not add any noise so that
             // a solution is found. When adding more measurements, certain noise can be added
-            final double accelNoiseRootPSD = 0.0;
-            final double gyroNoiseRootPSD = 0.0;
-            final double accelQuantLevel = 0.0;
-            final double gyroQuantLevel = 0.0;
+            final var accelNoiseRootPSD = 0.0;
+            final var gyroNoiseRootPSD = 0.0;
+            final var accelQuantLevel = 0.0;
+            final var gyroQuantLevel = 0.0;
 
-            final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
-                    accelQuantLevel, gyroQuantLevel);
+            final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                    gyroQuantLevel);
+            
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-
-            final double sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
-            final double specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
-            final double angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
+            final var sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
+            final var specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
+            final var angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
 
             double timeInterval = TIME_INTERVAL_SECONDS;
-            final List<StandardDeviationBodyKinematics> measurements = new ArrayList<>();
-            for (int i = 0; i < TurntableGyroscopeCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS; i++) {
-                final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var measurements = new ArrayList<StandardDeviationBodyKinematics>();
+            final var random = new Random();
+            for (var i = 0; i < TurntableGyroscopeCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS; i++) {
+                final var roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-                final CoordinateTransformation nedC1 = new CoordinateTransformation(roll1, pitch1, yaw1,
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+                final var nedC1 = new CoordinateTransformation(roll1, pitch1, yaw1, FrameType.BODY_FRAME, 
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final NEDFrame nedFrame1 = new NEDFrame(nedPosition, nedC1);
-                final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
+                final var nedFrame1 = new NEDFrame(nedPosition, nedC1);
+                final var ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
 
-                final Rotation3D rot1 = nedC1.asRotation();
-                final double[] axis1 = rot1.getRotationAxis();
-                double angleIncrement = rotationRate * timeInterval;
+                final var rot1 = nedC1.asRotation();
+                final var axis1 = rot1.getRotationAxis();
+                var angleIncrement = rotationRate * timeInterval;
                 if (Math.abs(angleIncrement) > Math.PI / 2.0) {
                     // angle = rot_rate * interval
                     // rot_rate * interval / x = angle / x
 
                     // if we want angle / x = pi / 2, then:
-                    final double x = Math.abs(angleIncrement) / (Math.PI / 2.0);
+                    final var x = Math.abs(angleIncrement) / (Math.PI / 2.0);
                     timeInterval /= x;
                     angleIncrement = rotationRate * timeInterval;
                 }
-                final Rotation3D rot = new AxisRotation3D(axis1, angleIncrement);
-                final Rotation3D rot2 = rot1.combineAndReturnNew(rot);
-                final CoordinateTransformation nedC2 = new CoordinateTransformation(rot2.asInhomogeneousMatrix(),
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+                final var rot = new AxisRotation3D(axis1, angleIncrement);
+                final var rot2 = rot1.combineAndReturnNew(rot);
+                final var nedC2 = new CoordinateTransformation(rot2.asInhomogeneousMatrix(), FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final NEDFrame nedFrame2 = new NEDFrame(nedPosition, nedC2);
-                final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
+                final var nedFrame2 = new NEDFrame(nedPosition, nedC2);
+                final var ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
 
                 // compute ground-truth kinematics that should be generated at provided
                 // position, velocity and orientation
-                final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
-                        timeInterval, ecefFrame2, ecefFrame1);
+                final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(timeInterval, 
+                        ecefFrame2, ecefFrame1);
 
                 // apply known calibration parameters to distort ground-truth and generate a
                 // measured kinematics sample
-                final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(timeInterval,
+                final var measuredKinematics = BodyKinematicsGenerator.generate(timeInterval,
                         trueKinematics, errors, random);
 
-                final StandardDeviationBodyKinematics measurement = new StandardDeviationBodyKinematics(
-                        measuredKinematics, specificForceStandardDeviation, angularRateStandardDeviation);
+                final var measurement = new StandardDeviationBodyKinematics(measuredKinematics,
+                        specificForceStandardDeviation, angularRateStandardDeviation);
                 measurements.add(measurement);
             }
 
             // When we have the minimum number of measurements, we need to provide
             // an initial solution close to the true solution
-            final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(
-                    new ECEFPosition(), rotationRate, timeInterval, measurements, true,
-                    false, bg, mg, gg, this);
+            final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(new ECEFPosition(), rotationRate,
+                    timeInterval, measurements, true, false, bg, mg, gg, this);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
 
             try {
                 calibrator.calibrate();
@@ -8744,11 +8721,11 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
 
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
 
-            final Matrix estimatedMg = calibrator.getEstimatedMg();
-            final Matrix estimatedGg = calibrator.getEstimatedGg();
+            final var estimatedMg = calibrator.getEstimatedMg();
+            final var estimatedGg = calibrator.getEstimatedGg();
 
             assertTrue(mg.equals(estimatedMg, LARGE_ABSOLUTE_ERROR));
             assertTrue(gg.equals(estimatedGg, ABSOLUTE_ERROR));
@@ -8767,100 +8744,99 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testCalibrateGeneralAndGDependentCrossBiasesDisabledAndNoNoise() throws WrongSizeException,
+    void testCalibrateGeneralAndGDependentCrossBiasesDisabledAndNoNoise() throws WrongSizeException,
             InvalidSourceAndDestinationFrameTypeException, LockedException, NotReadyException,
             InvalidRotationMatrixException, RotationException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final double rotationRate = 100.0 * getTurntableRotationRate();
-            final Matrix ba = generateBa();
-            final Matrix bg = generateBg();
-            final Matrix ma = generateMa();
-            final Matrix mg = generateGeneralMg();
-            final Matrix gg = new Matrix(3, 3);
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var rotationRate = 100.0 * getTurntableRotationRate();
+            final var ba = generateBa();
+            final var bg = generateBg();
+            final var ma = generateMa();
+            final var mg = generateGeneralMg();
+            final var gg = new Matrix(3, 3);
             // when using minimum number of measurements we must not add any noise so that
             // a solution is found. When adding more measurements, certain noise can be added
-            final double accelNoiseRootPSD = 0.0;
-            final double gyroNoiseRootPSD = 0.0;
-            final double accelQuantLevel = 0.0;
-            final double gyroQuantLevel = 0.0;
+            final var accelNoiseRootPSD = 0.0;
+            final var gyroNoiseRootPSD = 0.0;
+            final var accelQuantLevel = 0.0;
+            final var gyroQuantLevel = 0.0;
 
-            final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
-                    accelQuantLevel, gyroQuantLevel);
+            final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                    gyroQuantLevel);
 
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
-            final double specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
-            final double angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
+            final var sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
+            final var specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
+            final var angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
 
-            double timeInterval = TIME_INTERVAL_SECONDS;
-            final List<StandardDeviationBodyKinematics> measurements = new ArrayList<>();
-            for (int i = 0; i < TurntableGyroscopeCalibrator.MINIMUM_MEASUREMENTS_GENERAL; i++) {
-                final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            var timeInterval = TIME_INTERVAL_SECONDS;
+            final var measurements = new ArrayList<StandardDeviationBodyKinematics>();
+            final var random = new Random();
+            for (var i = 0; i < TurntableGyroscopeCalibrator.MINIMUM_MEASUREMENTS_GENERAL; i++) {
+                final var roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-                final CoordinateTransformation nedC1 = new CoordinateTransformation(roll1, pitch1, yaw1,
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+                final var nedC1 = new CoordinateTransformation(roll1, pitch1, yaw1, FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final NEDFrame nedFrame1 = new NEDFrame(nedPosition, nedC1);
-                final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
+                final var nedFrame1 = new NEDFrame(nedPosition, nedC1);
+                final var ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
 
-                final Rotation3D rot1 = nedC1.asRotation();
-                final double[] axis1 = rot1.getRotationAxis();
-                double angleIncrement = rotationRate * timeInterval;
+                final var rot1 = nedC1.asRotation();
+                final var axis1 = rot1.getRotationAxis();
+                var angleIncrement = rotationRate * timeInterval;
                 if (Math.abs(angleIncrement) > Math.PI / 2.0) {
                     // angle = rot_rate * interval
                     // rot_rate * interval / x = angle / x
 
                     // if we want angle / x = pi / 2, then:
-                    final double x = Math.abs(angleIncrement) / (Math.PI / 2.0);
+                    final var x = Math.abs(angleIncrement) / (Math.PI / 2.0);
                     timeInterval /= x;
                     angleIncrement = rotationRate * timeInterval;
                 }
-                final Rotation3D rot = new AxisRotation3D(axis1, angleIncrement);
-                final Rotation3D rot2 = rot1.combineAndReturnNew(rot);
-                final CoordinateTransformation nedC2 = new CoordinateTransformation(rot2.asInhomogeneousMatrix(),
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+                final var rot = new AxisRotation3D(axis1, angleIncrement);
+                final var rot2 = rot1.combineAndReturnNew(rot);
+                final var nedC2 = new CoordinateTransformation(rot2.asInhomogeneousMatrix(), FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final NEDFrame nedFrame2 = new NEDFrame(nedPosition, nedC2);
-                final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
+                final var nedFrame2 = new NEDFrame(nedPosition, nedC2);
+                final var ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
 
                 // compute ground-truth kinematics that should be generated at provided
                 // position, velocity and orientation
-                final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
-                        timeInterval, ecefFrame2, ecefFrame1);
+                final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(timeInterval,
+                        ecefFrame2, ecefFrame1);
 
                 // apply known calibration parameters to distort ground-truth and generate a
                 // measured kinematics sample
-                final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(timeInterval,
+                final var measuredKinematics = BodyKinematicsGenerator.generate(timeInterval,
                         trueKinematics, errors, random);
 
-                final StandardDeviationBodyKinematics measurement = new StandardDeviationBodyKinematics(
-                        measuredKinematics, specificForceStandardDeviation, angularRateStandardDeviation);
+                final var measurement = new StandardDeviationBodyKinematics(measuredKinematics,
+                        specificForceStandardDeviation, angularRateStandardDeviation);
                 measurements.add(measurement);
             }
 
             // When we have the minimum number of measurements, we need to provide
             // an initial solution close to the true solution
-            final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(
-                    new ECEFPosition(), rotationRate, timeInterval, measurements, false,
-                    false, bg, mg, gg, this);
+            final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(new ECEFPosition(), rotationRate,
+                    timeInterval, measurements, false, false, bg, mg, gg,
+                    this);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
 
             try {
                 calibrator.calibrate();
@@ -8870,11 +8846,11 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
 
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
 
-            final Matrix estimatedMg = calibrator.getEstimatedMg();
-            final Matrix estimatedGg = calibrator.getEstimatedGg();
+            final var estimatedMg = calibrator.getEstimatedMg();
+            final var estimatedGg = calibrator.getEstimatedGg();
 
             if (!mg.equals(estimatedMg, LARGE_ABSOLUTE_ERROR)) {
                 continue;
@@ -8900,100 +8876,99 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testCalibrateCommonAxisAndGDependentCrossBiasesEnabledAndNoNoise() throws WrongSizeException,
+    void testCalibrateCommonAxisAndGDependentCrossBiasesEnabledAndNoNoise() throws WrongSizeException,
             InvalidSourceAndDestinationFrameTypeException, LockedException, NotReadyException,
             InvalidRotationMatrixException, RotationException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final double rotationRate = 100.0 * getTurntableRotationRate();
-            final Matrix ba = generateBa();
-            final Matrix bg = generateBg();
-            final Matrix ma = generateMa();
-            final Matrix mg = generateCommonAxisMg();
-            final Matrix gg = generateGg();
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var rotationRate = 100.0 * getTurntableRotationRate();
+            final var ba = generateBa();
+            final var bg = generateBg();
+            final var ma = generateMa();
+            final var mg = generateCommonAxisMg();
+            final var gg = generateGg();
             // when using minimum number of measurements we must not add any noise so that
             // a solution is found. When adding more measurements, certain noise can be added
-            final double accelNoiseRootPSD = 0.0;
-            final double gyroNoiseRootPSD = 0.0;
-            final double accelQuantLevel = 0.0;
-            final double gyroQuantLevel = 0.0;
+            final var accelNoiseRootPSD = 0.0;
+            final var gyroNoiseRootPSD = 0.0;
+            final var accelQuantLevel = 0.0;
+            final var gyroQuantLevel = 0.0;
 
-            final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
-                    accelQuantLevel, gyroQuantLevel);
+            final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                    gyroQuantLevel);
 
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
-            final double specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
-            final double angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
+            final var sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
+            final var specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
+            final var angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
 
-            double timeInterval = TIME_INTERVAL_SECONDS;
-            final List<StandardDeviationBodyKinematics> measurements = new ArrayList<>();
-            for (int i = 0; i < TurntableGyroscopeCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS_AND_CROSS_BIASES; i++) {
-                final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            var timeInterval = TIME_INTERVAL_SECONDS;
+            final var measurements = new ArrayList<StandardDeviationBodyKinematics>();
+            final var random = new Random();
+            for (var i = 0; i < TurntableGyroscopeCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS_AND_CROSS_BIASES; i++) {
+                final var roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-                final CoordinateTransformation nedC1 = new CoordinateTransformation(roll1, pitch1, yaw1,
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+                final var nedC1 = new CoordinateTransformation(roll1, pitch1, yaw1, FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final NEDFrame nedFrame1 = new NEDFrame(nedPosition, nedC1);
-                final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
+                final var nedFrame1 = new NEDFrame(nedPosition, nedC1);
+                final var ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
 
-                final Rotation3D rot1 = nedC1.asRotation();
-                final double[] axis1 = rot1.getRotationAxis();
-                double angleIncrement = rotationRate * timeInterval;
+                final var rot1 = nedC1.asRotation();
+                final var axis1 = rot1.getRotationAxis();
+                var angleIncrement = rotationRate * timeInterval;
                 if (Math.abs(angleIncrement) > Math.PI / 2.0) {
                     // angle = rot_rate * interval
                     // rot_rate * interval / x = angle / x
 
                     // if we want angle / x = pi / 2, then:
-                    final double x = Math.abs(angleIncrement) / (Math.PI / 2.0);
+                    final var x = Math.abs(angleIncrement) / (Math.PI / 2.0);
                     timeInterval /= x;
                     angleIncrement = rotationRate * timeInterval;
                 }
-                final Rotation3D rot = new AxisRotation3D(axis1, angleIncrement);
-                final Rotation3D rot2 = rot1.combineAndReturnNew(rot);
-                final CoordinateTransformation nedC2 = new CoordinateTransformation(rot2.asInhomogeneousMatrix(),
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+                final var rot = new AxisRotation3D(axis1, angleIncrement);
+                final var rot2 = rot1.combineAndReturnNew(rot);
+                final var nedC2 = new CoordinateTransformation(rot2.asInhomogeneousMatrix(), FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final NEDFrame nedFrame2 = new NEDFrame(nedPosition, nedC2);
-                final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
+                final var nedFrame2 = new NEDFrame(nedPosition, nedC2);
+                final var ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
 
                 // compute ground-truth kinematics that should be generated at provided
                 // position, velocity and orientation
-                final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
-                        timeInterval, ecefFrame2, ecefFrame1);
+                final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(timeInterval,
+                        ecefFrame2, ecefFrame1);
 
                 // apply known calibration parameters to distort ground-truth and generate a
                 // measured kinematics sample
-                final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(timeInterval,
+                final var measuredKinematics = BodyKinematicsGenerator.generate(timeInterval,
                         trueKinematics, errors, random);
 
-                final StandardDeviationBodyKinematics measurement = new StandardDeviationBodyKinematics(
-                        measuredKinematics, specificForceStandardDeviation, angularRateStandardDeviation);
+                final var measurement = new StandardDeviationBodyKinematics(measuredKinematics,
+                        specificForceStandardDeviation, angularRateStandardDeviation);
                 measurements.add(measurement);
             }
 
             // When we have the minimum number of measurements, we need to provide
             // an initial solution close to the true solution
-            final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(
-                    new ECEFPosition(), rotationRate, timeInterval, measurements, true,
-                    true, bg, mg, gg, ba, ma, this);
+            final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(new ECEFPosition(), rotationRate,
+                    timeInterval, measurements, true, true, bg, mg, gg, ba,
+                    ma, this);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
 
             try {
                 calibrator.calibrate();
@@ -9003,11 +8978,11 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
 
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
 
-            final Matrix estimatedMg = calibrator.getEstimatedMg();
-            final Matrix estimatedGg = calibrator.getEstimatedGg();
+            final var estimatedMg = calibrator.getEstimatedMg();
+            final var estimatedGg = calibrator.getEstimatedGg();
 
             assertTrue(mg.equals(estimatedMg, LARGE_ABSOLUTE_ERROR));
             assertTrue(gg.equals(estimatedGg, LARGE_ABSOLUTE_ERROR));
@@ -9026,100 +9001,99 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testCalibrateGeneralAndGDependentCrossBiasesEnabledAndNoNoise() throws WrongSizeException,
+    void testCalibrateGeneralAndGDependentCrossBiasesEnabledAndNoNoise() throws WrongSizeException,
             InvalidSourceAndDestinationFrameTypeException, LockedException, NotReadyException,
             InvalidRotationMatrixException, RotationException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final double rotationRate = 100.0 * getTurntableRotationRate();
-            final Matrix ba = generateBa();
-            final Matrix bg = generateBg();
-            final Matrix ma = generateMa();
-            final Matrix mg = generateGeneralMg();
-            final Matrix gg = generateGg();
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var rotationRate = 100.0 * getTurntableRotationRate();
+            final var ba = generateBa();
+            final var bg = generateBg();
+            final var ma = generateMa();
+            final var mg = generateGeneralMg();
+            final var gg = generateGg();
             // when using minimum number of measurements we must not add any noise so that
             // a solution is found. When adding more measurements, certain noise can be added
-            final double accelNoiseRootPSD = 0.0;
-            final double gyroNoiseRootPSD = 0.0;
-            final double accelQuantLevel = 0.0;
-            final double gyroQuantLevel = 0.0;
+            final var accelNoiseRootPSD = 0.0;
+            final var gyroNoiseRootPSD = 0.0;
+            final var accelQuantLevel = 0.0;
+            final var gyroQuantLevel = 0.0;
 
-            final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
-                    accelQuantLevel, gyroQuantLevel);
+            final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                    gyroQuantLevel);
 
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
-            final double specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
-            final double angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
+            final var sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
+            final var specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
+            final var angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
 
-            double timeInterval = TIME_INTERVAL_SECONDS;
-            final List<StandardDeviationBodyKinematics> measurements = new ArrayList<>();
-            for (int i = 0; i < TurntableGyroscopeCalibrator.MINIMUM_MEASUREMENTS_GENERAL_AND_CROSS_BIASES; i++) {
-                final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            var timeInterval = TIME_INTERVAL_SECONDS;
+            final var measurements = new ArrayList<StandardDeviationBodyKinematics>();
+            final var random = new Random();
+            for (var i = 0; i < TurntableGyroscopeCalibrator.MINIMUM_MEASUREMENTS_GENERAL_AND_CROSS_BIASES; i++) {
+                final var roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-                final CoordinateTransformation nedC1 = new CoordinateTransformation(roll1, pitch1, yaw1,
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+                final var nedC1 = new CoordinateTransformation(roll1, pitch1, yaw1, FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final NEDFrame nedFrame1 = new NEDFrame(nedPosition, nedC1);
-                final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
+                final var nedFrame1 = new NEDFrame(nedPosition, nedC1);
+                final var ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
 
-                final Rotation3D rot1 = nedC1.asRotation();
-                final double[] axis1 = rot1.getRotationAxis();
-                double angleIncrement = rotationRate * timeInterval;
+                final var rot1 = nedC1.asRotation();
+                final var axis1 = rot1.getRotationAxis();
+                var angleIncrement = rotationRate * timeInterval;
                 if (Math.abs(angleIncrement) > Math.PI / 2.0) {
                     // angle = rot_rate * interval
                     // rot_rate * interval / x = angle / x
 
                     // if we want angle / x = pi / 2, then:
-                    final double x = Math.abs(angleIncrement) / (Math.PI / 2.0);
+                    final var x = Math.abs(angleIncrement) / (Math.PI / 2.0);
                     timeInterval /= x;
                     angleIncrement = rotationRate * timeInterval;
                 }
-                final Rotation3D rot = new AxisRotation3D(axis1, angleIncrement);
-                final Rotation3D rot2 = rot1.combineAndReturnNew(rot);
-                final CoordinateTransformation nedC2 = new CoordinateTransformation(rot2.asInhomogeneousMatrix(),
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+                final var rot = new AxisRotation3D(axis1, angleIncrement);
+                final var rot2 = rot1.combineAndReturnNew(rot);
+                final var nedC2 = new CoordinateTransformation(rot2.asInhomogeneousMatrix(), FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final NEDFrame nedFrame2 = new NEDFrame(nedPosition, nedC2);
-                final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
+                final var nedFrame2 = new NEDFrame(nedPosition, nedC2);
+                final var ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
 
                 // compute ground-truth kinematics that should be generated at provided
                 // position, velocity and orientation
-                final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
-                        timeInterval, ecefFrame2, ecefFrame1);
+                final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(timeInterval,
+                        ecefFrame2, ecefFrame1);
 
                 // apply known calibration parameters to distort ground-truth and generate a
                 // measured kinematics sample
-                final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(timeInterval,
-                        trueKinematics, errors, random);
+                final var measuredKinematics = BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors,
+                        random);
 
-                final StandardDeviationBodyKinematics measurement = new StandardDeviationBodyKinematics(
-                        measuredKinematics, specificForceStandardDeviation, angularRateStandardDeviation);
+                final var measurement = new StandardDeviationBodyKinematics(measuredKinematics,
+                        specificForceStandardDeviation, angularRateStandardDeviation);
                 measurements.add(measurement);
             }
 
             // When we have the minimum number of measurements, we need to provide
             // an initial solution close to the true solution
-            final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(
-                    new ECEFPosition(), rotationRate, timeInterval, measurements, false,
-                    true, bg, mg, gg, ba, ma, this);
+            final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(new ECEFPosition(), rotationRate,
+                    timeInterval, measurements, false, true, bg, mg, gg, ba,
+                    ma, this);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
 
             try {
                 calibrator.calibrate();
@@ -9129,11 +9103,11 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
 
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
 
-            final Matrix estimatedMg = calibrator.getEstimatedMg();
-            final Matrix estimatedGg = calibrator.getEstimatedGg();
+            final var estimatedMg = calibrator.getEstimatedMg();
+            final var estimatedGg = calibrator.getEstimatedGg();
 
             if (!mg.equals(estimatedMg, LARGE_ABSOLUTE_ERROR)) {
                 continue;
@@ -9158,99 +9132,98 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testCalibrateCommonAxisAndGDependentCrossBiasesDisabledLargeNumberOfMeasurementsWithNoise()
+    void testCalibrateCommonAxisAndGDependentCrossBiasesDisabledLargeNumberOfMeasurementsWithNoise()
             throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException, LockedException,
             NotReadyException, InvalidRotationMatrixException, RotationException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final double rotationRate = 100.0 * getTurntableRotationRate();
-            final Matrix ba = generateBa();
-            final Matrix bg = generateBg();
-            final Matrix ma = generateMa();
-            final Matrix mg = generateCommonAxisMg();
-            final Matrix gg = new Matrix(3, 3);
-            final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-            final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-            final double accelQuantLevel = 0.0;
-            final double gyroQuantLevel = 0.0;
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var rotationRate = 100.0 * getTurntableRotationRate();
+            final var ba = generateBa();
+            final var bg = generateBg();
+            final var ma = generateMa();
+            final var mg = generateCommonAxisMg();
+            final var gg = new Matrix(3, 3);
+            final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+            final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+            final var accelQuantLevel = 0.0;
+            final var gyroQuantLevel = 0.0;
 
-            final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
-                    accelQuantLevel, gyroQuantLevel);
+            final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                    gyroQuantLevel);
 
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
-            final double specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
-            final double angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
+            final var sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
+            final var specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
+            final var angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
 
-            double timeInterval = TIME_INTERVAL_SECONDS;
-            final List<StandardDeviationBodyKinematics> measurements = new ArrayList<>();
-            for (int i = 0; i < LARGE_MEASUREMENT_NUMBER; i++) {
-                final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            var timeInterval = TIME_INTERVAL_SECONDS;
+            final var measurements = new ArrayList<StandardDeviationBodyKinematics>();
+            final var random = new Random();
+            for (var i = 0; i < LARGE_MEASUREMENT_NUMBER; i++) {
+                final var roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-                final CoordinateTransformation nedC1 = new CoordinateTransformation(roll1, pitch1, yaw1,
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+                final var nedC1 = new CoordinateTransformation(roll1, pitch1, yaw1, FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final NEDFrame nedFrame1 = new NEDFrame(nedPosition, nedC1);
-                final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
+                final var nedFrame1 = new NEDFrame(nedPosition, nedC1);
+                final var ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
 
-                final Rotation3D rot1 = nedC1.asRotation();
-                final double[] axis1 = rot1.getRotationAxis();
-                double angleIncrement = rotationRate * timeInterval;
+                final var rot1 = nedC1.asRotation();
+                final var axis1 = rot1.getRotationAxis();
+                var angleIncrement = rotationRate * timeInterval;
                 if (Math.abs(angleIncrement) > Math.PI / 2.0) {
                     // angle = rot_rate * interval
                     // rot_rate * interval / x = angle / x
 
                     // if we want angle / x = pi / 2, then:
-                    final double x = Math.abs(angleIncrement) / (Math.PI / 2.0);
+                    final var x = Math.abs(angleIncrement) / (Math.PI / 2.0);
                     timeInterval /= x;
                     angleIncrement = rotationRate * timeInterval;
                 }
-                final Rotation3D rot = new AxisRotation3D(axis1, angleIncrement);
-                final Rotation3D rot2 = rot1.combineAndReturnNew(rot);
-                final CoordinateTransformation nedC2 = new CoordinateTransformation(rot2.asInhomogeneousMatrix(),
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+                final var rot = new AxisRotation3D(axis1, angleIncrement);
+                final var rot2 = rot1.combineAndReturnNew(rot);
+                final var nedC2 = new CoordinateTransformation(rot2.asInhomogeneousMatrix(), FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final NEDFrame nedFrame2 = new NEDFrame(nedPosition, nedC2);
-                final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
+                final var nedFrame2 = new NEDFrame(nedPosition, nedC2);
+                final var ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
 
                 // compute ground-truth kinematics that should be generated at provided
                 // position, velocity and orientation
-                final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
-                        timeInterval, ecefFrame2, ecefFrame1);
+                final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(timeInterval,
+                        ecefFrame2, ecefFrame1);
 
                 // apply known calibration parameters to distort ground-truth and generate a
                 // measured kinematics sample
-                final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(timeInterval,
+                final var measuredKinematics = BodyKinematicsGenerator.generate(timeInterval,
                         trueKinematics, errors, random);
 
-                final StandardDeviationBodyKinematics measurement = new StandardDeviationBodyKinematics(
-                        measuredKinematics, specificForceStandardDeviation, angularRateStandardDeviation);
+                final var measurement = new StandardDeviationBodyKinematics(measuredKinematics,
+                        specificForceStandardDeviation, angularRateStandardDeviation);
                 measurements.add(measurement);
             }
 
-            final Matrix initialBg = new Matrix(3, 1);
-            final Matrix initialMg = new Matrix(3, 3);
-            final Matrix initialGg = new Matrix(3, 3);
-            final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(
-                    nedPosition, rotationRate, timeInterval, measurements, true,
-                    false, initialBg, initialMg, initialGg, this);
+            final var initialBg = new Matrix(3, 1);
+            final var initialMg = new Matrix(3, 3);
+            final var initialGg = new Matrix(3, 3);
+            final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(nedPosition, rotationRate, timeInterval,
+                    measurements, true, false, initialBg, initialMg,
+                    initialGg, this);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
 
             try {
                 calibrator.calibrate();
@@ -9260,11 +9233,11 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
 
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
 
-            final Matrix estimatedMg = calibrator.getEstimatedMg();
-            final Matrix estimatedGg = calibrator.getEstimatedGg();
+            final var estimatedMg = calibrator.getEstimatedMg();
+            final var estimatedGg = calibrator.getEstimatedGg();
 
             assertTrue(mg.equals(estimatedMg, LARGE_ABSOLUTE_ERROR));
             assertTrue(gg.equals(estimatedGg, ABSOLUTE_ERROR));
@@ -9283,99 +9256,98 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testCalibrateGeneralAndGDependentCrossBiasesDisabledLargeNumberOfMeasurementsWithNoise()
+    void testCalibrateGeneralAndGDependentCrossBiasesDisabledLargeNumberOfMeasurementsWithNoise()
             throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException, LockedException,
             NotReadyException, InvalidRotationMatrixException, RotationException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final double rotationRate = 100.0 * getTurntableRotationRate();
-            final Matrix ba = generateBa();
-            final Matrix bg = generateBg();
-            final Matrix ma = generateMa();
-            final Matrix mg = generateGeneralMg();
-            final Matrix gg = new Matrix(3, 3);
-            final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-            final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-            final double accelQuantLevel = 0.0;
-            final double gyroQuantLevel = 0.0;
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var rotationRate = 100.0 * getTurntableRotationRate();
+            final var ba = generateBa();
+            final var bg = generateBg();
+            final var ma = generateMa();
+            final var mg = generateGeneralMg();
+            final var gg = new Matrix(3, 3);
+            final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+            final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+            final var accelQuantLevel = 0.0;
+            final var gyroQuantLevel = 0.0;
 
-            final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
-                    accelQuantLevel, gyroQuantLevel);
+            final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                    gyroQuantLevel);
 
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
-            final double specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
-            final double angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
+            final var sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
+            final var specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
+            final var angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
 
-            double timeInterval = TIME_INTERVAL_SECONDS;
-            final List<StandardDeviationBodyKinematics> measurements = new ArrayList<>();
-            for (int i = 0; i < LARGE_MEASUREMENT_NUMBER; i++) {
-                final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            var timeInterval = TIME_INTERVAL_SECONDS;
+            final var measurements = new ArrayList<StandardDeviationBodyKinematics>();
+            final var random = new Random();
+            for (var i = 0; i < LARGE_MEASUREMENT_NUMBER; i++) {
+                final var roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-                final CoordinateTransformation nedC1 = new CoordinateTransformation(roll1, pitch1, yaw1,
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+                final var nedC1 = new CoordinateTransformation(roll1, pitch1, yaw1, FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final NEDFrame nedFrame1 = new NEDFrame(nedPosition, nedC1);
-                final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
+                final var nedFrame1 = new NEDFrame(nedPosition, nedC1);
+                final var ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
 
-                final Rotation3D rot1 = nedC1.asRotation();
-                final double[] axis1 = rot1.getRotationAxis();
+                final var rot1 = nedC1.asRotation();
+                final var axis1 = rot1.getRotationAxis();
                 double angleIncrement = rotationRate * timeInterval;
                 if (Math.abs(angleIncrement) > Math.PI / 2.0) {
                     // angle = rot_rate * interval
                     // rot_rate * interval / x = angle / x
 
                     // if we want angle / x = pi / 2, then:
-                    final double x = Math.abs(angleIncrement) / (Math.PI / 2.0);
+                    final var x = Math.abs(angleIncrement) / (Math.PI / 2.0);
                     timeInterval /= x;
                     angleIncrement = rotationRate * timeInterval;
                 }
-                final Rotation3D rot = new AxisRotation3D(axis1, angleIncrement);
-                final Rotation3D rot2 = rot1.combineAndReturnNew(rot);
-                final CoordinateTransformation nedC2 = new CoordinateTransformation(rot2.asInhomogeneousMatrix(),
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+                final var rot = new AxisRotation3D(axis1, angleIncrement);
+                final var rot2 = rot1.combineAndReturnNew(rot);
+                final var nedC2 = new CoordinateTransformation(rot2.asInhomogeneousMatrix(), FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final NEDFrame nedFrame2 = new NEDFrame(nedPosition, nedC2);
-                final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
+                final var nedFrame2 = new NEDFrame(nedPosition, nedC2);
+                final var ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
 
                 // compute ground-truth kinematics that should be generated at provided
                 // position, velocity and orientation
-                final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
-                        timeInterval, ecefFrame2, ecefFrame1);
+                final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(timeInterval,
+                        ecefFrame2, ecefFrame1);
 
                 // apply known calibration parameters to distort ground-truth and generate a
                 // measured kinematics sample
-                final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(timeInterval,
+                final var measuredKinematics = BodyKinematicsGenerator.generate(timeInterval,
                         trueKinematics, errors, random);
 
-                final StandardDeviationBodyKinematics measurement = new StandardDeviationBodyKinematics(
-                        measuredKinematics, specificForceStandardDeviation, angularRateStandardDeviation);
+                final var measurement = new StandardDeviationBodyKinematics(measuredKinematics,
+                        specificForceStandardDeviation, angularRateStandardDeviation);
                 measurements.add(measurement);
             }
 
-            final Matrix initialBg = new Matrix(3, 1);
-            final Matrix initialMg = new Matrix(3, 3);
-            final Matrix initialGg = new Matrix(3, 3);
-            final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(
-                    nedPosition, rotationRate, timeInterval, measurements, false,
-                    false, initialBg, initialMg, initialGg, this);
+            final var initialBg = new Matrix(3, 1);
+            final var initialMg = new Matrix(3, 3);
+            final var initialGg = new Matrix(3, 3);
+            final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(nedPosition, rotationRate, timeInterval,
+                    measurements, false, false, initialBg, initialMg,
+                    initialGg, this);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
 
             try {
                 calibrator.calibrate();
@@ -9385,11 +9357,11 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
 
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
 
-            final Matrix estimatedMg = calibrator.getEstimatedMg();
-            final Matrix estimatedGg = calibrator.getEstimatedGg();
+            final var estimatedMg = calibrator.getEstimatedMg();
+            final var estimatedGg = calibrator.getEstimatedGg();
 
             assertTrue(mg.equals(estimatedMg, LARGE_ABSOLUTE_ERROR));
             assertTrue(gg.equals(estimatedGg, ABSOLUTE_ERROR));
@@ -9408,99 +9380,98 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testCalibrateCommonAxisAndGDependentCrossBiasesEnabledLargeNumberOfMeasurementsWithNoise()
+    void testCalibrateCommonAxisAndGDependentCrossBiasesEnabledLargeNumberOfMeasurementsWithNoise()
             throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException, LockedException,
             NotReadyException, InvalidRotationMatrixException, RotationException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final double rotationRate = 100.0 * getTurntableRotationRate();
-            final Matrix ba = generateBa();
-            final Matrix bg = generateBg();
-            final Matrix ma = generateMa();
-            final Matrix mg = generateCommonAxisMg();
-            final Matrix gg = generateGg();
-            final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-            final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-            final double accelQuantLevel = 0.0;
-            final double gyroQuantLevel = 0.0;
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var rotationRate = 100.0 * getTurntableRotationRate();
+            final var ba = generateBa();
+            final var bg = generateBg();
+            final var ma = generateMa();
+            final var mg = generateCommonAxisMg();
+            final var gg = generateGg();
+            final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+            final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+            final var accelQuantLevel = 0.0;
+            final var gyroQuantLevel = 0.0;
 
-            final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
-                    accelQuantLevel, gyroQuantLevel);
+            final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                    gyroQuantLevel);
 
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
-            final double specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
-            final double angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
+            final var sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
+            final var specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
+            final var angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
 
-            double timeInterval = TIME_INTERVAL_SECONDS;
-            final List<StandardDeviationBodyKinematics> measurements = new ArrayList<>();
-            for (int i = 0; i < LARGE_MEASUREMENT_NUMBER; i++) {
-                final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            var timeInterval = TIME_INTERVAL_SECONDS;
+            final var measurements = new ArrayList<StandardDeviationBodyKinematics>();
+            final var random = new Random();
+            for (var i = 0; i < LARGE_MEASUREMENT_NUMBER; i++) {
+                final var roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-                final CoordinateTransformation nedC1 = new CoordinateTransformation(roll1, pitch1, yaw1,
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+                final var nedC1 = new CoordinateTransformation(roll1, pitch1, yaw1, FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final NEDFrame nedFrame1 = new NEDFrame(nedPosition, nedC1);
-                final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
+                final var nedFrame1 = new NEDFrame(nedPosition, nedC1);
+                final var ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
 
-                final Rotation3D rot1 = nedC1.asRotation();
-                final double[] axis1 = rot1.getRotationAxis();
-                double angleIncrement = rotationRate * timeInterval;
+                final var rot1 = nedC1.asRotation();
+                final var axis1 = rot1.getRotationAxis();
+                var angleIncrement = rotationRate * timeInterval;
                 if (Math.abs(angleIncrement) > Math.PI / 2.0) {
                     // angle = rot_rate * interval
                     // rot_rate * interval / x = angle / x
 
                     // if we want angle / x = pi / 2, then:
-                    final double x = Math.abs(angleIncrement) / (Math.PI / 2.0);
+                    final var x = Math.abs(angleIncrement) / (Math.PI / 2.0);
                     timeInterval /= x;
                     angleIncrement = rotationRate * timeInterval;
                 }
-                final Rotation3D rot = new AxisRotation3D(axis1, angleIncrement);
-                final Rotation3D rot2 = rot1.combineAndReturnNew(rot);
-                final CoordinateTransformation nedC2 = new CoordinateTransformation(rot2.asInhomogeneousMatrix(),
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+                final var rot = new AxisRotation3D(axis1, angleIncrement);
+                final var rot2 = rot1.combineAndReturnNew(rot);
+                final var nedC2 = new CoordinateTransformation(rot2.asInhomogeneousMatrix(), FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final NEDFrame nedFrame2 = new NEDFrame(nedPosition, nedC2);
-                final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
+                final var nedFrame2 = new NEDFrame(nedPosition, nedC2);
+                final var ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
 
                 // compute ground-truth kinematics that should be generated at provided
                 // position, velocity and orientation
-                final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
-                        timeInterval, ecefFrame2, ecefFrame1);
+                final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(timeInterval,
+                        ecefFrame2, ecefFrame1);
 
                 // apply known calibration parameters to distort ground-truth and generate a
                 // measured kinematics sample
-                final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(timeInterval,
-                        trueKinematics, errors, random);
+                final var measuredKinematics = BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors,
+                        random);
 
-                final StandardDeviationBodyKinematics measurement = new StandardDeviationBodyKinematics(
-                        measuredKinematics, specificForceStandardDeviation, angularRateStandardDeviation);
+                final var measurement = new StandardDeviationBodyKinematics(measuredKinematics,
+                        specificForceStandardDeviation, angularRateStandardDeviation);
                 measurements.add(measurement);
             }
 
-            final Matrix initialBg = new Matrix(3, 1);
-            final Matrix initialMg = new Matrix(3, 3);
-            final Matrix initialGg = new Matrix(3, 3);
-            final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(
-                    nedPosition, rotationRate, timeInterval, measurements, true,
-                    true, initialBg, initialMg, initialGg, ba, ma, this);
+            final var initialBg = new Matrix(3, 1);
+            final var initialMg = new Matrix(3, 3);
+            final var initialGg = new Matrix(3, 3);
+            final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(nedPosition, rotationRate, timeInterval,
+                    measurements, true, true, initialBg, initialMg, initialGg,
+                    ba, ma, this);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
 
             try {
                 calibrator.calibrate();
@@ -9510,11 +9481,11 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
 
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
 
-            final Matrix estimatedMg = calibrator.getEstimatedMg();
-            final Matrix estimatedGg = calibrator.getEstimatedGg();
+            final var estimatedMg = calibrator.getEstimatedMg();
+            final var estimatedGg = calibrator.getEstimatedGg();
 
             assertTrue(mg.equals(estimatedMg, LARGE_ABSOLUTE_ERROR));
             assertTrue(gg.equals(estimatedGg, LARGE_ABSOLUTE_ERROR));
@@ -9533,99 +9504,98 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     @Test
-    public void testCalibrateGeneralAndGDependentCrossBiasesEnabledLargeNumberOfMeasurementsWithNoise()
+    void testCalibrateGeneralAndGDependentCrossBiasesEnabledLargeNumberOfMeasurementsWithNoise()
             throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException, LockedException,
             NotReadyException, InvalidRotationMatrixException, RotationException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final double rotationRate = 100.0 * getTurntableRotationRate();
-            final Matrix ba = generateBa();
-            final Matrix bg = generateBg();
-            final Matrix ma = generateMa();
-            final Matrix mg = generateGeneralMg();
-            final Matrix gg = generateGg();
-            final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-            final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-            final double accelQuantLevel = 0.0;
-            final double gyroQuantLevel = 0.0;
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var rotationRate = 100.0 * getTurntableRotationRate();
+            final var ba = generateBa();
+            final var bg = generateBg();
+            final var ma = generateMa();
+            final var mg = generateGeneralMg();
+            final var gg = generateGg();
+            final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+            final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+            final var accelQuantLevel = 0.0;
+            final var gyroQuantLevel = 0.0;
 
-            final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
-                    accelQuantLevel, gyroQuantLevel);
+            final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                    gyroQuantLevel);
 
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
-            final double specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
-            final double angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
+            final var sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
+            final var specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
+            final var angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
 
-            double timeInterval = TIME_INTERVAL_SECONDS;
-            final List<StandardDeviationBodyKinematics> measurements = new ArrayList<>();
-            for (int i = 0; i < LARGE_MEASUREMENT_NUMBER; i++) {
-                final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            var timeInterval = TIME_INTERVAL_SECONDS;
+            final var measurements = new ArrayList<StandardDeviationBodyKinematics>();
+            final var random = new Random();
+            for (var i = 0; i < LARGE_MEASUREMENT_NUMBER; i++) {
+                final var roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-                final CoordinateTransformation nedC1 = new CoordinateTransformation(roll1, pitch1, yaw1,
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+                final var nedC1 = new CoordinateTransformation(roll1, pitch1, yaw1, FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final NEDFrame nedFrame1 = new NEDFrame(nedPosition, nedC1);
-                final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
+                final var nedFrame1 = new NEDFrame(nedPosition, nedC1);
+                final var ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
 
-                final Rotation3D rot1 = nedC1.asRotation();
-                final double[] axis1 = rot1.getRotationAxis();
+                final var rot1 = nedC1.asRotation();
+                final var axis1 = rot1.getRotationAxis();
                 double angleIncrement = rotationRate * timeInterval;
                 if (Math.abs(angleIncrement) > Math.PI / 2.0) {
                     // angle = rot_rate * interval
                     // rot_rate * interval / x = angle / x
 
                     // if we want angle / x = pi / 2, then:
-                    final double x = Math.abs(angleIncrement) / (Math.PI / 2.0);
+                    final var x = Math.abs(angleIncrement) / (Math.PI / 2.0);
                     timeInterval /= x;
                     angleIncrement = rotationRate * timeInterval;
                 }
-                final Rotation3D rot = new AxisRotation3D(axis1, angleIncrement);
-                final Rotation3D rot2 = rot1.combineAndReturnNew(rot);
-                final CoordinateTransformation nedC2 = new CoordinateTransformation(rot2.asInhomogeneousMatrix(),
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+                final var rot = new AxisRotation3D(axis1, angleIncrement);
+                final var rot2 = rot1.combineAndReturnNew(rot);
+                final var nedC2 = new CoordinateTransformation(rot2.asInhomogeneousMatrix(), FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final NEDFrame nedFrame2 = new NEDFrame(nedPosition, nedC2);
-                final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
+                final var nedFrame2 = new NEDFrame(nedPosition, nedC2);
+                final var ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
 
                 // compute ground-truth kinematics that should be generated at provided
                 // position, velocity and orientation
-                final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
-                        timeInterval, ecefFrame2, ecefFrame1);
+                final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(timeInterval,
+                        ecefFrame2, ecefFrame1);
 
                 // apply known calibration parameters to distort ground-truth and generate a
                 // measured kinematics sample
-                final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(timeInterval,
-                        trueKinematics, errors, random);
+                final var measuredKinematics = BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors,
+                        random);
 
-                final StandardDeviationBodyKinematics measurement = new StandardDeviationBodyKinematics(
-                        measuredKinematics, specificForceStandardDeviation, angularRateStandardDeviation);
+                final var measurement = new StandardDeviationBodyKinematics(measuredKinematics,
+                        specificForceStandardDeviation, angularRateStandardDeviation);
                 measurements.add(measurement);
             }
 
-            final Matrix initialBg = new Matrix(3, 1);
-            final Matrix initialMg = new Matrix(3, 3);
-            final Matrix initialGg = new Matrix(3, 3);
-            final KnownBiasTurntableGyroscopeCalibrator calibrator = new KnownBiasTurntableGyroscopeCalibrator(
-                    nedPosition, rotationRate, timeInterval, measurements, false,
-                    true, initialBg, initialMg, initialGg, ba, ma, this);
+            final var initialBg = new Matrix(3, 1);
+            final var initialMg = new Matrix(3, 3);
+            final var initialGg = new Matrix(3, 3);
+            final var calibrator = new KnownBiasTurntableGyroscopeCalibrator(nedPosition, rotationRate, timeInterval,
+                    measurements, false, true, initialBg, initialMg,
+                    initialGg, ba, ma, this);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
 
             try {
                 calibrator.calibrate();
@@ -9635,11 +9605,11 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
 
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
 
-            final Matrix estimatedMg = calibrator.getEstimatedMg();
-            final Matrix estimatedGg = calibrator.getEstimatedGg();
+            final var estimatedMg = calibrator.getEstimatedMg();
+            final var estimatedGg = calibrator.getEstimatedGg();
 
             if (!mg.equals(estimatedMg, LARGE_ABSOLUTE_ERROR)) {
                 continue;
@@ -9666,18 +9636,18 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     @Override
     public void onCalibrateStart(final KnownBiasTurntableGyroscopeCalibrator calibrator) {
         checkLocked(calibrator);
-        mCalibrateStart++;
+        calibrateStart++;
     }
 
     @Override
     public void onCalibrateEnd(final KnownBiasTurntableGyroscopeCalibrator calibrator) {
         checkLocked(calibrator);
-        mCalibrateEnd++;
+        calibrateEnd++;
     }
 
     private void reset() {
-        mCalibrateStart = 0;
-        mCalibrateEnd = 0;
+        calibrateStart = 0;
+        calibrateEnd = 0;
     }
 
     private void checkLocked(final KnownBiasTurntableGyroscopeCalibrator calibrator) {
@@ -9775,10 +9745,10 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(18, covariance.getRows());
         assertEquals(18, covariance.getColumns());
 
-        for (int j = 0; j < 18; j++) {
-            final boolean colIsZero = j == 5 || j == 7 || j == 8;
-            for (int i = 0; i < 18; i++) {
-                final boolean rowIsZero = i == 5 || i == 7 || i == 8;
+        for (var j = 0; j < 18; j++) {
+            final var colIsZero = j == 5 || j == 7 || j == 8;
+            for (var i = 0; i < 18; i++) {
+                final var rowIsZero = i == 5 || i == 7 || i == 8;
                 if (colIsZero || rowIsZero) {
                     assertEquals(0.0, covariance.getElementAt(i, j), 0.0);
                 }
@@ -9790,8 +9760,8 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(18, covariance.getRows());
         assertEquals(18, covariance.getColumns());
 
-        for (int i = 0; i < 18; i++) {
-            assertNotEquals(covariance.getElementAt(i, i), 0.0);
+        for (var i = 0; i < 18; i++) {
+            assertNotEquals(0.0, covariance.getElementAt(i, i));
         }
     }
 
@@ -9799,10 +9769,10 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(18, covariance.getRows());
         assertEquals(18, covariance.getColumns());
 
-        for (int j = 0; j < 18; j++) {
-            final boolean colIsZero = j == 5 || j > 6;
-            for (int i = 0; i < 18; i++) {
-                final boolean rowIsZero = i == 5 || i > 6;
+        for (var j = 0; j < 18; j++) {
+            final var colIsZero = j == 5 || j > 6;
+            for (var i = 0; i < 18; i++) {
+                final var rowIsZero = i == 5 || i > 6;
                 if (colIsZero || rowIsZero) {
                     assertEquals(0.0, covariance.getElementAt(i, j), 0.0);
                 }
@@ -9814,10 +9784,10 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
         assertEquals(18, covariance.getRows());
         assertEquals(18, covariance.getColumns());
 
-        for (int j = 0; j < 18; j++) {
-            final boolean colIsZero = j > 8;
-            for (int i = 0; i < 18; i++) {
-                final boolean rowIsZero = i > 8;
+        for (var j = 0; j < 18; j++) {
+            final var colIsZero = j > 8;
+            for (var i = 0; i < 18; i++) {
+                final var rowIsZero = i > 8;
                 if (colIsZero || rowIsZero) {
                     assertEquals(0.0, covariance.getElementAt(i, j), 0.0);
                 }
@@ -9840,7 +9810,7 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     private static Matrix generateMa() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
+        final var result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 500e-6, -300e-6, 200e-6,
                 -150e-6, -600e-6, 250e-6,
@@ -9851,7 +9821,7 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     private static Matrix generateCommonAxisMg() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
+        final var result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 400e-6, -300e-6, 250e-6,
                 0.0, -300e-6, -150e-6,
@@ -9862,7 +9832,7 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     private static Matrix generateGeneralMg() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
+        final var result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 400e-6, -300e-6, 250e-6,
                 -300e-6, -300e-6, -150e-6,
@@ -9873,8 +9843,8 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     private static Matrix generateGg() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
-        final double tmp = DEG_TO_RAD / (3600 * 9.80665);
+        final var result = new Matrix(3, 3);
+        final var tmp = DEG_TO_RAD / (3600 * 9.80665);
         result.fromArray(new double[]{
                 0.9 * tmp, -1.1 * tmp, -0.6 * tmp,
                 -0.5 * tmp, 1.9 * tmp, -1.6 * tmp,
@@ -9893,7 +9863,7 @@ public class KnownBiasTurntableGyroscopeCalibratorTest implements KnownBiasTurnt
     }
 
     private static double getTurntableRotationRate() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final var randomizer = new UniformRandomizer();
         return Math.toRadians(randomizer.nextDouble(MIN_ROTATION_RATE_DEGREES_PER_SECOND,
                 MAX_ROTATION_RATE_DEGREES_PER_SECOND));
     }

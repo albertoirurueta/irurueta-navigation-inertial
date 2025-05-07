@@ -34,44 +34,44 @@ public class TimeIntervalEstimator {
     /**
      * Total samples to be processed to finish estimation.
      */
-    private int mTotalSamples = DEFAULT_TOTAL_SAMPLES;
+    private int totalSamples = DEFAULT_TOTAL_SAMPLES;
 
     /**
      * Listener to handle events raised by this estimator.
      */
-    private TimeIntervalEstimatorListener mListener;
+    private TimeIntervalEstimatorListener listener;
 
     /**
      * Last provided timestamp expressed in seconds (s).
      */
-    private Double mLastTimestamp;
+    private Double lastTimestamp;
 
     /**
      * Estimated average time interval between body kinematics samples expressed in
      * seconds (s).
      */
-    private double mAverageTimeInterval;
+    private double averageTimeInterval;
 
     /**
      * Estimated variance of time interval between body kinematics samples expressed
      * in squared seconds (s^2).
      */
-    private double mTimeIntervalVariance;
+    private double timeIntervalVariance;
 
     /**
      * Number of processed timestamp samples.
      */
-    private int mNumberOfProcessedSamples;
+    private int numberOfProcessedSamples;
 
     /**
      * Number of processed timestamp samples plus one.
      */
-    private int mNumberOfProcessedSamplesPlusOne = 1;
+    private int numberOfProcessedSamplesPlusOne = 1;
 
     /**
      * Indicates that estimator is running.
      */
-    private boolean mRunning;
+    private boolean running;
 
     /**
      * Constructor.
@@ -85,7 +85,7 @@ public class TimeIntervalEstimator {
      * @param listener listener to handle events raised by this estimator.
      */
     public TimeIntervalEstimator(final TimeIntervalEstimatorListener listener) {
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -99,7 +99,7 @@ public class TimeIntervalEstimator {
             throw new IllegalArgumentException();
         }
 
-        mTotalSamples = totalSamples;
+        this.totalSamples = totalSamples;
     }
 
     /**
@@ -111,7 +111,7 @@ public class TimeIntervalEstimator {
      */
     public TimeIntervalEstimator(final int totalSamples, final TimeIntervalEstimatorListener listener) {
         this(totalSamples);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -129,7 +129,7 @@ public class TimeIntervalEstimator {
      * @return total samples to be processed to finish estimation.
      */
     public int getTotalSamples() {
-        return mTotalSamples;
+        return totalSamples;
     }
 
     /**
@@ -139,7 +139,7 @@ public class TimeIntervalEstimator {
      * @throws LockedException if estimator is currently running.
      */
     public void setTotalSamples(final int totalSamples) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
@@ -147,7 +147,7 @@ public class TimeIntervalEstimator {
             throw new IllegalArgumentException();
         }
 
-        mTotalSamples = totalSamples;
+        this.totalSamples = totalSamples;
     }
 
     /**
@@ -156,7 +156,7 @@ public class TimeIntervalEstimator {
      * @return listener to handle events raised by this estimator.
      */
     public TimeIntervalEstimatorListener getListener() {
-        return mListener;
+        return listener;
     }
 
     /**
@@ -166,11 +166,11 @@ public class TimeIntervalEstimator {
      * @throws LockedException if this estimator is running.
      */
     public void setListener(final TimeIntervalEstimatorListener listener) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -180,7 +180,7 @@ public class TimeIntervalEstimator {
      * @return last provided timestamp or null.
      */
     public Double getLastTimestamp() {
-        return mLastTimestamp;
+        return lastTimestamp;
     }
 
     /**
@@ -189,7 +189,7 @@ public class TimeIntervalEstimator {
      * @return last provided timestamp or null.
      */
     public Time getLastTimestampAsTime() {
-        return mLastTimestamp != null ? new Time(mLastTimestamp, TimeUnit.SECOND) : null;
+        return lastTimestamp != null ? new Time(lastTimestamp, TimeUnit.SECOND) : null;
     }
 
     /**
@@ -199,8 +199,8 @@ public class TimeIntervalEstimator {
      * @return true if last provided timestamp was available, false otherwise.
      */
     public boolean getLastTimestampAsTime(final Time result) {
-        if (mLastTimestamp != null) {
-            result.setValue(mLastTimestamp);
+        if (lastTimestamp != null) {
+            result.setValue(lastTimestamp);
             result.setUnit(TimeUnit.SECOND);
             return true;
         } else {
@@ -217,7 +217,7 @@ public class TimeIntervalEstimator {
      * @return estimated average time interval.
      */
     public double getAverageTimeInterval() {
-        return mAverageTimeInterval;
+        return averageTimeInterval;
     }
 
     /**
@@ -228,7 +228,7 @@ public class TimeIntervalEstimator {
      * @return estimate average time interval.
      */
     public Time getAverageTimeIntervalAsTime() {
-        return new Time(mAverageTimeInterval, TimeUnit.SECOND);
+        return new Time(averageTimeInterval, TimeUnit.SECOND);
     }
 
     /**
@@ -239,7 +239,7 @@ public class TimeIntervalEstimator {
      * @param result instance where estimated average time interval will be stored.
      */
     public void getAverageTimeIntervalAsTime(final Time result) {
-        result.setValue(mAverageTimeInterval);
+        result.setValue(averageTimeInterval);
         result.setUnit(TimeUnit.SECOND);
     }
 
@@ -252,7 +252,7 @@ public class TimeIntervalEstimator {
      * @return estimated variance of time interval between body kinematics samples.
      */
     public double getTimeIntervalVariance() {
-        return mTimeIntervalVariance;
+        return timeIntervalVariance;
     }
 
     /**
@@ -265,7 +265,7 @@ public class TimeIntervalEstimator {
      * samples.
      */
     public double getTimeIntervalStandardDeviation() {
-        return Math.sqrt(mTimeIntervalVariance);
+        return Math.sqrt(timeIntervalVariance);
     }
 
     /**
@@ -301,7 +301,7 @@ public class TimeIntervalEstimator {
      * @return number of samples that have been processed so far.
      */
     public int getNumberOfProcessedSamples() {
-        return mNumberOfProcessedSamples;
+        return numberOfProcessedSamples;
     }
 
     /**
@@ -310,7 +310,7 @@ public class TimeIntervalEstimator {
      * @return true if estimator is running, false otherwise.
      */
     public boolean isRunning() {
-        return mRunning;
+        return running;
     }
 
     /**
@@ -319,7 +319,7 @@ public class TimeIntervalEstimator {
      * @return true if estimator has finished, false otherwise.
      */
     public boolean isFinished() {
-        return mNumberOfProcessedSamples == mTotalSamples;
+        return numberOfProcessedSamples == totalSamples;
     }
 
     /**
@@ -346,7 +346,7 @@ public class TimeIntervalEstimator {
      * @throws LockedException if estimator is currently running.
      */
     public boolean addTimestamp(final double timestamp) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
@@ -354,37 +354,37 @@ public class TimeIntervalEstimator {
             return false;
         }
 
-        mRunning = true;
+        running = true;
 
-        if (mLastTimestamp == null && mListener != null) {
-            mListener.onStart(this);
+        if (lastTimestamp == null && listener != null) {
+            listener.onStart(this);
         }
 
-        if (mLastTimestamp != null) {
-            final double timeInterval = timestamp - mLastTimestamp;
+        if (lastTimestamp != null) {
+            final var timeInterval = timestamp - lastTimestamp;
 
-            mAverageTimeInterval = mAverageTimeInterval * mNumberOfProcessedSamples / mNumberOfProcessedSamplesPlusOne
-                    + timeInterval / mNumberOfProcessedSamplesPlusOne;
+            averageTimeInterval = averageTimeInterval * numberOfProcessedSamples / numberOfProcessedSamplesPlusOne
+                    + timeInterval / numberOfProcessedSamplesPlusOne;
 
-            final double diff = timeInterval - mAverageTimeInterval;
-            final double diff2 = diff * diff;
-            mTimeIntervalVariance = mTimeIntervalVariance * mNumberOfProcessedSamples / mNumberOfProcessedSamplesPlusOne
-                    + diff2 / mNumberOfProcessedSamplesPlusOne;
+            final var diff = timeInterval - averageTimeInterval;
+            final var diff2 = diff * diff;
+            timeIntervalVariance = timeIntervalVariance * numberOfProcessedSamples / numberOfProcessedSamplesPlusOne
+                    + diff2 / numberOfProcessedSamplesPlusOne;
         }
 
-        mLastTimestamp = timestamp;
+        lastTimestamp = timestamp;
 
-        mNumberOfProcessedSamples++;
-        mNumberOfProcessedSamplesPlusOne++;
+        numberOfProcessedSamples++;
+        numberOfProcessedSamplesPlusOne++;
 
-        if (mListener != null) {
-            mListener.onTimestampAdded(this);
+        if (listener != null) {
+            listener.onTimestampAdded(this);
         }
 
-        mRunning = false;
+        running = false;
 
-        if (isFinished() && mListener != null) {
-            mListener.onFinish(this);
+        if (isFinished() && listener != null) {
+            listener.onFinish(this);
         }
 
         return true;
@@ -398,26 +398,26 @@ public class TimeIntervalEstimator {
      */
     @SuppressWarnings("DuplicatedCode")
     public boolean reset() throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        if (mNumberOfProcessedSamples == 0) {
+        if (numberOfProcessedSamples == 0) {
             return false;
         }
 
-        mRunning = true;
-        mLastTimestamp = null;
-        mAverageTimeInterval = 0.0;
-        mTimeIntervalVariance = 0.0;
-        mNumberOfProcessedSamples = 0;
-        mNumberOfProcessedSamplesPlusOne = 1;
+        running = true;
+        lastTimestamp = null;
+        averageTimeInterval = 0.0;
+        timeIntervalVariance = 0.0;
+        numberOfProcessedSamples = 0;
+        numberOfProcessedSamplesPlusOne = 1;
 
-        if (mListener != null) {
-            mListener.onReset(this);
+        if (listener != null) {
+            listener.onReset(this);
         }
 
-        mRunning = false;
+        running = false;
 
         return true;
     }
@@ -428,14 +428,14 @@ public class TimeIntervalEstimator {
      * @param input input instance to be copied.
      */
     public void copyFrom(final TimeIntervalEstimator input) {
-        mTotalSamples = input.mTotalSamples;
-        mListener = input.mListener;
-        mLastTimestamp = input.mLastTimestamp;
-        mAverageTimeInterval = input.mAverageTimeInterval;
-        mTimeIntervalVariance = input.mTimeIntervalVariance;
-        mNumberOfProcessedSamples = input.mNumberOfProcessedSamples;
-        mNumberOfProcessedSamplesPlusOne = input.mNumberOfProcessedSamplesPlusOne;
-        mRunning = input.mRunning;
+        totalSamples = input.totalSamples;
+        listener = input.listener;
+        lastTimestamp = input.lastTimestamp;
+        averageTimeInterval = input.averageTimeInterval;
+        timeIntervalVariance = input.timeIntervalVariance;
+        numberOfProcessedSamples = input.numberOfProcessedSamples;
+        numberOfProcessedSamplesPlusOne = input.numberOfProcessedSamplesPlusOne;
+        running = input.running;
     }
 
     /**

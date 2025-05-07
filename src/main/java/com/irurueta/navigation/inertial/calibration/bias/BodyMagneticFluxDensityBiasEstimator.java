@@ -29,7 +29,6 @@ import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
 import com.irurueta.navigation.inertial.calibration.MagneticFluxDensityTriad;
 import com.irurueta.navigation.inertial.estimators.BodyMagneticFluxDensityEstimator;
-import com.irurueta.navigation.inertial.wmm.NEDMagneticFluxDensity;
 import com.irurueta.navigation.inertial.wmm.WMMEarthMagneticFluxDensityEstimator;
 import com.irurueta.navigation.inertial.wmm.WorldMagneticModel;
 import com.irurueta.units.Angle;
@@ -91,7 +90,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
     /**
      * Time interval expressed in seconds (s) between body kinematics samples.
      */
-    private double mTimeInterval = DEFAULT_TIME_INTERVAL_SECONDS;
+    private double timeInterval = DEFAULT_TIME_INTERVAL_SECONDS;
 
     /**
      * Contains body position, velocity (which will always be zero) and orientation
@@ -101,86 +100,86 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * pith = 0, yaw = 0), which for Android devices it means that the device is flat
      * on a horizontal surface with the screen facing down.
      */
-    private final ECEFFrame mFrame;
+    private final ECEFFrame frame;
 
     /**
      * Contains year expressed in decimal format.
      */
-    private double mYear;
+    private double year;
 
     /**
      * Listener to handle events raised by this estimator.
      */
-    private BodyMagneticFluxDensityBiasEstimatorListener mListener;
+    private BodyMagneticFluxDensityBiasEstimatorListener listener;
 
     /**
      * Contains Earth's magnetic model.
      */
-    private WorldMagneticModel mMagneticModel;
+    private WorldMagneticModel magneticModel;
 
     /**
      * World Magnetic Model of Earth.
      */
-    private WMMEarthMagneticFluxDensityEstimator mWmmEstimator;
+    private WMMEarthMagneticFluxDensityEstimator wmmEstimator;
 
     /**
      * Last provided body magnetic flux density values.
      */
-    private BodyMagneticFluxDensity mLastBodyMagneticFluxDensity;
+    private BodyMagneticFluxDensity lastBodyMagneticFluxDensity;
 
     /**
      * Contains estimated bias of x coordinate of body magnetic flux density
      * expressed in Teslas (T). Notice that bias is equivalent to hard iron
      * component on a magnetometer calibrator.
      */
-    private double mBiasX;
+    private double biasX;
 
     /**
      * Contains estimated bias of y coordinate of body magnetic flux density
      * expressed in Teslas (T). Notice that bias is equivalent to hard iron
      * component on a magnetometer calibrator.
      */
-    private double mBiasY;
+    private double biasY;
 
     /**
      * Contains estimated bias of z coordinate of body magnetic flux density
      * expressed in Teslas (T). Notice that bias is equivalent to hard iron
      * component on a magnetometer calibrator.
      */
-    private double mBiasZ;
+    private double biasZ;
 
     /**
      * Contains estimated variance of x coordinate of body magnetic flux density
      * expressed in squared Teslas (T^2).
      */
-    private double mVarianceX;
+    private double varianceX;
 
     /**
      * Contains estimated variance of y coordinate of body magnetic flux density
      * expressed in squared Teslas (T^2).
      */
-    private double mVarianceY;
+    private double varianceY;
 
     /**
      * Contains estimated variance of z coordinate of body magnetic flux density
      * expressed in squared Teslas (T^2).
      */
-    private double mVarianceZ;
+    private double varianceZ;
 
     /**
      * Number of processed magnetometer samples.
      */
-    private int mNumberOfProcessedSamples;
+    private int numberOfProcessedSamples;
 
     /**
      * Number of processed magnetometer samples plus one.
      */
-    private int mNumberOfProcessedSamplesPlusOne = 1;
+    private int numberOfProcessedSamplesPlusOne = 1;
 
     /**
      * Indicates that estimator is running.
      */
-    private boolean mRunning;
+    private boolean running;
 
     /**
      * Theoretical expected body magnetic flux density for provided instant,
@@ -189,7 +188,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * When body remains static, sensed magnetic flux density will remain constant
      * for a few minutes respect to provided time instant.
      */
-    private BodyMagneticFluxDensity mExpectedBodyMagneticFluxDensity;
+    private BodyMagneticFluxDensity expectedBodyMagneticFluxDensity;
 
     /**
      * Constructor.
@@ -240,8 +239,8 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @param height    height expressed in meters (m).
      * @throws IOException if initialization of world magnetic model fails.
      */
-    public BodyMagneticFluxDensityBiasEstimator(
-            final double latitude, final double longitude, final double height) throws IOException {
+    public BodyMagneticFluxDensityBiasEstimator(final double latitude, final double longitude, final double height)
+            throws IOException {
         this(latitude, longitude, height, new Date(), (WorldMagneticModel) null);
     }
 
@@ -258,8 +257,8 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @param height    height expressed in meters (m).
      * @throws IOException if initialization of world magnetic model fails.
      */
-    public BodyMagneticFluxDensityBiasEstimator(
-            final Angle latitude, final Angle longitude, final double height) throws IOException {
+    public BodyMagneticFluxDensityBiasEstimator(final Angle latitude, final Angle longitude, final double height)
+            throws IOException {
         this(latitude, longitude, height, new Date(), (WorldMagneticModel) null);
     }
 
@@ -276,8 +275,8 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @param height    height.
      * @throws IOException if initialization of world magnetic model fails.
      */
-    public BodyMagneticFluxDensityBiasEstimator(
-            final Angle latitude, final Angle longitude, final Distance height) throws IOException {
+    public BodyMagneticFluxDensityBiasEstimator(final Angle latitude, final Angle longitude, final Distance height)
+            throws IOException {
         this(latitude, longitude, height, new Date(), (WorldMagneticModel) null);
     }
 
@@ -297,8 +296,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      *                                                       world magnetic model
      *                                                       fails.
      */
-    public BodyMagneticFluxDensityBiasEstimator(
-            final NEDPosition position, final CoordinateTransformation nedC)
+    public BodyMagneticFluxDensityBiasEstimator(final NEDPosition position, final CoordinateTransformation nedC)
             throws InvalidSourceAndDestinationFrameTypeException, IOException {
         this(position, nedC, new Date(), (WorldMagneticModel) null);
     }
@@ -319,8 +317,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      *                                                       world magnetic model
      *                                                       fails.
      */
-    public BodyMagneticFluxDensityBiasEstimator(
-            final ECEFPosition position, final CoordinateTransformation nedC)
+    public BodyMagneticFluxDensityBiasEstimator(final ECEFPosition position, final CoordinateTransformation nedC)
             throws InvalidSourceAndDestinationFrameTypeException, IOException {
         this(position, nedC, new Date(), (WorldMagneticModel) null);
     }
@@ -339,7 +336,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
     public BodyMagneticFluxDensityBiasEstimator(
             final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
         this(new Date());
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -364,7 +361,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
             final CoordinateTransformation nedC, final BodyMagneticFluxDensityBiasEstimatorListener listener)
             throws InvalidSourceAndDestinationFrameTypeException, IOException {
         this(nedC, new Date());
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -385,7 +382,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
             final double latitude, final double longitude, final double height,
             final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
         this(latitude, longitude, height, new Date());
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -406,7 +403,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
             final Angle latitude, final Angle longitude, final double height,
             final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
         this(latitude, longitude, height, new Date());
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -427,7 +424,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
             final Angle latitude, final Angle longitude, final Distance height,
             final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
         this(latitude, longitude, height, new Date());
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -452,7 +449,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
             final BodyMagneticFluxDensityBiasEstimatorListener listener)
             throws InvalidSourceAndDestinationFrameTypeException, IOException {
         this(position, nedC, new Date());
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -476,7 +473,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
             final BodyMagneticFluxDensityBiasEstimatorListener listener)
             throws InvalidSourceAndDestinationFrameTypeException, IOException {
         this(position, nedC, new Date());
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -627,7 +624,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
     public BodyMagneticFluxDensityBiasEstimator(
             final double year, final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
         this(year);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -653,7 +650,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
             final BodyMagneticFluxDensityBiasEstimatorListener listener)
             throws InvalidSourceAndDestinationFrameTypeException, IOException {
         this(nedC, year);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -674,7 +671,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
             final double latitude, final double longitude, final double height, final double year,
             final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
         this(latitude, longitude, height, year);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -695,7 +692,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
             final Angle latitude, final Angle longitude, final double height, final double year,
             final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
         this(latitude, longitude, height, year);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -716,7 +713,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
             final Angle latitude, final Angle longitude, final Distance height,
             final double year, final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
         this(latitude, longitude, height, year);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -741,7 +738,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
             final BodyMagneticFluxDensityBiasEstimatorListener listener)
             throws InvalidSourceAndDestinationFrameTypeException, IOException {
         this(position, nedC, year);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -766,7 +763,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
             final double year, final BodyMagneticFluxDensityBiasEstimatorListener listener)
             throws InvalidSourceAndDestinationFrameTypeException, IOException {
         this(position, nedC, year);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -876,8 +873,8 @@ public class BodyMagneticFluxDensityBiasEstimator {
      *                                                       fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final NEDPosition position, final CoordinateTransformation nedC,
-            final Date date) throws InvalidSourceAndDestinationFrameTypeException, IOException {
+            final NEDPosition position, final CoordinateTransformation nedC, final Date date)
+            throws InvalidSourceAndDestinationFrameTypeException, IOException {
         this(position, nedC, convertTime(date));
     }
 
@@ -898,8 +895,8 @@ public class BodyMagneticFluxDensityBiasEstimator {
      *                                                       fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final ECEFPosition position, final CoordinateTransformation nedC,
-            final Date date) throws InvalidSourceAndDestinationFrameTypeException, IOException {
+            final ECEFPosition position, final CoordinateTransformation nedC, final Date date)
+            throws InvalidSourceAndDestinationFrameTypeException, IOException {
         this(position, nedC, convertTime(date));
     }
 
@@ -959,8 +956,8 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws IOException if initialization of world magnetic model fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final double latitude, final double longitude, final double height,
-            final Date date, final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
+            final double latitude, final double longitude, final double height, final Date date,
+            final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
         this(latitude, longitude, height, convertTime(date), listener);
     }
 
@@ -1066,9 +1063,9 @@ public class BodyMagneticFluxDensityBiasEstimator {
      */
     public BodyMagneticFluxDensityBiasEstimator(
             final double year, final WorldMagneticModel magneticModel) throws IOException {
-        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame());
-        mYear = year;
-        mMagneticModel = magneticModel;
+        frame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame());
+        this.year = year;
+        this.magneticModel = magneticModel;
         initialize();
     }
 
@@ -1093,9 +1090,9 @@ public class BodyMagneticFluxDensityBiasEstimator {
     public BodyMagneticFluxDensityBiasEstimator(
             final CoordinateTransformation nedC, final double year, final WorldMagneticModel magneticModel)
             throws InvalidSourceAndDestinationFrameTypeException, IOException {
-        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(nedC));
-        mYear = year;
-        mMagneticModel = magneticModel;
+        frame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(nedC));
+        this.year = year;
+        this.magneticModel = magneticModel;
         initialize();
     }
 
@@ -1117,9 +1114,9 @@ public class BodyMagneticFluxDensityBiasEstimator {
     public BodyMagneticFluxDensityBiasEstimator(
             final double latitude, final double longitude, final double height,
             final double year, final WorldMagneticModel magneticModel) throws IOException {
-        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(latitude, longitude, height));
-        mYear = year;
-        mMagneticModel = magneticModel;
+        frame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(latitude, longitude, height));
+        this.year = year;
+        this.magneticModel = magneticModel;
         initialize();
     }
 
@@ -1141,9 +1138,9 @@ public class BodyMagneticFluxDensityBiasEstimator {
     public BodyMagneticFluxDensityBiasEstimator(
             final Angle latitude, final Angle longitude, final double height,
             final double year, final WorldMagneticModel magneticModel) throws IOException {
-        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(latitude, longitude, height));
-        mYear = year;
-        mMagneticModel = magneticModel;
+        frame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(latitude, longitude, height));
+        this.year = year;
+        this.magneticModel = magneticModel;
         initialize();
     }
 
@@ -1165,9 +1162,9 @@ public class BodyMagneticFluxDensityBiasEstimator {
     public BodyMagneticFluxDensityBiasEstimator(
             final Angle latitude, final Angle longitude, final Distance height,
             final double year, final WorldMagneticModel magneticModel) throws IOException {
-        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(latitude, longitude, height));
-        mYear = year;
-        mMagneticModel = magneticModel;
+        frame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(latitude, longitude, height));
+        this.year = year;
+        this.magneticModel = magneticModel;
         initialize();
     }
 
@@ -1193,9 +1190,9 @@ public class BodyMagneticFluxDensityBiasEstimator {
             final NEDPosition position, final CoordinateTransformation nedC,
             final double year, final WorldMagneticModel magneticModel)
             throws InvalidSourceAndDestinationFrameTypeException, IOException {
-        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(position, nedC));
-        mYear = year;
-        mMagneticModel = magneticModel;
+        frame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(position, nedC));
+        this.year = year;
+        this.magneticModel = magneticModel;
         initialize();
     }
 
@@ -1221,12 +1218,12 @@ public class BodyMagneticFluxDensityBiasEstimator {
             final ECEFPosition position, final CoordinateTransformation nedC,
             final double year, final WorldMagneticModel magneticModel)
             throws InvalidSourceAndDestinationFrameTypeException, IOException {
-        mFrame = new ECEFFrame(position);
-        final NEDFrame nedFrame = ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(mFrame);
+        frame = new ECEFFrame(position);
+        final var nedFrame = ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(frame);
         nedFrame.setCoordinateTransformation(nedC);
-        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
-        mYear = year;
-        mMagneticModel = magneticModel;
+        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
+        this.year = year;
+        this.magneticModel = magneticModel;
         initialize();
     }
 
@@ -1247,7 +1244,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
             final double year, final WorldMagneticModel magneticModel,
             final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
         this(year, magneticModel);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1275,7 +1272,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
             final BodyMagneticFluxDensityBiasEstimatorListener listener)
             throws InvalidSourceAndDestinationFrameTypeException, IOException {
         this(nedC, year, magneticModel);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1299,7 +1296,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
             final double year, final WorldMagneticModel magneticModel,
             final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
         this(latitude, longitude, height, year, magneticModel);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1323,7 +1320,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
             final WorldMagneticModel magneticModel,
             final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
         this(latitude, longitude, height, year, magneticModel);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1347,7 +1344,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
             final double year, final WorldMagneticModel magneticModel,
             final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
         this(latitude, longitude, height, year, magneticModel);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1374,7 +1371,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
             final WorldMagneticModel magneticModel, final BodyMagneticFluxDensityBiasEstimatorListener listener)
             throws InvalidSourceAndDestinationFrameTypeException, IOException {
         this(position, nedC, year, magneticModel);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1402,7 +1399,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
             final BodyMagneticFluxDensityBiasEstimatorListener listener)
             throws InvalidSourceAndDestinationFrameTypeException, IOException {
         this(position, nedC, year, magneticModel);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1735,7 +1732,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @return time interval between body kinematics samples.
      */
     public double getTimeInterval() {
-        return mTimeInterval;
+        return timeInterval;
     }
 
     /**
@@ -1746,7 +1743,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws LockedException if estimator is currently running.
      */
     public void setTimeInterval(final double timeInterval) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
@@ -1754,7 +1751,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
             throw new IllegalArgumentException();
         }
 
-        mTimeInterval = timeInterval;
+        this.timeInterval = timeInterval;
     }
 
     /**
@@ -1764,7 +1761,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @return time interval between body kinematics samples.
      */
     public Time getTimeIntervalAsTime() {
-        return new Time(mTimeInterval, TimeUnit.SECOND);
+        return new Time(timeInterval, TimeUnit.SECOND);
     }
 
     /**
@@ -1774,7 +1771,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @param result instance where time interval will be stored.
      */
     public void getTimeIntervalAsTime(final Time result) {
-        result.setValue(mTimeInterval);
+        result.setValue(timeInterval);
         result.setUnit(TimeUnit.SECOND);
     }
 
@@ -1795,7 +1792,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @return current body position expressed in ECEF coordinates.
      */
     public ECEFPosition getEcefPosition() {
-        return mFrame.getECEFPosition();
+        return frame.getECEFPosition();
     }
 
     /**
@@ -1804,7 +1801,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @param result instance where current body position will be stored.
      */
     public void getEcefPosition(final ECEFPosition result) {
-        mFrame.getECEFPosition(result);
+        frame.getECEFPosition(result);
     }
 
     /**
@@ -1814,11 +1811,11 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws LockedException if estimator is currently running.
      */
     public void setEcefPosition(final ECEFPosition position) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mFrame.setPosition(position);
+        frame.setPosition(position);
 
         rebuildExpectedBodyMagneticFluxDensity();
     }
@@ -1832,11 +1829,11 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws LockedException if estimator is currently running.
      */
     public void setEcefPosition(final double x, final double y, final double z) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mFrame.setCoordinates(x, y, z);
+        frame.setCoordinates(x, y, z);
 
         rebuildExpectedBodyMagneticFluxDensity();
     }
@@ -1851,11 +1848,11 @@ public class BodyMagneticFluxDensityBiasEstimator {
      */
     public void setEcefPosition(
             final Distance x, final Distance y, final Distance z) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mFrame.setPositionCoordinates(x, y, z);
+        frame.setPositionCoordinates(x, y, z);
 
         rebuildExpectedBodyMagneticFluxDensity();
     }
@@ -1867,11 +1864,11 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws LockedException if estimator is currently running.
      */
     public void setEcefPosition(final Point3D position) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mFrame.setPosition(position);
+        frame.setPosition(position);
 
         rebuildExpectedBodyMagneticFluxDensity();
     }
@@ -1885,7 +1882,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * around ECEF axes.
      */
     public ECEFFrame getEcefFrame() {
-        return new ECEFFrame(mFrame);
+        return new ECEFFrame(frame);
     }
 
     /**
@@ -1897,7 +1894,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      *               orientation resolved around ECEF axes will be stored.
      */
     public void getEcefFrame(final ECEFFrame result) {
-        mFrame.copyTo(result);
+        frame.copyTo(result);
     }
 
     /**
@@ -1909,7 +1906,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * around NED axes.
      */
     public NEDFrame getNedFrame() {
-        return ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(mFrame);
+        return ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(frame);
     }
 
     /**
@@ -1921,7 +1918,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      *               orientation resolved around NED axes will be stored.
      */
     public void getNedFrame(final NEDFrame result) {
-        ECEFtoNEDFrameConverter.convertECEFtoNED(mFrame, result);
+        ECEFtoNEDFrameConverter.convertECEFtoNED(frame, result);
     }
 
     /**
@@ -1949,13 +1946,13 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws LockedException if estimator is currently running.
      */
     public void setNedPosition(final NEDPosition position) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        final NEDFrame nedFrame = getNedFrame();
+        final var nedFrame = getNedFrame();
         nedFrame.setPosition(position);
-        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
+        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
 
         rebuildExpectedBodyMagneticFluxDensity();
     }
@@ -1970,13 +1967,13 @@ public class BodyMagneticFluxDensityBiasEstimator {
      */
     public void setNedPosition(final double latitude, final double longitude, final double height)
             throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        final NEDFrame nedFrame = getNedFrame();
+        final var nedFrame = getNedFrame();
         nedFrame.setPosition(latitude, longitude, height);
-        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
+        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
 
         rebuildExpectedBodyMagneticFluxDensity();
     }
@@ -1991,13 +1988,13 @@ public class BodyMagneticFluxDensityBiasEstimator {
      */
     public void setNedPosition(
             final Angle latitude, final Angle longitude, final double height) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        final NEDFrame nedFrame = getNedFrame();
+        final var nedFrame = getNedFrame();
         nedFrame.setPosition(latitude, longitude, height);
-        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
+        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
 
         rebuildExpectedBodyMagneticFluxDensity();
     }
@@ -2012,13 +2009,13 @@ public class BodyMagneticFluxDensityBiasEstimator {
      */
     public void setNedPosition(
             final Angle latitude, final Angle longitude, final Distance height) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        final NEDFrame nedFrame = getNedFrame();
+        final var nedFrame = getNedFrame();
         nedFrame.setPosition(latitude, longitude, height);
-        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
+        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
 
         rebuildExpectedBodyMagneticFluxDensity();
     }
@@ -2036,7 +2033,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @return current body orientation resolved on ECEF axes.
      */
     public CoordinateTransformation getEcefC() {
-        return mFrame.getCoordinateTransformation();
+        return frame.getCoordinateTransformation();
     }
 
     /**
@@ -2053,7 +2050,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      *               will be stored.
      */
     public void getEcefC(final CoordinateTransformation result) {
-        mFrame.getCoordinateTransformation(result);
+        frame.getCoordinateTransformation(result);
     }
 
     /**
@@ -2076,11 +2073,11 @@ public class BodyMagneticFluxDensityBiasEstimator {
      */
     public void setEcefC(final CoordinateTransformation ecefC)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mFrame.setCoordinateTransformation(ecefC);
+        frame.setCoordinateTransformation(ecefC);
 
         rebuildExpectedBodyMagneticFluxDensity();
     }
@@ -2134,13 +2131,13 @@ public class BodyMagneticFluxDensityBiasEstimator {
      */
     public void setNedC(final CoordinateTransformation nedC)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        final NEDFrame nedFrame = getNedFrame();
+        final var nedFrame = getNedFrame();
         nedFrame.setCoordinateTransformation(nedC);
-        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
+        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
 
         rebuildExpectedBodyMagneticFluxDensity();
     }
@@ -2162,14 +2159,14 @@ public class BodyMagneticFluxDensityBiasEstimator {
     public void setNedPositionAndNedOrientation(
             final NEDPosition nedPosition, final CoordinateTransformation nedC)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        final NEDFrame nedFrame = getNedFrame();
+        final var nedFrame = getNedFrame();
         nedFrame.setPosition(nedPosition);
         nedFrame.setCoordinateTransformation(nedC);
-        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
+        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
 
         rebuildExpectedBodyMagneticFluxDensity();
     }
@@ -2193,14 +2190,14 @@ public class BodyMagneticFluxDensityBiasEstimator {
     public void setNedPositionAndNedOrientation(
             final double latitude, final double longitude, final double height, final CoordinateTransformation nedC)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        final NEDFrame nedFrame = getNedFrame();
+        final var nedFrame = getNedFrame();
         nedFrame.setPosition(latitude, longitude, height);
         nedFrame.setCoordinateTransformation(nedC);
-        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
+        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
 
         rebuildExpectedBodyMagneticFluxDensity();
     }
@@ -2224,14 +2221,14 @@ public class BodyMagneticFluxDensityBiasEstimator {
     public void setNedPositionAndNedOrientation(
             final Angle latitude, final Angle longitude, final double height, final CoordinateTransformation nedC)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        final NEDFrame nedFrame = getNedFrame();
+        final var nedFrame = getNedFrame();
         nedFrame.setPosition(latitude, longitude, height);
         nedFrame.setCoordinateTransformation(nedC);
-        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
+        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
 
         rebuildExpectedBodyMagneticFluxDensity();
     }
@@ -2255,14 +2252,14 @@ public class BodyMagneticFluxDensityBiasEstimator {
     public void setNedPositionAndNedOrientation(
             final Angle latitude, final Angle longitude, final Distance height, final CoordinateTransformation nedC)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        final NEDFrame nedFrame = getNedFrame();
+        final var nedFrame = getNedFrame();
         nedFrame.setPosition(latitude, longitude, height);
         nedFrame.setCoordinateTransformation(nedC);
-        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
+        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
 
         rebuildExpectedBodyMagneticFluxDensity();
     }
@@ -2284,12 +2281,12 @@ public class BodyMagneticFluxDensityBiasEstimator {
     public void setEcefPositionAndEcefOrientation(
             final ECEFPosition ecefPosition, final CoordinateTransformation ecefC)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mFrame.setPosition(ecefPosition);
-        mFrame.setCoordinateTransformation(ecefC);
+        frame.setPosition(ecefPosition);
+        frame.setCoordinateTransformation(ecefC);
 
         rebuildExpectedBodyMagneticFluxDensity();
     }
@@ -2313,12 +2310,12 @@ public class BodyMagneticFluxDensityBiasEstimator {
     public void setEcefPositionAndEcefOrientation(
             final double x, final double y, final double z, final CoordinateTransformation ecefC)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mFrame.setCoordinates(x, y, z);
-        mFrame.setCoordinateTransformation(ecefC);
+        frame.setCoordinates(x, y, z);
+        frame.setCoordinateTransformation(ecefC);
 
         rebuildExpectedBodyMagneticFluxDensity();
     }
@@ -2342,12 +2339,12 @@ public class BodyMagneticFluxDensityBiasEstimator {
     public void setEcefPositionAndEcefOrientation(
             final Distance x, final Distance y, final Distance z, final CoordinateTransformation ecefC)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mFrame.setPositionCoordinates(x, y, z);
-        mFrame.setCoordinateTransformation(ecefC);
+        frame.setPositionCoordinates(x, y, z);
+        frame.setCoordinateTransformation(ecefC);
 
         rebuildExpectedBodyMagneticFluxDensity();
     }
@@ -2369,12 +2366,12 @@ public class BodyMagneticFluxDensityBiasEstimator {
     public void setEcefPositionAndEcefOrientation(
             final Point3D position, final CoordinateTransformation ecefC)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mFrame.setPosition(position);
-        mFrame.setCoordinateTransformation(ecefC);
+        frame.setPosition(position);
+        frame.setCoordinateTransformation(ecefC);
 
         rebuildExpectedBodyMagneticFluxDensity();
     }
@@ -2397,14 +2394,14 @@ public class BodyMagneticFluxDensityBiasEstimator {
     public void setNedPositionAndEcefOrientation(
             final NEDPosition position, final CoordinateTransformation ecefC)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        final NEDFrame nedFrame = getNedFrame();
+        final var nedFrame = getNedFrame();
         nedFrame.setPosition(position);
-        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
-        mFrame.setCoordinateTransformation(ecefC);
+        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
+        frame.setCoordinateTransformation(ecefC);
 
         rebuildExpectedBodyMagneticFluxDensity();
     }
@@ -2429,14 +2426,14 @@ public class BodyMagneticFluxDensityBiasEstimator {
     public void setNedPositionAndEcefOrientation(
             final double latitude, final double longitude, final double height, final CoordinateTransformation ecefC)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        final NEDFrame nedFrame = getNedFrame();
+        final var nedFrame = getNedFrame();
         nedFrame.setPosition(latitude, longitude, height);
-        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
-        mFrame.setCoordinateTransformation(ecefC);
+        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
+        frame.setCoordinateTransformation(ecefC);
 
         rebuildExpectedBodyMagneticFluxDensity();
     }
@@ -2462,14 +2459,14 @@ public class BodyMagneticFluxDensityBiasEstimator {
             final Angle latitude, final Angle longitude, final double height,
             final CoordinateTransformation ecefC)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        final NEDFrame nedFrame = getNedFrame();
+        final var nedFrame = getNedFrame();
         nedFrame.setPosition(latitude, longitude, height);
-        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
-        mFrame.setCoordinateTransformation(ecefC);
+        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
+        frame.setCoordinateTransformation(ecefC);
 
         rebuildExpectedBodyMagneticFluxDensity();
     }
@@ -2495,14 +2492,14 @@ public class BodyMagneticFluxDensityBiasEstimator {
             final Angle latitude, final Angle longitude, final Distance height,
             final CoordinateTransformation ecefC)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        final NEDFrame nedFrame = getNedFrame();
+        final var nedFrame = getNedFrame();
         nedFrame.setPosition(latitude, longitude, height);
-        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
-        mFrame.setCoordinateTransformation(ecefC);
+        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
+        frame.setCoordinateTransformation(ecefC);
 
         rebuildExpectedBodyMagneticFluxDensity();
     }
@@ -2527,15 +2524,15 @@ public class BodyMagneticFluxDensityBiasEstimator {
     public void setEcefPositionAndNedOrientation(
             final ECEFPosition ecefPosition, final CoordinateTransformation nedC)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mFrame.setPosition(ecefPosition);
+        frame.setPosition(ecefPosition);
 
-        final NEDFrame nedFrame = getNedFrame();
+        final var nedFrame = getNedFrame();
         nedFrame.setCoordinateTransformation(nedC);
-        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
+        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
 
         rebuildExpectedBodyMagneticFluxDensity();
     }
@@ -2562,15 +2559,15 @@ public class BodyMagneticFluxDensityBiasEstimator {
     public void setEcefPositionAndNedOrientation(
             final double x, final double y, final double z,
             final CoordinateTransformation nedC) throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mFrame.setCoordinates(x, y, z);
+        frame.setCoordinates(x, y, z);
 
-        final NEDFrame nedFrame = getNedFrame();
+        final var nedFrame = getNedFrame();
         nedFrame.setCoordinateTransformation(nedC);
-        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
+        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
 
         rebuildExpectedBodyMagneticFluxDensity();
     }
@@ -2597,15 +2594,15 @@ public class BodyMagneticFluxDensityBiasEstimator {
     public void setEcefPositionAndNedOrientation(
             final Distance x, final Distance y, final Distance z,
             final CoordinateTransformation nedC) throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mFrame.setPositionCoordinates(x, y, z);
+        frame.setPositionCoordinates(x, y, z);
 
-        final NEDFrame nedFrame = getNedFrame();
+        final var nedFrame = getNedFrame();
         nedFrame.setCoordinateTransformation(nedC);
-        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
+        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
 
         rebuildExpectedBodyMagneticFluxDensity();
     }
@@ -2630,15 +2627,15 @@ public class BodyMagneticFluxDensityBiasEstimator {
     public void setEcefPositionAndNedOrientation(
             final Point3D position, final CoordinateTransformation nedC)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mFrame.setPosition(position);
+        frame.setPosition(position);
 
-        final NEDFrame nedFrame = getNedFrame();
+        final var nedFrame = getNedFrame();
         nedFrame.setCoordinateTransformation(nedC);
-        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
+        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
 
         rebuildExpectedBodyMagneticFluxDensity();
     }
@@ -2649,7 +2646,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @return year expressed in decimal format.
      */
     public double getYear() {
-        return mYear;
+        return year;
     }
 
     /**
@@ -2659,11 +2656,11 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws LockedException if estimator is running.
      */
     public void setYear(final double year) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mYear = year;
+        this.year = year;
 
         rebuildExpectedBodyMagneticFluxDensity();
     }
@@ -2675,11 +2672,11 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws LockedException if estimator is running.
      */
     public void setTime(final Date date) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mYear = convertTime(date);
+        year = convertTime(date);
 
         rebuildExpectedBodyMagneticFluxDensity();
     }
@@ -2691,11 +2688,11 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws LockedException if estimator is running.
      */
     public void setTime(final GregorianCalendar calendar) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mYear = convertTime(calendar);
+        year = convertTime(calendar);
 
         rebuildExpectedBodyMagneticFluxDensity();
     }
@@ -2706,7 +2703,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @return Earth's magnetic model or null if not provided.
      */
     public WorldMagneticModel getMagneticModel() {
-        return mMagneticModel;
+        return magneticModel;
     }
 
     /**
@@ -2718,10 +2715,10 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws IOException     if initialization of world magnetic model fails.
      */
     public void setMagneticModel(final WorldMagneticModel magneticModel) throws LockedException, IOException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mMagneticModel = magneticModel;
+        this.magneticModel = magneticModel;
         initialize();
     }
 
@@ -2731,7 +2728,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @return listener to handle events raised by this estimator.
      */
     public BodyMagneticFluxDensityBiasEstimatorListener getListener() {
-        return mListener;
+        return listener;
     }
 
     /**
@@ -2742,11 +2739,11 @@ public class BodyMagneticFluxDensityBiasEstimator {
      */
     public void setListener(
             final BodyMagneticFluxDensityBiasEstimatorListener listener) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2756,7 +2753,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @return last provided body magnetic flux density values or null.
      */
     public BodyMagneticFluxDensity getLastBodyMagneticFluxDensity() {
-        return mLastBodyMagneticFluxDensity != null ? new BodyMagneticFluxDensity(mLastBodyMagneticFluxDensity) : null;
+        return lastBodyMagneticFluxDensity != null ? new BodyMagneticFluxDensity(lastBodyMagneticFluxDensity) : null;
     }
 
     /**
@@ -2767,8 +2764,8 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @return true if result instance was updated, false otherwise.
      */
     public boolean getLastBodyMagneticFluxDensity(final BodyMagneticFluxDensity result) {
-        if (mLastBodyMagneticFluxDensity != null) {
-            mLastBodyMagneticFluxDensity.copyTo(result);
+        if (lastBodyMagneticFluxDensity != null) {
+            lastBodyMagneticFluxDensity.copyTo(result);
             return true;
         } else {
             return false;
@@ -2783,7 +2780,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @return bias of x coordinate of body magnetic flux density.
      */
     public double getBiasX() {
-        return mBiasX;
+        return biasX;
     }
 
     /**
@@ -2794,7 +2791,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @return bias of x coordinate of body magnetic flux density.
      */
     public MagneticFluxDensity getBiasXAsMagneticFluxDensity() {
-        return new MagneticFluxDensity(mBiasX, MagneticFluxDensityUnit.TESLA);
+        return new MagneticFluxDensity(biasX, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -2806,7 +2803,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      *               density will be stored.
      */
     public void getBiasXAsMagneticFluxDensity(final MagneticFluxDensity result) {
-        result.setValue(mBiasX);
+        result.setValue(biasX);
         result.setUnit(MagneticFluxDensityUnit.TESLA);
     }
 
@@ -2818,7 +2815,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @return bias of y coordinate of body magnetic flux density.
      */
     public double getBiasY() {
-        return mBiasY;
+        return biasY;
     }
 
     /**
@@ -2829,7 +2826,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @return bias of y coordinate of body magnetic flux density.
      */
     public MagneticFluxDensity getBiasYAsMagneticFluxDensity() {
-        return new MagneticFluxDensity(mBiasY, MagneticFluxDensityUnit.TESLA);
+        return new MagneticFluxDensity(biasY, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -2841,7 +2838,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      *               density will be stored.
      */
     public void getBiasYAsMagneticFluxDensity(final MagneticFluxDensity result) {
-        result.setValue(mBiasY);
+        result.setValue(biasY);
         result.setUnit(MagneticFluxDensityUnit.TESLA);
     }
 
@@ -2853,7 +2850,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @return bias of z coordinate of body magnetic flux density.
      */
     public double getBiasZ() {
-        return mBiasZ;
+        return biasZ;
     }
 
     /**
@@ -2864,7 +2861,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @return bias of z coordinate of body magnetic flux density.
      */
     public MagneticFluxDensity getBiasZAsMagneticFluxDensity() {
-        return new MagneticFluxDensity(mBiasZ, MagneticFluxDensityUnit.TESLA);
+        return new MagneticFluxDensity(biasZ, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -2876,7 +2873,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      *               density will be stored.
      */
     public void getBiasZAsMagneticFluxDensity(final MagneticFluxDensity result) {
-        result.setValue(mBiasZ);
+        result.setValue(biasZ);
         result.setUnit(MagneticFluxDensityUnit.TESLA);
     }
 
@@ -2886,7 +2883,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @return estimated bias of magnetic flux density.
      */
     public MagneticFluxDensityTriad getBiasTriad() {
-        return new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA, mBiasX, mBiasY, mBiasZ);
+        return new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA, biasX, biasY, biasZ);
     }
 
     /**
@@ -2896,7 +2893,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      *               be stored.
      */
     public void getBiasTriad(final MagneticFluxDensityTriad result) {
-        result.setValueCoordinatesAndUnit(mBiasX, mBiasY, mBiasZ, MagneticFluxDensityUnit.TESLA);
+        result.setValueCoordinatesAndUnit(biasX, biasY, biasZ, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -2906,7 +2903,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @return estimated variance of x coordinate of body magnetic flux density.
      */
     public double getVarianceX() {
-        return mVarianceX;
+        return varianceX;
     }
 
     /**
@@ -2916,7 +2913,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @return estimated variance of y coordinate of body magnetic flux density.
      */
     public double getVarianceY() {
-        return mVarianceY;
+        return varianceY;
     }
 
     /**
@@ -2926,7 +2923,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @return estimated variance of z coordinate of body magnetic flux density.
      */
     public double getVarianceZ() {
-        return mVarianceZ;
+        return varianceZ;
     }
 
     /**
@@ -2937,7 +2934,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * flux density.
      */
     public double getStandardDeviationX() {
-        return Math.sqrt(mVarianceX);
+        return Math.sqrt(varianceX);
     }
 
     /**
@@ -2958,8 +2955,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @param result instance where estimated standard deviation of x coordinate
      *               of body magnetic flux density will be stored.
      */
-    public void getStandardDeviationXAsMagneticFluxDensity(
-            final MagneticFluxDensity result) {
+    public void getStandardDeviationXAsMagneticFluxDensity(final MagneticFluxDensity result) {
         result.setValue(getStandardDeviationX());
         result.setUnit(MagneticFluxDensityUnit.TESLA);
     }
@@ -2972,7 +2968,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * flux density.
      */
     public double getStandardDeviationY() {
-        return Math.sqrt(mVarianceY);
+        return Math.sqrt(varianceY);
     }
 
     /**
@@ -2993,8 +2989,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @param result instance where estimated standard deviation of y coordinate
      *               of body magnetic flux density will be stored.
      */
-    public void getStandardDeviationYAsMagneticFluxDensity(
-            final MagneticFluxDensity result) {
+    public void getStandardDeviationYAsMagneticFluxDensity(final MagneticFluxDensity result) {
         result.setValue(getStandardDeviationY());
         result.setUnit(MagneticFluxDensityUnit.TESLA);
     }
@@ -3007,7 +3002,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * flux density.
      */
     public double getStandardDeviationZ() {
-        return Math.sqrt(mVarianceZ);
+        return Math.sqrt(varianceZ);
     }
 
     /**
@@ -3028,8 +3023,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @param result instance where estimated standard deviation of z coordinate
      *               of body magnetic flux density will be stored.
      */
-    public void getStandardDeviationZAsMagneticFluxDensity(
-            final MagneticFluxDensity result) {
+    public void getStandardDeviationZAsMagneticFluxDensity(final MagneticFluxDensity result) {
         result.setValue(getStandardDeviationZ());
         result.setUnit(MagneticFluxDensityUnit.TESLA);
     }
@@ -3082,8 +3076,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @param result instance where average of estimated standard deviation of
      *               body magnetic flux density will be stored.
      */
-    public void getAverageStandardDeviationAsMagneticFluxDensity(
-            final MagneticFluxDensity result) {
+    public void getAverageStandardDeviationAsMagneticFluxDensity(final MagneticFluxDensity result) {
         result.setValue(getAverageStandardDeviation());
         result.setUnit(MagneticFluxDensityUnit.TESLA);
     }
@@ -3095,7 +3088,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @return magnetometer noise PSD on x axis.
      */
     public double getPsdX() {
-        return mVarianceX * mTimeInterval;
+        return varianceX * timeInterval;
     }
 
     /**
@@ -3105,7 +3098,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @return magnetometer noise PSD on y axis.
      */
     public double getPsdY() {
-        return mVarianceY * mTimeInterval;
+        return varianceY * timeInterval;
     }
 
     /**
@@ -3115,7 +3108,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @return magnetometer noise PSD on z axis.
      */
     public double getPsdZ() {
-        return mVarianceZ * mTimeInterval;
+        return varianceZ * timeInterval;
     }
 
     /**
@@ -3174,7 +3167,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @return number of samples that have been processed so far.
      */
     public int getNumberOfProcessedSamples() {
-        return mNumberOfProcessedSamples;
+        return numberOfProcessedSamples;
     }
 
     /**
@@ -3183,7 +3176,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @return true if estimator is running, false otherwise.
      */
     public boolean isRunning() {
-        return mRunning;
+        return running;
     }
 
     /**
@@ -3196,7 +3189,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @return expected body magnetic flux density.
      */
     public BodyMagneticFluxDensity getExpectedBodyMagneticFluxDensity() {
-        return new BodyMagneticFluxDensity(mExpectedBodyMagneticFluxDensity);
+        return new BodyMagneticFluxDensity(expectedBodyMagneticFluxDensity);
     }
 
     /**
@@ -3210,7 +3203,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      *               stored.
      */
     public void getExpectedBodyMagneticFluxDensity(final BodyMagneticFluxDensity result) {
-        mExpectedBodyMagneticFluxDensity.copyTo(result);
+        expectedBodyMagneticFluxDensity.copyTo(result);
     }
 
     /**
@@ -3223,57 +3216,57 @@ public class BodyMagneticFluxDensityBiasEstimator {
     public void addBodyMagneticFluxDensity(final BodyMagneticFluxDensity bodyMagneticFluxDensity)
             throws LockedException {
 
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mRunning = true;
+        running = true;
 
-        if (mLastBodyMagneticFluxDensity == null && mListener != null) {
-            mListener.onStart(this);
+        if (lastBodyMagneticFluxDensity == null && listener != null) {
+            listener.onStart(this);
         }
 
-        final double bx = bodyMagneticFluxDensity.getBx();
-        final double by = bodyMagneticFluxDensity.getBy();
-        final double bz = bodyMagneticFluxDensity.getBz();
+        final var bx = bodyMagneticFluxDensity.getBx();
+        final var by = bodyMagneticFluxDensity.getBy();
+        final var bz = bodyMagneticFluxDensity.getBz();
 
-        final double expectedBx = mExpectedBodyMagneticFluxDensity.getBx();
-        final double expectedBy = mExpectedBodyMagneticFluxDensity.getBy();
-        final double expectedBz = mExpectedBodyMagneticFluxDensity.getBz();
+        final var expectedBx = expectedBodyMagneticFluxDensity.getBx();
+        final var expectedBy = expectedBodyMagneticFluxDensity.getBy();
+        final var expectedBz = expectedBodyMagneticFluxDensity.getBz();
 
-        final double diffBx = bx - expectedBx;
-        final double diffBy = by - expectedBy;
-        final double diffBz = bz - expectedBz;
+        final var diffBx = bx - expectedBx;
+        final var diffBy = by - expectedBy;
+        final var diffBz = bz - expectedBz;
 
         // compute biases
-        final double tmp = (double) mNumberOfProcessedSamples / (double) mNumberOfProcessedSamplesPlusOne;
-        mBiasX = mBiasX * tmp + diffBx / mNumberOfProcessedSamplesPlusOne;
-        mBiasY = mBiasY * tmp + diffBy / mNumberOfProcessedSamplesPlusOne;
-        mBiasZ = mBiasZ * tmp + diffBz / mNumberOfProcessedSamplesPlusOne;
+        final var tmp = (double) numberOfProcessedSamples / (double) numberOfProcessedSamplesPlusOne;
+        biasX = biasX * tmp + diffBx / numberOfProcessedSamplesPlusOne;
+        biasY = biasY * tmp + diffBy / numberOfProcessedSamplesPlusOne;
+        biasZ = biasZ * tmp + diffBz / numberOfProcessedSamplesPlusOne;
 
         // compute variances
-        final double diffBiasX = diffBx - mBiasX;
-        final double diffBiasY = diffBy - mBiasY;
-        final double diffBiasZ = diffBz - mBiasZ;
+        final var diffBiasX = diffBx - biasX;
+        final var diffBiasY = diffBy - biasY;
+        final var diffBiasZ = diffBz - biasZ;
 
-        final double diffBiasX2 = diffBiasX * diffBiasX;
-        final double diffBiasY2 = diffBiasY * diffBiasY;
-        final double diffBiasZ2 = diffBiasZ * diffBiasZ;
+        final var diffBiasX2 = diffBiasX * diffBiasX;
+        final var diffBiasY2 = diffBiasY * diffBiasY;
+        final var diffBiasZ2 = diffBiasZ * diffBiasZ;
 
-        mVarianceX = mVarianceX * tmp + diffBiasX2 / mNumberOfProcessedSamplesPlusOne;
-        mVarianceY = mVarianceY * tmp + diffBiasY2 / mNumberOfProcessedSamplesPlusOne;
-        mVarianceZ = mVarianceZ * tmp + diffBiasZ2 / mNumberOfProcessedSamplesPlusOne;
+        varianceX = varianceX * tmp + diffBiasX2 / numberOfProcessedSamplesPlusOne;
+        varianceY = varianceY * tmp + diffBiasY2 / numberOfProcessedSamplesPlusOne;
+        varianceZ = varianceZ * tmp + diffBiasZ2 / numberOfProcessedSamplesPlusOne;
 
-        mLastBodyMagneticFluxDensity = bodyMagneticFluxDensity;
+        lastBodyMagneticFluxDensity = bodyMagneticFluxDensity;
 
-        mNumberOfProcessedSamples++;
-        mNumberOfProcessedSamplesPlusOne++;
+        numberOfProcessedSamples++;
+        numberOfProcessedSamplesPlusOne++;
 
-        if (mListener != null) {
-            mListener.onBodyMagneticFluxDensityAdded(this);
+        if (listener != null) {
+            listener.onBodyMagneticFluxDensityAdded(this);
         }
 
-        mRunning = false;
+        running = false;
     }
 
     /**
@@ -3284,30 +3277,30 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws LockedException if estimator is currently running.
      */
     public boolean reset() throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        if (mNumberOfProcessedSamples == 0) {
+        if (numberOfProcessedSamples == 0) {
             return false;
         }
 
-        mRunning = true;
-        mLastBodyMagneticFluxDensity = null;
-        mBiasX = 0.0;
-        mBiasY = 0.0;
-        mBiasZ = 0.0;
-        mVarianceX = 0.0;
-        mVarianceY = 0.0;
-        mVarianceZ = 0.0;
-        mNumberOfProcessedSamples = 0;
-        mNumberOfProcessedSamplesPlusOne = 1;
+        running = true;
+        lastBodyMagneticFluxDensity = null;
+        biasX = 0.0;
+        biasY = 0.0;
+        biasZ = 0.0;
+        varianceX = 0.0;
+        varianceY = 0.0;
+        varianceZ = 0.0;
+        numberOfProcessedSamples = 0;
+        numberOfProcessedSamplesPlusOne = 1;
 
-        if (mListener != null) {
-            mListener.onReset(this);
+        if (listener != null) {
+            listener.onReset(this);
         }
 
-        mRunning = false;
+        running = false;
 
         return true;
     }
@@ -3320,7 +3313,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @return converted value expressed in decimal years.
      */
     public static double convertTime(final Date date) {
-        final GregorianCalendar calendar = new GregorianCalendar();
+        final var calendar = new GregorianCalendar();
         calendar.setTime(date);
         return convertTime(calendar);
     }
@@ -3354,10 +3347,10 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws IOException if world magnetic model loading fails.
      */
     private void initialize() throws IOException {
-        if (mMagneticModel != null) {
-            mWmmEstimator = new WMMEarthMagneticFluxDensityEstimator(mMagneticModel);
+        if (magneticModel != null) {
+            wmmEstimator = new WMMEarthMagneticFluxDensityEstimator(magneticModel);
         } else {
-            mWmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+            wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         }
 
         rebuildExpectedBodyMagneticFluxDensity();
@@ -3368,27 +3361,25 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * location and body orientation.
      */
     private void rebuildExpectedBodyMagneticFluxDensity() {
-        final NEDFrame nedFrame = ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(mFrame);
+        final var nedFrame = ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(frame);
 
-        final double latitude = nedFrame.getLatitude();
-        final double longitude = nedFrame.getLongitude();
-        final double height = nedFrame.getHeight();
+        final var latitude = nedFrame.getLatitude();
+        final var longitude = nedFrame.getLongitude();
+        final var height = nedFrame.getHeight();
 
-        final CoordinateTransformation cbn = new CoordinateTransformation(
-                FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
-        final CoordinateTransformation cnb = new CoordinateTransformation(
-                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
+        final var cbn = new CoordinateTransformation(FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+        final var cnb = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
         nedFrame.getCoordinateTransformation(cbn);
         cbn.inverse(cnb);
 
-        final NEDMagneticFluxDensity earthB = mWmmEstimator.estimate(latitude, longitude, height, mYear);
+        final var earthB = wmmEstimator.estimate(latitude, longitude, height, year);
 
         // estimate expected body magnetic flux density taking into
         // account body attitude (inverse of frame orientation) and
         // estimated Earth magnetic flux density
-        if (mExpectedBodyMagneticFluxDensity == null) {
-            mExpectedBodyMagneticFluxDensity = new BodyMagneticFluxDensity();
+        if (expectedBodyMagneticFluxDensity == null) {
+            expectedBodyMagneticFluxDensity = new BodyMagneticFluxDensity();
         }
-        BodyMagneticFluxDensityEstimator.estimate(earthB, cnb, mExpectedBodyMagneticFluxDensity);
+        BodyMagneticFluxDensityEstimator.estimate(earthB, cnb, expectedBodyMagneticFluxDensity);
     }
 }

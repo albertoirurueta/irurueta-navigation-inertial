@@ -61,7 +61,7 @@ public class KnownPositionAccelerometerCalibrator extends
     /**
      * Position where body kinematics measures have been taken.
      */
-    private ECEFPosition mPosition;
+    private ECEFPosition position;
 
     /**
      * Constructor.
@@ -75,8 +75,7 @@ public class KnownPositionAccelerometerCalibrator extends
      *
      * @param listener listener to handle events raised by this calibrator.
      */
-    public KnownPositionAccelerometerCalibrator(
-            final KnownPositionAccelerometerCalibratorListener listener) {
+    public KnownPositionAccelerometerCalibrator(final KnownPositionAccelerometerCalibratorListener listener) {
         super(listener);
     }
 
@@ -87,8 +86,7 @@ public class KnownPositionAccelerometerCalibrator extends
      *                     deviations taken at the same position with zero velocity
      *                     and unknown different orientations.
      */
-    public KnownPositionAccelerometerCalibrator(
-            final Collection<StandardDeviationBodyKinematics> measurements) {
+    public KnownPositionAccelerometerCalibrator(final Collection<StandardDeviationBodyKinematics> measurements) {
         super(measurements);
     }
 
@@ -420,8 +418,8 @@ public class KnownPositionAccelerometerCalibrator extends
      *                       to find a solution.
      */
     public KnownPositionAccelerometerCalibrator(
-            final boolean commonAxisUsed, final Acceleration initialBiasX,
-            final Acceleration initialBiasY, final Acceleration initialBiasZ) {
+            final boolean commonAxisUsed, final Acceleration initialBiasX, final Acceleration initialBiasY,
+            final Acceleration initialBiasZ) {
         super(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ);
     }
 
@@ -461,9 +459,8 @@ public class KnownPositionAccelerometerCalibrator extends
      *                       to find a solution.
      */
     public KnownPositionAccelerometerCalibrator(
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Acceleration initialBiasX,
-            final Acceleration initialBiasY, final Acceleration initialBiasZ) {
+            final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final Acceleration initialBiasX, final Acceleration initialBiasY, final Acceleration initialBiasZ) {
         super(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ);
     }
 
@@ -484,9 +481,9 @@ public class KnownPositionAccelerometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public KnownPositionAccelerometerCalibrator(
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Acceleration initialBiasX, final Acceleration initialBiasY,
-            final Acceleration initialBiasZ, final KnownPositionAccelerometerCalibratorListener listener) {
+            final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final Acceleration initialBiasX, final Acceleration initialBiasY, final Acceleration initialBiasZ,
+            final KnownPositionAccelerometerCalibratorListener listener) {
         super(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, listener);
     }
 
@@ -1553,8 +1550,7 @@ public class KnownPositionAccelerometerCalibrator extends
      * @param initialBias    initial bias to find a solution.
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
-    public KnownPositionAccelerometerCalibrator(
-            final boolean commonAxisUsed, final Matrix initialBias) {
+    public KnownPositionAccelerometerCalibrator(final boolean commonAxisUsed, final Matrix initialBias) {
         super(commonAxisUsed, initialBias);
     }
 
@@ -2774,8 +2770,8 @@ public class KnownPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed, final Acceleration initialBiasX, final Acceleration initialBiasY,
             final Acceleration initialBiasZ, final double initialSx, final double initialSy, final double initialSz,
             final KnownPositionAccelerometerCalibratorListener listener) {
-        this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,
-                initialSx, initialSy, initialSz, listener);
+        this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,
+                listener);
         try {
             setPosition(position);
         } catch (final LockedException ignore) {
@@ -3389,8 +3385,7 @@ public class KnownPositionAccelerometerCalibrator extends
      *                    squared second (m/s^2).
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
-    public KnownPositionAccelerometerCalibrator(
-            final ECEFPosition position, final double[] initialBias) {
+    public KnownPositionAccelerometerCalibrator(final ECEFPosition position, final double[] initialBias) {
         this(initialBias);
         try {
             setPosition(position);
@@ -3570,8 +3565,7 @@ public class KnownPositionAccelerometerCalibrator extends
      * @param initialBias initial bias to find a solution.
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
-    public KnownPositionAccelerometerCalibrator(
-            final ECEFPosition position, final Matrix initialBias) {
+    public KnownPositionAccelerometerCalibrator(final ECEFPosition position, final Matrix initialBias) {
         this(initialBias);
         try {
             setPosition(position);
@@ -5728,7 +5722,7 @@ public class KnownPositionAccelerometerCalibrator extends
      * @return position where body kinematics measures have been taken.
      */
     public ECEFPosition getEcefPosition() {
-        return mPosition;
+        return position;
     }
 
     /**
@@ -5743,13 +5737,13 @@ public class KnownPositionAccelerometerCalibrator extends
             throw new LockedException();
         }
 
-        mPosition = position;
+        this.position = position;
         if (position != null) {
-            final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
-                    mPosition.getX(), mPosition.getY(), mPosition.getZ());
-            mGroundTruthGravityNorm = gravity.getNorm();
+            final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+                    this.position.getX(), this.position.getY(), this.position.getZ());
+            groundTruthGravityNorm = gravity.getNorm();
         } else {
-            mGroundTruthGravityNorm = null;
+            groundTruthGravityNorm = null;
         }
     }
 
@@ -5761,7 +5755,7 @@ public class KnownPositionAccelerometerCalibrator extends
      * not available.
      */
     public NEDPosition getNedPosition() {
-        final NEDPosition result = new NEDPosition();
+        final var result = new NEDPosition();
         return getNedPosition(result) ? result : null;
     }
 
@@ -5774,10 +5768,10 @@ public class KnownPositionAccelerometerCalibrator extends
      */
     public boolean getNedPosition(final NEDPosition result) {
 
-        if (mPosition != null) {
-            final NEDVelocity velocity = new NEDVelocity();
+        if (position != null) {
+            final var velocity = new NEDVelocity();
             ECEFtoNEDPositionVelocityConverter.convertECEFtoNED(
-                    mPosition.getX(), mPosition.getY(), mPosition.getZ(),
+                    position.getX(), position.getY(), position.getZ(),
                     0.0, 0.0, 0.0, result, velocity);
             return true;
         } else {
@@ -5803,7 +5797,7 @@ public class KnownPositionAccelerometerCalibrator extends
      */
     @Override
     public boolean isReady() {
-        return super.isReady() && mPosition != null;
+        return super.isReady() && position != null;
     }
 
     /**
@@ -5814,8 +5808,8 @@ public class KnownPositionAccelerometerCalibrator extends
      * @return converted position expressed in ECEF coordinates.
      */
     private static ECEFPosition convertPosition(final NEDPosition position) {
-        final ECEFVelocity velocity = new ECEFVelocity();
-        final ECEFPosition result = new ECEFPosition();
+        final var velocity = new ECEFVelocity();
+        final var result = new ECEFPosition();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
                 position.getLatitude(), position.getLongitude(), position.getHeight(),
                 0.0, 0.0, 0.0, result, velocity);

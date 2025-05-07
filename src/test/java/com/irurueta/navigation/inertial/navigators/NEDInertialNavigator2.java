@@ -26,8 +26,6 @@ import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeExcept
 import com.irurueta.navigation.frames.NEDFrame;
 import com.irurueta.navigation.geodesic.Constants;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.inertial.NEDGravity;
-import com.irurueta.navigation.inertial.RadiiOfCurvature;
 import com.irurueta.navigation.inertial.estimators.NEDGravityEstimator;
 import com.irurueta.navigation.inertial.estimators.RadiiOfCurvatureEstimator;
 
@@ -81,50 +79,48 @@ public class NEDInertialNavigator2 {
 
         try {
             // Calculate attitude increment, magnitude, and skew-symmetric matrix
-            final Matrix alphaIbb = new Matrix(ROWS, 1);
+            final var alphaIbb = new Matrix(ROWS, 1);
             alphaIbb.setElementAtIndex(0, angularRateX * timeInterval);
             alphaIbb.setElementAtIndex(1, angularRateY * timeInterval);
             alphaIbb.setElementAtIndex(2, angularRateZ * timeInterval);
 
-            final double magAlpha = Utils.normF(alphaIbb);
+            final var magAlpha = Utils.normF(alphaIbb);
 
-            final Matrix skewAlphaIbb = Utils.skewMatrix(alphaIbb);
+            final var skewAlphaIbb = Utils.skewMatrix(alphaIbb);
 
             // From (2.123), determine the angular rate of the ECEF frame with respect
-            // the ECI frame, resolved about NED
+            // to the ECI frame, resolved about NED
             // From (2.123), determine the angular rate of the ECEF frame with respect
-            // the ECI frame, resolved about NED
-            final Matrix omegaIen = new Matrix(ROWS, 1);
+            // to the ECI frame, resolved about NED
+            final var omegaIen = new Matrix(ROWS, 1);
             omegaIen.setElementAtIndex(0, Math.cos(oldLatitude) * EARTH_ROTATION_RATE);
             omegaIen.setElementAtIndex(2, -Math.sin(oldLatitude) * EARTH_ROTATION_RATE);
 
             // From (5.44), determine the angular rate of the NED frame with respect
-            // the ECEF frame, resolved about NED
-            final RadiiOfCurvature oldRadiiOfCurvature = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(
-                    oldLatitude);
-            final double oldRe = oldRadiiOfCurvature.getRe();
-            final double oldRn = oldRadiiOfCurvature.getRn();
+            // to the ECEF frame, resolved about NED
+            final var oldRadiiOfCurvature = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(oldLatitude);
+            final var oldRe = oldRadiiOfCurvature.getRe();
+            final var oldRn = oldRadiiOfCurvature.getRn();
 
-            final Matrix oldOmegaEnN = new Matrix(ROWS, 1);
+            final var oldOmegaEnN = new Matrix(ROWS, 1);
             oldOmegaEnN.setElementAtIndex(0, oldVe / (oldRe + oldHeight));
             oldOmegaEnN.setElementAtIndex(1, -oldVn / (oldRn + oldHeight));
             oldOmegaEnN.setElementAtIndex(2, -oldVe * Math.tan(oldLatitude) / (oldRe + oldHeight));
 
-            final Matrix oldCbn = oldC.getMatrix();
+            final var oldCbn = oldC.getMatrix();
 
-            // Specific force frame transformation
+            // Specific force frame transformation.
             // Calculate the average body-to-ECEF-frame coordinate transformation
             // matrix over the update interval using (5.84) and (5.86)
             final Matrix aveCbn;
             final Matrix skewAlphaIbb2;
-            final Matrix skewOmega = Utils.skewMatrix(oldOmegaEnN.addAndReturnNew(omegaIen));
+            final var skewOmega = Utils.skewMatrix(oldOmegaEnN.addAndReturnNew(omegaIen));
             if (magAlpha > ALPHA_THRESHOLD) {
-                final double magAlpha2 = magAlpha * magAlpha;
-                final double value1 = (1.0 - Math.cos(magAlpha)) / magAlpha2;
-                final double value2 = (1.0 - Math.sin(magAlpha) / magAlpha) / magAlpha2;
+                final var magAlpha2 = magAlpha * magAlpha;
+                final var value1 = (1.0 - Math.cos(magAlpha)) / magAlpha2;
+                final var value2 = (1.0 - Math.sin(magAlpha) / magAlpha) / magAlpha2;
                 skewAlphaIbb2 = skewAlphaIbb.multiplyAndReturnNew(skewAlphaIbb);
-                aveCbn = oldCbn.multiplyAndReturnNew(
-                        Matrix.identity(Rotation3D.INHOM_COORDS, Rotation3D.INHOM_COORDS)
+                aveCbn = oldCbn.multiplyAndReturnNew(Matrix.identity(Rotation3D.INHOM_COORDS, Rotation3D.INHOM_COORDS)
                                 .addAndReturnNew(skewAlphaIbb.multiplyByScalarAndReturnNew(value1))
                                 .addAndReturnNew(skewAlphaIbb2
                                         .multiplyByScalarAndReturnNew(value2)))
@@ -137,67 +133,66 @@ public class NEDInertialNavigator2 {
             }
 
             // Transform specific force to ECEF-frame resolving axes using (5.86)
-            final Matrix fIbb = new Matrix(ROWS, 1);
+            final var fIbb = new Matrix(ROWS, 1);
             fIbb.setElementAtIndex(0, fx);
             fIbb.setElementAtIndex(1, fy);
             fIbb.setElementAtIndex(2, fz);
 
-            final Matrix fibn = aveCbn.multiplyAndReturnNew(fIbb);
+            final var fibn = aveCbn.multiplyAndReturnNew(fIbb);
 
             // Update velocity
             // From (5.54),
-            final NEDGravity gravity = NEDGravityEstimator.estimateGravityAndReturnNew(oldLatitude, oldHeight);
-            final Matrix g = gravity.asMatrix();
+            final var gravity = NEDGravityEstimator.estimateGravityAndReturnNew(oldLatitude, oldHeight);
+            final var g = gravity.asMatrix();
 
-            final Matrix oldVebn = new Matrix(ROWS, 1);
+            final var oldVebn = new Matrix(ROWS, 1);
             oldVebn.setElementAtIndex(0, oldVn);
             oldVebn.setElementAtIndex(1, oldVe);
             oldVebn.setElementAtIndex(2, oldVd);
 
-            final Matrix skewOmega2 = Utils.skewMatrix(oldOmegaEnN.addAndReturnNew(
+            final var skewOmega2 = Utils.skewMatrix(oldOmegaEnN.addAndReturnNew(
                     omegaIen.multiplyByScalarAndReturnNew(2.0)));
 
-            final Matrix vEbn = oldVebn.addAndReturnNew(fibn.addAndReturnNew(g).subtractAndReturnNew(
+            final var vEbn = oldVebn.addAndReturnNew(fibn.addAndReturnNew(g).subtractAndReturnNew(
                     skewOmega2.multiplyAndReturnNew(oldVebn)).multiplyByScalarAndReturnNew(timeInterval));
 
-            final double vn = vEbn.getElementAtIndex(0);
-            final double ve = vEbn.getElementAtIndex(1);
-            final double vd = vEbn.getElementAtIndex(2);
+            final var vn = vEbn.getElementAtIndex(0);
+            final var ve = vEbn.getElementAtIndex(1);
+            final var vd = vEbn.getElementAtIndex(2);
 
             // Update curvilinear position
             // Update height using (5.56)
-            final double height = oldHeight - 0.5 * timeInterval * (oldVd + vd);
+            final var height = oldHeight - 0.5 * timeInterval * (oldVd + vd);
 
             // Update latitude using (5.56)
-            final double latitude = oldLatitude
+            final var latitude = oldLatitude
                     + 0.5 * timeInterval * (oldVn / (oldRn + oldHeight) + vn / (oldRn + height));
 
             // Calculate meridian and transverse radii of curvature
-            final RadiiOfCurvature radiiOfCurvature = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(
-                    latitude);
-            final double rn = radiiOfCurvature.getRn();
-            final double re = radiiOfCurvature.getRe();
+            final var radiiOfCurvature = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(latitude);
+            final var rn = radiiOfCurvature.getRn();
+            final var re = radiiOfCurvature.getRe();
 
             // Update longitude using (5.56)
-            final double longitude = oldLongitude
+            final var longitude = oldLongitude
                     + 0.5 * timeInterval * (oldVe / ((oldRe + oldHeight) * Math.cos(oldLatitude))
                     + ve / ((re + height) * Math.cos(latitude)));
 
-            // Attitude update
+            // Attitude update.
             // From (5.44), determine the angular rate of the NED frame with respect the
             // ECEF frame, resolved about NED
-            final Matrix omegaEnN = new Matrix(ROWS, 1);
+            final var omegaEnN = new Matrix(ROWS, 1);
             omegaEnN.setElementAtIndex(0, ve / (re + height));
             omegaEnN.setElementAtIndex(1, -vn / (rn + height));
             omegaEnN.setElementAtIndex(2, -ve * Math.tan(latitude) / (re + height));
 
-            // Obtain coordinate transformation matrix from the new attitude with respect
+            // Get coordinate transformation matrix from the new attitude with respect
             // an inertial frame to the old using Rodrigues' formula, (5.73)
             final Matrix cNewOld;
             if (magAlpha > ALPHA_THRESHOLD) {
-                final double magAlpha2 = magAlpha * magAlpha;
-                final double value1 = Math.sin(magAlpha) / magAlpha;
-                final double value2 = (1.0 - Math.cos(magAlpha)) / magAlpha2;
+                final var magAlpha2 = magAlpha * magAlpha;
+                final var value1 = Math.sin(magAlpha) / magAlpha;
+                final var value2 = (1.0 - Math.cos(magAlpha)) / magAlpha2;
                 cNewOld = Matrix.identity(Rotation3D.INHOM_COORDS, Rotation3D.INHOM_COORDS)
                         .addAndReturnNew(skewAlphaIbb.multiplyByScalarAndReturnNew(value1))
                         .addAndReturnNew(skewAlphaIbb2.multiplyByScalarAndReturnNew(value2));
@@ -207,16 +202,15 @@ public class NEDInertialNavigator2 {
             }
 
             // Update attitude using (5.77)
-            final Matrix skewOmega3 = Utils.skewMatrix(
-                    omegaIen.addAndReturnNew(omegaEnN.multiplyByScalarAndReturnNew(0.5))
-                            .addAndReturnNew(oldOmegaEnN.multiplyByScalarAndReturnNew(0.5)));
-            final Matrix cbn = Matrix.identity(Rotation3D.INHOM_COORDS, Rotation3D.INHOM_COORDS)
+            final var skewOmega3 = Utils.skewMatrix(omegaIen.addAndReturnNew(omegaEnN.multiplyByScalarAndReturnNew(0.5))
+                    .addAndReturnNew(oldOmegaEnN.multiplyByScalarAndReturnNew(0.5)));
+            final var cbn = Matrix.identity(Rotation3D.INHOM_COORDS, Rotation3D.INHOM_COORDS)
                     .subtractAndReturnNew(skewOmega3.multiplyByScalarAndReturnNew(timeInterval))
                     .multiplyAndReturnNew(oldCbn)
                     .multiplyAndReturnNew(cNewOld);
 
-            final CoordinateTransformation c = new CoordinateTransformation(cbn,
-                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME, accuracyThreshold);
+            final var c = new CoordinateTransformation(cbn, FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME,
+                    accuracyThreshold);
 
             result.setPosition(latitude, longitude, height);
             result.setVelocityCoordinates(vn, ve, vd);

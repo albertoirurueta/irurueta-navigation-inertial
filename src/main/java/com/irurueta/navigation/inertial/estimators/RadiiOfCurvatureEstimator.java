@@ -95,14 +95,13 @@ public class RadiiOfCurvatureEstimator {
      */
     public static void estimateRadiiOfCurvature(
             final double latitude, final RadiiOfCurvature result) {
-        final double tmp = 1.0 - Math.pow(EARTH_ECCENTRICITY * Math.sin(latitude), 2.0);
+        final var tmp = 1.0 - Math.pow(EARTH_ECCENTRICITY * Math.sin(latitude), 2.0);
 
         // Calculate meridian radius of curvature using (2.105)
-        final double rn = EARTH_EQUATORIAL_RADIUS_WGS84
-                * (1.0 - Math.pow(EARTH_ECCENTRICITY, 2.0)) / Math.pow(tmp, 1.5);
+        final var rn = EARTH_EQUATORIAL_RADIUS_WGS84 * (1.0 - Math.pow(EARTH_ECCENTRICITY, 2.0)) / Math.pow(tmp, 1.5);
 
         // Calculate transverse radius of curvature using (2.106)
-        final double re = EARTH_EQUATORIAL_RADIUS_WGS84 / Math.sqrt(tmp);
+        final var re = EARTH_EQUATORIAL_RADIUS_WGS84 / Math.sqrt(tmp);
 
         result.setValues(rn, re);
     }
@@ -116,7 +115,7 @@ public class RadiiOfCurvatureEstimator {
      * radii of curvature.
      */
     public static RadiiOfCurvature estimateRadiiOfCurvatureAndReturnNew(final double latitude) {
-        final RadiiOfCurvature result = new RadiiOfCurvature();
+        final var result = new RadiiOfCurvature();
         estimateRadiiOfCurvature(latitude, result);
         return result;
     }
@@ -142,7 +141,7 @@ public class RadiiOfCurvatureEstimator {
      * radii of curvature.
      */
     public static RadiiOfCurvature estimateRadiiOfCurvatureAndReturnNew(final Angle latitude) {
-        final RadiiOfCurvature result = new RadiiOfCurvature();
+        final var result = new RadiiOfCurvature();
         estimateRadiiOfCurvature(latitude, result);
         return result;
     }

@@ -147,15 +147,14 @@ public class YuanQuaternionStepIntegrator extends QuaternionStepIntegrator {
             final double currentWx, final double currentWy, final double currentWz,
             final double dt, final Quaternion result) throws RotationException {
         try {
-            final Matrix quat = new Matrix(Quaternion.N_PARAMS, 1);
-            final Matrix omega = new Matrix(Quaternion.N_ANGLES, 1);
-            final Matrix a = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
-            final Matrix identity = Matrix.identity(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
-            final Matrix tmp = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
-            final Matrix quatResult = new Matrix(Quaternion.N_PARAMS, 1);
+            final var quat = new Matrix(Quaternion.N_PARAMS, 1);
+            final var omega = new Matrix(Quaternion.N_ANGLES, 1);
+            final var a = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
+            final var identity = Matrix.identity(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
+            final var tmp = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
+            final var quatResult = new Matrix(Quaternion.N_PARAMS, 1);
             integrationStep(initialAttitude, initialWx, initialWy, initialWz,
-                    currentWx, currentWy, currentWz, dt, result, quat, omega, a, identity, tmp,
-                    quatResult);
+                    currentWx, currentWy, currentWz, dt, result, quat, omega, a, identity, tmp, quatResult);
         } catch (final AlgebraException ignore) {
             // never happens
         }
@@ -201,23 +200,23 @@ public class YuanQuaternionStepIntegrator extends QuaternionStepIntegrator {
             initialAttitude.normalize();
             initialAttitude.values(quat.getBuffer());
 
-            double w1 = (initialWx + currentWx) / 2.0;
-            double w2 = (initialWy + currentWy) / 2.0;
-            double w3 = (initialWz + currentWz) / 2.0;
+            final var w1 = (initialWx + currentWx) / 2.0;
+            final var w2 = (initialWy + currentWy) / 2.0;
+            final var w3 = (initialWz + currentWz) / 2.0;
 
             copyAngularSpeedToMatrix(w1, w2, w3, omega);
             computeOmegaSkew(omega, a);
 
-            final double w1dt = w1 * dt;
-            final double w2dt = w2 * dt;
-            final double w3dt = w3 * dt;
+            final var w1dt = w1 * dt;
+            final var w2dt = w2 * dt;
+            final var w3dt = w3 * dt;
 
-            final double w1dt2 = w1dt * w1dt;
-            final double w2dt2 = w2dt * w2dt;
-            final double w3dt2 = w3dt * w3dt;
+            final var w1dt2 = w1dt * w1dt;
+            final var w2dt2 = w2dt * w2dt;
+            final var w3dt2 = w3dt * w3dt;
 
-            final double theta = Math.sqrt(w1dt2 + w2dt2 + w3dt2);
-            final double halfTheta = theta / 2;
+            final var theta = Math.sqrt(w1dt2 + w2dt2 + w3dt2);
+            final var halfTheta = theta / 2;
             final double sinc;
             if (theta > EPSILON) {
                 sinc = Math.sin(halfTheta) / halfTheta;

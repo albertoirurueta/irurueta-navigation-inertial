@@ -15,14 +15,14 @@
  */
 package com.irurueta.navigation.inertial.calibration.gyroscope;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class QuaternionStepIntegratorTypeTest {
+class QuaternionStepIntegratorTypeTest {
 
     @Test
-    public void enum_hasExpectedNumberOfValues() {
+    void enum_hasExpectedNumberOfValues() {
         assertEquals(6, QuaternionStepIntegratorType.values().length);
     }
 }

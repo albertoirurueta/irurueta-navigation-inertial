@@ -20,7 +20,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.io.StreamTokenizer;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -60,8 +59,7 @@ public class WMMLoader {
      * @throws IOException if an I/O error occurs.
      */
     public static WorldMagneticModel loadFromResource(final String resource) throws IOException {
-        try (final InputStream stream = WMMLoader.class
-                .getResourceAsStream(resource)) {
+        try (final var stream = WMMLoader.class.getResourceAsStream(resource)) {
             return load(stream);
         }
     }
@@ -74,8 +72,7 @@ public class WMMLoader {
      * @return a World Magnetic Model containing all required coefficients.
      * @throws IOException if an I/O error occurs.
      */
-    public static WorldMagneticModel loadFromUrl(final String url)
-            throws IOException {
+    public static WorldMagneticModel loadFromUrl(final String url) throws IOException {
         return load(new URL(url));
     }
 
@@ -87,8 +84,7 @@ public class WMMLoader {
      * @throws IOException if an I/O error occurs.
      */
     public static WorldMagneticModel loadFromFile(final String filePath) throws IOException {
-
-        try (final FileInputStream stream = new FileInputStream(filePath)) {
+        try (final var stream = new FileInputStream(filePath)) {
             return load(stream);
         }
     }
@@ -102,9 +98,9 @@ public class WMMLoader {
      * @throws IOException if an I/O error occurs.
      */
     public static WorldMagneticModel load(final URL url) throws IOException {
-        final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        final var connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
-        try (final InputStream stream = connection.getInputStream()) {
+        try (final var stream = connection.getInputStream()) {
             return load(stream);
         }
     }
@@ -117,8 +113,7 @@ public class WMMLoader {
      * @throws IOException if an I/O error occurs.
      */
     public static WorldMagneticModel load(final File file) throws IOException {
-
-        try (final FileInputStream stream = new FileInputStream(file)) {
+        try (final var stream = new FileInputStream(file)) {
             return load(stream);
         }
     }
@@ -131,10 +126,9 @@ public class WMMLoader {
      * @throws IOException if an I/O error occurs.
      */
     public static WorldMagneticModel load(final InputStream stream) throws IOException {
-
-        try (final Reader reader = new InputStreamReader(stream)) {
-            WorldMagneticModel result = new WorldMagneticModel();
-            final StreamTokenizer tokenizer = new StreamTokenizer(reader);
+        try (final var reader = new InputStreamReader(stream)) {
+            final var result = new WorldMagneticModel();
+            final var tokenizer = new StreamTokenizer(reader);
 
             // Read World Magnetic Model spherical harmonic coefficients
             result.snorm[0] = 1.0;
@@ -154,17 +148,17 @@ public class WMMLoader {
                     break;
                 }
 
-                final int n = (int) tokenizer.nval;
+                final var n = (int) tokenizer.nval;
                 tokenizer.nextToken();
-                final int m = (int) tokenizer.nval;
+                final var m = (int) tokenizer.nval;
                 tokenizer.nextToken();
-                final double gnm = tokenizer.nval;
+                final var gnm = tokenizer.nval;
                 tokenizer.nextToken();
-                final double hnm = tokenizer.nval;
+                final var hnm = tokenizer.nval;
                 tokenizer.nextToken();
-                final double dgnm = tokenizer.nval;
+                final var dgnm = tokenizer.nval;
                 tokenizer.nextToken();
-                final double dhnm = tokenizer.nval;
+                final var dhnm = tokenizer.nval;
 
                 if (m <= n) {
                     result.c[m][n] = gnm;
@@ -179,15 +173,15 @@ public class WMMLoader {
 
             // convert Schmidt normalized Gauss coefficients to un-normalized
             result.snorm[0] = 1.0;
-            for (int n = 1; n <= WorldMagneticModel.MAX_ORDER; n++) {
+            for (var n = 1; n <= WorldMagneticModel.MAX_ORDER; n++) {
 
                 result.snorm[n] = result.snorm[n - 1] * (2 * n - 1) / n;
-                int j = 2;
+                var j = 2;
 
                 for (int m = 0, D1 = 1, D2 = (n - m + D1) / D1; D2 > 0; D2--, m += D1) {
                     result.k[m][n] = (double) (((n - 1) * (n - 1)) - (m * m)) / (double) ((2 * n - 1) * (2 * n - 3));
                     if (m > 0) {
-                        double flnmj = ((n - m + 1) * j) / (double) (n + m);
+                        final var flnmj = ((n - m + 1) * j) / (double) (n + m);
                         result.snorm[n + m * N] = result.snorm[n + (m - 1) * N] * Math.sqrt(flnmj);
                         j = 1;
                         result.c[n][m - 1] = result.snorm[n + m * N] * result.c[n][m - 1];

@@ -25,7 +25,6 @@ import com.irurueta.navigation.frames.ECIFrame;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.inertial.ECIGravitation;
 import com.irurueta.navigation.inertial.estimators.ECIGravitationEstimator;
 
 /**
@@ -73,23 +72,23 @@ class ECIInertialNavigator2 {
         try {
             // Attitude update
             // Calculate attitude increment, magnitude, and skew-symmetric matrix
-            final Matrix alphaIbb = new Matrix(ROWS, 1);
+            final var alphaIbb = new Matrix(ROWS, 1);
             alphaIbb.setElementAtIndex(0, angularRateX * timeInterval);
             alphaIbb.setElementAtIndex(1, angularRateY * timeInterval);
             alphaIbb.setElementAtIndex(2, angularRateZ * timeInterval);
 
-            final double magAlpha = Utils.normF(alphaIbb);
+            final var magAlpha = Utils.normF(alphaIbb);
 
-            final Matrix skewAlphaIbb = Utils.skewMatrix(alphaIbb);
+            final var skewAlphaIbb = Utils.skewMatrix(alphaIbb);
 
             // Obtain coordinate transformation matrix from the new attitude to the old
             // using Rodrigues' formula, (5.73)
             final Matrix cNewOld;
             final Matrix skewAlphaIbb2;
             if (magAlpha > ALPHA_THRESHOLD) {
-                final double magAlpha2 = magAlpha * magAlpha;
-                final double value1 = Math.sin(magAlpha) / magAlpha;
-                final double value2 = (1.0 - Math.cos(magAlpha)) / magAlpha2;
+                final var magAlpha2 = magAlpha * magAlpha;
+                final var value1 = Math.sin(magAlpha) / magAlpha;
+                final var value2 = (1.0 - Math.cos(magAlpha)) / magAlpha2;
                 skewAlphaIbb2 = skewAlphaIbb.multiplyAndReturnNew(skewAlphaIbb);
                 cNewOld = Matrix.identity(Rotation3D.INHOM_COORDS, Rotation3D.INHOM_COORDS)
                         .addAndReturnNew(skewAlphaIbb.multiplyByScalarAndReturnNew(value1))
@@ -101,59 +100,58 @@ class ECIInertialNavigator2 {
             }
 
             // Update attitude
-            final Matrix oldCbi = oldC.getMatrix();
-            final Matrix cbi = oldCbi.multiplyAndReturnNew(cNewOld);
+            final var oldCbi = oldC.getMatrix();
+            final var cbi = oldCbi.multiplyAndReturnNew(cNewOld);
 
-            // Specific force frame transformation
-            // Calculate the average body-to-ECI-frame coordinate transformation
+            // Specific force frame transformation.
+            // Calculate the average body to ECI frame coordinate transformation
             // matrix over the update interval using (5.84)
             final Matrix aveCbi;
             if (magAlpha > ALPHA_THRESHOLD) {
-                final double magAlpha2 = magAlpha * magAlpha;
-                final double value1 = (1.0 - Math.cos(magAlpha)) / magAlpha2;
-                final double value2 = (1.0 - Math.sin(magAlpha) / magAlpha) / magAlpha2;
+                final var magAlpha2 = magAlpha * magAlpha;
+                final var value1 = (1.0 - Math.cos(magAlpha)) / magAlpha2;
+                final var value2 = (1.0 - Math.sin(magAlpha) / magAlpha) / magAlpha2;
 
-                aveCbi = oldCbi.multiplyAndReturnNew(
-                        Matrix.identity(Rotation3D.INHOM_COORDS, Rotation3D.INHOM_COORDS)
-                                .addAndReturnNew(skewAlphaIbb.multiplyByScalarAndReturnNew(value1))
-                                .addAndReturnNew(skewAlphaIbb2.multiplyByScalarAndReturnNew(value2)));
+                aveCbi = oldCbi.multiplyAndReturnNew(Matrix.identity(Rotation3D.INHOM_COORDS, Rotation3D.INHOM_COORDS)
+                        .addAndReturnNew(skewAlphaIbb.multiplyByScalarAndReturnNew(value1))
+                        .addAndReturnNew(skewAlphaIbb2.multiplyByScalarAndReturnNew(value2)));
             } else {
                 aveCbi = oldCbi;
             }
 
             // Transform specific force to ECI-frame resolving axes using (5.81)
-            final Matrix fIbb = new Matrix(ROWS, 1);
+            final var fIbb = new Matrix(ROWS, 1);
             fIbb.setElementAtIndex(0, fx);
             fIbb.setElementAtIndex(1, fy);
             fIbb.setElementAtIndex(2, fz);
 
-            final Matrix fibi = aveCbi.multiplyAndReturnNew(fIbb);
+            final var fibi = aveCbi.multiplyAndReturnNew(fIbb);
 
             // Update velocity
             // From (5.18) and (5.20),
-            final Matrix oldVibi = new Matrix(ROWS, 1);
+            final var oldVibi = new Matrix(ROWS, 1);
             oldVibi.setElementAtIndex(0, oldVx);
             oldVibi.setElementAtIndex(1, oldVy);
             oldVibi.setElementAtIndex(2, oldVz);
 
-            final ECIGravitation gravitation = ECIGravitationEstimator.estimateGravitationAndReturnNew(
+            final var gravitation = ECIGravitationEstimator.estimateGravitationAndReturnNew(
                     oldX, oldY, oldZ);
-            final Matrix g = gravitation.asMatrix();
+            final var g = gravitation.asMatrix();
 
-            final Matrix vIbi = oldVibi.addAndReturnNew(fibi.addAndReturnNew(g).multiplyByScalarAndReturnNew(
+            final var vIbi = oldVibi.addAndReturnNew(fibi.addAndReturnNew(g).multiplyByScalarAndReturnNew(
                     timeInterval));
 
-            final double vx = vIbi.getElementAtIndex(0);
-            final double vy = vIbi.getElementAtIndex(1);
-            final double vz = vIbi.getElementAtIndex(2);
+            final var vx = vIbi.getElementAtIndex(0);
+            final var vy = vIbi.getElementAtIndex(1);
+            final var vz = vIbi.getElementAtIndex(2);
 
             // Update cartesian position
             // From (5.23),
-            final double x = oldX + (vx + oldVx) * 0.5 * timeInterval;
-            final double y = oldY + (vy + oldVy) * 0.5 * timeInterval;
-            final double z = oldZ + (vz + oldVz) * 0.5 * timeInterval;
+            final var x = oldX + (vx + oldVx) * 0.5 * timeInterval;
+            final var y = oldY + (vy + oldVy) * 0.5 * timeInterval;
+            final var z = oldZ + (vz + oldVz) * 0.5 * timeInterval;
 
-            final CoordinateTransformation newC = new CoordinateTransformation(cbi, FrameType.BODY_FRAME,
+            final var newC = new CoordinateTransformation(cbi, FrameType.BODY_FRAME,
                     FrameType.EARTH_CENTERED_INERTIAL_FRAME);
 
             result.setCoordinates(x, y, z);

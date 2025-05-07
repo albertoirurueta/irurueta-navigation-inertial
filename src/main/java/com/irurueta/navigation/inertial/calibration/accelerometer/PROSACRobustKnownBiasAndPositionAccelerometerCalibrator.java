@@ -81,23 +81,23 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * The threshold refers to the amount of error on distance between estimated position and
      * distances provided for each sample.
      */
-    private double mThreshold = DEFAULT_THRESHOLD;
+    private double threshold = DEFAULT_THRESHOLD;
 
     /**
      * Indicates whether inliers must be computed and kept.
      */
-    private boolean mComputeAndKeepInliers = DEFAULT_COMPUTE_AND_KEEP_INLIERS;
+    private boolean computeAndKeepInliers = DEFAULT_COMPUTE_AND_KEEP_INLIERS;
 
     /**
      * Indicates whether residuals must be computed and kept.
      */
-    private boolean mComputeAndKeepResiduals = DEFAULT_COMPUTE_AND_KEEP_RESIDUALS;
+    private boolean computeAndKeepResiduals = DEFAULT_COMPUTE_AND_KEEP_RESIDUALS;
 
     /**
      * Quality scores corresponding to each provided sample.
      * The larger the score value the better the quality of the sample.
      */
-    private double[] mQualityScores;
+    private double[] qualityScores;
 
     /**
      * Constructor.
@@ -330,8 +330,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias) {
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements, final Matrix bias) {
         super(position, measurements, bias);
     }
 
@@ -403,8 +402,8 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  scaling and coupling error matrix is not 3x3.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias, final Matrix initialMa) {
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements, final Matrix bias,
+            final Matrix initialMa) {
         super(position, measurements, bias, initialMa);
     }
 
@@ -554,8 +553,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
-            final double[] bias) {
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements, final double[] bias) {
         super(position, measurements, bias);
     }
 
@@ -572,8 +570,8 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
-            final double[] bias, final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements, final double[] bias,
+            final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, bias, listener);
     }
 
@@ -644,8 +642,8 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias, final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements, final Matrix bias,
+            final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, bias, listener);
     }
 
@@ -1582,7 +1580,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * @return threshold to determine whether samples are inliers or not.
      */
     public double getThreshold() {
-        return mThreshold;
+        return threshold;
     }
 
     /**
@@ -1595,13 +1593,13 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * @throws LockedException          if calibrator is currently running.
      */
     public void setThreshold(final double threshold) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (threshold <= MIN_THRESHOLD) {
             throw new IllegalArgumentException();
         }
-        mThreshold = threshold;
+        this.threshold = threshold;
     }
 
     /**
@@ -1612,7 +1610,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      */
     @Override
     public double[] getQualityScores() {
-        return mQualityScores;
+        return qualityScores;
     }
 
     /**
@@ -1627,7 +1625,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      */
     @Override
     public void setQualityScores(final double[] qualityScores) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         internalSetQualityScores(qualityScores);
@@ -1640,7 +1638,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      */
     @Override
     public boolean isReady() {
-        return super.isReady() && mQualityScores != null && mQualityScores.length == mMeasurements.size();
+        return super.isReady() && qualityScores != null && qualityScores.length == measurements.size();
     }
 
     /**
@@ -1650,7 +1648,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * only need to be computed but not kept.
      */
     public boolean isComputeAndKeepInliersEnabled() {
-        return mComputeAndKeepInliers;
+        return computeAndKeepInliers;
     }
 
     /**
@@ -1661,10 +1659,10 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * @throws LockedException if calibrator is currently running.
      */
     public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliers) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mComputeAndKeepInliers = computeAndKeepInliers;
+        this.computeAndKeepInliers = computeAndKeepInliers;
     }
 
     /**
@@ -1674,7 +1672,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * only need to be computed but not kept.
      */
     public boolean isComputeAndKeepResiduals() {
-        return mComputeAndKeepResiduals;
+        return computeAndKeepResiduals;
     }
 
     /**
@@ -1685,10 +1683,10 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * @throws LockedException if calibrator is currently running.
      */
     public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResiduals) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mComputeAndKeepResiduals = computeAndKeepResiduals;
+        this.computeAndKeepResiduals = computeAndKeepResiduals;
     }
 
     /**
@@ -1702,102 +1700,101 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
     @SuppressWarnings("DuplicatedCode")
     @Override
     public void calibrate() throws LockedException, NotReadyException, CalibrationException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (!isReady()) {
             throw new NotReadyException();
         }
 
-        mGravityNorm = computeGravityNorm();
+        gravityNorm = computeGravityNorm();
 
-        final PROSACRobustEstimator<PreliminaryResult> innerEstimator =
-                new PROSACRobustEstimator<>(new PROSACRobustEstimatorListener<>() {
-                    @Override
-                    public double[] getQualityScores() {
-                        return mQualityScores;
-                    }
-
-                    @Override
-                    public double getThreshold() {
-                        return mThreshold;
-                    }
-
-                    @Override
-                    public int getTotalSamples() {
-                        return mMeasurements.size();
-                    }
-
-                    @Override
-                    public int getSubsetSize() {
-                        return mPreliminarySubsetSize;
-                    }
-
-                    @Override
-                    public void estimatePreliminarSolutions(
-                            final int[] samplesIndices, final List<PreliminaryResult> solutions) {
-                        computePreliminarySolutions(samplesIndices, solutions);
-                    }
-
-                    @Override
-                    public double computeResidual(final PreliminaryResult currentEstimation, final int i) {
-                        return computeError(mMeasurements.get(i), currentEstimation);
-                    }
-
-                    @Override
-                    public boolean isReady() {
-                        return PROSACRobustKnownBiasAndPositionAccelerometerCalibrator.this.isReady();
-                    }
-
-                    @Override
-                    public void onEstimateStart(final RobustEstimator<PreliminaryResult> estimator) {
-                        // no action needed
-                    }
-
-                    @Override
-                    public void onEstimateEnd(final RobustEstimator<PreliminaryResult> estimator) {
-                        // no action needed
-                    }
-
-                    @Override
-                    public void onEstimateNextIteration(
-                            final RobustEstimator<PreliminaryResult> estimator, final int iteration) {
-                        if (mListener != null) {
-                            mListener.onCalibrateNextIteration(
-                                    PROSACRobustKnownBiasAndPositionAccelerometerCalibrator.this, iteration);
-                        }
-                    }
-
-                    @Override
-                    public void onEstimateProgressChange(
-                            final RobustEstimator<PreliminaryResult> estimator, final float progress) {
-                        if (mListener != null) {
-                            mListener.onCalibrateProgressChange(
-                                    PROSACRobustKnownBiasAndPositionAccelerometerCalibrator.this, progress);
-                        }
-                    }
-                });
-
-        try {
-            mRunning = true;
-
-            if (mListener != null) {
-                mListener.onCalibrateStart(this);
+        final var innerEstimator = new PROSACRobustEstimator<>(new PROSACRobustEstimatorListener<PreliminaryResult>() {
+            @Override
+            public double[] getQualityScores() {
+                return qualityScores;
             }
 
-            mInliersData = null;
-            innerEstimator.setComputeAndKeepInliersEnabled(mComputeAndKeepInliers || mRefineResult);
-            innerEstimator.setComputeAndKeepResidualsEnabled(mComputeAndKeepResiduals || mRefineResult);
-            innerEstimator.setConfidence(mConfidence);
-            innerEstimator.setMaxIterations(mMaxIterations);
-            innerEstimator.setProgressDelta(mProgressDelta);
-            final PreliminaryResult preliminaryResult = innerEstimator.estimate();
-            mInliersData = innerEstimator.getInliersData();
+            @Override
+            public double getThreshold() {
+                return threshold;
+            }
+
+            @Override
+            public int getTotalSamples() {
+                return measurements.size();
+            }
+
+            @Override
+            public int getSubsetSize() {
+                return preliminarySubsetSize;
+            }
+
+            @Override
+            public void estimatePreliminarSolutions(
+                    final int[] samplesIndices, final List<PreliminaryResult> solutions) {
+                computePreliminarySolutions(samplesIndices, solutions);
+            }
+
+            @Override
+            public double computeResidual(final PreliminaryResult currentEstimation, final int i) {
+                return computeError(measurements.get(i), currentEstimation);
+            }
+
+            @Override
+            public boolean isReady() {
+                return PROSACRobustKnownBiasAndPositionAccelerometerCalibrator.this.isReady();
+            }
+
+            @Override
+            public void onEstimateStart(final RobustEstimator<PreliminaryResult> estimator) {
+                // no action needed
+            }
+
+            @Override
+            public void onEstimateEnd(final RobustEstimator<PreliminaryResult> estimator) {
+                // no action needed
+            }
+
+            @Override
+            public void onEstimateNextIteration(
+                    final RobustEstimator<PreliminaryResult> estimator, final int iteration) {
+                if (listener != null) {
+                    listener.onCalibrateNextIteration(
+                            PROSACRobustKnownBiasAndPositionAccelerometerCalibrator.this, iteration);
+                }
+            }
+
+            @Override
+            public void onEstimateProgressChange(
+                    final RobustEstimator<PreliminaryResult> estimator, final float progress) {
+                if (listener != null) {
+                    listener.onCalibrateProgressChange(
+                            PROSACRobustKnownBiasAndPositionAccelerometerCalibrator.this, progress);
+                }
+            }
+        });
+
+        try {
+            running = true;
+
+            if (listener != null) {
+                listener.onCalibrateStart(this);
+            }
+
+            inliersData = null;
+            innerEstimator.setComputeAndKeepInliersEnabled(computeAndKeepInliers || refineResult);
+            innerEstimator.setComputeAndKeepResidualsEnabled(computeAndKeepResiduals || refineResult);
+            innerEstimator.setConfidence(confidence);
+            innerEstimator.setMaxIterations(maxIterations);
+            innerEstimator.setProgressDelta(progressDelta);
+            final var preliminaryResult = innerEstimator.estimate();
+            inliersData = innerEstimator.getInliersData();
 
             attemptRefine(preliminaryResult);
 
-            if (mListener != null) {
-                mListener.onCalibrateEnd(this);
+            if (listener != null) {
+                listener.onCalibrateEnd(this);
             }
 
         } catch (final com.irurueta.numerical.LockedException e) {
@@ -1807,7 +1804,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
         } catch (final RobustEstimatorException e) {
             throw new CalibrationException(e);
         } finally {
-            mRunning = false;
+            running = false;
         }
     }
 
@@ -1847,6 +1844,6 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
             throw new IllegalArgumentException();
         }
 
-        mQualityScores = qualityScores;
+        this.qualityScores = qualityScores;
     }
 }

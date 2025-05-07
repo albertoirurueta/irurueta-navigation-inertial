@@ -37,13 +37,13 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
     /**
      * Current body magnetic flux density. Contains magnetometer measurements.
      */
-    private BodyMagneticFluxDensity mMagneticFluxDensity;
+    private BodyMagneticFluxDensity magneticFluxDensity;
 
     /**
      * Standard deviation of measured magnetic flux density expressed in Teslas
      * (T).
      */
-    private double mMagneticFluxDensityStandardDeviation;
+    private double magneticFluxDensityStandardDeviation;
 
     /**
      * Constructor.
@@ -57,7 +57,7 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
      * @param magneticFluxDensity current body magnetic flux density.
      */
     public StandardDeviationBodyMagneticFluxDensity(final BodyMagneticFluxDensity magneticFluxDensity) {
-        mMagneticFluxDensity = magneticFluxDensity;
+        this.magneticFluxDensity = magneticFluxDensity;
     }
 
     /**
@@ -69,8 +69,7 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
      *                                  negative.
      */
     public StandardDeviationBodyMagneticFluxDensity(final double magneticFluxDensityStandardDeviation) {
-        setMagneticFluxDensityStandardDeviation(
-                magneticFluxDensityStandardDeviation);
+        setMagneticFluxDensityStandardDeviation(magneticFluxDensityStandardDeviation);
     }
 
     /**
@@ -86,7 +85,7 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
     public StandardDeviationBodyMagneticFluxDensity(
             final BodyMagneticFluxDensity magneticFluxDensity, final double magneticFluxDensityStandardDeviation) {
         this(magneticFluxDensityStandardDeviation);
-        mMagneticFluxDensity = magneticFluxDensity;
+        this.magneticFluxDensity = magneticFluxDensity;
     }
 
     /**
@@ -105,7 +104,7 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
      * @return current body magnetic flux density.
      */
     public BodyMagneticFluxDensity getMagneticFluxDensity() {
-        return mMagneticFluxDensity;
+        return magneticFluxDensity;
     }
 
     /**
@@ -115,7 +114,7 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
      * @param magneticFluxDensity current body magnetic flux density.
      */
     public void setMagneticFluxDensity(final BodyMagneticFluxDensity magneticFluxDensity) {
-        mMagneticFluxDensity = magneticFluxDensity;
+        this.magneticFluxDensity = magneticFluxDensity;
     }
 
     /**
@@ -125,7 +124,7 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
      * @return standard deviation of measured magnetic flux density.
      */
     public double getMagneticFluxDensityStandardDeviation() {
-        return mMagneticFluxDensityStandardDeviation;
+        return magneticFluxDensityStandardDeviation;
     }
 
     /**
@@ -142,8 +141,7 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
             throw new IllegalArgumentException();
         }
 
-        mMagneticFluxDensityStandardDeviation =
-                magneticFluxDensityStandardDeviation;
+        this.magneticFluxDensityStandardDeviation = magneticFluxDensityStandardDeviation;
     }
 
     /**
@@ -152,17 +150,17 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
      * @param input instance to copy data from.
      */
     public void copyFrom(final StandardDeviationBodyMagneticFluxDensity input) {
-        if (input.mMagneticFluxDensity != null) {
-            if (mMagneticFluxDensity == null) {
-                mMagneticFluxDensity = new BodyMagneticFluxDensity(input.mMagneticFluxDensity);
+        if (input.magneticFluxDensity != null) {
+            if (magneticFluxDensity == null) {
+                magneticFluxDensity = new BodyMagneticFluxDensity(input.magneticFluxDensity);
             } else {
-                mMagneticFluxDensity.copyFrom(input.mMagneticFluxDensity);
+                magneticFluxDensity.copyFrom(input.magneticFluxDensity);
             }
         } else {
-            mMagneticFluxDensity = null;
+            magneticFluxDensity = null;
         }
 
-        mMagneticFluxDensityStandardDeviation = input.mMagneticFluxDensityStandardDeviation;
+        magneticFluxDensityStandardDeviation = input.magneticFluxDensityStandardDeviation;
     }
 
     /**
@@ -183,7 +181,7 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
      */
     @Override
     public int hashCode() {
-        return Objects.hash(mMagneticFluxDensity, mMagneticFluxDensityStandardDeviation);
+        return Objects.hash(magneticFluxDensity, magneticFluxDensityStandardDeviation);
     }
 
     /**
@@ -192,8 +190,7 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
      * @param other instance to be compared.
      * @return true if both instances are considered to be equal, false otherwise.
      */
-    public boolean equals(
-            final StandardDeviationBodyMagneticFluxDensity other) {
+    public boolean equals(final StandardDeviationBodyMagneticFluxDensity other) {
         return equals(other, 0.0);
     }
 
@@ -212,11 +209,11 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
             return false;
         }
 
-        return ((other.mMagneticFluxDensity == null && mMagneticFluxDensity == null)
-                || (mMagneticFluxDensity != null
-                && mMagneticFluxDensity.equals(other.mMagneticFluxDensity, threshold)))
-                && Math.abs(mMagneticFluxDensityStandardDeviation
-                - other.mMagneticFluxDensityStandardDeviation) <= threshold;
+        return ((other.magneticFluxDensity == null && magneticFluxDensity == null)
+                || (magneticFluxDensity != null
+                && magneticFluxDensity.equals(other.magneticFluxDensity, threshold)))
+                && Math.abs(magneticFluxDensityStandardDeviation
+                - other.magneticFluxDensityStandardDeviation) <= threshold;
     }
 
     /**
@@ -233,7 +230,7 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        final StandardDeviationBodyMagneticFluxDensity other = (StandardDeviationBodyMagneticFluxDensity) obj;
+        final var other = (StandardDeviationBodyMagneticFluxDensity) obj;
         return equals(other);
     }
 
@@ -245,8 +242,7 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final StandardDeviationBodyMagneticFluxDensity result =
-                (StandardDeviationBodyMagneticFluxDensity) super.clone();
+        final var result = (StandardDeviationBodyMagneticFluxDensity) super.clone();
         copyTo(result);
         return super.clone();
     }

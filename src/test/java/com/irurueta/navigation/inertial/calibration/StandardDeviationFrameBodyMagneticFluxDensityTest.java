@@ -25,21 +25,18 @@ import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
 import com.irurueta.navigation.inertial.SerializationHelper;
 import com.irurueta.navigation.inertial.estimators.BodyMagneticFluxDensityEstimator;
-import com.irurueta.navigation.inertial.wmm.NEDMagneticFluxDensity;
 import com.irurueta.navigation.inertial.wmm.WMMEarthMagneticFluxDensityEstimator;
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class StandardDeviationFrameBodyMagneticFluxDensityTest {
+class StandardDeviationFrameBodyMagneticFluxDensityTest {
 
     private static final double MIN_ANGLE_DEGREES = -90.0;
     private static final double MAX_ANGLE_DEGREES = 90.0;
@@ -72,10 +69,9 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
     }
 
     @Test
-    public void testConstructor() throws IOException {
+    void testConstructor() throws IOException {
         // test empty constructor
-        StandardDeviationFrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity =
-                new StandardDeviationFrameBodyMagneticFluxDensity();
+        var frameBodyMagneticFluxDensity = new StandardDeviationFrameBodyMagneticFluxDensity();
 
         // check default values
         assertNull(frameBodyMagneticFluxDensity.getMagneticFluxDensity());
@@ -86,7 +82,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         assertEquals(0.0, frameBodyMagneticFluxDensity.getMagneticFluxDensityStandardDeviation(), 0.0);
 
         // test constructor with magnetic flux density
-        final BodyMagneticFluxDensity magneticFluxDensity = createMagneticFluxDensity();
+        final var magneticFluxDensity = createMagneticFluxDensity();
         frameBodyMagneticFluxDensity = new StandardDeviationFrameBodyMagneticFluxDensity(magneticFluxDensity);
 
         // check default value
@@ -98,15 +94,15 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         assertEquals(0.0, frameBodyMagneticFluxDensity.getMagneticFluxDensityStandardDeviation(), 0.0);
 
         // test constructor with ECEF frame
-        final NEDFrame nedFrame = new NEDFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var nedFrame = new NEDFrame();
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
         frameBodyMagneticFluxDensity = new StandardDeviationFrameBodyMagneticFluxDensity(ecefFrame);
 
         // check default values
         assertNull(frameBodyMagneticFluxDensity.getMagneticFluxDensity());
         assertSame(ecefFrame, frameBodyMagneticFluxDensity.getFrame());
         assertEquals(nedFrame, frameBodyMagneticFluxDensity.getNedFrame());
-        NEDFrame nedFrame2 = new NEDFrame();
+        var nedFrame2 = new NEDFrame();
         assertTrue(frameBodyMagneticFluxDensity.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
         assertEquals(0.0, frameBodyMagneticFluxDensity.getYear(), 0.0);
@@ -126,7 +122,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         assertEquals(0.0, frameBodyMagneticFluxDensity.getMagneticFluxDensityStandardDeviation(), 0.0);
 
         // test constructor with magnetic flux density and ECEF frame
-        frameBodyMagneticFluxDensity = new StandardDeviationFrameBodyMagneticFluxDensity(magneticFluxDensity,
+        frameBodyMagneticFluxDensity = new StandardDeviationFrameBodyMagneticFluxDensity(magneticFluxDensity, 
                 ecefFrame);
 
         // check default values
@@ -152,10 +148,10 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         assertEquals(0.0, frameBodyMagneticFluxDensity.getYear(), 0.0);
         assertEquals(0.0, frameBodyMagneticFluxDensity.getMagneticFluxDensityStandardDeviation(), 0.0);
 
-        final Date timestamp = createTimestamp();
-        final GregorianCalendar calendar = new GregorianCalendar();
+        final var timestamp = createTimestamp();
+        final var calendar = new GregorianCalendar();
         calendar.setTime(timestamp);
-        final double year = FrameBodyMagneticFluxDensity.convertTime(timestamp);
+        final var year = FrameBodyMagneticFluxDensity.convertTime(timestamp);
 
         // test constructor with year
         frameBodyMagneticFluxDensity = new StandardDeviationFrameBodyMagneticFluxDensity(year);
@@ -219,7 +215,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         assertEquals(year, frameBodyMagneticFluxDensity.getYear(), 0.0);
         assertEquals(0.0, frameBodyMagneticFluxDensity.getMagneticFluxDensityStandardDeviation(), 0.0);
 
-        // test constructor with magnetic flux density,  NED frame and year
+        // test constructor with magnetic flux density, NED frame and year
         frameBodyMagneticFluxDensity = new StandardDeviationFrameBodyMagneticFluxDensity(magneticFluxDensity, nedFrame,
                 year);
 
@@ -245,7 +241,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         assertEquals(0.0, frameBodyMagneticFluxDensity.getMagneticFluxDensityStandardDeviation(), 0.0);
 
         // test constructor with magnetic flux density and date
-        frameBodyMagneticFluxDensity = new StandardDeviationFrameBodyMagneticFluxDensity(magneticFluxDensity,
+        frameBodyMagneticFluxDensity = new StandardDeviationFrameBodyMagneticFluxDensity(magneticFluxDensity, 
                 timestamp);
 
         // check default value
@@ -388,11 +384,11 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         assertEquals(year, frameBodyMagneticFluxDensity.getYear(), 0.0);
         assertEquals(0.0, frameBodyMagneticFluxDensity.getMagneticFluxDensityStandardDeviation(), 0.0);
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double magneticFluxDensityStandardDeviation = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final var randomizer = new UniformRandomizer();
+        final var magneticFluxDensityStandardDeviation = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
 
         // test constructor with year and standard deviation
-        frameBodyMagneticFluxDensity = new StandardDeviationFrameBodyMagneticFluxDensity(year,
+        frameBodyMagneticFluxDensity = new StandardDeviationFrameBodyMagneticFluxDensity(year, 
                 magneticFluxDensityStandardDeviation);
 
         // check default values
@@ -401,7 +397,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         assertNull(frameBodyMagneticFluxDensity.getNedFrame());
         assertFalse(frameBodyMagneticFluxDensity.getNedFrame(null));
         assertEquals(year, frameBodyMagneticFluxDensity.getYear(), 0.0);
-        assertEquals(frameBodyMagneticFluxDensity.getMagneticFluxDensityStandardDeviation(),
+        assertEquals(frameBodyMagneticFluxDensity.getMagneticFluxDensityStandardDeviation(), 
                 magneticFluxDensityStandardDeviation, 0.0);
 
         // Force IllegalArgumentException
@@ -457,12 +453,12 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         assertTrue(frameBodyMagneticFluxDensity.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
         assertEquals(year, frameBodyMagneticFluxDensity.getYear(), 0.0);
-        assertEquals(magneticFluxDensityStandardDeviation,
+        assertEquals(magneticFluxDensityStandardDeviation, 
                 frameBodyMagneticFluxDensity.getMagneticFluxDensityStandardDeviation(), 0.0);
 
         // Force IllegalArgumentException
-        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationFrameBodyMagneticFluxDensity(
-                nedFrame, year, -1.0));
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationFrameBodyMagneticFluxDensity(nedFrame, 
+                year, -1.0));
 
         // test constructor with magnetic flux density, ECEF frame, year
         // and standard deviation
@@ -477,7 +473,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         assertTrue(frameBodyMagneticFluxDensity.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
         assertEquals(year, frameBodyMagneticFluxDensity.getYear(), 0.0);
-        assertEquals(magneticFluxDensityStandardDeviation,
+        assertEquals(magneticFluxDensityStandardDeviation, 
                 frameBodyMagneticFluxDensity.getMagneticFluxDensityStandardDeviation(), 0.0);
 
         // Force IllegalArgumentException
@@ -497,7 +493,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         assertTrue(frameBodyMagneticFluxDensity.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
         assertEquals(year, frameBodyMagneticFluxDensity.getYear(), 0.0);
-        assertEquals(magneticFluxDensityStandardDeviation,
+        assertEquals(magneticFluxDensityStandardDeviation, 
                 frameBodyMagneticFluxDensity.getMagneticFluxDensityStandardDeviation(), 0.0);
 
         // Force IllegalArgumentException
@@ -518,8 +514,8 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
                 frameBodyMagneticFluxDensity.getMagneticFluxDensityStandardDeviation(), 0.0);
 
         // Force IllegalArgumentException
-        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationFrameBodyMagneticFluxDensity(
-                timestamp, -1.0));
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationFrameBodyMagneticFluxDensity(timestamp,
+                -1.0));
 
         // test constructor with magnetic flux density, date and standard
         // deviation
@@ -532,7 +528,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         assertNull(frameBodyMagneticFluxDensity.getNedFrame());
         assertFalse(frameBodyMagneticFluxDensity.getNedFrame(null));
         assertEquals(year, frameBodyMagneticFluxDensity.getYear(), 0.0);
-        assertEquals(magneticFluxDensityStandardDeviation,
+        assertEquals(magneticFluxDensityStandardDeviation, 
                 frameBodyMagneticFluxDensity.getMagneticFluxDensityStandardDeviation(), 0.0);
 
         // Force IllegalArgumentException
@@ -551,12 +547,12 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         assertTrue(frameBodyMagneticFluxDensity.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
         assertEquals(year, frameBodyMagneticFluxDensity.getYear(), 0.0);
-        assertEquals(magneticFluxDensityStandardDeviation,
+        assertEquals(magneticFluxDensityStandardDeviation, 
                 frameBodyMagneticFluxDensity.getMagneticFluxDensityStandardDeviation(), 0.0);
 
         // Force IllegalArgumentException
-        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationFrameBodyMagneticFluxDensity(
-                ecefFrame, timestamp, -1.0));
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationFrameBodyMagneticFluxDensity(ecefFrame,
+                timestamp, -1.0));
 
         // test constructor with NED frame, date and standard deviation
         frameBodyMagneticFluxDensity = new StandardDeviationFrameBodyMagneticFluxDensity(nedFrame, timestamp,
@@ -574,8 +570,8 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
                 frameBodyMagneticFluxDensity.getMagneticFluxDensityStandardDeviation(), 0.0);
 
         // Force IllegalArgumentException
-        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationFrameBodyMagneticFluxDensity(
-                nedFrame, timestamp, -1.0));
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationFrameBodyMagneticFluxDensity(nedFrame,
+                timestamp, -1.0));
 
         // test constructor with magnetic flux density, ECEF frame, date
         // and standard deviation
@@ -610,7 +606,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         assertTrue(frameBodyMagneticFluxDensity.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
         assertEquals(year, frameBodyMagneticFluxDensity.getYear(), 0.0);
-        assertEquals(magneticFluxDensityStandardDeviation,
+        assertEquals(magneticFluxDensityStandardDeviation, 
                 frameBodyMagneticFluxDensity.getMagneticFluxDensityStandardDeviation(), 0.0);
 
         // Force IllegalArgumentException
@@ -627,12 +623,12 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         assertNull(frameBodyMagneticFluxDensity.getNedFrame());
         assertFalse(frameBodyMagneticFluxDensity.getNedFrame(null));
         assertEquals(year, frameBodyMagneticFluxDensity.getYear(), 0.0);
-        assertEquals(magneticFluxDensityStandardDeviation,
+        assertEquals(magneticFluxDensityStandardDeviation, 
                 frameBodyMagneticFluxDensity.getMagneticFluxDensityStandardDeviation(), 0.0);
 
         // Force IllegalArgumentException
-        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationFrameBodyMagneticFluxDensity(
-                calendar, -1.0));
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationFrameBodyMagneticFluxDensity(calendar,
+                -1.0));
 
         // test constructor with magnetic flux density, calendar and
         // standard deviation
@@ -668,8 +664,8 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
                 frameBodyMagneticFluxDensity.getMagneticFluxDensityStandardDeviation(), 0.0);
 
         // Force IllegalArgumentException
-        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationFrameBodyMagneticFluxDensity(
-                ecefFrame, calendar, -1.0));
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationFrameBodyMagneticFluxDensity(ecefFrame,
+                calendar, -1.0));
 
         // test constructor with NED frame, calendar and standard deviation
         frameBodyMagneticFluxDensity = new StandardDeviationFrameBodyMagneticFluxDensity(nedFrame, calendar,
@@ -683,12 +679,12 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         assertTrue(frameBodyMagneticFluxDensity.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
         assertEquals(year, frameBodyMagneticFluxDensity.getYear(), 0.0);
-        assertEquals(magneticFluxDensityStandardDeviation,
+        assertEquals(magneticFluxDensityStandardDeviation, 
                 frameBodyMagneticFluxDensity.getMagneticFluxDensityStandardDeviation(), 0.0);
 
         // Force IllegalArgumentException
-        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationFrameBodyMagneticFluxDensity(
-                nedFrame, calendar, -1.0));
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationFrameBodyMagneticFluxDensity(nedFrame,
+                calendar, -1.0));
 
         // test constructor with magnetic flux density, ECEF frame,
         // calendar and standard deviation
@@ -723,7 +719,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         assertTrue(frameBodyMagneticFluxDensity.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
         assertEquals(year, frameBodyMagneticFluxDensity.getYear(), 0.0);
-        assertEquals(magneticFluxDensityStandardDeviation,
+        assertEquals(magneticFluxDensityStandardDeviation, 
                 frameBodyMagneticFluxDensity.getMagneticFluxDensityStandardDeviation(), 0.0);
 
         // Force IllegalArgumentException
@@ -734,8 +730,8 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         frameBodyMagneticFluxDensity = new StandardDeviationFrameBodyMagneticFluxDensity(magneticFluxDensity, nedFrame,
                 calendar, magneticFluxDensityStandardDeviation);
 
-        final StandardDeviationFrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity2 =
-                new StandardDeviationFrameBodyMagneticFluxDensity(frameBodyMagneticFluxDensity);
+        final var frameBodyMagneticFluxDensity2 = new StandardDeviationFrameBodyMagneticFluxDensity(
+                frameBodyMagneticFluxDensity);
 
         // check default values
         assertEquals(magneticFluxDensity, frameBodyMagneticFluxDensity2.getMagneticFluxDensity());
@@ -745,39 +741,37 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         assertTrue(frameBodyMagneticFluxDensity2.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
         assertEquals(year, frameBodyMagneticFluxDensity2.getYear(), 0.0);
-        assertEquals(magneticFluxDensityStandardDeviation,
+        assertEquals(magneticFluxDensityStandardDeviation, 
                 frameBodyMagneticFluxDensity2.getMagneticFluxDensityStandardDeviation(), 0.0);
     }
 
     @Test
-    public void testGetSetMagneticFluxDensityStandardDeviation() {
-        final StandardDeviationFrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity =
-                new StandardDeviationFrameBodyMagneticFluxDensity();
+    void testGetSetMagneticFluxDensityStandardDeviation() {
+        final var frameBodyMagneticFluxDensity = new StandardDeviationFrameBodyMagneticFluxDensity();
 
         // check default value
         assertEquals(0.0, frameBodyMagneticFluxDensity.getMagneticFluxDensityStandardDeviation(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double magneticFluxDensityStandardDeviation = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var magneticFluxDensityStandardDeviation = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
 
         frameBodyMagneticFluxDensity.setMagneticFluxDensityStandardDeviation(magneticFluxDensityStandardDeviation);
 
         // check
-        assertEquals(magneticFluxDensityStandardDeviation,
+        assertEquals(magneticFluxDensityStandardDeviation, 
                 frameBodyMagneticFluxDensity.getMagneticFluxDensityStandardDeviation(), 0.0);
     }
 
     @Test
-    public void testGetSetMagneticFluxDensity() throws IOException {
-        final StandardDeviationFrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity =
-                new StandardDeviationFrameBodyMagneticFluxDensity();
+    void testGetSetMagneticFluxDensity() throws IOException {
+        final var frameBodyMagneticFluxDensity = new StandardDeviationFrameBodyMagneticFluxDensity();
 
         // check default value
         assertNull(frameBodyMagneticFluxDensity.getMagneticFluxDensity());
 
-        // set new value
-        final BodyMagneticFluxDensity magneticFluxDensity = createMagneticFluxDensity();
+        // set a new value
+        final var magneticFluxDensity = createMagneticFluxDensity();
         frameBodyMagneticFluxDensity.setMagneticFluxDensity(magneticFluxDensity);
 
         // check
@@ -785,15 +779,14 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
     }
 
     @Test
-    public void testGetSetFrame() {
-        final StandardDeviationFrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity =
-                new StandardDeviationFrameBodyMagneticFluxDensity();
+    void testGetSetFrame() {
+        final var frameBodyMagneticFluxDensity = new StandardDeviationFrameBodyMagneticFluxDensity();
 
         // check default value
         assertNull(frameBodyMagneticFluxDensity.getFrame());
 
-        // set new value
-        ECEFFrame frame = new ECEFFrame();
+        // set a new value
+        final var frame = new ECEFFrame();
         frameBodyMagneticFluxDensity.setFrame(frame);
 
         // check
@@ -801,38 +794,36 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
     }
 
     @Test
-    public void testGetSetNedFrame() {
-        final StandardDeviationFrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity =
-                new StandardDeviationFrameBodyMagneticFluxDensity();
+    void testGetSetNedFrame() {
+        final var frameBodyMagneticFluxDensity = new StandardDeviationFrameBodyMagneticFluxDensity();
 
         // check default value
         assertNull(frameBodyMagneticFluxDensity.getNedFrame());
         assertFalse(frameBodyMagneticFluxDensity.getNedFrame(null));
 
-        // set new value
-        final NEDFrame nedFrame = new NEDFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        // set a new value
+        final var nedFrame = new NEDFrame();
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
         frameBodyMagneticFluxDensity.setNedFrame(nedFrame);
 
         // check
         assertEquals(nedFrame, frameBodyMagneticFluxDensity.getNedFrame());
         assertEquals(ecefFrame, frameBodyMagneticFluxDensity.getFrame());
-        final NEDFrame nedFrame2 = new NEDFrame();
+        final var nedFrame2 = new NEDFrame();
         assertTrue(frameBodyMagneticFluxDensity.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
     }
 
     @Test
-    public void testGetSetYear() {
-        final StandardDeviationFrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity =
-                new StandardDeviationFrameBodyMagneticFluxDensity();
+    void testGetSetYear() {
+        final var frameBodyMagneticFluxDensity = new StandardDeviationFrameBodyMagneticFluxDensity();
 
         // check default value
         assertEquals(0.0, frameBodyMagneticFluxDensity.getYear(), 0.0);
 
-        // set new value
-        final Date timestamp = createTimestamp();
-        final double year = FrameBodyMagneticFluxDensity.convertTime(timestamp);
+        // set a new value
+        final var timestamp = createTimestamp();
+        final var year = FrameBodyMagneticFluxDensity.convertTime(timestamp);
 
         frameBodyMagneticFluxDensity.setYear(year);
 
@@ -841,16 +832,15 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
     }
 
     @Test
-    public void testSetTime1() {
-        final StandardDeviationFrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity =
-                new StandardDeviationFrameBodyMagneticFluxDensity();
+    void testSetTime1() {
+        final var frameBodyMagneticFluxDensity = new StandardDeviationFrameBodyMagneticFluxDensity();
 
         // check default value
         assertEquals(0.0, frameBodyMagneticFluxDensity.getYear(), 0.0);
 
-        // set new value
-        final Date timestamp = createTimestamp();
-        final double year = FrameBodyMagneticFluxDensity.convertTime(timestamp);
+        // set a new value
+        final var timestamp = createTimestamp();
+        final var year = FrameBodyMagneticFluxDensity.convertTime(timestamp);
 
         frameBodyMagneticFluxDensity.setTime(timestamp);
 
@@ -859,18 +849,17 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
     }
 
     @Test
-    public void testSetTime2() {
-        final StandardDeviationFrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity =
-                new StandardDeviationFrameBodyMagneticFluxDensity();
+    void testSetTime2() {
+        final var frameBodyMagneticFluxDensity = new StandardDeviationFrameBodyMagneticFluxDensity();
 
         // check default value
         assertEquals(0.0, frameBodyMagneticFluxDensity.getYear(), 0.0);
 
-        // set new value
-        final Date timestamp = createTimestamp();
-        final GregorianCalendar calendar = new GregorianCalendar();
+        // set a new value
+        final var timestamp = createTimestamp();
+        final var calendar = new GregorianCalendar();
         calendar.setTime(timestamp);
-        final double year = FrameBodyMagneticFluxDensity.convertTime(timestamp);
+        final var year = FrameBodyMagneticFluxDensity.convertTime(timestamp);
 
         frameBodyMagneticFluxDensity.setTime(calendar);
 
@@ -879,79 +868,73 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
     }
 
     @Test
-    public void testCopyFromWhenBodyMagneticFluxAndFrameAreAvailableAtSourceAndDestinationIsEmpty() throws IOException,
+    void testCopyFromWhenBodyMagneticFluxAndFrameAreAvailableAtSourceAndDestinationIsEmpty() throws IOException,
             InvalidSourceAndDestinationFrameTypeException {
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double magneticFluxDensityStandardDeviation = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final var randomizer = new UniformRandomizer();
+        final var magneticFluxDensityStandardDeviation = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
 
-        final NEDPosition position = createPosition();
-        final Date timestamp = createTimestamp();
-        final CoordinateTransformation cnb = createAttitude();
-        final CoordinateTransformation cbn = cnb.inverseAndReturnNew();
+        final var position = createPosition();
+        final var timestamp = createTimestamp();
+        final var cnb = createAttitude();
+        final var cbn = cnb.inverseAndReturnNew();
 
-        final BodyMagneticFluxDensity bodyMagneticFluxDensity = createMagneticFluxDensity(position, timestamp, cnb);
+        final var bodyMagneticFluxDensity = createMagneticFluxDensity(position, timestamp, cnb);
 
-        final NEDFrame nedFrame = new NEDFrame(position, cbn);
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var nedFrame = new NEDFrame(position, cbn);
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
-        final StandardDeviationFrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 =
-                new StandardDeviationFrameBodyMagneticFluxDensity(bodyMagneticFluxDensity, ecefFrame, timestamp,
-                        magneticFluxDensityStandardDeviation);
-        final StandardDeviationFrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity2 =
-                new StandardDeviationFrameBodyMagneticFluxDensity();
+        final var frameBodyMagneticFluxDensity1 = new StandardDeviationFrameBodyMagneticFluxDensity(
+                bodyMagneticFluxDensity, ecefFrame, timestamp, magneticFluxDensityStandardDeviation);
+        final var frameBodyMagneticFluxDensity2 = new StandardDeviationFrameBodyMagneticFluxDensity();
 
         frameBodyMagneticFluxDensity2.copyFrom(frameBodyMagneticFluxDensity1);
 
         // check
         assertEquals(bodyMagneticFluxDensity, frameBodyMagneticFluxDensity2.getMagneticFluxDensity());
         assertEquals(ecefFrame, frameBodyMagneticFluxDensity2.getFrame());
-        assertEquals(magneticFluxDensityStandardDeviation,
+        assertEquals(magneticFluxDensityStandardDeviation, 
                 frameBodyMagneticFluxDensity2.getMagneticFluxDensityStandardDeviation(), 0.0);
     }
 
     @Test
-    public void testCopyFromWhenOnlyBodyMagneticFluxAreaAvailableAtSourceAndDestinationIsEmpty() throws IOException {
+    void testCopyFromWhenOnlyBodyMagneticFluxAreaAvailableAtSourceAndDestinationIsEmpty() throws IOException {
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double magneticFluxDensityStandardDeviation = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final var randomizer = new UniformRandomizer();
+        final var magneticFluxDensityStandardDeviation = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
 
-        final NEDPosition position = createPosition();
-        final Date timestamp = createTimestamp();
-        final CoordinateTransformation cnb = createAttitude();
+        final var position = createPosition();
+        final var timestamp = createTimestamp();
+        final var cnb = createAttitude();
 
-        final BodyMagneticFluxDensity bodyMagneticFluxDensity = createMagneticFluxDensity(position, timestamp, cnb);
+        final var bodyMagneticFluxDensity = createMagneticFluxDensity(position, timestamp, cnb);
 
-        final StandardDeviationFrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 =
-                new StandardDeviationFrameBodyMagneticFluxDensity(bodyMagneticFluxDensity, timestamp,
-                        magneticFluxDensityStandardDeviation);
-        final StandardDeviationFrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity2 =
-                new StandardDeviationFrameBodyMagneticFluxDensity();
+        final var frameBodyMagneticFluxDensity1 = new StandardDeviationFrameBodyMagneticFluxDensity(
+                bodyMagneticFluxDensity, timestamp, magneticFluxDensityStandardDeviation);
+        final var frameBodyMagneticFluxDensity2 = new StandardDeviationFrameBodyMagneticFluxDensity();
 
         frameBodyMagneticFluxDensity2.copyFrom(frameBodyMagneticFluxDensity1);
 
         // check
         assertEquals(bodyMagneticFluxDensity, frameBodyMagneticFluxDensity2.getMagneticFluxDensity());
         assertNull(frameBodyMagneticFluxDensity2.getFrame());
-        assertEquals(magneticFluxDensityStandardDeviation,
+        assertEquals(magneticFluxDensityStandardDeviation, 
                 frameBodyMagneticFluxDensity2.getMagneticFluxDensityStandardDeviation(), 0.0);
     }
 
     @Test
-    public void testCopyFromWhenOnlyFrameIsAvailableAtSourceAndDestinationIsEmpty()
+    void testCopyFromWhenOnlyFrameIsAvailableAtSourceAndDestinationIsEmpty() 
             throws InvalidSourceAndDestinationFrameTypeException {
 
-        final NEDPosition position = createPosition();
-        final CoordinateTransformation cnb = createAttitude();
-        final CoordinateTransformation cbn = cnb.inverseAndReturnNew();
+        final var position = createPosition();
+        final var cnb = createAttitude();
+        final var cbn = cnb.inverseAndReturnNew();
 
-        final NEDFrame nedFrame = new NEDFrame(position, cbn);
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var nedFrame = new NEDFrame(position, cbn);
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
-        final StandardDeviationFrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 =
-                new StandardDeviationFrameBodyMagneticFluxDensity(ecefFrame);
-        final StandardDeviationFrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity2 =
-                new StandardDeviationFrameBodyMagneticFluxDensity();
+        final var frameBodyMagneticFluxDensity1 = new StandardDeviationFrameBodyMagneticFluxDensity(ecefFrame);
+        final var frameBodyMagneticFluxDensity2 = new StandardDeviationFrameBodyMagneticFluxDensity();
 
         frameBodyMagneticFluxDensity2.copyFrom(frameBodyMagneticFluxDensity1);
 
@@ -961,27 +944,25 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
     }
 
     @Test
-    public void testCopyFromWhenEmptySourceAndDestinationHasData() throws IOException,
+    void testCopyFromWhenEmptySourceAndDestinationHasData() throws IOException, 
             InvalidSourceAndDestinationFrameTypeException {
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double magneticFluxDensityStandardDeviation = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final var randomizer = new UniformRandomizer();
+        final var magneticFluxDensityStandardDeviation = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
 
-        final NEDPosition position = createPosition();
-        final Date timestamp = createTimestamp();
-        final CoordinateTransformation cnb = createAttitude();
-        final CoordinateTransformation cbn = cnb.inverseAndReturnNew();
+        final var position = createPosition();
+        final var timestamp = createTimestamp();
+        final var cnb = createAttitude();
+        final var cbn = cnb.inverseAndReturnNew();
 
-        final BodyMagneticFluxDensity bodyMagneticFluxDensity = createMagneticFluxDensity(position, timestamp, cnb);
+        final var bodyMagneticFluxDensity = createMagneticFluxDensity(position, timestamp, cnb);
 
-        final NEDFrame nedFrame = new NEDFrame(position, cbn);
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var nedFrame = new NEDFrame(position, cbn);
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
-        final StandardDeviationFrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 =
-                new StandardDeviationFrameBodyMagneticFluxDensity();
-        final StandardDeviationFrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity2 =
-                new StandardDeviationFrameBodyMagneticFluxDensity(bodyMagneticFluxDensity, ecefFrame, timestamp,
-                        magneticFluxDensityStandardDeviation);
+        final var frameBodyMagneticFluxDensity1 = new StandardDeviationFrameBodyMagneticFluxDensity();
+        final var frameBodyMagneticFluxDensity2 = new StandardDeviationFrameBodyMagneticFluxDensity(
+                bodyMagneticFluxDensity, ecefFrame, timestamp, magneticFluxDensityStandardDeviation);
 
         frameBodyMagneticFluxDensity2.copyFrom(frameBodyMagneticFluxDensity1);
 
@@ -992,36 +973,34 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
     }
 
     @Test
-    public void testCopyFromWhenBothSourceAndDestinationHaveData() throws IOException,
+    void testCopyFromWhenBothSourceAndDestinationHaveData() throws IOException, 
             InvalidSourceAndDestinationFrameTypeException {
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double magneticFluxDensityStandardDeviation1 = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
-        final double magneticFluxDensityStandardDeviation2 = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final var randomizer = new UniformRandomizer();
+        final var magneticFluxDensityStandardDeviation1 = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final var magneticFluxDensityStandardDeviation2 = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
 
-        final NEDPosition position1 = createPosition();
-        final NEDPosition position2 = createPosition();
-        final Date timestamp1 = createTimestamp();
-        final Date timestamp2 = createTimestamp();
-        final CoordinateTransformation cnb1 = createAttitude();
-        final CoordinateTransformation cnb2 = createAttitude();
-        final CoordinateTransformation cbn1 = cnb1.inverseAndReturnNew();
-        final CoordinateTransformation cbn2 = cnb1.inverseAndReturnNew();
+        final var position1 = createPosition();
+        final var position2 = createPosition();
+        final var timestamp1 = createTimestamp();
+        final var timestamp2 = createTimestamp();
+        final var cnb1 = createAttitude();
+        final var cnb2 = createAttitude();
+        final var cbn1 = cnb1.inverseAndReturnNew();
+        final var cbn2 = cnb1.inverseAndReturnNew();
 
-        final BodyMagneticFluxDensity bodyMagneticFluxDensity1 = createMagneticFluxDensity(position1, timestamp1, cnb1);
-        final BodyMagneticFluxDensity bodyMagneticFluxDensity2 = createMagneticFluxDensity(position2, timestamp2, cnb2);
+        final var bodyMagneticFluxDensity1 = createMagneticFluxDensity(position1, timestamp1, cnb1);
+        final var bodyMagneticFluxDensity2 = createMagneticFluxDensity(position2, timestamp2, cnb2);
 
-        final NEDFrame nedFrame1 = new NEDFrame(position1, cbn1);
-        final NEDFrame nedFrame2 = new NEDFrame(position2, cbn2);
-        final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
-        final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
+        final var nedFrame1 = new NEDFrame(position1, cbn1);
+        final var nedFrame2 = new NEDFrame(position2, cbn2);
+        final var ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
+        final var ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
 
-        final StandardDeviationFrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 =
-                new StandardDeviationFrameBodyMagneticFluxDensity(bodyMagneticFluxDensity1, ecefFrame1, timestamp1,
-                        magneticFluxDensityStandardDeviation1);
-        final StandardDeviationFrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity2 =
-                new StandardDeviationFrameBodyMagneticFluxDensity(bodyMagneticFluxDensity2, ecefFrame2, timestamp2,
-                        magneticFluxDensityStandardDeviation2);
+        final var frameBodyMagneticFluxDensity1 = new StandardDeviationFrameBodyMagneticFluxDensity(
+                bodyMagneticFluxDensity1, ecefFrame1, timestamp1, magneticFluxDensityStandardDeviation1);
+        final var frameBodyMagneticFluxDensity2 = new StandardDeviationFrameBodyMagneticFluxDensity(
+                bodyMagneticFluxDensity2, ecefFrame2, timestamp2, magneticFluxDensityStandardDeviation2);
 
         frameBodyMagneticFluxDensity2.copyFrom(frameBodyMagneticFluxDensity1);
 
@@ -1033,35 +1012,33 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
     }
 
     @Test
-    public void testCopyTo() throws IOException, InvalidSourceAndDestinationFrameTypeException {
+    void testCopyTo() throws IOException, InvalidSourceAndDestinationFrameTypeException {
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double magneticFluxDensityStandardDeviation1 = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
-        final double magneticFluxDensityStandardDeviation2 = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final var randomizer = new UniformRandomizer();
+        final var magneticFluxDensityStandardDeviation1 = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final var magneticFluxDensityStandardDeviation2 = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
 
-        final NEDPosition position1 = createPosition();
-        final NEDPosition position2 = createPosition();
-        final Date timestamp1 = createTimestamp();
-        final Date timestamp2 = createTimestamp();
-        final CoordinateTransformation cnb1 = createAttitude();
-        final CoordinateTransformation cnb2 = createAttitude();
-        final CoordinateTransformation cbn1 = cnb1.inverseAndReturnNew();
-        final CoordinateTransformation cbn2 = cnb1.inverseAndReturnNew();
+        final var position1 = createPosition();
+        final var position2 = createPosition();
+        final var timestamp1 = createTimestamp();
+        final var timestamp2 = createTimestamp();
+        final var cnb1 = createAttitude();
+        final var cnb2 = createAttitude();
+        final var cbn1 = cnb1.inverseAndReturnNew();
+        final var cbn2 = cnb1.inverseAndReturnNew();
 
-        final BodyMagneticFluxDensity bodyMagneticFluxDensity1 = createMagneticFluxDensity(position1, timestamp1, cnb1);
-        final BodyMagneticFluxDensity bodyMagneticFluxDensity2 = createMagneticFluxDensity(position2, timestamp2, cnb2);
+        final var bodyMagneticFluxDensity1 = createMagneticFluxDensity(position1, timestamp1, cnb1);
+        final var bodyMagneticFluxDensity2 = createMagneticFluxDensity(position2, timestamp2, cnb2);
 
-        final NEDFrame nedFrame1 = new NEDFrame(position1, cbn1);
-        final NEDFrame nedFrame2 = new NEDFrame(position2, cbn2);
-        final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
-        final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
+        final var nedFrame1 = new NEDFrame(position1, cbn1);
+        final var nedFrame2 = new NEDFrame(position2, cbn2);
+        final var ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
+        final var ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
 
-        final StandardDeviationFrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 =
-                new StandardDeviationFrameBodyMagneticFluxDensity(bodyMagneticFluxDensity1, ecefFrame1, timestamp1,
-                        magneticFluxDensityStandardDeviation1);
-        final StandardDeviationFrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity2 =
-                new StandardDeviationFrameBodyMagneticFluxDensity(bodyMagneticFluxDensity2, ecefFrame2, timestamp2,
-                        magneticFluxDensityStandardDeviation2);
+        final var frameBodyMagneticFluxDensity1 = new StandardDeviationFrameBodyMagneticFluxDensity(
+                bodyMagneticFluxDensity1, ecefFrame1, timestamp1, magneticFluxDensityStandardDeviation1);
+        final var frameBodyMagneticFluxDensity2 = new StandardDeviationFrameBodyMagneticFluxDensity(
+                bodyMagneticFluxDensity2, ecefFrame2, timestamp2, magneticFluxDensityStandardDeviation2);
 
         frameBodyMagneticFluxDensity1.copyTo(frameBodyMagneticFluxDensity2);
 
@@ -1074,91 +1051,82 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
     }
 
     @Test
-    public void testHashCode() throws IOException, InvalidSourceAndDestinationFrameTypeException {
+    void testHashCode() throws IOException, InvalidSourceAndDestinationFrameTypeException {
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double magneticFluxDensityStandardDeviation = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final var randomizer = new UniformRandomizer();
+        final var magneticFluxDensityStandardDeviation = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
 
-        final NEDPosition position = createPosition();
-        final Date timestamp = createTimestamp();
-        final CoordinateTransformation cnb = createAttitude();
-        final CoordinateTransformation cbn = cnb.inverseAndReturnNew();
+        final var position = createPosition();
+        final var timestamp = createTimestamp();
+        final var cnb = createAttitude();
+        final var cbn = cnb.inverseAndReturnNew();
 
-        final BodyMagneticFluxDensity bodyMagneticFluxDensity = createMagneticFluxDensity(position, timestamp, cnb);
+        final var bodyMagneticFluxDensity = createMagneticFluxDensity(position, timestamp, cnb);
 
-        final NEDFrame nedFrame = new NEDFrame(position, cbn);
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var nedFrame = new NEDFrame(position, cbn);
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
-        final StandardDeviationFrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 =
-                new StandardDeviationFrameBodyMagneticFluxDensity(bodyMagneticFluxDensity, ecefFrame, timestamp,
-                        magneticFluxDensityStandardDeviation);
-        final StandardDeviationFrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity2 =
-                new StandardDeviationFrameBodyMagneticFluxDensity(bodyMagneticFluxDensity, ecefFrame, timestamp,
-                        magneticFluxDensityStandardDeviation);
-        final StandardDeviationFrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity3 =
-                new StandardDeviationFrameBodyMagneticFluxDensity();
+        final var frameBodyMagneticFluxDensity1 = new StandardDeviationFrameBodyMagneticFluxDensity(
+                bodyMagneticFluxDensity, ecefFrame, timestamp, magneticFluxDensityStandardDeviation);
+        final var frameBodyMagneticFluxDensity2 = new StandardDeviationFrameBodyMagneticFluxDensity(
+                bodyMagneticFluxDensity, ecefFrame, timestamp, magneticFluxDensityStandardDeviation);
+        final var frameBodyMagneticFluxDensity3 = new StandardDeviationFrameBodyMagneticFluxDensity();
 
         assertEquals(frameBodyMagneticFluxDensity1.hashCode(), frameBodyMagneticFluxDensity2.hashCode());
         assertNotEquals(frameBodyMagneticFluxDensity1.hashCode(), frameBodyMagneticFluxDensity3.hashCode());
     }
 
     @Test
-    public void testEquals() throws IOException, InvalidSourceAndDestinationFrameTypeException {
+    void testEquals() throws IOException, InvalidSourceAndDestinationFrameTypeException {
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double magneticFluxDensityStandardDeviation = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final var randomizer = new UniformRandomizer();
+        final var magneticFluxDensityStandardDeviation = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
 
-        final NEDPosition position = createPosition();
-        final Date timestamp = createTimestamp();
-        final CoordinateTransformation cnb = createAttitude();
-        final CoordinateTransformation cbn = cnb.inverseAndReturnNew();
+        final var position = createPosition();
+        final var timestamp = createTimestamp();
+        final var cnb = createAttitude();
+        final var cbn = cnb.inverseAndReturnNew();
 
-        final BodyMagneticFluxDensity bodyMagneticFluxDensity = createMagneticFluxDensity(position, timestamp, cnb);
+        final var bodyMagneticFluxDensity = createMagneticFluxDensity(position, timestamp, cnb);
 
-        final NEDFrame nedFrame = new NEDFrame(position, cbn);
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var nedFrame = new NEDFrame(position, cbn);
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
-        final StandardDeviationFrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 =
-                new StandardDeviationFrameBodyMagneticFluxDensity(bodyMagneticFluxDensity, ecefFrame, timestamp,
-                        magneticFluxDensityStandardDeviation);
-        final StandardDeviationFrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity2 =
-                new StandardDeviationFrameBodyMagneticFluxDensity(bodyMagneticFluxDensity, ecefFrame, timestamp,
-                        magneticFluxDensityStandardDeviation);
-        final StandardDeviationFrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity3 =
-                new StandardDeviationFrameBodyMagneticFluxDensity();
+        final var frameBodyMagneticFluxDensity1 = new StandardDeviationFrameBodyMagneticFluxDensity(
+                bodyMagneticFluxDensity, ecefFrame, timestamp, magneticFluxDensityStandardDeviation);
+        final var frameBodyMagneticFluxDensity2 = new StandardDeviationFrameBodyMagneticFluxDensity(
+                bodyMagneticFluxDensity, ecefFrame, timestamp, magneticFluxDensityStandardDeviation);
+        final var frameBodyMagneticFluxDensity3 = new StandardDeviationFrameBodyMagneticFluxDensity();
 
         //noinspection EqualsWithItself
         assertEquals(frameBodyMagneticFluxDensity1, frameBodyMagneticFluxDensity1);
         assertTrue(frameBodyMagneticFluxDensity1.equals(frameBodyMagneticFluxDensity2));
         assertFalse(frameBodyMagneticFluxDensity1.equals(frameBodyMagneticFluxDensity3));
-        assertNotEquals(frameBodyMagneticFluxDensity1, null);
-        assertNotEquals(frameBodyMagneticFluxDensity1, new Object());
+        assertNotEquals(null, frameBodyMagneticFluxDensity1);
+        assertNotEquals(new Object(), frameBodyMagneticFluxDensity1);
     }
 
     @Test
-    public void testEqualsWithThreshold() throws IOException, InvalidSourceAndDestinationFrameTypeException {
+    void testEqualsWithThreshold() throws IOException, InvalidSourceAndDestinationFrameTypeException {
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double magneticFluxDensityStandardDeviation = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final var randomizer = new UniformRandomizer();
+        final var magneticFluxDensityStandardDeviation = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
 
-        final NEDPosition position = createPosition();
-        final Date timestamp = createTimestamp();
-        final CoordinateTransformation cnb = createAttitude();
-        final CoordinateTransformation cbn = cnb.inverseAndReturnNew();
+        final var position = createPosition();
+        final var timestamp = createTimestamp();
+        final var cnb = createAttitude();
+        final var cbn = cnb.inverseAndReturnNew();
 
-        final BodyMagneticFluxDensity bodyMagneticFluxDensity = createMagneticFluxDensity(position, timestamp, cnb);
+        final var bodyMagneticFluxDensity = createMagneticFluxDensity(position, timestamp, cnb);
 
-        final NEDFrame nedFrame = new NEDFrame(position, cbn);
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var nedFrame = new NEDFrame(position, cbn);
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
-        final StandardDeviationFrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 =
-                new StandardDeviationFrameBodyMagneticFluxDensity(bodyMagneticFluxDensity, ecefFrame, timestamp,
-                        magneticFluxDensityStandardDeviation);
-        final StandardDeviationFrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity2 =
-                new StandardDeviationFrameBodyMagneticFluxDensity(bodyMagneticFluxDensity, ecefFrame, timestamp,
-                        magneticFluxDensityStandardDeviation);
-        final StandardDeviationFrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity3 =
-                new StandardDeviationFrameBodyMagneticFluxDensity();
+        final var frameBodyMagneticFluxDensity1 = new StandardDeviationFrameBodyMagneticFluxDensity(
+                bodyMagneticFluxDensity, ecefFrame, timestamp, magneticFluxDensityStandardDeviation);
+        final var frameBodyMagneticFluxDensity2 = new StandardDeviationFrameBodyMagneticFluxDensity(
+                bodyMagneticFluxDensity, ecefFrame, timestamp, magneticFluxDensityStandardDeviation);
+        final var frameBodyMagneticFluxDensity3 = new StandardDeviationFrameBodyMagneticFluxDensity();
 
         assertTrue(frameBodyMagneticFluxDensity1.equals(frameBodyMagneticFluxDensity1, THRESHOLD));
         assertTrue(frameBodyMagneticFluxDensity1.equals(frameBodyMagneticFluxDensity2, THRESHOLD));
@@ -1167,63 +1135,59 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
     }
 
     @Test
-    public void testClone() throws IOException, InvalidSourceAndDestinationFrameTypeException,
-            CloneNotSupportedException {
+    void testClone() throws IOException, InvalidSourceAndDestinationFrameTypeException, CloneNotSupportedException {
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double magneticFluxDensityStandardDeviation = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final var randomizer = new UniformRandomizer();
+        final var magneticFluxDensityStandardDeviation = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
 
-        final NEDPosition position = createPosition();
-        final Date timestamp = createTimestamp();
-        final CoordinateTransformation cnb = createAttitude();
-        final CoordinateTransformation cbn = cnb.inverseAndReturnNew();
+        final var position = createPosition();
+        final var timestamp = createTimestamp();
+        final var cnb = createAttitude();
+        final var cbn = cnb.inverseAndReturnNew();
 
-        final BodyMagneticFluxDensity bodyMagneticFluxDensity = createMagneticFluxDensity(position, timestamp, cnb);
+        final var bodyMagneticFluxDensity = createMagneticFluxDensity(position, timestamp, cnb);
 
-        final NEDFrame nedFrame = new NEDFrame(position, cbn);
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var nedFrame = new NEDFrame(position, cbn);
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
-        final StandardDeviationFrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 =
-                new StandardDeviationFrameBodyMagneticFluxDensity(bodyMagneticFluxDensity, ecefFrame, timestamp,
-                        magneticFluxDensityStandardDeviation);
+        final var frameBodyMagneticFluxDensity1 = new StandardDeviationFrameBodyMagneticFluxDensity(
+                bodyMagneticFluxDensity, ecefFrame, timestamp, magneticFluxDensityStandardDeviation);
 
-        final Object frameBodyMagneticFluxDensity2 = frameBodyMagneticFluxDensity1.clone();
+        final var frameBodyMagneticFluxDensity2 = frameBodyMagneticFluxDensity1.clone();
 
         // check
         assertEquals(frameBodyMagneticFluxDensity1, frameBodyMagneticFluxDensity2);
     }
 
     @Test
-    public void testSerializeDeserialize() throws IOException, InvalidSourceAndDestinationFrameTypeException,
+    void testSerializeDeserialize() throws IOException, InvalidSourceAndDestinationFrameTypeException, 
             ClassNotFoundException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double magneticFluxDensityStandardDeviation = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final var randomizer = new UniformRandomizer();
+        final var magneticFluxDensityStandardDeviation = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
 
-        final NEDPosition position = createPosition();
-        final Date timestamp = createTimestamp();
-        final CoordinateTransformation cnb = createAttitude();
-        final CoordinateTransformation cbn = cnb.inverseAndReturnNew();
+        final var position = createPosition();
+        final var timestamp = createTimestamp();
+        final var cnb = createAttitude();
+        final var cbn = cnb.inverseAndReturnNew();
 
-        final BodyMagneticFluxDensity bodyMagneticFluxDensity = createMagneticFluxDensity(position, timestamp, cnb);
+        final var bodyMagneticFluxDensity = createMagneticFluxDensity(position, timestamp, cnb);
 
-        final NEDFrame nedFrame = new NEDFrame(position, cbn);
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final var nedFrame = new NEDFrame(position, cbn);
+        final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
-        final StandardDeviationFrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 =
-                new StandardDeviationFrameBodyMagneticFluxDensity(bodyMagneticFluxDensity, ecefFrame, timestamp,
-                        magneticFluxDensityStandardDeviation);
+        final var frameBodyMagneticFluxDensity1 = new StandardDeviationFrameBodyMagneticFluxDensity(
+                bodyMagneticFluxDensity, ecefFrame, timestamp, magneticFluxDensityStandardDeviation);
 
-        final byte[] bytes = SerializationHelper.serialize(frameBodyMagneticFluxDensity1);
-        final StandardDeviationFrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity2 =
-                SerializationHelper.deserialize(bytes);
+        final var bytes = SerializationHelper.serialize(frameBodyMagneticFluxDensity1);
+        final var frameBodyMagneticFluxDensity2 = SerializationHelper.deserialize(bytes);
 
         assertEquals(frameBodyMagneticFluxDensity1, frameBodyMagneticFluxDensity2);
         assertNotSame(frameBodyMagneticFluxDensity1, frameBodyMagneticFluxDensity2);
     }
 
     @Test
-    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
-        final Field field = StandardDeviationFrameBodyMagneticFluxDensity.class.getDeclaredField(
+    void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final var field = StandardDeviationFrameBodyMagneticFluxDensity.class.getDeclaredField(
                 "serialVersionUID");
         field.setAccessible(true);
 
@@ -1231,40 +1195,40 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
     }
 
     private static BodyMagneticFluxDensity createMagneticFluxDensity() throws IOException {
-        final NEDPosition position = createPosition();
-        final Date timestamp = createTimestamp();
-        final CoordinateTransformation cnb = createAttitude();
+        final var position = createPosition();
+        final var timestamp = createTimestamp();
+        final var cnb = createAttitude();
         return createMagneticFluxDensity(position, timestamp, cnb);
     }
 
     private static BodyMagneticFluxDensity createMagneticFluxDensity(
             final NEDPosition position, final Date timestamp, final CoordinateTransformation cnb) throws IOException {
-        final WMMEarthMagneticFluxDensityEstimator wMMEstimator = new WMMEarthMagneticFluxDensityEstimator();
-        final NEDMagneticFluxDensity earthB = wMMEstimator.estimate(position, timestamp);
+        final var wMMEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final var earthB = wMMEstimator.estimate(position, timestamp);
         return BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
     }
 
     private static CoordinateTransformation createAttitude() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final var randomizer = new UniformRandomizer();
 
-        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         return new CoordinateTransformation(roll, pitch, yaw, FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
     }
 
     private static NEDPosition createPosition() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT_METERS, MAX_HEIGHT_METERS);
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT_METERS, MAX_HEIGHT_METERS);
 
         return new NEDPosition(latitude, longitude, height);
     }
 
     private static Date createTimestamp() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final var randomizer = new UniformRandomizer();
         return new Date(randomizer.nextLong(START_TIMESTAMP_MILLIS, END_TIMESTAMP_MILLIS));
     }
 }

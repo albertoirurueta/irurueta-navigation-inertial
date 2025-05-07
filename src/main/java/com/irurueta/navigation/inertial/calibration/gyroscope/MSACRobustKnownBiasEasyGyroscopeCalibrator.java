@@ -78,7 +78,7 @@ public class MSACRobustKnownBiasEasyGyroscopeCalibrator extends RobustKnownBiasE
      * Threshold to determine whether samples are inliers or not when
      * testing possible estimation solutions.
      */
-    private double mThreshold = DEFAULT_THRESHOLD;
+    private double threshold = DEFAULT_THRESHOLD;
 
     /**
      * Constructor.
@@ -567,7 +567,7 @@ public class MSACRobustKnownBiasEasyGyroscopeCalibrator extends RobustKnownBiasE
      * @return threshold to determine whether samples are inliers or not.
      */
     public double getThreshold() {
-        return mThreshold;
+        return threshold;
     }
 
     /**
@@ -579,13 +579,13 @@ public class MSACRobustKnownBiasEasyGyroscopeCalibrator extends RobustKnownBiasE
      * @throws LockedException          if calibrator is currently running.
      */
     public void setThreshold(final double threshold) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (threshold <= MIN_THRESHOLD) {
             throw new IllegalArgumentException();
         }
-        mThreshold = threshold;
+        this.threshold = threshold;
     }
 
     /**
@@ -599,96 +599,94 @@ public class MSACRobustKnownBiasEasyGyroscopeCalibrator extends RobustKnownBiasE
     @SuppressWarnings("DuplicatedCode")
     @Override
     public void calibrate() throws LockedException, NotReadyException, CalibrationException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (!isReady()) {
             throw new NotReadyException();
         }
 
-        final MSACRobustEstimator<PreliminaryResult> innerEstimator =
-                new MSACRobustEstimator<>(
-                        new MSACRobustEstimatorListener<>() {
-                            @Override
-                            public double getThreshold() {
-                                return mThreshold;
-                            }
+        final var innerEstimator = new MSACRobustEstimator<>(new MSACRobustEstimatorListener<PreliminaryResult>() {
+            @Override
+            public double getThreshold() {
+                return threshold;
+            }
 
-                            @Override
-                            public int getTotalSamples() {
-                                return mSequences.size();
-                            }
+            @Override
+            public int getTotalSamples() {
+                return sequences.size();
+            }
 
-                            @Override
-                            public int getSubsetSize() {
-                                return mPreliminarySubsetSize;
-                            }
+            @Override
+            public int getSubsetSize() {
+                return preliminarySubsetSize;
+            }
 
-                            @Override
-                            public void estimatePreliminarSolutions(
-                                    final int[] samplesIndices, final List<PreliminaryResult> solutions) {
-                                computePreliminarySolutions(samplesIndices, solutions);
-                            }
+            @Override
+            public void estimatePreliminarSolutions(
+                    final int[] samplesIndices, final List<PreliminaryResult> solutions) {
+                computePreliminarySolutions(samplesIndices, solutions);
+            }
 
-                            @Override
-                            public double computeResidual(final PreliminaryResult currentEstimation, final int i) {
-                                return computeError(mSequences.get(i), currentEstimation);
-                            }
+            @Override
+            public double computeResidual(final PreliminaryResult currentEstimation, final int i) {
+                return computeError(sequences.get(i), currentEstimation);
+            }
 
-                            @Override
-                            public boolean isReady() {
-                                return MSACRobustKnownBiasEasyGyroscopeCalibrator.super.isReady();
-                            }
+            @Override
+            public boolean isReady() {
+                return MSACRobustKnownBiasEasyGyroscopeCalibrator.super.isReady();
+            }
 
-                            @Override
-                            public void onEstimateStart(final RobustEstimator<PreliminaryResult> estimator) {
-                                // no action needed
-                            }
+            @Override
+            public void onEstimateStart(final RobustEstimator<PreliminaryResult> estimator) {
+                // no action needed
+            }
 
-                            @Override
-                            public void onEstimateEnd(final RobustEstimator<PreliminaryResult> estimator) {
-                                // no action needed
-                            }
+            @Override
+            public void onEstimateEnd(final RobustEstimator<PreliminaryResult> estimator) {
+                // no action needed
+            }
 
-                            @Override
-                            public void onEstimateNextIteration(final RobustEstimator<PreliminaryResult> estimator,
-                                                                final int iteration) {
-                                if (mListener != null) {
-                                    mListener.onCalibrateNextIteration(
-                                            MSACRobustKnownBiasEasyGyroscopeCalibrator.this, iteration);
-                                }
-                            }
+            @Override
+            public void onEstimateNextIteration(final RobustEstimator<PreliminaryResult> estimator,
+                                                final int iteration) {
+                if (listener != null) {
+                    listener.onCalibrateNextIteration(
+                            MSACRobustKnownBiasEasyGyroscopeCalibrator.this, iteration);
+                }
+            }
 
-                            @Override
-                            public void onEstimateProgressChange(
-                                    final RobustEstimator<PreliminaryResult> estimator, final float progress) {
-                                if (mListener != null) {
-                                    mListener.onCalibrateProgressChange(
-                                            MSACRobustKnownBiasEasyGyroscopeCalibrator.this, progress);
-                                }
-                            }
-                        });
+            @Override
+            public void onEstimateProgressChange(
+                    final RobustEstimator<PreliminaryResult> estimator, final float progress) {
+                if (listener != null) {
+                    listener.onCalibrateProgressChange(
+                            MSACRobustKnownBiasEasyGyroscopeCalibrator.this, progress);
+                }
+            }
+        });
 
         try {
-            mRunning = true;
+            running = true;
 
-            if (mListener != null) {
-                mListener.onCalibrateStart(this);
+            if (listener != null) {
+                listener.onCalibrateStart(this);
             }
 
             setupAccelerationFixer();
 
-            mInliersData = null;
-            innerEstimator.setConfidence(mConfidence);
-            innerEstimator.setMaxIterations(mMaxIterations);
-            innerEstimator.setProgressDelta(mProgressDelta);
-            final PreliminaryResult preliminaryResult = innerEstimator.estimate();
-            mInliersData = innerEstimator.getInliersData();
+            inliersData = null;
+            innerEstimator.setConfidence(confidence);
+            innerEstimator.setMaxIterations(maxIterations);
+            innerEstimator.setProgressDelta(progressDelta);
+            final var preliminaryResult = innerEstimator.estimate();
+            inliersData = innerEstimator.getInliersData();
 
             attemptRefine(preliminaryResult);
 
-            if (mListener != null) {
-                mListener.onCalibrateEnd(this);
+            if (listener != null) {
+                listener.onCalibrateEnd(this);
             }
 
         } catch (final com.irurueta.numerical.LockedException e) {
@@ -698,7 +696,7 @@ public class MSACRobustKnownBiasEasyGyroscopeCalibrator extends RobustKnownBiasE
         } catch (final RobustEstimatorException | AlgebraException e) {
             throw new CalibrationException(e);
         } finally {
-            mRunning = false;
+            running = false;
         }
     }
 

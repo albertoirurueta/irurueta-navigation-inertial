@@ -49,12 +49,12 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
      * Standard deviation of measured specific force expressed in meters per squared
      * second (m/s^2).
      */
-    private double mSpecificForceStandardDeviation;
+    private double specificForceStandardDeviation;
 
     /**
      * Standard deviation of measured angular rate expressed in radians per second (rad/s).
      */
-    private double mAngularRateStandardDeviation;
+    private double angularRateStandardDeviation;
 
     /**
      * Constructor.
@@ -353,7 +353,7 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
      * @return standard deviation of measured specific force.
      */
     public double getSpecificForceStandardDeviation() {
-        return mSpecificForceStandardDeviation;
+        return specificForceStandardDeviation;
     }
 
     /**
@@ -368,7 +368,7 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
             throw new IllegalArgumentException();
         }
 
-        mSpecificForceStandardDeviation = specificForceStandardDeviation;
+        this.specificForceStandardDeviation = specificForceStandardDeviation;
     }
 
     /**
@@ -377,7 +377,7 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
      * @return standard deviation of measured specific force.
      */
     public Acceleration getSpecificForceStandardDeviationAsAcceleration() {
-        return new Acceleration(mSpecificForceStandardDeviation, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(specificForceStandardDeviation, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -387,7 +387,7 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
      *               stored.
      */
     public void getSpecificForceStandardDeviationAsAcceleration(final Acceleration result) {
-        result.setValue(mSpecificForceStandardDeviation);
+        result.setValue(specificForceStandardDeviation);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -407,7 +407,7 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
      * @return standard deviation of measured angular rate.
      */
     public double getAngularRateStandardDeviation() {
-        return mAngularRateStandardDeviation;
+        return angularRateStandardDeviation;
     }
 
     /**
@@ -421,7 +421,7 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
             throw new IllegalArgumentException();
         }
 
-        mAngularRateStandardDeviation = angularRateStandardDeviation;
+        this.angularRateStandardDeviation = angularRateStandardDeviation;
     }
 
     /**
@@ -430,7 +430,7 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
      * @return standard deviation of measured angular rate.
      */
     public AngularSpeed getAngularRateStandardDeviationAsAngularSpeed() {
-        return new AngularSpeed(mAngularRateStandardDeviation, AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(angularRateStandardDeviation, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -440,7 +440,7 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
      *               stored.
      */
     public void getAngularRateStandardDeviationAsAngularSpeed(final AngularSpeed result) {
-        result.setValue(mAngularRateStandardDeviation);
+        result.setValue(angularRateStandardDeviation);
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -461,8 +461,8 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
      */
     public void copyFrom(final StandardDeviationTimedBodyKinematics input) {
         super.copyFrom(input);
-        mSpecificForceStandardDeviation = input.mSpecificForceStandardDeviation;
-        mAngularRateStandardDeviation = input.mAngularRateStandardDeviation;
+        specificForceStandardDeviation = input.specificForceStandardDeviation;
+        angularRateStandardDeviation = input.angularRateStandardDeviation;
     }
 
     @Override
@@ -478,7 +478,7 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), mSpecificForceStandardDeviation, mAngularRateStandardDeviation);
+        return Objects.hash(super.hashCode(), specificForceStandardDeviation, angularRateStandardDeviation);
     }
 
     /**
@@ -507,8 +507,8 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
         }
 
         return super.equals(other, threshold)
-                && Math.abs(mSpecificForceStandardDeviation - other.mSpecificForceStandardDeviation) <= threshold
-                && Math.abs(mAngularRateStandardDeviation - other.mAngularRateStandardDeviation) <= threshold;
+                && Math.abs(specificForceStandardDeviation - other.specificForceStandardDeviation) <= threshold
+                && Math.abs(angularRateStandardDeviation - other.angularRateStandardDeviation) <= threshold;
     }
 
     /**
@@ -519,7 +519,7 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final StandardDeviationTimedBodyKinematics result = (StandardDeviationTimedBodyKinematics) super.clone();
+        final var result = (StandardDeviationTimedBodyKinematics) super.clone();
         copyTo(result);
         return result;
     }
@@ -539,7 +539,7 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        final StandardDeviationTimedBodyKinematics other = (StandardDeviationTimedBodyKinematics) obj;
+        final var other = (StandardDeviationTimedBodyKinematics) obj;
         return equals(other);
     }
 

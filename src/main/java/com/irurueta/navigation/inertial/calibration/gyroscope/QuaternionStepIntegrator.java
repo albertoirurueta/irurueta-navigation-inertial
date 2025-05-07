@@ -116,9 +116,9 @@ public abstract class QuaternionStepIntegrator {
      */
     protected static void computeOmegaSkew(final Matrix omega, final Matrix result) {
 
-        final double wx = omega.getElementAtIndex(0);
-        final double wy = omega.getElementAtIndex(1);
-        final double wz = omega.getElementAtIndex(2);
+        final var wx = omega.getElementAtIndex(0);
+        final var wy = omega.getElementAtIndex(1);
+        final var wz = omega.getElementAtIndex(2);
 
         // The skew matrix has the following expression:
         // W = [0		-wx		-wy		-wz]

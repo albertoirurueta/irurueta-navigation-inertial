@@ -44,18 +44,18 @@ public class StandardDeviationBodyKinematics implements Serializable, Cloneable 
     /**
      * Current body kinematics measurement. Contains accelerometer and gyroscope measurements.
      */
-    private BodyKinematics mKinematics;
+    private BodyKinematics kinematics;
 
     /**
      * Standard deviation of measured specific force expressed in meters per squared
      * second (m/s^2).
      */
-    private double mSpecificForceStandardDeviation;
+    private double specificForceStandardDeviation;
 
     /**
      * Standard deviation of measured angular rate expressed in radians per second (rad/s).
      */
-    private double mAngularRateStandardDeviation;
+    private double angularRateStandardDeviation;
 
     /**
      * Constructor.
@@ -69,7 +69,7 @@ public class StandardDeviationBodyKinematics implements Serializable, Cloneable 
      * @param kinematics current body kinematics measurement.
      */
     public StandardDeviationBodyKinematics(final BodyKinematics kinematics) {
-        mKinematics = kinematics;
+        this.kinematics = kinematics;
     }
 
     /**
@@ -159,7 +159,7 @@ public class StandardDeviationBodyKinematics implements Serializable, Cloneable 
      * @return current body kinematics measurement.
      */
     public BodyKinematics getKinematics() {
-        return mKinematics;
+        return kinematics;
     }
 
     /**
@@ -169,7 +169,7 @@ public class StandardDeviationBodyKinematics implements Serializable, Cloneable 
      * @param kinematics current body kinematics measurement to be set.
      */
     public void setKinematics(final BodyKinematics kinematics) {
-        mKinematics = kinematics;
+        this.kinematics = kinematics;
     }
 
     /**
@@ -179,7 +179,7 @@ public class StandardDeviationBodyKinematics implements Serializable, Cloneable 
      * @return standard deviation of measured specific force.
      */
     public double getSpecificForceStandardDeviation() {
-        return mSpecificForceStandardDeviation;
+        return specificForceStandardDeviation;
     }
 
     /**
@@ -194,7 +194,7 @@ public class StandardDeviationBodyKinematics implements Serializable, Cloneable 
             throw new IllegalArgumentException();
         }
 
-        mSpecificForceStandardDeviation = specificForceStandardDeviation;
+        this.specificForceStandardDeviation = specificForceStandardDeviation;
     }
 
     /**
@@ -203,7 +203,7 @@ public class StandardDeviationBodyKinematics implements Serializable, Cloneable 
      * @return standard deviation of measured specific force.
      */
     public Acceleration getSpecificForceStandardDeviationAsAcceleration() {
-        return new Acceleration(mSpecificForceStandardDeviation, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(specificForceStandardDeviation, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -213,7 +213,7 @@ public class StandardDeviationBodyKinematics implements Serializable, Cloneable 
      *               stored.
      */
     public void getSpecificForceStandardDeviationAsAcceleration(final Acceleration result) {
-        result.setValue(mSpecificForceStandardDeviation);
+        result.setValue(specificForceStandardDeviation);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -233,7 +233,7 @@ public class StandardDeviationBodyKinematics implements Serializable, Cloneable 
      * @return standard deviation of measured angular rate.
      */
     public double getAngularRateStandardDeviation() {
-        return mAngularRateStandardDeviation;
+        return angularRateStandardDeviation;
     }
 
     /**
@@ -247,7 +247,7 @@ public class StandardDeviationBodyKinematics implements Serializable, Cloneable 
             throw new IllegalArgumentException();
         }
 
-        mAngularRateStandardDeviation = angularRateStandardDeviation;
+        this.angularRateStandardDeviation = angularRateStandardDeviation;
     }
 
     /**
@@ -256,7 +256,7 @@ public class StandardDeviationBodyKinematics implements Serializable, Cloneable 
      * @return standard deviation of measured angular rate.
      */
     public AngularSpeed getAngularRateStandardDeviationAsAngularSpeed() {
-        return new AngularSpeed(mAngularRateStandardDeviation, AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(angularRateStandardDeviation, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -266,7 +266,7 @@ public class StandardDeviationBodyKinematics implements Serializable, Cloneable 
      *               stored.
      */
     public void getAngularRateStandardDeviationAsAngularSpeed(final AngularSpeed result) {
-        result.setValue(mAngularRateStandardDeviation);
+        result.setValue(angularRateStandardDeviation);
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -277,8 +277,7 @@ public class StandardDeviationBodyKinematics implements Serializable, Cloneable 
      * @throws IllegalArgumentException if provided value is negative.
      */
     public void setAngularRateStandardDeviation(final AngularSpeed angularRateStandardDeviation) {
-        setAngularRateStandardDeviation(convertAngularSpeed(
-                angularRateStandardDeviation));
+        setAngularRateStandardDeviation(convertAngularSpeed(angularRateStandardDeviation));
     }
 
     /**
@@ -287,18 +286,18 @@ public class StandardDeviationBodyKinematics implements Serializable, Cloneable 
      * @param input instance to copy data from.
      */
     public void copyFrom(final StandardDeviationBodyKinematics input) {
-        if (input.mKinematics != null) {
-            if (mKinematics == null) {
-                mKinematics = new BodyKinematics(input.mKinematics);
+        if (input.kinematics != null) {
+            if (kinematics == null) {
+                kinematics = new BodyKinematics(input.kinematics);
             } else {
-                mKinematics.copyFrom(input.mKinematics);
+                kinematics.copyFrom(input.kinematics);
             }
         } else {
-            mKinematics = null;
+            kinematics = null;
         }
 
-        mSpecificForceStandardDeviation = input.mSpecificForceStandardDeviation;
-        mAngularRateStandardDeviation = input.mAngularRateStandardDeviation;
+        specificForceStandardDeviation = input.specificForceStandardDeviation;
+        angularRateStandardDeviation = input.angularRateStandardDeviation;
     }
 
     /**
@@ -318,7 +317,7 @@ public class StandardDeviationBodyKinematics implements Serializable, Cloneable 
      */
     @Override
     public int hashCode() {
-        return Objects.hash(mKinematics, mSpecificForceStandardDeviation, mAngularRateStandardDeviation);
+        return Objects.hash(kinematics, specificForceStandardDeviation, angularRateStandardDeviation);
     }
 
     /**
@@ -346,10 +345,10 @@ public class StandardDeviationBodyKinematics implements Serializable, Cloneable 
             return false;
         }
 
-        return ((other.mKinematics == null && mKinematics == null)
-                || (mKinematics != null && mKinematics.equals(other.mKinematics, threshold)))
-                && Math.abs(mSpecificForceStandardDeviation - other.mSpecificForceStandardDeviation) <= threshold
-                && Math.abs(mAngularRateStandardDeviation - other.mAngularRateStandardDeviation) <= threshold;
+        return ((other.kinematics == null && kinematics == null)
+                || (kinematics != null && kinematics.equals(other.kinematics, threshold)))
+                && Math.abs(specificForceStandardDeviation - other.specificForceStandardDeviation) <= threshold
+                && Math.abs(angularRateStandardDeviation - other.angularRateStandardDeviation) <= threshold;
     }
 
     /**
@@ -367,7 +366,7 @@ public class StandardDeviationBodyKinematics implements Serializable, Cloneable 
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        final StandardDeviationBodyKinematics other = (StandardDeviationBodyKinematics) obj;
+        final var other = (StandardDeviationBodyKinematics) obj;
         return equals(other);
     }
 
@@ -379,7 +378,7 @@ public class StandardDeviationBodyKinematics implements Serializable, Cloneable 
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final StandardDeviationBodyKinematics result = (StandardDeviationBodyKinematics) super.clone();
+        final var result = (StandardDeviationBodyKinematics) super.clone();
         copyTo(result);
         return result;
     }

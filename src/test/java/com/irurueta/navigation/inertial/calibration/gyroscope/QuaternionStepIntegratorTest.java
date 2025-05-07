@@ -15,79 +15,72 @@
  */
 package com.irurueta.navigation.inertial.calibration.gyroscope;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class QuaternionStepIntegratorTest {
+class QuaternionStepIntegratorTest {
 
     @Test
-    public void create_whenEulerType_returnsExpectedIntegratorType() {
-        final QuaternionStepIntegrator integrator = QuaternionStepIntegrator.create(
-                QuaternionStepIntegratorType.EULER_METHOD);
+    void create_whenEulerType_returnsExpectedIntegratorType() {
+        final var integrator = QuaternionStepIntegrator.create(QuaternionStepIntegratorType.EULER_METHOD);
 
         // check
         assertEquals(QuaternionStepIntegratorType.EULER_METHOD, integrator.getType());
-        assertTrue(integrator instanceof EulerQuaternionStepIntegrator);
+        assertInstanceOf(EulerQuaternionStepIntegrator.class, integrator);
     }
 
     @Test
-    public void create_whenMidPointType_returnsExpectedIntegratorType() {
-        final QuaternionStepIntegrator integrator = QuaternionStepIntegrator.create(
-                QuaternionStepIntegratorType.MID_POINT);
+    void create_whenMidPointType_returnsExpectedIntegratorType() {
+        final var integrator = QuaternionStepIntegrator.create(QuaternionStepIntegratorType.MID_POINT);
 
         // check
         assertEquals(QuaternionStepIntegratorType.MID_POINT, integrator.getType());
-        assertTrue(integrator instanceof MidPointQuaternionStepIntegrator);
+        assertInstanceOf(MidPointQuaternionStepIntegrator.class, integrator);
     }
 
     @Test
-    public void create_whenSuhType_returnsExpectedIntegratorType() {
-        final QuaternionStepIntegrator integrator = QuaternionStepIntegrator.create(
-                QuaternionStepIntegratorType.SUH);
+    void create_whenSuhType_returnsExpectedIntegratorType() {
+        final var integrator = QuaternionStepIntegrator.create(QuaternionStepIntegratorType.SUH);
 
         // check
         assertEquals(QuaternionStepIntegratorType.SUH, integrator.getType());
-        assertTrue(integrator instanceof SuhQuaternionStepIntegrator);
+        assertInstanceOf(SuhQuaternionStepIntegrator.class, integrator);
     }
 
     @Test
-    public void create_whenTrawnyType_returnsExpectedIntegratorType() {
-        final QuaternionStepIntegrator integrator = QuaternionStepIntegrator.create(
-                QuaternionStepIntegratorType.TRAWNY);
+    void create_whenTrawnyType_returnsExpectedIntegratorType() {
+        final var integrator = QuaternionStepIntegrator.create(QuaternionStepIntegratorType.TRAWNY);
 
         // check
         assertEquals(QuaternionStepIntegratorType.TRAWNY, integrator.getType());
-        assertTrue(integrator instanceof TrawnyQuaternionStepIntegrator);
+        assertInstanceOf(TrawnyQuaternionStepIntegrator.class, integrator);
     }
 
     @Test
-    public void create_whenYuanType_returnsExpectedIntegratorType() {
-        final QuaternionStepIntegrator integrator = QuaternionStepIntegrator.create(
-                QuaternionStepIntegratorType.YUAN);
+    void create_whenYuanType_returnsExpectedIntegratorType() {
+        final var integrator = QuaternionStepIntegrator.create(QuaternionStepIntegratorType.YUAN);
 
         // check
         assertEquals(QuaternionStepIntegratorType.YUAN, integrator.getType());
-        assertTrue(integrator instanceof YuanQuaternionStepIntegrator);
+        assertInstanceOf(YuanQuaternionStepIntegrator.class, integrator);
     }
 
     @Test
-    public void create_whenRungeKuttaType_returnsExpectedIntegratorType() {
-        final QuaternionStepIntegrator integrator = QuaternionStepIntegrator.create(
-                QuaternionStepIntegratorType.RUNGE_KUTTA);
+    void create_whenRungeKuttaType_returnsExpectedIntegratorType() {
+        final var integrator = QuaternionStepIntegrator.create(QuaternionStepIntegratorType.RUNGE_KUTTA);
 
         // check
         assertEquals(QuaternionStepIntegratorType.RUNGE_KUTTA, integrator.getType());
-        assertTrue(integrator instanceof RungeKuttaQuaternionStepIntegrator);
+        assertInstanceOf(RungeKuttaQuaternionStepIntegrator.class, integrator);
     }
 
     @Test
-    public void create_whenDefaultType_returnsExpectedIntegratorType() {
-        final QuaternionStepIntegrator integrator = QuaternionStepIntegrator.create();
+    void create_whenDefaultType_returnsExpectedIntegratorType() {
+        final var integrator = QuaternionStepIntegrator.create();
 
         // check
         assertEquals(QuaternionStepIntegratorType.RUNGE_KUTTA, integrator.getType());
-        assertTrue(integrator instanceof RungeKuttaQuaternionStepIntegrator);
+        assertInstanceOf(RungeKuttaQuaternionStepIntegrator.class, integrator);
     }
 }

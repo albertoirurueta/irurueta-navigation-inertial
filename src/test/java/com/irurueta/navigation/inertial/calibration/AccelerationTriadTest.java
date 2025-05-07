@@ -21,21 +21,19 @@ import com.irurueta.navigation.inertial.SerializationHelper;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationUnit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class AccelerationTriadTest {
+class AccelerationTriadTest {
 
     private static final double ABSOLUTE_ERROR = 1e-12;
 
     @Test
-    public void testConstructor1() throws WrongSizeException {
-        final AccelerationTriad triad = new AccelerationTriad();
+    void testConstructor1() throws WrongSizeException {
+        final var triad = new AccelerationTriad();
 
         // check
         assertEquals(0.0, triad.getValueX(), 0.0);
@@ -43,39 +41,39 @@ public class AccelerationTriadTest {
         assertEquals(0.0, triad.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, triad.getUnit());
         assertArrayEquals(new double[3], triad.getValuesAsArray(), 0.0);
-        final double[] values = new double[3];
+        final var values = new double[3];
         triad.getValuesAsArray(values);
         assertArrayEquals(new double[3], values, 0.0);
         assertEquals(new Matrix(3, 1), triad.getValuesAsMatrix());
-        final Matrix v = new Matrix(3, 1);
+        final var v = new Matrix(3, 1);
         triad.getValuesAsMatrix(v);
         assertEquals(new Matrix(3, 1), v);
-        final Acceleration vx1 = triad.getMeasurementX();
+        final var vx1 = triad.getMeasurementX();
         assertEquals(0.0, vx1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, vx1.getUnit());
-        final Acceleration vx2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var vx2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         triad.getMeasurementX(vx2);
         assertEquals(0.0, vx2.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, vx2.getUnit());
-        final Acceleration vy1 = triad.getMeasurementY();
+        final var vy1 = triad.getMeasurementY();
         assertEquals(0.0, vy1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, vy1.getUnit());
-        final Acceleration vy2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var vy2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         triad.getMeasurementY(vy2);
         assertEquals(0.0, vy2.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, vy2.getUnit());
-        final Acceleration vz1 = triad.getMeasurementZ();
+        final var vz1 = triad.getMeasurementZ();
         assertEquals(0.0, vz1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, vz1.getUnit());
-        final Acceleration vz2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var vz2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         triad.getMeasurementZ(vz2);
         assertEquals(0.0, vz2.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, vz2.getUnit());
     }
 
     @Test
-    public void testConstructor2() throws WrongSizeException {
-        final AccelerationTriad triad = new AccelerationTriad(AccelerationUnit.FEET_PER_SQUARED_SECOND);
+    void testConstructor2() throws WrongSizeException {
+        final var triad = new AccelerationTriad(AccelerationUnit.FEET_PER_SQUARED_SECOND);
 
         // check
         assertEquals(0.0, triad.getValueX(), 0.0);
@@ -83,47 +81,47 @@ public class AccelerationTriadTest {
         assertEquals(0.0, triad.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.FEET_PER_SQUARED_SECOND, triad.getUnit());
         assertArrayEquals(new double[3], triad.getValuesAsArray(), 0.0);
-        final double[] values = new double[3];
+        final var values = new double[3];
         triad.getValuesAsArray(values);
         assertArrayEquals(new double[3], values, 0.0);
         assertEquals(new Matrix(3, 1), triad.getValuesAsMatrix());
-        final Matrix v = new Matrix(3, 1);
+        final var v = new Matrix(3, 1);
         triad.getValuesAsMatrix(v);
         assertEquals(new Matrix(3, 1), v);
-        final Acceleration vx1 = triad.getMeasurementX();
+        final var vx1 = triad.getMeasurementX();
         assertEquals(0.0, vx1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.FEET_PER_SQUARED_SECOND, vx1.getUnit());
-        final Acceleration vx2 = new Acceleration(1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var vx2 = new Acceleration(1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         triad.getMeasurementX(vx2);
         assertEquals(0.0, vx2.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.FEET_PER_SQUARED_SECOND, vx2.getUnit());
-        final Acceleration vy1 = triad.getMeasurementY();
+        final var vy1 = triad.getMeasurementY();
         assertEquals(0.0, vy1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.FEET_PER_SQUARED_SECOND, vy1.getUnit());
-        final Acceleration vy2 = new Acceleration(1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var vy2 = new Acceleration(1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         triad.getMeasurementY(vy2);
         assertEquals(0.0, vy2.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.FEET_PER_SQUARED_SECOND, vy2.getUnit());
-        final Acceleration vz1 = triad.getMeasurementZ();
+        final var vz1 = triad.getMeasurementZ();
         assertEquals(0.0, vz1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.FEET_PER_SQUARED_SECOND, vz1.getUnit());
-        final Acceleration vz2 = new Acceleration(1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var vz2 = new Acceleration(1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         triad.getMeasurementZ(vz2);
         assertEquals(0.0, vz2.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.FEET_PER_SQUARED_SECOND, vz2.getUnit());
     }
 
     @Test
-    public void testConstructor3() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testConstructor3() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final double[] values1 = new double[]{valueX, valueY, valueZ};
-        final Matrix v1 = Matrix.newFromArray(values1);
+        final var values1 = new double[]{valueX, valueY, valueZ};
+        final var v1 = Matrix.newFromArray(values1);
 
-        final AccelerationTriad triad = new AccelerationTriad(valueX, valueY, valueZ);
+        final var triad = new AccelerationTriad(valueX, valueY, valueZ);
 
         // check
         assertEquals(valueX, triad.getValueX(), 0.0);
@@ -131,48 +129,47 @@ public class AccelerationTriadTest {
         assertEquals(valueZ, triad.getValueZ(), 0.0);
         assertEquals(AccelerationTriad.DEFAULT_UNIT, triad.getUnit());
         assertArrayEquals(new double[]{valueX, valueY, valueZ}, triad.getValuesAsArray(), 0.0);
-        final double[] values2 = new double[3];
+        final var values2 = new double[3];
         triad.getValuesAsArray(values2);
         assertArrayEquals(values1, values2, 0.0);
         assertEquals(v1, triad.getValuesAsMatrix());
-        final Matrix v2 = new Matrix(3, 1);
+        final var v2 = new Matrix(3, 1);
         triad.getValuesAsMatrix(v2);
         assertEquals(v1, v2);
-        final Acceleration vx1 = triad.getMeasurementX();
+        final var vx1 = triad.getMeasurementX();
         assertEquals(valueX, vx1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, vx1.getUnit());
-        final Acceleration vx2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var vx2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         triad.getMeasurementX(vx2);
         assertEquals(valueX, vx2.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, vx2.getUnit());
-        final Acceleration vy1 = triad.getMeasurementY();
+        final var vy1 = triad.getMeasurementY();
         assertEquals(valueY, vy1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, vy1.getUnit());
-        final Acceleration vy2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var vy2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         triad.getMeasurementY(vy2);
         assertEquals(valueY, vy2.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, vy2.getUnit());
-        final Acceleration vz1 = triad.getMeasurementZ();
+        final var vz1 = triad.getMeasurementZ();
         assertEquals(valueZ, vz1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, vz1.getUnit());
-        final Acceleration vz2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var vz2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         triad.getMeasurementZ(vz2);
         assertEquals(valueZ, vz2.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, vz2.getUnit());
     }
 
     @Test
-    public void testConstructor4() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testConstructor4() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final double[] values1 = new double[]{valueX, valueY, valueZ};
-        final Matrix v1 = Matrix.newFromArray(values1);
+        final var values1 = new double[]{valueX, valueY, valueZ};
+        final var v1 = Matrix.newFromArray(values1);
 
-        final AccelerationTriad triad = new AccelerationTriad(AccelerationUnit.FEET_PER_SQUARED_SECOND,
-                valueX, valueY, valueZ);
+        final var triad = new AccelerationTriad(AccelerationUnit.FEET_PER_SQUARED_SECOND, valueX, valueY, valueZ);
 
         // check
         assertEquals(valueX, triad.getValueX(), 0.0);
@@ -180,51 +177,51 @@ public class AccelerationTriadTest {
         assertEquals(valueZ, triad.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.FEET_PER_SQUARED_SECOND, triad.getUnit());
         assertArrayEquals(new double[]{valueX, valueY, valueZ}, triad.getValuesAsArray(), 0.0);
-        final double[] values2 = new double[3];
+        final var values2 = new double[3];
         triad.getValuesAsArray(values2);
         assertArrayEquals(values1, values2, 0.0);
         assertEquals(v1, triad.getValuesAsMatrix());
-        final Matrix v2 = new Matrix(3, 1);
+        final var v2 = new Matrix(3, 1);
         triad.getValuesAsMatrix(v2);
         assertEquals(v1, v2);
-        final Acceleration vx1 = triad.getMeasurementX();
+        final var vx1 = triad.getMeasurementX();
         assertEquals(valueX, vx1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.FEET_PER_SQUARED_SECOND, vx1.getUnit());
-        final Acceleration vx2 = new Acceleration(1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var vx2 = new Acceleration(1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         triad.getMeasurementX(vx2);
         assertEquals(valueX, vx2.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.FEET_PER_SQUARED_SECOND, vx2.getUnit());
-        final Acceleration vy1 = triad.getMeasurementY();
+        final var vy1 = triad.getMeasurementY();
         assertEquals(valueY, vy1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.FEET_PER_SQUARED_SECOND, vy1.getUnit());
-        final Acceleration vy2 = new Acceleration(1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var vy2 = new Acceleration(1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         triad.getMeasurementY(vy2);
         assertEquals(valueY, vy2.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.FEET_PER_SQUARED_SECOND, vy2.getUnit());
-        final Acceleration vz1 = triad.getMeasurementZ();
+        final var vz1 = triad.getMeasurementZ();
         assertEquals(valueZ, vz1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.FEET_PER_SQUARED_SECOND, vz1.getUnit());
-        final Acceleration vz2 = new Acceleration(1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var vz2 = new Acceleration(1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         triad.getMeasurementZ(vz2);
         assertEquals(valueZ, vz2.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.FEET_PER_SQUARED_SECOND, vz2.getUnit());
     }
 
     @Test
-    public void testConstructor5() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testConstructor5() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final Acceleration mx = new Acceleration(valueX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration my = new Acceleration(valueY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration mz = new Acceleration(valueZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var mx = new Acceleration(valueX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var my = new Acceleration(valueY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var mz = new Acceleration(valueZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
-        final double[] values1 = new double[]{valueX, valueY, valueZ};
-        final Matrix v1 = Matrix.newFromArray(values1);
+        final var values1 = new double[]{valueX, valueY, valueZ};
+        final var v1 = Matrix.newFromArray(values1);
 
-        final AccelerationTriad triad = new AccelerationTriad(mx, my, mz);
+        final var triad = new AccelerationTriad(mx, my, mz);
 
         // check
         assertEquals(valueX, triad.getValueX(), 0.0);
@@ -232,45 +229,45 @@ public class AccelerationTriadTest {
         assertEquals(valueZ, triad.getValueZ(), 0.0);
         assertEquals(AccelerationTriad.DEFAULT_UNIT, triad.getUnit());
         assertArrayEquals(new double[]{valueX, valueY, valueZ}, triad.getValuesAsArray(), 0.0);
-        final double[] values2 = new double[3];
+        final var values2 = new double[3];
         triad.getValuesAsArray(values2);
         assertArrayEquals(values1, values2, 0.0);
         assertEquals(v1, triad.getValuesAsMatrix());
-        final Matrix v2 = new Matrix(3, 1);
+        final var v2 = new Matrix(3, 1);
         triad.getValuesAsMatrix(v2);
         assertEquals(v1, v2);
-        final Acceleration vx1 = triad.getMeasurementX();
+        final var vx1 = triad.getMeasurementX();
         assertEquals(valueX, vx1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, vx1.getUnit());
-        final Acceleration vx2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var vx2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         triad.getMeasurementX(vx2);
         assertEquals(valueX, vx2.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, vx2.getUnit());
-        final Acceleration vy1 = triad.getMeasurementY();
+        final var vy1 = triad.getMeasurementY();
         assertEquals(valueY, vy1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, vy1.getUnit());
-        final Acceleration vy2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var vy2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         triad.getMeasurementY(vy2);
         assertEquals(valueY, vy2.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, vy2.getUnit());
-        final Acceleration vz1 = triad.getMeasurementZ();
+        final var vz1 = triad.getMeasurementZ();
         assertEquals(valueZ, vz1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, vz1.getUnit());
-        final Acceleration vz2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var vz2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         triad.getMeasurementZ(vz2);
         assertEquals(valueZ, vz2.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, vz2.getUnit());
     }
 
     @Test
-    public void testConstructor6() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testConstructor6() {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final AccelerationTriad triad1 = new AccelerationTriad(valueX, valueY, valueZ);
-        final AccelerationTriad triad2 = new AccelerationTriad(triad1);
+        final var triad1 = new AccelerationTriad(valueX, valueY, valueZ);
+        final var triad2 = new AccelerationTriad(triad1);
 
         // check
         assertEquals(valueX, triad2.getValueX(), 0.0);
@@ -280,15 +277,15 @@ public class AccelerationTriadTest {
     }
 
     @Test
-    public void testGetSetValueX() {
-        final AccelerationTriad triad = new AccelerationTriad();
+    void testGetSetValueX() {
+        final var triad = new AccelerationTriad();
 
         // check default value
         assertEquals(0.0, triad.getValueX(), 0.0);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
 
         triad.setValueX(valueX);
 
@@ -297,15 +294,15 @@ public class AccelerationTriadTest {
     }
 
     @Test
-    public void testGetSetValueY() {
-        final AccelerationTriad triad = new AccelerationTriad();
+    void testGetSetValueY() {
+        final var triad = new AccelerationTriad();
 
         // check default value
         assertEquals(0.0, triad.getValueY(), 0.0);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueY = randomizer.nextDouble();
+        final var randomizer = new UniformRandomizer();
+        final var valueY = randomizer.nextDouble();
 
         triad.setValueY(valueY);
 
@@ -314,15 +311,15 @@ public class AccelerationTriadTest {
     }
 
     @Test
-    public void testGetSetValueZ() {
-        final AccelerationTriad triad = new AccelerationTriad();
+    void testGetSetValueZ() {
+        final var triad = new AccelerationTriad();
 
         // check default value
         assertEquals(0.0, triad.getValueZ(), 0.0);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueZ = randomizer.nextDouble();
+        final var randomizer = new UniformRandomizer();
+        final var valueZ = randomizer.nextDouble();
 
         triad.setValueZ(valueZ);
 
@@ -331,8 +328,8 @@ public class AccelerationTriadTest {
     }
 
     @Test
-    public void testSetValueCoordinates() {
-        final AccelerationTriad triad = new AccelerationTriad();
+    void testSetValueCoordinates() {
+        final var triad = new AccelerationTriad();
 
         // check default value
         assertEquals(0.0, triad.getValueX(), 0.0);
@@ -340,10 +337,10 @@ public class AccelerationTriadTest {
         assertEquals(0.0, triad.getValueZ(), 0.0);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
         triad.setValueCoordinates(valueX, valueY, valueZ);
 
@@ -354,8 +351,8 @@ public class AccelerationTriadTest {
     }
 
     @Test
-    public void testGetSetUnit() {
-        final AccelerationTriad triad = new AccelerationTriad();
+    void testGetSetUnit() {
+        final var triad = new AccelerationTriad();
 
         // check default value
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, triad.getUnit());
@@ -371,8 +368,8 @@ public class AccelerationTriadTest {
     }
 
     @Test
-    public void testSetValueCoordinatesAndUnit() {
-        final AccelerationTriad triad = new AccelerationTriad();
+    void testSetValueCoordinatesAndUnit() {
+        final var triad = new AccelerationTriad();
 
         // check default values
         assertEquals(0.0, triad.getValueX(), 0.0);
@@ -381,10 +378,10 @@ public class AccelerationTriadTest {
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, triad.getUnit());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
         triad.setValueCoordinatesAndUnit(valueX, valueY, valueZ, AccelerationUnit.FEET_PER_SQUARED_SECOND);
 
@@ -400,22 +397,22 @@ public class AccelerationTriadTest {
     }
 
     @Test
-    public void testGetSetValuesAsArray() {
-        final AccelerationTriad triad = new AccelerationTriad();
+    void testGetSetValuesAsArray() {
+        final var triad = new AccelerationTriad();
 
         // check default value
         assertArrayEquals(new double[3], triad.getValuesAsArray(), 0.0);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] values1 = new double[3];
+        final var randomizer = new UniformRandomizer();
+        final var values1 = new double[3];
         randomizer.fill(values1);
 
         triad.setValueCoordinates(values1);
 
         // check
-        final double[] values2 = triad.getValuesAsArray();
-        final double[] values3 = new double[3];
+        final var values2 = triad.getValuesAsArray();
+        final var values3 = new double[3];
         triad.getValuesAsArray(values3);
 
         assertArrayEquals(values1, values2, 0.0);
@@ -427,20 +424,20 @@ public class AccelerationTriadTest {
     }
 
     @Test
-    public void testGetSetValuesAsMatrix() throws WrongSizeException {
-        final AccelerationTriad triad = new AccelerationTriad();
+    void testGetSetValuesAsMatrix() throws WrongSizeException {
+        final var triad = new AccelerationTriad();
 
         // check default value
         assertEquals(new Matrix(3, 1), triad.getValuesAsMatrix());
 
         // set new value
-        final Matrix values1 = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+        final var values1 = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
 
         triad.setValueCoordinates(values1);
 
         // check
-        final Matrix values2 = triad.getValuesAsMatrix();
-        final Matrix values3 = new Matrix(3, 1);
+        final var values2 = triad.getValuesAsMatrix();
+        final var values3 = new Matrix(3, 1);
         triad.getValuesAsMatrix(values3);
 
         assertEquals(values1, values2);
@@ -458,24 +455,24 @@ public class AccelerationTriadTest {
     }
 
     @Test
-    public void testGetSetMeasurementX() {
-        final AccelerationTriad triad = new AccelerationTriad();
+    void testGetSetMeasurementX() {
+        final var triad = new AccelerationTriad();
 
         // check default value
-        final Acceleration mx1 = triad.getMeasurementX();
+        final var mx1 = triad.getMeasurementX();
         assertEquals(0.0, mx1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, mx1.getUnit());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final Acceleration mx2 = new Acceleration(valueX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var mx2 = new Acceleration(valueX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
         triad.setMeasurementX(mx2);
 
         // check
-        final Acceleration mx3 = triad.getMeasurementX();
-        final Acceleration mx4 = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var mx3 = triad.getMeasurementX();
+        final var mx4 = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         triad.getMeasurementX(mx4);
 
         assertEquals(mx2, mx3);
@@ -483,24 +480,24 @@ public class AccelerationTriadTest {
     }
 
     @Test
-    public void testGetSetMeasurementY() {
-        final AccelerationTriad triad = new AccelerationTriad();
+    void testGetSetMeasurementY() {
+        final var triad = new AccelerationTriad();
 
         // check default value
-        final Acceleration my1 = triad.getMeasurementY();
+        final var my1 = triad.getMeasurementY();
         assertEquals(0.0, my1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, my1.getUnit());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueY = randomizer.nextDouble();
-        final Acceleration my2 = new Acceleration(valueY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var valueY = randomizer.nextDouble();
+        final var my2 = new Acceleration(valueY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
         triad.setMeasurementY(my2);
 
         // check
-        final Acceleration my3 = triad.getMeasurementY();
-        final Acceleration my4 = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var my3 = triad.getMeasurementY();
+        final var my4 = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         triad.getMeasurementY(my4);
 
         assertEquals(my2, my3);
@@ -508,24 +505,24 @@ public class AccelerationTriadTest {
     }
 
     @Test
-    public void testGetSetMeasurementZ() {
-        final AccelerationTriad triad = new AccelerationTriad();
+    void testGetSetMeasurementZ() {
+        final var triad = new AccelerationTriad();
 
         // check default value
-        final Acceleration mz1 = triad.getMeasurementZ();
+        final var mz1 = triad.getMeasurementZ();
         assertEquals(0.0, mz1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, mz1.getUnit());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueZ = randomizer.nextDouble();
-        final Acceleration mz2 = new Acceleration(valueZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var valueZ = randomizer.nextDouble();
+        final var mz2 = new Acceleration(valueZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
         triad.setMeasurementZ(mz2);
 
         // check
-        final Acceleration mz3 = triad.getMeasurementZ();
-        final Acceleration mz4 = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var mz3 = triad.getMeasurementZ();
+        final var mz4 = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         triad.getMeasurementZ(mz4);
 
         assertEquals(mz2, mz3);
@@ -533,13 +530,13 @@ public class AccelerationTriadTest {
     }
 
     @Test
-    public void testSetMeasurementCoordinates() {
-        final AccelerationTriad triad = new AccelerationTriad();
+    void testSetMeasurementCoordinates() {
+        final var triad = new AccelerationTriad();
 
         // check default values
-        final Acceleration mx1 = triad.getMeasurementX();
-        final Acceleration my1 = triad.getMeasurementY();
-        final Acceleration mz1 = triad.getMeasurementZ();
+        final var mx1 = triad.getMeasurementX();
+        final var my1 = triad.getMeasurementY();
+        final var mz1 = triad.getMeasurementZ();
 
         assertEquals(0.0, mx1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, mx1.getUnit());
@@ -549,20 +546,20 @@ public class AccelerationTriadTest {
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, mz1.getUnit());
 
         // set new values
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
-        final Acceleration mx2 = new Acceleration(valueX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration my2 = new Acceleration(valueY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration mz2 = new Acceleration(valueZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
+        final var mx2 = new Acceleration(valueX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var my2 = new Acceleration(valueY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var mz2 = new Acceleration(valueZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
         triad.setMeasurementCoordinates(mx2, my2, mz2);
 
         // check
-        final Acceleration mx3 = triad.getMeasurementX();
-        final Acceleration my3 = triad.getMeasurementY();
-        final Acceleration mz3 = triad.getMeasurementZ();
+        final var mx3 = triad.getMeasurementX();
+        final var my3 = triad.getMeasurementY();
+        final var mz3 = triad.getMeasurementZ();
 
         assertEquals(mx2, mx3);
         assertEquals(my2, my3);
@@ -570,14 +567,14 @@ public class AccelerationTriadTest {
     }
 
     @Test
-    public void testCopyTo() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testCopyTo() {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final AccelerationTriad triad1 = new AccelerationTriad(valueX, valueY, valueZ);
-        final AccelerationTriad triad2 = new AccelerationTriad(AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var triad1 = new AccelerationTriad(valueX, valueY, valueZ);
+        final var triad2 = new AccelerationTriad(AccelerationUnit.FEET_PER_SQUARED_SECOND);
 
         triad1.copyTo(triad2);
 
@@ -589,14 +586,14 @@ public class AccelerationTriadTest {
     }
 
     @Test
-    public void testCopyFrom() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testCopyFrom() {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final AccelerationTriad triad1 = new AccelerationTriad(valueX, valueY, valueZ);
-        final AccelerationTriad triad2 = new AccelerationTriad(AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var triad1 = new AccelerationTriad(valueX, valueY, valueZ);
+        final var triad2 = new AccelerationTriad(AccelerationUnit.FEET_PER_SQUARED_SECOND);
 
         triad2.copyFrom(triad1);
 
@@ -608,30 +605,30 @@ public class AccelerationTriadTest {
     }
 
     @Test
-    public void testHashCode() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testHashCode() {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final AccelerationTriad triad1 = new AccelerationTriad(valueX, valueY, valueZ);
-        final AccelerationTriad triad2 = new AccelerationTriad(triad1);
-        final AccelerationTriad triad3 = new AccelerationTriad();
+        final var triad1 = new AccelerationTriad(valueX, valueY, valueZ);
+        final var triad2 = new AccelerationTriad(triad1);
+        final var triad3 = new AccelerationTriad();
 
         assertEquals(triad1.hashCode(), triad2.hashCode());
         assertNotEquals(triad1.hashCode(), triad3.hashCode());
     }
 
     @Test
-    public void testEquals1() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testEquals1() {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final AccelerationTriad triad1 = new AccelerationTriad(valueX, valueY, valueZ);
-        final AccelerationTriad triad2 = new AccelerationTriad(triad1);
-        final AccelerationTriad triad3 = new AccelerationTriad();
+        final var triad1 = new AccelerationTriad(valueX, valueY, valueZ);
+        final var triad2 = new AccelerationTriad(triad1);
+        final var triad3 = new AccelerationTriad();
 
         assertTrue(triad1.equals(triad2));
         assertTrue(triad2.equals(triad1));
@@ -645,15 +642,15 @@ public class AccelerationTriadTest {
     }
 
     @Test
-    public void testEquals2() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testEquals2() {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final AccelerationTriad triad1 = new AccelerationTriad(valueX, valueY, valueZ);
-        final AccelerationTriad triad2 = new AccelerationTriad(triad1);
-        final AccelerationTriad triad3 = new AccelerationTriad();
+        final var triad1 = new AccelerationTriad(valueX, valueY, valueZ);
+        final var triad2 = new AccelerationTriad(triad1);
+        final var triad3 = new AccelerationTriad();
 
         assertTrue(triad1.equals(triad2, ABSOLUTE_ERROR));
         assertTrue(triad2.equals(triad1, ABSOLUTE_ERROR));
@@ -665,77 +662,77 @@ public class AccelerationTriadTest {
     }
 
     @Test
-    public void testEquals3() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testEquals3() {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final AccelerationTriad triad1 = new AccelerationTriad(valueX, valueY, valueZ);
-        final AccelerationTriad triad2 = new AccelerationTriad(triad1);
-        final AccelerationTriad triad3 = new AccelerationTriad();
+        final var triad1 = new AccelerationTriad(valueX, valueY, valueZ);
+        final var triad2 = new AccelerationTriad(triad1);
+        final var triad3 = new AccelerationTriad();
         final Object obj = new Object();
 
         assertEquals(triad1, triad2);
         assertNotEquals(triad1, triad3);
         assertNotEquals(triad1, obj);
-        assertNotEquals(triad1, null);
+        assertNotEquals(null, triad1);
     }
 
     @Test
-    public void testClone() throws CloneNotSupportedException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testClone() throws CloneNotSupportedException {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final AccelerationTriad triad1 = new AccelerationTriad(valueX, valueY, valueZ);
-        final AccelerationTriad triad2 = (AccelerationTriad) triad1.clone();
+        final var triad1 = new AccelerationTriad(valueX, valueY, valueZ);
+        final var triad2 = (AccelerationTriad) triad1.clone();
 
         assertEquals(triad1, triad2);
     }
 
     @Test
-    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final AccelerationTriad triad1 = new AccelerationTriad(valueX, valueY, valueZ);
+        final var triad1 = new AccelerationTriad(valueX, valueY, valueZ);
 
-        final byte[] bytes = SerializationHelper.serialize(triad1);
-        final AccelerationTriad triad2 = SerializationHelper.deserialize(bytes);
+        final var bytes = SerializationHelper.serialize(triad1);
+        final var triad2 = SerializationHelper.deserialize(bytes);
 
         assertEquals(triad1, triad2);
         assertNotSame(triad1, triad2);
     }
 
     @Test
-    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
-        final Field field = AccelerationTriad.class.getDeclaredField("serialVersionUID");
+    void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final var field = AccelerationTriad.class.getDeclaredField("serialVersionUID");
         field.setAccessible(true);
 
         assertEquals(0L, field.get(null));
     }
 
     @Test
-    public void testGetNorm() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double valueX = randomizer.nextDouble();
-        final double valueY = randomizer.nextDouble();
-        final double valueZ = randomizer.nextDouble();
+    void testGetNorm() {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
 
-        final AccelerationTriad triad = new AccelerationTriad(valueX, valueY, valueZ);
+        final var triad = new AccelerationTriad(valueX, valueY, valueZ);
 
-        final double sqrNorm = valueX * valueX + valueY * valueY + valueZ * valueZ;
-        final double norm = Math.sqrt(sqrNorm);
+        final var sqrNorm = valueX * valueX + valueY * valueY + valueZ * valueZ;
+        final var norm = Math.sqrt(sqrNorm);
 
         assertEquals(sqrNorm, triad.getSqrNorm(), 0.0);
         assertEquals(norm, triad.getNorm(), 0.0);
 
-        final Acceleration a1 = triad.getMeasurementNorm();
-        final Acceleration a2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var a1 = triad.getMeasurementNorm();
+        final var a2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         triad.getMeasurementNorm(a2);
 
         assertEquals(norm, a1.getValue().doubleValue(), 0.0);

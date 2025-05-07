@@ -53,45 +53,45 @@ public abstract class AccumulatedMeasurementNoiseEstimator<U extends Enum<?>,
      * Time interval expressed in seconds (s) between consecutive accelerometer
      * samples.
      */
-    private double mTimeInterval = DEFAULT_TIME_INTERVAL_SECONDS;
+    private double timeInterval = DEFAULT_TIME_INTERVAL_SECONDS;
 
     /**
      * Listener to handle events raised by this estimator.
      */
-    private L mListener;
+    private L listener;
 
     /**
      * Last provided measurement.
      */
-    private M mLastMeasurement;
+    private M lastMeasurement;
 
     /**
      * Contains estimated average of measurement expressed in its default unit
      * (m/s^2 for acceleration, rad/s for angular speed or T for magnetic flux density).
      */
-    private double mAvg;
+    private double avg;
 
     /**
      * Contains estimated variance of measurement expressed in its default squared unit
      * (m^2/s^4 for acceleration, rad^2/s^2 for angular speed or T^2 for magnetic
      * flux density).
      */
-    private double mVariance;
+    private double variance;
 
     /**
      * Number of processed body kinematics samples.
      */
-    private int mNumberOfProcessedSamples;
+    private int numberOfProcessedSamples;
 
     /**
      * Number of processed timestamp samples plus one.
      */
-    private int mNumberOfProcessedSamplesPlusOne = 1;
+    private int numberOfProcessedSamplesPlusOne = 1;
 
     /**
      * Indicates that estimator is running.
      */
-    private boolean mRunning;
+    private boolean running;
 
     /**
      * Constructor.
@@ -105,7 +105,7 @@ public abstract class AccumulatedMeasurementNoiseEstimator<U extends Enum<?>,
      * @param listener listener to handle events raised by this estimator.
      */
     protected AccumulatedMeasurementNoiseEstimator(final L listener) {
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -115,7 +115,7 @@ public abstract class AccumulatedMeasurementNoiseEstimator<U extends Enum<?>,
      * @return time interval between accelerometer triad samples.
      */
     public double getTimeInterval() {
-        return mTimeInterval;
+        return timeInterval;
     }
 
     /**
@@ -127,7 +127,7 @@ public abstract class AccumulatedMeasurementNoiseEstimator<U extends Enum<?>,
      * @throws LockedException          if estimator is currently running.
      */
     public void setTimeInterval(final double timeInterval) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
@@ -135,7 +135,7 @@ public abstract class AccumulatedMeasurementNoiseEstimator<U extends Enum<?>,
             throw new IllegalArgumentException();
         }
 
-        mTimeInterval = timeInterval;
+        this.timeInterval = timeInterval;
     }
 
     /**
@@ -144,7 +144,7 @@ public abstract class AccumulatedMeasurementNoiseEstimator<U extends Enum<?>,
      * @return time interval between accelerometer triad samples.
      */
     public Time getTimeIntervalAsTime() {
-        return new Time(mTimeInterval, TimeUnit.SECOND);
+        return new Time(timeInterval, TimeUnit.SECOND);
     }
 
     /**
@@ -153,7 +153,7 @@ public abstract class AccumulatedMeasurementNoiseEstimator<U extends Enum<?>,
      * @param result instance where time interval will be stored.
      */
     public void getTimeIntervalAsTime(final Time result) {
-        result.setValue(mTimeInterval);
+        result.setValue(timeInterval);
         result.setUnit(TimeUnit.SECOND);
     }
 
@@ -174,7 +174,7 @@ public abstract class AccumulatedMeasurementNoiseEstimator<U extends Enum<?>,
      * @return listener to handle events raised by this estimator.
      */
     public L getListener() {
-        return mListener;
+        return listener;
     }
 
     /**
@@ -184,11 +184,11 @@ public abstract class AccumulatedMeasurementNoiseEstimator<U extends Enum<?>,
      * @throws LockedException if this estimator is running.
      */
     public void setListener(final L listener) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -197,7 +197,7 @@ public abstract class AccumulatedMeasurementNoiseEstimator<U extends Enum<?>,
      * @return last provided measurement or null.
      */
     public M getLastMeasurement() {
-        return mLastMeasurement;
+        return lastMeasurement;
     }
 
     /**
@@ -207,9 +207,9 @@ public abstract class AccumulatedMeasurementNoiseEstimator<U extends Enum<?>,
      * @return true if result instance was updated, false otherwise.
      */
     public boolean getLastMeasurement(final M result) {
-        if (mLastMeasurement != null) {
-            result.setValue(mLastMeasurement.getValue());
-            result.setUnit(mLastMeasurement.getUnit());
+        if (lastMeasurement != null) {
+            result.setValue(lastMeasurement.getValue());
+            result.setUnit(lastMeasurement.getUnit());
             return true;
         } else {
             return false;
@@ -223,7 +223,7 @@ public abstract class AccumulatedMeasurementNoiseEstimator<U extends Enum<?>,
      * @return average of measurement in current window.
      */
     public double getAvg() {
-        return mAvg;
+        return avg;
     }
 
     /**
@@ -232,7 +232,7 @@ public abstract class AccumulatedMeasurementNoiseEstimator<U extends Enum<?>,
      * @return average of measurement in current window
      */
     public M getAvgAsMeasurement() {
-        return createMeasurement(mAvg, getDefaultUnit());
+        return createMeasurement(avg, getDefaultUnit());
     }
 
     /**
@@ -241,7 +241,7 @@ public abstract class AccumulatedMeasurementNoiseEstimator<U extends Enum<?>,
      * @param result instance where average of measurement will be stored.
      */
     public void getAvgAsMeasurement(final M result) {
-        result.setValue(mAvg);
+        result.setValue(avg);
         result.setUnit(getDefaultUnit());
     }
 
@@ -253,7 +253,7 @@ public abstract class AccumulatedMeasurementNoiseEstimator<U extends Enum<?>,
      * @return estimated variance of measurement within current window.
      */
     public double getVariance() {
-        return mVariance;
+        return variance;
     }
 
     /**
@@ -264,7 +264,7 @@ public abstract class AccumulatedMeasurementNoiseEstimator<U extends Enum<?>,
      * @return estimated standard of measurement.
      */
     public double getStandardDeviation() {
-        return Math.sqrt(mVariance);
+        return Math.sqrt(variance);
     }
 
     /**
@@ -295,7 +295,7 @@ public abstract class AccumulatedMeasurementNoiseEstimator<U extends Enum<?>,
      * @return measurement noise PSD.
      */
     public double getPsd() {
-        return mVariance * mTimeInterval;
+        return variance * timeInterval;
     }
 
     /**
@@ -315,7 +315,7 @@ public abstract class AccumulatedMeasurementNoiseEstimator<U extends Enum<?>,
      * @return number of samples that have been processed so far.
      */
     public int getNumberOfProcessedSamples() {
-        return mNumberOfProcessedSamples;
+        return numberOfProcessedSamples;
     }
 
     /**
@@ -324,7 +324,7 @@ public abstract class AccumulatedMeasurementNoiseEstimator<U extends Enum<?>,
      * @return true if estimator is running, false otherwise.
      */
     public boolean isRunning() {
-        return mRunning;
+        return running;
     }
 
     /**
@@ -336,43 +336,43 @@ public abstract class AccumulatedMeasurementNoiseEstimator<U extends Enum<?>,
      */
     public void addMeasurement(final double value) throws LockedException {
 
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mRunning = true;
+        running = true;
 
-        if (mLastMeasurement == null && mListener != null) {
+        if (lastMeasurement == null && listener != null) {
             //noinspection unchecked
-            mListener.onStart((E) this);
+            listener.onStart((E) this);
         }
 
         // compute average
-        final double tmp = (double) mNumberOfProcessedSamples / (double) mNumberOfProcessedSamplesPlusOne;
-        mAvg = mAvg * tmp + value / mNumberOfProcessedSamplesPlusOne;
+        final var tmp = (double) numberOfProcessedSamples / (double) numberOfProcessedSamplesPlusOne;
+        avg = avg * tmp + value / numberOfProcessedSamplesPlusOne;
 
         // compute variance
-        final double diff = value - mAvg;
-        final double diff2 = diff * diff;
+        final var diff = value - avg;
+        final var diff2 = diff * diff;
 
-        mVariance = mVariance * tmp + diff2 / mNumberOfProcessedSamplesPlusOne;
+        variance = variance * tmp + diff2 / numberOfProcessedSamplesPlusOne;
 
-        if (mLastMeasurement == null) {
-            mLastMeasurement = createMeasurement(value, getDefaultUnit());
+        if (lastMeasurement == null) {
+            lastMeasurement = createMeasurement(value, getDefaultUnit());
         } else {
-            mLastMeasurement.setValue(value);
-            mLastMeasurement.setUnit(getDefaultUnit());
+            lastMeasurement.setValue(value);
+            lastMeasurement.setUnit(getDefaultUnit());
         }
 
-        mNumberOfProcessedSamples++;
-        mNumberOfProcessedSamplesPlusOne++;
+        numberOfProcessedSamples++;
+        numberOfProcessedSamplesPlusOne++;
 
-        if (mListener != null) {
+        if (listener != null) {
             //noinspection unchecked
-            mListener.onMeasurementAdded((E) this);
+            listener.onMeasurementAdded((E) this);
         }
 
-        mRunning = false;
+        running = false;
     }
 
     /**
@@ -392,27 +392,27 @@ public abstract class AccumulatedMeasurementNoiseEstimator<U extends Enum<?>,
      * @throws LockedException if estimator is currently running.
      */
     public boolean reset() throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        if (mNumberOfProcessedSamples == 0) {
+        if (numberOfProcessedSamples == 0) {
             return false;
         }
 
-        mRunning = true;
-        mLastMeasurement = null;
-        mAvg = 0.0;
-        mVariance = 0.0;
-        mNumberOfProcessedSamples = 0;
-        mNumberOfProcessedSamplesPlusOne = 1;
+        running = true;
+        lastMeasurement = null;
+        avg = 0.0;
+        variance = 0.0;
+        numberOfProcessedSamples = 0;
+        numberOfProcessedSamplesPlusOne = 1;
 
-        if (mListener != null) {
+        if (listener != null) {
             //noinspection unchecked
-            mListener.onReset((E) this);
+            listener.onReset((E) this);
         }
 
-        mRunning = false;
+        running = false;
 
         return true;
     }

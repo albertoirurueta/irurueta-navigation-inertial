@@ -25,16 +25,13 @@ import com.irurueta.navigation.frames.converters.NEDtoECEFPositionVelocityConver
 import com.irurueta.navigation.inertial.calibration.StandardDeviationBodyKinematics;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
-import java.util.List;
-import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class RobustKnownPositionAccelerometerCalibratorTest implements
-        RobustKnownPositionAccelerometerCalibratorListener {
+class RobustKnownPositionAccelerometerCalibratorTest implements RobustKnownPositionAccelerometerCalibratorListener {
 
     private static final double MICRO_G_TO_METERS_PER_SECOND_SQUARED = 9.80665E-6;
 
@@ -48,40 +45,39 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
     private static final double ABSOLUTE_ERROR = 1e-8;
 
     @Test
-    public void testCreateWithMethod() throws WrongSizeException {
+    void testCreateWithMethod() throws WrongSizeException {
 
         // create 1
 
         // RANSAC
-        RobustKnownPositionAccelerometerCalibrator calibrator = RobustKnownPositionAccelerometerCalibrator.create(
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustKnownPositionAccelerometerCalibrator.create(RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
 
         // LMedS
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
 
         // MSAC
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
 
         // PROSAC
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
 
         // PROMedS
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
 
         // create 2
 
@@ -89,83 +85,83 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(this, calibrator.getListener());
 
         // LMedS
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(this, calibrator.getListener());
 
         // MSAC
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(this, calibrator.getListener());
 
         // PROSAC
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(this, calibrator.getListener());
 
         // PROMedS
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(this, calibrator.getListener());
 
         // create 3
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
         // RANSAC
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(measurements, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(measurements, calibrator.getMeasurements());
 
         // LMedS
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(measurements, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(measurements, calibrator.getMeasurements());
 
         // MSAC
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(measurements, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(measurements, calibrator.getMeasurements());
 
         // PROSAC
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(measurements, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(measurements, calibrator.getMeasurements());
 
         // PROMedS
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(measurements, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(measurements, calibrator.getMeasurements());
 
         // create 4
 
         // RANSAC
-        calibrator = RobustKnownPositionAccelerometerCalibrator.create(true,
+        calibrator = RobustKnownPositionAccelerometerCalibrator.create(true, 
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // LMedS
@@ -173,7 +169,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // MSAC
@@ -181,7 +177,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROSAC
@@ -189,7 +185,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROMedS
@@ -197,46 +193,46 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // create 5
-        final Matrix ba = generateBa();
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bias = ba.getBuffer();
 
         // RANSAC
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(bias, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
 
         // LMedS
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(bias, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
 
         // MSAC
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(bias, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
 
         // PROSAC
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(bias, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
 
         // PROMedS
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(bias, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
 
         // create 6
@@ -245,45 +241,45 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(ba, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
 
         // LMedS
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(ba, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
 
         // MSAC
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(ba, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
 
         // PROSAC
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(ba, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
 
         // PROMedS
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(ba, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
 
         // create 7
-        final Matrix ma = generateMa();
+        final var ma = generateMa();
 
         // RANSAC
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(ba, ma, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
         assertEquals(ma, calibrator.getInitialMa());
 
@@ -291,7 +287,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(ba, ma, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
         assertEquals(ma, calibrator.getInitialMa());
 
@@ -299,7 +295,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(ba, ma, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
         assertEquals(ma, calibrator.getInitialMa());
 
@@ -307,7 +303,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(ba, ma, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
         assertEquals(ma, calibrator.getInitialMa());
 
@@ -315,54 +311,54 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(ba, ma, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
         assertEquals(ma, calibrator.getInitialMa());
 
         // create 8
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
         // RANSAC
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(ecefPosition, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
 
         // LMedS
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(ecefPosition, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
 
         // MSAC
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(ecefPosition, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
 
         // PROSAC
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(ecefPosition, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
 
         // PROMedS
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(ecefPosition, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
 
         // create 9
@@ -372,7 +368,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
 
@@ -381,7 +377,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
 
@@ -390,7 +386,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
 
@@ -399,7 +395,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
 
@@ -408,7 +404,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
 
@@ -419,7 +415,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
 
@@ -428,7 +424,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
 
@@ -437,7 +433,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
 
@@ -446,7 +442,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
 
@@ -455,7 +451,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
 
@@ -466,7 +462,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -476,7 +472,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -486,7 +482,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -496,7 +492,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -506,7 +502,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -518,7 +514,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -529,7 +525,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -540,7 +536,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -551,7 +547,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -562,7 +558,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -575,7 +571,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
@@ -585,7 +581,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
@@ -595,7 +591,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
@@ -605,7 +601,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
@@ -615,7 +611,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
@@ -627,7 +623,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
@@ -638,7 +634,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
@@ -649,7 +645,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
@@ -660,7 +656,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
@@ -671,7 +667,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
@@ -684,7 +680,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 bias, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -695,7 +691,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 bias, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -706,7 +702,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 bias, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -717,7 +713,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 bias, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -728,7 +724,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 bias, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -741,7 +737,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 bias, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -753,7 +749,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 bias, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -765,7 +761,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 bias, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -777,7 +773,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 bias, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -789,7 +785,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 bias, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -803,7 +799,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
@@ -813,7 +809,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
@@ -823,7 +819,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
@@ -833,7 +829,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
@@ -843,7 +839,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
@@ -855,7 +851,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
         assertSame(this, calibrator.getListener());
@@ -865,7 +861,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
         assertSame(this, calibrator.getListener());
@@ -875,7 +871,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
         assertSame(this, calibrator.getListener());
@@ -885,7 +881,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
         assertSame(this, calibrator.getListener());
@@ -895,7 +891,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
         assertSame(this, calibrator.getListener());
@@ -907,7 +903,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -918,7 +914,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -929,7 +925,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -940,7 +936,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -951,7 +947,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -964,7 +960,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -976,7 +972,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -990,7 +986,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
@@ -1001,7 +997,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
@@ -1012,7 +1008,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
@@ -1023,7 +1019,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
@@ -1034,7 +1030,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
@@ -1047,7 +1043,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
@@ -1059,7 +1055,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
@@ -1071,7 +1067,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
@@ -1083,7 +1079,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
@@ -1095,7 +1091,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
@@ -1109,7 +1105,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, ma, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1121,7 +1117,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, ma, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1133,7 +1129,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, ma, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1145,7 +1141,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, ma, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1157,7 +1153,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, ma, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1171,7 +1167,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, ma, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1184,7 +1180,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, ma, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1197,7 +1193,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, ma, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1210,7 +1206,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, ma, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1223,7 +1219,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, ma, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1237,35 +1233,35 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(nedPosition, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
 
         // LMedS
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(nedPosition, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
 
         // MSAC
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(nedPosition, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
 
         // PROSAC
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(nedPosition, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
 
         // PROMedS
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(nedPosition, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
 
         // create 26
@@ -1275,7 +1271,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
 
@@ -1284,7 +1280,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
 
@@ -1293,7 +1289,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
 
@@ -1302,7 +1298,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
 
@@ -1311,7 +1307,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
 
@@ -1322,7 +1318,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertSame(this, calibrator.getListener());
@@ -1332,7 +1328,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertSame(this, calibrator.getListener());
@@ -1342,7 +1338,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertSame(this, calibrator.getListener());
@@ -1352,7 +1348,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertSame(this, calibrator.getListener());
@@ -1362,7 +1358,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertSame(this, calibrator.getListener());
@@ -1374,7 +1370,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1384,7 +1380,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1394,7 +1390,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1404,7 +1400,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1414,7 +1410,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1426,7 +1422,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1437,7 +1433,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1448,7 +1444,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1459,7 +1455,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1470,7 +1466,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1483,7 +1479,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
@@ -1493,7 +1489,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
@@ -1503,7 +1499,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
@@ -1513,7 +1509,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
@@ -1523,7 +1519,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
@@ -1535,7 +1531,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
@@ -1546,7 +1542,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
@@ -1557,7 +1553,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
@@ -1568,7 +1564,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
@@ -1579,7 +1575,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
@@ -1592,7 +1588,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 bias, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1603,7 +1599,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 bias, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1614,7 +1610,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 bias, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1625,7 +1621,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 bias, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1636,7 +1632,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 bias, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1649,7 +1645,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 bias, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1660,7 +1656,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 bias, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1671,7 +1667,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 bias, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1682,7 +1678,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 bias, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1693,7 +1689,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 bias, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1706,7 +1702,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
@@ -1716,7 +1712,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
@@ -1726,7 +1722,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
@@ -1736,7 +1732,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
@@ -1746,7 +1742,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
@@ -1758,7 +1754,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
@@ -1769,7 +1765,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
@@ -1780,7 +1776,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
@@ -1791,7 +1787,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
@@ -1802,7 +1798,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
@@ -1815,7 +1811,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1826,7 +1822,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1837,7 +1833,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1848,7 +1844,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1859,7 +1855,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1872,7 +1868,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1884,7 +1880,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1896,7 +1892,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1908,7 +1904,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1920,7 +1916,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -1934,7 +1930,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
@@ -1945,7 +1941,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
@@ -1956,7 +1952,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
@@ -1967,7 +1963,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
@@ -1978,7 +1974,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
@@ -1991,7 +1987,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
@@ -2003,7 +1999,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
@@ -2015,7 +2011,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
@@ -2027,7 +2023,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
@@ -2039,7 +2035,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
@@ -2053,7 +2049,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, ma, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -2065,7 +2061,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, ma, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -2077,7 +2073,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, ma, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -2089,7 +2085,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, ma, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -2101,7 +2097,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, ma, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -2115,7 +2111,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, ma, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -2128,7 +2124,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, ma, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -2141,7 +2137,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, ma, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -2154,7 +2150,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, ma, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -2167,7 +2163,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, ma, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -2176,14 +2172,14 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
         assertSame(this, calibrator.getListener());
 
         // create 42
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
         // RANSAC
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(qualityScores, ecefPosition, measurements,
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2193,7 +2189,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2203,7 +2199,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2213,7 +2209,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2223,7 +2219,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2235,7 +2231,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2246,7 +2242,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2257,7 +2253,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2268,7 +2264,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2279,7 +2275,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2292,7 +2288,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2303,7 +2299,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2314,7 +2310,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2325,7 +2321,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2336,7 +2332,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2349,7 +2345,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2361,7 +2357,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2373,7 +2369,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2385,7 +2381,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2397,7 +2393,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2411,7 +2407,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2422,7 +2418,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2433,7 +2429,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2444,7 +2440,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2455,7 +2451,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2468,7 +2464,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2480,7 +2476,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2492,7 +2488,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2504,7 +2500,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2516,7 +2512,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2530,7 +2526,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, bias, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2542,7 +2538,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, bias, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2554,7 +2550,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, bias, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2566,7 +2562,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, bias, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2578,7 +2574,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, bias, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2592,7 +2588,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, bias, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2605,7 +2601,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, bias, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2618,7 +2614,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, bias, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2631,7 +2627,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, bias, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2644,7 +2640,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, bias, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2659,7 +2655,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2670,7 +2666,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2681,7 +2677,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2692,7 +2688,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2703,7 +2699,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2716,7 +2712,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2728,7 +2724,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2740,7 +2736,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2752,7 +2748,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2764,7 +2760,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2778,7 +2774,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(calibrator.getEcefPosition(), ecefPosition);
         assertSame(calibrator.getMeasurements(), measurements);
@@ -2790,7 +2786,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2802,7 +2798,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2814,7 +2810,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2826,7 +2822,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2840,7 +2836,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2853,7 +2849,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2866,7 +2862,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2879,7 +2875,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2892,7 +2888,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2907,7 +2903,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ba, ma, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2919,7 +2915,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ma, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2931,7 +2927,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ma, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2943,7 +2939,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ma, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2955,7 +2951,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ma, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2969,7 +2965,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ma, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2982,7 +2978,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ma, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -2995,7 +2991,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ma, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -3008,7 +3004,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ma, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -3021,7 +3017,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 ma, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -3036,7 +3032,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, ma, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -3049,7 +3045,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, ma, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -3062,7 +3058,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, ma, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -3075,7 +3071,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, ma, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -3088,7 +3084,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, ma, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertSame(measurements, calibrator.getMeasurements());
@@ -3103,7 +3099,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, ma, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -3116,7 +3112,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, ma, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -3129,7 +3125,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, ma, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -3142,7 +3138,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, ma, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -3155,7 +3151,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, ma, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -3170,7 +3166,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3180,7 +3176,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3190,7 +3186,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3200,7 +3196,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3210,7 +3206,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3222,7 +3218,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3233,7 +3229,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3244,7 +3240,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3255,7 +3251,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3266,7 +3262,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3279,7 +3275,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3290,7 +3286,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3301,7 +3297,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3312,7 +3308,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3323,7 +3319,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3336,7 +3332,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3348,7 +3344,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3360,7 +3356,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3372,7 +3368,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3384,7 +3380,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3398,7 +3394,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3409,7 +3405,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3420,7 +3416,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3431,7 +3427,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3442,7 +3438,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3455,7 +3451,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3467,7 +3463,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3479,7 +3475,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3491,7 +3487,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3503,7 +3499,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3517,7 +3513,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, bias, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3529,7 +3525,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, bias, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3541,7 +3537,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, bias, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3553,7 +3549,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, bias, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3565,7 +3561,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, bias, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3579,7 +3575,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, bias, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3592,7 +3588,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, bias, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3605,7 +3601,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, bias, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3618,7 +3614,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, bias, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3631,7 +3627,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, bias, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3646,7 +3642,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3657,7 +3653,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3668,7 +3664,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3679,7 +3675,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3690,7 +3686,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3703,7 +3699,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3715,7 +3711,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3727,7 +3723,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3739,7 +3735,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3751,7 +3747,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3765,7 +3761,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3777,7 +3773,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3789,7 +3785,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3801,7 +3797,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3813,7 +3809,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3827,7 +3823,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3840,7 +3836,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3853,7 +3849,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3866,7 +3862,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3879,7 +3875,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3894,7 +3890,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3906,7 +3902,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3918,7 +3914,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3930,7 +3926,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3942,7 +3938,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3956,7 +3952,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3969,7 +3965,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3982,7 +3978,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3995,20 +3991,20 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
         assertEquals(ma, calibrator.getInitialMa());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(qualityScores, nedPosition, measurements, ba, ma,
                 this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -4023,7 +4019,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, ma, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(calibrator.getMeasurements(), measurements);
@@ -4036,7 +4032,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, ma, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -4049,7 +4045,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, ma, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -4062,7 +4058,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, ma, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -4075,7 +4071,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, ma, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -4090,7 +4086,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, ma, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -4104,7 +4100,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, ma, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -4118,7 +4114,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, ma, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -4132,7 +4128,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, ma, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -4146,7 +4142,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
                 true, ba, ma, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownPositionAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownPositionAccelerometerCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -4157,10 +4153,10 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreateWithDefaultMethod() throws WrongSizeException {
+    void testCreateWithDefaultMethod() throws WrongSizeException {
 
         // create 1
-        RobustKnownPositionAccelerometerCalibrator calibrator = RobustKnownPositionAccelerometerCalibrator.create();
+        var calibrator = RobustKnownPositionAccelerometerCalibrator.create();
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -4173,7 +4169,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
         assertSame(this, calibrator.getListener());
 
         // create 3
-        List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(measurements);
 
         // check
@@ -4188,8 +4184,8 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
 
         // create 5
-        final Matrix ba = generateBa();
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bias = ba.getBuffer();
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(bias);
 
         // check
@@ -4204,7 +4200,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
 
         // calibrate 7
-        final Matrix ma = generateMa();
+        final var ma = generateMa();
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(ba, ma);
 
         // check
@@ -4213,14 +4209,14 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(ma, calibrator.getInitialMa());
 
         // calibrate 8
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(ecefPosition);
@@ -4305,7 +4301,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // create 17
         calibrator = RobustKnownPositionAccelerometerCalibrator.create(ecefPosition, measurements, ba);
@@ -4572,20 +4568,24 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
 
     @Override
     public void onCalibrateStart(final RobustKnownPositionAccelerometerCalibrator calibrator) {
+        // no action needed
     }
 
     @Override
     public void onCalibrateEnd(final RobustKnownPositionAccelerometerCalibrator calibrator) {
+        // no action needed
     }
 
     @Override
     public void onCalibrateNextIteration(
             final RobustKnownPositionAccelerometerCalibrator calibrator, final int iteration) {
+        // no action needed
     }
 
     @Override
     public void onCalibrateProgressChange(
             final RobustKnownPositionAccelerometerCalibrator calibrator, final float progress) {
+        // no action needed
     }
 
     private static Matrix generateBa() {
@@ -4596,7 +4596,7 @@ public class RobustKnownPositionAccelerometerCalibratorTest implements
     }
 
     private static Matrix generateMa() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
+        final var result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 500e-6, -300e-6, 200e-6,
                 -150e-6, -600e-6, 250e-6,

@@ -22,64 +22,61 @@ import com.irurueta.numerical.robust.RobustEstimatorMethod;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationUnit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
-import java.util.List;
-import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class RobustKnownGravityNormAccelerometerCalibratorTest implements
+class RobustKnownGravityNormAccelerometerCalibratorTest implements 
         RobustKnownGravityNormAccelerometerCalibratorListener {
 
     @Test
-    public void testCreate1() {
+    void testCreate1() {
         // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
 
         // LMedS
         calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
 
         // MSAC
         calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
 
         // PROSAC
         calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
 
         // PROMedS
         calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
     }
 
     @Test
-    public void testCreate2() {
+    void testCreate2() {
         // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                this, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(this, 
+                RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertSame(this, calibrator.getListener());
 
@@ -87,7 +84,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
         calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertSame(this, calibrator.getListener());
 
@@ -95,7 +92,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
         calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
         assertSame(this, calibrator.getListener());
 
@@ -103,7 +100,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
         calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
         assertSame(this, calibrator.getListener());
 
@@ -111,21 +108,21 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
         calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
         assertSame(this, calibrator.getListener());
     }
 
     @Test
-    public void testCreate3() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreate3() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
         // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                measurements, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(measurements, 
+                RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertSame(measurements, calibrator.getMeasurements());
 
@@ -133,7 +130,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
         calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(measurements, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertSame(measurements, calibrator.getMeasurements());
 
@@ -141,7 +138,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
         calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(measurements, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
         assertSame(measurements, calibrator.getMeasurements());
 
@@ -149,7 +146,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
         calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(measurements, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
         assertSame(measurements, calibrator.getMeasurements());
 
@@ -157,3512 +154,3451 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
         calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(measurements, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
         assertSame(measurements, calibrator.getMeasurements());
     }
 
     @Test
-    public void testCreate4() {
+    void testCreate4() {
         // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(true, 
+                RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertTrue(calibrator.isCommonAxisUsed());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(true,
+                RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertTrue(calibrator.isCommonAxisUsed());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(true,
+                RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertTrue(calibrator.isCommonAxisUsed());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(true, 
+                RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertTrue(calibrator.isCommonAxisUsed());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(true,
+                RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertTrue(calibrator.isCommonAxisUsed());
+    }
+
+    @Test
+    void testCreate5() {
+        final var initialBias = new double[3];
+        final var randomizer = new UniformRandomizer();
+        randomizer.fill(initialBias);
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(initialBias, 
+                RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(initialBias, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(initialBias, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(initialBias, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(initialBias, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+    }
+
+    @Test
+    void testCreate6() throws WrongSizeException {
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(initialBias, 
+                RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(initialBias, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(initialBias, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(initialBias, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(initialBias, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+    }
+
+    @Test
+    void testCreate7() throws WrongSizeException {
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+        final var initialMa = Matrix.createWithGaussianRandomValues(
+                3, 3, -1.0, 1.0);
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(initialBias, initialMa, 
+                RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(initialBias, initialMa, 
+                RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(initialBias, initialMa, 
+                RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(initialBias, initialMa, 
+                RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(initialBias, initialMa, 
+                RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+    }
+
+    @Test
+    void testCreate8() {
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm,
+                RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+    }
+
+    @Test
+    void testCreate9() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+    }
+
+    @Test
+    void testCreate10() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, this,
+                RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, this,
+                RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, this,
+                RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, this,
+                RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, this,
+                RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
+    }
+
+    @Test
+    void testCreate11() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
                 true, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(true,
-                RobustEstimatorMethod.LMEDS);
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(true,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(true,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(true,
-                RobustEstimatorMethod.PROMEDS);
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
     }
 
     @Test
-    public void testCreate5() {
-        final double[] initialBias = new double[3];
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testCreate12() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, this, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, this, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, this, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, this, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, this, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+    }
+
+    @Test
+    void testCreate13() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
+        final var initialBias = new double[3];
         randomizer.fill(initialBias);
 
         // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                initialBias, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
 
         // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(initialBias, RobustEstimatorMethod.LMEDS);
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
 
         // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(initialBias, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
 
         // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(initialBias, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
 
         // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(initialBias, RobustEstimatorMethod.PROMEDS);
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
     }
 
     @Test
-    public void testCreate6() throws WrongSizeException {
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
+    void testCreate14() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
+        final var initialBias = new double[3];
+        randomizer.fill(initialBias);
 
         // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                initialBias, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertSame(this, calibrator.getListener());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                this, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertSame(this, calibrator.getListener());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                this, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertSame(this, calibrator.getListener());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                this, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertSame(this, calibrator.getListener());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                this, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertSame(this, calibrator.getListener());
+    }
+
+    @Test
+    void testCreate15() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
+        final var initialBias = new double[3];
+        randomizer.fill(initialBias);
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+    }
+
+    @Test
+    void testCreate16() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
+        final var initialBias = new double[3];
+        randomizer.fill(initialBias);
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, this, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertSame(this, calibrator.getListener());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, this, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertSame(this, calibrator.getListener());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, this, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertSame(this, calibrator.getListener());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, this, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertSame(this, calibrator.getListener());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, this, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertSame(this, calibrator.getListener());
+    }
+
+    @Test
+    void testCreate17() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
+
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
 
         // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(initialBias, RobustEstimatorMethod.LMEDS);
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
 
         // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(initialBias, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
 
         // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(initialBias, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
 
         // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(initialBias, RobustEstimatorMethod.PROMEDS);
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
     }
 
     @Test
-    public void testCreate7() throws WrongSizeException {
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-        final Matrix initialMa = Matrix.createWithGaussianRandomValues(
-                3, 3, -1.0, 1.0);
+    void testCreate18() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
+
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
 
         // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                this, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                this, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                this, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                this, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                this, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
+    }
+
+    @Test
+    void testCreate19() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
+
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+    }
+
+    @Test
+    void testCreate20() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
+
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, this, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, this, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, this, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, this, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, this, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
+    }
+
+    @Test
+    void testCreate21() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
+
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+        final var initialMa = Matrix.createWithUniformRandomValues(3, 3, -1.0, 1.0);
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                initialMa, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                initialMa, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                initialMa, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                initialMa, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                initialMa, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+    }
+
+    @Test
+    void testCreate22() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
+
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+        final var initialMa = Matrix.createWithUniformRandomValues(3, 3, -1.0, 1.0);
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                initialMa, this, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+        assertSame(this, calibrator.getListener());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                initialMa, this, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+        assertSame(this, calibrator.getListener());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                initialMa, this, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+        assertSame(this, calibrator.getListener());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                initialMa, this, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+        assertSame(this, calibrator.getListener());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                initialMa, this, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+        assertSame(this, calibrator.getListener());
+    }
+
+    @Test
+    void testCreate23() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
+
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+        final var initialMa = Matrix.createWithUniformRandomValues(3, 3, -1.0, 1.0);
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, initialMa, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, 
+                true, initialBias, initialMa, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, 
+                true, initialBias, initialMa, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, initialMa, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, initialMa, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+    }
+
+    @Test
+    void testCreate24() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
+
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+        final var initialMa = Matrix.createWithUniformRandomValues(3, 3, -1.0, 1.0);
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, 
+                true, initialBias, initialMa, this, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+        assertSame(this, calibrator.getListener());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, initialMa, this, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+        assertSame(this, calibrator.getListener());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, initialMa, this, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+        assertSame(this, calibrator.getListener());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, initialMa, this, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+        assertSame(this, calibrator.getListener());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, initialMa, this, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+        assertSame(this, calibrator.getListener());
+    }
+
+    @Test
+    void testCreate25() {
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, 
+                RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+    }
+
+    @Test
+    void testCreate26() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, 
+                RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, 
+                RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+    }
+
+    @Test
+    void testCreate27() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, this,
+                RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, this,
+                RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, this,
+                RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, this,
+                RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, this,
+                RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
+    }
+
+    @Test
+    void testCreate28() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, 
+                true, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+    }
+
+    @Test
+    void testCreate29() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, this, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, 
+                true, this, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, this, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, this, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, this, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+    }
+
+    @Test
+    void testCreate30() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var initialBias = new double[3];
+        randomizer.fill(initialBias);
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+    }
+
+    @Test
+    void testCreate31() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var initialBias = new double[3];
+        randomizer.fill(initialBias);
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                this, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertSame(this, calibrator.getListener());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                this, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertSame(this, calibrator.getListener());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                this, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertSame(this, calibrator.getListener());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                this, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertSame(this, calibrator.getListener());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                this, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertSame(this, calibrator.getListener());
+    }
+
+    @Test
+    void testCreate32() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var initialBias = new double[3];
+        randomizer.fill(initialBias);
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+    }
+
+    @Test
+    void testCreate33() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var initialBias = new double[3];
+        randomizer.fill(initialBias);
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, this, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertSame(this, calibrator.getListener());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, 
+                true, initialBias, this, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertSame(this, calibrator.getListener());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, this, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertSame(this, calibrator.getListener());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, this, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertSame(this, calibrator.getListener());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, this, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertSame(this, calibrator.getListener());
+    }
+
+    @Test
+    void testCreate34() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+    }
+
+    @Test
+    void testCreate35() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                this, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                this, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                this, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                this, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                this, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
+    }
+
+    @Test
+    void testCreate36() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, 
+                true, initialBias, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, 
+                true, initialBias, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+    }
+
+    @Test
+    void testCreate37() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+
+
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, this, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, this, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, 
+                true, initialBias, this, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, this, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, this, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
+    }
+
+    @Test
+    void testCreate38() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+        final var initialMa = Matrix.createWithUniformRandomValues(3, 3, -1.0, 1.0);
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                initialMa, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                initialMa, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                initialMa, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                initialMa, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                initialMa, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+    }
+
+    @Test
+    void testCreate39() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+        final var initialMa = Matrix.createWithUniformRandomValues(3, 3, -1.0, 1.0);
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                initialMa, this, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+        assertSame(this, calibrator.getListener());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                initialMa, this, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+        assertSame(this, calibrator.getListener());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                initialMa, this, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+        assertSame(this, calibrator.getListener());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                initialMa, this, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+        assertSame(this, calibrator.getListener());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
+                initialMa, this, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+        assertSame(this, calibrator.getListener());
+    }
+
+    @Test
+    void testCreate40() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+        final var initialMa = Matrix.createWithUniformRandomValues(3, 3, -1.0, 1.0);
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, initialMa, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, initialMa, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, initialMa, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, 
+                true, initialBias, initialMa, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, initialMa, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+    }
+
+    @Test
+    void testCreate41() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+        final var initialMa = Matrix.createWithUniformRandomValues(3, 3, -1.0, 1.0);
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, initialMa, this, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+        assertSame(this, calibrator.getListener());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, 
+                true, initialBias, initialMa, this, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+        assertSame(this, calibrator.getListener());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, initialMa, this, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+        assertSame(this, calibrator.getListener());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, initialMa, this, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+        assertSame(this, calibrator.getListener());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, initialMa, this, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMa, calibrator.getInitialMa());
+        assertSame(this, calibrator.getListener());
+    }
+
+    @Test
+    void testCreate42() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
+
+        final var qualityScores = new double[13];
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertNull(calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertNull(calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertNull(calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+    }
+
+    @Test
+    void testCreate43() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
+
+        final var qualityScores = new double[13];
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                this, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertNull(calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                this, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertNull(calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                this, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertNull(calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                this, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                this, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
+    }
+
+    @Test
+    void testCreate44() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
+
+        final var qualityScores = new double[13];
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertNull(calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertNull(calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertNull(calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+    }
+
+    @Test
+    void testCreate45() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
+
+        final var qualityScores = new double[13];
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, this, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertNull(calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, this, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertNull(calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, this, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertNull(calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, this, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, this, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+    }
+
+    @Test
+    void testCreate46() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
+        final var initialBias = new double[3];
+        randomizer.fill(initialBias);
+
+        final var qualityScores = new double[13];
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                initialBias, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertNull(calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                initialBias, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertNull(calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                initialBias, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertNull(calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                initialBias, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                initialBias, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+    }
+
+    @Test
+    void testCreate47() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
+        final var initialBias = new double[3];
+        randomizer.fill(initialBias);
+
+        final var qualityScores = new double[13];
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                initialBias, this, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertNull(calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertSame(this, calibrator.getListener());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                initialBias, this, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertNull(calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertSame(this, calibrator.getListener());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                initialBias, this, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertNull(calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertSame(this, calibrator.getListener());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                initialBias, this, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertSame(this, calibrator.getListener());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                initialBias, this, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertSame(this, calibrator.getListener());
+    }
+
+    @Test
+    void testCreate48() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
+        final var initialBias = new double[3];
+        randomizer.fill(initialBias);
+
+        final var qualityScores = new double[13];
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, initialBias, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertNull(calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, initialBias, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertNull(calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, initialBias, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertNull(calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, initialBias, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, initialBias, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+    }
+
+    @Test
+    void testCreate49() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
+        final var initialBias = new double[3];
+        randomizer.fill(initialBias);
+
+        final var qualityScores = new double[13];
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, initialBias, this, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertNull(calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertSame(this, calibrator.getListener());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, initialBias, this, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertNull(calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertSame(this, calibrator.getListener());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, initialBias, this, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertNull(calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertSame(this, calibrator.getListener());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, initialBias, this, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertSame(this, calibrator.getListener());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, initialBias, this, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertSame(this, calibrator.getListener());
+    }
+
+    @Test
+    void testCreate50() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
+
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+
+        final var qualityScores = new double[13];
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                initialBias, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertNull(calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                initialBias, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertNull(calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                initialBias, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertNull(calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                initialBias, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                initialBias, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+    }
+
+    @Test
+    void testCreate51() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
+
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+
+        final var qualityScores = new double[13];
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                initialBias, this, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertNull(calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                initialBias, this, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertNull(calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                initialBias, this, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertNull(calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                initialBias, this, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                initialBias, this, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
+    }
+
+    @Test
+    void testCreate52() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
+
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+
+        final var qualityScores = new double[13];
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, initialBias, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertNull(calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, initialBias, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertNull(calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, initialBias, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertNull(calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, initialBias, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, initialBias, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+    }
+
+    @Test
+    void testCreate53() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
+
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+
+        final var qualityScores = new double[13];
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, initialBias, this, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
+        assertNull(calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
+
+        // LMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, initialBias, this, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertNull(calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
+
+        // MSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, initialBias, this, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
+        assertNull(calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
+
+        // PROSAC
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, initialBias, this, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
+
+        // PROMedS
+        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, initialBias, this, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
+        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
+    }
+
+    @Test
+    void testCreate54() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
+
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+        final var initialMa = Matrix.createWithUniformRandomValues(3, 3, -1.0, 1.0);
+
+        final var qualityScores = new double[13];
+
+        // RANSAC
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
                 initialBias, initialMa, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(initialBias, initialMa,
-                RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(initialBias, initialMa,
-                RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(initialBias, initialMa,
-                RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(initialBias, initialMa,
-                RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-    }
-
-    @Test
-    public void testCreate8() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                gravityNorm, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-    }
-
-    @Test
-    public void testCreate9() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                gravityNorm, measurements, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-    }
-
-    @Test
-    public void testCreate10() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                gravityNorm, measurements, this, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertSame(this, calibrator.getListener());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, this,
-                RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertSame(this, calibrator.getListener());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, this,
-                RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertSame(this, calibrator.getListener());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, this,
-                RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertSame(this, calibrator.getListener());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, this,
-                RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertSame(this, calibrator.getListener());
-    }
-
-    @Test
-    public void testCreate11() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                gravityNorm, measurements, true, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-    }
-
-    @Test
-    public void testCreate12() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                gravityNorm, measurements, true, this, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(this, calibrator.getListener());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, this, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(this, calibrator.getListener());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, this, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(this, calibrator.getListener());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, this, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(this, calibrator.getListener());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, this, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(this, calibrator.getListener());
-    }
-
-    @Test
-    public void testCreate13() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
-        final double[] initialBias = new double[3];
-        randomizer.fill(initialBias);
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                gravityNorm, measurements, initialBias, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-    }
-
-    @Test
-    public void testCreate14() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
-        final double[] initialBias = new double[3];
-        randomizer.fill(initialBias);
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                gravityNorm, measurements, initialBias, this, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertSame(this, calibrator.getListener());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                this, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertSame(this, calibrator.getListener());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                this, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertSame(this, calibrator.getListener());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                this, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertSame(this, calibrator.getListener());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                this, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertSame(this, calibrator.getListener());
-    }
-
-    @Test
-    public void testCreate15() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
-        final double[] initialBias = new double[3];
-        randomizer.fill(initialBias);
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                gravityNorm, measurements, true, initialBias, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-    }
-
-    @Test
-    public void testCreate16() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
-        final double[] initialBias = new double[3];
-        randomizer.fill(initialBias);
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                gravityNorm, measurements, true, initialBias, this,
-                RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertSame(this, calibrator.getListener());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, this, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertSame(this, calibrator.getListener());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, this, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertSame(this, calibrator.getListener());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, this, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertSame(this, calibrator.getListener());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, this, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertSame(this, calibrator.getListener());
-    }
-
-    @Test
-    public void testCreate17() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
-
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                gravityNorm, measurements, initialBias, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-    }
-
-    @Test
-    public void testCreate18() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
-
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                gravityNorm, measurements, initialBias, this, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertSame(this, calibrator.getListener());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                this, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertSame(this, calibrator.getListener());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                this, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertSame(this, calibrator.getListener());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                this, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertSame(this, calibrator.getListener());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                this, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertSame(this, calibrator.getListener());
-    }
-
-    @Test
-    public void testCreate19() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
-
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                gravityNorm, measurements, true, initialBias, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-    }
-
-    @Test
-    public void testCreate20() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
-
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                gravityNorm, measurements, true, initialBias, this,
-                RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertSame(this, calibrator.getListener());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, this, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertSame(this, calibrator.getListener());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, this, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertSame(this, calibrator.getListener());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, this, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertSame(this, calibrator.getListener());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, this, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertSame(this, calibrator.getListener());
-    }
-
-    @Test
-    public void testCreate21() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
-
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-        final Matrix initialMa = Matrix.createWithUniformRandomValues(
-                3, 3, -1.0, 1.0);
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                gravityNorm, measurements, initialBias, initialMa, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                initialMa, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                initialMa, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                initialMa, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                initialMa, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-    }
-
-    @Test
-    public void testCreate22() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
-
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-        final Matrix initialMa = Matrix.createWithUniformRandomValues(
-                3, 3, -1.0, 1.0);
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                gravityNorm, measurements, initialBias, initialMa, this, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-        assertSame(this, calibrator.getListener());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                initialMa, this, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-        assertSame(this, calibrator.getListener());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                initialMa, this, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-        assertSame(this, calibrator.getListener());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                initialMa, this, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-        assertSame(this, calibrator.getListener());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                initialMa, this, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-        assertSame(this, calibrator.getListener());
-    }
-
-    @Test
-    public void testCreate23() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
-
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-        final Matrix initialMa = Matrix.createWithUniformRandomValues(
-                3, 3, -1.0, 1.0);
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                gravityNorm, measurements, true, initialBias, initialMa, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, initialMa, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, initialMa, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, initialMa, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, initialMa, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-    }
-
-    @Test
-    public void testCreate24() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
-
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-        final Matrix initialMa = Matrix.createWithUniformRandomValues(
-                3, 3, -1.0, 1.0);
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                gravityNorm, measurements, true, initialBias, initialMa, this,
-                RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-        assertSame(this, calibrator.getListener());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, initialMa, this, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-        assertSame(this, calibrator.getListener());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, initialMa, this, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-        assertSame(this, calibrator.getListener());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, initialMa, this, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-        assertSame(this, calibrator.getListener());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, initialMa, this, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-        assertSame(this, calibrator.getListener());
-    }
-
-    @Test
-    public void testCreate25() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                gravityNorm, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-    }
-
-    @Test
-    public void testCreate26() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                gravityNorm, measurements, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-    }
-
-    @Test
-    public void testCreate27() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                gravityNorm, measurements, this, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertSame(this, calibrator.getListener());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, this,
-                RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertSame(this, calibrator.getListener());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, this,
-                RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertSame(this, calibrator.getListener());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, this,
-                RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertSame(this, calibrator.getListener());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, this,
-                RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertSame(this, calibrator.getListener());
-    }
-
-    @Test
-    public void testCreate28() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                gravityNorm, measurements, true, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-    }
-
-    @Test
-    public void testCreate29() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                gravityNorm, measurements, true, this, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(this, calibrator.getListener());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, this, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(this, calibrator.getListener());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, this, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(this, calibrator.getListener());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, this, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(this, calibrator.getListener());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, this, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(this, calibrator.getListener());
-    }
-
-    @Test
-    public void testCreate30() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final double[] initialBias = new double[3];
-        randomizer.fill(initialBias);
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                gravityNorm, measurements, initialBias, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-    }
-
-    @Test
-    public void testCreate31() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final double[] initialBias = new double[3];
-        randomizer.fill(initialBias);
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                gravityNorm, measurements, initialBias, this, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertSame(this, calibrator.getListener());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                this, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertSame(this, calibrator.getListener());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                this, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertSame(this, calibrator.getListener());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                this, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertSame(this, calibrator.getListener());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                this, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertSame(this, calibrator.getListener());
-    }
-
-    @Test
-    public void testCreate32() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final double[] initialBias = new double[3];
-        randomizer.fill(initialBias);
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                gravityNorm, measurements, true, initialBias, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-    }
-
-    @Test
-    public void testCreate33() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final double[] initialBias = new double[3];
-        randomizer.fill(initialBias);
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                gravityNorm, measurements, true, initialBias, this,
-                RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertSame(this, calibrator.getListener());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, this, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertSame(this, calibrator.getListener());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, this, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertSame(this, calibrator.getListener());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, this, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertSame(this, calibrator.getListener());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, this, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertSame(this, calibrator.getListener());
-    }
-
-    @Test
-    public void testCreate34() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
-
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                gravityNorm, measurements, initialBias, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-    }
-
-    @Test
-    public void testCreate35() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
-
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                gravityNorm, measurements, initialBias, this, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertSame(this, calibrator.getListener());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                this, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertSame(this, calibrator.getListener());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                this, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertSame(this, calibrator.getListener());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                this, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertSame(this, calibrator.getListener());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                this, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertSame(this, calibrator.getListener());
-    }
-
-    @Test
-    public void testCreate36() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
-
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, true,
-                        initialBias, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-    }
-
-    @Test
-    public void testCreate37() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
-
-
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                gravityNorm, measurements, true, initialBias, this,
-                RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertSame(this, calibrator.getListener());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, this, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertSame(this, calibrator.getListener());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, this, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertSame(this, calibrator.getListener());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, this, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertSame(this, calibrator.getListener());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, this, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertSame(this, calibrator.getListener());
-    }
-
-    @Test
-    public void testCreate38() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
-
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-        final Matrix initialMa = Matrix.createWithUniformRandomValues(
-                3, 3, -1.0, 1.0);
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                gravityNorm, measurements, initialBias, initialMa, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                initialMa, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                initialMa, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                initialMa, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                initialMa, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-    }
-
-    @Test
-    public void testCreate39() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
-
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-        final Matrix initialMa = Matrix.createWithUniformRandomValues(
-                3, 3, -1.0, 1.0);
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                gravityNorm, measurements, initialBias, initialMa, this, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-        assertSame(this, calibrator.getListener());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                initialMa, this, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-        assertSame(this, calibrator.getListener());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                initialMa, this, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-        assertSame(this, calibrator.getListener());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                initialMa, this, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-        assertSame(this, calibrator.getListener());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                initialMa, this, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-        assertSame(this, calibrator.getListener());
-    }
-
-    @Test
-    public void testCreate40() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
-
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-        final Matrix initialMa = Matrix.createWithUniformRandomValues(
-                3, 3, -1.0, 1.0);
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                gravityNorm, measurements, true, initialBias, initialMa, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, initialMa, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, initialMa, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, initialMa, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, initialMa, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-    }
-
-    @Test
-    public void testCreate41() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
-
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-        final Matrix initialMa = Matrix.createWithUniformRandomValues(
-                3, 3, -1.0, 1.0);
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                gravityNorm, measurements, true, initialBias, initialMa, this,
-                RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-        assertSame(this, calibrator.getListener());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, initialMa, this, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-        assertSame(this, calibrator.getListener());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, initialMa, this, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-        assertSame(this, calibrator.getListener());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, initialMa, this, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-        assertSame(this, calibrator.getListener());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
-                true, initialBias, initialMa, this, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMa, calibrator.getInitialMa());
-        assertSame(this, calibrator.getListener());
-    }
-
-    @Test
-    public void testCreate42() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
-
-        final double[] qualityScores = new double[13];
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                qualityScores, gravityNorm, measurements, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertNull(calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertNull(calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertNull(calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertSame(qualityScores, calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertSame(qualityScores, calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-    }
-
-    @Test
-    public void testCreate43() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
-
-        final double[] qualityScores = new double[13];
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                qualityScores, gravityNorm, measurements, this, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertNull(calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertSame(this, calibrator.getListener());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                this, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertNull(calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertSame(this, calibrator.getListener());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                this, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertNull(calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertSame(this, calibrator.getListener());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                this, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertSame(qualityScores, calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertSame(this, calibrator.getListener());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                this, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertSame(qualityScores, calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertSame(this, calibrator.getListener());
-    }
-
-    @Test
-    public void testCreate44() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
-
-        final double[] qualityScores = new double[13];
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                qualityScores, gravityNorm, measurements, true, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertNull(calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                true, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertNull(calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                true, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertNull(calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                true, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertSame(qualityScores, calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                true, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertSame(qualityScores, calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-    }
-
-    @Test
-    public void testCreate45() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
-
-        final double[] qualityScores = new double[13];
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                qualityScores, gravityNorm, measurements, true, this,
-                RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertNull(calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(this, calibrator.getListener());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                true, this, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertNull(calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(this, calibrator.getListener());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                true, this, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertNull(calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(this, calibrator.getListener());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                true, this, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertSame(qualityScores, calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(this, calibrator.getListener());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                true, this, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertSame(qualityScores, calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(this, calibrator.getListener());
-    }
-
-    @Test
-    public void testCreate46() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
-        final double[] initialBias = new double[3];
-        randomizer.fill(initialBias);
-
-        final double[] qualityScores = new double[13];
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                qualityScores, gravityNorm, measurements, initialBias, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertNull(calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                initialBias, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertNull(calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                initialBias, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertNull(calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                initialBias, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertSame(qualityScores, calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                initialBias, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertSame(qualityScores, calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-    }
-
-    @Test
-    public void testCreate47() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
-        final double[] initialBias = new double[3];
-        randomizer.fill(initialBias);
-
-        final double[] qualityScores = new double[13];
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                qualityScores, gravityNorm, measurements, initialBias, this, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertNull(calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertSame(this, calibrator.getListener());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                initialBias, this, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertNull(calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertSame(this, calibrator.getListener());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                initialBias, this, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertNull(calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertSame(this, calibrator.getListener());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                initialBias, this, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertSame(qualityScores, calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertSame(this, calibrator.getListener());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                initialBias, this, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertSame(qualityScores, calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertSame(this, calibrator.getListener());
-    }
-
-    @Test
-    public void testCreate48() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
-        final double[] initialBias = new double[3];
-        randomizer.fill(initialBias);
-
-        final double[] qualityScores = new double[13];
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                qualityScores, gravityNorm, measurements, true, initialBias,
-                RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertNull(calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                true, initialBias, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertNull(calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                true, initialBias, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertNull(calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                true, initialBias, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertSame(qualityScores, calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                true, initialBias, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertSame(qualityScores, calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-    }
-
-    @Test
-    public void testCreate49() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
-        final double[] initialBias = new double[3];
-        randomizer.fill(initialBias);
-
-        final double[] qualityScores = new double[13];
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                qualityScores, gravityNorm, measurements, true, initialBias, this,
-                RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertNull(calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertSame(this, calibrator.getListener());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                true, initialBias, this, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertNull(calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertSame(this, calibrator.getListener());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                true, initialBias, this, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertNull(calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertSame(this, calibrator.getListener());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                true, initialBias, this, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertSame(qualityScores, calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertSame(this, calibrator.getListener());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                true, initialBias, this, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertSame(qualityScores, calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertSame(this, calibrator.getListener());
-    }
-
-    @Test
-    public void testCreate50() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
-
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-
-        final double[] qualityScores = new double[13];
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                qualityScores, gravityNorm, measurements, initialBias, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertNull(calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                initialBias, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertNull(calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                initialBias, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertNull(calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                initialBias, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertSame(qualityScores, calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                initialBias, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertSame(qualityScores, calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-    }
-
-    @Test
-    public void testCreate51() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
-
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-
-        final double[] qualityScores = new double[13];
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                qualityScores, gravityNorm, measurements, initialBias, this, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertNull(calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertSame(this, calibrator.getListener());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                initialBias, this, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertNull(calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertSame(this, calibrator.getListener());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                initialBias, this, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertNull(calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertSame(this, calibrator.getListener());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                initialBias, this, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertSame(qualityScores, calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertSame(this, calibrator.getListener());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                initialBias, this, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertSame(qualityScores, calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertSame(this, calibrator.getListener());
-    }
-
-    @Test
-    public void testCreate52() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
-
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-
-        final double[] qualityScores = new double[13];
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                qualityScores, gravityNorm, measurements, true, initialBias,
-                RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertNull(calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                true, initialBias, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertNull(calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                true, initialBias, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertNull(calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                true, initialBias, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertSame(qualityScores, calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                true, initialBias, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertSame(qualityScores, calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-    }
-
-    @Test
-    public void testCreate53() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
-
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-
-        final double[] qualityScores = new double[13];
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                qualityScores, gravityNorm, measurements, true, initialBias, this,
-                RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
-        assertNull(calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertSame(this, calibrator.getListener());
-
-        // LMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                true, initialBias, this, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertNull(calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertSame(this, calibrator.getListener());
-
-        // MSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                true, initialBias, this, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
-        assertNull(calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertSame(this, calibrator.getListener());
-
-        // PROSAC
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                true, initialBias, this, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertSame(qualityScores, calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertSame(this, calibrator.getListener());
-
-        // PROMedS
-        calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
-                true, initialBias, this, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
-        assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
-        assertSame(qualityScores, calibrator.getQualityScores());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertSame(this, calibrator.getListener());
-    }
-
-    @Test
-    public void testCreate54() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
-
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-        final Matrix initialMa = Matrix.createWithUniformRandomValues(
-                3, 3, -1.0, 1.0);
-
-        final double[] qualityScores = new double[13];
-
-        // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                qualityScores, gravityNorm, measurements, initialBias, initialMa, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
@@ -3675,7 +3611,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 initialBias, initialMa, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
@@ -3688,7 +3624,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 initialBias, initialMa, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
@@ -3701,7 +3637,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 initialBias, initialMa, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
@@ -3714,7 +3650,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 initialBias, initialMa, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
@@ -3724,26 +3660,23 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreate55() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreate55() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
 
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-        final Matrix initialMa = Matrix.createWithUniformRandomValues(
-                3, 3, -1.0, 1.0);
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+        final var initialMa = Matrix.createWithUniformRandomValues(3, 3, -1.0, 1.0);
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
         // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                qualityScores, gravityNorm, measurements, initialBias, initialMa, this,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                initialBias, initialMa, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
@@ -3757,7 +3690,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 initialBias, initialMa, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
@@ -3771,7 +3704,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 initialBias, initialMa, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
@@ -3785,7 +3718,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 initialBias, initialMa, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
@@ -3799,7 +3732,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 initialBias, initialMa, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
@@ -3810,26 +3743,25 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreate56() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreate56() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
 
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
+        final var initialBias = Matrix.createWithUniformRandomValues(
                 3, 1, -1.0, 1.0);
-        final Matrix initialMa = Matrix.createWithUniformRandomValues(
+        final var initialMa = Matrix.createWithUniformRandomValues(
                 3, 3, -1.0, 1.0);
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
         // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                qualityScores, gravityNorm, measurements, true, initialBias, initialMa,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, initialBias, initialMa, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
@@ -3843,7 +3775,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, initialBias, initialMa, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
@@ -3857,7 +3789,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, initialBias, initialMa, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
@@ -3871,7 +3803,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, initialBias, initialMa, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
@@ -3885,7 +3817,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, initialBias, initialMa, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
@@ -3896,26 +3828,25 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreate57() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreate57() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
 
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
+        final var initialBias = Matrix.createWithUniformRandomValues(
                 3, 1, -1.0, 1.0);
-        final Matrix initialMa = Matrix.createWithUniformRandomValues(
+        final var initialMa = Matrix.createWithUniformRandomValues(
                 3, 3, -1.0, 1.0);
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
         // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                qualityScores, gravityNorm, measurements, true, initialBias, initialMa, this,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, initialBias, initialMa, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
@@ -3930,7 +3861,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, initialBias, initialMa, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
@@ -3945,7 +3876,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, initialBias, initialMa, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
@@ -3960,7 +3891,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, initialBias, initialMa, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
@@ -3975,7 +3906,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, initialBias, initialMa, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
@@ -3987,19 +3918,18 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreate58() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+    void testCreate58() {
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
         // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                qualityScores, gravityNorm, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, 
+                RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4009,7 +3939,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4019,7 +3949,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4029,7 +3959,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4039,28 +3969,27 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
     }
 
     @Test
-    public void testCreate59() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreate59() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
         // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                qualityScores, gravityNorm, measurements, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4071,7 +4000,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4082,7 +4011,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4093,7 +4022,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4104,7 +4033,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4112,21 +4041,20 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreate60() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreate60() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
         // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                qualityScores, gravityNorm, measurements, this, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4138,7 +4066,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4150,7 +4078,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4162,7 +4090,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4174,7 +4102,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4183,21 +4111,20 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreate61() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreate61() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
         // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                qualityScores, gravityNorm, measurements, true, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4209,7 +4136,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4221,7 +4148,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4233,7 +4160,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4245,7 +4172,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4254,22 +4181,20 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreate62() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreate62() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
         // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                qualityScores, gravityNorm, measurements, true, this,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4282,7 +4207,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4295,7 +4220,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4308,7 +4233,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4321,7 +4246,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4331,23 +4256,22 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreate63() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreate63() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final double[] initialBias = new double[3];
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var initialBias = new double[3];
         randomizer.fill(initialBias);
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
         // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                qualityScores, gravityNorm, measurements, initialBias, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                initialBias, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4359,7 +4283,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 initialBias, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4371,7 +4295,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 initialBias, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4383,7 +4307,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 initialBias, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4395,7 +4319,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 initialBias, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4404,23 +4328,22 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreate64() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreate64() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final double[] initialBias = new double[3];
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var initialBias = new double[3];
         randomizer.fill(initialBias);
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
         // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                qualityScores, gravityNorm, measurements, initialBias, this, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                initialBias, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4433,7 +4356,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 initialBias, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4446,7 +4369,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 initialBias, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4459,7 +4382,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 initialBias, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4472,7 +4395,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 initialBias, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4482,24 +4405,22 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreate65() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreate65() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final double[] initialBias = new double[3];
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var initialBias = new double[3];
         randomizer.fill(initialBias);
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
         // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                qualityScores, gravityNorm, measurements, true, initialBias,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, initialBias, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4512,7 +4433,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, initialBias, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4525,7 +4446,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, initialBias, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4538,7 +4459,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, initialBias, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4551,7 +4472,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, initialBias, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4561,24 +4482,22 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreate66() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreate66() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final double[] initialBias = new double[3];
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var initialBias = new double[3];
         randomizer.fill(initialBias);
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
         // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                qualityScores, gravityNorm, measurements, true, initialBias, this,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, initialBias, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4592,7 +4511,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, initialBias, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4606,7 +4525,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, initialBias, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4620,7 +4539,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, initialBias, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4634,7 +4553,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, initialBias, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4645,24 +4564,22 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreate67() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreate67() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
         // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                qualityScores, gravityNorm, measurements, initialBias, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                initialBias, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4674,7 +4591,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 initialBias, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4686,7 +4603,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 initialBias, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4698,7 +4615,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 initialBias, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4710,7 +4627,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 initialBias, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4719,24 +4636,22 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreate68() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreate68() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
         // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                qualityScores, gravityNorm, measurements, initialBias, this, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                initialBias, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4749,7 +4664,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 initialBias, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4762,7 +4677,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 initialBias, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4775,7 +4690,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 initialBias, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4788,7 +4703,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 initialBias, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4798,25 +4713,22 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreate69() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreate69() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
         // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                qualityScores, gravityNorm, measurements, true, initialBias,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, initialBias, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4829,7 +4741,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, initialBias, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4842,7 +4754,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, initialBias, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4855,7 +4767,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, initialBias, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4868,7 +4780,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, initialBias, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4878,25 +4790,22 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreate70() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreate70() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
         // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                qualityScores, gravityNorm, measurements, true, initialBias, this,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, initialBias, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4910,7 +4819,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, initialBias, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4924,7 +4833,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, initialBias, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4938,7 +4847,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, initialBias, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4952,7 +4861,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, initialBias, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4963,26 +4872,23 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreate71() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreate71() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-        final Matrix initialMa = Matrix.createWithUniformRandomValues(
-                3, 3, -1.0, 1.0);
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+        final var initialMa = Matrix.createWithUniformRandomValues(3, 3, -1.0, 1.0);
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
         // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                qualityScores, gravityNorm, measurements, initialBias, initialMa, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                initialBias, initialMa, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4995,7 +4901,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 initialBias, initialMa, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -5008,7 +4914,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 initialBias, initialMa, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -5021,7 +4927,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 initialBias, initialMa, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -5034,7 +4940,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 initialBias, initialMa, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -5044,27 +4950,23 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreate72() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreate72() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-        final Matrix initialMa = Matrix.createWithUniformRandomValues(
-                3, 3, -1.0, 1.0);
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+        final var initialMa = Matrix.createWithUniformRandomValues(3, 3, -1.0, 1.0);
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
         // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                qualityScores, gravityNorm, measurements, initialBias, initialMa, this,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                initialBias, initialMa, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -5078,7 +4980,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 initialBias, initialMa, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -5092,7 +4994,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 initialBias, initialMa, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -5106,7 +5008,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 initialBias, initialMa, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -5120,7 +5022,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 initialBias, initialMa, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -5131,27 +5033,23 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreate73() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreate73() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-        final Matrix initialMa = Matrix.createWithUniformRandomValues(
-                3, 3, -1.0, 1.0);
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+        final var initialMa = Matrix.createWithUniformRandomValues(3, 3, -1.0, 1.0);
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
         // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                qualityScores, gravityNorm, measurements, true, initialBias, initialMa,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, initialBias, initialMa, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -5165,7 +5063,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, initialBias, initialMa, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -5179,7 +5077,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, initialBias, initialMa, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -5193,7 +5091,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, initialBias, initialMa, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -5207,7 +5105,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, initialBias, initialMa, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -5218,27 +5116,23 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreate74() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreate74() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-        final Matrix initialMa = Matrix.createWithUniformRandomValues(
-                3, 3, -1.0, 1.0);
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+        final var initialMa = Matrix.createWithUniformRandomValues(3, 3, -1.0, 1.0);
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
         // RANSAC
-        RobustKnownGravityNormAccelerometerCalibrator calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(
-                qualityScores, gravityNorm, measurements, true, initialBias, initialMa, this,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(qualityScores, gravityNorm, measurements,
+                true, initialBias, initialMa, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(RANSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -5253,7 +5147,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, initialBias, initialMa, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -5268,7 +5162,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, initialBias, initialMa, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(MSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.MSAC, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -5283,7 +5177,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, initialBias, initialMa, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROSACRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -5298,7 +5192,7 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 true, initialBias, initialMa, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(PROMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.PROMEDS, calibrator.getMethod());
         assertSame(qualityScores, calibrator.getQualityScores());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -5310,137 +5204,126 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreateDefault1() {
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create();
+    void testCreateDefault1() {
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create();
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
     }
 
     @Test
-    public void testCreateDefault2() {
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(this);
+    void testCreateDefault2() {
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(this);
 
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertSame(this, calibrator.getListener());
     }
 
     @Test
-    public void testCreateDefault3() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreateDefault3() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(measurements);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(measurements);
 
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertSame(measurements, calibrator.getMeasurements());
     }
 
     @Test
-    public void testCreateDefault4() {
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(true);
+    void testCreateDefault4() {
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(true);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertTrue(calibrator.isCommonAxisUsed());
     }
 
     @Test
-    public void testCreateDefault5() {
-        final double[] initialBias = new double[3];
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testCreateDefault5() {
+        final var initialBias = new double[3];
+        final var randomizer = new UniformRandomizer();
         randomizer.fill(initialBias);
 
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(initialBias);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(initialBias);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
     }
 
     @Test
-    public void testCreateDefault6() throws WrongSizeException {
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
+    void testCreateDefault6() throws WrongSizeException {
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
 
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(initialBias);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(initialBias);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
     }
 
     @Test
-    public void testCreateDefault7() throws WrongSizeException {
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-        final Matrix initialMa = Matrix.createWithGaussianRandomValues(
+    void testCreateDefault7() throws WrongSizeException {
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+        final var initialMa = Matrix.createWithGaussianRandomValues(
                 3, 3, -1.0, 1.0);
 
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(initialBias, initialMa);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(initialBias, initialMa);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMa, calibrator.getInitialMa());
     }
 
     @Test
-    public void testCreateDefault8() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
+    void testCreateDefault8() {
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
 
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
     }
 
     @Test
-    public void testCreateDefault9() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreateDefault9() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
 
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
         assertSame(measurements, calibrator.getMeasurements());
     }
 
     @Test
-    public void testCreateDefault10() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreateDefault10() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
 
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, this);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                this);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
         assertSame(measurements, calibrator.getMeasurements());
@@ -5448,17 +5331,17 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreateDefault11() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreateDefault11() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
 
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, true);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
         assertSame(measurements, calibrator.getMeasurements());
@@ -5466,18 +5349,17 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreateDefault12() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreateDefault12() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
 
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, true,
-                        this);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, this);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
         assertSame(measurements, calibrator.getMeasurements());
@@ -5486,19 +5368,19 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreateDefault13() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreateDefault13() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
-        final double[] initialBias = new double[3];
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
+        final var initialBias = new double[3];
         randomizer.fill(initialBias);
 
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                initialBias);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
         assertSame(measurements, calibrator.getMeasurements());
@@ -5506,20 +5388,19 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreateDefault14() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreateDefault14() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
-        final double[] initialBias = new double[3];
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
+        final var initialBias = new double[3];
         randomizer.fill(initialBias);
 
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                        this);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                initialBias, this);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
         assertSame(measurements, calibrator.getMeasurements());
@@ -5528,20 +5409,19 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreateDefault15() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreateDefault15() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
-        final double[] initialBias = new double[3];
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
+        final var initialBias = new double[3];
         randomizer.fill(initialBias);
 
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, true,
-                        initialBias);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
         assertSame(measurements, calibrator.getMeasurements());
@@ -5550,20 +5430,19 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreateDefault16() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreateDefault16() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
-        final double[] initialBias = new double[3];
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
+        final var initialBias = new double[3];
         randomizer.fill(initialBias);
 
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, true,
-                        initialBias, this);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, this);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
         assertSame(measurements, calibrator.getMeasurements());
@@ -5573,20 +5452,19 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreateDefault17() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreateDefault17() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
 
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
 
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                initialBias);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
         assertSame(measurements, calibrator.getMeasurements());
@@ -5594,21 +5472,19 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreateDefault18() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreateDefault18() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
 
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
 
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                        this);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                initialBias, this);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
         assertSame(measurements, calibrator.getMeasurements());
@@ -5617,21 +5493,19 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreateDefault19() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreateDefault19() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
 
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
 
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, true,
-                        initialBias);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
         assertSame(measurements, calibrator.getMeasurements());
@@ -5640,21 +5514,19 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreateDefault20() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreateDefault20() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
 
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
 
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, true,
-                        initialBias, this);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, this);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
         assertSame(measurements, calibrator.getMeasurements());
@@ -5664,22 +5536,20 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreateDefault21() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreateDefault21() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
 
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-        final Matrix initialMa = Matrix.createWithUniformRandomValues(
-                3, 3, -1.0, 1.0);
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+        final var initialMa = Matrix.createWithUniformRandomValues(3, 3, -1.0, 1.0);
 
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias, initialMa);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                initialBias, initialMa);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
         assertSame(measurements, calibrator.getMeasurements());
@@ -5688,24 +5558,21 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreateDefault22() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreateDefault22() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
 
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-        final Matrix initialMa = Matrix.createWithUniformRandomValues(
-                3, 3, -1.0, 1.0);
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+        final var initialMa = Matrix.createWithUniformRandomValues(3, 3, -1.0, 1.0);
 
 
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias, initialMa,
-                        this);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                initialBias, initialMa, this);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
         assertSame(measurements, calibrator.getMeasurements());
@@ -5715,23 +5582,20 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreateDefault23() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreateDefault23() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
 
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-        final Matrix initialMa = Matrix.createWithUniformRandomValues(
-                3, 3, -1.0, 1.0);
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+        final var initialMa = Matrix.createWithUniformRandomValues(3, 3, -1.0, 1.0);
 
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, true,
-                        initialBias, initialMa);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, initialMa);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
         assertSame(measurements, calibrator.getMeasurements());
@@ -5741,23 +5605,20 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreateDefault24() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreateDefault24() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gravityNorm = randomizer.nextDouble();
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = randomizer.nextDouble();
 
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-        final Matrix initialMa = Matrix.createWithUniformRandomValues(
-                3, 3, -1.0, 1.0);
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+        final var initialMa = Matrix.createWithUniformRandomValues(3, 3, -1.0, 1.0);
 
-        RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, true,
-                        initialBias, initialMa, this);
+        var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, initialMa, this);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
         assertSame(measurements, calibrator.getMeasurements());
@@ -5768,51 +5629,46 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreateDefault25() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+    void testCreateDefault25() {
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
     }
 
     @Test
-    public void testCreateDefault26() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreateDefault26() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
         assertSame(measurements, calibrator.getMeasurements());
     }
 
     @Test
-    public void testCreateDefault27() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreateDefault27() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, this);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                this);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
         assertSame(measurements, calibrator.getMeasurements());
@@ -5820,18 +5676,17 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreateDefault28() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreateDefault28() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, true);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
         assertSame(measurements, calibrator.getMeasurements());
@@ -5839,19 +5694,17 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreateDefault29() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreateDefault29() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, true,
-                        this);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, this);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
         assertSame(measurements, calibrator.getMeasurements());
@@ -5860,20 +5713,19 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreateDefault30() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreateDefault30() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final double[] initialBias = new double[3];
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var initialBias = new double[3];
         randomizer.fill(initialBias);
 
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                initialBias);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
         assertSame(measurements, calibrator.getMeasurements());
@@ -5881,21 +5733,19 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreateDefault31() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreateDefault31() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final double[] initialBias = new double[3];
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var initialBias = new double[3];
         randomizer.fill(initialBias);
 
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                        this);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                initialBias, this);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
         assertSame(measurements, calibrator.getMeasurements());
@@ -5904,21 +5754,19 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreateDefault32() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreateDefault32() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final double[] initialBias = new double[3];
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var initialBias = new double[3];
         randomizer.fill(initialBias);
 
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, true,
-                        initialBias);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
         assertSame(measurements, calibrator.getMeasurements());
@@ -5927,21 +5775,19 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreateDefault33() {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreateDefault33() {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final double[] initialBias = new double[3];
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var initialBias = new double[3];
         randomizer.fill(initialBias);
 
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, true,
-                        initialBias, this);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, this);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
         assertSame(measurements, calibrator.getMeasurements());
@@ -5951,20 +5797,18 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreateDefault34() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreateDefault34() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
 
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                initialBias);
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
         assertSame(measurements, calibrator.getMeasurements());
@@ -5972,22 +5816,19 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreateDefault35() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreateDefault35() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
 
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias,
-                        this);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                initialBias, this);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
         assertSame(measurements, calibrator.getMeasurements());
@@ -5996,22 +5837,19 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreateDefault36() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreateDefault36() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
 
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, true,
-                        initialBias);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
         assertSame(measurements, calibrator.getMeasurements());
@@ -6020,23 +5858,19 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreateDefault37() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreateDefault37() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
 
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, true,
-                        initialBias, this);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, this);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
         assertSame(measurements, calibrator.getMeasurements());
@@ -6046,23 +5880,20 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreateDefault38() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreateDefault38() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-        final Matrix initialMa = Matrix.createWithUniformRandomValues(
-                3, 3, -1.0, 1.0);
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+        final var initialMa = Matrix.createWithUniformRandomValues(3, 3, -1.0, 1.0);
 
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias, initialMa);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                initialBias, initialMa);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
         assertSame(measurements, calibrator.getMeasurements());
@@ -6071,24 +5902,20 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreateDefault39() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreateDefault39() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-        final Matrix initialMa = Matrix.createWithUniformRandomValues(
-                3, 3, -1.0, 1.0);
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+        final var initialMa = Matrix.createWithUniformRandomValues(3, 3, -1.0, 1.0);
 
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, initialBias, initialMa,
-                        this);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                initialBias, initialMa, this);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
         assertSame(measurements, calibrator.getMeasurements());
@@ -6098,24 +5925,20 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreateDefault40() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreateDefault40() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-        final Matrix initialMa = Matrix.createWithUniformRandomValues(
-                3, 3, -1.0, 1.0);
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+        final var initialMa = Matrix.createWithUniformRandomValues(3, 3, -1.0, 1.0);
 
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, true,
-                        initialBias, initialMa);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, initialMa);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
         assertSame(measurements, calibrator.getMeasurements());
@@ -6125,23 +5948,19 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCreateDefault41() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testCreateDefault41() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Acceleration gravityNorm = new Acceleration(randomizer.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var gravityNorm = new Acceleration(randomizer.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
-        final Matrix initialBias = Matrix.createWithUniformRandomValues(
-                3, 1, -1.0, 1.0);
-        final Matrix initialMa = Matrix.createWithUniformRandomValues(
-                3, 3, -1.0, 1.0);
+        final var initialBias = Matrix.createWithUniformRandomValues(3, 1, -1.0, 1.0);
+        final var initialMa = Matrix.createWithUniformRandomValues(3, 3, -1.0, 1.0);
 
-        final RobustKnownGravityNormAccelerometerCalibrator calibrator =
-                RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements, true,
-                        initialBias, initialMa, this);
+        final var calibrator = RobustKnownGravityNormAccelerometerCalibrator.create(gravityNorm, measurements,
+                true, initialBias, initialMa, this);
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownGravityNormAccelerometerCalibrator);
+        assertInstanceOf(LMedSRobustKnownGravityNormAccelerometerCalibrator.class, calibrator);
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
         assertSame(measurements, calibrator.getMeasurements());
@@ -6153,19 +5972,23 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
 
     @Override
     public void onCalibrateStart(final RobustKnownGravityNormAccelerometerCalibrator calibrator) {
+        // no action needed
     }
 
     @Override
     public void onCalibrateEnd(final RobustKnownGravityNormAccelerometerCalibrator calibrator) {
+        // no action needed
     }
 
     @Override
     public void onCalibrateNextIteration(
             final RobustKnownGravityNormAccelerometerCalibrator calibrator, final int iteration) {
+        // no action needed
     }
 
     @Override
     public void onCalibrateProgressChange(
             final RobustKnownGravityNormAccelerometerCalibrator calibrator, final float progress) {
+        // no action needed
     }
 }

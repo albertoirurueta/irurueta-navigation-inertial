@@ -41,7 +41,6 @@ import com.irurueta.units.AngularSpeedConverter;
 import com.irurueta.units.AngularSpeedUnit;
 
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.List;
 
 /**
@@ -155,171 +154,171 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * specific force and find cross biases introduced by the accelerometer.
      * This is expressed in meters per squared second (m/s^2).
      */
-    private double mAccelerometerBiasX;
+    private double accelerometerBiasX;
 
     /**
      * Known y-coordinate of accelerometer bias to be used to fix measured
      * specific force and find cross biases introduced by the accelerometer.
      * This is expressed in meters per squared second (m/s^2).
      */
-    private double mAccelerometerBiasY;
+    private double accelerometerBiasY;
 
     /**
      * Known z-coordinate of accelerometer bias to be used to fix measured
      * specific force and find cross biases introduced by the accelerometer.
      * This is expressed in meters per squared second (m/s^2).
      */
-    private double mAccelerometerBiasZ;
+    private double accelerometerBiasZ;
 
     /**
      * Known accelerometer x scaling factor to be used to fix measured
      * specific force and find cross biases introduced by the accelerometer.
      */
-    private double mAccelerometerSx;
+    private double accelerometerSx;
 
     /**
      * Known accelerometer y scaling factor to be used to fix measured
      * specific force and find cross biases introduced by the accelerometer.
      */
-    private double mAccelerometerSy;
+    private double accelerometerSy;
 
     /**
      * Known accelerometer z scaling factor to be used to fix measured
      * specific force and find cross biases introduced by the accelerometer.
      */
-    private double mAccelerometerSz;
+    private double accelerometerSz;
 
     /**
      * Known accelerometer x-y cross coupling error to be used to fix measured
      * specific force and find cross biases introduced by the accelerometer.
      */
-    private double mAccelerometerMxy;
+    private double accelerometerMxy;
 
     /**
      * Know accelerometer x-z cross coupling error to be used to fix measured
      * specific force and find cross biases introduced by the accelerometer.
      */
-    private double mAccelerometerMxz;
+    private double accelerometerMxz;
 
     /**
      * Known accelerometer y-x cross coupling error to be used to fix measured
      * specific force and find cross biases introduced by the accelerometer.
      */
-    private double mAccelerometerMyx;
+    private double accelerometerMyx;
 
     /**
      * Known accelerometer y-z cross coupling error to be used to fix measured
      * specific force and find cross biases introduced by the accelerometer.
      */
-    private double mAccelerometerMyz;
+    private double accelerometerMyz;
 
     /**
      * Known accelerometer z-x cross coupling error to be used to fix measured
      * specific force and find cross biases introduced by the accelerometer.
      */
-    private double mAccelerometerMzx;
+    private double accelerometerMzx;
 
     /**
      * Known accelerometer z-y cross coupling error to be used to fix measured
      * specific force and find cross biases introduced by the accelerometer.
      */
-    private double mAccelerometerMzy;
+    private double accelerometerMzy;
 
     /**
      * X-coordinate of gyroscope known bias expressed in radians per second
      * (rad/s).
      */
-    private double mBiasX;
+    private double biasX;
 
     /**
      * Y-coordinate of gyroscope known bias expressed in radians per second
      * (rad/s).
      */
-    private double mBiasY;
+    private double biasY;
 
     /**
      * Z-coordinate of gyroscope known bias expressed in radians per second
      * (rad/s).
      */
-    private double mBiasZ;
+    private double biasZ;
 
     /**
      * Initial gyroscope x scaling factor.
      */
-    private double mInitialSx;
+    private double initialSx;
 
     /**
      * Initial gyroscope y scaling factor.
      */
-    private double mInitialSy;
+    private double initialSy;
 
     /**
      * Initial gyroscope z scaling factor.
      */
-    private double mInitialSz;
+    private double initialSz;
 
     /**
      * Initial gyroscope x-y cross coupling error.
      */
-    private double mInitialMxy;
+    private double initialMxy;
 
     /**
      * Initial gyroscope x-z cross coupling error.
      */
-    private double mInitialMxz;
+    private double initialMxz;
 
     /**
      * Initial gyroscope y-x cross coupling error.
      */
-    private double mInitialMyx;
+    private double initialMyx;
 
     /**
      * Initial gyroscope y-z cross coupling error.
      */
-    private double mInitialMyz;
+    private double initialMyz;
 
     /**
      * Initial gyroscope z-x cross coupling error.
      */
-    private double mInitialMzx;
+    private double initialMzx;
 
     /**
      * Initial gyroscope z-y cross coupling error.
      */
-    private double mInitialMzy;
+    private double initialMzy;
 
     /**
      * Initial G-dependent cross biases introduced on the gyroscope by the
      * specific forces sensed by the accelerometer.
      */
-    private Matrix mInitialGg;
+    private Matrix initialGg;
 
     /**
      * Contains a collection of sequences of timestamped body kinematics
      * measurements taken at a given position where the device moves freely
      * with different orientations.
      */
-    protected List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> mSequences;
+    protected List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences;
 
     /**
      * This flag indicates whether z-axis is assumed to be common for accelerometer
      * and gyroscope.
      * When enabled, this eliminates 3 variables from Mg matrix.
      */
-    private boolean mCommonAxisUsed = DEFAULT_USE_COMMON_Z_AXIS;
+    private boolean commonAxisUsed = DEFAULT_USE_COMMON_Z_AXIS;
 
     /**
      * This flag indicates whether G-dependent cross biases are being
      * estimated or not.
      * When enabled, this adds 9 variables from Gg matrix.
      */
-    private boolean mEstimateGDependentCrossBiases = DEFAULT_ESTIMATE_G_DEPENDENT_CROSS_BIASES;
+    private boolean estimateGDependentCrossBiases = DEFAULT_ESTIMATE_G_DEPENDENT_CROSS_BIASES;
 
     /**
      * Listener to be notified of events such as when calibration starts, ends or its
      * progress significantly changes.
      */
-    protected RobustKnownBiasEasyGyroscopeCalibratorListener mListener;
+    protected RobustKnownBiasEasyGyroscopeCalibratorListener listener;
 
     /**
      * Estimated gyroscope scale factors and cross coupling errors.
@@ -360,58 +359,58 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * </pre>
      * Values of this matrix are unit-less.
      */
-    private Matrix mEstimatedMg;
+    private Matrix estimatedMg;
 
     /**
      * Estimated G-dependent cross biases introduced on the gyroscope by the
      * specific forces sensed by the accelerometer.
      * This instance allows any 3x3 matrix.
      */
-    private Matrix mEstimatedGg;
+    private Matrix estimatedGg;
 
     /**
      * Estimated covariance matrix for estimated parameters.
      */
-    private Matrix mEstimatedCovariance;
+    private Matrix estimatedCovariance;
 
     /**
      * Estimated chi square value.
      */
-    private double mEstimatedChiSq;
+    private double estimatedChiSq;
 
     /**
      * Estimated mean square error respect to provided measurements.
      */
-    private double mEstimatedMse;
+    private double estimatedMse;
 
     /**
      * Indicates whether calibrator is running.
      */
-    protected boolean mRunning;
+    protected boolean running;
 
     /**
      * Amount of progress variation before notifying a progress change during calibration.
      */
-    protected float mProgressDelta = DEFAULT_PROGRESS_DELTA;
+    protected float progressDelta = DEFAULT_PROGRESS_DELTA;
 
     /**
      * Amount of confidence expressed as a value between 0.0 and 1.0 (which is equivalent
      * to 100%). The amount of confidence indicates the probability that the estimated
      * result is correct. Usually this value will be close to 1.0, but not exactly 1.0.
      */
-    protected double mConfidence = DEFAULT_CONFIDENCE;
+    protected double confidence = DEFAULT_CONFIDENCE;
 
     /**
      * Maximum allowed number of iterations. When the maximum number of iterations is
      * exceeded, result will not be available, however an approximate result will be
      * available for retrieval.
      */
-    protected int mMaxIterations = DEFAULT_MAX_ITERATIONS;
+    protected int maxIterations = DEFAULT_MAX_ITERATIONS;
 
     /**
      * Data related to inliers found after calibration.
      */
-    protected InliersData mInliersData;
+    protected InliersData inliersData;
 
     /**
      * Indicates whether result must be refined using a non linear calibrator over
@@ -419,91 +418,91 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * If true, inliers will be computed and kept in any implementation regardless of the
      * settings.
      */
-    protected boolean mRefineResult = DEFAULT_REFINE_RESULT;
+    protected boolean refineResult = DEFAULT_REFINE_RESULT;
 
     /**
      * Size of subsets to be checked during robust estimation.
      */
-    protected int mPreliminarySubsetSize = EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_GENERAL_AND_CROSS_BIASES;
+    protected int preliminarySubsetSize = EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_GENERAL_AND_CROSS_BIASES;
 
     /**
      * Indicates whether covariance must be kept after refining result.
      * This setting is only taken into account if result is refined.
      */
-    private boolean mKeepCovariance = DEFAULT_KEEP_COVARIANCE;
+    private boolean keepCovariance = DEFAULT_KEEP_COVARIANCE;
 
     /**
      * Inner non-robust calibrator.
      */
-    private final KnownBiasEasyGyroscopeCalibrator mInnerCalibrator = new KnownBiasEasyGyroscopeCalibrator();
+    private final KnownBiasEasyGyroscopeCalibrator innerCalibrator = new KnownBiasEasyGyroscopeCalibrator();
 
     /**
      * Contains normalized start gravity coordinates.
      * This is reused when computing error residuals.
      */
-    private final InhomogeneousPoint3D mStartPoint = new InhomogeneousPoint3D();
+    private final InhomogeneousPoint3D startPoint = new InhomogeneousPoint3D();
 
     /**
      * Contains estimated normalized end gravity coordinates.
      * This is reused when computing error residuals.
      */
-    private final InhomogeneousPoint3D mEndPoint = new InhomogeneousPoint3D();
+    private final InhomogeneousPoint3D endPoint = new InhomogeneousPoint3D();
 
     /**
      * Contains expected normalized end gravity coordinates.
      * This is reused when computing error residuals.
      */
-    private final InhomogeneousPoint3D mExpectedEndPoint = new InhomogeneousPoint3D();
+    private final InhomogeneousPoint3D expectedEndPoint = new InhomogeneousPoint3D();
 
     /**
      * Contains amount of rotation for a given sequence and preliminary
      * solution.
      * This is reused when computing error residuals.
      */
-    private final Quaternion mQ = new Quaternion();
+    private final Quaternion q = new Quaternion();
 
     /**
      * Array containing measured specific force coordinates.
      * This is reused when computing error residuals.
      */
-    private final double[] mMeasuredSpecificForce = new double[BodyKinematics.COMPONENTS];
+    private final double[] measuredSpecificForce = new double[BodyKinematics.COMPONENTS];
 
     /**
      * Array containing fixed specific force coordinates.
      * This is reused when computing error residuals.
      */
-    private final double[] mFixedSpecificForce = new double[BodyKinematics.COMPONENTS];
+    private final double[] fixedSpecificForce = new double[BodyKinematics.COMPONENTS];
 
     /**
      * Array containing measured angular rate coordinates.
      * This is reused when computing error residuals.
      */
-    private final double[] mMeasuredAngularRate = new double[BodyKinematics.COMPONENTS];
+    private final double[] measuredAngularRate = new double[BodyKinematics.COMPONENTS];
 
     /**
      * Array containing fixed angular rate coordinates.
      * This is reused when computing error residuals.
      */
-    private final double[] mFixedAngularRate = new double[BodyKinematics.COMPONENTS];
+    private final double[] fixedAngularRate = new double[BodyKinematics.COMPONENTS];
 
     /**
      * An acceleration fixer.
      * This is reused when computing error residuals.
      */
-    private final AccelerationFixer mAccelerationFixer = new AccelerationFixer();
+    private final AccelerationFixer accelerationFixer = new AccelerationFixer();
 
     /**
      * An angular rate fixer.
      * This is reused when computing error residuals.
      */
-    private final AngularRateFixer mAngularRateFixer = new AngularRateFixer();
+    private final AngularRateFixer angularRateFixer = new AngularRateFixer();
 
     /**
      * Constructor.
      */
     protected RobustKnownBiasEasyGyroscopeCalibrator() {
         try {
-            mInitialGg = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+            initialGg = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         } catch (final WrongSizeException ignore) {
             // never happens
         }
@@ -528,7 +527,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences, final Matrix bias,
             final Matrix initialMg, final Matrix initialGg) {
         this();
-        mSequences = sequences;
+        this.sequences = sequences;
         try {
             setBias(bias);
             setInitialMg(initialMg);
@@ -560,7 +559,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
             final Matrix initialMg, final Matrix initialGg,
             final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
         this(sequences, bias, initialMg, initialGg);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -582,7 +581,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences, final double[] bias,
             final Matrix initialMg, final Matrix initialGg) {
         this();
-        mSequences = sequences;
+        this.sequences = sequences;
         try {
             setBias(bias);
             setInitialMg(initialMg);
@@ -614,7 +613,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
             final Matrix initialMg, final Matrix initialGg,
             final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
         this(sequences, bias, initialMg, initialGg);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -679,7 +678,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
             final Matrix initialMg, final Matrix initialGg, final double[] accelerometerBias,
             final Matrix accelerometerMa, final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
         this(sequences, bias, initialMg, initialGg, accelerometerBias, accelerometerMa);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -742,7 +741,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
             final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
             final Matrix accelerometerMa, final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
         this(sequences, bias, initialMg, initialGg, accelerometerBias, accelerometerMa);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -771,8 +770,8 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
             final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final Matrix bias,
             final Matrix initialMg, final Matrix initialGg) {
         this(sequences, bias, initialMg, initialGg);
-        mCommonAxisUsed = commonAxisUsed;
-        mEstimateGDependentCrossBiases = estimateGDependentCrossBiases;
+        this.commonAxisUsed = commonAxisUsed;
+        this.estimateGDependentCrossBiases = estimateGDependentCrossBiases;
     }
 
     /**
@@ -804,7 +803,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
             final Matrix initialMg, final Matrix initialGg,
             final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
         this(sequences, commonAxisUsed, estimateGDependentCrossBiases, bias, initialMg, initialGg);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -833,8 +832,8 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
             final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final double[] bias,
             final Matrix initialMg, final Matrix initialGg) {
         this(sequences, bias, initialMg, initialGg);
-        mCommonAxisUsed = commonAxisUsed;
-        mEstimateGDependentCrossBiases = estimateGDependentCrossBiases;
+        this.commonAxisUsed = commonAxisUsed;
+        this.estimateGDependentCrossBiases = estimateGDependentCrossBiases;
     }
 
     /**
@@ -866,7 +865,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
             final Matrix initialMg, final Matrix initialGg,
             final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
         this(sequences, commonAxisUsed, estimateGDependentCrossBiases, bias, initialMg, initialGg);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -903,8 +902,8 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
             final Matrix initialMg, final Matrix initialGg, final double[] accelerometerBias,
             final Matrix accelerometerMa) {
         this(sequences, bias, initialMg, initialGg, accelerometerBias, accelerometerMa);
-        mCommonAxisUsed = commonAxisUsed;
-        mEstimateGDependentCrossBiases = estimateGDependentCrossBiases;
+        this.commonAxisUsed = commonAxisUsed;
+        this.estimateGDependentCrossBiases = estimateGDependentCrossBiases;
     }
 
     /**
@@ -944,7 +943,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
             final Matrix accelerometerMa, final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
         this(sequences, commonAxisUsed, estimateGDependentCrossBiases, bias, initialMg, initialGg, accelerometerBias,
                 accelerometerMa);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -981,8 +980,8 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
             final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
             final Matrix accelerometerMa) {
         this(sequences, bias, initialMg, initialGg, accelerometerBias, accelerometerMa);
-        mCommonAxisUsed = commonAxisUsed;
-        mEstimateGDependentCrossBiases = estimateGDependentCrossBiases;
+        this.commonAxisUsed = commonAxisUsed;
+        this.estimateGDependentCrossBiases = estimateGDependentCrossBiases;
     }
 
     /**
@@ -1022,7 +1021,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
             final Matrix accelerometerMa, final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
         this(sequences, commonAxisUsed, estimateGDependentCrossBiases, bias, initialMg, initialGg, accelerometerBias,
                 accelerometerMa);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1035,7 +1034,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public double getAccelerometerBiasX() {
-        return mAccelerometerBiasX;
+        return accelerometerBiasX;
     }
 
     /**
@@ -1049,10 +1048,10 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setAccelerometerBiasX(final double accelerometerBiasX) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mAccelerometerBiasX = accelerometerBiasX;
+        this.accelerometerBiasX = accelerometerBiasX;
     }
 
     /**
@@ -1065,7 +1064,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public double getAccelerometerBiasY() {
-        return mAccelerometerBiasY;
+        return accelerometerBiasY;
     }
 
     /**
@@ -1079,10 +1078,10 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setAccelerometerBiasY(final double accelerometerBiasY) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mAccelerometerBiasY = accelerometerBiasY;
+        this.accelerometerBiasY = accelerometerBiasY;
     }
 
     /**
@@ -1095,7 +1094,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public double getAccelerometerBiasZ() {
-        return mAccelerometerBiasZ;
+        return accelerometerBiasZ;
     }
 
     /**
@@ -1109,10 +1108,10 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setAccelerometerBiasZ(final double accelerometerBiasZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mAccelerometerBiasZ = accelerometerBiasZ;
+        this.accelerometerBiasZ = accelerometerBiasZ;
     }
 
     /**
@@ -1124,7 +1123,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public Acceleration getAccelerometerBiasXAsAcceleration() {
-        return new Acceleration(mAccelerometerBiasX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(accelerometerBiasX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -1136,7 +1135,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void getAccelerometerBiasXAsAcceleration(final Acceleration result) {
-        result.setValue(mAccelerometerBiasX);
+        result.setValue(accelerometerBiasX);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -1150,10 +1149,10 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setAccelerometerBiasX(final Acceleration accelerometerBiasX) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mAccelerometerBiasX = convertAcceleration(accelerometerBiasX);
+        this.accelerometerBiasX = convertAcceleration(accelerometerBiasX);
     }
 
     /**
@@ -1165,7 +1164,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public Acceleration getAccelerometerBiasYAsAcceleration() {
-        return new Acceleration(mAccelerometerBiasY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(accelerometerBiasY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -1177,7 +1176,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void getAccelerometerBiasYAsAcceleration(final Acceleration result) {
-        result.setValue(mAccelerometerBiasY);
+        result.setValue(accelerometerBiasY);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -1191,10 +1190,10 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setAccelerometerBiasY(final Acceleration accelerometerBiasY) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mAccelerometerBiasY = convertAcceleration(accelerometerBiasY);
+        this.accelerometerBiasY = convertAcceleration(accelerometerBiasY);
     }
 
     /**
@@ -1206,7 +1205,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public Acceleration getAccelerometerBiasZAsAcceleration() {
-        return new Acceleration(mAccelerometerBiasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(accelerometerBiasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -1218,7 +1217,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void getAccelerometerBiasZAsAcceleration(final Acceleration result) {
-        result.setValue(mAccelerometerBiasZ);
+        result.setValue(accelerometerBiasZ);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -1232,10 +1231,10 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setAccelerometerBiasZ(final Acceleration accelerometerBiasZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mAccelerometerBiasZ = convertAcceleration(accelerometerBiasZ);
+        this.accelerometerBiasZ = convertAcceleration(accelerometerBiasZ);
     }
 
     /**
@@ -1252,13 +1251,13 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
     public void setAccelerometerBias(
             final double accelerometerBiasX, final double accelerometerBiasY, final double accelerometerBiasZ)
             throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mAccelerometerBiasX = accelerometerBiasX;
-        mAccelerometerBiasY = accelerometerBiasY;
-        mAccelerometerBiasZ = accelerometerBiasZ;
+        this.accelerometerBiasX = accelerometerBiasX;
+        this.accelerometerBiasY = accelerometerBiasY;
+        this.accelerometerBiasZ = accelerometerBiasZ;
     }
 
     /**
@@ -1274,13 +1273,13 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
     public void setAccelerometerBias(
             final Acceleration accelerometerBiasX, final Acceleration accelerometerBiasY,
             final Acceleration accelerometerBiasZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mAccelerometerBiasX = convertAcceleration(accelerometerBiasX);
-        mAccelerometerBiasY = convertAcceleration(accelerometerBiasY);
-        mAccelerometerBiasZ = convertAcceleration(accelerometerBiasZ);
+        this.accelerometerBiasX = convertAcceleration(accelerometerBiasX);
+        this.accelerometerBiasY = convertAcceleration(accelerometerBiasY);
+        this.accelerometerBiasZ = convertAcceleration(accelerometerBiasZ);
     }
 
     /**
@@ -1292,7 +1291,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public double[] getAccelerometerBias() {
-        final double[] result = new double[BodyKinematics.COMPONENTS];
+        final var result = new double[BodyKinematics.COMPONENTS];
         getAccelerometerBias(result);
         return result;
     }
@@ -1312,9 +1311,9 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
             throw new IllegalArgumentException();
         }
 
-        result[0] = mAccelerometerBiasX;
-        result[1] = mAccelerometerBiasY;
-        result[2] = mAccelerometerBiasZ;
+        result[0] = accelerometerBiasX;
+        result[1] = accelerometerBiasY;
+        result[2] = accelerometerBiasZ;
     }
 
     /**
@@ -1329,7 +1328,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setAccelerometerBias(final double[] accelerometerBias) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
@@ -1337,9 +1336,9 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
             throw new IllegalArgumentException();
         }
 
-        mAccelerometerBiasX = accelerometerBias[0];
-        mAccelerometerBiasY = accelerometerBias[1];
-        mAccelerometerBiasZ = accelerometerBias[2];
+        accelerometerBiasX = accelerometerBias[0];
+        accelerometerBiasY = accelerometerBias[1];
+        accelerometerBiasZ = accelerometerBias[2];
     }
 
     /**
@@ -1375,9 +1374,9 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
         if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
-        result.setElementAtIndex(0, mAccelerometerBiasX);
-        result.setElementAtIndex(1, mAccelerometerBiasY);
-        result.setElementAtIndex(2, mAccelerometerBiasZ);
+        result.setElementAtIndex(0, accelerometerBiasX);
+        result.setElementAtIndex(1, accelerometerBiasY);
+        result.setElementAtIndex(2, accelerometerBiasZ);
     }
 
     /**
@@ -1391,16 +1390,16 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setAccelerometerBias(final Matrix accelerometerBias) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (accelerometerBias.getRows() != BodyKinematics.COMPONENTS || accelerometerBias.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
-        mAccelerometerBiasX = accelerometerBias.getElementAtIndex(0);
-        mAccelerometerBiasY = accelerometerBias.getElementAtIndex(1);
-        mAccelerometerBiasZ = accelerometerBias.getElementAtIndex(2);
+        accelerometerBiasX = accelerometerBias.getElementAtIndex(0);
+        accelerometerBiasY = accelerometerBias.getElementAtIndex(1);
+        accelerometerBiasZ = accelerometerBias.getElementAtIndex(2);
     }
 
     /**
@@ -1411,7 +1410,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public double getAccelerometerSx() {
-        return mAccelerometerSx;
+        return accelerometerSx;
     }
 
     /**
@@ -1423,10 +1422,10 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setAccelerometerSx(final double accelerometerSx) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mAccelerometerSx = accelerometerSx;
+        this.accelerometerSx = accelerometerSx;
     }
 
     /**
@@ -1437,7 +1436,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public double getAccelerometerSy() {
-        return mAccelerometerSy;
+        return accelerometerSy;
     }
 
     /**
@@ -1449,10 +1448,10 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setAccelerometerSy(final double accelerometerSy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mAccelerometerSy = accelerometerSy;
+        this.accelerometerSy = accelerometerSy;
     }
 
     /**
@@ -1463,7 +1462,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public double getAccelerometerSz() {
-        return mAccelerometerSz;
+        return accelerometerSz;
     }
 
     /**
@@ -1475,10 +1474,10 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setAccelerometerSz(final double accelerometerSz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mAccelerometerSz = accelerometerSz;
+        this.accelerometerSz = accelerometerSz;
     }
 
     /**
@@ -1490,7 +1489,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public double getAccelerometerMxy() {
-        return mAccelerometerMxy;
+        return accelerometerMxy;
     }
 
     /**
@@ -1503,10 +1502,10 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setAccelerometerMxy(final double accelerometerMxy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mAccelerometerMxy = accelerometerMxy;
+        this.accelerometerMxy = accelerometerMxy;
     }
 
     /**
@@ -1518,7 +1517,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public double getAccelerometerMxz() {
-        return mAccelerometerMxz;
+        return accelerometerMxz;
     }
 
     /**
@@ -1531,10 +1530,10 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setAccelerometerMxz(final double accelerometerMxz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mAccelerometerMxz = accelerometerMxz;
+        this.accelerometerMxz = accelerometerMxz;
     }
 
     /**
@@ -1546,7 +1545,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public double getAccelerometerMyx() {
-        return mAccelerometerMyx;
+        return accelerometerMyx;
     }
 
     /**
@@ -1560,10 +1559,10 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setAccelerometerMyx(final double accelerometerMyx) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mAccelerometerMyx = accelerometerMyx;
+        this.accelerometerMyx = accelerometerMyx;
     }
 
     /**
@@ -1575,7 +1574,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public double getAccelerometerMyz() {
-        return mAccelerometerMyz;
+        return accelerometerMyz;
     }
 
     /**
@@ -1589,10 +1588,10 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setAccelerometerMyz(final double accelerometerMyz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mAccelerometerMyz = accelerometerMyz;
+        this.accelerometerMyz = accelerometerMyz;
     }
 
     /**
@@ -1604,7 +1603,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public double getAccelerometerMzx() {
-        return mAccelerometerMzx;
+        return accelerometerMzx;
     }
 
     /**
@@ -1618,10 +1617,10 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setAccelerometerMzx(final double accelerometerMzx) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mAccelerometerMzx = accelerometerMzx;
+        this.accelerometerMzx = accelerometerMzx;
     }
 
     /**
@@ -1633,7 +1632,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public double getAccelerometerMzy() {
-        return mAccelerometerMzy;
+        return accelerometerMzy;
     }
 
     /**
@@ -1647,10 +1646,10 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setAccelerometerMzy(final double accelerometerMzy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mAccelerometerMzy = accelerometerMzy;
+        this.accelerometerMzy = accelerometerMzy;
     }
 
     /**
@@ -1667,12 +1666,12 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
     public void setAccelerometerScalingFactors(
             final double accelerometerSx, final double accelerometerSy, final double accelerometerSz)
             throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mAccelerometerSx = accelerometerSx;
-        mAccelerometerSy = accelerometerSy;
-        mAccelerometerSz = accelerometerSz;
+        this.accelerometerSx = accelerometerSx;
+        this.accelerometerSy = accelerometerSy;
+        this.accelerometerSz = accelerometerSz;
     }
 
     /**
@@ -1699,15 +1698,15 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
             final double accelerometerMxy, final double accelerometerMxz,
             final double accelerometerMyx, final double accelerometerMyz,
             final double accelerometerMzx, final double accelerometerMzy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mAccelerometerMxy = accelerometerMxy;
-        mAccelerometerMxz = accelerometerMxz;
-        mAccelerometerMyx = accelerometerMyx;
-        mAccelerometerMyz = accelerometerMyz;
-        mAccelerometerMzx = accelerometerMzx;
-        mAccelerometerMzy = accelerometerMzy;
+        this.accelerometerMxy = accelerometerMxy;
+        this.accelerometerMxz = accelerometerMxz;
+        this.accelerometerMyx = accelerometerMyx;
+        this.accelerometerMyz = accelerometerMyz;
+        this.accelerometerMzx = accelerometerMzx;
+        this.accelerometerMzy = accelerometerMzy;
     }
 
     /**
@@ -1739,7 +1738,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
             final double accelerometerMxz, final double accelerometerMyx,
             final double accelerometerMyz, final double accelerometerMzx,
             final double accelerometerMzy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         setAccelerometerScalingFactors(accelerometerSx, accelerometerSy, accelerometerSz);
@@ -1779,17 +1778,17 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
         if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        result.setElementAtIndex(0, mAccelerometerSx);
-        result.setElementAtIndex(1, mAccelerometerMyx);
-        result.setElementAtIndex(2, mAccelerometerMzx);
+        result.setElementAtIndex(0, accelerometerSx);
+        result.setElementAtIndex(1, accelerometerMyx);
+        result.setElementAtIndex(2, accelerometerMzx);
 
-        result.setElementAtIndex(3, mAccelerometerMxy);
-        result.setElementAtIndex(4, mAccelerometerSy);
-        result.setElementAtIndex(5, mAccelerometerMzy);
+        result.setElementAtIndex(3, accelerometerMxy);
+        result.setElementAtIndex(4, accelerometerSy);
+        result.setElementAtIndex(5, accelerometerMzy);
 
-        result.setElementAtIndex(6, mAccelerometerMxz);
-        result.setElementAtIndex(7, mAccelerometerMyz);
-        result.setElementAtIndex(8, mAccelerometerSz);
+        result.setElementAtIndex(6, accelerometerMxz);
+        result.setElementAtIndex(7, accelerometerMyz);
+        result.setElementAtIndex(8, accelerometerSz);
     }
 
     /**
@@ -1803,7 +1802,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setAccelerometerMa(final Matrix accelerometerMa) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (accelerometerMa.getRows() != BodyKinematics.COMPONENTS
@@ -1811,17 +1810,17 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
             throw new IllegalArgumentException();
         }
 
-        mAccelerometerSx = accelerometerMa.getElementAtIndex(0);
-        mAccelerometerMyx = accelerometerMa.getElementAtIndex(1);
-        mAccelerometerMzx = accelerometerMa.getElementAtIndex(2);
+        accelerometerSx = accelerometerMa.getElementAtIndex(0);
+        accelerometerMyx = accelerometerMa.getElementAtIndex(1);
+        accelerometerMzx = accelerometerMa.getElementAtIndex(2);
 
-        mAccelerometerMxy = accelerometerMa.getElementAtIndex(3);
-        mAccelerometerSy = accelerometerMa.getElementAtIndex(4);
-        mAccelerometerMzy = accelerometerMa.getElementAtIndex(5);
+        accelerometerMxy = accelerometerMa.getElementAtIndex(3);
+        accelerometerSy = accelerometerMa.getElementAtIndex(4);
+        accelerometerMzy = accelerometerMa.getElementAtIndex(5);
 
-        mAccelerometerMxz = accelerometerMa.getElementAtIndex(6);
-        mAccelerometerMyz = accelerometerMa.getElementAtIndex(7);
-        mAccelerometerSz = accelerometerMa.getElementAtIndex(8);
+        accelerometerMxz = accelerometerMa.getElementAtIndex(6);
+        accelerometerMyz = accelerometerMa.getElementAtIndex(7);
+        accelerometerSz = accelerometerMa.getElementAtIndex(8);
     }
 
     /**
@@ -1832,7 +1831,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public double getBiasX() {
-        return mBiasX;
+        return biasX;
     }
 
     /**
@@ -1844,10 +1843,10 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setBiasX(final double biasX) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mBiasX = biasX;
+        this.biasX = biasX;
     }
 
     /**
@@ -1858,7 +1857,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public double getBiasY() {
-        return mBiasY;
+        return biasY;
     }
 
     /**
@@ -1870,10 +1869,10 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setBiasY(final double biasY) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mBiasY = biasY;
+        this.biasY = biasY;
     }
 
     /**
@@ -1884,7 +1883,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public double getBiasZ() {
-        return mBiasZ;
+        return biasZ;
     }
 
     /**
@@ -1896,10 +1895,10 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setBiasZ(final double biasZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mBiasZ = biasZ;
+        this.biasZ = biasZ;
     }
 
     /**
@@ -1909,7 +1908,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public AngularSpeed getBiasAngularSpeedX() {
-        return new AngularSpeed(mBiasX, AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(biasX, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -1919,7 +1918,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void getBiasAngularSpeedX(final AngularSpeed result) {
-        result.setValue(mBiasX);
+        result.setValue(biasX);
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -1931,10 +1930,10 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setBiasX(final AngularSpeed biasX) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mBiasX = convertAngularSpeed(biasX);
+        this.biasX = convertAngularSpeed(biasX);
     }
 
     /**
@@ -1944,7 +1943,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public AngularSpeed getBiasAngularSpeedY() {
-        return new AngularSpeed(mBiasY, AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(biasY, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -1954,7 +1953,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void getBiasAngularSpeedY(final AngularSpeed result) {
-        result.setValue(mBiasY);
+        result.setValue(biasY);
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -1966,10 +1965,10 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setBiasY(final AngularSpeed biasY) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mBiasY = convertAngularSpeed(biasY);
+        this.biasY = convertAngularSpeed(biasY);
     }
 
     /**
@@ -1979,7 +1978,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public AngularSpeed getBiasAngularSpeedZ() {
-        return new AngularSpeed(mBiasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(biasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -1989,7 +1988,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void getBiasAngularSpeedZ(final AngularSpeed result) {
-        result.setValue(mBiasZ);
+        result.setValue(biasZ);
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -2001,10 +2000,10 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setBiasZ(final AngularSpeed biasZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mBiasZ = convertAngularSpeed(biasZ);
+        this.biasZ = convertAngularSpeed(biasZ);
     }
 
     /**
@@ -2019,12 +2018,12 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
     @Override
     public void setBiasCoordinates(
             final double biasX, final double biasY, final double biasZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mBiasX = biasX;
-        mBiasY = biasY;
-        mBiasZ = biasZ;
+        this.biasX = biasX;
+        this.biasY = biasY;
+        this.biasZ = biasZ;
     }
 
     /**
@@ -2038,12 +2037,12 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
     @Override
     public void setBiasCoordinates(
             final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mBiasX = convertAngularSpeed(biasX);
-        mBiasY = convertAngularSpeed(biasY);
-        mBiasZ = convertAngularSpeed(biasZ);
+        this.biasX = convertAngularSpeed(biasX);
+        this.biasY = convertAngularSpeed(biasY);
+        this.biasZ = convertAngularSpeed(biasZ);
     }
 
     /**
@@ -2052,7 +2051,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * @return known gyroscope bias.
      */
     public AngularSpeedTriad getBiasAsTriad() {
-        return new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND, mBiasX, mBiasY, mBiasZ);
+        return new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND, biasX, biasY, biasZ);
     }
 
     /**
@@ -2061,7 +2060,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * @param result instance where result will be stored.
      */
     public void getBiasAsTriad(final AngularSpeedTriad result) {
-        result.setValueCoordinatesAndUnit(mBiasX, mBiasY, mBiasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
+        result.setValueCoordinatesAndUnit(biasX, biasY, biasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -2071,13 +2070,13 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     public void setBias(final AngularSpeedTriad bias) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mBiasX = convertAngularSpeed(bias.getValueX(), bias.getUnit());
-        mBiasY = convertAngularSpeed(bias.getValueY(), bias.getUnit());
-        mBiasZ = convertAngularSpeed(bias.getValueZ(), bias.getUnit());
+        biasX = convertAngularSpeed(bias.getValueX(), bias.getUnit());
+        biasY = convertAngularSpeed(bias.getValueY(), bias.getUnit());
+        biasZ = convertAngularSpeed(bias.getValueZ(), bias.getUnit());
     }
 
     /**
@@ -2087,7 +2086,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public double getInitialSx() {
-        return mInitialSx;
+        return initialSx;
     }
 
     /**
@@ -2098,10 +2097,10 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setInitialSx(final double initialSx) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialSx = initialSx;
+        this.initialSx = initialSx;
     }
 
     /**
@@ -2111,7 +2110,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public double getInitialSy() {
-        return mInitialSy;
+        return initialSy;
     }
 
     /**
@@ -2122,10 +2121,10 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setInitialSy(final double initialSy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialSy = initialSy;
+        this.initialSy = initialSy;
     }
 
     /**
@@ -2135,7 +2134,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public double getInitialSz() {
-        return mInitialSz;
+        return initialSz;
     }
 
     /**
@@ -2146,10 +2145,10 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setInitialSz(final double initialSz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialSz = initialSz;
+        this.initialSz = initialSz;
     }
 
     /**
@@ -2159,7 +2158,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public double getInitialMxy() {
-        return mInitialMxy;
+        return initialMxy;
     }
 
     /**
@@ -2170,10 +2169,10 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setInitialMxy(final double initialMxy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMxy = initialMxy;
+        this.initialMxy = initialMxy;
     }
 
     /**
@@ -2183,7 +2182,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public double getInitialMxz() {
-        return mInitialMxz;
+        return initialMxz;
     }
 
     /**
@@ -2194,10 +2193,10 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setInitialMxz(final double initialMxz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMxz = initialMxz;
+        this.initialMxz = initialMxz;
     }
 
     /**
@@ -2207,7 +2206,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public double getInitialMyx() {
-        return mInitialMyx;
+        return initialMyx;
     }
 
     /**
@@ -2218,10 +2217,10 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setInitialMyx(final double initialMyx) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMyx = initialMyx;
+        this.initialMyx = initialMyx;
     }
 
     /**
@@ -2231,7 +2230,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public double getInitialMyz() {
-        return mInitialMyz;
+        return initialMyz;
     }
 
     /**
@@ -2242,10 +2241,10 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setInitialMyz(final double initialMyz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMyz = initialMyz;
+        this.initialMyz = initialMyz;
     }
 
     /**
@@ -2255,7 +2254,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public double getInitialMzx() {
-        return mInitialMzx;
+        return initialMzx;
     }
 
     /**
@@ -2266,10 +2265,10 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setInitialMzx(final double initialMzx) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMzx = initialMzx;
+        this.initialMzx = initialMzx;
     }
 
     /**
@@ -2279,7 +2278,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public double getInitialMzy() {
-        return mInitialMzy;
+        return initialMzy;
     }
 
     /**
@@ -2290,10 +2289,10 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setInitialMzy(final double initialMzy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMzy = initialMzy;
+        this.initialMzy = initialMzy;
     }
 
     /**
@@ -2307,12 +2306,12 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
     @Override
     public void setInitialScalingFactors(
             final double initialSx, final double initialSy, final double initialSz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialSx = initialSx;
-        mInitialSy = initialSy;
-        mInitialSz = initialSz;
+        this.initialSx = initialSx;
+        this.initialSy = initialSy;
+        this.initialSz = initialSz;
     }
 
     /**
@@ -2330,15 +2329,15 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
     public void setInitialCrossCouplingErrors(
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMxy = initialMxy;
-        mInitialMxz = initialMxz;
-        mInitialMyx = initialMyx;
-        mInitialMyz = initialMyz;
-        mInitialMzx = initialMzx;
-        mInitialMzy = initialMzy;
+        this.initialMxy = initialMxy;
+        this.initialMxz = initialMxz;
+        this.initialMyx = initialMyx;
+        this.initialMyz = initialMyz;
+        this.initialMzx = initialMzx;
+        this.initialMzy = initialMzy;
     }
 
     /**
@@ -2361,7 +2360,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
             final double initialSx, final double initialSy, final double initialSz,
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         setInitialScalingFactors(initialSx, initialSy, initialSz);
@@ -2376,7 +2375,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public double[] getBias() {
-        final double[] result = new double[BodyKinematics.COMPONENTS];
+        final var result = new double[BodyKinematics.COMPONENTS];
         getBias(result);
         return result;
     }
@@ -2393,9 +2392,9 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
         if (result.length != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        result[0] = mBiasX;
-        result[1] = mBiasY;
-        result[2] = mBiasZ;
+        result[0] = biasX;
+        result[1] = biasY;
+        result[2] = biasZ;
     }
 
     /**
@@ -2409,16 +2408,16 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setBias(final double[] bias) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
         if (bias.length != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        mBiasX = bias[0];
-        mBiasY = bias[1];
-        mBiasZ = bias[2];
+        biasX = bias[0];
+        biasY = bias[1];
+        biasZ = bias[2];
     }
 
     /**
@@ -2451,9 +2450,9 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
         if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
-        result.setElementAtIndex(0, mBiasX);
-        result.setElementAtIndex(1, mBiasY);
-        result.setElementAtIndex(2, mBiasZ);
+        result.setElementAtIndex(0, biasX);
+        result.setElementAtIndex(1, biasY);
+        result.setElementAtIndex(2, biasZ);
     }
 
     /**
@@ -2465,16 +2464,16 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setBias(final Matrix initialBias) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (initialBias.getRows() != BodyKinematics.COMPONENTS || initialBias.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
-        mBiasX = initialBias.getElementAtIndex(0);
-        mBiasY = initialBias.getElementAtIndex(1);
-        mBiasZ = initialBias.getElementAtIndex(2);
+        biasX = initialBias.getElementAtIndex(0);
+        biasY = initialBias.getElementAtIndex(1);
+        biasZ = initialBias.getElementAtIndex(2);
     }
 
     /**
@@ -2509,17 +2508,17 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
         if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        result.setElementAtIndex(0, mInitialSx);
-        result.setElementAtIndex(1, mInitialMyx);
-        result.setElementAtIndex(2, mInitialMzx);
+        result.setElementAtIndex(0, initialSx);
+        result.setElementAtIndex(1, initialMyx);
+        result.setElementAtIndex(2, initialMzx);
 
-        result.setElementAtIndex(3, mInitialMxy);
-        result.setElementAtIndex(4, mInitialSy);
-        result.setElementAtIndex(5, mInitialMzy);
+        result.setElementAtIndex(3, initialMxy);
+        result.setElementAtIndex(4, initialSy);
+        result.setElementAtIndex(5, initialMzy);
 
-        result.setElementAtIndex(6, mInitialMxz);
-        result.setElementAtIndex(7, mInitialMyz);
-        result.setElementAtIndex(8, mInitialSz);
+        result.setElementAtIndex(6, initialMxz);
+        result.setElementAtIndex(7, initialMyz);
+        result.setElementAtIndex(8, initialSz);
     }
 
     /**
@@ -2531,24 +2530,24 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setInitialMg(final Matrix initialMg) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (initialMg.getRows() != BodyKinematics.COMPONENTS || initialMg.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
-        mInitialSx = initialMg.getElementAtIndex(0);
-        mInitialMyx = initialMg.getElementAtIndex(1);
-        mInitialMzx = initialMg.getElementAtIndex(2);
+        initialSx = initialMg.getElementAtIndex(0);
+        initialMyx = initialMg.getElementAtIndex(1);
+        initialMzx = initialMg.getElementAtIndex(2);
 
-        mInitialMxy = initialMg.getElementAtIndex(3);
-        mInitialSy = initialMg.getElementAtIndex(4);
-        mInitialMzy = initialMg.getElementAtIndex(5);
+        initialMxy = initialMg.getElementAtIndex(3);
+        initialSy = initialMg.getElementAtIndex(4);
+        initialMzy = initialMg.getElementAtIndex(5);
 
-        mInitialMxz = initialMg.getElementAtIndex(6);
-        mInitialMyz = initialMg.getElementAtIndex(7);
-        mInitialSz = initialMg.getElementAtIndex(8);
+        initialMxz = initialMg.getElementAtIndex(6);
+        initialMyz = initialMg.getElementAtIndex(7);
+        initialSz = initialMg.getElementAtIndex(8);
     }
 
     /**
@@ -2559,7 +2558,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public Matrix getInitialGg() {
-        return new Matrix(mInitialGg);
+        return new Matrix(initialGg);
     }
 
     /**
@@ -2571,12 +2570,11 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void getInitialGg(final Matrix result) {
-
         if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
-        result.copyFrom(mInitialGg);
+        result.copyFrom(initialGg);
     }
 
     /**
@@ -2589,7 +2587,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setInitialGg(final Matrix initialGg) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
@@ -2597,7 +2595,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
             throw new IllegalArgumentException();
         }
 
-        initialGg.copyTo(mInitialGg);
+        initialGg.copyTo(this.initialGg);
     }
 
     /**
@@ -2610,7 +2608,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> getSequences() {
-        return mSequences;
+        return sequences;
     }
 
     /**
@@ -2625,10 +2623,10 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
     @Override
     public void setSequences(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mSequences = sequences;
+        this.sequences = sequences;
     }
 
     /**
@@ -2662,7 +2660,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public boolean isCommonAxisUsed() {
-        return mCommonAxisUsed;
+        return commonAxisUsed;
     }
 
     /**
@@ -2676,11 +2674,11 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public void setCommonAxisUsed(final boolean commonAxisUsed) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -2692,7 +2690,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * false otherwise.
      */
     public boolean isGDependentCrossBiasesEstimated() {
-        return mEstimateGDependentCrossBiases;
+        return estimateGDependentCrossBiases;
     }
 
     /**
@@ -2706,11 +2704,11 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     public void setGDependentCrossBiasesEstimated(final boolean estimateGDependentCrossBiases) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mEstimateGDependentCrossBiases = estimateGDependentCrossBiases;
+        this.estimateGDependentCrossBiases = estimateGDependentCrossBiases;
     }
 
     /**
@@ -2719,7 +2717,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * @return listener to handle events raised by this estimator.
      */
     public RobustKnownBiasEasyGyroscopeCalibratorListener getListener() {
-        return mListener;
+        return listener;
     }
 
     /**
@@ -2729,11 +2727,11 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     public void setListener(final RobustKnownBiasEasyGyroscopeCalibratorListener listener) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2743,14 +2741,14 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public int getMinimumRequiredMeasurementsOrSequences() {
-        if (mCommonAxisUsed) {
-            if (mEstimateGDependentCrossBiases) {
+        if (commonAxisUsed) {
+            if (estimateGDependentCrossBiases) {
                 return KnownBiasEasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS_AND_CROSS_BIASES;
             } else {
                 return KnownBiasEasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS;
             }
         } else {
-            if (mEstimateGDependentCrossBiases) {
+            if (estimateGDependentCrossBiases) {
                 return KnownBiasEasyGyroscopeCalibrator.MINIMUM_SEQUENCES_GENERAL_AND_CROSS_BIASES;
             } else {
                 return KnownBiasEasyGyroscopeCalibrator.MINIMUM_SEQUENCES_GENERAL;
@@ -2765,7 +2763,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public boolean isReady() {
-        return mSequences != null && mSequences.size() >= getMinimumRequiredMeasurementsOrSequences();
+        return sequences != null && sequences.size() >= getMinimumRequiredMeasurementsOrSequences();
     }
 
     /**
@@ -2775,7 +2773,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public boolean isRunning() {
-        return mRunning;
+        return running;
     }
 
     /**
@@ -2786,7 +2784,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * calibration.
      */
     public float getProgressDelta() {
-        return mProgressDelta;
+        return progressDelta;
     }
 
     /**
@@ -2799,13 +2797,13 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * @throws LockedException          if calibrator is currently running.
      */
     public void setProgressDelta(final float progressDelta) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (progressDelta < MIN_PROGRESS_DELTA || progressDelta > MAX_PROGRESS_DELTA) {
             throw new IllegalArgumentException();
         }
-        mProgressDelta = progressDelta;
+        this.progressDelta = progressDelta;
     }
 
     /**
@@ -2817,7 +2815,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * @return amount of confidence as a value between 0.0 and 1.0.
      */
     public double getConfidence() {
-        return mConfidence;
+        return confidence;
     }
 
     /**
@@ -2831,13 +2829,13 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * @throws LockedException          if calibrator is currently running.
      */
     public void setConfidence(final double confidence) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (confidence < MIN_CONFIDENCE || confidence > MAX_CONFIDENCE) {
             throw new IllegalArgumentException();
         }
-        mConfidence = confidence;
+        this.confidence = confidence;
     }
 
     /**
@@ -2848,7 +2846,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * @return maximum allowed number of iterations.
      */
     public int getMaxIterations() {
-        return mMaxIterations;
+        return maxIterations;
     }
 
     /**
@@ -2861,13 +2859,13 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * @throws LockedException          if calibrator is currently running.
      */
     public void setMaxIterations(final int maxIterations) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (maxIterations < MIN_ITERATIONS) {
             throw new IllegalArgumentException();
         }
-        mMaxIterations = maxIterations;
+        this.maxIterations = maxIterations;
     }
 
     /**
@@ -2876,7 +2874,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * @return data related to inliers found after estimation.
      */
     public InliersData getInliersData() {
-        return mInliersData;
+        return inliersData;
     }
 
     /**
@@ -2886,7 +2884,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * without further refining.
      */
     public boolean isResultRefined() {
-        return mRefineResult;
+        return refineResult;
     }
 
     /**
@@ -2897,10 +2895,10 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     public void setResultRefined(final boolean refineResult) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mRefineResult = refineResult;
+        this.refineResult = refineResult;
     }
 
     /**
@@ -2910,7 +2908,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * @return true if covariance must be kept after refining result, false otherwise.
      */
     public boolean isCovarianceKept() {
-        return mKeepCovariance;
+        return keepCovariance;
     }
 
     /**
@@ -2922,10 +2920,10 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     public void setCovarianceKept(final boolean keepCovariance) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mKeepCovariance = keepCovariance;
+        this.keepCovariance = keepCovariance;
     }
 
     /**
@@ -3000,7 +2998,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public Matrix getEstimatedMg() {
-        return mEstimatedMg;
+        return estimatedMg;
     }
 
     /**
@@ -3011,7 +3009,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedSx() {
-        return mEstimatedMg != null ? mEstimatedMg.getElementAt(0, 0) : null;
+        return estimatedMg != null ? estimatedMg.getElementAt(0, 0) : null;
     }
 
     /**
@@ -3022,7 +3020,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedSy() {
-        return mEstimatedMg != null ? mEstimatedMg.getElementAt(1, 1) : null;
+        return estimatedMg != null ? estimatedMg.getElementAt(1, 1) : null;
     }
 
     /**
@@ -3033,7 +3031,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedSz() {
-        return mEstimatedMg != null ? mEstimatedMg.getElementAt(2, 2) : null;
+        return estimatedMg != null ? estimatedMg.getElementAt(2, 2) : null;
     }
 
     /**
@@ -3044,7 +3042,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedMxy() {
-        return mEstimatedMg != null ? mEstimatedMg.getElementAt(0, 1) : null;
+        return estimatedMg != null ? estimatedMg.getElementAt(0, 1) : null;
     }
 
     /**
@@ -3055,7 +3053,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedMxz() {
-        return mEstimatedMg != null ? mEstimatedMg.getElementAt(0, 2) : null;
+        return estimatedMg != null ? estimatedMg.getElementAt(0, 2) : null;
     }
 
     /**
@@ -3066,7 +3064,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedMyx() {
-        return mEstimatedMg != null ? mEstimatedMg.getElementAt(1, 0) : null;
+        return estimatedMg != null ? estimatedMg.getElementAt(1, 0) : null;
     }
 
     /**
@@ -3077,7 +3075,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedMyz() {
-        return mEstimatedMg != null ? mEstimatedMg.getElementAt(1, 2) : null;
+        return estimatedMg != null ? estimatedMg.getElementAt(1, 2) : null;
     }
 
     /**
@@ -3088,7 +3086,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedMzx() {
-        return mEstimatedMg != null ? mEstimatedMg.getElementAt(2, 0) : null;
+        return estimatedMg != null ? estimatedMg.getElementAt(2, 0) : null;
     }
 
     /**
@@ -3099,7 +3097,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedMzy() {
-        return mEstimatedMg != null ? mEstimatedMg.getElementAt(2, 1) : null;
+        return estimatedMg != null ? estimatedMg.getElementAt(2, 1) : null;
     }
 
     /**
@@ -3111,7 +3109,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public Matrix getEstimatedGg() {
-        return mEstimatedGg;
+        return estimatedGg;
     }
 
     /**
@@ -3124,7 +3122,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public Matrix getEstimatedCovariance() {
-        return mEstimatedCovariance;
+        return estimatedCovariance;
     }
 
     /**
@@ -3134,7 +3132,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public double getEstimatedChiSq() {
-        return mEstimatedChiSq;
+        return estimatedChiSq;
     }
 
     /**
@@ -3144,7 +3142,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      */
     @Override
     public double getEstimatedMse() {
-        return mEstimatedMse;
+        return estimatedMse;
     }
 
     /**
@@ -3154,7 +3152,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * @return size of subsets to be checked during robust estimation.
      */
     public int getPreliminarySubsetSize() {
-        return mPreliminarySubsetSize;
+        return preliminarySubsetSize;
     }
 
     /**
@@ -3167,14 +3165,14 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      *                                  {@link #getMinimumRequiredMeasurementsOrSequences}.
      */
     public void setPreliminarySubsetSize(final int preliminarySubsetSize) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (preliminarySubsetSize < getMinimumRequiredMeasurementsOrSequences()) {
             throw new IllegalArgumentException();
         }
 
-        mPreliminarySubsetSize = preliminarySubsetSize;
+        this.preliminarySubsetSize = preliminarySubsetSize;
     }
 
     /**
@@ -5299,8 +5297,8 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      *                          are numerically unstable.
      */
     protected void setupAccelerationFixer() throws AlgebraException {
-        mAccelerationFixer.setBias(getAccelerometerBias());
-        mAccelerationFixer.setCrossCouplingErrors(getAccelerometerMa());
+        accelerationFixer.setBias(getAccelerometerBias());
+        accelerationFixer.setCrossCouplingErrors(getAccelerometerMa());
     }
 
     /**
@@ -5315,59 +5313,58 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
             final PreliminaryResult preliminaryResult) {
 
         try {
-            mAngularRateFixer.setBias(mBiasX, mBiasY, mBiasZ);
-            mAngularRateFixer.setCrossCouplingErrors(preliminaryResult.mEstimatedMg);
-            mAngularRateFixer.setGDependantCrossBias(preliminaryResult.mEstimatedGg);
+            angularRateFixer.setBias(biasX, biasY, biasZ);
+            angularRateFixer.setCrossCouplingErrors(preliminaryResult.estimatedMg);
+            angularRateFixer.setGDependantCrossBias(preliminaryResult.estimatedGg);
 
             // copy measured sequence as it will be used to fix kinematics values
             // using preliminary gyroscope parameters
-            final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> fixedSequence =
-                    new BodyKinematicsSequence<>(sequence);
+            final var fixedSequence = new BodyKinematicsSequence<>(sequence);
 
             // fix body kinematic measurements of provided sequence
-            final int numItems = sequence.getItemsCount();
-            final List<StandardDeviationTimedBodyKinematics> measuredItems = sequence.getSortedItems();
-            final List<StandardDeviationTimedBodyKinematics> fixedItems = fixedSequence.getSortedItems();
-            for (int j = 0; j < numItems; j++) {
-                final StandardDeviationTimedBodyKinematics measuredItem = measuredItems.get(j);
-                final StandardDeviationTimedBodyKinematics fixedItem = fixedItems.get(j);
+            final var numItems = sequence.getItemsCount();
+            final var measuredItems = sequence.getSortedItems();
+            final var fixedItems = fixedSequence.getSortedItems();
+            for (var j = 0; j < numItems; j++) {
+                final var measuredItem = measuredItems.get(j);
+                final var fixedItem = fixedItems.get(j);
 
-                final BodyKinematics measuredKinematics = measuredItem.getKinematics();
-                final BodyKinematics fixedKinematics = fixedItem.getKinematics();
+                final var measuredKinematics = measuredItem.getKinematics();
+                final var fixedKinematics = fixedItem.getKinematics();
                 fixKinematics(measuredKinematics, fixedKinematics);
             }
 
             // integrate fixed sequence to obtain attitude change
-            QuaternionIntegrator.integrateGyroSequence(fixedSequence, QuaternionStepIntegratorType.RUNGE_KUTTA, mQ);
+            QuaternionIntegrator.integrateGyroSequence(fixedSequence, QuaternionStepIntegratorType.RUNGE_KUTTA, q);
 
             // fix before coordinates
-            mMeasuredSpecificForce[0] = sequence.getBeforeMeanFx();
-            mMeasuredSpecificForce[1] = sequence.getBeforeMeanFy();
-            mMeasuredSpecificForce[2] = sequence.getBeforeMeanFz();
-            mAccelerationFixer.fix(mMeasuredSpecificForce, mFixedSpecificForce);
+            measuredSpecificForce[0] = sequence.getBeforeMeanFx();
+            measuredSpecificForce[1] = sequence.getBeforeMeanFy();
+            measuredSpecificForce[2] = sequence.getBeforeMeanFz();
+            accelerationFixer.fix(measuredSpecificForce, fixedSpecificForce);
 
             // normalize coordinates
-            ArrayUtils.normalize(mFixedSpecificForce);
+            ArrayUtils.normalize(fixedSpecificForce);
 
             // compute estimated normalized end coordinates
-            mStartPoint.setCoordinates(mFixedSpecificForce);
-            mQ.inverse();
-            mQ.rotate(mStartPoint, mEndPoint);
+            startPoint.setCoordinates(fixedSpecificForce);
+            q.inverse();
+            q.rotate(startPoint, endPoint);
 
             // fix after coordinates
-            mMeasuredSpecificForce[0] = sequence.getAfterMeanFx();
-            mMeasuredSpecificForce[1] = sequence.getAfterMeanFy();
-            mMeasuredSpecificForce[2] = sequence.getAfterMeanFz();
-            mAccelerationFixer.fix(mMeasuredSpecificForce, mFixedSpecificForce);
+            measuredSpecificForce[0] = sequence.getAfterMeanFx();
+            measuredSpecificForce[1] = sequence.getAfterMeanFy();
+            measuredSpecificForce[2] = sequence.getAfterMeanFz();
+            accelerationFixer.fix(measuredSpecificForce, fixedSpecificForce);
 
             // normalize coordinates
-            ArrayUtils.normalize(mFixedSpecificForce);
+            ArrayUtils.normalize(fixedSpecificForce);
 
-            mExpectedEndPoint.setCoordinates(mFixedSpecificForce);
+            expectedEndPoint.setCoordinates(fixedSpecificForce);
 
             // compare estimated normalized end coordinates with expected
             // ones
-            return mExpectedEndPoint.distanceTo(mEndPoint);
+            return expectedEndPoint.distanceTo(endPoint);
 
         } catch (final AlgebraException | RotationException e) {
             return Double.MAX_VALUE;
@@ -5381,41 +5378,41 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * @param solutions      list where estimated preliminary solution will be stored.
      */
     protected void computePreliminarySolutions(final int[] samplesIndices, final List<PreliminaryResult> solutions) {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = new ArrayList<>();
+        final var seqs = new ArrayList<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>();
 
-        for (int samplesIndex : samplesIndices) {
-            sequences.add(mSequences.get(samplesIndex));
+        for (var samplesIndex : samplesIndices) {
+            seqs.add(this.sequences.get(samplesIndex));
         }
 
         try {
-            final PreliminaryResult result = new PreliminaryResult();
-            result.mEstimatedMg = getInitialMg();
-            result.mEstimatedGg = getInitialGg();
+            final var result = new PreliminaryResult();
+            result.estimatedMg = getInitialMg();
+            result.estimatedGg = getInitialGg();
 
-            mInnerCalibrator.setGDependentCrossBiasesEstimated(mEstimateGDependentCrossBiases);
-            mInnerCalibrator.setBiasCoordinates(mBiasX, mBiasY, mBiasZ);
-            mInnerCalibrator.setInitialMg(result.mEstimatedMg);
-            mInnerCalibrator.setInitialGg(result.mEstimatedGg);
-            mInnerCalibrator.setAccelerometerBias(mAccelerometerBiasX, mAccelerometerBiasY, mAccelerometerBiasZ);
-            mInnerCalibrator.setAccelerometerScalingFactorsAndCrossCouplingErrors(
-                    mAccelerometerSx, mAccelerometerSy, mAccelerometerSz,
-                    mAccelerometerMxy, mAccelerometerMxz, mAccelerometerMyx,
-                    mAccelerometerMyz, mAccelerometerMzx, mAccelerometerMzy);
-            mInnerCalibrator.setCommonAxisUsed(mCommonAxisUsed);
-            mInnerCalibrator.setSequences(sequences);
-            mInnerCalibrator.calibrate();
+            innerCalibrator.setGDependentCrossBiasesEstimated(estimateGDependentCrossBiases);
+            innerCalibrator.setBiasCoordinates(biasX, biasY, biasZ);
+            innerCalibrator.setInitialMg(result.estimatedMg);
+            innerCalibrator.setInitialGg(result.estimatedGg);
+            innerCalibrator.setAccelerometerBias(accelerometerBiasX, accelerometerBiasY, accelerometerBiasZ);
+            innerCalibrator.setAccelerometerScalingFactorsAndCrossCouplingErrors(
+                    accelerometerSx, accelerometerSy, accelerometerSz,
+                    accelerometerMxy, accelerometerMxz, accelerometerMyx,
+                    accelerometerMyz, accelerometerMzx, accelerometerMzy);
+            innerCalibrator.setCommonAxisUsed(commonAxisUsed);
+            innerCalibrator.setSequences(seqs);
+            innerCalibrator.calibrate();
 
-            result.mEstimatedMg = mInnerCalibrator.getEstimatedMg();
-            result.mEstimatedGg = mInnerCalibrator.getEstimatedGg();
+            result.estimatedMg = innerCalibrator.getEstimatedMg();
+            result.estimatedGg = innerCalibrator.getEstimatedGg();
 
-            if (mKeepCovariance) {
-                result.mCovariance = mInnerCalibrator.getEstimatedCovariance();
+            if (keepCovariance) {
+                result.covariance = innerCalibrator.getEstimatedCovariance();
             } else {
-                result.mCovariance = null;
+                result.covariance = null;
             }
 
-            result.mEstimatedMse = mInnerCalibrator.getEstimatedMse();
-            result.mEstimatedChiSq = mInnerCalibrator.getEstimatedChiSq();
+            result.estimatedMse = innerCalibrator.getEstimatedMse();
+            result.estimatedChiSq = innerCalibrator.getEstimatedChiSq();
 
             solutions.add(result);
         } catch (final LockedException | CalibrationException | NotReadyException e) {
@@ -5433,58 +5430,57 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * @param preliminaryResult a preliminary result.
      */
     protected void attemptRefine(final PreliminaryResult preliminaryResult) {
-        if (mRefineResult && mInliersData != null) {
-            final BitSet inliers = mInliersData.getInliers();
-            final int nSamples = mSequences.size();
+        if (refineResult && inliersData != null) {
+            final var inliers = inliersData.getInliers();
+            final var nSamples = sequences.size();
 
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> inlierSequences =
-                    new ArrayList<>();
-            for (int i = 0; i < nSamples; i++) {
+            final var inlierSequences = new ArrayList<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>();
+            for (var i = 0; i < nSamples; i++) {
                 if (inliers.get(i)) {
                     // sample is inlier
-                    inlierSequences.add(mSequences.get(i));
+                    inlierSequences.add(sequences.get(i));
                 }
             }
 
             try {
-                mInnerCalibrator.setGDependentCrossBiasesEstimated(mEstimateGDependentCrossBiases);
-                mInnerCalibrator.setBiasCoordinates(mBiasX, mBiasY, mBiasZ);
-                mInnerCalibrator.setInitialMg(preliminaryResult.mEstimatedMg);
-                mInnerCalibrator.setInitialGg(preliminaryResult.mEstimatedGg);
-                mInnerCalibrator.setAccelerometerBias(mAccelerometerBiasX, mAccelerometerBiasY, mAccelerometerBiasZ);
-                mInnerCalibrator.setAccelerometerScalingFactorsAndCrossCouplingErrors(
-                        mAccelerometerSx, mAccelerometerSy, mAccelerometerSz,
-                        mAccelerometerMxy, mAccelerometerMxz, mAccelerometerMyx,
-                        mAccelerometerMyz, mAccelerometerMzx, mAccelerometerMzy);
-                mInnerCalibrator.setCommonAxisUsed(mCommonAxisUsed);
-                mInnerCalibrator.setSequences(inlierSequences);
-                mInnerCalibrator.calibrate();
+                innerCalibrator.setGDependentCrossBiasesEstimated(estimateGDependentCrossBiases);
+                innerCalibrator.setBiasCoordinates(biasX, biasY, biasZ);
+                innerCalibrator.setInitialMg(preliminaryResult.estimatedMg);
+                innerCalibrator.setInitialGg(preliminaryResult.estimatedGg);
+                innerCalibrator.setAccelerometerBias(accelerometerBiasX, accelerometerBiasY, accelerometerBiasZ);
+                innerCalibrator.setAccelerometerScalingFactorsAndCrossCouplingErrors(
+                        accelerometerSx, accelerometerSy, accelerometerSz,
+                        accelerometerMxy, accelerometerMxz, accelerometerMyx,
+                        accelerometerMyz, accelerometerMzx, accelerometerMzy);
+                innerCalibrator.setCommonAxisUsed(commonAxisUsed);
+                innerCalibrator.setSequences(inlierSequences);
+                innerCalibrator.calibrate();
 
-                mEstimatedMg = mInnerCalibrator.getEstimatedMg();
-                mEstimatedGg = mInnerCalibrator.getEstimatedGg();
+                estimatedMg = innerCalibrator.getEstimatedMg();
+                estimatedGg = innerCalibrator.getEstimatedGg();
 
-                if (mKeepCovariance) {
-                    mEstimatedCovariance = mInnerCalibrator.getEstimatedCovariance();
+                if (keepCovariance) {
+                    estimatedCovariance = innerCalibrator.getEstimatedCovariance();
                 } else {
-                    mEstimatedCovariance = null;
+                    estimatedCovariance = null;
                 }
 
-                mEstimatedMse = mInnerCalibrator.getEstimatedMse();
-                mEstimatedChiSq = mInnerCalibrator.getEstimatedChiSq();
+                estimatedMse = innerCalibrator.getEstimatedMse();
+                estimatedChiSq = innerCalibrator.getEstimatedChiSq();
 
             } catch (final LockedException | CalibrationException | NotReadyException e) {
-                mEstimatedCovariance = preliminaryResult.mCovariance;
-                mEstimatedMg = preliminaryResult.mEstimatedMg;
-                mEstimatedGg = preliminaryResult.mEstimatedGg;
-                mEstimatedMse = preliminaryResult.mEstimatedMse;
-                mEstimatedChiSq = preliminaryResult.mEstimatedChiSq;
+                estimatedCovariance = preliminaryResult.covariance;
+                estimatedMg = preliminaryResult.estimatedMg;
+                estimatedGg = preliminaryResult.estimatedGg;
+                estimatedMse = preliminaryResult.estimatedMse;
+                estimatedChiSq = preliminaryResult.estimatedChiSq;
             }
         } else {
-            mEstimatedCovariance = preliminaryResult.mCovariance;
-            mEstimatedMg = preliminaryResult.mEstimatedMg;
-            mEstimatedGg = preliminaryResult.mEstimatedGg;
-            mEstimatedMse = preliminaryResult.mEstimatedMse;
-            mEstimatedChiSq = preliminaryResult.mEstimatedChiSq;
+            estimatedCovariance = preliminaryResult.covariance;
+            estimatedMg = preliminaryResult.estimatedMg;
+            estimatedGg = preliminaryResult.estimatedGg;
+            estimatedMse = preliminaryResult.estimatedMse;
+            estimatedChiSq = preliminaryResult.estimatedChiSq;
         }
     }
 
@@ -5495,8 +5491,8 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * @return converted value.
      */
     private static double convertAcceleration(final Acceleration acceleration) {
-        return AccelerationConverter.convert(acceleration.getValue().doubleValue(),
-                acceleration.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return AccelerationConverter.convert(acceleration.getValue().doubleValue(), acceleration.getUnit(),
+                AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -5531,18 +5527,18 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
     private void fixKinematics(
             final BodyKinematics measuredKinematics, final BodyKinematics result) throws AlgebraException {
 
-        mMeasuredSpecificForce[0] = measuredKinematics.getFx();
-        mMeasuredSpecificForce[1] = measuredKinematics.getFy();
-        mMeasuredSpecificForce[2] = measuredKinematics.getFz();
-        mAccelerationFixer.fix(mMeasuredSpecificForce, mFixedSpecificForce);
+        measuredSpecificForce[0] = measuredKinematics.getFx();
+        measuredSpecificForce[1] = measuredKinematics.getFy();
+        measuredSpecificForce[2] = measuredKinematics.getFz();
+        accelerationFixer.fix(measuredSpecificForce, fixedSpecificForce);
 
-        mMeasuredAngularRate[0] = measuredKinematics.getAngularRateX();
-        mMeasuredAngularRate[1] = measuredKinematics.getAngularRateY();
-        mMeasuredAngularRate[2] = measuredKinematics.getAngularRateZ();
-        mAngularRateFixer.fix(mMeasuredAngularRate, mFixedSpecificForce, mFixedAngularRate);
+        measuredAngularRate[0] = measuredKinematics.getAngularRateX();
+        measuredAngularRate[1] = measuredKinematics.getAngularRateY();
+        measuredAngularRate[2] = measuredKinematics.getAngularRateZ();
+        angularRateFixer.fix(measuredAngularRate, fixedSpecificForce, fixedAngularRate);
 
-        result.setSpecificForceCoordinates(mFixedSpecificForce[0], mFixedSpecificForce[1], mFixedSpecificForce[2]);
-        result.setAngularRateCoordinates(mFixedAngularRate[0], mFixedAngularRate[1], mFixedAngularRate[2]);
+        result.setSpecificForceCoordinates(fixedSpecificForce[0], fixedSpecificForce[1], fixedSpecificForce[2]);
+        result.setAngularRateCoordinates(fixedAngularRate[0], fixedAngularRate[1], fixedAngularRate[2]);
     }
 
     /**
@@ -5588,28 +5584,28 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
          * </pre>
          * Values of this matrix are unit-less.
          */
-        private Matrix mEstimatedMg;
+        private Matrix estimatedMg;
 
         /**
          * Estimated G-dependent cross biases introduced on the gyroscope by the
          * specific forces sensed by the accelerometer.
          * This instance allows any 3x3 matrix.
          */
-        private Matrix mEstimatedGg;
+        private Matrix estimatedGg;
 
         /**
          * Covariance matrix for estimated result.
          */
-        private Matrix mCovariance;
+        private Matrix covariance;
 
         /**
          * Estimated Mean Square Error.
          */
-        private double mEstimatedMse;
+        private double estimatedMse;
 
         /**
          * Estimated chi square value.
          */
-        private double mEstimatedChiSq;
+        private double estimatedChiSq;
     }
 }

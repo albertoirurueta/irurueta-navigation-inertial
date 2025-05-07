@@ -24,15 +24,13 @@ import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationUnit;
 import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedUnit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class BodyKinematicsTest {
+class BodyKinematicsTest {
 
     private static final double MIN_SPECIFIC_FORCE = -9.81;
     private static final double MAX_SPECIFIC_FORCE = 9.81;
@@ -43,9 +41,9 @@ public class BodyKinematicsTest {
     private static final double THRESHOLD = 1e-6;
 
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         // test empty constructor
-        BodyKinematics k = new BodyKinematics();
+        var k = new BodyKinematics();
 
         // check default values
         assertEquals(0.0, k.getFx(), 0.0);
@@ -59,7 +57,7 @@ public class BodyKinematicsTest {
         assertEquals(0.0, k.getSpecificForceY().getValue().doubleValue(), 0.0);
         assertEquals(0.0, k.getSpecificForceZ().getValue().doubleValue(), 0.0);
 
-        AccelerationTriad triad1 = k.getSpecificForceTriad();
+        var triad1 = k.getSpecificForceTriad();
         assertEquals(0.0, triad1.getValueX(), 0.0);
         assertEquals(0.0, triad1.getValueY(), 0.0);
         assertEquals(0.0, triad1.getValueZ(), 0.0);
@@ -69,7 +67,7 @@ public class BodyKinematicsTest {
         assertEquals(0.0, k.getAngularSpeedY().getValue().doubleValue(), 0.0);
         assertEquals(0.0, k.getAngularSpeedZ().getValue().doubleValue(), 0.0);
 
-        AngularSpeedTriad triad2 = k.getAngularRateTriad();
+        var triad2 = k.getAngularRateTriad();
         assertEquals(0.0, triad2.getValueX(), 0.0);
         assertEquals(0.0, triad2.getValueY(), 0.0);
         assertEquals(0.0, triad2.getValueZ(), 0.0);
@@ -82,11 +80,11 @@ public class BodyKinematicsTest {
         assertEquals(0.0, k.getAngularSpeedNorm().getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, k.getAngularSpeedNorm().getUnit());
 
-        // test constructor with specific force
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        // test constructor with a specific force
+        final var randomizer = new UniformRandomizer();
+        final var fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
 
         k = new BodyKinematics(fx, fy, fz);
 
@@ -118,7 +116,7 @@ public class BodyKinematicsTest {
         assertEquals(0.0, triad2.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, triad2.getUnit());
 
-        final double normF = Math.sqrt(fx * fx + fy * fy + fz * fz);
+        final var normF = Math.sqrt(fx * fx + fy * fy + fz * fz);
         assertEquals(normF, k.getSpecificForceNorm(), 0.0);
         assertEquals(normF, k.getSpecificForceNormAsAcceleration().getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, k.getSpecificForceNormAsAcceleration().getUnit());
@@ -127,9 +125,9 @@ public class BodyKinematicsTest {
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, k.getAngularSpeedNorm().getUnit());
 
         // test constructor with specific force and angular rate
-        final double angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
 
         k = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
@@ -161,7 +159,7 @@ public class BodyKinematicsTest {
         assertEquals(angularRateZ, triad2.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, triad2.getUnit());
 
-        final double angularRateNorm = Math.sqrt(angularRateX * angularRateX
+        final var angularRateNorm = Math.sqrt(angularRateX * angularRateX
                 + angularRateY * angularRateY + angularRateZ * angularRateZ);
         assertEquals(normF, k.getSpecificForceNorm(), 0.0);
         assertEquals(normF, k.getSpecificForceNormAsAcceleration().getValue().doubleValue(), 0.0);
@@ -171,9 +169,9 @@ public class BodyKinematicsTest {
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, k.getAngularSpeedNorm().getUnit());
 
         // test constructor with specific forces accelerations
-        final Acceleration specificForceX = new Acceleration(fx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration specificForceY = new Acceleration(fy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration specificForceZ = new Acceleration(fz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var specificForceX = new Acceleration(fx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var specificForceY = new Acceleration(fy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var specificForceZ = new Acceleration(fz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
         k = new BodyKinematics(specificForceX, specificForceY, specificForceZ);
 
@@ -213,9 +211,9 @@ public class BodyKinematicsTest {
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, k.getAngularSpeedNorm().getUnit());
 
         // test constructor with angular speeds
-        final AngularSpeed angularSpeedX = new AngularSpeed(angularRateX, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed angularSpeedY = new AngularSpeed(angularRateY, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed angularSpeedZ = new AngularSpeed(angularRateZ, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedX = new AngularSpeed(angularRateX, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedY = new AngularSpeed(angularRateY, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedZ = new AngularSpeed(angularRateZ, AngularSpeedUnit.RADIANS_PER_SECOND);
 
         k = new BodyKinematics(angularSpeedX, angularSpeedY, angularSpeedZ);
 
@@ -255,7 +253,7 @@ public class BodyKinematicsTest {
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, k.getAngularSpeedNorm().getUnit());
 
         // test constructor with specific forces accelerations and angular speeds
-        k = new BodyKinematics(specificForceX, specificForceY, specificForceZ, angularSpeedX, angularSpeedY,
+        k = new BodyKinematics(specificForceX, specificForceY, specificForceZ, angularSpeedX, angularSpeedY, 
                 angularSpeedZ);
 
         // check default values
@@ -332,7 +330,7 @@ public class BodyKinematicsTest {
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, k.getAngularSpeedNorm().getUnit());
 
         // test copy constructor
-        final BodyKinematics k2 = new BodyKinematics(k);
+        final var k2 = new BodyKinematics(k);
 
         // check default values
         assertEquals(k.getFx(), k2.getFx(), 0.0);
@@ -344,15 +342,15 @@ public class BodyKinematicsTest {
     }
 
     @Test
-    public void testGetSetFx() {
-        final BodyKinematics k = new BodyKinematics();
+    void testGetSetFx() {
+        final var k = new BodyKinematics();
 
         // check default value
         assertEquals(0.0, k.getFx(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
 
         k.setFx(fx);
 
@@ -361,15 +359,15 @@ public class BodyKinematicsTest {
     }
 
     @Test
-    public void testGetSetFy() {
-        final BodyKinematics k = new BodyKinematics();
+    void testGetSetFy() {
+        final var k = new BodyKinematics();
 
         // check default value
         assertEquals(0.0, k.getFy(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
 
         k.setFy(fy);
 
@@ -378,15 +376,15 @@ public class BodyKinematicsTest {
     }
 
     @Test
-    public void testGetSetFz() {
-        final BodyKinematics k = new BodyKinematics();
+    void testGetSetFz() {
+        final var k = new BodyKinematics();
 
         // check default value
         assertEquals(0.0, k.getFz(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
         k.setFz(fz);
 
         // check
@@ -394,8 +392,8 @@ public class BodyKinematicsTest {
     }
 
     @Test
-    public void testSetSpecificForceCoordinates() {
-        final BodyKinematics k = new BodyKinematics();
+    void testSetSpecificForceCoordinates() {
+        final var k = new BodyKinematics();
 
         // check default values
         assertEquals(0.0, k.getFx(), 0.0);
@@ -403,10 +401,10 @@ public class BodyKinematicsTest {
         assertEquals(0.0, k.getFz(), 0.0);
 
         // set new values
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var randomizer = new UniformRandomizer();
+        final var fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
         k.setSpecificForceCoordinates(fx, fy, fz);
 
         // check
@@ -416,22 +414,22 @@ public class BodyKinematicsTest {
     }
 
     @Test
-    public void testGetSetSpecificForceX() {
-        final BodyKinematics k = new BodyKinematics();
+    void testGetSetSpecificForceX() {
+        final var k = new BodyKinematics();
 
         // check default value
         assertEquals(0.0, k.getSpecificForceX().getValue().doubleValue(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final Acceleration specificForceX1 = new Acceleration(fx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var specificForceX1 = new Acceleration(fx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
         k.setSpecificForceX(specificForceX1);
 
         // check
-        final Acceleration specificForceX2 = k.getSpecificForceX();
-        final Acceleration specificForceX3 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var specificForceX2 = k.getSpecificForceX();
+        final var specificForceX3 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         k.getSpecificForceX(specificForceX3);
 
         assertEquals(specificForceX1, specificForceX2);
@@ -439,22 +437,22 @@ public class BodyKinematicsTest {
     }
 
     @Test
-    public void testGetSetSpecificForceY() {
-        final BodyKinematics k = new BodyKinematics();
+    void testGetSetSpecificForceY() {
+        final var k = new BodyKinematics();
 
         // check default value
         assertEquals(0.0, k.getSpecificForceY().getValue().doubleValue(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final Acceleration specificForceY1 = new Acceleration(fy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var specificForceY1 = new Acceleration(fy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
         k.setSpecificForceY(specificForceY1);
 
         // check
-        final Acceleration specificForceY2 = k.getSpecificForceY();
-        final Acceleration specificForceY3 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var specificForceY2 = k.getSpecificForceY();
+        final var specificForceY3 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         k.getSpecificForceY(specificForceY3);
 
         assertEquals(specificForceY1, specificForceY2);
@@ -462,22 +460,22 @@ public class BodyKinematicsTest {
     }
 
     @Test
-    public void testGetSetSpecificForceZ() {
-        final BodyKinematics k = new BodyKinematics();
+    void testGetSetSpecificForceZ() {
+        final var k = new BodyKinematics();
 
         // check default value
         assertEquals(0.0, k.getSpecificForceZ().getValue().doubleValue(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final Acceleration specificForceZ1 = new Acceleration(fz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var specificForceZ1 = new Acceleration(fz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
         k.setSpecificForceZ(specificForceZ1);
 
         // check
-        final Acceleration specificForceZ2 = k.getSpecificForceZ();
-        final Acceleration specificForceZ3 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var specificForceZ2 = k.getSpecificForceZ();
+        final var specificForceZ3 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         k.getSpecificForceZ(specificForceZ3);
 
         assertEquals(specificForceZ1, specificForceZ2);
@@ -485,8 +483,8 @@ public class BodyKinematicsTest {
     }
 
     @Test
-    public void testSetSpecificForceCoordinatesAsAcceleration() {
-        final BodyKinematics k = new BodyKinematics();
+    void testSetSpecificForceCoordinatesAsAcceleration() {
+        final var k = new BodyKinematics();
 
         // check default values
         assertEquals(0.0, k.getSpecificForceX().getValue().doubleValue(), 0.0);
@@ -494,48 +492,48 @@ public class BodyKinematicsTest {
         assertEquals(0.0, k.getSpecificForceZ().getValue().doubleValue(), 0.0);
 
         // set new values
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final Acceleration specificForceX1 = new Acceleration(fx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration specificForceY1 = new Acceleration(fy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration specificForceZ1 = new Acceleration(fz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var specificForceX1 = new Acceleration(fx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var specificForceY1 = new Acceleration(fy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var specificForceZ1 = new Acceleration(fz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
         k.setSpecificForceCoordinates(specificForceX1, specificForceY1, specificForceZ1);
 
         // check
-        final Acceleration specificForceX2 = k.getSpecificForceX();
-        final Acceleration specificForceY2 = k.getSpecificForceY();
-        final Acceleration specificForceZ2 = k.getSpecificForceZ();
+        final var specificForceX2 = k.getSpecificForceX();
+        final var specificForceY2 = k.getSpecificForceY();
+        final var specificForceZ2 = k.getSpecificForceZ();
         assertEquals(specificForceX1, specificForceX2);
         assertEquals(specificForceY1, specificForceY2);
         assertEquals(specificForceZ1, specificForceZ2);
     }
 
     @Test
-    public void testGetSetSpecificForceTriad() {
-        final BodyKinematics k = new BodyKinematics();
+    void testGetSetSpecificForceTriad() {
+        final var k = new BodyKinematics();
 
         // check default value
-        final AccelerationTriad triad1 = k.getSpecificForceTriad();
+        final var triad1 = k.getSpecificForceTriad();
         assertEquals(0.0, triad1.getValueX(), 0.0);
         assertEquals(0.0, triad1.getValueY(), 0.0);
         assertEquals(0.0, triad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, triad1.getUnit());
 
         // set new values
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var randomizer = new UniformRandomizer();
+        final var fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
 
-        final AccelerationTriad triad2 = new AccelerationTriad(AccelerationUnit.METERS_PER_SQUARED_SECOND, fx, fy, fz);
+        final var triad2 = new AccelerationTriad(AccelerationUnit.METERS_PER_SQUARED_SECOND, fx, fy, fz);
         k.setSpecificForceTriad(triad2);
 
         // check
-        final AccelerationTriad triad3 = k.getSpecificForceTriad();
-        final AccelerationTriad triad4 = new AccelerationTriad();
+        final var triad3 = k.getSpecificForceTriad();
+        final var triad4 = new AccelerationTriad();
         k.getSpecificForceTriad(triad4);
 
         assertEquals(triad2, triad3);
@@ -543,15 +541,15 @@ public class BodyKinematicsTest {
     }
 
     @Test
-    public void testGetSetAngularRateX() {
-        final BodyKinematics k = new BodyKinematics();
+    void testGetSetAngularRateX() {
+        final var k = new BodyKinematics();
 
         // check default value
         assertEquals(0.0, k.getAngularRateX(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
 
         k.setAngularRateX(angularRateX);
 
@@ -560,15 +558,15 @@ public class BodyKinematicsTest {
     }
 
     @Test
-    public void testGetSetAngularRateY() {
-        final BodyKinematics k = new BodyKinematics();
+    void testGetSetAngularRateY() {
+        final var k = new BodyKinematics();
 
         // check default value
         assertEquals(0.0, k.getAngularRateY(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
 
         k.setAngularRateY(angularRateY);
 
@@ -577,15 +575,15 @@ public class BodyKinematicsTest {
     }
 
     @Test
-    public void testGetSetAngularRateZ() {
-        final BodyKinematics k = new BodyKinematics();
+    void testGetSetAngularRateZ() {
+        final var k = new BodyKinematics();
 
         // check default value
         assertEquals(0.0, k.getAngularRateZ(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
 
         k.setAngularRateZ(angularRateZ);
 
@@ -594,8 +592,8 @@ public class BodyKinematicsTest {
     }
 
     @Test
-    public void testSetAngularRateCoordinates() {
-        final BodyKinematics k = new BodyKinematics();
+    void testSetAngularRateCoordinates() {
+        final var k = new BodyKinematics();
 
         // check default values
         assertEquals(0.0, k.getAngularRateX(), 0.0);
@@ -603,10 +601,10 @@ public class BodyKinematicsTest {
         assertEquals(0.0, k.getAngularRateZ(), 0.0);
 
         // set new values
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var randomizer = new UniformRandomizer();
+        final var angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
 
         k.setAngularRateCoordinates(angularRateX, angularRateY, angularRateZ);
 
@@ -617,29 +615,29 @@ public class BodyKinematicsTest {
     }
 
     @Test
-    public void testGetSetAngularSpeedTriad() {
-        final BodyKinematics k = new BodyKinematics();
+    void testGetSetAngularSpeedTriad() {
+        final var k = new BodyKinematics();
 
         // check default value
-        final AngularSpeedTriad triad1 = k.getAngularRateTriad();
+        final var triad1 = k.getAngularRateTriad();
         assertEquals(0.0, triad1.getValueX(), 0.0);
         assertEquals(0.0, triad1.getValueY(), 0.0);
         assertEquals(0.0, triad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, triad1.getUnit());
 
         // set new values
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var randomizer = new UniformRandomizer();
+        final var angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
 
-        final AngularSpeedTriad triad2 = new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND,
+        final var triad2 = new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND, 
                 angularRateX, angularRateY, angularRateZ);
         k.setAngularRateTriad(triad2);
 
         // check
-        final AngularSpeedTriad triad3 = k.getAngularRateTriad();
-        final AngularSpeedTriad triad4 = new AngularSpeedTriad();
+        final var triad3 = k.getAngularRateTriad();
+        final var triad4 = new AngularSpeedTriad();
         k.getAngularRateTriad(triad4);
 
         assertEquals(triad2, triad3);
@@ -647,22 +645,22 @@ public class BodyKinematicsTest {
     }
 
     @Test
-    public void testGetSetAngularSpeedX() {
-        final BodyKinematics k = new BodyKinematics();
+    void testGetSetAngularSpeedX() {
+        final var k = new BodyKinematics();
 
         // check default value
         assertEquals(0.0, k.getAngularSpeedX().getValue().doubleValue(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final AngularSpeed angularSpeedX1 = new AngularSpeed(angularRateX, AngularSpeedUnit.RADIANS_PER_SECOND);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularSpeedX1 = new AngularSpeed(angularRateX, AngularSpeedUnit.RADIANS_PER_SECOND);
 
         k.setAngularSpeedX(angularSpeedX1);
 
         // check
-        final AngularSpeed angularSpeedX2 = k.getAngularSpeedX();
-        final AngularSpeed angularSpeedX3 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedX2 = k.getAngularSpeedX();
+        final var angularSpeedX3 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         k.getAngularSpeedX(angularSpeedX3);
 
         assertEquals(angularSpeedX1, angularSpeedX2);
@@ -670,22 +668,22 @@ public class BodyKinematicsTest {
     }
 
     @Test
-    public void testGetSetAngularSpeedY() {
-        final BodyKinematics k = new BodyKinematics();
+    void testGetSetAngularSpeedY() {
+        final var k = new BodyKinematics();
 
         // check default value
         assertEquals(0.0, k.getAngularSpeedY().getValue().doubleValue(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final AngularSpeed angularSpeedY1 = new AngularSpeed(angularRateY, AngularSpeedUnit.RADIANS_PER_SECOND);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularSpeedY1 = new AngularSpeed(angularRateY, AngularSpeedUnit.RADIANS_PER_SECOND);
 
         k.setAngularSpeedY(angularSpeedY1);
 
         // check
-        final AngularSpeed angularSpeedY2 = k.getAngularSpeedY();
-        final AngularSpeed angularSpeedY3 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedY2 = k.getAngularSpeedY();
+        final var angularSpeedY3 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         k.getAngularSpeedY(angularSpeedY3);
 
         assertEquals(angularSpeedY1, angularSpeedY2);
@@ -693,22 +691,22 @@ public class BodyKinematicsTest {
     }
 
     @Test
-    public void testGetSetAngularSpeedZ() {
-        final BodyKinematics k = new BodyKinematics();
+    void testGetSetAngularSpeedZ() {
+        final var k = new BodyKinematics();
 
         // check default value
         assertEquals(0.0, k.getAngularSpeedZ().getValue().doubleValue(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final AngularSpeed angularSpeedZ1 = new AngularSpeed(angularRateZ, AngularSpeedUnit.RADIANS_PER_SECOND);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularSpeedZ1 = new AngularSpeed(angularRateZ, AngularSpeedUnit.RADIANS_PER_SECOND);
 
         k.setAngularSpeedZ(angularSpeedZ1);
 
         // check
-        final AngularSpeed angularSpeedZ2 = k.getAngularSpeedZ();
-        final AngularSpeed angularSpeedZ3 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var angularSpeedZ2 = k.getAngularSpeedZ();
+        final var angularSpeedZ3 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         k.getAngularSpeedZ(angularSpeedZ3);
 
         assertEquals(angularSpeedZ1, angularSpeedZ2);
@@ -716,8 +714,8 @@ public class BodyKinematicsTest {
     }
 
     @Test
-    public void testSetAngularSpeedCoordinates() {
-        final BodyKinematics k = new BodyKinematics();
+    void testSetAngularSpeedCoordinates() {
+        final var k = new BodyKinematics();
 
         // check default values
         assertEquals(0.0, k.getAngularSpeedX().getValue().doubleValue(), 0.0);
@@ -725,42 +723,42 @@ public class BodyKinematicsTest {
         assertEquals(0.0, k.getAngularSpeedZ().getValue().doubleValue(), 0.0);
 
         // set new values
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final AngularSpeed angularSpeedX1 = new AngularSpeed(angularRateX, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed angularSpeedY1 = new AngularSpeed(angularRateY, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed angularSpeedZ1 = new AngularSpeed(angularRateZ, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var randomizer = new UniformRandomizer();
+        final var angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularSpeedX1 = new AngularSpeed(angularRateX, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedY1 = new AngularSpeed(angularRateY, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final var angularSpeedZ1 = new AngularSpeed(angularRateZ, AngularSpeedUnit.RADIANS_PER_SECOND);
 
         k.setAngularSpeedCoordinates(angularSpeedX1, angularSpeedY1, angularSpeedZ1);
 
         // check
-        final AngularSpeed angularSpeedX2 = k.getAngularSpeedX();
-        final AngularSpeed angularSpeedY2 = k.getAngularSpeedY();
-        final AngularSpeed angularSpeedZ2 = k.getAngularSpeedZ();
+        final var angularSpeedX2 = k.getAngularSpeedX();
+        final var angularSpeedY2 = k.getAngularSpeedY();
+        final var angularSpeedZ2 = k.getAngularSpeedZ();
         assertEquals(angularSpeedX1, angularSpeedX2);
         assertEquals(angularSpeedY1, angularSpeedY2);
         assertEquals(angularSpeedZ1, angularSpeedZ2);
     }
 
     @Test
-    public void testSpecificForceNorm() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+    void testSpecificForceNorm() {
+        final var randomizer = new UniformRandomizer();
+        final var fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
 
-        final BodyKinematics k = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+        final var k = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final double normF = Math.sqrt(fx * fx + fy * fy + fz * fz);
+        final var normF = Math.sqrt(fx * fx + fy * fy + fz * fz);
         assertEquals(normF, k.getSpecificForceNorm(), 0.0);
 
-        final Acceleration norm1 = k.getSpecificForceNormAsAcceleration();
-        final Acceleration norm2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var norm1 = k.getSpecificForceNormAsAcceleration();
+        final var norm2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         k.getSpecificForceNormAsAcceleration(norm2);
 
         assertEquals(normF, norm1.getValue().doubleValue(), 0.0);
@@ -769,23 +767,23 @@ public class BodyKinematicsTest {
     }
 
     @Test
-    public void testAngularRateNorm() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+    void testAngularRateNorm() {
+        final var randomizer = new UniformRandomizer();
+        final var fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
 
-        final BodyKinematics k = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+        final var k = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final double normAngularRate = Math.sqrt(angularRateX * angularRateX + angularRateY * angularRateY
+        final var normAngularRate = Math.sqrt(angularRateX * angularRateX + angularRateY * angularRateY
                 + angularRateZ * angularRateZ);
         assertEquals(normAngularRate, k.getAngularRateNorm(), 0.0);
 
-        final AngularSpeed norm1 = k.getAngularSpeedNorm();
-        final AngularSpeed norm2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final var norm1 = k.getAngularSpeedNorm();
+        final var norm2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         k.getAngularSpeedNorm(norm2);
 
         assertEquals(normAngularRate, norm1.getValue().doubleValue(), 0.0);
@@ -794,18 +792,18 @@ public class BodyKinematicsTest {
     }
 
     @Test
-    public void testCopyTo() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+    void testCopyTo() {
+        final var randomizer = new UniformRandomizer();
+        final var fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
 
-        final BodyKinematics k1 = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+        final var k1 = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final BodyKinematics k2 = new BodyKinematics();
+        final var k2 = new BodyKinematics();
         k1.copyTo(k2);
 
         // check
@@ -818,18 +816,18 @@ public class BodyKinematicsTest {
     }
 
     @Test
-    public void testCopyFrom() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+    void testCopyFrom() {
+        final var randomizer = new UniformRandomizer();
+        final var fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
 
-        final BodyKinematics k1 = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+        final var k1 = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final BodyKinematics k2 = new BodyKinematics();
+        final var k2 = new BodyKinematics();
         k2.copyFrom(k1);
 
         // check
@@ -842,20 +840,20 @@ public class BodyKinematicsTest {
     }
 
     @Test
-    public void testAsSpecificForceArray() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+    void testAsSpecificForceArray() {
+        final var randomizer = new UniformRandomizer();
+        final var fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
 
-        final BodyKinematics k = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+        final var k = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final double[] array1 = new double[BodyKinematics.COMPONENTS];
+        final var array1 = new double[BodyKinematics.COMPONENTS];
         k.asSpecificForceArray(array1);
-        final double[] array2 = k.asSpecificForceArray();
+        final var array2 = k.asSpecificForceArray();
 
         // check
         assertEquals(fx, array1[0], 0.0);
@@ -868,21 +866,21 @@ public class BodyKinematicsTest {
     }
 
     @Test
-    public void testAsSpecificForceMatrix() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+    void testAsSpecificForceMatrix() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
 
-        final BodyKinematics k = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+        final var k = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final Matrix m1 = new Matrix(BodyKinematics.COMPONENTS, 1);
+        final var m1 = new Matrix(BodyKinematics.COMPONENTS, 1);
         k.asSpecificForceMatrix(m1);
-        final Matrix m2 = k.asSpecificForceMatrix();
-        final Matrix m3 = new Matrix(1, 1);
+        final var m2 = k.asSpecificForceMatrix();
+        final var m3 = new Matrix(1, 1);
         k.asSpecificForceMatrix(m3);
 
         // check
@@ -894,20 +892,20 @@ public class BodyKinematicsTest {
     }
 
     @Test
-    public void testAsAngularRateArray() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+    void testAsAngularRateArray() {
+        final var randomizer = new UniformRandomizer();
+        final var fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
 
-        final BodyKinematics k = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+        final var k = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final double[] array1 = new double[BodyKinematics.COMPONENTS];
+        final var array1 = new double[BodyKinematics.COMPONENTS];
         k.asAngularRateArray(array1);
-        final double[] array2 = k.asAngularRateArray();
+        final var array2 = k.asAngularRateArray();
 
         // check
         assertEquals(angularRateX, array1[0], 0.0);
@@ -920,21 +918,21 @@ public class BodyKinematicsTest {
     }
 
     @Test
-    public void testAsAngularRateMatrix() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+    void testAsAngularRateMatrix() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
 
-        final BodyKinematics k = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+        final var k = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final Matrix m1 = new Matrix(BodyKinematics.COMPONENTS, 1);
+        final var m1 = new Matrix(BodyKinematics.COMPONENTS, 1);
         k.asAngularRateMatrix(m1);
-        final Matrix m2 = k.asAngularRateMatrix();
-        final Matrix m3 = new Matrix(1, 1);
+        final var m2 = k.asAngularRateMatrix();
+        final var m3 = new Matrix(1, 1);
         k.asAngularRateMatrix(m3);
 
         // check
@@ -946,36 +944,36 @@ public class BodyKinematicsTest {
     }
 
     @Test
-    public void testHashCode() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+    void testHashCode() {
+        final var randomizer = new UniformRandomizer();
+        final var fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
 
-        final BodyKinematics k1 = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
-        final BodyKinematics k2 = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
-        final BodyKinematics k3 = new BodyKinematics();
+        final var k1 = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+        final var k2 = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+        final var k3 = new BodyKinematics();
 
         assertEquals(k1.hashCode(), k2.hashCode());
         assertNotEquals(k1.hashCode(), k3.hashCode());
     }
 
     @Test
-    public void testEquals() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+    void testEquals() {
+        final var randomizer = new UniformRandomizer();
+        final var fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
 
-        final BodyKinematics k1 = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
-        final BodyKinematics k2 = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
-        final BodyKinematics k3 = new BodyKinematics();
+        final var k1 = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+        final var k2 = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+        final var k3 = new BodyKinematics();
 
         //noinspection EqualsWithItself
         assertEquals(k1, k1);
@@ -983,24 +981,24 @@ public class BodyKinematicsTest {
         assertTrue(k1.equals(k1));
         assertTrue(k1.equals(k2));
         assertFalse(k1.equals(k3));
-        assertNotEquals(k1, null);
+        assertNotEquals(null, k1);
         assertFalse(k1.equals(null));
-        assertNotEquals(k1, new Object());
+        assertNotEquals(new Object(), k1);
     }
 
     @Test
-    public void testEqualsWithThreshold() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+    void testEqualsWithThreshold() {
+        final var randomizer = new UniformRandomizer();
+        final var fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
 
-        final BodyKinematics k1 = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
-        final BodyKinematics k2 = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
-        final BodyKinematics k3 = new BodyKinematics();
+        final var k1 = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+        final var k2 = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+        final var k3 = new BodyKinematics();
 
         assertTrue(k1.equals(k1, THRESHOLD));
         assertTrue(k1.equals(k2, THRESHOLD));
@@ -1009,45 +1007,45 @@ public class BodyKinematicsTest {
     }
 
     @Test
-    public void testClone() throws CloneNotSupportedException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+    void testClone() throws CloneNotSupportedException {
+        final var randomizer = new UniformRandomizer();
+        final var fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
 
-        final BodyKinematics k1 = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+        final var k1 = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final Object k2 = k1.clone();
+        final var k2 = k1.clone();
 
         // check
         assertEquals(k1, k2);
     }
 
     @Test
-    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+    void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final var randomizer = new UniformRandomizer();
+        final var fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
 
-        final BodyKinematics k1 = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+        final var k1 = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-        final byte[] bytes = SerializationHelper.serialize(k1);
-        final BodyKinematics k2 = SerializationHelper.deserialize(bytes);
+        final var bytes = SerializationHelper.serialize(k1);
+        final var k2 = SerializationHelper.deserialize(bytes);
 
         assertEquals(k1, k2);
         assertNotSame(k1, k2);
     }
 
     @Test
-    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
-        final Field field = BodyKinematics.class.getDeclaredField("serialVersionUID");
+    void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final var field = BodyKinematics.class.getDeclaredField("serialVersionUID");
         field.setAccessible(true);
 
         assertEquals(0L, field.get(null));

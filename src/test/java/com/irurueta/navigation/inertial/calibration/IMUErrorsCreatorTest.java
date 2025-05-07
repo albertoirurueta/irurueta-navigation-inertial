@@ -31,7 +31,6 @@ import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.converters.ECEFtoNEDFrameConverter;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.inertial.ECEFGravity;
 import com.irurueta.navigation.inertial.calibration.accelerometer.KnownFrameAccelerometerLinearLeastSquaresCalibrator;
 import com.irurueta.navigation.inertial.calibration.accelerometer.KnownGravityNormAccelerometerCalibrator;
 import com.irurueta.navigation.inertial.calibration.generators.AccelerometerAndGyroscopeMeasurementsGenerator;
@@ -46,15 +45,14 @@ import com.irurueta.navigation.inertial.calibration.intervals.TriadStaticInterva
 import com.irurueta.navigation.inertial.estimators.ECEFGravityEstimator;
 import com.irurueta.navigation.inertial.estimators.ECEFKinematicsEstimator;
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class IMUErrorsCreatorTest {
+class IMUErrorsCreatorTest {
 
     private static final double TIME_INTERVAL_SECONDS = 0.02;
 
@@ -86,8 +84,8 @@ public class IMUErrorsCreatorTest {
 
 
     @Test
-    public void testConstructor1() {
-        final IMUErrorsCreator creator = new IMUErrorsCreator();
+    void testConstructor1() {
+        final var creator = new IMUErrorsCreator();
 
         // check default values
         assertNull(creator.getAccelerometerCalibrationSource());
@@ -100,16 +98,14 @@ public class IMUErrorsCreatorTest {
     }
 
     @Test
-    public void testConstructor2() {
-        final KnownFrameAccelerometerLinearLeastSquaresCalibrator accelerometerCalibrator =
-                new KnownFrameAccelerometerLinearLeastSquaresCalibrator();
-        final KnownFrameGyroscopeLinearLeastSquaresCalibrator gyroscopeCalibrator =
-                new KnownFrameGyroscopeLinearLeastSquaresCalibrator();
-        final AccelerometerMeasurementsGenerator accelerometerGenerator = new AccelerometerMeasurementsGenerator();
-        final GyroscopeMeasurementsGenerator gyroscopeGenerator = new GyroscopeMeasurementsGenerator();
+    void testConstructor2() {
+        final var accelerometerCalibrator = new KnownFrameAccelerometerLinearLeastSquaresCalibrator();
+        final var gyroscopeCalibrator = new KnownFrameGyroscopeLinearLeastSquaresCalibrator();
+        final var accelerometerGenerator = new AccelerometerMeasurementsGenerator();
+        final var gyroscopeGenerator = new GyroscopeMeasurementsGenerator();
 
-        final IMUErrorsCreator creator = new IMUErrorsCreator(accelerometerCalibrator, gyroscopeCalibrator,
-                accelerometerGenerator, gyroscopeGenerator);
+        final var creator = new IMUErrorsCreator(accelerometerCalibrator, gyroscopeCalibrator, accelerometerGenerator,
+                gyroscopeGenerator);
 
         // check default values
         assertSame(accelerometerCalibrator, creator.getAccelerometerCalibrationSource());
@@ -122,20 +118,18 @@ public class IMUErrorsCreatorTest {
     }
 
     @Test
-    public void testConstructor3() {
-        final KnownFrameAccelerometerLinearLeastSquaresCalibrator accelerometerCalibrator =
-                new KnownFrameAccelerometerLinearLeastSquaresCalibrator();
-        final KnownFrameGyroscopeLinearLeastSquaresCalibrator gyroscopeCalibrator =
-                new KnownFrameGyroscopeLinearLeastSquaresCalibrator();
-        final AccelerometerMeasurementsGenerator accelerometerGenerator = new AccelerometerMeasurementsGenerator();
-        final GyroscopeMeasurementsGenerator gyroscopeGenerator = new GyroscopeMeasurementsGenerator();
+    void testConstructor3() {
+        final var accelerometerCalibrator = new KnownFrameAccelerometerLinearLeastSquaresCalibrator();
+        final var gyroscopeCalibrator = new KnownFrameGyroscopeLinearLeastSquaresCalibrator();
+        final var accelerometerGenerator = new AccelerometerMeasurementsGenerator();
+        final var gyroscopeGenerator = new GyroscopeMeasurementsGenerator();
 
-        final Random random = new Random();
-        final double accelerometerQuantizationLevel = random.nextDouble();
-        final double gyroscopeQuantizationLevel = random.nextDouble();
+        final var random = new Random();
+        final var accelerometerQuantizationLevel = random.nextDouble();
+        final var gyroscopeQuantizationLevel = random.nextDouble();
 
-        final IMUErrorsCreator creator = new IMUErrorsCreator(accelerometerCalibrator, gyroscopeCalibrator,
-                accelerometerGenerator, gyroscopeGenerator, accelerometerQuantizationLevel, gyroscopeQuantizationLevel);
+        final var creator = new IMUErrorsCreator(accelerometerCalibrator, gyroscopeCalibrator, accelerometerGenerator,
+                gyroscopeGenerator, accelerometerQuantizationLevel, gyroscopeQuantizationLevel);
 
         // check default values
         assertSame(accelerometerCalibrator, creator.getAccelerometerCalibrationSource());
@@ -148,15 +142,14 @@ public class IMUErrorsCreatorTest {
     }
 
     @Test
-    public void testGetSetAccelerometerCalibrationSource() {
-        final IMUErrorsCreator creator = new IMUErrorsCreator();
+    void testGetSetAccelerometerCalibrationSource() {
+        final var creator = new IMUErrorsCreator();
 
         // check default value
         assertNull(creator.getAccelerometerCalibrationSource());
 
         // set new value
-        final KnownFrameAccelerometerLinearLeastSquaresCalibrator accelerometerCalibrator =
-                new KnownFrameAccelerometerLinearLeastSquaresCalibrator();
+        final var accelerometerCalibrator = new KnownFrameAccelerometerLinearLeastSquaresCalibrator();
 
         creator.setAccelerometerCalibrationSource(accelerometerCalibrator);
 
@@ -165,15 +158,14 @@ public class IMUErrorsCreatorTest {
     }
 
     @Test
-    public void testGetSetGyroscopeCalibrationSource() {
-        final IMUErrorsCreator creator = new IMUErrorsCreator();
+    void testGetSetGyroscopeCalibrationSource() {
+        final var creator = new IMUErrorsCreator();
 
         // check default value
         assertNull(creator.getGyroscopeCalibrationSource());
 
         // set new value
-        final KnownFrameGyroscopeLinearLeastSquaresCalibrator gyroscopeCalibrator =
-                new KnownFrameGyroscopeLinearLeastSquaresCalibrator();
+        final var gyroscopeCalibrator = new KnownFrameGyroscopeLinearLeastSquaresCalibrator();
 
         creator.setGyroscopeCalibrationSource(gyroscopeCalibrator);
 
@@ -182,14 +174,14 @@ public class IMUErrorsCreatorTest {
     }
 
     @Test
-    public void testGetSetAccelerometerNoiseRootPsdSource() {
-        final IMUErrorsCreator creator = new IMUErrorsCreator();
+    void testGetSetAccelerometerNoiseRootPsdSource() {
+        final var creator = new IMUErrorsCreator();
 
         // check default value
         assertNull(creator.getAccelerometerNoiseRootPsdSource());
 
         // set new value
-        final AccelerometerMeasurementsGenerator accelerometerGenerator = new AccelerometerMeasurementsGenerator();
+        final var accelerometerGenerator = new AccelerometerMeasurementsGenerator();
 
         creator.setAccelerometerNoiseRootPsdSource(accelerometerGenerator);
 
@@ -198,14 +190,14 @@ public class IMUErrorsCreatorTest {
     }
 
     @Test
-    public void testGetSetGyroscopeNoiseRootPsdSource() {
-        final IMUErrorsCreator creator = new IMUErrorsCreator();
+    void testGetSetGyroscopeNoiseRootPsdSource() {
+        final var creator = new IMUErrorsCreator();
 
         // check default value
         assertNull(creator.getGyroscopeNoiseRootPsdSource());
 
         // set new value
-        final GyroscopeMeasurementsGenerator gyroscopeGenerator = new GyroscopeMeasurementsGenerator();
+        final var gyroscopeGenerator = new GyroscopeMeasurementsGenerator();
 
         creator.sstGyroscopeNoiseRootPsdSource(gyroscopeGenerator);
 
@@ -214,15 +206,15 @@ public class IMUErrorsCreatorTest {
     }
 
     @Test
-    public void testGetSetAccelerometerQuantizationLevel() {
-        final IMUErrorsCreator creator = new IMUErrorsCreator();
+    void testGetSetAccelerometerQuantizationLevel() {
+        final var creator = new IMUErrorsCreator();
 
         // check default value
         assertEquals(0.0, creator.getAccelerometerQuantizationLevel(), 0.0);
 
         // set new value
-        final Random random = new Random();
-        final double accelerometerQuantizationLevel = random.nextDouble();
+        final var random = new Random();
+        final var accelerometerQuantizationLevel = random.nextDouble();
 
         creator.setAccelerometerQuantizationLevel(accelerometerQuantizationLevel);
 
@@ -231,15 +223,15 @@ public class IMUErrorsCreatorTest {
     }
 
     @Test
-    public void testGetSetGyroQuantizationLevel() {
-        final IMUErrorsCreator creator = new IMUErrorsCreator();
+    void testGetSetGyroQuantizationLevel() {
+        final var creator = new IMUErrorsCreator();
 
         // check default value
         assertEquals(0.0, creator.getGyroQuantizationLevel(), 0.0);
 
         // set new value
-        final Random random = new Random();
-        final double gyroscopeQuantizationLevel = random.nextDouble();
+        final var random = new Random();
+        final var gyroscopeQuantizationLevel = random.nextDouble();
 
         creator.setGyroQuantizationLevel(gyroscopeQuantizationLevel);
 
@@ -248,129 +240,127 @@ public class IMUErrorsCreatorTest {
     }
 
     @Test
-    public void testCreate() throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException, LockedException,
+    void testCreate() throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException, LockedException,
             InvalidRotationMatrixException, NotReadyException, RotationException {
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMaCommonAxis();
-        final Matrix mg = generateMg();
-        final Matrix gg = new Matrix(3, 3);
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMaCommonAxis();
+        final var mg = generateMg();
+        final var gg = new Matrix(3, 3);
 
-        final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+        final var gyroNoiseRootPSD = 0.0;
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, SMALL_ROOT_PSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, SMALL_ROOT_PSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var random = new Random();
+            final var randomizer = new UniformRandomizer(random);
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+            final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
                     FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-            final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+            final var nedFrame = new NEDFrame(nedPosition, nedC);
+            final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
             // compute ground-truth kinematics that should be generated at provided
             // position, velocity and orientation
-            final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
-                    TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
+            final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS,
+                    ecefFrame, ecefFrame);
 
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> gyroscopeMeasurements =
-                    new ArrayList<>();
-            final List<StandardDeviationBodyKinematics> accelerometerMeasurements = new ArrayList<>();
+            final var gyroscopeMeasurements =
+                    new ArrayList<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>();
+            final var accelerometerMeasurements = new ArrayList<StandardDeviationBodyKinematics>();
 
-            final AccelerometerAndGyroscopeMeasurementsGenerator generator =
-                    new AccelerometerAndGyroscopeMeasurementsGenerator(
-                            new AccelerometerAndGyroscopeMeasurementsGeneratorListener() {
-                                @Override
-                                public void onInitializationStarted(
-                                        final AccelerometerAndGyroscopeMeasurementsGenerator generator) {
-                                    // no action needed
-                                }
+            final var generator = new AccelerometerAndGyroscopeMeasurementsGenerator(
+                    new AccelerometerAndGyroscopeMeasurementsGeneratorListener() {
+                        @Override
+                        public void onInitializationStarted(
+                                final AccelerometerAndGyroscopeMeasurementsGenerator generator) {
+                            // no action needed
+                        }
 
-                                @Override
-                                public void onInitializationCompleted(
-                                        final AccelerometerAndGyroscopeMeasurementsGenerator generator,
-                                        final double accelerometerBaseNoiseLevel) {
-                                    // no action needed
-                                }
+                        @Override
+                        public void onInitializationCompleted(
+                                final AccelerometerAndGyroscopeMeasurementsGenerator generator,
+                                final double accelerometerBaseNoiseLevel) {
+                            // no action needed
+                        }
 
-                                @Override
-                                public void onError(
-                                        final AccelerometerAndGyroscopeMeasurementsGenerator generator,
-                                        final TriadStaticIntervalDetector.ErrorReason reason) {
-                                    // no action needed
-                                }
+                        @Override
+                        public void onError(
+                                final AccelerometerAndGyroscopeMeasurementsGenerator generator,
+                                final TriadStaticIntervalDetector.ErrorReason reason) {
+                            // no action needed
+                        }
 
-                                @Override
-                                public void onStaticIntervalDetected(
-                                        final AccelerometerAndGyroscopeMeasurementsGenerator generator) {
-                                    // no action needed
-                                }
+                        @Override
+                        public void onStaticIntervalDetected(
+                                final AccelerometerAndGyroscopeMeasurementsGenerator generator) {
+                            // no action needed
+                        }
 
-                                @Override
-                                public void onDynamicIntervalDetected(
-                                        final AccelerometerAndGyroscopeMeasurementsGenerator generator) {
-                                    // no action needed
-                                }
+                        @Override
+                        public void onDynamicIntervalDetected(
+                                final AccelerometerAndGyroscopeMeasurementsGenerator generator) {
+                            // no action needed
+                        }
 
-                                @Override
-                                public void onStaticIntervalSkipped(
-                                        final AccelerometerAndGyroscopeMeasurementsGenerator generator) {
-                                    // no action needed
-                                }
+                        @Override
+                        public void onStaticIntervalSkipped(
+                                final AccelerometerAndGyroscopeMeasurementsGenerator generator) {
+                            // no action needed
+                        }
 
-                                @Override
-                                public void onDynamicIntervalSkipped(
-                                        final AccelerometerAndGyroscopeMeasurementsGenerator generator) {
-                                    // no action needed
-                                }
+                        @Override
+                        public void onDynamicIntervalSkipped(
+                                final AccelerometerAndGyroscopeMeasurementsGenerator generator) {
+                            // no action needed
+                        }
 
-                                @Override
-                                public void onGeneratedAccelerometerMeasurement(
-                                        final AccelerometerAndGyroscopeMeasurementsGenerator generator,
-                                        final StandardDeviationBodyKinematics measurement) {
-                                    accelerometerMeasurements.add(measurement);
-                                }
+                        @Override
+                        public void onGeneratedAccelerometerMeasurement(
+                                final AccelerometerAndGyroscopeMeasurementsGenerator generator,
+                                final StandardDeviationBodyKinematics measurement) {
+                            accelerometerMeasurements.add(measurement);
+                        }
 
-                                @Override
-                                public void onGeneratedGyroscopeMeasurement(
-                                        final AccelerometerAndGyroscopeMeasurementsGenerator generator,
-                                        final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> measurement) {
-                                    gyroscopeMeasurements.add(measurement);
-                                }
+                        @Override
+                        public void onGeneratedGyroscopeMeasurement(
+                                final AccelerometerAndGyroscopeMeasurementsGenerator generator,
+                                final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> measurement) {
+                            gyroscopeMeasurements.add(measurement);
+                        }
 
-                                @Override
-                                public void onReset(
-                                        final AccelerometerAndGyroscopeMeasurementsGenerator generator) {
-                                    // no action needed
-                                }
-                            });
+                        @Override
+                        public void onReset(final AccelerometerAndGyroscopeMeasurementsGenerator generator) {
+                            // no action needed
+                        }
+                    });
 
             // generate initial static samples
-            final int initialStaticSamples = TriadStaticIntervalDetector.DEFAULT_INITIAL_STATIC_SAMPLES;
+            final var initialStaticSamples = TriadStaticIntervalDetector.DEFAULT_INITIAL_STATIC_SAMPLES;
             generateStaticSamples(generator, initialStaticSamples, trueKinematics, errors, random, 0);
 
-            final int numSequences = EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS;
-            final int numMeasurements = KnownGravityNormAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL;
-            final int n = Math.max(numSequences + 1, numMeasurements);
+            final var numSequences = EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS;
+            final var numMeasurements = KnownGravityNormAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL;
+            final var n = Math.max(numSequences + 1, numMeasurements);
 
-            final int staticPeriodLength = 3 * TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE;
-            final int dynamicPeriodLength = TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE;
+            final var staticPeriodLength = 3 * TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE;
+            final var dynamicPeriodLength = TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE;
 
-            int start = initialStaticSamples;
-            for (int i = 0; i < n; i++) {
+            var start = initialStaticSamples;
+            for (var i = 0; i < n; i++) {
                 // generate static samples
                 generateStaticSamples(generator, staticPeriodLength, trueKinematics, errors, random, start);
                 start += staticPeriodLength;
@@ -381,22 +371,22 @@ public class IMUErrorsCreatorTest {
                 start += dynamicPeriodLength;
             }
 
-            // as an initial value for gyroscope bias we can use the average
+            // as an initial value for gyroscope bias, we can use the average
             // gyroscope values during initialization. A more accurate initial
             // guess for bias could be obtained by using leveling with magnetometer
             // and accelerometer readings (once both magnetometer and accelerometer
             // are calibrated).
-            final AngularSpeedTriad initialAvgAngularSpeed = generator.getInitialAvgAngularSpeedTriad();
-            final Matrix initialBg = initialAvgAngularSpeed.getValuesAsMatrix();
+            final var initialAvgAngularSpeed = generator.getInitialAvgAngularSpeedTriad();
+            final var initialBg = initialAvgAngularSpeed.getValuesAsMatrix();
 
             if (generator.getStatus() == TriadStaticIntervalDetector.Status.FAILED) {
                 continue;
             }
 
-            final Matrix initialMg = new Matrix(3, 3);
-            final Matrix initialGg = new Matrix(3, 3);
-            final EasyGyroscopeCalibrator gyroCalibrator = new EasyGyroscopeCalibrator(gyroscopeMeasurements,
-                    true, false, initialBg, initialMg, initialGg, ba, ma);
+            final var initialMg = new Matrix(3, 3);
+            final var initialGg = new Matrix(3, 3);
+            final var gyroCalibrator = new EasyGyroscopeCalibrator(gyroscopeMeasurements, true,
+                    false, initialBg, initialMg, initialGg, ba, ma);
 
             try {
                 gyroCalibrator.calibrate();
@@ -404,15 +394,14 @@ public class IMUErrorsCreatorTest {
                 continue;
             }
 
-            final double[] estimatedBg = gyroCalibrator.getEstimatedBiases();
-            final Matrix estimatedMg = gyroCalibrator.getEstimatedMg();
-            final Matrix estimatedGg = gyroCalibrator.getEstimatedGg();
+            final var estimatedBg = gyroCalibrator.getEstimatedBiases();
+            final var estimatedMg = gyroCalibrator.getEstimatedMg();
+            final var estimatedGg = gyroCalibrator.getEstimatedGg();
 
-            final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(ecefFrame);
+            final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(ecefFrame);
 
-            KnownGravityNormAccelerometerCalibrator accelerometerCalibrator =
-                    new KnownGravityNormAccelerometerCalibrator(gravity.getNorm(), accelerometerMeasurements,
-                            true);
+            final var accelerometerCalibrator = new KnownGravityNormAccelerometerCalibrator(gravity.getNorm(), 
+                    accelerometerMeasurements, true);
 
             try {
                 accelerometerCalibrator.calibrate();
@@ -420,11 +409,11 @@ public class IMUErrorsCreatorTest {
                 continue;
             }
 
-            final double[] estimatedBa = accelerometerCalibrator.getEstimatedBiases();
-            final Matrix estimatedMa = accelerometerCalibrator.getEstimatedMa();
+            final var estimatedBa = accelerometerCalibrator.getEstimatedBiases();
+            final var estimatedMa = accelerometerCalibrator.getEstimatedMa();
 
-            final double estimatedAccelerometerNoiseRootPsd = generator.getAccelerometerBaseNoiseLevelRootPsd();
-            final double estimatedGyroNoiseRootPsd = generator.getGyroscopeBaseNoiseLevelRootPsd();
+            final var estimatedAccelerometerNoiseRootPsd = generator.getAccelerometerBaseNoiseLevelRootPsd();
+            final var estimatedGyroNoiseRootPsd = generator.getGyroscopeBaseNoiseLevelRootPsd();
 
             assertNotNull(estimatedBa);
             assertNotNull(estimatedMa);
@@ -432,13 +421,13 @@ public class IMUErrorsCreatorTest {
             assertNotNull(estimatedMg);
             assertNotNull(estimatedGg);
 
-            final double accelerometerQuantizationLevel = random.nextDouble();
-            final double gyroscopeQuantizationLevel = random.nextDouble();
+            final var accelerometerQuantizationLevel = random.nextDouble();
+            final var gyroscopeQuantizationLevel = random.nextDouble();
 
-            final IMUErrorsCreator creator = new IMUErrorsCreator(accelerometerCalibrator, gyroCalibrator, generator,
-                    generator, accelerometerQuantizationLevel, gyroscopeQuantizationLevel);
+            final var creator = new IMUErrorsCreator(accelerometerCalibrator, gyroCalibrator, generator, generator, 
+                    accelerometerQuantizationLevel, gyroscopeQuantizationLevel);
 
-            final IMUErrors estimatedErrors = creator.create();
+            final var estimatedErrors = creator.create();
 
             assertNotNull(estimatedErrors);
             assertArrayEquals(estimatedBa, estimatedErrors.getAccelerometerBiases(), 0.0);
@@ -476,9 +465,9 @@ public class IMUErrorsCreatorTest {
             assertTrue(estimatedAccelerometerNoiseRootPsd > 0.0);
             assertTrue(estimatedGyroNoiseRootPsd > 0.0);
 
-            final double accelerometerNoiseLevel = generator.getAccelerometerBaseNoiseLevel();
-            final double gyroNoiseLevel = generator.getGyroscopeBaseNoiseLevel();
-            final double sqrtTimeInterval = Math.sqrt(generator.getTimeInterval());
+            final var accelerometerNoiseLevel = generator.getAccelerometerBaseNoiseLevel();
+            final var gyroNoiseLevel = generator.getGyroscopeBaseNoiseLevel();
+            final var sqrtTimeInterval = Math.sqrt(generator.getTimeInterval());
             assertEquals(accelerometerNoiseLevel * sqrtTimeInterval, estimatedAccelerometerNoiseRootPsd,
                     SMALL_ABSOLUTE_ERROR);
             assertEquals(gyroNoiseLevel * sqrtTimeInterval, estimatedGyroNoiseRootPsd, SMALL_ABSOLUTE_ERROR);
@@ -493,7 +482,7 @@ public class IMUErrorsCreatorTest {
         assertTrue(numValid > 0);
 
         // Force NotReadyException
-        final IMUErrorsCreator creator = new IMUErrorsCreator();
+        final var creator = new IMUErrorsCreator();
         assertThrows(NotReadyException.class, creator::create);
     }
 
@@ -512,7 +501,7 @@ public class IMUErrorsCreatorTest {
     }
 
     private static Matrix generateMaCommonAxis() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
+        final var result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 500e-6, -300e-6, 200e-6,
                 0.0, -600e-6, 250e-6,
@@ -523,7 +512,7 @@ public class IMUErrorsCreatorTest {
     }
 
     private static Matrix generateMg() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
+        final var result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 400e-6, -300e-6, 250e-6,
                 0.0, -300e-6, -150e-6,
@@ -546,10 +535,9 @@ public class IMUErrorsCreatorTest {
             final BodyKinematics trueKinematics, final IMUErrors errors, final Random random, final int startSample)
             throws LockedException {
 
-        final TimedBodyKinematics timedMeasuredKinematics = new TimedBodyKinematics();
-        final BodyKinematics measuredKinematics = new BodyKinematics();
+        final var timedMeasuredKinematics = new TimedBodyKinematics();
+        final var measuredKinematics = new BodyKinematics();
         for (int i = 0, j = startSample; i < numSamples; i++, j++) {
-
             BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors, random, measuredKinematics);
 
             timedMeasuredKinematics.setKinematics(measuredKinematics);
@@ -567,79 +555,76 @@ public class IMUErrorsCreatorTest {
             final boolean changePosition) throws InvalidSourceAndDestinationFrameTypeException, LockedException,
             InvalidRotationMatrixException, RotationException {
 
-        final double sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
-        final double specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
-        final double angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
+        final var sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
+        final var specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
+        final var angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
 
-        final double deltaX = changePosition ? randomizer.nextDouble(MIN_DELTA_POS_METERS, MAX_DELTA_POS_METERS) : 0.0;
-        final double deltaY = changePosition ? randomizer.nextDouble(MIN_DELTA_POS_METERS, MAX_DELTA_POS_METERS) : 0.0;
-        final double deltaZ = changePosition ? randomizer.nextDouble(MIN_DELTA_POS_METERS, MAX_DELTA_POS_METERS) : 0.0;
+        final var deltaX = changePosition ? randomizer.nextDouble(MIN_DELTA_POS_METERS, MAX_DELTA_POS_METERS) : 0.0;
+        final var deltaY = changePosition ? randomizer.nextDouble(MIN_DELTA_POS_METERS, MAX_DELTA_POS_METERS) : 0.0;
+        final var deltaZ = changePosition ? randomizer.nextDouble(MIN_DELTA_POS_METERS, MAX_DELTA_POS_METERS) : 0.0;
 
-        final double deltaRoll = Math.toRadians(randomizer.nextDouble(
-                MIN_DELTA_ANGLE_DEGREES, MAX_DELTA_ANGLE_DEGREES));
-        final double deltaPitch = Math.toRadians(randomizer.nextDouble(
-                MIN_DELTA_ANGLE_DEGREES, MAX_DELTA_ANGLE_DEGREES));
-        final double deltaYaw = Math.toRadians(randomizer.nextDouble(MIN_DELTA_ANGLE_DEGREES, MAX_DELTA_ANGLE_DEGREES));
+        final var deltaRoll = Math.toRadians(randomizer.nextDouble(MIN_DELTA_ANGLE_DEGREES, MAX_DELTA_ANGLE_DEGREES));
+        final var deltaPitch = Math.toRadians(randomizer.nextDouble(MIN_DELTA_ANGLE_DEGREES, MAX_DELTA_ANGLE_DEGREES));
+        final var deltaYaw = Math.toRadians(randomizer.nextDouble(MIN_DELTA_ANGLE_DEGREES, MAX_DELTA_ANGLE_DEGREES));
 
-        final double ecefX = ecefFrame.getX();
-        final double ecefY = ecefFrame.getY();
-        final double ecefZ = ecefFrame.getZ();
+        final var ecefX = ecefFrame.getX();
+        final var ecefY = ecefFrame.getY();
+        final var ecefZ = ecefFrame.getZ();
 
-        final CoordinateTransformation nedC = nedFrame.getCoordinateTransformation();
+        final var nedC = nedFrame.getCoordinateTransformation();
 
-        final double roll = nedC.getRollEulerAngle();
-        final double pitch = nedC.getPitchEulerAngle();
-        final double yaw = nedC.getYawEulerAngle();
+        final var roll = nedC.getRollEulerAngle();
+        final var pitch = nedC.getPitchEulerAngle();
+        final var yaw = nedC.getYawEulerAngle();
 
-        final Quaternion beforeQ = new Quaternion();
+        final var beforeQ = new Quaternion();
         nedC.asRotation(beforeQ);
 
-        NEDFrame oldNedFrame = new NEDFrame(nedFrame);
-        NEDFrame newNedFrame = new NEDFrame();
-        ECEFFrame oldEcefFrame = new ECEFFrame(ecefFrame);
-        ECEFFrame newEcefFrame = new ECEFFrame();
+        var oldNedFrame = new NEDFrame(nedFrame);
+        var newNedFrame = new NEDFrame();
+        var oldEcefFrame = new ECEFFrame(ecefFrame);
+        var newEcefFrame = new ECEFFrame();
 
-        double oldEcefX = ecefX - deltaX;
-        double oldEcefY = ecefY - deltaY;
-        double oldEcefZ = ecefZ - deltaZ;
-        double oldRoll = roll - deltaRoll;
-        double oldPitch = pitch - deltaPitch;
-        double oldYaw = yaw - deltaYaw;
+        var oldEcefX = ecefX - deltaX;
+        var oldEcefY = ecefY - deltaY;
+        var oldEcefZ = ecefZ - deltaZ;
+        var oldRoll = roll - deltaRoll;
+        var oldPitch = pitch - deltaPitch;
+        var oldYaw = yaw - deltaYaw;
 
-        final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> trueSequence =
-                new BodyKinematicsSequence<>();
-        final List<StandardDeviationTimedBodyKinematics> trueTimedKinematicsList = new ArrayList<>();
+        final var trueSequence = new BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>();
+        final var trueTimedKinematicsList = new ArrayList<StandardDeviationTimedBodyKinematics>();
 
-        final TimedBodyKinematics timedMeasuredKinematics = new TimedBodyKinematics();
-        final BodyKinematics measuredKinematics = new BodyKinematics();
+        final var timedMeasuredKinematics = new TimedBodyKinematics();
+        final var measuredKinematics = new BodyKinematics();
 
         for (int i = 0, j = startSample; i < numSamples; i++, j++) {
-            final double progress = (double) i / (double) numSamples;
+            final var progress = (double) i / (double) numSamples;
 
-            final double newRoll = oldRoll + interpolate(deltaRoll, progress);
-            final double newPitch = oldPitch + interpolate(deltaPitch, progress);
-            final double newYaw = oldYaw + interpolate(deltaYaw, progress);
-            final CoordinateTransformation newNedC = new CoordinateTransformation(newRoll, newPitch, newYaw,
-                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
-            final NEDPosition newNedPosition = oldNedFrame.getPosition();
+            final var newRoll = oldRoll + interpolate(deltaRoll, progress);
+            final var newPitch = oldPitch + interpolate(deltaPitch, progress);
+            final var newYaw = oldYaw + interpolate(deltaYaw, progress);
+            final var newNedC = new CoordinateTransformation(newRoll, newPitch, newYaw, FrameType.BODY_FRAME,
+                    FrameType.LOCAL_NAVIGATION_FRAME);
+            final var newNedPosition = oldNedFrame.getPosition();
 
             newNedFrame.setPosition(newNedPosition);
             newNedFrame.setCoordinateTransformation(newNedC);
 
             NEDtoECEFFrameConverter.convertNEDtoECEF(newNedFrame, newEcefFrame);
 
-            final double newEcefX = oldEcefX + interpolate(deltaX, progress);
-            final double newEcefY = oldEcefY + interpolate(deltaY, progress);
-            final double newEcefZ = oldEcefZ + interpolate(deltaZ, progress);
+            final var newEcefX = oldEcefX + interpolate(deltaX, progress);
+            final var newEcefY = oldEcefY + interpolate(deltaY, progress);
+            final var newEcefZ = oldEcefZ + interpolate(deltaZ, progress);
 
             newEcefFrame.setCoordinates(newEcefX, newEcefY, newEcefZ);
 
             ECEFtoNEDFrameConverter.convertECEFtoNED(newEcefFrame, newNedFrame);
 
-            final double timestampSeconds = j * TIME_INTERVAL_SECONDS;
+            final var timestampSeconds = j * TIME_INTERVAL_SECONDS;
 
             // update true kinematics using new position and rotation
-            ECEFKinematicsEstimator.estimateKinematics(TIME_INTERVAL_SECONDS, newEcefFrame, oldEcefFrame,
+            ECEFKinematicsEstimator.estimateKinematics(TIME_INTERVAL_SECONDS, newEcefFrame, oldEcefFrame, 
                     trueKinematics);
 
             // add error to true kinematics
@@ -650,9 +635,8 @@ public class IMUErrorsCreatorTest {
 
             assertTrue(generator.process(timedMeasuredKinematics));
 
-            final StandardDeviationTimedBodyKinematics trueTimedKinematics = new StandardDeviationTimedBodyKinematics(
-                    new BodyKinematics(trueKinematics), timestampSeconds, specificForceStandardDeviation,
-                    angularRateStandardDeviation);
+            final var trueTimedKinematics = new StandardDeviationTimedBodyKinematics(new BodyKinematics(trueKinematics),
+                    timestampSeconds, specificForceStandardDeviation, angularRateStandardDeviation);
             trueTimedKinematicsList.add(trueTimedKinematics);
 
             oldNedFrame.copyFrom(newNedFrame);
@@ -667,12 +651,12 @@ public class IMUErrorsCreatorTest {
 
         trueSequence.setItems(trueTimedKinematicsList);
 
-        final Quaternion afterQ = new Quaternion();
+        final var afterQ = new Quaternion();
         QuaternionIntegrator.integrateGyroSequence(trueSequence, beforeQ, QuaternionStepIntegratorType.RUNGE_KUTTA,
                 afterQ);
 
-        final CoordinateTransformation newNedC = new CoordinateTransformation(afterQ.asInhomogeneousMatrix(),
-                FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+        final var newNedC = new CoordinateTransformation(afterQ.asInhomogeneousMatrix(), FrameType.BODY_FRAME,
+                FrameType.LOCAL_NAVIGATION_FRAME);
         newNedFrame.setCoordinateTransformation(newNedC);
 
         NEDtoECEFFrameConverter.convertNEDtoECEF(newNedFrame, newEcefFrame);
@@ -682,13 +666,13 @@ public class IMUErrorsCreatorTest {
         ecefFrame.copyFrom(newEcefFrame);
         nedFrame.copyFrom(newNedFrame);
 
-        // after dynamic sequence finishes, update true kinematics for a
-        // static sequence at current frame
+        // after the dynamic sequence finishes, update true kinematics for a
+        // static sequence at the current frame
         ECEFKinematicsEstimator.estimateKinematics(TIME_INTERVAL_SECONDS, newEcefFrame, newEcefFrame, trueKinematics);
     }
 
     // This is required to simulate a smooth transition of values during
-    // dynamic period, to avoid a sudden rotation or translation and simulate
+    // a dynamic period, to avoid a sudden rotation or translation and simulate
     // a more natural behaviour.
     private static double interpolate(final double value, final double progress) {
         return -2.0 * (Math.abs(progress - 0.5) - 0.5) * value;

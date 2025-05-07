@@ -31,27 +31,27 @@ public class EulerQuaternionStepIntegrator extends QuaternionStepIntegrator {
     /**
      * Angular speed at initial timestamp t0 to be reused.
      */
-    private Matrix mOmega0;
+    private Matrix omega0;
 
     /**
      * Initial attitude to be reused.
      */
-    private Matrix mQuat;
+    private Matrix quat;
 
     /**
      * Instance where result of integration is stored in matrix form being reused.
      */
-    private Matrix mQuatResult;
+    private Matrix quatResult;
 
     /**
      * Slope of quaternion derivative at initial timestamp t0 to be reused.
      */
-    private Matrix mK1;
+    private Matrix k1;
 
     /**
      * Skew antisymmetric matrix used for quaternion time derivative computation to be reused.
      */
-    private Matrix mOmegaSkew;
+    private Matrix omegaSkew;
 
     /**
      * Constructor.
@@ -59,11 +59,11 @@ public class EulerQuaternionStepIntegrator extends QuaternionStepIntegrator {
      */
     public EulerQuaternionStepIntegrator() {
         try {
-            mOmega0 = new Matrix(Rotation3D.INHOM_COORDS, 1);
-            mQuat = new Matrix(Quaternion.N_PARAMS, 1);
-            mQuatResult = new Matrix(Quaternion.N_PARAMS, 1);
-            mK1 = new Matrix(Quaternion.N_PARAMS, 1);
-            mOmegaSkew = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
+            omega0 = new Matrix(Rotation3D.INHOM_COORDS, 1);
+            quat = new Matrix(Quaternion.N_PARAMS, 1);
+            quatResult = new Matrix(Quaternion.N_PARAMS, 1);
+            k1 = new Matrix(Quaternion.N_PARAMS, 1);
+            omegaSkew = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
         } catch (final AlgebraException ignore) {
             // never happens
         }
@@ -107,8 +107,8 @@ public class EulerQuaternionStepIntegrator extends QuaternionStepIntegrator {
             final double initialWx, final double initialWy, final double initialWz,
             final double currentWx, final double currentWy, final double currentWz,
             final double dt, final Quaternion result) throws RotationException {
-        integrationStep(initialAttitude, initialWx, initialWy, initialWz,
-                dt, result, mOmega0, mQuat, mQuatResult, mK1, mOmegaSkew);
+        integrationStep(initialAttitude, initialWx, initialWy, initialWz, dt, result, omega0, quat, quatResult, k1,
+                omegaSkew);
     }
 
     /**
@@ -136,13 +136,13 @@ public class EulerQuaternionStepIntegrator extends QuaternionStepIntegrator {
             final double dt, final Quaternion result) throws RotationException {
 
         try {
-            final Matrix omega0 = new Matrix(Rotation3D.INHOM_COORDS, 1);
-            final Matrix quat = new Matrix(Quaternion.N_PARAMS, 1);
-            final Matrix quatResult = new Matrix(Quaternion.N_PARAMS, 1);
-            final Matrix k1 = new Matrix(Quaternion.N_PARAMS, 1);
-            final Matrix omegaSkew = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
-            integrationStep(initialAttitude, initialWx, initialWy, initialWz,
-                    dt, result, omega0, quat, quatResult, k1, omegaSkew);
+            final var omega0 = new Matrix(Rotation3D.INHOM_COORDS, 1);
+            final var quat = new Matrix(Quaternion.N_PARAMS, 1);
+            final var quatResult = new Matrix(Quaternion.N_PARAMS, 1);
+            final var k1 = new Matrix(Quaternion.N_PARAMS, 1);
+            final var omegaSkew = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
+            integrationStep(initialAttitude, initialWx, initialWy, initialWz, dt, result, omega0, quat, quatResult, k1,
+                    omegaSkew);
         } catch (final AlgebraException ignore) {
             // never happens
         }

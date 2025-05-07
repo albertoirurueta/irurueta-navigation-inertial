@@ -20,7 +20,6 @@ import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.frames.CoordinateTransformation;
-import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.ECEFPosition;
 import com.irurueta.navigation.frames.ECEFVelocity;
 import com.irurueta.navigation.frames.FrameType;
@@ -42,17 +41,15 @@ import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationUnit;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implements
+class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implements 
         RobustKnownBiasAndPositionAccelerometerCalibratorListener {
 
     private static final double TIME_INTERVAL_SECONDS = 0.02;
@@ -85,15 +82,14 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
 
     private static final int TIMES = 100;
 
-    private int mCalibrateStart;
-    private int mCalibrateEnd;
-    private int mCalibrateNextIteration;
-    private int mCalibrateProgressChange;
+    private int calibrateStart;
+    private int calibrateEnd;
+    private int calibrateNextIteration;
+    private int calibrateProgressChange;
 
     @Test
-    public void testConstructor1() throws WrongSizeException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testConstructor1() throws WrongSizeException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -102,10 +98,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
         assertEquals(0.0, calibrator.getBiasY(), 0.0);
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -120,12 +116,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(0.0, biasTriad1.getValueX(), 0.0);
         assertEquals(0.0, biasTriad1.getValueY(), 0.0);
         assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -137,19 +133,19 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertNull(calibrator.getEcefPosition());
@@ -162,14 +158,14 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertTrue(calibrator.isQualityScoresRequired());
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        Assert.assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, 
                 calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
                 calibrator.getMaxIterations(), 0.0);
         assertNull(calibrator.getInliersData());
@@ -194,9 +190,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor2() throws WrongSizeException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(this);
+    void testConstructor2() throws WrongSizeException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(this);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -205,10 +200,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
         assertEquals(0.0, calibrator.getBiasY(), 0.0);
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -223,12 +218,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(0.0, biasTriad1.getValueX(), 0.0);
         assertEquals(0.0, biasTriad1.getValueY(), 0.0);
         assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -240,19 +235,19 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertNull(calibrator.getEcefPosition());
@@ -297,11 +292,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor3() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor3() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(measurements);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(measurements);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -310,10 +304,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
         assertEquals(0.0, calibrator.getBiasY(), 0.0);
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -328,12 +322,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(0.0, biasTriad1.getValueX(), 0.0);
         assertEquals(0.0, biasTriad1.getValueY(), 0.0);
         assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -345,19 +339,19 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertNull(calibrator.getEcefPosition());
@@ -402,9 +396,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor4() throws WrongSizeException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(true);
+    void testConstructor4() throws WrongSizeException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(true);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -413,10 +406,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
         assertEquals(0.0, calibrator.getBiasY(), 0.0);
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -431,12 +424,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(0.0, biasTriad1.getValueX(), 0.0);
         assertEquals(0.0, biasTriad1.getValueY(), 0.0);
         assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -448,19 +441,19 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertNull(calibrator.getEcefPosition());
@@ -505,15 +498,14 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor5() throws WrongSizeException {
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+    void testConstructor5() throws WrongSizeException {
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(bias);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(bias);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -522,10 +514,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -540,12 +532,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -558,16 +550,16 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertNull(calibrator.getEcefPosition());
@@ -616,15 +608,14 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor6() throws WrongSizeException {
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+    void testConstructor6() throws WrongSizeException {
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ba);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ba);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -633,10 +624,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -651,12 +642,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -669,16 +660,16 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertNull(calibrator.getEcefPosition());
@@ -731,26 +722,25 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor7() throws WrongSizeException {
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+    void testConstructor7() throws WrongSizeException {
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final Matrix ma = generateMaGeneral();
-        final double sx = ma.getElementAt(0, 0);
-        final double sy = ma.getElementAt(1, 1);
-        final double sz = ma.getElementAt(2, 2);
-        final double mxy = ma.getElementAt(0, 1);
-        final double mxz = ma.getElementAt(0, 2);
-        final double myx = ma.getElementAt(1, 0);
-        final double myz = ma.getElementAt(1, 2);
-        final double mzx = ma.getElementAt(2, 0);
-        final double mzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var sx = ma.getElementAt(0, 0);
+        final var sy = ma.getElementAt(1, 1);
+        final var sz = ma.getElementAt(2, 2);
+        final var mxy = ma.getElementAt(0, 1);
+        final var mxz = ma.getElementAt(0, 2);
+        final var myx = ma.getElementAt(1, 0);
+        final var myz = ma.getElementAt(1, 2);
+        final var mzx = ma.getElementAt(2, 0);
+        final var mzy = ma.getElementAt(2, 1);
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ba, ma);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ba, ma);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -759,10 +749,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -777,12 +767,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -795,15 +785,15 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(ma, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertNull(calibrator.getEcefPosition());
@@ -862,19 +852,18 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor8() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor8() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ecefPosition);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ecefPosition);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -883,10 +872,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
         assertEquals(0.0, calibrator.getBiasY(), 0.0);
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -901,12 +890,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(0.0, biasTriad1.getValueX(), 0.0);
         assertEquals(0.0, biasTriad1.getValueY(), 0.0);
         assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -918,24 +907,24 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertNull(calibrator.getMeasurements());
@@ -951,8 +940,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
                 calibrator.getMaxIterations(), 0.0);
         assertNull(calibrator.getInliersData());
@@ -977,21 +966,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor9() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor9() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ecefPosition, measurements);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ecefPosition,
+                measurements);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -1000,10 +989,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
         assertEquals(0.0, calibrator.getBiasY(), 0.0);
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -1018,12 +1007,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(0.0, biasTriad1.getValueX(), 0.0);
         assertEquals(0.0, biasTriad1.getValueY(), 0.0);
         assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -1035,24 +1024,24 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -1094,21 +1083,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor10() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor10() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ecefPosition, measurements, this);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ecefPosition, measurements,
+                this);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -1117,10 +1106,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
         assertEquals(0.0, calibrator.getBiasY(), 0.0);
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -1135,12 +1124,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(0.0, biasTriad1.getValueX(), 0.0);
         assertEquals(0.0, biasTriad1.getValueY(), 0.0);
         assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -1152,24 +1141,24 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -1211,22 +1200,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor11() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor11() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ecefPosition, measurements,
-                        true);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ecefPosition, measurements,
+                true);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -1235,10 +1223,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
         assertEquals(0.0, calibrator.getBiasY(), 0.0);
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -1253,12 +1241,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(0.0, biasTriad1.getValueX(), 0.0);
         assertEquals(0.0, biasTriad1.getValueY(), 0.0);
         assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -1270,24 +1258,24 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -1329,22 +1317,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor12() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor12() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ecefPosition, measurements,
-                        true, this);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ecefPosition, measurements,
+                true, this);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -1353,10 +1340,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
         assertEquals(0.0, calibrator.getBiasY(), 0.0);
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -1371,12 +1358,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(0.0, biasTriad1.getValueX(), 0.0);
         assertEquals(0.0, biasTriad1.getValueY(), 0.0);
         assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -1388,24 +1375,24 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -1447,27 +1434,27 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor13() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor13() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ecefPosition, measurements, bias);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ecefPosition, measurements,
+                bias);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -1476,10 +1463,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -1494,12 +1481,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -1512,21 +1499,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -1572,28 +1559,27 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor14() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor14() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ecefPosition, measurements, bias,
-                        this);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ecefPosition, measurements,
+                bias, this);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -1602,10 +1588,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -1620,12 +1606,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -1638,21 +1624,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -1698,28 +1684,27 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor15() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor15() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ecefPosition, measurements,
-                        true, bias);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ecefPosition, measurements,
+                true, bias);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -1728,10 +1713,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -1746,12 +1731,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -1764,21 +1749,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -1824,28 +1809,27 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor16() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor16() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ecefPosition, measurements,
-                        true, bias, this);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ecefPosition, measurements,
+                true, bias, this);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -1854,10 +1838,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -1872,12 +1856,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -1890,21 +1874,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -1920,8 +1904,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
                 calibrator.getMaxIterations(), 0.0);
         assertNull(calibrator.getInliersData());
@@ -1950,27 +1934,27 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor17() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor17() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ecefPosition, measurements, ba);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ecefPosition, measurements,
+                ba);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -1979,10 +1963,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -1997,12 +1981,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -2015,21 +1999,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -2045,8 +2029,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
                 calibrator.getMaxIterations(), 0.0);
         assertNull(calibrator.getInliersData());
@@ -2079,28 +2063,27 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor18() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor18() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ecefPosition, measurements, ba,
-                        this);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ecefPosition, measurements,
+                ba, this);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -2109,10 +2092,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -2127,12 +2110,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -2145,21 +2128,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -2175,8 +2158,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
                 calibrator.getMaxIterations(), 0.0);
         assertNull(calibrator.getInliersData());
@@ -2209,28 +2192,27 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor19() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor19() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ecefPosition, measurements,
-                        true, ba);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ecefPosition, measurements,
+                true, ba);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -2239,10 +2221,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -2257,12 +2239,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -2275,21 +2257,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -2305,8 +2287,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
                 calibrator.getMaxIterations(), 0.0);
         assertNull(calibrator.getInliersData());
@@ -2339,28 +2321,27 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor20() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor20() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ecefPosition, measurements,
-                        true, ba, this);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ecefPosition, measurements,
+                true, ba, this);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -2369,10 +2350,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -2387,12 +2368,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -2405,21 +2386,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -2435,8 +2416,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
                 calibrator.getMaxIterations(), 0.0);
         assertNull(calibrator.getInliersData());
@@ -2469,38 +2450,38 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor21() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor21() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final Matrix ma = generateMaGeneral();
-        final double sx = ma.getElementAt(0, 0);
-        final double sy = ma.getElementAt(1, 1);
-        final double sz = ma.getElementAt(2, 2);
-        final double mxy = ma.getElementAt(0, 1);
-        final double mxz = ma.getElementAt(0, 2);
-        final double myx = ma.getElementAt(1, 0);
-        final double myz = ma.getElementAt(1, 2);
-        final double mzx = ma.getElementAt(2, 0);
-        final double mzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var sx = ma.getElementAt(0, 0);
+        final var sy = ma.getElementAt(1, 1);
+        final var sz = ma.getElementAt(2, 2);
+        final var mxy = ma.getElementAt(0, 1);
+        final var mxz = ma.getElementAt(0, 2);
+        final var myx = ma.getElementAt(1, 0);
+        final var myz = ma.getElementAt(1, 2);
+        final var mzx = ma.getElementAt(2, 0);
+        final var mzy = ma.getElementAt(2, 1);
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ecefPosition, measurements, ba, ma);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ecefPosition, measurements,
+                ba, ma);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -2509,10 +2490,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -2527,12 +2508,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -2545,20 +2526,20 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(ma, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -2574,8 +2555,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
                 calibrator.getMaxIterations(), 0.0);
         assertNull(calibrator.getInliersData());
@@ -2614,39 +2595,38 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor22() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor22() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final Matrix ma = generateMaGeneral();
-        final double sx = ma.getElementAt(0, 0);
-        final double sy = ma.getElementAt(1, 1);
-        final double sz = ma.getElementAt(2, 2);
-        final double mxy = ma.getElementAt(0, 1);
-        final double mxz = ma.getElementAt(0, 2);
-        final double myx = ma.getElementAt(1, 0);
-        final double myz = ma.getElementAt(1, 2);
-        final double mzx = ma.getElementAt(2, 0);
-        final double mzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var sx = ma.getElementAt(0, 0);
+        final var sy = ma.getElementAt(1, 1);
+        final var sz = ma.getElementAt(2, 2);
+        final var mxy = ma.getElementAt(0, 1);
+        final var mxz = ma.getElementAt(0, 2);
+        final var myx = ma.getElementAt(1, 0);
+        final var myz = ma.getElementAt(1, 2);
+        final var mzx = ma.getElementAt(2, 0);
+        final var mzy = ma.getElementAt(2, 1);
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ecefPosition, measurements, ba, ma,
-                        this);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ecefPosition, measurements,
+                ba, ma, this);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -2655,10 +2635,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -2673,12 +2653,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -2691,20 +2671,20 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(ma, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -2720,8 +2700,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
                 calibrator.getMaxIterations(), 0.0);
         assertNull(calibrator.getInliersData());
@@ -2760,39 +2740,38 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor23() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor23() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final Matrix ma = generateMaGeneral();
-        final double sx = ma.getElementAt(0, 0);
-        final double sy = ma.getElementAt(1, 1);
-        final double sz = ma.getElementAt(2, 2);
-        final double mxy = ma.getElementAt(0, 1);
-        final double mxz = ma.getElementAt(0, 2);
-        final double myx = ma.getElementAt(1, 0);
-        final double myz = ma.getElementAt(1, 2);
-        final double mzx = ma.getElementAt(2, 0);
-        final double mzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var sx = ma.getElementAt(0, 0);
+        final var sy = ma.getElementAt(1, 1);
+        final var sz = ma.getElementAt(2, 2);
+        final var mxy = ma.getElementAt(0, 1);
+        final var mxz = ma.getElementAt(0, 2);
+        final var myx = ma.getElementAt(1, 0);
+        final var myz = ma.getElementAt(1, 2);
+        final var mzx = ma.getElementAt(2, 0);
+        final var mzy = ma.getElementAt(2, 1);
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ecefPosition, measurements,
-                        true, ba, ma);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ecefPosition, measurements,
+                true, ba, ma);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -2801,10 +2780,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -2819,12 +2798,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -2837,20 +2816,20 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(ma, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(calibrator.getMeasurements(), measurements);
@@ -2866,8 +2845,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
                 calibrator.getMaxIterations(), 0.0);
         assertNull(calibrator.getInliersData());
@@ -2906,39 +2885,38 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor24() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor24() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final Matrix ma = generateMaGeneral();
-        final double sx = ma.getElementAt(0, 0);
-        final double sy = ma.getElementAt(1, 1);
-        final double sz = ma.getElementAt(2, 2);
-        final double mxy = ma.getElementAt(0, 1);
-        final double mxz = ma.getElementAt(0, 2);
-        final double myx = ma.getElementAt(1, 0);
-        final double myz = ma.getElementAt(1, 2);
-        final double mzx = ma.getElementAt(2, 0);
-        final double mzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var sx = ma.getElementAt(0, 0);
+        final var sy = ma.getElementAt(1, 1);
+        final var sz = ma.getElementAt(2, 2);
+        final var mxy = ma.getElementAt(0, 1);
+        final var mxz = ma.getElementAt(0, 2);
+        final var myx = ma.getElementAt(1, 0);
+        final var myz = ma.getElementAt(1, 2);
+        final var mzx = ma.getElementAt(2, 0);
+        final var mzy = ma.getElementAt(2, 1);
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ecefPosition, measurements,
-                        true, ba, ma, this);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(ecefPosition, measurements,
+                true, ba, ma, this);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -2947,10 +2925,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -2965,12 +2943,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -2983,20 +2961,20 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(ma, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3052,19 +3030,18 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor25() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor25() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(nedPosition);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(nedPosition);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -3073,10 +3050,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
         assertEquals(0.0, calibrator.getBiasY(), 0.0);
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -3091,12 +3068,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(0.0, biasTriad1.getValueX(), 0.0);
         assertEquals(0.0, biasTriad1.getValueY(), 0.0);
         assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -3108,24 +3085,24 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertNull(calibrator.getMeasurements());
@@ -3141,8 +3118,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
                 calibrator.getMaxIterations(), 0.0);
         assertNull(calibrator.getInliersData());
@@ -3167,21 +3144,20 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor26() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor26() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(nedPosition, measurements);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(nedPosition, measurements);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -3190,10 +3166,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
         assertEquals(0.0, calibrator.getBiasY(), 0.0);
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -3208,12 +3184,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(0.0, biasTriad1.getValueX(), 0.0);
         assertEquals(0.0, biasTriad1.getValueY(), 0.0);
         assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -3225,24 +3201,24 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(calibrator.getMeasurements(), measurements);
@@ -3258,8 +3234,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
                 calibrator.getMaxIterations(), 0.0);
         assertNull(calibrator.getInliersData());
@@ -3284,23 +3260,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor27() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor27() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(nedPosition, measurements, this);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(nedPosition, measurements,
+                this);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -3309,10 +3283,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
         assertEquals(0.0, calibrator.getBiasY(), 0.0);
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -3327,12 +3301,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(0.0, biasTriad1.getValueX(), 0.0);
         assertEquals(0.0, biasTriad1.getValueY(), 0.0);
         assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -3344,24 +3318,24 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3377,8 +3351,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
                 calibrator.getMaxIterations(), 0.0);
         assertNull(calibrator.getInliersData());
@@ -3403,22 +3377,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor28() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor28() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(nedPosition, measurements,
-                        true);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(nedPosition, measurements,
+                true);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -3427,10 +3400,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
         assertEquals(0.0, calibrator.getBiasY(), 0.0);
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -3445,12 +3418,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(0.0, biasTriad1.getValueX(), 0.0);
         assertEquals(0.0, biasTriad1.getValueY(), 0.0);
         assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -3462,24 +3435,24 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3495,8 +3468,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
                 calibrator.getMaxIterations(), 0.0);
         assertNull(calibrator.getInliersData());
@@ -3521,22 +3494,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor29() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor29() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(nedPosition, measurements,
-                        true, this);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(nedPosition, measurements,
+                true, this);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -3545,10 +3517,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
         assertEquals(0.0, calibrator.getBiasY(), 0.0);
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -3563,12 +3535,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(0.0, biasTriad1.getValueX(), 0.0);
         assertEquals(0.0, biasTriad1.getValueY(), 0.0);
         assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -3580,24 +3552,24 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3613,8 +3585,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
                 calibrator.getMaxIterations(), 0.0);
         assertNull(calibrator.getInliersData());
@@ -3639,27 +3611,27 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor30() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor30() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(nedPosition, measurements, bias);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(nedPosition, measurements,
+                bias);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -3668,10 +3640,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -3686,12 +3658,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -3704,21 +3676,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3734,8 +3706,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
                 calibrator.getMaxIterations(), 0.0);
         assertNull(calibrator.getInliersData());
@@ -3764,28 +3736,27 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor31() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor31() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(nedPosition, measurements, bias,
-                        this);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(nedPosition, measurements,
+                bias, this);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -3794,10 +3765,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -3812,12 +3783,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -3830,21 +3801,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -3860,8 +3831,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
                 calibrator.getMaxIterations(), 0.0);
         assertNull(calibrator.getInliersData());
@@ -3890,28 +3861,27 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor32() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor32() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(nedPosition, measurements,
-                        true, bias);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(nedPosition, measurements,
+                true, bias);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -3920,10 +3890,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -3938,12 +3908,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -3956,21 +3926,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -4016,28 +3986,27 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor33() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor33() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(nedPosition, measurements,
-                        true, bias, this);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(nedPosition, measurements,
+                true, bias, this);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -4046,10 +4015,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -4064,12 +4033,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -4082,21 +4051,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -4112,8 +4081,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
                 calibrator.getMaxIterations(), 0.0);
         assertNull(calibrator.getInliersData());
@@ -4142,27 +4111,27 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor34() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor34() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(nedPosition, measurements, ba);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(nedPosition, measurements,
+                ba);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -4171,10 +4140,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -4189,12 +4158,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -4207,21 +4176,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -4237,8 +4206,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
                 calibrator.getMaxIterations(), 0.0);
         assertNull(calibrator.getInliersData());
@@ -4271,28 +4240,27 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor35() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor35() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(nedPosition, measurements, ba,
-                        this);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(nedPosition, measurements,
+                ba, this);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -4301,10 +4269,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -4319,12 +4287,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -4337,21 +4305,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -4401,28 +4369,27 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor36() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor36() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(nedPosition, measurements,
-                        true, ba);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(nedPosition, measurements,
+                true, ba);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -4431,10 +4398,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -4449,12 +4416,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -4467,21 +4434,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -4531,28 +4498,27 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor37() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor37() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(nedPosition, measurements,
-                        true, ba, this);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(nedPosition, measurements,
+                true, ba, this);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -4561,10 +4527,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -4579,12 +4545,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -4597,21 +4563,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -4627,8 +4593,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
                 calibrator.getMaxIterations(), 0.0);
         assertNull(calibrator.getInliersData());
@@ -4661,38 +4627,38 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor38() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor38() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final Matrix ma = generateMaGeneral();
-        final double sx = ma.getElementAt(0, 0);
-        final double sy = ma.getElementAt(1, 1);
-        final double sz = ma.getElementAt(2, 2);
-        final double mxy = ma.getElementAt(0, 1);
-        final double mxz = ma.getElementAt(0, 2);
-        final double myx = ma.getElementAt(1, 0);
-        final double myz = ma.getElementAt(1, 2);
-        final double mzx = ma.getElementAt(2, 0);
-        final double mzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var sx = ma.getElementAt(0, 0);
+        final var sy = ma.getElementAt(1, 1);
+        final var sz = ma.getElementAt(2, 2);
+        final var mxy = ma.getElementAt(0, 1);
+        final var mxz = ma.getElementAt(0, 2);
+        final var myx = ma.getElementAt(1, 0);
+        final var myz = ma.getElementAt(1, 2);
+        final var mzx = ma.getElementAt(2, 0);
+        final var mzy = ma.getElementAt(2, 1);
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(nedPosition, measurements, ba, ma);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(nedPosition, measurements,
+                ba, ma);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -4701,10 +4667,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -4719,12 +4685,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -4737,20 +4703,20 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(ma, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -4766,8 +4732,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
                 calibrator.getMaxIterations(), 0.0);
         assertNull(calibrator.getInliersData());
@@ -4806,39 +4772,38 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor39() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor39() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final Matrix ma = generateMaGeneral();
-        final double sx = ma.getElementAt(0, 0);
-        final double sy = ma.getElementAt(1, 1);
-        final double sz = ma.getElementAt(2, 2);
-        final double mxy = ma.getElementAt(0, 1);
-        final double mxz = ma.getElementAt(0, 2);
-        final double myx = ma.getElementAt(1, 0);
-        final double myz = ma.getElementAt(1, 2);
-        final double mzx = ma.getElementAt(2, 0);
-        final double mzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var sx = ma.getElementAt(0, 0);
+        final var sy = ma.getElementAt(1, 1);
+        final var sz = ma.getElementAt(2, 2);
+        final var mxy = ma.getElementAt(0, 1);
+        final var mxz = ma.getElementAt(0, 2);
+        final var myx = ma.getElementAt(1, 0);
+        final var myz = ma.getElementAt(1, 2);
+        final var mzx = ma.getElementAt(2, 0);
+        final var mzy = ma.getElementAt(2, 1);
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(nedPosition, measurements, ba, ma,
-                        this);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(nedPosition, measurements,
+                ba, ma, this);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -4847,10 +4812,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -4865,12 +4830,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -4883,20 +4848,20 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(ma, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -4952,39 +4917,38 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor40() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor40() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final Matrix ma = generateMaGeneral();
-        final double sx = ma.getElementAt(0, 0);
-        final double sy = ma.getElementAt(1, 1);
-        final double sz = ma.getElementAt(2, 2);
-        final double mxy = ma.getElementAt(0, 1);
-        final double mxz = ma.getElementAt(0, 2);
-        final double myx = ma.getElementAt(1, 0);
-        final double myz = ma.getElementAt(1, 2);
-        final double mzx = ma.getElementAt(2, 0);
-        final double mzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var sx = ma.getElementAt(0, 0);
+        final var sy = ma.getElementAt(1, 1);
+        final var sz = ma.getElementAt(2, 2);
+        final var mxy = ma.getElementAt(0, 1);
+        final var mxz = ma.getElementAt(0, 2);
+        final var myx = ma.getElementAt(1, 0);
+        final var myz = ma.getElementAt(1, 2);
+        final var mzx = ma.getElementAt(2, 0);
+        final var mzy = ma.getElementAt(2, 1);
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(nedPosition, measurements,
-                        true, ba, ma);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(nedPosition, measurements,
+                true, ba, ma);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -4993,10 +4957,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -5011,12 +4975,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -5029,20 +4993,20 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(ma, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -5098,39 +5062,38 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor41() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor41() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final Matrix ma = generateMaGeneral();
-        final double sx = ma.getElementAt(0, 0);
-        final double sy = ma.getElementAt(1, 1);
-        final double sz = ma.getElementAt(2, 2);
-        final double mxy = ma.getElementAt(0, 1);
-        final double mxz = ma.getElementAt(0, 2);
-        final double myx = ma.getElementAt(1, 0);
-        final double myz = ma.getElementAt(1, 2);
-        final double mzx = ma.getElementAt(2, 0);
-        final double mzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var sx = ma.getElementAt(0, 0);
+        final var sy = ma.getElementAt(1, 1);
+        final var sz = ma.getElementAt(2, 2);
+        final var mxy = ma.getElementAt(0, 1);
+        final var mxz = ma.getElementAt(0, 2);
+        final var myx = ma.getElementAt(1, 0);
+        final var myz = ma.getElementAt(1, 2);
+        final var mzx = ma.getElementAt(2, 0);
+        final var mzy = ma.getElementAt(2, 1);
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(nedPosition, measurements,
-                        true, ba, ma, this);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(nedPosition, measurements,
+                true, ba, ma, this);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -5139,10 +5102,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -5157,12 +5120,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -5175,20 +5138,20 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(ma, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -5244,23 +5207,23 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor42() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor42() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, ecefPosition, measurements);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, ecefPosition,
+                measurements);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -5269,10 +5232,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
         assertEquals(0.0, calibrator.getBiasY(), 0.0);
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -5287,12 +5250,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(0.0, biasTriad1.getValueX(), 0.0);
         assertEquals(0.0, biasTriad1.getValueY(), 0.0);
         assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -5304,24 +5267,24 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -5363,24 +5326,23 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor43() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor43() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, ecefPosition, measurements,
-                        this);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, ecefPosition,
+                measurements, this);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -5389,10 +5351,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
         assertEquals(0.0, calibrator.getBiasY(), 0.0);
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -5407,12 +5369,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(0.0, biasTriad1.getValueX(), 0.0);
         assertEquals(0.0, biasTriad1.getValueY(), 0.0);
         assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -5424,24 +5386,24 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -5483,24 +5445,23 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor44() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor44() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, ecefPosition, measurements,
-                        true);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, ecefPosition,
+                measurements, true);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -5509,10 +5470,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
         assertEquals(0.0, calibrator.getBiasY(), 0.0);
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -5527,12 +5488,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(0.0, biasTriad1.getValueX(), 0.0);
         assertEquals(0.0, biasTriad1.getValueY(), 0.0);
         assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -5544,24 +5505,24 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -5603,24 +5564,23 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor45() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor45() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, ecefPosition, measurements,
-                        true, this);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, ecefPosition,
+                measurements, true, this);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -5629,10 +5589,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
         assertEquals(0.0, calibrator.getBiasY(), 0.0);
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -5647,12 +5607,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(0.0, biasTriad1.getValueX(), 0.0);
         assertEquals(0.0, biasTriad1.getValueY(), 0.0);
         assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -5664,24 +5624,24 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -5723,30 +5683,29 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor46() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor46() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, ecefPosition, measurements,
-                        bias);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, ecefPosition,
+                measurements, bias);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -5755,10 +5714,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -5773,12 +5732,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -5791,21 +5750,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -5851,30 +5810,29 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor47() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor47() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, ecefPosition, measurements,
-                        bias, this);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, ecefPosition,
+                measurements, bias, this);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -5883,10 +5841,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -5901,12 +5859,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -5919,21 +5877,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -5949,8 +5907,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
                 calibrator.getMaxIterations(), 0.0);
         assertNull(calibrator.getInliersData());
@@ -5979,30 +5937,29 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor48() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor48() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, ecefPosition, measurements,
-                        true, bias);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, ecefPosition,
+                measurements, true, bias);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -6011,10 +5968,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -6029,12 +5986,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -6047,21 +6004,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -6107,30 +6064,29 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor49() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor49() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, ecefPosition, measurements,
-                        true, bias, this);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, ecefPosition,
+                measurements, true, bias, this);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -6139,10 +6095,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -6157,12 +6113,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -6175,21 +6131,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -6235,30 +6191,29 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor50() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor50() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, ecefPosition, measurements,
-                        ba);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, ecefPosition,
+                measurements, ba);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -6267,10 +6222,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -6285,12 +6240,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -6303,21 +6258,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(calibrator.getEcefPosition(), ecefPosition);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(calibrator.getMeasurements(), measurements);
@@ -6367,30 +6322,29 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor51() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor51() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, ecefPosition, measurements,
-                        ba, this);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, ecefPosition,
+                measurements, ba, this);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -6399,10 +6353,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -6417,12 +6371,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -6435,21 +6389,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -6465,8 +6419,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
                 calibrator.getMaxIterations(), 0.0);
         assertNull(calibrator.getInliersData());
@@ -6499,30 +6453,29 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor52() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor52() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, ecefPosition, measurements,
-                        true, ba);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, ecefPosition,
+                measurements, true, ba);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -6531,10 +6484,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -6549,12 +6502,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -6567,21 +6520,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -6597,8 +6550,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
                 calibrator.getMaxIterations(), 0.0);
         assertNull(calibrator.getInliersData());
@@ -6631,30 +6584,29 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor53() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor53() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, ecefPosition, measurements,
-                        true, ba, this);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, ecefPosition,
+                measurements, true, ba, this);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -6663,10 +6615,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -6681,12 +6633,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -6699,21 +6651,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -6729,8 +6681,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
                 calibrator.getMaxIterations(), 0.0);
         assertNull(calibrator.getInliersData());
@@ -6763,41 +6715,40 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor54() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor54() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final Matrix ma = generateMaGeneral();
-        final double sx = ma.getElementAt(0, 0);
-        final double sy = ma.getElementAt(1, 1);
-        final double sz = ma.getElementAt(2, 2);
-        final double mxy = ma.getElementAt(0, 1);
-        final double mxz = ma.getElementAt(0, 2);
-        final double myx = ma.getElementAt(1, 0);
-        final double myz = ma.getElementAt(1, 2);
-        final double mzx = ma.getElementAt(2, 0);
-        final double mzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var sx = ma.getElementAt(0, 0);
+        final var sy = ma.getElementAt(1, 1);
+        final var sz = ma.getElementAt(2, 2);
+        final var mxy = ma.getElementAt(0, 1);
+        final var mxz = ma.getElementAt(0, 2);
+        final var myx = ma.getElementAt(1, 0);
+        final var myz = ma.getElementAt(1, 2);
+        final var mzx = ma.getElementAt(2, 0);
+        final var mzy = ma.getElementAt(2, 1);
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, ecefPosition, measurements,
-                        ba, ma);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, ecefPosition,
+                measurements, ba, ma);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -6806,10 +6757,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -6824,12 +6775,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -6842,20 +6793,20 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(ma, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -6871,8 +6822,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
                 calibrator.getMaxIterations(), 0.0);
         assertNull(calibrator.getInliersData());
@@ -6911,41 +6862,40 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor55() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor55() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final Matrix ma = generateMaGeneral();
-        final double sx = ma.getElementAt(0, 0);
-        final double sy = ma.getElementAt(1, 1);
-        final double sz = ma.getElementAt(2, 2);
-        final double mxy = ma.getElementAt(0, 1);
-        final double mxz = ma.getElementAt(0, 2);
-        final double myx = ma.getElementAt(1, 0);
-        final double myz = ma.getElementAt(1, 2);
-        final double mzx = ma.getElementAt(2, 0);
-        final double mzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var sx = ma.getElementAt(0, 0);
+        final var sy = ma.getElementAt(1, 1);
+        final var sz = ma.getElementAt(2, 2);
+        final var mxy = ma.getElementAt(0, 1);
+        final var mxz = ma.getElementAt(0, 2);
+        final var myx = ma.getElementAt(1, 0);
+        final var myz = ma.getElementAt(1, 2);
+        final var mzx = ma.getElementAt(2, 0);
+        final var mzy = ma.getElementAt(2, 1);
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, ecefPosition, measurements,
-                        ba, ma, this);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, ecefPosition,
+                measurements, ba, ma, this);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -6954,10 +6904,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -6972,12 +6922,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -6990,20 +6940,20 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(ma, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -7059,41 +7009,40 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor56() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor56() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final Matrix ma = generateMaGeneral();
-        final double sx = ma.getElementAt(0, 0);
-        final double sy = ma.getElementAt(1, 1);
-        final double sz = ma.getElementAt(2, 2);
-        final double mxy = ma.getElementAt(0, 1);
-        final double mxz = ma.getElementAt(0, 2);
-        final double myx = ma.getElementAt(1, 0);
-        final double myz = ma.getElementAt(1, 2);
-        final double mzx = ma.getElementAt(2, 0);
-        final double mzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var sx = ma.getElementAt(0, 0);
+        final var sy = ma.getElementAt(1, 1);
+        final var sz = ma.getElementAt(2, 2);
+        final var mxy = ma.getElementAt(0, 1);
+        final var mxz = ma.getElementAt(0, 2);
+        final var myx = ma.getElementAt(1, 0);
+        final var myz = ma.getElementAt(1, 2);
+        final var mzx = ma.getElementAt(2, 0);
+        final var mzy = ma.getElementAt(2, 1);
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, ecefPosition, measurements,
-                        true, ba, ma);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, ecefPosition,
+                measurements, true, ba, ma);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -7102,10 +7051,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -7120,12 +7069,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -7138,20 +7087,20 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(ma, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -7207,41 +7156,40 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor57() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor57() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final Matrix ma = generateMaGeneral();
-        final double sx = ma.getElementAt(0, 0);
-        final double sy = ma.getElementAt(1, 1);
-        final double sz = ma.getElementAt(2, 2);
-        final double mxy = ma.getElementAt(0, 1);
-        final double mxz = ma.getElementAt(0, 2);
-        final double myx = ma.getElementAt(1, 0);
-        final double myz = ma.getElementAt(1, 2);
-        final double mzx = ma.getElementAt(2, 0);
-        final double mzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var sx = ma.getElementAt(0, 0);
+        final var sy = ma.getElementAt(1, 1);
+        final var sz = ma.getElementAt(2, 2);
+        final var mxy = ma.getElementAt(0, 1);
+        final var mxz = ma.getElementAt(0, 2);
+        final var myx = ma.getElementAt(1, 0);
+        final var myz = ma.getElementAt(1, 2);
+        final var mzx = ma.getElementAt(2, 0);
+        final var mzy = ma.getElementAt(2, 1);
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, ecefPosition, measurements,
-                        true, ba, ma, this);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, ecefPosition,
+                measurements, true, ba, ma, this);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -7250,10 +7198,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -7268,12 +7216,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -7286,20 +7234,20 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(ma, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertSame(ecefPosition, calibrator.getEcefPosition());
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -7355,23 +7303,23 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor58() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor58() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition, measurements);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition,
+                measurements);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -7380,10 +7328,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
         assertEquals(0.0, calibrator.getBiasY(), 0.0);
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -7398,12 +7346,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(0.0, biasTriad1.getValueX(), 0.0);
         assertEquals(0.0, biasTriad1.getValueY(), 0.0);
         assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -7415,24 +7363,24 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -7474,24 +7422,23 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor59() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor59() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition, measurements,
-                        this);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition,
+                measurements, this);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -7500,10 +7447,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
         assertEquals(0.0, calibrator.getBiasY(), 0.0);
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -7518,12 +7465,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(0.0, biasTriad1.getValueX(), 0.0);
         assertEquals(0.0, biasTriad1.getValueY(), 0.0);
         assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -7535,24 +7482,24 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -7594,24 +7541,23 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor60() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor60() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition, measurements,
-                        true);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition,
+                measurements, true);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -7620,10 +7566,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
         assertEquals(0.0, calibrator.getBiasY(), 0.0);
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -7638,12 +7584,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(0.0, biasTriad1.getValueX(), 0.0);
         assertEquals(0.0, biasTriad1.getValueY(), 0.0);
         assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -7655,24 +7601,24 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -7714,24 +7660,23 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor61() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor61() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition, measurements,
-                        true, this);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition,
+                measurements, true, this);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -7740,10 +7685,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
         assertEquals(0.0, calibrator.getBiasY(), 0.0);
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -7758,12 +7703,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(0.0, biasTriad1.getValueX(), 0.0);
         assertEquals(0.0, biasTriad1.getValueY(), 0.0);
         assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -7775,24 +7720,24 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(calibrator.getMeasurements(), measurements);
@@ -7834,30 +7779,29 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor62() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor62() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition, measurements,
-                        bias);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition,
+                measurements, bias);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -7866,10 +7810,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -7884,12 +7828,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -7902,21 +7846,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -7932,8 +7876,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
                 calibrator.getMaxIterations(), 0.0);
         assertNull(calibrator.getInliersData());
@@ -7962,30 +7906,29 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor63() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor63() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition, measurements,
-                        bias, this);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition,
+                measurements, bias, this);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -7994,10 +7937,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -8012,12 +7955,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -8030,21 +7973,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(calibrator.getMeasurements(), measurements);
@@ -8060,8 +8003,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
                 calibrator.getMaxIterations(), 0.0);
         assertNull(calibrator.getInliersData());
@@ -8090,30 +8033,29 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor64() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor64() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition, measurements,
-                        true, bias);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition, 
+                measurements, true, bias);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -8122,10 +8064,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -8140,12 +8082,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -8158,21 +8100,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -8218,30 +8160,29 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor65() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor65() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition, measurements,
-                        true, bias, this);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition, 
+                measurements, true, bias, this);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -8250,10 +8191,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -8268,12 +8209,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -8286,21 +8227,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -8316,8 +8257,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
                 calibrator.getMaxIterations(), 0.0);
         assertNull(calibrator.getInliersData());
@@ -8346,30 +8287,29 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor66() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor66() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition, measurements,
-                        ba);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition, 
+                measurements, ba);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -8378,10 +8318,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -8396,12 +8336,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -8414,21 +8354,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -8478,30 +8418,29 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor67() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor67() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition, measurements,
-                        ba, this);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition, 
+                measurements, ba, this);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -8510,10 +8449,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -8528,12 +8467,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -8546,21 +8485,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -8576,8 +8515,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
                 calibrator.getMaxIterations(), 0.0);
         assertNull(calibrator.getInliersData());
@@ -8610,30 +8549,29 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor68() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor68() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition, measurements,
-                        true, ba);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition, 
+                measurements, true, ba);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -8642,10 +8580,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -8660,12 +8598,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -8678,21 +8616,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -8708,8 +8646,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
                 calibrator.getMaxIterations(), 0.0);
         assertNull(calibrator.getInliersData());
@@ -8742,30 +8680,29 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor69() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor69() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition, measurements,
-                        true, ba, this);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition, 
+                measurements, true, ba, this);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -8774,10 +8711,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -8792,12 +8729,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -8810,21 +8747,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -8840,8 +8777,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
         assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
                 calibrator.getMaxIterations(), 0.0);
         assertNull(calibrator.getInliersData());
@@ -8874,41 +8811,40 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor70() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor70() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final Matrix ma = generateMaGeneral();
-        final double sx = ma.getElementAt(0, 0);
-        final double sy = ma.getElementAt(1, 1);
-        final double sz = ma.getElementAt(2, 2);
-        final double mxy = ma.getElementAt(0, 1);
-        final double mxz = ma.getElementAt(0, 2);
-        final double myx = ma.getElementAt(1, 0);
-        final double myz = ma.getElementAt(1, 2);
-        final double mzx = ma.getElementAt(2, 0);
-        final double mzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var sx = ma.getElementAt(0, 0);
+        final var sy = ma.getElementAt(1, 1);
+        final var sz = ma.getElementAt(2, 2);
+        final var mxy = ma.getElementAt(0, 1);
+        final var mxz = ma.getElementAt(0, 2);
+        final var myx = ma.getElementAt(1, 0);
+        final var myz = ma.getElementAt(1, 2);
+        final var mzx = ma.getElementAt(2, 0);
+        final var mzy = ma.getElementAt(2, 1);
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition, measurements,
-                        ba, ma);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition,
+                measurements, ba, ma);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -8917,10 +8853,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -8935,12 +8871,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -8953,20 +8889,20 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(ma, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -9022,41 +8958,40 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor71() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor71() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final Matrix ma = generateMaGeneral();
-        final double sx = ma.getElementAt(0, 0);
-        final double sy = ma.getElementAt(1, 1);
-        final double sz = ma.getElementAt(2, 2);
-        final double mxy = ma.getElementAt(0, 1);
-        final double mxz = ma.getElementAt(0, 2);
-        final double myx = ma.getElementAt(1, 0);
-        final double myz = ma.getElementAt(1, 2);
-        final double mzx = ma.getElementAt(2, 0);
-        final double mzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var sx = ma.getElementAt(0, 0);
+        final var sy = ma.getElementAt(1, 1);
+        final var sz = ma.getElementAt(2, 2);
+        final var mxy = ma.getElementAt(0, 1);
+        final var mxz = ma.getElementAt(0, 2);
+        final var myx = ma.getElementAt(1, 0);
+        final var myz = ma.getElementAt(1, 2);
+        final var mzx = ma.getElementAt(2, 0);
+        final var mzy = ma.getElementAt(2, 1);
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition, measurements,
-                        ba, ma, this);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition, 
+                measurements, ba, ma, this);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -9065,10 +9000,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -9083,12 +9018,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -9101,20 +9036,20 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(ma, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -9170,41 +9105,40 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor72() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor72() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final Matrix ma = generateMaGeneral();
-        final double sx = ma.getElementAt(0, 0);
-        final double sy = ma.getElementAt(1, 1);
-        final double sz = ma.getElementAt(2, 2);
-        final double mxy = ma.getElementAt(0, 1);
-        final double mxz = ma.getElementAt(0, 2);
-        final double myx = ma.getElementAt(1, 0);
-        final double myz = ma.getElementAt(1, 2);
-        final double mzx = ma.getElementAt(2, 0);
-        final double mzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var sx = ma.getElementAt(0, 0);
+        final var sy = ma.getElementAt(1, 1);
+        final var sz = ma.getElementAt(2, 2);
+        final var mxy = ma.getElementAt(0, 1);
+        final var mxz = ma.getElementAt(0, 2);
+        final var myx = ma.getElementAt(1, 0);
+        final var myz = ma.getElementAt(1, 2);
+        final var mzx = ma.getElementAt(2, 0);
+        final var mzy = ma.getElementAt(2, 1);
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition, measurements,
-                        true, ba, ma);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition,
+                measurements, true, ba, ma);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -9213,10 +9147,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -9231,12 +9165,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -9249,20 +9183,20 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(ma, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -9318,41 +9252,40 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testConstructor73() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor73() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final Matrix ma = generateMaGeneral();
-        final double sx = ma.getElementAt(0, 0);
-        final double sy = ma.getElementAt(1, 1);
-        final double sz = ma.getElementAt(2, 2);
-        final double mxy = ma.getElementAt(0, 1);
-        final double mxz = ma.getElementAt(0, 2);
-        final double myx = ma.getElementAt(1, 0);
-        final double myz = ma.getElementAt(1, 2);
-        final double mzx = ma.getElementAt(2, 0);
-        final double mzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var sx = ma.getElementAt(0, 0);
+        final var sy = ma.getElementAt(1, 1);
+        final var sz = ma.getElementAt(2, 2);
+        final var mxy = ma.getElementAt(0, 1);
+        final var mxz = ma.getElementAt(0, 2);
+        final var myx = ma.getElementAt(1, 0);
+        final var myz = ma.getElementAt(1, 2);
+        final var mzx = ma.getElementAt(2, 0);
+        final var mzy = ma.getElementAt(2, 1);
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition, measurements,
-                        true, ba, ma, this);
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition, 
+                measurements, true, ba, ma, this);
 
         // check default values
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -9361,10 +9294,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(bx, calibrator.getBiasX(), 0.0);
         assertEquals(by, calibrator.getBiasY(), 0.0);
         assertEquals(bz, calibrator.getBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getBiasXAsAcceleration();
+        var acceleration1 = calibrator.getBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getBiasYAsAcceleration();
@@ -9379,12 +9312,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
+        final var biasTriad1 = calibrator.getBiasAsTriad();
         assertEquals(bx, biasTriad1.getValueX(), 0.0);
         assertEquals(by, biasTriad1.getValueY(), 0.0);
         assertEquals(bz, biasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
-        final AccelerationTriad biasTriad2 = new AccelerationTriad();
+        final var biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -9397,20 +9330,20 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(ma, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-        final NEDPosition nedPosition1 = new NEDPosition();
+        final var nedPosition1 = new NEDPosition();
         assertTrue(calibrator.getNedPosition(nedPosition1));
         assertTrue(nedPosition1.equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(measurements, calibrator.getMeasurements());
@@ -9466,9 +9399,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testGetSetStopThreshold() throws LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testGetSetStopThreshold() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default value
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_STOP_THRESHOLD,
@@ -9485,16 +9417,15 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testGetSetInitialBiasX() throws LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testGetSetInitialBiasX() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
 
         // set new value
-        final Matrix ba = generateBa();
-        final double biasX = ba.getElementAtIndex(0);
+        final var ba = generateBa();
+        final var biasX = ba.getElementAtIndex(0);
 
         calibrator.setBiasX(biasX);
 
@@ -9503,16 +9434,15 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testGetSetInitialBiasY() throws LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testGetSetInitialBiasY() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getBiasY(), 0.0);
 
         // set new value
-        final Matrix ba = generateBa();
-        final double biasY = ba.getElementAtIndex(1);
+        final var ba = generateBa();
+        final var biasY = ba.getElementAtIndex(1);
 
         calibrator.setBiasY(biasY);
 
@@ -9521,16 +9451,15 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testGetSetInitialBiasZ() throws LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testGetSetInitialBiasZ() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
 
         // set new value
-        final Matrix ba = generateBa();
-        final double biasZ = ba.getElementAtIndex(2);
+        final var ba = generateBa();
+        final var biasZ = ba.getElementAtIndex(2);
 
         calibrator.setBiasZ(biasZ);
 
@@ -9539,26 +9468,25 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testGetSetInitialBiasXAsAcceleration() throws LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testGetSetInitialBiasXAsAcceleration() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default value
-        final Acceleration biasX1 = calibrator.getBiasXAsAcceleration();
+        final var biasX1 = calibrator.getBiasXAsAcceleration();
 
         assertEquals(0.0, biasX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasX1.getUnit());
 
         // set new value
-        final Matrix ba = generateBa();
-        final double biasX = ba.getElementAtIndex(0);
+        final var ba = generateBa();
+        final var biasX = ba.getElementAtIndex(0);
 
-        final Acceleration biasX2 = new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var biasX2 = new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.setBiasX(biasX2);
 
         // check
-        final Acceleration biasX3 = calibrator.getBiasXAsAcceleration();
-        final Acceleration biasX4 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var biasX3 = calibrator.getBiasXAsAcceleration();
+        final var biasX4 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(biasX4);
 
         assertEquals(biasX2, biasX3);
@@ -9566,26 +9494,25 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testGetSetInitialBiasYAsAcceleration() throws LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testGetSetInitialBiasYAsAcceleration() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default value
-        final Acceleration biasY1 = calibrator.getBiasYAsAcceleration();
+        final var biasY1 = calibrator.getBiasYAsAcceleration();
 
         assertEquals(0.0, biasY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasY1.getUnit());
 
         // set new value
-        final Matrix ba = generateBa();
-        final double biasY = ba.getElementAtIndex(1);
+        final var ba = generateBa();
+        final var biasY = ba.getElementAtIndex(1);
 
-        final Acceleration biasY2 = new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var biasY2 = new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.setBiasY(biasY2);
 
         // check
-        final Acceleration biasY3 = calibrator.getBiasYAsAcceleration();
-        final Acceleration biasY4 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var biasY3 = calibrator.getBiasYAsAcceleration();
+        final var biasY4 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasYAsAcceleration(biasY4);
 
         assertEquals(biasY2, biasY3);
@@ -9593,26 +9520,25 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testGetSetInitialBiasZAsAcceleration() throws LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testGetSetInitialBiasZAsAcceleration() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default value
-        final Acceleration biasZ1 = calibrator.getBiasZAsAcceleration();
+        final var biasZ1 = calibrator.getBiasZAsAcceleration();
 
         assertEquals(0.0, biasZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasZ1.getUnit());
 
         // set new value
-        final Matrix ba = generateBa();
-        final double biasZ = ba.getElementAtIndex(2);
+        final var ba = generateBa();
+        final var biasZ = ba.getElementAtIndex(2);
 
-        final Acceleration biasZ2 = new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var biasZ2 = new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.setBiasZ(biasZ2);
 
         // check
-        final Acceleration biasZ3 = calibrator.getBiasZAsAcceleration();
-        final Acceleration biasZ4 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var biasZ3 = calibrator.getBiasZAsAcceleration();
+        final var biasZ4 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(biasZ4);
 
         assertEquals(biasZ2, biasZ3);
@@ -9620,9 +9546,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testSetBiasCoordinates1() throws LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testSetBiasCoordinates1() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
@@ -9630,10 +9555,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
 
         // set new value
-        final Matrix ba = generateBa();
-        final double biasX = ba.getElementAtIndex(0);
-        final double biasY = ba.getElementAtIndex(1);
-        final double biasZ = ba.getElementAtIndex(2);
+        final var ba = generateBa();
+        final var biasX = ba.getElementAtIndex(0);
+        final var biasY = ba.getElementAtIndex(1);
+        final var biasZ = ba.getElementAtIndex(2);
 
         calibrator.setBiasCoordinates(biasX, biasY, biasZ);
 
@@ -9644,9 +9569,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testSetBiasCoordinates2() throws LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testSetBiasCoordinates2() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getBiasX(), 0.0);
@@ -9654,14 +9578,14 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getBiasZ(), 0.0);
 
         // set new value
-        final Matrix ba = generateBa();
-        final double biasX = ba.getElementAtIndex(0);
-        final double biasY = ba.getElementAtIndex(1);
-        final double biasZ = ba.getElementAtIndex(2);
+        final var ba = generateBa();
+        final var biasX = ba.getElementAtIndex(0);
+        final var biasY = ba.getElementAtIndex(1);
+        final var biasZ = ba.getElementAtIndex(2);
 
-        final Acceleration bax = new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration bay = new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration baz = new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var bax = new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var bay = new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var baz = new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
         calibrator.setBiasCoordinates(bax, bay, baz);
 
@@ -9672,30 +9596,28 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testGetSetBiasAsTriad() throws LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testGetSetBiasAsTriad() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default values
-        final AccelerationTriad triad1 = calibrator.getBiasAsTriad();
+        final var triad1 = calibrator.getBiasAsTriad();
         assertEquals(0.0, triad1.getValueX(), 0.0);
         assertEquals(0.0, triad1.getValueY(), 0.0);
         assertEquals(0.0, triad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, triad1.getUnit());
 
         // set new values
-        final Matrix ba = generateBa();
-        final double biasX = ba.getElementAtIndex(0);
-        final double biasY = ba.getElementAtIndex(1);
-        final double biasZ = ba.getElementAtIndex(2);
+        final var ba = generateBa();
+        final var biasX = ba.getElementAtIndex(0);
+        final var biasY = ba.getElementAtIndex(1);
+        final var biasZ = ba.getElementAtIndex(2);
 
-        final AccelerationTriad triad2 = new AccelerationTriad(AccelerationUnit.METERS_PER_SQUARED_SECOND,
-                biasX, biasY, biasZ);
+        final var triad2 = new AccelerationTriad(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasX, biasY, biasZ);
         calibrator.setBias(triad2);
 
         // check
-        final AccelerationTriad triad3 = calibrator.getBiasAsTriad();
-        final AccelerationTriad triad4 = new AccelerationTriad();
+        final var triad3 = calibrator.getBiasAsTriad();
+        final var triad4 = new AccelerationTriad();
         calibrator.getBiasAsTriad(triad4);
 
         assertEquals(triad2, triad3);
@@ -9703,16 +9625,15 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testGetSetInitialSx() throws WrongSizeException, LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testGetSetInitialSx() throws WrongSizeException, LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
 
         // set new value
-        final Matrix ma = generateMaGeneral();
-        final double initialSx = ma.getElementAt(0, 0);
+        final var ma = generateMaGeneral();
+        final var initialSx = ma.getElementAt(0, 0);
 
         calibrator.setInitialSx(initialSx);
 
@@ -9721,16 +9642,15 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testGetSetInitialSy() throws WrongSizeException, LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testGetSetInitialSy() throws WrongSizeException, LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialSy(), 0.0);
 
         // set new value
-        final Matrix ma = generateMaGeneral();
-        final double initialSy = ma.getElementAt(1, 1);
+        final var ma = generateMaGeneral();
+        final var initialSy = ma.getElementAt(1, 1);
 
         calibrator.setInitialSy(initialSy);
 
@@ -9739,16 +9659,15 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testGetSetInitialSz() throws WrongSizeException, LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testGetSetInitialSz() throws WrongSizeException, LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialSz(), 0.0);
 
         // set new value
-        final Matrix ma = generateMaGeneral();
-        final double initialSz = ma.getElementAt(2, 2);
+        final var ma = generateMaGeneral();
+        final var initialSz = ma.getElementAt(2, 2);
 
         calibrator.setInitialSz(initialSz);
 
@@ -9757,16 +9676,15 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testGetSetInitialMxy() throws WrongSizeException, LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testGetSetInitialMxy() throws WrongSizeException, LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
 
         // set new value
-        final Matrix ma = generateMaGeneral();
-        final double initialMxy = ma.getElementAt(0, 1);
+        final var ma = generateMaGeneral();
+        final var initialMxy = ma.getElementAt(0, 1);
 
         calibrator.setInitialMxy(initialMxy);
 
@@ -9775,16 +9693,15 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testGetSetInitialMxz() throws WrongSizeException, LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testGetSetInitialMxz() throws WrongSizeException, LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
 
         // set new value
-        final Matrix ma = generateMaGeneral();
-        final double initialMxz = ma.getElementAt(0, 2);
+        final var ma = generateMaGeneral();
+        final var initialMxz = ma.getElementAt(0, 2);
 
         calibrator.setInitialMxz(initialMxz);
 
@@ -9793,16 +9710,15 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testGetSetInitialMyx() throws WrongSizeException, LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testGetSetInitialMyx() throws WrongSizeException, LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
 
         // set new value
-        final Matrix ma = generateMaGeneral();
-        final double initialMyx = ma.getElementAt(1, 0);
+        final var ma = generateMaGeneral();
+        final var initialMyx = ma.getElementAt(1, 0);
 
         calibrator.setInitialMyx(initialMyx);
 
@@ -9811,16 +9727,15 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testGetSetInitialMyz() throws WrongSizeException, LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testGetSetInitialMyz() throws WrongSizeException, LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
 
         // set new value
-        final Matrix ma = generateMaGeneral();
-        final double initialMyz = ma.getElementAt(1, 2);
+        final var ma = generateMaGeneral();
+        final var initialMyz = ma.getElementAt(1, 2);
 
         calibrator.setInitialMyz(initialMyz);
 
@@ -9829,16 +9744,15 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testGetSetInitialMzx() throws WrongSizeException, LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testGetSetInitialMzx() throws WrongSizeException, LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
 
         // set new value
-        final Matrix ma = generateMaGeneral();
-        final double initialMzx = ma.getElementAt(2, 0);
+        final var ma = generateMaGeneral();
+        final var initialMzx = ma.getElementAt(2, 0);
 
         calibrator.setInitialMzx(initialMzx);
 
@@ -9847,16 +9761,15 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testGetSetInitialMzy() throws WrongSizeException, LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testGetSetInitialMzy() throws WrongSizeException, LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         // set new value
-        final Matrix ma = generateMaGeneral();
-        final double initialMzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var initialMzy = ma.getElementAt(2, 1);
 
         calibrator.setInitialMzy(initialMzy);
 
@@ -9865,9 +9778,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testGetSetInitialScalingFactors() throws WrongSizeException, LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testGetSetInitialScalingFactors() throws WrongSizeException, LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -9875,10 +9787,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialSz(), 0.0);
 
         // set new values
-        final Matrix ma = generateMaGeneral();
-        final double initialSx = ma.getElementAt(0, 0);
-        final double initialSy = ma.getElementAt(1, 1);
-        final double initialSz = ma.getElementAt(2, 2);
+        final var ma = generateMaGeneral();
+        final var initialSx = ma.getElementAt(0, 0);
+        final var initialSy = ma.getElementAt(1, 1);
+        final var initialSz = ma.getElementAt(2, 2);
 
         calibrator.setInitialScalingFactors(initialSx, initialSy, initialSz);
 
@@ -9889,9 +9801,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testGetSetInitialCrossCouplingErrors() throws WrongSizeException, LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testGetSetInitialCrossCouplingErrors() throws WrongSizeException, LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
@@ -9902,15 +9813,15 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         // set new values
-        final Matrix ma = generateMaGeneral();
-        final double initialMxy = ma.getElementAt(0, 1);
-        final double initialMxz = ma.getElementAt(0, 2);
-        final double initialMyx = ma.getElementAt(1, 0);
-        final double initialMyz = ma.getElementAt(1, 2);
-        final double initialMzx = ma.getElementAt(2, 0);
-        final double initialMzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var initialMxy = ma.getElementAt(0, 1);
+        final var initialMxz = ma.getElementAt(0, 2);
+        final var initialMyx = ma.getElementAt(1, 0);
+        final var initialMyz = ma.getElementAt(1, 2);
+        final var initialMzx = ma.getElementAt(2, 0);
+        final var initialMzy = ma.getElementAt(2, 1);
 
-        calibrator.setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx,
+        calibrator.setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx, 
                 initialMyz, initialMzx, initialMzy);
 
         // check
@@ -9923,9 +9834,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testSetInitialScalingFactorsAndCrossCouplingErrors() throws WrongSizeException, LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testSetInitialScalingFactorsAndCrossCouplingErrors() throws WrongSizeException, LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -9939,16 +9849,16 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         // set new values
-        final Matrix ma = generateMaGeneral();
-        final double initialSx = ma.getElementAt(0, 0);
-        final double initialSy = ma.getElementAt(1, 1);
-        final double initialSz = ma.getElementAt(2, 2);
-        final double initialMxy = ma.getElementAt(0, 1);
-        final double initialMxz = ma.getElementAt(0, 2);
-        final double initialMyx = ma.getElementAt(1, 0);
-        final double initialMyz = ma.getElementAt(1, 2);
-        final double initialMzx = ma.getElementAt(2, 0);
-        final double initialMzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var initialSx = ma.getElementAt(0, 0);
+        final var initialSy = ma.getElementAt(1, 1);
+        final var initialSz = ma.getElementAt(2, 2);
+        final var initialMxy = ma.getElementAt(0, 1);
+        final var initialMxz = ma.getElementAt(0, 2);
+        final var initialMyx = ma.getElementAt(1, 0);
+        final var initialMyz = ma.getElementAt(1, 2);
+        final var initialMzx = ma.getElementAt(2, 0);
+        final var initialMzy = ma.getElementAt(2, 1);
 
         calibrator.setInitialScalingFactorsAndCrossCouplingErrors(initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
@@ -9966,21 +9876,20 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testGetSetInitialBias() throws LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testGetSetInitialBias() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default value
-        final double[] bias1 = calibrator.getBias();
-        assertArrayEquals(bias1, new double[3], 0.0);
+        final var bias1 = calibrator.getBias();
+        assertArrayEquals(new double[3], bias1, 0.0);
 
         // set new value
-        final double[] bias2 = generateBa().getBuffer();
+        final var bias2 = generateBa().getBuffer();
         calibrator.setBias(bias2);
 
         // check
-        final double[] bias3 = calibrator.getBias();
-        final double[] bias4 = new double[3];
+        final var bias3 = calibrator.getBias();
+        final var bias4 = new double[3];
         calibrator.getBias(bias4);
 
         assertArrayEquals(bias2, bias3, 0.0);
@@ -9992,21 +9901,20 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testGetSetInitialBiasAsMatrix() throws LockedException, WrongSizeException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testGetSetInitialBiasAsMatrix() throws LockedException, WrongSizeException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default value
-        final Matrix bias1 = calibrator.getBiasAsMatrix();
-        assertArrayEquals(bias1.getBuffer(), new double[3], 0.0);
+        final var bias1 = calibrator.getBiasAsMatrix();
+        assertArrayEquals(new double[3], bias1.getBuffer(), 0.0);
 
         // set new values
-        final Matrix bias2 = generateBa();
+        final var bias2 = generateBa();
         calibrator.setBias(bias2);
 
         // check
-        final Matrix bias3 = calibrator.getBiasAsMatrix();
-        final Matrix bias4 = new Matrix(3, 1);
+        final var bias3 = calibrator.getBiasAsMatrix();
+        final var bias4 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(bias4);
 
         assertEquals(bias2, bias3);
@@ -10024,31 +9932,30 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testGetSetInitialMa() throws WrongSizeException, LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testGetSetInitialMa() throws WrongSizeException, LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default value
-        final Matrix ma1 = calibrator.getInitialMa();
-        assertEquals(ma1, new Matrix(3, 3));
+        final var ma1 = calibrator.getInitialMa();
+        assertEquals(new Matrix(3, 3), ma1);
 
         // set new value
-        final Matrix ma2 = generateMaGeneral();
+        final var ma2 = generateMaGeneral();
         calibrator.setInitialMa(ma2);
 
-        final double initialSx = ma2.getElementAt(0, 0);
-        final double initialSy = ma2.getElementAt(1, 1);
-        final double initialSz = ma2.getElementAt(2, 2);
-        final double initialMxy = ma2.getElementAt(0, 1);
-        final double initialMxz = ma2.getElementAt(0, 2);
-        final double initialMyx = ma2.getElementAt(1, 0);
-        final double initialMyz = ma2.getElementAt(1, 2);
-        final double initialMzx = ma2.getElementAt(2, 0);
-        final double initialMzy = ma2.getElementAt(2, 1);
+        final var initialSx = ma2.getElementAt(0, 0);
+        final var initialSy = ma2.getElementAt(1, 1);
+        final var initialSz = ma2.getElementAt(2, 2);
+        final var initialMxy = ma2.getElementAt(0, 1);
+        final var initialMxz = ma2.getElementAt(0, 2);
+        final var initialMyx = ma2.getElementAt(1, 0);
+        final var initialMyz = ma2.getElementAt(1, 2);
+        final var initialMzx = ma2.getElementAt(2, 0);
+        final var initialMzy = ma2.getElementAt(2, 1);
 
         // check
-        final Matrix ma3 = calibrator.getInitialMa();
-        final Matrix ma4 = new Matrix(3, 3);
+        final var ma3 = calibrator.getInitialMa();
+        final var ma4 = new Matrix(3, 3);
         calibrator.getInitialMa(ma4);
 
         assertEquals(ma2, ma3);
@@ -10076,22 +9983,21 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testGetSetEcefPosition() throws LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testGetSetEcefPosition() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default value
         assertNull(calibrator.getEcefPosition());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
         calibrator.setPosition(ecefPosition);
@@ -10101,26 +10007,25 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testGetSetNedPosition() throws LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testGetSetNedPosition() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default value
         assertNull(calibrator.getNedPosition());
         assertFalse(calibrator.getNedPosition(null));
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition1 = new NEDPosition(latitude, longitude, height);
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition1 = new NEDPosition(latitude, longitude, height);
 
         calibrator.setPosition(nedPosition1);
 
         // check
-        final NEDPosition nedPosition2 = calibrator.getNedPosition();
-        final NEDPosition nedPosition3 = new NEDPosition();
+        final var nedPosition2 = calibrator.getNedPosition();
+        final var nedPosition3 = new NEDPosition();
         calibrator.getNedPosition(nedPosition3);
 
         assertTrue(nedPosition1.equals(nedPosition2, ABSOLUTE_ERROR));
@@ -10128,15 +10033,14 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testGetSetMeasurements() throws LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testGetSetMeasurements() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default value
         assertNull(calibrator.getMeasurements());
 
         // set new value
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
         calibrator.setMeasurements(measurements);
 
         // check
@@ -10144,9 +10048,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testIsSetCommonAxisUsed() throws LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testIsSetCommonAxisUsed() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default value
         assertFalse(calibrator.isCommonAxisUsed());
@@ -10159,9 +10062,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testGetSetListener() throws LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testGetSetListener() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default value
         assertNull(calibrator.getListener());
@@ -10174,15 +10076,14 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testIsReady() throws LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testIsReady() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check
         assertFalse(calibrator.isReady());
 
         // set empty measurements
-        final List<StandardDeviationBodyKinematics> measurements1 = Collections.emptyList();
+        final var measurements1 = Collections.<StandardDeviationBodyKinematics>emptyList();
         calibrator.setMeasurements(measurements1);
 
         // check
@@ -10191,8 +10092,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         // set enough measurements for general case
         calibrator.setCommonAxisUsed(false);
 
-        final List<StandardDeviationBodyKinematics> measurements2 = new ArrayList<>();
-        for (int i = 0; i < KnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL; i++) {
+        final var measurements2 = new ArrayList<StandardDeviationBodyKinematics>();
+        for (var i = 0; i < KnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL; i++) {
             measurements2.add(new StandardDeviationBodyKinematics());
         }
         calibrator.setMeasurements(measurements2);
@@ -10201,13 +10102,13 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertFalse(calibrator.isReady());
 
         // set position
-        final ECEFPosition position = new ECEFPosition();
+        final var position = new ECEFPosition();
         calibrator.setPosition(position);
 
         assertFalse(calibrator.isReady());
 
         // set quality scores with different length
-        double[] qualityScores = new double[11];
+        var qualityScores = new double[11];
         calibrator.setQualityScores(qualityScores);
 
         assertFalse(calibrator.isReady());
@@ -10220,7 +10121,7 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
 
         // set enough measurements for common axis case
         measurements2.clear();
-        for (int i = 0; i < KnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS; i++) {
+        for (var i = 0; i < KnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS; i++) {
             measurements2.add(new StandardDeviationBodyKinematics());
         }
         calibrator.setMeasurements(measurements2);
@@ -10240,9 +10141,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testGetSetProgressDelta() throws LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testGetSetProgressDelta() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default value
         assertEquals(0.05f, calibrator.getProgressDelta(), 0.0);
@@ -10259,9 +10159,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testGetSetConfidence() throws LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testGetSetConfidence() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default value
         assertEquals(0.99, calibrator.getConfidence(), 0.0);
@@ -10278,9 +10177,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testGetSetMaxIterations() throws LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testGetSetMaxIterations() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default value
         assertEquals(5000, calibrator.getMaxIterations());
@@ -10295,9 +10193,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testIsSetResultRefined() throws LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testIsSetResultRefined() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default value
         assertTrue(calibrator.isResultRefined());
@@ -10310,9 +10207,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testIsSetCovarianceKept() throws LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testIsSetCovarianceKept() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default value
         assertTrue(calibrator.isCovarianceKept());
@@ -10325,15 +10221,14 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testGetSetQualityScores() throws LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testGetSetQualityScores() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default value
         assertNull(calibrator.getQualityScores());
 
         // set new value
-        final double[] qualityScores = new double[
+        final var qualityScores = new double[
                 PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL];
         calibrator.setQualityScores(qualityScores);
 
@@ -10345,9 +10240,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testGetSetPreliminarySubsetSize() throws LockedException {
-        final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
+    void testGetSetPreliminarySubsetSize() throws LockedException {
+        final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator();
 
         // check default value
         assertEquals(PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
@@ -10364,61 +10258,59 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testCalibrateGeneralNoNoiseInlier() throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException, LockedException, CalibrationException, NotReadyException {
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Matrix ba = generateBa();
-            final Matrix bg = generateBg();
-            final Matrix ma = generateMaGeneral();
-            final Matrix mg = generateMg();
-            final Matrix gg = generateGg();
-            final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-            final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-            final double accelQuantLevel = 0.0;
-            final double gyroQuantLevel = 0.0;
+    void testCalibrateGeneralNoNoiseInlier() throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException,
+            LockedException, CalibrationException, NotReadyException {
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var ba = generateBa();
+            final var bg = generateBg();
+            final var ma = generateMaGeneral();
+            final var mg = generateMg();
+            final var gg = generateGg();
+            final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+            final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+            final var accelQuantLevel = 0.0;
+            final var gyroQuantLevel = 0.0;
 
-            final IMUErrors errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg,
+            final var errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg,
                     OUTLIER_ERROR_FACTOR * accelNoiseRootPSD,
                     OUTLIER_ERROR_FACTOR * gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
-            final IMUErrors errorsInlier = new IMUErrors(ba, bg, ma, mg, gg,
+            final var errorsInlier = new IMUErrors(ba, bg, ma, mg, gg,
                     0.0, 0.0, accelQuantLevel, gyroQuantLevel);
+            
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+            final var sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
+            final var specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
+            final var angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
 
-            final double sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
-            final double specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
-            final double angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
+            final var errorRandomizer = new GaussianRandomizer(0.0, specificForceStandardDeviation);
 
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                    random, 0.0, specificForceStandardDeviation);
-
-            final List<StandardDeviationBodyKinematics> measurements = new ArrayList<>();
-            final double[] qualityScores = new double[MEASUREMENT_NUMBER];
+            final var measurements = new ArrayList<StandardDeviationBodyKinematics>();
+            final var qualityScores = new double[MEASUREMENT_NUMBER];
             double error;
-            for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
-                final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw,
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            for (var i = 0; i < MEASUREMENT_NUMBER; i++) {
+                final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME, 
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+                final var nedFrame = new NEDFrame(nedPosition, nedC);
+                final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
                 // compute ground-truth kinematics that should be generated at provided
                 // position, velocity and orientation
-                final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
                         TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
                 // apply known calibration parameters to distort ground-truth and generate a
                 // measured kinematics sample
+                final var random = new Random();
                 final BodyKinematics measuredKinematics;
                 if (randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE) {
                     // outlier
@@ -10432,38 +10324,37 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
                     error = 0.0;
                 }
 
-                final StandardDeviationBodyKinematics measurement = new StandardDeviationBodyKinematics(
-                        measuredKinematics, specificForceStandardDeviation, angularRateStandardDeviation);
+                final var measurement = new StandardDeviationBodyKinematics(measuredKinematics, 
+                        specificForceStandardDeviation, angularRateStandardDeviation);
                 measurements.add(measurement);
 
                 qualityScores[i] = 1.0 / (1.0 + error);
             }
 
-            final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                    new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition,
-                            measurements, false, ba, ma, this);
+            final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, 
+                    nedPosition, measurements, false, ba, ma, this);
             calibrator.setStopThreshold(THRESHOLD);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
-            assertEquals(0, mCalibrateNextIteration);
-            assertEquals(0, mCalibrateProgressChange);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
+            assertEquals(0, calibrateNextIteration);
+            assertEquals(0, calibrateProgressChange);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
-            assertTrue(mCalibrateNextIteration > 0);
-            assertTrue(mCalibrateProgressChange >= 0);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
+            assertTrue(calibrateNextIteration > 0);
+            assertTrue(calibrateProgressChange >= 0);
 
-            final Matrix estimatedMa = calibrator.getEstimatedMa();
+            final var estimatedMa = calibrator.getEstimatedMa();
 
             if (!ma.equals(estimatedMa, ABSOLUTE_ERROR)) {
                 continue;
@@ -10475,7 +10366,7 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
+            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
             break;
@@ -10485,61 +10376,59 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testCalibrateCommonAxisNoNoiseInlier() throws WrongSizeException,
+    void testCalibrateCommonAxisNoNoiseInlier() throws WrongSizeException, 
             InvalidSourceAndDestinationFrameTypeException, LockedException, CalibrationException, NotReadyException {
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Matrix ba = generateBa();
-            final Matrix bg = generateBg();
-            final Matrix ma = generateMaCommonAxis();
-            final Matrix mg = generateMg();
-            final Matrix gg = generateGg();
-            final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-            final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-            final double accelQuantLevel = 0.0;
-            final double gyroQuantLevel = 0.0;
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var ba = generateBa();
+            final var bg = generateBg();
+            final var ma = generateMaCommonAxis();
+            final var mg = generateMg();
+            final var gg = generateGg();
+            final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+            final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+            final var accelQuantLevel = 0.0;
+            final var gyroQuantLevel = 0.0;
 
-            final IMUErrors errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg,
+            final var errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg,
                     OUTLIER_ERROR_FACTOR * accelNoiseRootPSD,
                     OUTLIER_ERROR_FACTOR * gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
-            final IMUErrors errorsInlier = new IMUErrors(ba, bg, ma, mg, gg,
+            final var errorsInlier = new IMUErrors(ba, bg, ma, mg, gg,
                     0.0, 0.0, accelQuantLevel, gyroQuantLevel);
+            
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+            final var sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
+            final var specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
+            final var angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
 
-            final double sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
-            final double specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
-            final double angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
+            final var errorRandomizer = new GaussianRandomizer(0.0, specificForceStandardDeviation);
 
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                    random, 0.0, specificForceStandardDeviation);
-
-            final List<StandardDeviationBodyKinematics> measurements = new ArrayList<>();
-            final double[] qualityScores = new double[MEASUREMENT_NUMBER];
+            final var measurements = new ArrayList<StandardDeviationBodyKinematics>();
+            final var qualityScores = new double[MEASUREMENT_NUMBER];
             double error;
-            for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
-                final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw,
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            for (var i = 0; i < MEASUREMENT_NUMBER; i++) {
+                final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+                final var nedFrame = new NEDFrame(nedPosition, nedC);
+                final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
                 // compute ground-truth kinematics that should be generated at provided
                 // position, velocity and orientation
-                final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
                         TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
                 // apply known calibration parameters to distort ground-truth and generate a
                 // measured kinematics sample
+                final var random = new Random();
                 final BodyKinematics measuredKinematics;
                 if (randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE) {
                     // outlier
@@ -10553,38 +10442,37 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
                     error = 0.0;
                 }
 
-                final StandardDeviationBodyKinematics measurement = new StandardDeviationBodyKinematics(
-                        measuredKinematics, specificForceStandardDeviation, angularRateStandardDeviation);
+                final var measurement = new StandardDeviationBodyKinematics(measuredKinematics,
+                        specificForceStandardDeviation, angularRateStandardDeviation);
                 measurements.add(measurement);
 
                 qualityScores[i] = 1.0 / (1.0 + error);
             }
 
-            final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                    new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition,
-                            measurements, true, ba, ma, this);
+            final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores,
+                    nedPosition, measurements, true, ba, ma, this);
             calibrator.setStopThreshold(THRESHOLD);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
-            assertEquals(0, mCalibrateNextIteration);
-            assertEquals(0, mCalibrateProgressChange);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
+            assertEquals(0, calibrateNextIteration);
+            assertEquals(0, calibrateProgressChange);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
-            assertTrue(mCalibrateNextIteration > 0);
-            assertTrue(mCalibrateProgressChange >= 0);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
+            assertTrue(calibrateNextIteration > 0);
+            assertTrue(calibrateProgressChange >= 0);
 
-            final Matrix estimatedMa = calibrator.getEstimatedMa();
+            final var estimatedMa = calibrator.getEstimatedMa();
 
             if (!ma.equals(estimatedMa, ABSOLUTE_ERROR)) {
                 continue;
@@ -10596,7 +10484,7 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
+            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
             break;
@@ -10606,61 +10494,59 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testCalibrateGeneralWithInlierNoise() throws WrongSizeException,
+    void testCalibrateGeneralWithInlierNoise() throws WrongSizeException,
             InvalidSourceAndDestinationFrameTypeException, LockedException, CalibrationException, NotReadyException {
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Matrix ba = generateBa();
-            final Matrix bg = generateBg();
-            final Matrix ma = generateMaGeneral();
-            final Matrix mg = generateMg();
-            final Matrix gg = generateGg();
-            final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-            final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-            final double accelQuantLevel = 0.0;
-            final double gyroQuantLevel = 0.0;
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var ba = generateBa();
+            final var bg = generateBg();
+            final var ma = generateMaGeneral();
+            final var mg = generateMg();
+            final var gg = generateGg();
+            final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+            final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+            final var accelQuantLevel = 0.0;
+            final var gyroQuantLevel = 0.0;
 
-            final IMUErrors errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg,
+            final var errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg,
                     OUTLIER_ERROR_FACTOR * accelNoiseRootPSD,
                     OUTLIER_ERROR_FACTOR * gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
-            final IMUErrors errorsInlier = new IMUErrors(ba, bg, ma, mg, gg,
-                    accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+            final var errorsInlier = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
+                    accelQuantLevel, gyroQuantLevel);
 
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
-            final double specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
-            final double angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
+            final var sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
+            final var specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
+            final var angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
 
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                    random, 0.0, specificForceStandardDeviation);
+            final var errorRandomizer = new GaussianRandomizer(0.0, specificForceStandardDeviation);
 
-            final List<StandardDeviationBodyKinematics> measurements = new ArrayList<>();
-            final double[] qualityScores = new double[LARGE_MEASUREMENT_NUMBER];
+            final var measurements = new ArrayList<StandardDeviationBodyKinematics>();
+            final var qualityScores = new double[LARGE_MEASUREMENT_NUMBER];
             double error;
-            for (int i = 0; i < LARGE_MEASUREMENT_NUMBER; i++) {
-                final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw,
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            for (var i = 0; i < LARGE_MEASUREMENT_NUMBER; i++) {
+                final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+                final var nedFrame = new NEDFrame(nedPosition, nedC);
+                final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
                 // compute ground-truth kinematics that should be generated at provided
                 // position, velocity and orientation
-                final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
                         TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
                 // apply known calibration parameters to distort ground-truth and generate a
                 // measured kinematics sample
+                final var random = new Random();
                 final BodyKinematics measuredKinematics;
                 if (randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE) {
                     // outlier
@@ -10674,38 +10560,37 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
                     error = 0.0;
                 }
 
-                final StandardDeviationBodyKinematics measurement = new StandardDeviationBodyKinematics(
-                        measuredKinematics, specificForceStandardDeviation, angularRateStandardDeviation);
+                final var measurement = new StandardDeviationBodyKinematics(measuredKinematics,
+                        specificForceStandardDeviation, angularRateStandardDeviation);
                 measurements.add(measurement);
 
                 qualityScores[i] = 1.0 / (1.0 + error);
             }
 
-            final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                    new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition,
-                            measurements, false, this);
+            final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores,
+                    nedPosition, measurements, false, this);
             calibrator.setStopThreshold(LARGE_THRESHOLD);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
-            assertEquals(0, mCalibrateNextIteration);
-            assertEquals(0, mCalibrateProgressChange);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
+            assertEquals(0, calibrateNextIteration);
+            assertEquals(0, calibrateProgressChange);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
-            assertTrue(mCalibrateNextIteration > 0);
-            assertTrue(mCalibrateProgressChange >= 0);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
+            assertTrue(calibrateNextIteration > 0);
+            assertTrue(calibrateProgressChange >= 0);
 
-            final Matrix estimatedMa = calibrator.getEstimatedMa();
+            final var estimatedMa = calibrator.getEstimatedMa();
 
             if (!ma.equals(estimatedMa, LARGE_ABSOLUTE_ERROR)) {
                 continue;
@@ -10717,7 +10602,7 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
+            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
             break;
@@ -10727,61 +10612,59 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testCalibrateCommonAxisWithInlierNoise() throws WrongSizeException,
+    void testCalibrateCommonAxisWithInlierNoise() throws WrongSizeException,
             InvalidSourceAndDestinationFrameTypeException, LockedException, CalibrationException, NotReadyException {
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Matrix ba = generateBa();
-            final Matrix bg = generateBg();
-            final Matrix ma = generateMaCommonAxis();
-            final Matrix mg = generateMg();
-            final Matrix gg = generateGg();
-            final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-            final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-            final double accelQuantLevel = 0.0;
-            final double gyroQuantLevel = 0.0;
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var ba = generateBa();
+            final var bg = generateBg();
+            final var ma = generateMaCommonAxis();
+            final var mg = generateMg();
+            final var gg = generateGg();
+            final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+            final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+            final var accelQuantLevel = 0.0;
+            final var gyroQuantLevel = 0.0;
 
-            final IMUErrors errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg,
+            final var errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg,
                     OUTLIER_ERROR_FACTOR * accelNoiseRootPSD,
                     OUTLIER_ERROR_FACTOR * gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
-            final IMUErrors errorsInlier = new IMUErrors(ba, bg, ma, mg, gg,
+            final var errorsInlier = new IMUErrors(ba, bg, ma, mg, gg,
                     accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
 
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
-            final double specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
-            final double angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
+            final var sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
+            final var specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
+            final var angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
 
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                    random, 0.0, specificForceStandardDeviation);
+            final var errorRandomizer = new GaussianRandomizer(0.0, specificForceStandardDeviation);
 
-            final List<StandardDeviationBodyKinematics> measurements = new ArrayList<>();
-            final double[] qualityScores = new double[LARGE_MEASUREMENT_NUMBER];
+            final var measurements = new ArrayList<StandardDeviationBodyKinematics>();
+            final var qualityScores = new double[LARGE_MEASUREMENT_NUMBER];
             double error;
-            for (int i = 0; i < LARGE_MEASUREMENT_NUMBER; i++) {
-                final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw,
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            for (var i = 0; i < LARGE_MEASUREMENT_NUMBER; i++) {
+                final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+                final var nedFrame = new NEDFrame(nedPosition, nedC);
+                final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
                 // compute ground-truth kinematics that should be generated at provided
                 // position, velocity and orientation
-                final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
                         TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
                 // apply known calibration parameters to distort ground-truth and generate a
                 // measured kinematics sample
+                final var random = new Random();
                 final BodyKinematics measuredKinematics;
                 if (randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE) {
                     // outlier
@@ -10795,38 +10678,37 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
                     error = 0.0;
                 }
 
-                final StandardDeviationBodyKinematics measurement = new StandardDeviationBodyKinematics(
-                        measuredKinematics, specificForceStandardDeviation, angularRateStandardDeviation);
+                final var measurement = new StandardDeviationBodyKinematics(measuredKinematics,
+                        specificForceStandardDeviation, angularRateStandardDeviation);
                 measurements.add(measurement);
 
                 qualityScores[i] = 1.0 / (1.0 + error);
             }
 
-            final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                    new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition,
-                            measurements, true, this);
+            final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores,
+                    nedPosition, measurements, true, this);
             calibrator.setStopThreshold(LARGE_THRESHOLD);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
-            assertEquals(0, mCalibrateNextIteration);
-            assertEquals(0, mCalibrateProgressChange);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
+            assertEquals(0, calibrateNextIteration);
+            assertEquals(0, calibrateProgressChange);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
-            assertTrue(mCalibrateNextIteration > 0);
-            assertTrue(mCalibrateProgressChange >= 0);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
+            assertTrue(calibrateNextIteration > 0);
+            assertTrue(calibrateProgressChange >= 0);
 
-            final Matrix estimatedMa = calibrator.getEstimatedMa();
+            final var estimatedMa = calibrator.getEstimatedMa();
 
             if (!ma.equals(estimatedMa, LARGE_ABSOLUTE_ERROR)) {
                 continue;
@@ -10838,7 +10720,7 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
+            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
             break;
@@ -10848,61 +10730,59 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     @Test
-    public void testCalibrateGeneralNoRefinement() throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException, LockedException, CalibrationException, NotReadyException {
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Matrix ba = generateBa();
-            final Matrix bg = generateBg();
-            final Matrix ma = generateMaGeneral();
-            final Matrix mg = generateMg();
-            final Matrix gg = generateGg();
-            final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-            final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-            final double accelQuantLevel = 0.0;
-            final double gyroQuantLevel = 0.0;
+    void testCalibrateGeneralNoRefinement() throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException,
+            LockedException, CalibrationException, NotReadyException {
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var ba = generateBa();
+            final var bg = generateBg();
+            final var ma = generateMaGeneral();
+            final var mg = generateMg();
+            final var gg = generateGg();
+            final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+            final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+            final var accelQuantLevel = 0.0;
+            final var gyroQuantLevel = 0.0;
 
-            final IMUErrors errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg,
+            final var errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg,
                     OUTLIER_ERROR_FACTOR * accelNoiseRootPSD,
                     OUTLIER_ERROR_FACTOR * gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
-            final IMUErrors errorsInlier = new IMUErrors(ba, bg, ma, mg, gg,
+            final var errorsInlier = new IMUErrors(ba, bg, ma, mg, gg,
                     0.0, 0.0, accelQuantLevel, gyroQuantLevel);
 
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
-            final double specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
-            final double angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
+            final var sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
+            final var specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
+            final var angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
 
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                    random, 0.0, specificForceStandardDeviation);
+            final var errorRandomizer = new GaussianRandomizer(0.0, specificForceStandardDeviation);
 
-            final List<StandardDeviationBodyKinematics> measurements = new ArrayList<>();
-            final double[] qualityScores = new double[MEASUREMENT_NUMBER];
+            final var measurements = new ArrayList<StandardDeviationBodyKinematics>();
+            final var qualityScores = new double[MEASUREMENT_NUMBER];
             double error;
-            for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
-                final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw,
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            for (var i = 0; i < MEASUREMENT_NUMBER; i++) {
+                final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+                final var nedFrame = new NEDFrame(nedPosition, nedC);
+                final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
                 // compute ground-truth kinematics that should be generated at provided
                 // position, velocity and orientation
-                final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
                         TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
                 // apply known calibration parameters to distort ground-truth and generate a
                 // measured kinematics sample
+                final var random = new Random();
                 final BodyKinematics measuredKinematics;
                 if (randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE) {
                     // outlier
@@ -10916,16 +10796,15 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
                     error = 0.0;
                 }
 
-                final StandardDeviationBodyKinematics measurement = new StandardDeviationBodyKinematics(
-                        measuredKinematics, specificForceStandardDeviation, angularRateStandardDeviation);
+                final var measurement = new StandardDeviationBodyKinematics(measuredKinematics,
+                        specificForceStandardDeviation, angularRateStandardDeviation);
                 measurements.add(measurement);
 
                 qualityScores[i] = 1.0 / (1.0 + error);
             }
 
-            final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator =
-                    new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores, nedPosition,
-                            measurements, false, ba, ma, this);
+            final var calibrator = new PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(qualityScores,
+                    nedPosition, measurements, false, ba, ma, this);
             calibrator.setStopThreshold(THRESHOLD);
             calibrator.setResultRefined(false);
 
@@ -10933,22 +10812,22 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
-            assertEquals(0, mCalibrateNextIteration);
-            assertEquals(0, mCalibrateProgressChange);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
+            assertEquals(0, calibrateNextIteration);
+            assertEquals(0, calibrateProgressChange);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
-            assertTrue(mCalibrateNextIteration > 0);
-            assertTrue(mCalibrateProgressChange >= 0);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
+            assertTrue(calibrateNextIteration > 0);
+            assertTrue(calibrateProgressChange >= 0);
 
-            final Matrix estimatedMa = calibrator.getEstimatedMa();
+            final var estimatedMa = calibrator.getEstimatedMa();
 
             if (!ma.equals(estimatedMa, ABSOLUTE_ERROR)) {
                 continue;
@@ -10959,7 +10838,7 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
 
             assertNotNull(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() >= 0.0);
-            assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
+            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
             break;
@@ -10971,34 +10850,34 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     @Override
     public void onCalibrateStart(final RobustKnownBiasAndPositionAccelerometerCalibrator calibrator) {
         checkLocked((PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator) calibrator);
-        mCalibrateStart++;
+        calibrateStart++;
     }
 
     @Override
     public void onCalibrateEnd(final RobustKnownBiasAndPositionAccelerometerCalibrator calibrator) {
         checkLocked((PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator) calibrator);
-        mCalibrateEnd++;
+        calibrateEnd++;
     }
 
     @Override
     public void onCalibrateNextIteration(
             final RobustKnownBiasAndPositionAccelerometerCalibrator calibrator, final int iteration) {
         checkLocked((PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator) calibrator);
-        mCalibrateNextIteration++;
+        calibrateNextIteration++;
     }
 
     @Override
     public void onCalibrateProgressChange(
             final RobustKnownBiasAndPositionAccelerometerCalibrator calibrator, final float progress) {
         checkLocked((PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator) calibrator);
-        mCalibrateProgressChange++;
+        calibrateProgressChange++;
     }
 
     private void reset() {
-        mCalibrateStart = 0;
-        mCalibrateEnd = 0;
-        mCalibrateNextIteration = 0;
-        mCalibrateProgressChange = 0;
+        calibrateStart = 0;
+        calibrateEnd = 0;
+        calibrateNextIteration = 0;
+        calibrateProgressChange = 0;
     }
 
     private void checkLocked(final PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator calibrator) {
@@ -11063,10 +10942,10 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(9, covariance.getRows());
         assertEquals(9, covariance.getColumns());
 
-        for (int j = 0; j < 9; j++) {
-            final boolean colIsZero = j == 5 || j == 7 || j == 8;
-            for (int i = 0; i < 9; i++) {
-                final boolean rowIsZero = i == 5 || i == 7 || i == 8;
+        for (var j = 0; j < 9; j++) {
+            final var colIsZero = j == 5 || j == 7 || j == 8;
+            for (var i = 0; i < 9; i++) {
+                final var rowIsZero = i == 5 || i == 7 || i == 8;
                 if (colIsZero || rowIsZero) {
                     assertEquals(0.0, covariance.getElementAt(i, j), 0.0);
                 }
@@ -11078,8 +10957,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
         assertEquals(9, covariance.getRows());
         assertEquals(9, covariance.getColumns());
 
-        for (int i = 0; i < 9; i++) {
-            assertNotEquals(covariance.getElementAt(i, i), 0.0);
+        for (var i = 0; i < 9; i++) {
+            assertNotEquals(0.0, covariance.getElementAt(i, i));
         }
     }
 
@@ -11098,7 +10977,7 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     private static Matrix generateMaGeneral() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
+        final var result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 500e-6, -300e-6, 200e-6,
                 -150e-6, -600e-6, 250e-6,
@@ -11109,7 +10988,7 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     private static Matrix generateMaCommonAxis() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
+        final var result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 500e-6, -300e-6, 200e-6,
                 0.0, -600e-6, 250e-6,
@@ -11120,7 +10999,7 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     private static Matrix generateMg() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
+        final var result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 400e-6, -300e-6, 250e-6,
                 0.0, -300e-6, -150e-6,
@@ -11131,8 +11010,8 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implem
     }
 
     private static Matrix generateGg() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
-        final double tmp = DEG_TO_RAD / (3600 * 9.80665);
+        final var result = new Matrix(3, 3);
+        final var tmp = DEG_TO_RAD / (3600 * 9.80665);
         result.fromArray(new double[]{
                 0.9 * tmp, -1.1 * tmp, -0.6 * tmp,
                 -0.5 * tmp, 1.9 * tmp, -1.6 * tmp,

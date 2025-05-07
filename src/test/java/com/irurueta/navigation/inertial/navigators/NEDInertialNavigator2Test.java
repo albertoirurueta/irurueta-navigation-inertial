@@ -15,9 +15,9 @@
  */
 package com.irurueta.navigation.inertial.navigators;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.InvalidRotationMatrixException;
 import com.irurueta.geometry.Quaternion;
 import com.irurueta.navigation.frames.CoordinateTransformation;
@@ -30,11 +30,9 @@ import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedConverter;
 import com.irurueta.units.AngularSpeedUnit;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import java.util.Random;
-
-public class NEDInertialNavigator2Test {
+class NEDInertialNavigator2Test {
 
     private static final double TIME_INTERVAL_SECONDS = 0.02;
 
@@ -60,72 +58,69 @@ public class NEDInertialNavigator2Test {
 
     private static final double ABSOLUTE_ERROR = 1e-11;
 
-    @Test(expected = InvalidSourceAndDestinationFrameTypeException.class)
-    public void testNavigateNEDWhenInvalidCoordinateTransformationMatrix()
-            throws InvalidSourceAndDestinationFrameTypeException, InertialNavigatorException {
-
-        final CoordinateTransformation c = new CoordinateTransformation(FrameType.BODY_FRAME, FrameType.BODY_FRAME);
-        final NEDFrame result = new NEDFrame();
-        NEDInertialNavigator2.navigateNED(0.0, 0.0, 0.0, 0.0, c,
+    @Test
+    void testNavigateNEDWhenInvalidCoordinateTransformationMatrix() {
+        final var c = new CoordinateTransformation(FrameType.BODY_FRAME, FrameType.BODY_FRAME);
+        final var result = new NEDFrame();
+        assertThrows(InvalidSourceAndDestinationFrameTypeException.class, () -> NEDInertialNavigator2.navigateNED(
+                0.0, 0.0, 0.0, 0.0, c, 0.0, 0.0, 0.0,
                 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-                0.0, 0.0, 0.0, NEDInertialNavigator2.DEFAULT_ACCURACY_THRESHOLD,
-                result);
+                NEDInertialNavigator2.DEFAULT_ACCURACY_THRESHOLD, result));
     }
 
     @Test
-    public void testNavigateNED() throws InvalidRotationMatrixException, InvalidSourceAndDestinationFrameTypeException,
+    void testNavigateNED() throws InvalidRotationMatrixException, InvalidSourceAndDestinationFrameTypeException,
             InertialNavigatorException {
 
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final double oldLatitude = Math.toRadians(LATITUDE_DEGREES);
-            final double oldLongitude = Math.toRadians(LONGITUDE_DEGREES);
+            final var oldLatitude = Math.toRadians(LATITUDE_DEGREES);
+            final var oldLongitude = Math.toRadians(LONGITUDE_DEGREES);
 
-            final double oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-            final double oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-            final double oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+            final var oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+            final var oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+            final var oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final Quaternion q = new Quaternion(roll, pitch, yaw);
+            final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final var q = new Quaternion(roll, pitch, yaw);
 
-            final Matrix m = q.asInhomogeneousMatrix();
-            final CoordinateTransformation oldC = new CoordinateTransformation(m, FrameType.BODY_FRAME,
-                    FrameType.LOCAL_NAVIGATION_FRAME);
+            final var m = q.asInhomogeneousMatrix();
+            final var oldC = new CoordinateTransformation(m, FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame oldFrame = new NEDFrame(oldLatitude, oldLongitude, HEIGHT, oldVn, oldVe, oldVd, oldC);
+            final var oldFrame = new NEDFrame(oldLatitude, oldLongitude, HEIGHT, oldVn, oldVe, oldVd, oldC);
 
-            final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-            final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-            final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+            final var fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+            final var fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+            final var fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
 
-            final double angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+            final var angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                     MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-            final double angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+            final var angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                     MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-            final double angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+            final var angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                     MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
 
-            final AngularSpeed angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond,
+            final var angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond, 
                     AngularSpeedUnit.DEGREES_PER_SECOND);
-            final AngularSpeed angularSpeedY = new AngularSpeed(angularRateYDegreesPerSecond,
+            final var angularSpeedY = new AngularSpeed(angularRateYDegreesPerSecond, 
                     AngularSpeedUnit.DEGREES_PER_SECOND);
-            final AngularSpeed angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond,
+            final var angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond,
                     AngularSpeedUnit.DEGREES_PER_SECOND);
 
-            final double angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
+            final var angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
                     angularSpeedX.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-            final double angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
+            final var angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
                     angularSpeedY.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-            final double angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
+            final var angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
                     angularSpeedZ.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
 
-            final BodyKinematics kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+            final var kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
-            final NEDFrame result1 = new NEDFrame();
-            final NEDFrame result2 = new NEDFrame();
+            final var result1 = new NEDFrame();
+            final var result2 = new NEDFrame();
             NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldFrame, kinematics, ACCURACY_THRESHOLD, result1);
             NEDInertialNavigator2.navigateNED(TIME_INTERVAL_SECONDS, oldFrame, kinematics, ACCURACY_THRESHOLD, result2);
 

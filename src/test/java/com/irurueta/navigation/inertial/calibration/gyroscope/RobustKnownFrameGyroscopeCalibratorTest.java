@@ -17,49 +17,47 @@ package com.irurueta.navigation.inertial.calibration.gyroscope;
 
 import com.irurueta.navigation.inertial.calibration.StandardDeviationFrameBodyKinematics;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
-import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrameGyroscopeCalibratorListener {
+class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrameGyroscopeCalibratorListener {
 
     @Test
-    public void testCreate() {
+    void testCreate() {
         // create with method
 
         // RANSAC
-        RobustKnownFrameGyroscopeCalibrator calibrator = RobustKnownFrameGyroscopeCalibrator.create(
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustKnownFrameGyroscopeCalibrator.create(RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
 
         // LMedS
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustKnownFrameGyroscopeCalibrator.class, calibrator);
 
         // MSAC
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
 
         // PROSAC
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
 
         // PROMedS
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustKnownFrameGyroscopeCalibrator.class, calibrator);
 
         // test create with listener and method
 
@@ -67,73 +65,73 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(this, calibrator.getListener());
 
         // LMedS
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(this, calibrator.getListener());
 
         // MSAC
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(this, calibrator.getListener());
 
         // PROSAC
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(this, calibrator.getListener());
 
         // PROMedS
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(this, calibrator.getListener());
 
         // test create with measurements and method
 
         // RANSAC
-        final List<StandardDeviationFrameBodyKinematics> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationFrameBodyKinematics>emptyList();
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(measurements, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(measurements, calibrator.getMeasurements());
 
         // LMedS
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(measurements, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(measurements, calibrator.getMeasurements());
 
         // MSAC
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(measurements, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(measurements, calibrator.getMeasurements());
 
         // PROSAC
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(measurements, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(measurements, calibrator.getMeasurements());
 
         // PROMedS
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(measurements, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(measurements, calibrator.getMeasurements());
 
         // test create with measurements, listener and method
@@ -143,7 +141,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(measurements, calibrator.getMeasurements());
         assertSame(this, calibrator.getListener());
 
@@ -152,7 +150,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(measurements, calibrator.getMeasurements());
         assertSame(this, calibrator.getListener());
 
@@ -160,16 +158,16 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(measurements, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(measurements, calibrator.getMeasurements());
         assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownFrameGyroscopeCalibrator.create(measurements, this,
+        calibrator = RobustKnownFrameGyroscopeCalibrator.create(measurements, this, 
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(measurements, calibrator.getMeasurements());
         assertSame(this, calibrator.getListener());
 
@@ -178,7 +176,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(measurements, calibrator.getMeasurements());
         assertSame(this, calibrator.getListener());
 
@@ -188,35 +186,35 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(true, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // LMedS
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(true, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // MSAC
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(true, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROSAC
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(true, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROMedS
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(true, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // test create with common axis used, listener and method
@@ -226,7 +224,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
 
@@ -235,7 +233,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
 
@@ -244,7 +242,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
 
@@ -253,7 +251,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
 
@@ -262,7 +260,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
 
@@ -273,7 +271,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
@@ -282,7 +280,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
@@ -291,7 +289,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
@@ -300,7 +298,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
@@ -309,7 +307,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
@@ -320,7 +318,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
@@ -330,7 +328,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
@@ -340,7 +338,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
@@ -350,7 +348,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
@@ -360,47 +358,47 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
 
         // test create with quality scores and method
-        final double[] qualityScores = new double[RobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS];
+        final var qualityScores = new double[RobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS];
 
         // RANSAC
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(qualityScores, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
 
         // LMedS
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(qualityScores, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
 
         // MSAC
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(qualityScores, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(qualityScores, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(qualityScores, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
 
         // test create with quality scores, listener and method
@@ -410,7 +408,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(this, calibrator.getListener());
 
@@ -419,7 +417,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(this, calibrator.getListener());
 
@@ -428,7 +426,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(this, calibrator.getListener());
 
@@ -437,7 +435,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(this, calibrator.getListener());
 
@@ -446,7 +444,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(this, calibrator.getListener());
 
@@ -457,7 +455,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(measurements, calibrator.getMeasurements());
 
@@ -466,7 +464,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(measurements, calibrator.getMeasurements());
 
@@ -475,7 +473,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(measurements, calibrator.getMeasurements());
 
@@ -484,7 +482,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(measurements, calibrator.getMeasurements());
 
@@ -493,7 +491,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(measurements, calibrator.getMeasurements());
 
@@ -504,7 +502,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(measurements, calibrator.getMeasurements());
         assertSame(this, calibrator.getListener());
@@ -514,7 +512,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(measurements, calibrator.getMeasurements());
         assertSame(this, calibrator.getListener());
@@ -524,7 +522,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(measurements, calibrator.getMeasurements());
         assertSame(this, calibrator.getListener());
@@ -534,7 +532,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(measurements, calibrator.getMeasurements());
         assertSame(this, calibrator.getListener());
@@ -544,7 +542,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(measurements, calibrator.getMeasurements());
         assertSame(this, calibrator.getListener());
@@ -556,7 +554,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.isCommonAxisUsed());
 
@@ -565,7 +563,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.isCommonAxisUsed());
 
@@ -574,7 +572,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.isCommonAxisUsed());
 
@@ -583,7 +581,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.isCommonAxisUsed());
 
@@ -592,7 +590,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.isCommonAxisUsed());
 
@@ -603,7 +601,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
@@ -613,7 +611,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
@@ -623,7 +621,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
@@ -633,7 +631,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
@@ -643,7 +641,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
@@ -655,7 +653,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -665,7 +663,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -675,7 +673,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -685,7 +683,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -695,7 +693,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -708,7 +706,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -719,7 +717,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -730,7 +728,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -741,7 +739,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
@@ -752,7 +750,7 @@ public class RobustKnownFrameGyroscopeCalibratorTest implements RobustKnownFrame
                 this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownFrameGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustKnownFrameGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
         assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());

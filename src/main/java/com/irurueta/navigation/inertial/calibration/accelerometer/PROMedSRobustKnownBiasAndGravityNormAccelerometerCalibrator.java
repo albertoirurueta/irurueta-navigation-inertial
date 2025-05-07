@@ -95,13 +95,13 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * lower than the one typically used in RANSAC, and yet the algorithm could
      * still produce even smaller thresholds in estimated results.
      */
-    private double mStopThreshold = DEFAULT_STOP_THRESHOLD;
+    private double stopThreshold = DEFAULT_STOP_THRESHOLD;
 
     /**
      * Quality scores corresponding to each provided sample.
      * The larger the score value the better the quality of the sample.
      */
-    private double[] mQualityScores;
+    private double[] qualityScores;
 
     /**
      * Constructor.
@@ -1697,7 +1697,7 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * accuracy has been reached.
      */
     public double getStopThreshold() {
-        return mStopThreshold;
+        return stopThreshold;
     }
 
     /**
@@ -1722,14 +1722,14 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws LockedException          if calibrator is currently running.
      */
     public void setStopThreshold(final double stopThreshold) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (stopThreshold <= MIN_STOP_THRESHOLD) {
             throw new IllegalArgumentException();
         }
 
-        mStopThreshold = stopThreshold;
+        this.stopThreshold = stopThreshold;
     }
 
     /**
@@ -1740,7 +1740,7 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      */
     @Override
     public double[] getQualityScores() {
-        return mQualityScores;
+        return qualityScores;
     }
 
     /**
@@ -1755,7 +1755,7 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      */
     @Override
     public void setQualityScores(final double[] qualityScores) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         internalSetQualityScores(qualityScores);
@@ -1768,7 +1768,7 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      */
     @Override
     public boolean isReady() {
-        return super.isReady() && mQualityScores != null && mQualityScores.length == mMeasurements.size();
+        return super.isReady() && qualityScores != null && qualityScores.length == measurements.size();
     }
 
     /**
@@ -1781,101 +1781,98 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      */
     @Override
     public void calibrate() throws LockedException, NotReadyException, CalibrationException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (!isReady()) {
             throw new NotReadyException();
         }
 
-        final PROMedSRobustEstimator<PreliminaryResult> innerEstimator =
-                new PROMedSRobustEstimator<>(new PROMedSRobustEstimatorListener<>() {
-                    @Override
-                    public double[] getQualityScores() {
-                        return mQualityScores;
-                    }
-
-                    @Override
-                    public double getThreshold() {
-                        return mStopThreshold;
-                    }
-
-                    @Override
-                    public int getTotalSamples() {
-                        return mMeasurements.size();
-                    }
-
-                    @Override
-                    public int getSubsetSize() {
-                        return mPreliminarySubsetSize;
-                    }
-
-                    @Override
-                    public void estimatePreliminarSolutions(
-                            final int[] samplesIndices, final List<PreliminaryResult> solutions) {
-                        computePreliminarySolutions(samplesIndices, solutions);
-                    }
-
-                    @Override
-                    public double computeResidual(final PreliminaryResult currentEstimation, final int i) {
-                        return computeError(mMeasurements.get(i), currentEstimation);
-                    }
-
-                    @Override
-                    public boolean isReady() {
-                        return PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator.this.isReady();
-                    }
-
-                    @Override
-                    public void onEstimateStart(final RobustEstimator<PreliminaryResult> estimator) {
-                        // no action needed
-                    }
-
-                    @Override
-                    public void onEstimateEnd(final RobustEstimator<PreliminaryResult> estimator) {
-                        // no action needed
-                    }
-
-                    @Override
-                    public void onEstimateNextIteration(
-                            final RobustEstimator<PreliminaryResult> estimator, final int iteration) {
-                        if (mListener != null) {
-                            mListener.onCalibrateNextIteration(
-                                    PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator.this,
-                                    iteration);
-                        }
-                    }
-
-                    @Override
-                    public void onEstimateProgressChange(
-                            final RobustEstimator<PreliminaryResult> estimator, final float progress) {
-                        if (mListener != null) {
-                            mListener.onCalibrateProgressChange(
-                                    PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator.this,
-                                    progress);
-                        }
-                    }
-                });
-
-        try {
-            mRunning = true;
-
-            if (mListener != null) {
-                mListener.onCalibrateStart(this);
+        final var innerEstimator = new PROMedSRobustEstimator<>(new PROMedSRobustEstimatorListener<PreliminaryResult>() {
+            @Override
+            public double[] getQualityScores() {
+                return qualityScores;
             }
 
-            mInliersData = null;
+            @Override
+            public double getThreshold() {
+                return stopThreshold;
+            }
+
+            @Override
+            public int getTotalSamples() {
+                return measurements.size();
+            }
+
+            @Override
+            public int getSubsetSize() {
+                return preliminarySubsetSize;
+            }
+
+            @Override
+            public void estimatePreliminarSolutions(
+                    final int[] samplesIndices, final List<PreliminaryResult> solutions) {
+                computePreliminarySolutions(samplesIndices, solutions);
+            }
+
+            @Override
+            public double computeResidual(final PreliminaryResult currentEstimation, final int i) {
+                return computeError(measurements.get(i), currentEstimation);
+            }
+
+            @Override
+            public boolean isReady() {
+                return PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator.this.isReady();
+            }
+
+            @Override
+            public void onEstimateStart(final RobustEstimator<PreliminaryResult> estimator) {
+                // no action needed
+            }
+
+            @Override
+            public void onEstimateEnd(final RobustEstimator<PreliminaryResult> estimator) {
+                // no action needed
+            }
+
+            @Override
+            public void onEstimateNextIteration(
+                    final RobustEstimator<PreliminaryResult> estimator, final int iteration) {
+                if (listener != null) {
+                    listener.onCalibrateNextIteration(
+                            PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator.this, iteration);
+                }
+            }
+
+            @Override
+            public void onEstimateProgressChange(
+                    final RobustEstimator<PreliminaryResult> estimator, final float progress) {
+                if (listener != null) {
+                    listener.onCalibrateProgressChange(
+                            PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator.this, progress);
+                }
+            }
+        });
+
+        try {
+            running = true;
+
+            if (listener != null) {
+                listener.onCalibrateStart(this);
+            }
+
+            inliersData = null;
             innerEstimator.setUseInlierThresholds(true);
-            innerEstimator.setConfidence(mConfidence);
-            innerEstimator.setMaxIterations(mMaxIterations);
-            innerEstimator.setProgressDelta(mProgressDelta);
-            final PreliminaryResult preliminaryResult = innerEstimator.estimate();
-            mInliersData = innerEstimator.getInliersData();
+            innerEstimator.setConfidence(confidence);
+            innerEstimator.setMaxIterations(maxIterations);
+            innerEstimator.setProgressDelta(progressDelta);
+            final var preliminaryResult = innerEstimator.estimate();
+            inliersData = innerEstimator.getInliersData();
 
             attemptRefine(preliminaryResult);
 
-            if (mListener != null) {
-                mListener.onCalibrateEnd(this);
+            if (listener != null) {
+                listener.onCalibrateEnd(this);
             }
 
         } catch (final com.irurueta.numerical.LockedException e) {
@@ -1885,7 +1882,7 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
         } catch (final RobustEstimatorException e) {
             throw new CalibrationException(e);
         } finally {
-            mRunning = false;
+            running = false;
         }
     }
 
@@ -1925,6 +1922,6 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
             throw new IllegalArgumentException();
         }
 
-        mQualityScores = qualityScores;
+        this.qualityScores = qualityScores;
     }
 }

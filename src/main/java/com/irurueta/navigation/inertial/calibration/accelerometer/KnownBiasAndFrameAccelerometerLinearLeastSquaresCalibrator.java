@@ -21,7 +21,6 @@ import com.irurueta.algebra.Utils;
 import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
-import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.inertial.BodyKinematics;
 import com.irurueta.navigation.inertial.calibration.AccelerationTriad;
 import com.irurueta.navigation.inertial.calibration.CalibrationException;
@@ -104,37 +103,37 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      * typically constant at horizontal orientation while the phone remains on a
      * flat surface.
      */
-    private Collection<FrameBodyKinematics> mMeasurements;
+    private Collection<FrameBodyKinematics> measurements;
 
     /**
      * This flag indicates whether z-axis is assumed to be common for accelerometer
      * and gyroscope.
      * When enabled, this eliminates 3 variables from Ma matrix.
      */
-    private boolean mCommonAxisUsed = DEFAULT_USE_COMMON_Z_AXIS;
+    private boolean commonAxisUsed = DEFAULT_USE_COMMON_Z_AXIS;
 
     /**
      * Listener to handle events raised by this estimator.
      */
-    private KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorListener mListener;
+    private KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorListener listener;
 
     /**
      * Known x coordinate of accelerometer bias expressed in meters per squared
      * second (m/s^2).
      */
-    private double mBiasX;
+    private double biasX;
 
     /**
      * Known y coordinate of accelerometer bias expressed in meters per squared
      * second (m/s^2).
      */
-    private double mBiasY;
+    private double biasY;
 
     /**
      * Known z coordinate of accelerometer bias expressed in meters per squared
      * second (m/s^2).
      */
-    private double mBiasZ;
+    private double biasZ;
 
     /**
      * Estimated accelerometer scale factors and cross coupling errors.
@@ -175,12 +174,12 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      * </pre>
      * Values of this matrix are unit-less.
      */
-    private Matrix mEstimatedMa;
+    private Matrix estimatedMa;
 
     /**
      * Indicates whether estimator is running.
      */
-    private boolean mRunning;
+    private boolean running;
 
     /**
      * Constructor.
@@ -195,7 +194,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     public KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
             final KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorListener listener) {
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -206,7 +205,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     public KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
             final Collection<FrameBodyKinematics> measurements) {
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -220,7 +219,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
             final Collection<FrameBodyKinematics> measurements,
             final KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorListener listener) {
         this(measurements);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -230,7 +229,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      *                       accelerometer and gyroscope.
      */
     public KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(final boolean commonAxisUsed) {
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -244,7 +243,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
             final boolean commonAxisUsed,
             final KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -258,7 +257,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
     public KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
             final Collection<FrameBodyKinematics> measurements, final boolean commonAxisUsed) {
         this(measurements);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -274,7 +273,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
             final Collection<FrameBodyKinematics> measurements, final boolean commonAxisUsed,
             final KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -311,7 +310,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
             final double biasX, final double biasY, final double biasZ,
             final KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorListener listener) {
         this(biasX, biasY, biasZ);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -330,7 +329,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
             final Collection<FrameBodyKinematics> measurements,
             final double biasX, final double biasY, final double biasZ) {
         this(biasX, biasY, biasZ);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -351,7 +350,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
             final double biasX, final double biasY, final double biasZ,
             final KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorListener listener) {
         this(measurements, biasX, biasY, biasZ);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -369,7 +368,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
     public KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
             final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed) {
         this(biasX, biasY, biasZ);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -389,7 +388,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
             final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed,
             final KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorListener listener) {
         this(biasX, biasY, biasZ, commonAxisUsed);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -410,7 +409,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
             final Collection<FrameBodyKinematics> measurements,
             final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed) {
         this(measurements, biasX, biasY, biasZ);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -433,7 +432,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
             final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed,
             final KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorListener listener) {
         this(measurements, biasX, biasY, biasZ, commonAxisUsed);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -464,7 +463,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
             final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
             final KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorListener listener) {
         this(biasX, biasY, biasZ);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -480,7 +479,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
             final Collection<FrameBodyKinematics> measurements,
             final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ) {
         this(biasX, biasY, biasZ);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -498,7 +497,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
             final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
             final KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorListener listener) {
         this(measurements, biasX, biasY, biasZ);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -514,7 +513,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
             final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
             final boolean commonAxisUsed) {
         this(biasX, biasY, biasZ);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -531,7 +530,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
             final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ, final boolean commonAxisUsed,
             final KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorListener listener) {
         this(biasX, biasY, biasZ, commonAxisUsed);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -550,7 +549,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
             final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
             final boolean commonAxisUsed) {
         this(measurements, biasX, biasY, biasZ);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -570,7 +569,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
             final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ, final boolean commonAxisUsed,
             final KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorListener listener) {
         this(measurements, biasX, biasY, biasZ, commonAxisUsed);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -591,7 +590,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public Collection<FrameBodyKinematics> getMeasurements() {
-        return mMeasurements;
+        return measurements;
     }
 
     /**
@@ -613,11 +612,11 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public void setMeasurements(final Collection<? extends FrameBodyKinematics> measurements) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         //noinspection unchecked
-        mMeasurements = (Collection<FrameBodyKinematics>) measurements;
+        this.measurements = (Collection<FrameBodyKinematics>) measurements;
     }
 
     /**
@@ -662,7 +661,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public boolean isCommonAxisUsed() {
-        return mCommonAxisUsed;
+        return commonAxisUsed;
     }
 
     /**
@@ -676,11 +675,11 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public void setCommonAxisUsed(final boolean commonAxisUsed) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -690,7 +689,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorListener getListener() {
-        return mListener;
+        return listener;
     }
 
     /**
@@ -702,11 +701,11 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
     @Override
     public void setListener(
             final KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorListener listener) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -717,7 +716,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public double getBiasX() {
-        return mBiasX;
+        return biasX;
     }
 
     /**
@@ -729,10 +728,10 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public void setBiasX(final double biasX) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mBiasX = biasX;
+        this.biasX = biasX;
     }
 
     /**
@@ -743,7 +742,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public double getBiasY() {
-        return mBiasY;
+        return biasY;
     }
 
     /**
@@ -755,11 +754,11 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public void setBiasY(final double biasY) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mBiasY = biasY;
+        this.biasY = biasY;
     }
 
     /**
@@ -770,7 +769,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public double getBiasZ() {
-        return mBiasZ;
+        return biasZ;
     }
 
     /**
@@ -782,11 +781,11 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public void setBiasZ(final double biasZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mBiasZ = biasZ;
+        this.biasZ = biasZ;
     }
 
     /**
@@ -796,7 +795,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public Acceleration getBiasXAsAcceleration() {
-        return new Acceleration(mBiasX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -806,7 +805,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public void getBiasXAsAcceleration(final Acceleration result) {
-        result.setValue(mBiasX);
+        result.setValue(biasX);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -818,11 +817,11 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public void setBiasX(final Acceleration biasX) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mBiasX = convertAcceleration(biasX);
+        this.biasX = convertAcceleration(biasX);
     }
 
     /**
@@ -832,7 +831,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public Acceleration getBiasYAsAcceleration() {
-        return new Acceleration(mBiasY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -842,7 +841,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public void getBiasYAsAcceleration(final Acceleration result) {
-        result.setValue(mBiasY);
+        result.setValue(biasY);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -854,11 +853,11 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public void setBiasY(final Acceleration biasY) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mBiasY = convertAcceleration(biasY);
+        this.biasY = convertAcceleration(biasY);
     }
 
     /**
@@ -868,7 +867,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public Acceleration getBiasZAsAcceleration() {
-        return new Acceleration(mBiasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -878,7 +877,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public void getBiasZAsAcceleration(final Acceleration result) {
-        result.setValue(mBiasZ);
+        result.setValue(biasZ);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -890,11 +889,11 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public void setBiasZ(final Acceleration biasZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mBiasZ = convertAcceleration(biasZ);
+        this.biasZ = convertAcceleration(biasZ);
     }
 
     /**
@@ -908,13 +907,13 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public void setBiasCoordinates(final double biasX, final double biasY, final double biasZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mBiasX = biasX;
-        mBiasY = biasY;
-        mBiasZ = biasZ;
+        this.biasX = biasX;
+        this.biasY = biasY;
+        this.biasZ = biasZ;
     }
 
     /**
@@ -928,13 +927,13 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
     @Override
     public void setBiasCoordinates(final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ)
             throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mBiasX = convertAcceleration(biasX);
-        mBiasY = convertAcceleration(biasY);
-        mBiasZ = convertAcceleration(biasZ);
+        this.biasX = convertAcceleration(biasX);
+        this.biasY = convertAcceleration(biasY);
+        this.biasZ = convertAcceleration(biasZ);
     }
 
     /**
@@ -944,7 +943,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public AccelerationTriad getBiasAsTriad() {
-        return new AccelerationTriad(AccelerationUnit.METERS_PER_SQUARED_SECOND, mBiasX, mBiasY, mBiasZ);
+        return new AccelerationTriad(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasX, biasY, biasZ);
     }
 
     /**
@@ -954,7 +953,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public void getBiasAsTriad(final AccelerationTriad result) {
-        result.setValueCoordinatesAndUnit(mBiasX, mBiasY, mBiasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        result.setValueCoordinatesAndUnit(biasX, biasY, biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -965,13 +964,13 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public void setBias(final AccelerationTriad bias) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mBiasX = convertAcceleration(bias.getValueX(), bias.getUnit());
-        mBiasY = convertAcceleration(bias.getValueY(), bias.getUnit());
-        mBiasZ = convertAcceleration(bias.getValueZ(), bias.getUnit());
+        biasX = convertAcceleration(bias.getValueX(), bias.getUnit());
+        biasY = convertAcceleration(bias.getValueY(), bias.getUnit());
+        biasZ = convertAcceleration(bias.getValueZ(), bias.getUnit());
     }
 
     /**
@@ -982,7 +981,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public double[] getBias() {
-        final double[] result = new double[BodyKinematics.COMPONENTS];
+        final var result = new double[BodyKinematics.COMPONENTS];
         getBias(result);
         return result;
     }
@@ -999,9 +998,9 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
         if (result.length != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        result[0] = mBiasX;
-        result[1] = mBiasY;
-        result[2] = mBiasZ;
+        result[0] = biasX;
+        result[1] = biasY;
+        result[2] = biasZ;
     }
 
     /**
@@ -1014,16 +1013,16 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public void setBias(final double[] bias) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
         if (bias.length != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        mBiasX = bias[0];
-        mBiasY = bias[1];
-        mBiasZ = bias[2];
+        biasX = bias[0];
+        biasY = bias[1];
+        biasZ = bias[2];
     }
 
     /**
@@ -1055,9 +1054,9 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
         if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
-        result.setElementAtIndex(0, mBiasX);
-        result.setElementAtIndex(1, mBiasY);
-        result.setElementAtIndex(2, mBiasZ);
+        result.setElementAtIndex(0, biasX);
+        result.setElementAtIndex(1, biasY);
+        result.setElementAtIndex(2, biasZ);
     }
 
     /**
@@ -1069,16 +1068,16 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public void setBias(final Matrix bias) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (bias.getRows() != BodyKinematics.COMPONENTS || bias.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
-        mBiasX = bias.getElementAtIndex(0);
-        mBiasY = bias.getElementAtIndex(1);
-        mBiasZ = bias.getElementAtIndex(2);
+        biasX = bias.getElementAtIndex(0);
+        biasY = bias.getElementAtIndex(1);
+        biasZ = bias.getElementAtIndex(2);
     }
 
     /**
@@ -1098,7 +1097,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public boolean isReady() {
-        return mMeasurements != null && mMeasurements.size() >= MINIMUM_MEASUREMENTS;
+        return measurements != null && measurements.size() >= MINIMUM_MEASUREMENTS;
     }
 
     /**
@@ -1108,7 +1107,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public boolean isRunning() {
-        return mRunning;
+        return running;
     }
 
     /**
@@ -1121,7 +1120,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public void calibrate() throws LockedException, NotReadyException, CalibrationException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
@@ -1130,26 +1129,26 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
         }
 
         try {
-            mRunning = true;
+            running = true;
 
-            if (mListener != null) {
-                mListener.onCalibrateStart(this);
+            if (listener != null) {
+                listener.onCalibrateStart(this);
             }
 
-            if (mCommonAxisUsed) {
+            if (commonAxisUsed) {
                 calibrateCommonAxis();
             } else {
                 calibrateGeneral();
             }
 
-            if (mListener != null) {
-                mListener.onCalibrateEnd(this);
+            if (listener != null) {
+                listener.onCalibrateEnd(this);
             }
 
         } catch (final AlgebraException e) {
             throw new CalibrationException(e);
         } finally {
-            mRunning = false;
+            running = false;
         }
     }
 
@@ -1197,7 +1196,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public Matrix getEstimatedMa() {
-        return mEstimatedMa;
+        return estimatedMa;
     }
 
     /**
@@ -1207,7 +1206,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public Double getEstimatedSx() {
-        return mEstimatedMa != null ? mEstimatedMa.getElementAt(0, 0) : null;
+        return estimatedMa != null ? estimatedMa.getElementAt(0, 0) : null;
     }
 
     /**
@@ -1217,7 +1216,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public Double getEstimatedSy() {
-        return mEstimatedMa != null ? mEstimatedMa.getElementAt(1, 1) : null;
+        return estimatedMa != null ? estimatedMa.getElementAt(1, 1) : null;
     }
 
     /**
@@ -1227,7 +1226,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public Double getEstimatedSz() {
-        return mEstimatedMa != null ? mEstimatedMa.getElementAt(2, 2) : null;
+        return estimatedMa != null ? estimatedMa.getElementAt(2, 2) : null;
     }
 
     /**
@@ -1237,7 +1236,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public Double getEstimatedMxy() {
-        return mEstimatedMa != null ? mEstimatedMa.getElementAt(0, 1) : null;
+        return estimatedMa != null ? estimatedMa.getElementAt(0, 1) : null;
     }
 
     /**
@@ -1247,7 +1246,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public Double getEstimatedMxz() {
-        return mEstimatedMa != null ? mEstimatedMa.getElementAt(0, 2) : null;
+        return estimatedMa != null ? estimatedMa.getElementAt(0, 2) : null;
     }
 
     /**
@@ -1257,7 +1256,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public Double getEstimatedMyx() {
-        return mEstimatedMa != null ? mEstimatedMa.getElementAt(1, 0) : null;
+        return estimatedMa != null ? estimatedMa.getElementAt(1, 0) : null;
     }
 
     /**
@@ -1267,7 +1266,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public Double getEstimatedMyz() {
-        return mEstimatedMa != null ? mEstimatedMa.getElementAt(1, 2) : null;
+        return estimatedMa != null ? estimatedMa.getElementAt(1, 2) : null;
     }
 
     /**
@@ -1277,7 +1276,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public Double getEstimatedMzx() {
-        return mEstimatedMa != null ? mEstimatedMa.getElementAt(2, 0) : null;
+        return estimatedMa != null ? estimatedMa.getElementAt(2, 0) : null;
     }
 
     /**
@@ -1287,7 +1286,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      */
     @Override
     public Double getEstimatedMzy() {
-        return mEstimatedMa != null ? mEstimatedMa.getElementAt(2, 1) : null;
+        return estimatedMa != null ? estimatedMa.getElementAt(2, 1) : null;
     }
 
     /**
@@ -1340,27 +1339,27 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
         //                                                 [mxz]
         //                                                 [myz]
 
-        final BodyKinematics expectedKinematics = new BodyKinematics();
+        final var expectedKinematics = new BodyKinematics();
 
-        final int rows = EQUATIONS_PER_MEASUREMENT * mMeasurements.size();
-        final Matrix a = new Matrix(rows, COMMON_Z_AXIS_UNKNOWNS);
-        final Matrix b = new Matrix(rows, 1);
-        int i = 0;
-        for (final FrameBodyKinematics measurement : mMeasurements) {
-            final BodyKinematics measuredKinematics = measurement.getKinematics();
-            final ECEFFrame ecefFrame = measurement.getFrame();
-            final ECEFFrame previousEcefFrame = measurement.getPreviousFrame();
-            final double timeInterval = measurement.getTimeInterval();
+        final var rows = EQUATIONS_PER_MEASUREMENT * measurements.size();
+        final var a = new Matrix(rows, COMMON_Z_AXIS_UNKNOWNS);
+        final var b = new Matrix(rows, 1);
+        var i = 0;
+        for (final var measurement : measurements) {
+            final var measuredKinematics = measurement.getKinematics();
+            final var ecefFrame = measurement.getFrame();
+            final var previousEcefFrame = measurement.getPreviousFrame();
+            final var timeInterval = measurement.getTimeInterval();
 
             ECEFKinematicsEstimator.estimateKinematics(timeInterval, ecefFrame, previousEcefFrame, expectedKinematics);
 
-            final double fMeasX = measuredKinematics.getFx();
-            final double fMeasY = measuredKinematics.getFy();
-            final double fMeasZ = measuredKinematics.getFz();
+            final var fMeasX = measuredKinematics.getFx();
+            final var fMeasY = measuredKinematics.getFy();
+            final var fMeasZ = measuredKinematics.getFz();
 
-            final double fTrueX = expectedKinematics.getFx();
-            final double fTrueY = expectedKinematics.getFy();
-            final double fTrueZ = expectedKinematics.getFz();
+            final var fTrueX = expectedKinematics.getFx();
+            final var fTrueY = expectedKinematics.getFy();
+            final var fTrueZ = expectedKinematics.getFz();
 
             a.setElementAt(i, 0, fTrueX);
             a.setElementAt(i, 1, 0.0);
@@ -1369,7 +1368,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
             a.setElementAt(i, 4, fTrueZ);
             a.setElementAt(i, 5, 0.0);
 
-            b.setElementAtIndex(i, fMeasX - fTrueX - mBiasX);
+            b.setElementAtIndex(i, fMeasX - fTrueX - biasX);
             i++;
 
             a.setElementAt(i, 0, 0.0);
@@ -1379,7 +1378,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
             a.setElementAt(i, 4, 0.0);
             a.setElementAt(i, 5, fTrueZ);
 
-            b.setElementAtIndex(i, fMeasY - fTrueY - mBiasY);
+            b.setElementAtIndex(i, fMeasY - fTrueY - biasY);
             i++;
 
             a.setElementAt(i, 0, 0.0);
@@ -1389,18 +1388,18 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
             a.setElementAt(i, 4, 0.0);
             a.setElementAt(i, 5, 0.0);
 
-            b.setElementAtIndex(i, fMeasZ - fTrueZ - mBiasZ);
+            b.setElementAtIndex(i, fMeasZ - fTrueZ - biasZ);
             i++;
         }
 
-        final Matrix unknowns = Utils.solve(a, b);
+        final var unknowns = Utils.solve(a, b);
 
-        final double sx = unknowns.getElementAtIndex(0);
-        final double sy = unknowns.getElementAtIndex(1);
-        final double sz = unknowns.getElementAtIndex(2);
-        final double mxy = unknowns.getElementAtIndex(3);
-        final double mxz = unknowns.getElementAtIndex(4);
-        final double myz = unknowns.getElementAtIndex(5);
+        final var sx = unknowns.getElementAtIndex(0);
+        final var sy = unknowns.getElementAtIndex(1);
+        final var sz = unknowns.getElementAtIndex(2);
+        final var mxy = unknowns.getElementAtIndex(3);
+        final var mxz = unknowns.getElementAtIndex(4);
+        final var myz = unknowns.getElementAtIndex(5);
 
         fillMa(sx, sy, sz, mxy, mxz, 0.0, myz, 0.0, 0.0);
     }
@@ -1450,27 +1449,27 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
         //                                                                         [mzx]
         //                                                                         [mzy]
 
-        final BodyKinematics expectedKinematics = new BodyKinematics();
+        final var expectedKinematics = new BodyKinematics();
 
-        final int rows = EQUATIONS_PER_MEASUREMENT * mMeasurements.size();
-        final Matrix a = new Matrix(rows, GENERAL_UNKNOWNS);
-        final Matrix b = new Matrix(rows, 1);
-        int i = 0;
-        for (final FrameBodyKinematics measurement : mMeasurements) {
-            final BodyKinematics measuredKinematics = measurement.getKinematics();
-            final ECEFFrame ecefFrame = measurement.getFrame();
-            final ECEFFrame previousEcefFrame = measurement.getPreviousFrame();
-            final double timeInterval = measurement.getTimeInterval();
+        final var rows = EQUATIONS_PER_MEASUREMENT * measurements.size();
+        final var a = new Matrix(rows, GENERAL_UNKNOWNS);
+        final var b = new Matrix(rows, 1);
+        var i = 0;
+        for (final var measurement : measurements) {
+            final var measuredKinematics = measurement.getKinematics();
+            final var ecefFrame = measurement.getFrame();
+            final var previousEcefFrame = measurement.getPreviousFrame();
+            final var timeInterval = measurement.getTimeInterval();
 
             ECEFKinematicsEstimator.estimateKinematics(timeInterval, ecefFrame, previousEcefFrame, expectedKinematics);
 
-            final double fMeasX = measuredKinematics.getFx();
-            final double fMeasY = measuredKinematics.getFy();
-            final double fMeasZ = measuredKinematics.getFz();
+            final var fMeasX = measuredKinematics.getFx();
+            final var fMeasY = measuredKinematics.getFy();
+            final var fMeasZ = measuredKinematics.getFz();
 
-            final double fTrueX = expectedKinematics.getFx();
-            final double fTrueY = expectedKinematics.getFy();
-            final double fTrueZ = expectedKinematics.getFz();
+            final var fTrueX = expectedKinematics.getFx();
+            final var fTrueY = expectedKinematics.getFy();
+            final var fTrueZ = expectedKinematics.getFz();
 
             a.setElementAt(i, 0, fTrueX);
             a.setElementAt(i, 1, 0.0);
@@ -1482,7 +1481,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
             a.setElementAt(i, 7, 0.0);
             a.setElementAt(i, 8, 0.0);
 
-            b.setElementAtIndex(i, fMeasX - fTrueX - mBiasX);
+            b.setElementAtIndex(i, fMeasX - fTrueX - biasX);
             i++;
 
             a.setElementAt(i, 0, 0.0);
@@ -1495,7 +1494,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
             a.setElementAt(i, 7, 0.0);
             a.setElementAt(i, 8, 0.0);
 
-            b.setElementAtIndex(i, fMeasY - fTrueY - mBiasY);
+            b.setElementAtIndex(i, fMeasY - fTrueY - biasY);
             i++;
 
             a.setElementAt(i, 0, 0.0);
@@ -1508,21 +1507,21 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
             a.setElementAt(i, 7, fTrueX);
             a.setElementAt(i, 8, fTrueY);
 
-            b.setElementAtIndex(i, fMeasZ - fTrueZ - mBiasZ);
+            b.setElementAtIndex(i, fMeasZ - fTrueZ - biasZ);
             i++;
         }
 
-        final Matrix unknowns = Utils.solve(a, b);
+        final var unknowns = Utils.solve(a, b);
 
-        final double sx = unknowns.getElementAtIndex(0);
-        final double sy = unknowns.getElementAtIndex(1);
-        final double sz = unknowns.getElementAtIndex(2);
-        final double mxy = unknowns.getElementAtIndex(3);
-        final double mxz = unknowns.getElementAtIndex(4);
-        final double myx = unknowns.getElementAtIndex(5);
-        final double myz = unknowns.getElementAtIndex(6);
-        final double mzx = unknowns.getElementAtIndex(7);
-        final double mzy = unknowns.getElementAtIndex(8);
+        final var sx = unknowns.getElementAtIndex(0);
+        final var sy = unknowns.getElementAtIndex(1);
+        final var sz = unknowns.getElementAtIndex(2);
+        final var mxy = unknowns.getElementAtIndex(3);
+        final var mxz = unknowns.getElementAtIndex(4);
+        final var myx = unknowns.getElementAtIndex(5);
+        final var myz = unknowns.getElementAtIndex(6);
+        final var mzx = unknowns.getElementAtIndex(7);
+        final var mzy = unknowns.getElementAtIndex(8);
 
         fillMa(sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy);
     }
@@ -1544,21 +1543,21 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
     private void fillMa(final double sx, final double sy, final double sz,
                         final double mxy, final double mxz, final double myx,
                         final double myz, final double mzx, final double mzy) throws WrongSizeException {
-        if (mEstimatedMa == null) {
-            mEstimatedMa = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+        if (estimatedMa == null) {
+            estimatedMa = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         }
 
-        mEstimatedMa.setElementAt(0, 0, sx);
-        mEstimatedMa.setElementAt(1, 0, myx);
-        mEstimatedMa.setElementAt(2, 0, mzx);
+        estimatedMa.setElementAt(0, 0, sx);
+        estimatedMa.setElementAt(1, 0, myx);
+        estimatedMa.setElementAt(2, 0, mzx);
 
-        mEstimatedMa.setElementAt(0, 1, mxy);
-        mEstimatedMa.setElementAt(1, 1, sy);
-        mEstimatedMa.setElementAt(2, 1, mzy);
+        estimatedMa.setElementAt(0, 1, mxy);
+        estimatedMa.setElementAt(1, 1, sy);
+        estimatedMa.setElementAt(2, 1, mzy);
 
-        mEstimatedMa.setElementAt(0, 2, mxz);
-        mEstimatedMa.setElementAt(1, 2, myz);
-        mEstimatedMa.setElementAt(2, 2, sz);
+        estimatedMa.setElementAt(0, 2, mxz);
+        estimatedMa.setElementAt(1, 2, myz);
+        estimatedMa.setElementAt(2, 2, sz);
     }
 
     /**

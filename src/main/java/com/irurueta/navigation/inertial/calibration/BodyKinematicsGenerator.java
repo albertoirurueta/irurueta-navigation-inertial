@@ -24,7 +24,6 @@ import com.irurueta.units.TimeUnit;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -96,7 +95,7 @@ public class BodyKinematicsGenerator {
     public static Collection<BodyKinematics> generate(
             final double timeInterval, final Collection<BodyKinematics> trueKinematics, final IMUErrors errors,
             final Random random) {
-        final List<BodyKinematics> result = new ArrayList<>();
+        final var result = new ArrayList<BodyKinematics>();
         generate(timeInterval, trueKinematics, errors, random, result);
         return result;
     }
@@ -117,20 +116,20 @@ public class BodyKinematicsGenerator {
             final double timeInterval, final Collection<BodyKinematics> trueKinematics,
             final IMUErrors errors, final Random random, final Collection<BodyKinematics> result) {
         try {
-            final Matrix trueFibb = new Matrix(BodyKinematics.COMPONENTS, 1);
-            final Matrix ma = errors.getAccelerometerScaleFactorAndCrossCouplingErrors();
-            final Matrix ba = errors.getAccelerometerBiasesAsMatrix();
-            final Matrix trueOmegaIbb = new Matrix(BodyKinematics.COMPONENTS, 1);
-            final Matrix mg = errors.getGyroScaleFactorAndCrossCouplingErrors();
-            final Matrix bg = errors.getGyroBiasesAsMatrix();
-            final Matrix gg = errors.getGyroGDependentBiases();
-            final Matrix identity = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
-            final Matrix tmp33 = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
-            final Matrix tmp31a = new Matrix(BodyKinematics.COMPONENTS, 1);
-            final Matrix tmp31b = new Matrix(BodyKinematics.COMPONENTS, 1);
+            final var trueFibb = new Matrix(BodyKinematics.COMPONENTS, 1);
+            final var ma = errors.getAccelerometerScaleFactorAndCrossCouplingErrors();
+            final var ba = errors.getAccelerometerBiasesAsMatrix();
+            final var trueOmegaIbb = new Matrix(BodyKinematics.COMPONENTS, 1);
+            final var mg = errors.getGyroScaleFactorAndCrossCouplingErrors();
+            final var bg = errors.getGyroBiasesAsMatrix();
+            final var gg = errors.getGyroGDependentBiases();
+            final var identity = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+            final var tmp33 = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+            final var tmp31a = new Matrix(BodyKinematics.COMPONENTS, 1);
+            final var tmp31b = new Matrix(BodyKinematics.COMPONENTS, 1);
 
-            for (final BodyKinematics k : trueKinematics) {
-                final BodyKinematics r = new BodyKinematics();
+            for (final var k : trueKinematics) {
+                final var r = new BodyKinematics();
 
                 internalGenerate(timeInterval, k, errors, random, null, r, null,
                         trueFibb, ma, ba, trueOmegaIbb, mg, bg, gg, identity, tmp33, tmp31a, tmp31b);
@@ -188,7 +187,7 @@ public class BodyKinematicsGenerator {
     public static BodyKinematics generate(
             final double timeInterval, final BodyKinematics trueKinematics, final IMUErrors errors,
             final Random random) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         generate(timeInterval, trueKinematics, errors, random, result);
         return result;
     }
@@ -282,7 +281,7 @@ public class BodyKinematicsGenerator {
     public static BodyKinematics generate(
             final double timeInterval, final BodyKinematics trueKinematics, final IMUErrors errors, final Random random,
             final double[] oldQuantizationResiduals, final double[] quantizationResiduals) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         generate(timeInterval, trueKinematics, errors, random, oldQuantizationResiduals, result, quantizationResiduals);
         return result;
     }
@@ -310,17 +309,17 @@ public class BodyKinematicsGenerator {
             final double[] oldQuantizationResiduals, final BodyKinematics result,
             final double[] quantizationResiduals) {
         try {
-            final Matrix trueFibb = new Matrix(BodyKinematics.COMPONENTS, 1);
-            final Matrix ma = errors.getAccelerometerScaleFactorAndCrossCouplingErrors();
-            final Matrix ba = errors.getAccelerometerBiasesAsMatrix();
-            final Matrix trueOmegaIbb = new Matrix(BodyKinematics.COMPONENTS, 1);
-            final Matrix mg = errors.getGyroScaleFactorAndCrossCouplingErrors();
-            final Matrix bg = errors.getGyroBiasesAsMatrix();
-            final Matrix gg = errors.getGyroGDependentBiases();
-            final Matrix identity = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
-            final Matrix tmp33 = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
-            final Matrix tmp31a = new Matrix(BodyKinematics.COMPONENTS, 1);
-            final Matrix tmp31b = new Matrix(BodyKinematics.COMPONENTS, 1);
+            final var trueFibb = new Matrix(BodyKinematics.COMPONENTS, 1);
+            final var ma = errors.getAccelerometerScaleFactorAndCrossCouplingErrors();
+            final var ba = errors.getAccelerometerBiasesAsMatrix();
+            final var trueOmegaIbb = new Matrix(BodyKinematics.COMPONENTS, 1);
+            final var mg = errors.getGyroScaleFactorAndCrossCouplingErrors();
+            final var bg = errors.getGyroBiasesAsMatrix();
+            final var gg = errors.getGyroGDependentBiases();
+            final var identity = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+            final var tmp33 = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+            final var tmp31a = new Matrix(BodyKinematics.COMPONENTS, 1);
+            final var tmp31b = new Matrix(BodyKinematics.COMPONENTS, 1);
             internalGenerate(timeInterval, trueKinematics, errors, random, oldQuantizationResiduals, result,
                     quantizationResiduals, trueFibb, ma, ba, trueOmegaIbb, mg, bg, gg, identity, tmp33, tmp31a, tmp31b);
         } catch (final WrongSizeException ignore) {
@@ -368,7 +367,7 @@ public class BodyKinematicsGenerator {
             final Matrix bg, final Matrix gg, final Matrix identity, final Matrix tmp33, final Matrix tmp31a,
             final Matrix tmp31b) throws WrongSizeException {
 
-        final int comp2 = 2 * BodyKinematics.COMPONENTS;
+        final var comp2 = 2 * BodyKinematics.COMPONENTS;
         if (oldQuantizationResiduals != null && oldQuantizationResiduals.length != comp2) {
             throw new IllegalArgumentException();
         }
@@ -383,17 +382,17 @@ public class BodyKinematicsGenerator {
         final double gyroNoiseY;
         final double gyroNoiseZ;
         if (timeInterval > 0.0) {
-            final double sqrtTimeInterval = Math.sqrt(timeInterval);
+            final var sqrtTimeInterval = Math.sqrt(timeInterval);
 
-            final double accelNoiseRootPSD = errors.getAccelerometerNoiseRootPSD();
-            final double accelStd = accelNoiseRootPSD / sqrtTimeInterval;
+            final var accelNoiseRootPSD = errors.getAccelerometerNoiseRootPSD();
+            final var accelStd = accelNoiseRootPSD / sqrtTimeInterval;
 
             accelNoiseX = random.nextGaussian() * accelStd;
             accelNoiseY = random.nextGaussian() * accelStd;
             accelNoiseZ = random.nextGaussian() * accelStd;
 
-            final double gyroNoiseRootPSD = errors.getGyroNoiseRootPSD();
-            final double gyroStd = gyroNoiseRootPSD / sqrtTimeInterval;
+            final var gyroNoiseRootPSD = errors.getGyroNoiseRootPSD();
+            final var gyroStd = gyroNoiseRootPSD / sqrtTimeInterval;
 
             gyroNoiseX = random.nextGaussian() * gyroStd;
             gyroNoiseY = random.nextGaussian() * gyroStd;
@@ -416,9 +415,9 @@ public class BodyKinematicsGenerator {
         tmp33.multiply(trueFibb, tmp31a);
         tmp31a.add(ba);
 
-        final double uqFibbX = tmp31a.getElementAtIndex(0) + accelNoiseX;
-        final double uqFibbY = tmp31a.getElementAtIndex(1) + accelNoiseY;
-        final double uqFibbZ = tmp31a.getElementAtIndex(2) + accelNoiseZ;
+        final var uqFibbX = tmp31a.getElementAtIndex(0) + accelNoiseX;
+        final var uqFibbY = tmp31a.getElementAtIndex(1) + accelNoiseY;
+        final var uqFibbZ = tmp31a.getElementAtIndex(2) + accelNoiseZ;
 
         identity.add(mg, tmp33);
         tmp33.multiply(trueOmegaibb, tmp31a);
@@ -427,16 +426,16 @@ public class BodyKinematicsGenerator {
         gg.multiply(trueFibb, tmp31b);
         tmp31a.add(tmp31b);
 
-        final double uqOmegaIbbX = tmp31a.getElementAtIndex(0) + gyroNoiseX;
-        final double uqOmegaIbbY = tmp31a.getElementAtIndex(1) + gyroNoiseY;
-        final double uqOmegaIbbZ = tmp31a.getElementAtIndex(2) + gyroNoiseZ;
+        final var uqOmegaIbbX = tmp31a.getElementAtIndex(0) + gyroNoiseX;
+        final var uqOmegaIbbY = tmp31a.getElementAtIndex(1) + gyroNoiseY;
+        final var uqOmegaIbbZ = tmp31a.getElementAtIndex(2) + gyroNoiseZ;
 
         // Quantize accelerometer outputs
         if (errors.getAccelerometerQuantizationLevel() > 0.0 && oldQuantizationResiduals != null) {
-            final double accelQuantLevel = errors.getAccelerometerQuantizationLevel();
-            final double fx = accelQuantLevel * Math.round((uqFibbX + oldQuantizationResiduals[0]) / accelQuantLevel);
-            final double fy = accelQuantLevel * Math.round((uqFibbY + oldQuantizationResiduals[1]) / accelQuantLevel);
-            final double fz = accelQuantLevel * Math.round((uqFibbZ + oldQuantizationResiduals[2]) / accelQuantLevel);
+            final var accelQuantLevel = errors.getAccelerometerQuantizationLevel();
+            final var fx = accelQuantLevel * Math.round((uqFibbX + oldQuantizationResiduals[0]) / accelQuantLevel);
+            final var fy = accelQuantLevel * Math.round((uqFibbY + oldQuantizationResiduals[1]) / accelQuantLevel);
+            final var fz = accelQuantLevel * Math.round((uqFibbZ + oldQuantizationResiduals[2]) / accelQuantLevel);
 
             result.setSpecificForceCoordinates(fx, fy, fz);
 
@@ -457,12 +456,12 @@ public class BodyKinematicsGenerator {
 
         // Quantize gyro outputs
         if (errors.getGyroQuantizationLevel() > 0.0 && oldQuantizationResiduals != null) {
-            final double gyroQuantLevel = errors.getGyroQuantizationLevel();
-            final double omegaX = gyroQuantLevel * Math.round((uqOmegaIbbX + oldQuantizationResiduals[3])
+            final var gyroQuantLevel = errors.getGyroQuantizationLevel();
+            final var omegaX = gyroQuantLevel * Math.round((uqOmegaIbbX + oldQuantizationResiduals[3])
                     / gyroQuantLevel);
-            final double omegaY = gyroQuantLevel * Math.round((uqOmegaIbbY + oldQuantizationResiduals[4])
+            final var omegaY = gyroQuantLevel * Math.round((uqOmegaIbbY + oldQuantizationResiduals[4])
                     / gyroQuantLevel);
-            final double omegaZ = gyroQuantLevel * Math.round((uqOmegaIbbZ + oldQuantizationResiduals[5])
+            final var omegaZ = gyroQuantLevel * Math.round((uqOmegaIbbZ + oldQuantizationResiduals[5])
                     / gyroQuantLevel);
 
             result.setAngularRateCoordinates(omegaX, omegaY, omegaZ);

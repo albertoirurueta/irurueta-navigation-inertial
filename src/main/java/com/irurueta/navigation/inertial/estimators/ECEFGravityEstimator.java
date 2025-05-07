@@ -162,27 +162,27 @@ public class ECEFGravityEstimator {
      */
     public static void estimateGravity(final double x, final double y, final double z, final ECEFGravity result) {
         // Calculate distance from center of the Earth
-        final double magR = Math.sqrt(x * x + y * y + z * z);
+        final var magR = Math.sqrt(x * x + y * y + z * z);
 
         if (magR == 0.0) {
             // If the input position is 0,0,0, produce a dummy output
             result.setCoordinates(0.0, 0.0, 0.0);
         } else {
             // Calculate gravitational acceleration using (2.142)
-            final double zScale = 5.0 * Math.pow(z / magR, 2.0);
-            final double tmp1 = -EARTH_GRAVITATIONAL_CONSTANT / Math.pow(magR, 3.0);
-            final double tmp2 = 1.5 * EARTH_SECOND_GRAVITATIONAL_CONSTANT
-                    * Math.pow(EARTH_EQUATORIAL_RADIUS_WGS84 / magR, 2.0);
-            final double tmp3 = tmp1 * (1.0 + tmp2 * (1.0 - zScale));
+            final var zScale = 5.0 * Math.pow(z / magR, 2.0);
+            final var tmp1 = -EARTH_GRAVITATIONAL_CONSTANT / Math.pow(magR, 3.0);
+            final var tmp2 = 1.5 * EARTH_SECOND_GRAVITATIONAL_CONSTANT * Math.pow(EARTH_EQUATORIAL_RADIUS_WGS84
+                    / magR, 2.0);
+            final var tmp3 = tmp1 * (1.0 + tmp2 * (1.0 - zScale));
 
-            final double gammaX = tmp3 * x;
-            final double gammaY = tmp3 * y;
-            final double gammaZ = tmp1 * (1.0 + tmp2 * (3.0 - zScale)) * z;
+            final var gammaX = tmp3 * x;
+            final var gammaY = tmp3 * y;
+            final var gammaZ = tmp1 * (1.0 + tmp2 * (3.0 - zScale)) * z;
 
             // Add centripetal acceleration using (2.133)
-            final double omega2 = EARTH_ROTATION_RATE * EARTH_ROTATION_RATE;
-            final double gx = gammaX + omega2 * x;
-            final double gy = gammaY + omega2 * y;
+            final var omega2 = EARTH_ROTATION_RATE * EARTH_ROTATION_RATE;
+            final var gx = gammaX + omega2 * x;
+            final var gy = gammaY + omega2 * y;
 
             result.setCoordinates(gx, gy, gammaZ);
         }
@@ -200,7 +200,7 @@ public class ECEFGravityEstimator {
      * @return a new gravity instance containing estimated acceleration due to gravity.
      */
     public static ECEFGravity estimateGravityAndReturnNew(final double x, final double y, final double z) {
-        final ECEFGravity result = new ECEFGravity();
+        final var result = new ECEFGravity();
         estimateGravity(x, y, z, result);
         return result;
     }
@@ -268,7 +268,7 @@ public class ECEFGravityEstimator {
      * @return a new gravity instance containing estimated acceleration due to gravity.
      */
     public static ECEFGravity estimateGravityAndReturnNew(final Distance x, final Distance y, final Distance z) {
-        final ECEFGravity result = new ECEFGravity();
+        final var result = new ECEFGravity();
         estimateGravity(x, y, z, result);
         return result;
     }

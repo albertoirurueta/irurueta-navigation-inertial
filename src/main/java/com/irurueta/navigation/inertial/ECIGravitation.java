@@ -70,6 +70,17 @@ public class ECIGravitation extends GravityOrGravitation<ECIGravitation> {
     }
 
     /**
+     * Computes and returns hash code for this instance. Hash codes are almost unique
+     * values that are useful for fast classification and storage of objects in collections.
+     *
+     * @return Hash code.
+     */
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    /**
      * Check if provided object is a ECIGravitation instance having exactly the same contents
      * as this instance.
      *
@@ -89,7 +100,7 @@ public class ECIGravitation extends GravityOrGravitation<ECIGravitation> {
         }
 
         //noinspection PatternVariableCanBeUsed
-        final ECIGravitation other = (ECIGravitation) obj;
+        final var other = (ECIGravitation) obj;
         return equals(other);
     }
 
@@ -101,7 +112,7 @@ public class ECIGravitation extends GravityOrGravitation<ECIGravitation> {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final ECIGravitation result = (ECIGravitation) super.clone();
+        final var result = (ECIGravitation) super.clone();
         copyTo(result);
         return result;
     }

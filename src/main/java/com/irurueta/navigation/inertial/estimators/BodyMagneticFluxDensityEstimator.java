@@ -15,7 +15,6 @@
  */
 package com.irurueta.navigation.inertial.estimators;
 
-import com.irurueta.algebra.Matrix;
 import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.navigation.frames.CoordinateTransformation;
 import com.irurueta.navigation.frames.FrameType;
@@ -57,28 +56,28 @@ public class BodyMagneticFluxDensityEstimator {
             final double magnitude, final double declination, final double dip,
             final double roll, final double pitch, final double yaw, final BodyMagneticFluxDensity result) {
 
-        final double magneticHeading = yaw - declination;
+        final var magneticHeading = yaw - declination;
 
-        final double cosHeading = Math.cos(magneticHeading);
-        final double sinHeading = Math.sin(magneticHeading);
+        final var cosHeading = Math.cos(magneticHeading);
+        final var sinHeading = Math.sin(magneticHeading);
 
-        final double cosDip = Math.cos(dip);
-        final double sinDip = Math.sin(dip);
+        final var cosDip = Math.cos(dip);
+        final var sinDip = Math.sin(dip);
 
         // notice that bn and be are not really pointing towards north and
         // east, instead they are affected by the amount of declination.
-        final double bn = cosHeading * cosDip * magnitude;
-        final double be = sinHeading * cosDip * magnitude;
-        final double bd = sinDip * magnitude;
+        final var bn = cosHeading * cosDip * magnitude;
+        final var be = sinHeading * cosDip * magnitude;
+        final var bd = sinDip * magnitude;
 
-        final double sinRoll = Math.sin(roll);
-        final double cosRoll = Math.cos(roll);
-        final double sinPitch = Math.sin(pitch);
-        final double cosPitch = Math.cos(pitch);
+        final var sinRoll = Math.sin(roll);
+        final var cosRoll = Math.cos(roll);
+        final var sinPitch = Math.sin(pitch);
+        final var cosPitch = Math.cos(pitch);
 
-        final double bx = cosPitch * bn - sinPitch * bd;
-        final double by = sinRoll * sinPitch * bn - cosRoll * be + sinRoll * cosPitch * bd;
-        final double bz = cosRoll * sinPitch * bn + sinRoll * be + cosRoll * cosPitch * bd;
+        final var bx = cosPitch * bn - sinPitch * bd;
+        final var by = sinRoll * sinPitch * bn - cosRoll * be + sinRoll * cosPitch * bd;
+        final var bz = cosRoll * sinPitch * bn + sinRoll * be + cosRoll * cosPitch * bd;
 
         result.setCoordinates(bx, by, bz);
     }
@@ -100,9 +99,9 @@ public class BodyMagneticFluxDensityEstimator {
     public static void estimate(
             final double magnitude, final double declination, final double dip, final CoordinateTransformation c,
             final BodyMagneticFluxDensity result) {
-        final double roll = c.getRollEulerAngle();
-        final double pitch = c.getPitchEulerAngle();
-        final double yaw = c.getYawEulerAngle();
+        final var roll = c.getRollEulerAngle();
+        final var pitch = c.getPitchEulerAngle();
+        final var yaw = c.getYawEulerAngle();
 
         estimate(magnitude, declination, dip, roll, pitch, yaw, result);
     }
@@ -122,8 +121,8 @@ public class BodyMagneticFluxDensityEstimator {
             final NEDMagneticFluxDensity earthB, final double roll, final double pitch, final double yaw,
             final BodyMagneticFluxDensity result) {
 
-        final CoordinateTransformation c = new CoordinateTransformation(
-                roll, pitch, yaw, FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
+        final var c = new CoordinateTransformation(roll, pitch, yaw, FrameType.LOCAL_NAVIGATION_FRAME,
+                FrameType.BODY_FRAME);
         estimate(earthB, c, result);
     }
 
@@ -141,14 +140,14 @@ public class BodyMagneticFluxDensityEstimator {
             final BodyMagneticFluxDensity result) {
 
         try {
-            final Matrix bm = earthB.asMatrix();
-            final Matrix cbn = c.getMatrix();
+            final var bm = earthB.asMatrix();
+            final var cbn = c.getMatrix();
             cbn.multiply(bm);
 
             // cbn now contains magnetic flux density in body coordinates
-            final double bx = cbn.getElementAtIndex(0);
-            final double by = cbn.getElementAtIndex(1);
-            final double bz = cbn.getElementAtIndex(2);
+            final var bx = cbn.getElementAtIndex(0);
+            final var by = cbn.getElementAtIndex(1);
+            final var bz = cbn.getElementAtIndex(2);
 
             result.setCoordinates(bx, by, bz);
         } catch (final WrongSizeException ignore) {
@@ -230,7 +229,7 @@ public class BodyMagneticFluxDensityEstimator {
     public static BodyMagneticFluxDensity estimate(
             final double magnitude, final double declination, final double dip,
             final double roll, final double pitch, final double yaw) {
-        final BodyMagneticFluxDensity result = new BodyMagneticFluxDensity();
+        final var result = new BodyMagneticFluxDensity();
         estimate(magnitude, declination, dip, roll, pitch, yaw, result);
         return result;
     }
@@ -250,7 +249,7 @@ public class BodyMagneticFluxDensityEstimator {
      */
     public static BodyMagneticFluxDensity estimate(
             final double magnitude, final double declination, final double dip, final CoordinateTransformation c) {
-        final BodyMagneticFluxDensity result = new BodyMagneticFluxDensity();
+        final var result = new BodyMagneticFluxDensity();
         estimate(magnitude, declination, dip, c, result);
         return result;
     }
@@ -267,7 +266,7 @@ public class BodyMagneticFluxDensityEstimator {
      */
     public static BodyMagneticFluxDensity estimate(
             final NEDMagneticFluxDensity earthB, final double roll, final double pitch, final double yaw) {
-        final BodyMagneticFluxDensity result = new BodyMagneticFluxDensity();
+        final var result = new BodyMagneticFluxDensity();
         estimate(earthB, roll, pitch, yaw, result);
         return result;
     }
@@ -282,7 +281,7 @@ public class BodyMagneticFluxDensityEstimator {
      */
     public static BodyMagneticFluxDensity estimate(
             final NEDMagneticFluxDensity earthB, final CoordinateTransformation c) {
-        final BodyMagneticFluxDensity result = new BodyMagneticFluxDensity();
+        final var result = new BodyMagneticFluxDensity();
         estimate(earthB, c, result);
         return result;
     }
@@ -303,7 +302,7 @@ public class BodyMagneticFluxDensityEstimator {
     public static BodyMagneticFluxDensity estimate(
             final double magnitude, final Angle declination, final Angle dip,
             final Angle roll, final Angle pitch, final Angle yaw) {
-        final BodyMagneticFluxDensity result = new BodyMagneticFluxDensity();
+        final var result = new BodyMagneticFluxDensity();
         estimate(magnitude, declination, dip, roll, pitch, yaw, result);
         return result;
     }
@@ -322,7 +321,7 @@ public class BodyMagneticFluxDensityEstimator {
      */
     public static BodyMagneticFluxDensity estimate(
             final double magnitude, final Angle declination, final Angle dip, final CoordinateTransformation c) {
-        final BodyMagneticFluxDensity result = new BodyMagneticFluxDensity();
+        final var result = new BodyMagneticFluxDensity();
         estimate(magnitude, declination, dip, c, result);
         return result;
     }
@@ -339,7 +338,7 @@ public class BodyMagneticFluxDensityEstimator {
      */
     public static BodyMagneticFluxDensity estimate(
             final NEDMagneticFluxDensity earthB, final Angle roll, final Angle pitch, final Angle yaw) {
-        final BodyMagneticFluxDensity result = new BodyMagneticFluxDensity();
+        final var result = new BodyMagneticFluxDensity();
         estimate(earthB, roll, pitch, yaw, result);
         return result;
     }

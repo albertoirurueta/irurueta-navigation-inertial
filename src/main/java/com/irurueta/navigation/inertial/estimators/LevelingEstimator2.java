@@ -24,7 +24,6 @@ import com.irurueta.navigation.frames.CoordinateTransformation;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.inertial.NEDGravity;
 
 /**
  * This implementation provides slightly more accurate
@@ -74,9 +73,9 @@ public class LevelingEstimator2 {
         getPartialAttitude(latitude, height, fx, fy, fz, result);
 
         // fix yaw angle
-        final double roll = result.getRollEulerAngle();
-        final double pitch = result.getPitchEulerAngle();
-        final double yaw = LevelingEstimator.getYaw(roll, pitch, angularRateX, angularRateY, angularRateZ);
+        final var roll = result.getRollEulerAngle();
+        final var pitch = result.getPitchEulerAngle();
+        final var yaw = LevelingEstimator.getYaw(roll, pitch, angularRateX, angularRateY, angularRateZ);
 
         result.setEulerAngles(roll, pitch, yaw);
     }
@@ -160,8 +159,7 @@ public class LevelingEstimator2 {
             final double latitude, final double height,
             final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ) {
-        final CoordinateTransformation result = new CoordinateTransformation(
-                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
+        final var result = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
         getAttitude(latitude, height, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
@@ -187,8 +185,7 @@ public class LevelingEstimator2 {
     public static CoordinateTransformation getAttitude(
             final NEDPosition position, final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ) {
-        final CoordinateTransformation result = new CoordinateTransformation(
-                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
+        final var result = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
         getAttitude(position, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
@@ -204,8 +201,7 @@ public class LevelingEstimator2 {
      */
     public static CoordinateTransformation getAttitude(
             final double latitude, final double height, final BodyKinematics kinematics) {
-        final CoordinateTransformation result = new CoordinateTransformation(
-                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
+        final var result = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
         getAttitude(latitude, height, kinematics, result);
         return result;
     }
@@ -219,8 +215,7 @@ public class LevelingEstimator2 {
      * @return estimated attitude.
      */
     public static CoordinateTransformation getAttitude(final NEDPosition position, final BodyKinematics kinematics) {
-        final CoordinateTransformation result =
-                new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
+        final var result = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
         getAttitude(position, kinematics, result);
         return result;
     }
@@ -250,7 +245,7 @@ public class LevelingEstimator2 {
             // implementation).
 
             // obtain normalized specific force in local navigation coordinates
-            final double[] normF = new double[]{fx, fy, fz};
+            final var normF = new double[]{fx, fy, fz};
             ArrayUtils.normalize(normF);
 
             // obtain gravity in NED coordinates (locally equivalent to
@@ -258,9 +253,9 @@ public class LevelingEstimator2 {
             // Because Earth is not fully spherical, normalized vector won't
             // be (0, 0, 1), because there will always be a small north
             // gravity component.
-            final NEDGravity nedGravity = NEDGravityEstimator.estimateGravityAndReturnNew(latitude, height);
+            final var nedGravity = NEDGravityEstimator.estimateGravityAndReturnNew(latitude, height);
 
-            final double[] normG = nedGravity.asArray();
+            final var normG = nedGravity.asArray();
 
             // ensure that down coordinate points towards Earth center, just
             // like sensed specific force
@@ -270,22 +265,22 @@ public class LevelingEstimator2 {
 
             // compute angle between both normalized vectors using dot product
             // cos(alpha) = normF' * normG
-            final double cosAlpha = ArrayUtils.dotProduct(normF, normG);
+            final var cosAlpha = ArrayUtils.dotProduct(normF, normG);
 
             // compute vector perpendicular to both normF and normG which will
             // be the rotation axis
-            final Matrix skew = Utils.skewMatrix(normG);
-            final Matrix tmp1 = Matrix.newFromArray(normF);
-            final Matrix tmp2 = skew.multiplyAndReturnNew(tmp1);
+            final var skew = Utils.skewMatrix(normG);
+            final var tmp1 = Matrix.newFromArray(normF);
+            final var tmp2 = skew.multiplyAndReturnNew(tmp1);
 
-            final double sinAlpha = Utils.normF(tmp2);
+            final var sinAlpha = Utils.normF(tmp2);
 
-            final double[] axis = tmp2.toArray();
+            final var axis = tmp2.toArray();
             ArrayUtils.normalize(axis);
 
-            final double alpha = Math.atan2(sinAlpha, cosAlpha);
+            final var alpha = Math.atan2(sinAlpha, cosAlpha);
 
-            final Quaternion q = new Quaternion(axis, alpha);
+            final var q = new Quaternion(axis, alpha);
 
             // set rotation (yaw angle will be arbitrary and will need
             // to be fixed later on)

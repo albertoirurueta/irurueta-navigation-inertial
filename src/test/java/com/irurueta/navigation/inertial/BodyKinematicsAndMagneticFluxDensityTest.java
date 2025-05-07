@@ -16,15 +16,13 @@
 package com.irurueta.navigation.inertial;
 
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class BodyKinematicsAndMagneticFluxDensityTest {
+class BodyKinematicsAndMagneticFluxDensityTest {
 
     private static final double MIN_SPECIFIC_FORCE = -9.81;
     private static final double MAX_SPECIFIC_FORCE = 9.81;
@@ -40,8 +38,8 @@ public class BodyKinematicsAndMagneticFluxDensityTest {
     private static final double THRESHOLD = 1e-6;
 
     @Test
-    public void testConstructor1() {
-        final BodyKinematicsAndMagneticFluxDensity kb = new BodyKinematicsAndMagneticFluxDensity();
+    void testConstructor1() {
+        final var kb = new BodyKinematicsAndMagneticFluxDensity();
 
         // check default values
         assertNull(kb.getKinematics());
@@ -49,9 +47,9 @@ public class BodyKinematicsAndMagneticFluxDensityTest {
     }
 
     @Test
-    public void testConstructor2() {
-        final BodyKinematics kinematics = new BodyKinematics();
-        final BodyKinematicsAndMagneticFluxDensity kb = new BodyKinematicsAndMagneticFluxDensity(kinematics);
+    void testConstructor2() {
+        final var kinematics = new BodyKinematics();
+        final var kb = new BodyKinematicsAndMagneticFluxDensity(kinematics);
 
         // check default values
         assertSame(kb.getKinematics(), kinematics);
@@ -59,9 +57,9 @@ public class BodyKinematicsAndMagneticFluxDensityTest {
     }
 
     @Test
-    public void testConstructor3() {
-        final BodyMagneticFluxDensity b = new BodyMagneticFluxDensity();
-        final BodyKinematicsAndMagneticFluxDensity kb = new BodyKinematicsAndMagneticFluxDensity(b);
+    void testConstructor3() {
+        final var b = new BodyMagneticFluxDensity();
+        final var kb = new BodyKinematicsAndMagneticFluxDensity(b);
 
         // check default values
         assertNull(kb.getKinematics());
@@ -69,10 +67,10 @@ public class BodyKinematicsAndMagneticFluxDensityTest {
     }
 
     @Test
-    public void testConstructor4() {
-        final BodyKinematics kinematics = new BodyKinematics();
-        final BodyMagneticFluxDensity b = new BodyMagneticFluxDensity();
-        final BodyKinematicsAndMagneticFluxDensity kb = new BodyKinematicsAndMagneticFluxDensity(kinematics, b);
+    void testConstructor4() {
+        final var kinematics = new BodyKinematics();
+        final var b = new BodyMagneticFluxDensity();
+        final var kb = new BodyKinematicsAndMagneticFluxDensity(kinematics, b);
 
         // check default values
         assertSame(kb.getKinematics(), kinematics);
@@ -80,12 +78,12 @@ public class BodyKinematicsAndMagneticFluxDensityTest {
     }
 
     @Test
-    public void testConstructor5() {
-        final BodyKinematics kinematics = createKinematics();
-        final BodyMagneticFluxDensity b = createMagneticFlux();
-        final BodyKinematicsAndMagneticFluxDensity kb1 = new BodyKinematicsAndMagneticFluxDensity(kinematics, b);
+    void testConstructor5() {
+        final var kinematics = createKinematics();
+        final var b = createMagneticFlux();
+        final var kb1 = new BodyKinematicsAndMagneticFluxDensity(kinematics, b);
 
-        final BodyKinematicsAndMagneticFluxDensity kb2 = new BodyKinematicsAndMagneticFluxDensity(kb1);
+        final var kb2 = new BodyKinematicsAndMagneticFluxDensity(kb1);
 
         assertEquals(kb1.getKinematics(), kb2.getKinematics());
         assertEquals(kb1.getMagneticFluxDensity(), kb2.getMagneticFluxDensity());
@@ -95,14 +93,14 @@ public class BodyKinematicsAndMagneticFluxDensityTest {
     }
 
     @Test
-    public void testGetSetKinematics() {
-        final BodyKinematicsAndMagneticFluxDensity kb = new BodyKinematicsAndMagneticFluxDensity();
+    void testGetSetKinematics() {
+        final var kb = new BodyKinematicsAndMagneticFluxDensity();
 
         // check default value
         assertNull(kb.getKinematics());
 
-        // set new value
-        final BodyKinematics kinematics = new BodyKinematics();
+        // set a new value
+        final var kinematics = new BodyKinematics();
         kb.setKinematics(kinematics);
 
         // check
@@ -110,14 +108,14 @@ public class BodyKinematicsAndMagneticFluxDensityTest {
     }
 
     @Test
-    public void testGetSetMagneticFluxDensity() {
-        final BodyKinematicsAndMagneticFluxDensity kb = new BodyKinematicsAndMagneticFluxDensity();
+    void testGetSetMagneticFluxDensity() {
+        final var kb = new BodyKinematicsAndMagneticFluxDensity();
 
         // check default value
         assertNull(kb.getMagneticFluxDensity());
 
-        // set new value
-        final BodyMagneticFluxDensity b = new BodyMagneticFluxDensity();
+        // set a new value
+        final var b = new BodyMagneticFluxDensity();
         kb.setMagneticFluxDensity(b);
 
         // check
@@ -125,12 +123,12 @@ public class BodyKinematicsAndMagneticFluxDensityTest {
     }
 
     @Test
-    public void testCopyFromWhenHasBothKinematicsAndMagneticFlux() {
-        final BodyKinematics kinematics = createKinematics();
-        final BodyMagneticFluxDensity b = createMagneticFlux();
-        final BodyKinematicsAndMagneticFluxDensity kb1 = new BodyKinematicsAndMagneticFluxDensity(kinematics, b);
+    void testCopyFromWhenHasBothKinematicsAndMagneticFlux() {
+        final var kinematics = createKinematics();
+        final var b = createMagneticFlux();
+        final var kb1 = new BodyKinematicsAndMagneticFluxDensity(kinematics, b);
 
-        final BodyKinematicsAndMagneticFluxDensity kb2 = new BodyKinematicsAndMagneticFluxDensity();
+        final var kb2 = new BodyKinematicsAndMagneticFluxDensity();
 
         // check default values
         assertNull(kb2.getKinematics());
@@ -148,11 +146,11 @@ public class BodyKinematicsAndMagneticFluxDensityTest {
     }
 
     @Test
-    public void testCopyFromWhenHasKinematics() {
-        final BodyKinematics kinematics = createKinematics();
-        final BodyKinematicsAndMagneticFluxDensity kb1 = new BodyKinematicsAndMagneticFluxDensity(kinematics);
+    void testCopyFromWhenHasKinematics() {
+        final var kinematics = createKinematics();
+        final var kb1 = new BodyKinematicsAndMagneticFluxDensity(kinematics);
 
-        final BodyKinematicsAndMagneticFluxDensity kb2 = new BodyKinematicsAndMagneticFluxDensity();
+        final var kb2 = new BodyKinematicsAndMagneticFluxDensity();
 
         // check default values
         assertNull(kb2.getKinematics());
@@ -169,11 +167,11 @@ public class BodyKinematicsAndMagneticFluxDensityTest {
     }
 
     @Test
-    public void testCopyFromWhenHasMagneticFlux() {
-        final BodyMagneticFluxDensity b = createMagneticFlux();
-        final BodyKinematicsAndMagneticFluxDensity kb1 = new BodyKinematicsAndMagneticFluxDensity(b);
+    void testCopyFromWhenHasMagneticFlux() {
+        final var b = createMagneticFlux();
+        final var kb1 = new BodyKinematicsAndMagneticFluxDensity(b);
 
-        final BodyKinematicsAndMagneticFluxDensity kb2 = new BodyKinematicsAndMagneticFluxDensity();
+        final var kb2 = new BodyKinematicsAndMagneticFluxDensity();
 
         // check default values
         assertNull(kb2.getKinematics());
@@ -190,13 +188,13 @@ public class BodyKinematicsAndMagneticFluxDensityTest {
     }
 
     @Test
-    public void testCopyFromWhenNullData() {
-        final BodyKinematicsAndMagneticFluxDensity kb1 = new BodyKinematicsAndMagneticFluxDensity();
+    void testCopyFromWhenNullData() {
+        final var kb1 = new BodyKinematicsAndMagneticFluxDensity();
 
-        final BodyKinematics kinematics = createKinematics();
-        final BodyMagneticFluxDensity b = createMagneticFlux();
+        final var kinematics = createKinematics();
+        final var b = createMagneticFlux();
 
-        final BodyKinematicsAndMagneticFluxDensity kb2 = new BodyKinematicsAndMagneticFluxDensity(kinematics, b);
+        final var kb2 = new BodyKinematicsAndMagneticFluxDensity(kinematics, b);
 
         // check default values
         assertSame(kinematics, kb2.getKinematics());
@@ -211,16 +209,16 @@ public class BodyKinematicsAndMagneticFluxDensityTest {
     }
 
     @Test
-    public void testCopyTo() {
-        final BodyKinematics kinematics1 = createKinematics();
-        final BodyMagneticFluxDensity b1 = createMagneticFlux();
+    void testCopyTo() {
+        final var kinematics1 = createKinematics();
+        final var b1 = createMagneticFlux();
 
-        final BodyKinematics kinematics2 = createKinematics();
-        final BodyMagneticFluxDensity b2 = createMagneticFlux();
+        final var kinematics2 = createKinematics();
+        final var b2 = createMagneticFlux();
 
-        final BodyKinematicsAndMagneticFluxDensity kb1 = new BodyKinematicsAndMagneticFluxDensity(kinematics1, b1);
+        final var kb1 = new BodyKinematicsAndMagneticFluxDensity(kinematics1, b1);
 
-        final BodyKinematicsAndMagneticFluxDensity kb2 = new BodyKinematicsAndMagneticFluxDensity(kinematics2, b2);
+        final var kb2 = new BodyKinematicsAndMagneticFluxDensity(kinematics2, b2);
 
         kb1.copyTo(kb2);
 
@@ -230,36 +228,36 @@ public class BodyKinematicsAndMagneticFluxDensityTest {
     }
 
     @Test
-    public void testHashCode() {
-        final BodyKinematics kinematics1 = createKinematics();
-        final BodyMagneticFluxDensity b1 = createMagneticFlux();
+    void testHashCode() {
+        final var kinematics1 = createKinematics();
+        final var b1 = createMagneticFlux();
 
-        final BodyKinematics kinematics2 = createKinematics();
-        final BodyMagneticFluxDensity b2 = createMagneticFlux();
+        final var kinematics2 = createKinematics();
+        final var b2 = createMagneticFlux();
 
-        final BodyKinematicsAndMagneticFluxDensity kb1 = new BodyKinematicsAndMagneticFluxDensity(kinematics1, b1);
+        final var kb1 = new BodyKinematicsAndMagneticFluxDensity(kinematics1, b1);
 
-        final BodyKinematicsAndMagneticFluxDensity kb2 = new BodyKinematicsAndMagneticFluxDensity(kinematics1, b1);
+        final var kb2 = new BodyKinematicsAndMagneticFluxDensity(kinematics1, b1);
 
-        final BodyKinematicsAndMagneticFluxDensity kb3 = new BodyKinematicsAndMagneticFluxDensity(kinematics2, b2);
+        final var kb3 = new BodyKinematicsAndMagneticFluxDensity(kinematics2, b2);
 
         assertEquals(kb1.hashCode(), kb2.hashCode());
         assertNotEquals(kb1.hashCode(), kb3.hashCode());
     }
 
     @Test
-    public void testEquals() {
-        final BodyKinematics kinematics1 = createKinematics();
-        final BodyMagneticFluxDensity b1 = createMagneticFlux();
+    void testEquals() {
+        final var kinematics1 = createKinematics();
+        final var b1 = createMagneticFlux();
 
-        final BodyKinematics kinematics2 = createKinematics();
-        final BodyMagneticFluxDensity b2 = createMagneticFlux();
+        final var kinematics2 = createKinematics();
+        final var b2 = createMagneticFlux();
 
-        final BodyKinematicsAndMagneticFluxDensity kb1 = new BodyKinematicsAndMagneticFluxDensity(kinematics1, b1);
+        final var kb1 = new BodyKinematicsAndMagneticFluxDensity(kinematics1, b1);
 
-        final BodyKinematicsAndMagneticFluxDensity kb2 = new BodyKinematicsAndMagneticFluxDensity(kinematics1, b1);
+        final var kb2 = new BodyKinematicsAndMagneticFluxDensity(kinematics1, b1);
 
-        final BodyKinematicsAndMagneticFluxDensity kb3 = new BodyKinematicsAndMagneticFluxDensity(kinematics2, b2);
+        final var kb3 = new BodyKinematicsAndMagneticFluxDensity(kinematics2, b2);
 
         //noinspection EqualsWithItself
         assertEquals(kb1, kb1);
@@ -267,24 +265,24 @@ public class BodyKinematicsAndMagneticFluxDensityTest {
         assertTrue(kb1.equals(kb1));
         assertTrue(kb1.equals(kb2));
         assertFalse(kb1.equals(kb3));
-        assertNotEquals(kb1, null);
+        assertNotEquals(null, kb1);
         assertFalse(kb1.equals(null));
-        assertNotEquals(kb1, new Object());
+        assertNotEquals(new Object(), kb1);
     }
 
     @Test
-    public void testEqualsWithThreshold() {
-        final BodyKinematics kinematics1 = createKinematics();
-        final BodyMagneticFluxDensity b1 = createMagneticFlux();
+    void testEqualsWithThreshold() {
+        final var kinematics1 = createKinematics();
+        final var b1 = createMagneticFlux();
 
-        final BodyKinematics kinematics2 = createKinematics();
-        final BodyMagneticFluxDensity b2 = createMagneticFlux();
+        final var kinematics2 = createKinematics();
+        final var b2 = createMagneticFlux();
 
-        final BodyKinematicsAndMagneticFluxDensity kb1 = new BodyKinematicsAndMagneticFluxDensity(kinematics1, b1);
+        final var kb1 = new BodyKinematicsAndMagneticFluxDensity(kinematics1, b1);
 
-        final BodyKinematicsAndMagneticFluxDensity kb2 = new BodyKinematicsAndMagneticFluxDensity(kinematics1, b1);
+        final var kb2 = new BodyKinematicsAndMagneticFluxDensity(kinematics1, b1);
 
-        final BodyKinematicsAndMagneticFluxDensity kb3 = new BodyKinematicsAndMagneticFluxDensity(kinematics2, b2);
+        final var kb3 = new BodyKinematicsAndMagneticFluxDensity(kinematics2, b2);
 
         assertTrue(kb1.equals(kb1, THRESHOLD));
         assertTrue(kb1.equals(kb2, THRESHOLD));
@@ -293,11 +291,11 @@ public class BodyKinematicsAndMagneticFluxDensityTest {
     }
 
     @Test
-    public void testClone() throws CloneNotSupportedException {
-        final BodyKinematics kinematics = createKinematics();
-        final BodyMagneticFluxDensity b = createMagneticFlux();
+    void testClone() throws CloneNotSupportedException {
+        final var kinematics = createKinematics();
+        final var b = createMagneticFlux();
 
-        final BodyKinematicsAndMagneticFluxDensity kb1 = new BodyKinematicsAndMagneticFluxDensity(kinematics, b);
+        final var kb1 = new BodyKinematicsAndMagneticFluxDensity(kinematics, b);
 
         final Object kb2 = kb1.clone();
 
@@ -306,47 +304,47 @@ public class BodyKinematicsAndMagneticFluxDensityTest {
     }
 
     @Test
-    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
-        final BodyKinematics kinematics = createKinematics();
-        final BodyMagneticFluxDensity b = createMagneticFlux();
+    void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final var kinematics = createKinematics();
+        final var b = createMagneticFlux();
 
-        final BodyKinematicsAndMagneticFluxDensity kb1 = new BodyKinematicsAndMagneticFluxDensity(kinematics, b);
+        final var kb1 = new BodyKinematicsAndMagneticFluxDensity(kinematics, b);
 
         final byte[] bytes = SerializationHelper.serialize(kb1);
-        final BodyKinematicsAndMagneticFluxDensity kb2 = SerializationHelper.deserialize(bytes);
+        final var kb2 = SerializationHelper.deserialize(bytes);
 
         assertEquals(kb1, kb2);
         assertNotSame(kb1, kb2);
     }
 
     @Test
-    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
-        final Field field = BodyKinematicsAndMagneticFluxDensity.class.getDeclaredField("serialVersionUID");
+    void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final var field = BodyKinematicsAndMagneticFluxDensity.class.getDeclaredField("serialVersionUID");
         field.setAccessible(true);
 
         assertEquals(0L, field.get(null));
     }
 
-    private BodyKinematics createKinematics() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    private static BodyKinematics createKinematics() {
+        final var randomizer = new UniformRandomizer();
 
-        final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
 
-        final double angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
 
         return new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
     }
 
-    private BodyMagneticFluxDensity createMagneticFlux() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    private static BodyMagneticFluxDensity createMagneticFlux() {
+        final var randomizer = new UniformRandomizer();
 
-        final double bx = randomizer.nextDouble(MIN_MAGNETIC_FLUX_VALUE, MAX_MAGNETIC_FLUX_VALUE);
-        final double by = randomizer.nextDouble(MIN_MAGNETIC_FLUX_VALUE, MAX_MAGNETIC_FLUX_VALUE);
-        final double bz = randomizer.nextDouble(MIN_MAGNETIC_FLUX_VALUE, MAX_MAGNETIC_FLUX_VALUE);
+        final var bx = randomizer.nextDouble(MIN_MAGNETIC_FLUX_VALUE, MAX_MAGNETIC_FLUX_VALUE);
+        final var by = randomizer.nextDouble(MIN_MAGNETIC_FLUX_VALUE, MAX_MAGNETIC_FLUX_VALUE);
+        final var bz = randomizer.nextDouble(MIN_MAGNETIC_FLUX_VALUE, MAX_MAGNETIC_FLUX_VALUE);
 
         return new BodyMagneticFluxDensity(bx, by, bz);
     }

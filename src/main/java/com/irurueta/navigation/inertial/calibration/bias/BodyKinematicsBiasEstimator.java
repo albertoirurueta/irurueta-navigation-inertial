@@ -98,7 +98,7 @@ public class BodyKinematicsBiasEstimator {
     /**
      * Time interval expressed in seconds (s) between body kinematics samples.
      */
-    private double mTimeInterval = DEFAULT_TIME_INTERVAL_SECONDS;
+    private double timeInterval = DEFAULT_TIME_INTERVAL_SECONDS;
 
     /**
      * Contains body position, velocity (which will always be zero) and orientation
@@ -108,104 +108,104 @@ public class BodyKinematicsBiasEstimator {
      * pith = 0, yaw = 0), which for Android devices it means that the device is flat
      * on a horizontal surface with the screen facing down.
      */
-    private final ECEFFrame mFrame;
+    private final ECEFFrame frame;
 
     /**
      * Listener to handle events raised by this estimator.
      */
-    private BodyKinematicsBiasEstimatorListener mListener;
+    private BodyKinematicsBiasEstimatorListener listener;
 
     /**
      * Last provided body kinematics values.
      */
-    private BodyKinematics mLastBodyKinematics;
+    private BodyKinematics lastBodyKinematics;
 
     /**
      * Contains estimated bias of x coordinate of accelerometer sensed specific force
      * expressed in meters per squared second (m/s^2).
      */
-    private double mBiasFx;
+    private double biasFx;
 
     /**
      * Contains estimated bias of y coordinate of accelerometer sensed specific force
      * expressed in meters per squared second (m/s^2).
      */
-    private double mBiasFy;
+    private double biasFy;
 
     /**
      * Contains estimated bias of z coordinate of accelerometer sensed specific force
      * expressed in meters per squared second (m/s^2).
      */
-    private double mBiasFz;
+    private double biasFz;
 
     /**
      * Contains estimated bias of x coordinate of gyroscope sensed angular rate
      * expressed in radians per second (rad/s).
      */
-    private double mBiasAngularRateX;
+    private double biasAngularRateX;
 
     /**
      * Contains estimated bias of y coordinate of gyroscope sensed angular rate
      * expressed in radians per second (rad/s).
      */
-    private double mBiasAngularRateY;
+    private double biasAngularRateY;
 
     /**
      * Contains estimated bias of z coordinate of gyroscope sensed angular rate
      * expressed in radians per second (rad/s).
      */
-    private double mBiasAngularRateZ;
+    private double biasAngularRateZ;
 
     /**
      * Contains estimated variance of x coordinate of accelerometer sensed specific
      * force expressed in (m^2/s^4).
      */
-    private double mVarianceFx;
+    private double varianceFx;
 
     /**
      * Contains estimated variance of y coordinate of accelerometer sensed specific
      * force expressed in (m^2/s^4).
      */
-    private double mVarianceFy;
+    private double varianceFy;
 
     /**
      * Contains estimated variance of z coordinate of accelerometer sensed specific
      * force expressed in (m^2/s4).
      */
-    private double mVarianceFz;
+    private double varianceFz;
 
     /**
      * Contains estimated variance of x coordinate of gyroscope sensed angular rate
      * expressed in (rad^2/s^2).
      */
-    private double mVarianceAngularRateX;
+    private double varianceAngularRateX;
 
     /**
      * Contains estimated variance of y coordinate of gyroscope sensed angular rate
      * expressed in (rad^2/s^2).
      */
-    private double mVarianceAngularRateY;
+    private double varianceAngularRateY;
 
     /**
      * Contains estimated variance of z coordinate of gyroscope sensed angular rate
      * expressed in (rad^2/s^2).
      */
-    private double mVarianceAngularRateZ;
+    private double varianceAngularRateZ;
 
     /**
      * Number of processed body kinematics samples.
      */
-    private int mNumberOfProcessedSamples;
+    private int numberOfProcessedSamples;
 
     /**
      * Number of processed body kinematics samples plus one.
      */
-    private int mNumberOfProcessedSamplesPlusOne = 1;
+    private int numberOfProcessedSamplesPlusOne = 1;
 
     /**
      * Indicates that estimator is running.
      */
-    private boolean mRunning;
+    private boolean running;
 
     /**
      * Theoretical expected body kinematics for provided body position and orientation,
@@ -214,7 +214,7 @@ public class BodyKinematicsBiasEstimator {
      * When body remains static, sensed specific force and angular rates will remain
      * constant due to gravity and Earth rotation.
      */
-    private BodyKinematics mExpectedKinematics;
+    private BodyKinematics expectedKinematics;
 
     /**
      * Constructor.
@@ -224,7 +224,7 @@ public class BodyKinematicsBiasEstimator {
      * device is flat on a horizontal surface with the screen facing down.
      */
     public BodyKinematicsBiasEstimator() {
-        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame());
+        frame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame());
         rebuildExpectedKinematics();
     }
 
@@ -243,8 +243,7 @@ public class BodyKinematicsBiasEstimator {
      */
     public BodyKinematicsBiasEstimator(final CoordinateTransformation nedC)
             throws InvalidSourceAndDestinationFrameTypeException {
-        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(
-                new NEDFrame(nedC));
+        frame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(nedC));
         rebuildExpectedKinematics();
     }
 
@@ -259,9 +258,8 @@ public class BodyKinematicsBiasEstimator {
      * @param longitude longitude expressed in radians (rad).
      * @param height    height expressed in meters (m).
      */
-    public BodyKinematicsBiasEstimator(
-            final double latitude, final double longitude, final double height) {
-        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(latitude, longitude, height));
+    public BodyKinematicsBiasEstimator(final double latitude, final double longitude, final double height) {
+        frame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(latitude, longitude, height));
         rebuildExpectedKinematics();
     }
 
@@ -276,9 +274,8 @@ public class BodyKinematicsBiasEstimator {
      * @param longitude longitude.
      * @param height    height expressed in meters (m).
      */
-    public BodyKinematicsBiasEstimator(
-            final Angle latitude, final Angle longitude, final double height) {
-        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(latitude, longitude, height));
+    public BodyKinematicsBiasEstimator(final Angle latitude, final Angle longitude, final double height) {
+        frame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(latitude, longitude, height));
         rebuildExpectedKinematics();
     }
 
@@ -293,9 +290,8 @@ public class BodyKinematicsBiasEstimator {
      * @param longitude longitude.
      * @param height    height.
      */
-    public BodyKinematicsBiasEstimator(
-            final Angle latitude, final Angle longitude, final Distance height) {
-        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(latitude, longitude, height));
+    public BodyKinematicsBiasEstimator(final Angle latitude, final Angle longitude, final Distance height) {
+        frame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(latitude, longitude, height));
         rebuildExpectedKinematics();
     }
 
@@ -311,10 +307,9 @@ public class BodyKinematicsBiasEstimator {
      *                                                       from body to local
      *                                                       navigation coordinates.
      */
-    public BodyKinematicsBiasEstimator(
-            final NEDPosition position, final CoordinateTransformation nedC)
+    public BodyKinematicsBiasEstimator(final NEDPosition position, final CoordinateTransformation nedC)
             throws InvalidSourceAndDestinationFrameTypeException {
-        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(position, nedC));
+        frame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(position, nedC));
         rebuildExpectedKinematics();
     }
 
@@ -330,13 +325,12 @@ public class BodyKinematicsBiasEstimator {
      *                                                       from body to local
      *                                                       navigation coordinates.
      */
-    public BodyKinematicsBiasEstimator(
-            final ECEFPosition position, final CoordinateTransformation nedC)
+    public BodyKinematicsBiasEstimator(final ECEFPosition position, final CoordinateTransformation nedC)
             throws InvalidSourceAndDestinationFrameTypeException {
-        mFrame = new ECEFFrame(position);
-        final NEDFrame nedFrame = ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(mFrame);
+        frame = new ECEFFrame(position);
+        final var nedFrame = ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(frame);
         nedFrame.setCoordinateTransformation(nedC);
-        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
+        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
         rebuildExpectedKinematics();
     }
 
@@ -351,7 +345,7 @@ public class BodyKinematicsBiasEstimator {
      */
     public BodyKinematicsBiasEstimator(final BodyKinematicsBiasEstimatorListener listener) {
         this();
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -372,7 +366,7 @@ public class BodyKinematicsBiasEstimator {
             final CoordinateTransformation nedC, final BodyKinematicsBiasEstimatorListener listener)
             throws InvalidSourceAndDestinationFrameTypeException {
         this(nedC);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -391,7 +385,7 @@ public class BodyKinematicsBiasEstimator {
             final double latitude, final double longitude, final double height,
             final BodyKinematicsBiasEstimatorListener listener) {
         this(latitude, longitude, height);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -410,7 +404,7 @@ public class BodyKinematicsBiasEstimator {
             final Angle latitude, final Angle longitude, final double height,
             final BodyKinematicsBiasEstimatorListener listener) {
         this(latitude, longitude, height);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -429,7 +423,7 @@ public class BodyKinematicsBiasEstimator {
             final Angle latitude, final Angle longitude, final Distance height,
             final BodyKinematicsBiasEstimatorListener listener) {
         this(latitude, longitude, height);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -449,7 +443,7 @@ public class BodyKinematicsBiasEstimator {
             final NEDPosition position, final CoordinateTransformation nedC,
             final BodyKinematicsBiasEstimatorListener listener) throws InvalidSourceAndDestinationFrameTypeException {
         this(position, nedC);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -469,7 +463,7 @@ public class BodyKinematicsBiasEstimator {
             final ECEFPosition position, final CoordinateTransformation nedC,
             final BodyKinematicsBiasEstimatorListener listener) throws InvalidSourceAndDestinationFrameTypeException {
         this(position, nedC);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -668,7 +662,7 @@ public class BodyKinematicsBiasEstimator {
      */
     public BodyKinematicsBiasEstimator(final double timeInterval, final BodyKinematicsBiasEstimatorListener listener) {
         this(timeInterval);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -694,7 +688,7 @@ public class BodyKinematicsBiasEstimator {
             final CoordinateTransformation nedC, final double timeInterval,
             final BodyKinematicsBiasEstimatorListener listener) throws InvalidSourceAndDestinationFrameTypeException {
         this(nedC, timeInterval);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -717,7 +711,7 @@ public class BodyKinematicsBiasEstimator {
             final double latitude, final double longitude, final double height,
             final double timeInterval, final BodyKinematicsBiasEstimatorListener listener) {
         this(latitude, longitude, height, timeInterval);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -740,7 +734,7 @@ public class BodyKinematicsBiasEstimator {
             final Angle latitude, final Angle longitude, final double height,
             final double timeInterval, final BodyKinematicsBiasEstimatorListener listener) {
         this(latitude, longitude, height, timeInterval);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -763,7 +757,7 @@ public class BodyKinematicsBiasEstimator {
             final Angle latitude, final Angle longitude, final Distance height,
             final double timeInterval, final BodyKinematicsBiasEstimatorListener listener) {
         this(latitude, longitude, height, timeInterval);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -789,7 +783,7 @@ public class BodyKinematicsBiasEstimator {
             final double timeInterval, final BodyKinematicsBiasEstimatorListener listener)
             throws InvalidSourceAndDestinationFrameTypeException {
         this(position, nedC, timeInterval);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -815,7 +809,7 @@ public class BodyKinematicsBiasEstimator {
             final double timeInterval, final BodyKinematicsBiasEstimatorListener listener)
             throws InvalidSourceAndDestinationFrameTypeException {
         this(position, nedC, timeInterval);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -850,8 +844,7 @@ public class BodyKinematicsBiasEstimator {
      * @throws IllegalArgumentException                      if provided time interval
      *                                                       is negative.
      */
-    public BodyKinematicsBiasEstimator(
-            final CoordinateTransformation nedC, final Time timeInterval)
+    public BodyKinematicsBiasEstimator(final CoordinateTransformation nedC, final Time timeInterval)
             throws InvalidSourceAndDestinationFrameTypeException {
         this(nedC, convertTime(timeInterval));
     }
@@ -1115,7 +1108,7 @@ public class BodyKinematicsBiasEstimator {
      * @return time interval between body kinematics samples.
      */
     public double getTimeInterval() {
-        return mTimeInterval;
+        return timeInterval;
     }
 
     /**
@@ -1126,7 +1119,7 @@ public class BodyKinematicsBiasEstimator {
      * @throws LockedException if estimator is currently running.
      */
     public void setTimeInterval(final double timeInterval) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
@@ -1134,7 +1127,7 @@ public class BodyKinematicsBiasEstimator {
             throw new IllegalArgumentException();
         }
 
-        mTimeInterval = timeInterval;
+        this.timeInterval = timeInterval;
 
         rebuildExpectedKinematics();
     }
@@ -1146,7 +1139,7 @@ public class BodyKinematicsBiasEstimator {
      * @return time interval between body kinematics samples.
      */
     public Time getTimeIntervalAsTime() {
-        return new Time(mTimeInterval, TimeUnit.SECOND);
+        return new Time(timeInterval, TimeUnit.SECOND);
     }
 
     /**
@@ -1156,7 +1149,7 @@ public class BodyKinematicsBiasEstimator {
      * @param result instance where time interval will be stored.
      */
     public void getTimeIntervalAsTime(final Time result) {
-        result.setValue(mTimeInterval);
+        result.setValue(timeInterval);
         result.setUnit(TimeUnit.SECOND);
     }
 
@@ -1177,7 +1170,7 @@ public class BodyKinematicsBiasEstimator {
      * @return current body position expressed in ECEF coordinates.
      */
     public ECEFPosition getEcefPosition() {
-        return mFrame.getECEFPosition();
+        return frame.getECEFPosition();
     }
 
     /**
@@ -1186,7 +1179,7 @@ public class BodyKinematicsBiasEstimator {
      * @param result instance where current body position will be stored.
      */
     public void getEcefPosition(final ECEFPosition result) {
-        mFrame.getECEFPosition(result);
+        frame.getECEFPosition(result);
     }
 
     /**
@@ -1196,11 +1189,11 @@ public class BodyKinematicsBiasEstimator {
      * @throws LockedException if estimator is currently running.
      */
     public void setEcefPosition(final ECEFPosition position) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mFrame.setPosition(position);
+        frame.setPosition(position);
         rebuildExpectedKinematics();
     }
 
@@ -1213,11 +1206,11 @@ public class BodyKinematicsBiasEstimator {
      * @throws LockedException if estimator is currently running.
      */
     public void setEcefPosition(final double x, final double y, final double z) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mFrame.setCoordinates(x, y, z);
+        frame.setCoordinates(x, y, z);
         rebuildExpectedKinematics();
     }
 
@@ -1230,11 +1223,11 @@ public class BodyKinematicsBiasEstimator {
      * @throws LockedException if estimator is currently running.
      */
     public void setEcefPosition(final Distance x, final Distance y, final Distance z) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mFrame.setPositionCoordinates(x, y, z);
+        frame.setPositionCoordinates(x, y, z);
         rebuildExpectedKinematics();
     }
 
@@ -1245,11 +1238,11 @@ public class BodyKinematicsBiasEstimator {
      * @throws LockedException if estimator is currently running.
      */
     public void setEcefPosition(final Point3D position) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mFrame.setPosition(position);
+        frame.setPosition(position);
         rebuildExpectedKinematics();
     }
 
@@ -1262,7 +1255,7 @@ public class BodyKinematicsBiasEstimator {
      * around ECEF axes.
      */
     public ECEFFrame getEcefFrame() {
-        return new ECEFFrame(mFrame);
+        return new ECEFFrame(frame);
     }
 
     /**
@@ -1274,7 +1267,7 @@ public class BodyKinematicsBiasEstimator {
      *               orientation resolved around ECEF axes will be stored.
      */
     public void getEcefFrame(final ECEFFrame result) {
-        mFrame.copyTo(result);
+        frame.copyTo(result);
     }
 
     /**
@@ -1286,7 +1279,7 @@ public class BodyKinematicsBiasEstimator {
      * around NED axes.
      */
     public NEDFrame getNedFrame() {
-        return ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(mFrame);
+        return ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(frame);
     }
 
     /**
@@ -1298,7 +1291,7 @@ public class BodyKinematicsBiasEstimator {
      *               orientation resolved around NED axes will be stored.
      */
     public void getNedFrame(final NEDFrame result) {
-        ECEFtoNEDFrameConverter.convertECEFtoNED(mFrame, result);
+        ECEFtoNEDFrameConverter.convertECEFtoNED(frame, result);
     }
 
     /**
@@ -1326,13 +1319,13 @@ public class BodyKinematicsBiasEstimator {
      * @throws LockedException if estimator is currently running.
      */
     public void setNedPosition(final NEDPosition position) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        final NEDFrame nedFrame = getNedFrame();
+        final var nedFrame = getNedFrame();
         nedFrame.setPosition(position);
-        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
+        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
         rebuildExpectedKinematics();
     }
 
@@ -1346,13 +1339,13 @@ public class BodyKinematicsBiasEstimator {
      */
     public void setNedPosition(
             final double latitude, final double longitude, final double height) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        final NEDFrame nedFrame = getNedFrame();
+        final var nedFrame = getNedFrame();
         nedFrame.setPosition(latitude, longitude, height);
-        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
+        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
         rebuildExpectedKinematics();
     }
 
@@ -1366,13 +1359,13 @@ public class BodyKinematicsBiasEstimator {
      */
     public void setNedPosition(
             final Angle latitude, final Angle longitude, final double height) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        final NEDFrame nedFrame = getNedFrame();
+        final var nedFrame = getNedFrame();
         nedFrame.setPosition(latitude, longitude, height);
-        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
+        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
         rebuildExpectedKinematics();
     }
 
@@ -1386,13 +1379,13 @@ public class BodyKinematicsBiasEstimator {
      */
     public void setNedPosition(
             final Angle latitude, final Angle longitude, final Distance height) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        final NEDFrame nedFrame = getNedFrame();
+        final var nedFrame = getNedFrame();
         nedFrame.setPosition(latitude, longitude, height);
-        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
+        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
         rebuildExpectedKinematics();
     }
 
@@ -1409,7 +1402,7 @@ public class BodyKinematicsBiasEstimator {
      * @return current body orientation resolved on ECEF axes.
      */
     public CoordinateTransformation getEcefC() {
-        return mFrame.getCoordinateTransformation();
+        return frame.getCoordinateTransformation();
     }
 
     /**
@@ -1426,7 +1419,7 @@ public class BodyKinematicsBiasEstimator {
      *               will be stored.
      */
     public void getEcefC(final CoordinateTransformation result) {
-        mFrame.getCoordinateTransformation(result);
+        frame.getCoordinateTransformation(result);
     }
 
     /**
@@ -1449,11 +1442,11 @@ public class BodyKinematicsBiasEstimator {
      */
     public void setEcefC(final CoordinateTransformation ecefC)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mFrame.setCoordinateTransformation(ecefC);
+        frame.setCoordinateTransformation(ecefC);
         rebuildExpectedKinematics();
     }
 
@@ -1506,13 +1499,13 @@ public class BodyKinematicsBiasEstimator {
      */
     public void setNedC(final CoordinateTransformation nedC)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        final NEDFrame nedFrame = getNedFrame();
+        final var nedFrame = getNedFrame();
         nedFrame.setCoordinateTransformation(nedC);
-        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
+        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
         rebuildExpectedKinematics();
     }
 
@@ -1533,14 +1526,14 @@ public class BodyKinematicsBiasEstimator {
     public void setNedPositionAndNedOrientation(
             final NEDPosition nedPosition, final CoordinateTransformation nedC)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        final NEDFrame nedFrame = getNedFrame();
+        final var nedFrame = getNedFrame();
         nedFrame.setPosition(nedPosition);
         nedFrame.setCoordinateTransformation(nedC);
-        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
+        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
         rebuildExpectedKinematics();
     }
 
@@ -1563,14 +1556,14 @@ public class BodyKinematicsBiasEstimator {
     public void setNedPositionAndNedOrientation(
             final double latitude, final double longitude, final double height,
             final CoordinateTransformation nedC) throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        final NEDFrame nedFrame = getNedFrame();
+        final var nedFrame = getNedFrame();
         nedFrame.setPosition(latitude, longitude, height);
         nedFrame.setCoordinateTransformation(nedC);
-        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
+        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
         rebuildExpectedKinematics();
     }
 
@@ -1593,14 +1586,14 @@ public class BodyKinematicsBiasEstimator {
     public void setNedPositionAndNedOrientation(
             final Angle latitude, final Angle longitude, final double height,
             final CoordinateTransformation nedC) throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        final NEDFrame nedFrame = getNedFrame();
+        final var nedFrame = getNedFrame();
         nedFrame.setPosition(latitude, longitude, height);
         nedFrame.setCoordinateTransformation(nedC);
-        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
+        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
         rebuildExpectedKinematics();
     }
 
@@ -1623,14 +1616,14 @@ public class BodyKinematicsBiasEstimator {
     public void setNedPositionAndNedOrientation(
             final Angle latitude, final Angle longitude, final Distance height,
             final CoordinateTransformation nedC) throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        final NEDFrame nedFrame = getNedFrame();
+        final var nedFrame = getNedFrame();
         nedFrame.setPosition(latitude, longitude, height);
         nedFrame.setCoordinateTransformation(nedC);
-        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
+        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
         rebuildExpectedKinematics();
     }
 
@@ -1651,12 +1644,12 @@ public class BodyKinematicsBiasEstimator {
     public void setEcefPositionAndEcefOrientation(
             final ECEFPosition ecefPosition, final CoordinateTransformation ecefC)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mFrame.setPosition(ecefPosition);
-        mFrame.setCoordinateTransformation(ecefC);
+        frame.setPosition(ecefPosition);
+        frame.setCoordinateTransformation(ecefC);
         rebuildExpectedKinematics();
     }
 
@@ -1680,12 +1673,12 @@ public class BodyKinematicsBiasEstimator {
             final double x, final double y, final double z,
             final CoordinateTransformation ecefC)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mFrame.setCoordinates(x, y, z);
-        mFrame.setCoordinateTransformation(ecefC);
+        frame.setCoordinates(x, y, z);
+        frame.setCoordinateTransformation(ecefC);
         rebuildExpectedKinematics();
     }
 
@@ -1709,12 +1702,12 @@ public class BodyKinematicsBiasEstimator {
             final Distance x, final Distance y, final Distance z,
             final CoordinateTransformation ecefC)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mFrame.setPositionCoordinates(x, y, z);
-        mFrame.setCoordinateTransformation(ecefC);
+        frame.setPositionCoordinates(x, y, z);
+        frame.setCoordinateTransformation(ecefC);
         rebuildExpectedKinematics();
     }
 
@@ -1735,12 +1728,12 @@ public class BodyKinematicsBiasEstimator {
     public void setEcefPositionAndEcefOrientation(
             final Point3D position, final CoordinateTransformation ecefC)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mFrame.setPosition(position);
-        mFrame.setCoordinateTransformation(ecefC);
+        frame.setPosition(position);
+        frame.setCoordinateTransformation(ecefC);
         rebuildExpectedKinematics();
     }
 
@@ -1763,14 +1756,14 @@ public class BodyKinematicsBiasEstimator {
             final NEDPosition position,
             final CoordinateTransformation ecefC)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        final NEDFrame nedFrame = getNedFrame();
+        final var nedFrame = getNedFrame();
         nedFrame.setPosition(position);
-        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
-        mFrame.setCoordinateTransformation(ecefC);
+        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
+        frame.setCoordinateTransformation(ecefC);
         rebuildExpectedKinematics();
     }
 
@@ -1795,14 +1788,14 @@ public class BodyKinematicsBiasEstimator {
             final double latitude, final double longitude, final double height,
             final CoordinateTransformation ecefC)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        final NEDFrame nedFrame = getNedFrame();
+        final var nedFrame = getNedFrame();
         nedFrame.setPosition(latitude, longitude, height);
-        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
-        mFrame.setCoordinateTransformation(ecefC);
+        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
+        frame.setCoordinateTransformation(ecefC);
         rebuildExpectedKinematics();
     }
 
@@ -1827,14 +1820,14 @@ public class BodyKinematicsBiasEstimator {
             final Angle latitude, final Angle longitude, final double height,
             final CoordinateTransformation ecefC)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        final NEDFrame nedFrame = getNedFrame();
+        final var nedFrame = getNedFrame();
         nedFrame.setPosition(latitude, longitude, height);
-        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
-        mFrame.setCoordinateTransformation(ecefC);
+        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
+        frame.setCoordinateTransformation(ecefC);
         rebuildExpectedKinematics();
     }
 
@@ -1859,14 +1852,14 @@ public class BodyKinematicsBiasEstimator {
             final Angle latitude, final Angle longitude, final Distance height,
             final CoordinateTransformation ecefC)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        final NEDFrame nedFrame = getNedFrame();
+        final var nedFrame = getNedFrame();
         nedFrame.setPosition(latitude, longitude, height);
-        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
-        mFrame.setCoordinateTransformation(ecefC);
+        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
+        frame.setCoordinateTransformation(ecefC);
         rebuildExpectedKinematics();
     }
 
@@ -1890,15 +1883,15 @@ public class BodyKinematicsBiasEstimator {
     public void setEcefPositionAndNedOrientation(
             final ECEFPosition ecefPosition, final CoordinateTransformation nedC)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mFrame.setPosition(ecefPosition);
+        frame.setPosition(ecefPosition);
 
-        final NEDFrame nedFrame = getNedFrame();
+        final var nedFrame = getNedFrame();
         nedFrame.setCoordinateTransformation(nedC);
-        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
+        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
         rebuildExpectedKinematics();
     }
 
@@ -1922,17 +1915,17 @@ public class BodyKinematicsBiasEstimator {
      * @see #setNedC(CoordinateTransformation)
      */
     public void setEcefPositionAndNedOrientation(
-            final double x, final double y, final double z,
-            final CoordinateTransformation nedC) throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+            final double x, final double y, final double z, final CoordinateTransformation nedC)
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+        if (running) {
             throw new LockedException();
         }
 
-        mFrame.setCoordinates(x, y, z);
+        frame.setCoordinates(x, y, z);
 
-        final NEDFrame nedFrame = getNedFrame();
+        final var nedFrame = getNedFrame();
         nedFrame.setCoordinateTransformation(nedC);
-        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
+        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
         rebuildExpectedKinematics();
     }
 
@@ -1956,17 +1949,17 @@ public class BodyKinematicsBiasEstimator {
      * @see #setNedC(CoordinateTransformation)
      */
     public void setEcefPositionAndNedOrientation(
-            final Distance x, final Distance y, final Distance z,
-            final CoordinateTransformation nedC) throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+            final Distance x, final Distance y, final Distance z, final CoordinateTransformation nedC)
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+        if (running) {
             throw new LockedException();
         }
 
-        mFrame.setPositionCoordinates(x, y, z);
+        frame.setPositionCoordinates(x, y, z);
 
-        final NEDFrame nedFrame = getNedFrame();
+        final var nedFrame = getNedFrame();
         nedFrame.setCoordinateTransformation(nedC);
-        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
+        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
         rebuildExpectedKinematics();
     }
 
@@ -1990,15 +1983,15 @@ public class BodyKinematicsBiasEstimator {
     public void setEcefPositionAndNedOrientation(
             final Point3D position, final CoordinateTransformation nedC)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mFrame.setPosition(position);
+        frame.setPosition(position);
 
-        final NEDFrame nedFrame = getNedFrame();
+        final var nedFrame = getNedFrame();
         nedFrame.setCoordinateTransformation(nedC);
-        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
+        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
         rebuildExpectedKinematics();
     }
 
@@ -2008,7 +2001,7 @@ public class BodyKinematicsBiasEstimator {
      * @return listener to handle events raised by this estimator.
      */
     public BodyKinematicsBiasEstimatorListener getListener() {
-        return mListener;
+        return listener;
     }
 
     /**
@@ -2018,11 +2011,11 @@ public class BodyKinematicsBiasEstimator {
      * @throws LockedException if this estimator is running.
      */
     public void setListener(final BodyKinematicsBiasEstimatorListener listener) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2031,8 +2024,7 @@ public class BodyKinematicsBiasEstimator {
      * @return last provided body kinematics values or null.
      */
     public BodyKinematics getLastBodyKinematics() {
-        return mLastBodyKinematics != null ?
-                new BodyKinematics(mLastBodyKinematics) : null;
+        return lastBodyKinematics != null ? new BodyKinematics(lastBodyKinematics) : null;
     }
 
     /**
@@ -2042,8 +2034,8 @@ public class BodyKinematicsBiasEstimator {
      * @return true if result instance was updated, false otherwise.
      */
     public boolean getLastBodyKinematics(final BodyKinematics result) {
-        if (mLastBodyKinematics != null) {
-            mLastBodyKinematics.copyTo(result);
+        if (lastBodyKinematics != null) {
+            lastBodyKinematics.copyTo(result);
             return true;
         } else {
             return false;
@@ -2057,7 +2049,7 @@ public class BodyKinematicsBiasEstimator {
      * @return bias of x coordinate of sensed specific force.
      */
     public double getBiasFx() {
-        return mBiasFx;
+        return biasFx;
     }
 
     /**
@@ -2066,7 +2058,7 @@ public class BodyKinematicsBiasEstimator {
      * @return bias of x coordinate of sensed specific force.
      */
     public Acceleration getBiasFxAsAcceleration() {
-        return new Acceleration(mBiasFx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(biasFx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -2076,7 +2068,7 @@ public class BodyKinematicsBiasEstimator {
      *               will be stored.
      */
     public void getBiasFxAsAcceleration(final Acceleration result) {
-        result.setValue(mBiasFx);
+        result.setValue(biasFx);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -2087,7 +2079,7 @@ public class BodyKinematicsBiasEstimator {
      * @return bias of y coordinate of sensed specific force.
      */
     public double getBiasFy() {
-        return mBiasFy;
+        return biasFy;
     }
 
     /**
@@ -2096,7 +2088,7 @@ public class BodyKinematicsBiasEstimator {
      * @return bias of y coordinate of sensed specific force.
      */
     public Acceleration getBiasFyAsAcceleration() {
-        return new Acceleration(mBiasFy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(biasFy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -2106,7 +2098,7 @@ public class BodyKinematicsBiasEstimator {
      *               will be stored.
      */
     public void getBiasFyAsAcceleration(final Acceleration result) {
-        result.setValue(mBiasFy);
+        result.setValue(biasFy);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -2117,7 +2109,7 @@ public class BodyKinematicsBiasEstimator {
      * @return bias of z coordinate of sensed specific force.
      */
     public double getBiasFz() {
-        return mBiasFz;
+        return biasFz;
     }
 
     /**
@@ -2126,7 +2118,7 @@ public class BodyKinematicsBiasEstimator {
      * @return bias of z coordinate of sensed specific force.
      */
     public Acceleration getBiasFzAsAcceleration() {
-        return new Acceleration(mBiasFz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(biasFz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -2136,7 +2128,7 @@ public class BodyKinematicsBiasEstimator {
      *               will be stored.
      */
     public void getBiasFzAsAcceleration(final Acceleration result) {
-        result.setValue(mBiasFz);
+        result.setValue(biasFz);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -2147,7 +2139,7 @@ public class BodyKinematicsBiasEstimator {
      * @return bias of x coordinate of sensed angular rate.
      */
     public double getBiasAngularRateX() {
-        return mBiasAngularRateX;
+        return biasAngularRateX;
     }
 
     /**
@@ -2156,8 +2148,7 @@ public class BodyKinematicsBiasEstimator {
      * @return bias of x coordinate of sensed angular rate.
      */
     public AngularSpeed getBiasAngularRateXAsAngularSpeed() {
-        return new AngularSpeed(mBiasAngularRateX,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(biasAngularRateX, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -2167,7 +2158,7 @@ public class BodyKinematicsBiasEstimator {
      *               will be stored.
      */
     public void getBiasAngularRateXAsAngularSpeed(final AngularSpeed result) {
-        result.setValue(mBiasAngularRateX);
+        result.setValue(biasAngularRateX);
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -2178,7 +2169,7 @@ public class BodyKinematicsBiasEstimator {
      * @return bias of y coordinate of sensed angular rate.
      */
     public double getBiasAngularRateY() {
-        return mBiasAngularRateY;
+        return biasAngularRateY;
     }
 
     /**
@@ -2187,8 +2178,7 @@ public class BodyKinematicsBiasEstimator {
      * @return bias of y coordinate of sensed angular rate.
      */
     public AngularSpeed getBiasAngularRateYAsAngularSpeed() {
-        return new AngularSpeed(mBiasAngularRateY,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(biasAngularRateY, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -2198,7 +2188,7 @@ public class BodyKinematicsBiasEstimator {
      *               will be stored.
      */
     public void getBiasAngularRateYAsAngularSpeed(final AngularSpeed result) {
-        result.setValue(mBiasAngularRateY);
+        result.setValue(biasAngularRateY);
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -2209,7 +2199,7 @@ public class BodyKinematicsBiasEstimator {
      * @return bias of z coordinate of sensed angular rate.
      */
     public double getBiasAngularRateZ() {
-        return mBiasAngularRateZ;
+        return biasAngularRateZ;
     }
 
     /**
@@ -2218,8 +2208,7 @@ public class BodyKinematicsBiasEstimator {
      * @return bias of z coordinate of sensed angular rate.
      */
     public AngularSpeed getBiasAngularRateZAsAngularSpeed() {
-        return new AngularSpeed(mBiasAngularRateZ,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(biasAngularRateZ, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -2229,7 +2218,7 @@ public class BodyKinematicsBiasEstimator {
      *               will be stored.
      */
     public void getBiasAngularRateZAsAngularSpeed(final AngularSpeed result) {
-        result.setValue(mBiasAngularRateZ);
+        result.setValue(biasAngularRateZ);
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -2239,8 +2228,7 @@ public class BodyKinematicsBiasEstimator {
      * @return estimated bias of accelerometer sensed specific force.
      */
     public AccelerationTriad getBiasF() {
-        return new AccelerationTriad(AccelerationUnit.METERS_PER_SQUARED_SECOND,
-                mBiasFx, mBiasFy, mBiasFz);
+        return new AccelerationTriad(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasFx, biasFy, biasFz);
     }
 
     /**
@@ -2250,8 +2238,7 @@ public class BodyKinematicsBiasEstimator {
      *               be stored.
      */
     public void getBiasF(final AccelerationTriad result) {
-        result.setValueCoordinatesAndUnit(mBiasFx, mBiasFy, mBiasFz,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        result.setValueCoordinatesAndUnit(biasFx, biasFy, biasFz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -2261,7 +2248,7 @@ public class BodyKinematicsBiasEstimator {
      */
     public AngularSpeedTriad getBiasAngularRate() {
         return new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND,
-                mBiasAngularRateX, mBiasAngularRateY, mBiasAngularRateZ);
+                biasAngularRateX, biasAngularRateY, biasAngularRateZ);
     }
 
     /**
@@ -2271,8 +2258,7 @@ public class BodyKinematicsBiasEstimator {
      *               rate will be stored.
      */
     public void getBiasAngularRate(final AngularSpeedTriad result) {
-        result.setValueCoordinatesAndUnit(
-                mBiasAngularRateX, mBiasAngularRateY, mBiasAngularRateZ,
+        result.setValueCoordinatesAndUnit(biasAngularRateX, biasAngularRateY, biasAngularRateZ,
                 AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -2283,7 +2269,7 @@ public class BodyKinematicsBiasEstimator {
      * @return body kinematics containing estimated bias values.
      */
     public BodyKinematics getBiasesAsBodyKinematics() {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         getBiasesAsBodyKinematics(result);
         return result;
     }
@@ -2296,9 +2282,8 @@ public class BodyKinematicsBiasEstimator {
      *               values will be stored.
      */
     public void getBiasesAsBodyKinematics(final BodyKinematics result) {
-        result.setSpecificForceCoordinates(mBiasFx, mBiasFy, mBiasFz);
-        result.setAngularRateCoordinates(
-                mBiasAngularRateX, mBiasAngularRateY, mBiasAngularRateZ);
+        result.setSpecificForceCoordinates(biasFx, biasFy, biasFz);
+        result.setAngularRateCoordinates(biasAngularRateX, biasAngularRateY, biasAngularRateZ);
     }
 
     /**
@@ -2308,7 +2293,7 @@ public class BodyKinematicsBiasEstimator {
      * @return estimated variance of x coordinate of sensed specific force.
      */
     public double getVarianceFx() {
-        return mVarianceFx;
+        return varianceFx;
     }
 
     /**
@@ -2318,7 +2303,7 @@ public class BodyKinematicsBiasEstimator {
      * @return estimated variance of y coordinate of sensed specific force.
      */
     public double getVarianceFy() {
-        return mVarianceFy;
+        return varianceFy;
     }
 
     /**
@@ -2328,7 +2313,7 @@ public class BodyKinematicsBiasEstimator {
      * @return estimated variance of z coordinate of sensed specific force.
      */
     public double getVarianceFz() {
-        return mVarianceFz;
+        return varianceFz;
     }
 
     /**
@@ -2338,7 +2323,7 @@ public class BodyKinematicsBiasEstimator {
      * @return estimated variance of x coordinate of sensed angular rate.
      */
     public double getVarianceAngularRateX() {
-        return mVarianceAngularRateX;
+        return varianceAngularRateX;
     }
 
     /**
@@ -2348,7 +2333,7 @@ public class BodyKinematicsBiasEstimator {
      * @return estimated variance of y coordinate of sensed angular rate.
      */
     public double getVarianceAngularRateY() {
-        return mVarianceAngularRateY;
+        return varianceAngularRateY;
     }
 
     /**
@@ -2358,7 +2343,7 @@ public class BodyKinematicsBiasEstimator {
      * @return estimated variance of z coordinate of sensed angular rate.
      */
     public double getVarianceAngularRateZ() {
-        return mVarianceAngularRateZ;
+        return varianceAngularRateZ;
     }
 
     /**
@@ -2368,7 +2353,7 @@ public class BodyKinematicsBiasEstimator {
      * @return estimated standard deviation of x coordinate of sensed specific force.
      */
     public double getStandardDeviationFx() {
-        return Math.sqrt(mVarianceFx);
+        return Math.sqrt(varianceFx);
     }
 
     /**
@@ -2378,8 +2363,7 @@ public class BodyKinematicsBiasEstimator {
      * @return estimated standard deviation of x coordinate of sensed specific force.
      */
     public Acceleration getStandardDeviationFxAsAcceleration() {
-        return new Acceleration(getStandardDeviationFx(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(getStandardDeviationFx(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -2402,7 +2386,7 @@ public class BodyKinematicsBiasEstimator {
      * force.
      */
     public double getStandardDeviationFy() {
-        return Math.sqrt(mVarianceFy);
+        return Math.sqrt(varianceFy);
     }
 
     /**
@@ -2437,7 +2421,7 @@ public class BodyKinematicsBiasEstimator {
      * force.
      */
     public double getStandardDeviationFz() {
-        return Math.sqrt(mVarianceFz);
+        return Math.sqrt(varianceFz);
     }
 
     /**
@@ -2448,8 +2432,7 @@ public class BodyKinematicsBiasEstimator {
      * force.
      */
     public Acceleration getStandardDeviationFzAsAcceleration() {
-        return new Acceleration(getStandardDeviationFz(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(getStandardDeviationFz(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -2485,8 +2468,7 @@ public class BodyKinematicsBiasEstimator {
      *               accelerometer will be stored.
      */
     public void getStandardDeviationF(final AccelerationTriad result) {
-        result.setValueCoordinatesAndUnit(
-                getStandardDeviationFx(), getStandardDeviationFy(), getStandardDeviationFz(),
+        result.setValueCoordinatesAndUnit(getStandardDeviationFx(), getStandardDeviationFy(), getStandardDeviationFz(),
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -2497,8 +2479,7 @@ public class BodyKinematicsBiasEstimator {
      * @return average of estimated standard deviation of accelerometer.
      */
     public double getAverageAccelerometerStandardDeviation() {
-        return (getStandardDeviationFx() + getStandardDeviationFy()
-                + getStandardDeviationFz()) / 3.0;
+        return (getStandardDeviationFx() + getStandardDeviationFy() + getStandardDeviationFz()) / 3.0;
     }
 
     /**
@@ -2508,8 +2489,7 @@ public class BodyKinematicsBiasEstimator {
      * @return average of estimated standard deviation of accelerometer.
      */
     public Acceleration getAverageAccelerometerStandardDeviationAsAcceleration() {
-        return new Acceleration(getAverageAccelerometerStandardDeviation(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(getAverageAccelerometerStandardDeviation(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -2518,8 +2498,7 @@ public class BodyKinematicsBiasEstimator {
      *
      * @param result instance where result data will be copied to.
      */
-    public void getAverageAccelerometerStandardDeviationAsAcceleration(
-            final Acceleration result) {
+    public void getAverageAccelerometerStandardDeviationAsAcceleration(final Acceleration result) {
         result.setValue(getAverageAccelerometerStandardDeviation());
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
@@ -2531,7 +2510,7 @@ public class BodyKinematicsBiasEstimator {
      * @return estimated standard deviation of x coordinate of sensed angular rate.
      */
     public double getStandardDeviationAngularRateX() {
-        return Math.sqrt(mVarianceAngularRateX);
+        return Math.sqrt(varianceAngularRateX);
     }
 
     /**
@@ -2541,8 +2520,7 @@ public class BodyKinematicsBiasEstimator {
      * @return estimated standard deviation of x coordinate of sensed angular rate.
      */
     public AngularSpeed getStandardDeviationAngularRateXAsAngularSpeed() {
-        return new AngularSpeed(getStandardDeviationAngularRateX(),
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(getStandardDeviationAngularRateX(), AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -2552,8 +2530,7 @@ public class BodyKinematicsBiasEstimator {
      * @param result instance where estimated standard deviation of x coordinate of
      *               sensed angular rate will be stored.
      */
-    public void getStandardDeviationAngularRateXAsAngularSpeed(
-            final AngularSpeed result) {
+    public void getStandardDeviationAngularRateXAsAngularSpeed(final AngularSpeed result) {
         result.setValue(getStandardDeviationAngularRateX());
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
@@ -2565,7 +2542,7 @@ public class BodyKinematicsBiasEstimator {
      * @return estimated standard deviation of y coordinate of sensed angular rate.
      */
     public double getStandardDeviationAngularRateY() {
-        return Math.sqrt(mVarianceAngularRateY);
+        return Math.sqrt(varianceAngularRateY);
     }
 
     /**
@@ -2575,8 +2552,7 @@ public class BodyKinematicsBiasEstimator {
      * @return estimated standard deviation of y coordinate of sensed angular rate.
      */
     public AngularSpeed getStandardDeviationAngularRateYAsAngularSpeed() {
-        return new AngularSpeed(getStandardDeviationAngularRateY(),
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(getStandardDeviationAngularRateY(), AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -2586,8 +2562,7 @@ public class BodyKinematicsBiasEstimator {
      * @param result instance where estimated standard deviation of y coordinate of
      *               sensed angular rate will be stored.
      */
-    public void getStandardDeviationAngularRateYAsAngularSpeed(
-            final AngularSpeed result) {
+    public void getStandardDeviationAngularRateYAsAngularSpeed(final AngularSpeed result) {
         result.setValue(getStandardDeviationAngularRateY());
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
@@ -2599,7 +2574,7 @@ public class BodyKinematicsBiasEstimator {
      * @return estimated standard deviation of z coordinate of sensed angular rate.
      */
     public double getStandardDeviationAngularRateZ() {
-        return Math.sqrt(mVarianceAngularRateZ);
+        return Math.sqrt(varianceAngularRateZ);
     }
 
     /**
@@ -2609,8 +2584,7 @@ public class BodyKinematicsBiasEstimator {
      * @return estimated standard deviation of z coordinate of sensed angular rate.
      */
     public AngularSpeed getStandardDeviationAngularRateZAsAngularSpeed() {
-        return new AngularSpeed(getStandardDeviationAngularRateZ(),
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(getStandardDeviationAngularRateZ(), AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -2620,8 +2594,7 @@ public class BodyKinematicsBiasEstimator {
      * @param result instance where estimated standard deviation of z coordinate of
      *               sensed angular rate will be stored.
      */
-    public void getStandardDeviationAngularRateZAsAngularSpeed(
-            final AngularSpeed result) {
+    public void getStandardDeviationAngularRateZAsAngularSpeed(final AngularSpeed result) {
         result.setValue(getStandardDeviationAngularRateZ());
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
@@ -2669,8 +2642,7 @@ public class BodyKinematicsBiasEstimator {
      * @return average of estimated standard deviation of gyroscope.
      */
     public AngularSpeed getAverageGyroscopeStandardDeviationAsAngularSpeed() {
-        return new AngularSpeed(getAverageGyroscopeStandardDeviation(),
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(getAverageGyroscopeStandardDeviation(), AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -2679,8 +2651,7 @@ public class BodyKinematicsBiasEstimator {
      *
      * @param result instance where result data will be copied to.
      */
-    public void getAverageGyroscopeStandardDeviationAsAngularSpeed(
-            final AngularSpeed result) {
+    public void getAverageGyroscopeStandardDeviationAsAngularSpeed(final AngularSpeed result) {
         result.setValue(getAverageGyroscopeStandardDeviation());
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
@@ -2721,7 +2692,7 @@ public class BodyKinematicsBiasEstimator {
      * @return accelerometer noise PSD on x axis.
      */
     public double getPSDFx() {
-        return mVarianceFx * mTimeInterval;
+        return varianceFx * timeInterval;
     }
 
     /**
@@ -2731,7 +2702,7 @@ public class BodyKinematicsBiasEstimator {
      * @return accelerometer noise PSD on y axis.
      */
     public double getPSDFy() {
-        return mVarianceFy * mTimeInterval;
+        return varianceFy * timeInterval;
     }
 
     /**
@@ -2741,7 +2712,7 @@ public class BodyKinematicsBiasEstimator {
      * @return accelerometer noise PSD on z axis.
      */
     public double getPSDFz() {
-        return mVarianceFz * mTimeInterval;
+        return varianceFz * timeInterval;
     }
 
     /**
@@ -2751,7 +2722,7 @@ public class BodyKinematicsBiasEstimator {
      * @return gyroscope noise PSD on x axis.
      */
     public double getPSDAngularRateX() {
-        return mVarianceAngularRateX * mTimeInterval;
+        return varianceAngularRateX * timeInterval;
     }
 
     /**
@@ -2761,7 +2732,7 @@ public class BodyKinematicsBiasEstimator {
      * @return gyroscope noise PSD on y axis.
      */
     public double getPSDAngularRateY() {
-        return mVarianceAngularRateY * mTimeInterval;
+        return varianceAngularRateY * timeInterval;
     }
 
     /**
@@ -2771,7 +2742,7 @@ public class BodyKinematicsBiasEstimator {
      * @return gyroscope noise PSD on z axis.
      */
     public double getPSDAngularRateZ() {
-        return mVarianceAngularRateZ * mTimeInterval;
+        return varianceAngularRateZ * timeInterval;
     }
 
     /**
@@ -2861,8 +2832,7 @@ public class BodyKinematicsBiasEstimator {
      * @return average gyroscope noise PSD.
      */
     public double getGyroNoisePSD() {
-        return (getPSDAngularRateX() + getPSDAngularRateY() + getPSDAngularRateZ())
-                / 3.0;
+        return (getPSDAngularRateX() + getPSDAngularRateY() + getPSDAngularRateZ()) / 3.0;
     }
 
     /**
@@ -2902,14 +2872,13 @@ public class BodyKinematicsBiasEstimator {
      * @throws IllegalArgumentException if provided result matrix is not 3x1.
      */
     public void getAccelerometerBias(final Matrix result) {
-        if (result.getRows() != BodyKinematics.COMPONENTS
-                || result.getColumns() != 1) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
-        result.setElementAtIndex(0, mBiasFx);
-        result.setElementAtIndex(1, mBiasFy);
-        result.setElementAtIndex(2, mBiasFz);
+        result.setElementAtIndex(0, biasFx);
+        result.setElementAtIndex(1, biasFy);
+        result.setElementAtIndex(2, biasFz);
     }
 
     /**
@@ -2939,14 +2908,13 @@ public class BodyKinematicsBiasEstimator {
      * @throws IllegalArgumentException if provided result matrix is not 3x1.
      */
     public void getGyroBias(final Matrix result) {
-        if (result.getRows() != BodyKinematics.COMPONENTS
-                || result.getColumns() != 1) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
-        result.setElementAtIndex(0, mBiasAngularRateX);
-        result.setElementAtIndex(1, mBiasAngularRateY);
-        result.setElementAtIndex(2, mBiasAngularRateZ);
+        result.setElementAtIndex(0, biasAngularRateX);
+        result.setElementAtIndex(1, biasAngularRateY);
+        result.setElementAtIndex(2, biasAngularRateZ);
     }
 
     /**
@@ -2955,7 +2923,7 @@ public class BodyKinematicsBiasEstimator {
      * @return number of samples that have been processed so far.
      */
     public int getNumberOfProcessedSamples() {
-        return mNumberOfProcessedSamples;
+        return numberOfProcessedSamples;
     }
 
     /**
@@ -2965,7 +2933,7 @@ public class BodyKinematicsBiasEstimator {
      * @return amount of total elapsed time.
      */
     public double getElapsedTimeSeconds() {
-        return mNumberOfProcessedSamples * mTimeInterval;
+        return numberOfProcessedSamples * timeInterval;
     }
 
     /**
@@ -2993,7 +2961,7 @@ public class BodyKinematicsBiasEstimator {
      * @return true if estimator is running, false otherwise.
      */
     public boolean isRunning() {
-        return mRunning;
+        return running;
     }
 
     /**
@@ -3006,7 +2974,7 @@ public class BodyKinematicsBiasEstimator {
      * @return expected body kinematics.
      */
     public BodyKinematics getExpectedKinematics() {
-        return new BodyKinematics(mExpectedKinematics);
+        return new BodyKinematics(expectedKinematics);
     }
 
     /**
@@ -3019,7 +2987,7 @@ public class BodyKinematicsBiasEstimator {
      * @param result instance where expected body kinematics will be stored.
      */
     public void getExpectedKinematics(final BodyKinematics result) {
-        mExpectedKinematics.copyTo(result);
+        expectedKinematics.copyTo(result);
     }
 
     /**
@@ -3030,81 +2998,80 @@ public class BodyKinematicsBiasEstimator {
      * @throws LockedException if estimator is currently running.
      */
     public void addBodyKinematics(final BodyKinematics kinematics) throws LockedException {
-
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mRunning = true;
+        running = true;
 
-        if (mLastBodyKinematics == null && mListener != null) {
-            mListener.onStart(this);
+        if (lastBodyKinematics == null && listener != null) {
+            listener.onStart(this);
         }
 
-        final double fx = kinematics.getFx();
-        final double fy = kinematics.getFy();
-        final double fz = kinematics.getFz();
-        final double angularRateX = kinematics.getAngularRateX();
-        final double angularRateY = kinematics.getAngularRateY();
-        final double angularRateZ = kinematics.getAngularRateZ();
+        final var fx = kinematics.getFx();
+        final var fy = kinematics.getFy();
+        final var fz = kinematics.getFz();
+        final var angularRateX = kinematics.getAngularRateX();
+        final var angularRateY = kinematics.getAngularRateY();
+        final var angularRateZ = kinematics.getAngularRateZ();
 
-        final double expectedFx = mExpectedKinematics.getFx();
-        final double expectedFy = mExpectedKinematics.getFy();
-        final double expectedFz = mExpectedKinematics.getFz();
-        final double expectedAngularRateX = mExpectedKinematics.getAngularRateX();
-        final double expectedAngularRateY = mExpectedKinematics.getAngularRateY();
-        final double expectedAngularRateZ = mExpectedKinematics.getAngularRateZ();
+        final var expectedFx = expectedKinematics.getFx();
+        final var expectedFy = expectedKinematics.getFy();
+        final var expectedFz = expectedKinematics.getFz();
+        final var expectedAngularRateX = expectedKinematics.getAngularRateX();
+        final var expectedAngularRateY = expectedKinematics.getAngularRateY();
+        final var expectedAngularRateZ = expectedKinematics.getAngularRateZ();
 
-        final double diffFx = fx - expectedFx;
-        final double diffFy = fy - expectedFy;
-        final double diffFz = fz - expectedFz;
-        final double diffAngularRateX = angularRateX - expectedAngularRateX;
-        final double diffAngularRateY = angularRateY - expectedAngularRateY;
-        final double diffAngularRateZ = angularRateZ - expectedAngularRateZ;
+        final var diffFx = fx - expectedFx;
+        final var diffFy = fy - expectedFy;
+        final var diffFz = fz - expectedFz;
+        final var diffAngularRateX = angularRateX - expectedAngularRateX;
+        final var diffAngularRateY = angularRateY - expectedAngularRateY;
+        final var diffAngularRateZ = angularRateZ - expectedAngularRateZ;
 
         // compute biases
-        final double tmp = (double) mNumberOfProcessedSamples / (double) mNumberOfProcessedSamplesPlusOne;
-        mBiasFx = mBiasFx * tmp + diffFx / mNumberOfProcessedSamplesPlusOne;
-        mBiasFy = mBiasFy * tmp + diffFy / mNumberOfProcessedSamplesPlusOne;
-        mBiasFz = mBiasFz * tmp + diffFz / mNumberOfProcessedSamplesPlusOne;
+        final var tmp = (double) numberOfProcessedSamples / (double) numberOfProcessedSamplesPlusOne;
+        biasFx = biasFx * tmp + diffFx / numberOfProcessedSamplesPlusOne;
+        biasFy = biasFy * tmp + diffFy / numberOfProcessedSamplesPlusOne;
+        biasFz = biasFz * tmp + diffFz / numberOfProcessedSamplesPlusOne;
 
-        mBiasAngularRateX = mBiasAngularRateX * tmp + diffAngularRateX / mNumberOfProcessedSamplesPlusOne;
-        mBiasAngularRateY = mBiasAngularRateY * tmp + diffAngularRateY / mNumberOfProcessedSamplesPlusOne;
-        mBiasAngularRateZ = mBiasAngularRateZ * tmp + diffAngularRateZ / mNumberOfProcessedSamplesPlusOne;
+        biasAngularRateX = biasAngularRateX * tmp + diffAngularRateX / numberOfProcessedSamplesPlusOne;
+        biasAngularRateY = biasAngularRateY * tmp + diffAngularRateY / numberOfProcessedSamplesPlusOne;
+        biasAngularRateZ = biasAngularRateZ * tmp + diffAngularRateZ / numberOfProcessedSamplesPlusOne;
 
         // compute variances
-        final double diffBiasFx = diffFx - mBiasFx;
-        final double diffBiasFy = diffFy - mBiasFy;
-        final double diffBiasFz = diffFz - mBiasFz;
-        final double diffBiasAngularRateX = diffAngularRateX - mBiasAngularRateX;
-        final double diffBiasAngularRateY = diffAngularRateY - mBiasAngularRateY;
-        final double diffBiasAngularRateZ = diffAngularRateZ - mBiasAngularRateZ;
+        final var diffBiasFx = diffFx - biasFx;
+        final var diffBiasFy = diffFy - biasFy;
+        final var diffBiasFz = diffFz - biasFz;
+        final var diffBiasAngularRateX = diffAngularRateX - biasAngularRateX;
+        final var diffBiasAngularRateY = diffAngularRateY - biasAngularRateY;
+        final var diffBiasAngularRateZ = diffAngularRateZ - biasAngularRateZ;
 
-        final double diffBiasFx2 = diffBiasFx * diffBiasFx;
-        final double diffBiasFy2 = diffBiasFy * diffBiasFy;
-        final double diffBiasFz2 = diffBiasFz * diffBiasFz;
-        final double diffBiasAngularRateX2 = diffBiasAngularRateX * diffBiasAngularRateX;
-        final double diffBiasAngularRateY2 = diffBiasAngularRateY * diffBiasAngularRateY;
-        final double diffBiasAngularRateZ2 = diffBiasAngularRateZ * diffBiasAngularRateZ;
+        final var diffBiasFx2 = diffBiasFx * diffBiasFx;
+        final var diffBiasFy2 = diffBiasFy * diffBiasFy;
+        final var diffBiasFz2 = diffBiasFz * diffBiasFz;
+        final var diffBiasAngularRateX2 = diffBiasAngularRateX * diffBiasAngularRateX;
+        final var diffBiasAngularRateY2 = diffBiasAngularRateY * diffBiasAngularRateY;
+        final var diffBiasAngularRateZ2 = diffBiasAngularRateZ * diffBiasAngularRateZ;
 
-        mVarianceFx = mVarianceFx * tmp + diffBiasFx2 / mNumberOfProcessedSamplesPlusOne;
-        mVarianceFy = mVarianceFy * tmp + diffBiasFy2 / mNumberOfProcessedSamplesPlusOne;
-        mVarianceFz = mVarianceFz * tmp + diffBiasFz2 / mNumberOfProcessedSamplesPlusOne;
+        varianceFx = varianceFx * tmp + diffBiasFx2 / numberOfProcessedSamplesPlusOne;
+        varianceFy = varianceFy * tmp + diffBiasFy2 / numberOfProcessedSamplesPlusOne;
+        varianceFz = varianceFz * tmp + diffBiasFz2 / numberOfProcessedSamplesPlusOne;
 
-        mVarianceAngularRateX = mVarianceAngularRateX * tmp + diffBiasAngularRateX2 / mNumberOfProcessedSamplesPlusOne;
-        mVarianceAngularRateY = mVarianceAngularRateY * tmp + diffBiasAngularRateY2 / mNumberOfProcessedSamplesPlusOne;
-        mVarianceAngularRateZ = mVarianceAngularRateZ * tmp + diffBiasAngularRateZ2 / mNumberOfProcessedSamplesPlusOne;
+        varianceAngularRateX = varianceAngularRateX * tmp + diffBiasAngularRateX2 / numberOfProcessedSamplesPlusOne;
+        varianceAngularRateY = varianceAngularRateY * tmp + diffBiasAngularRateY2 / numberOfProcessedSamplesPlusOne;
+        varianceAngularRateZ = varianceAngularRateZ * tmp + diffBiasAngularRateZ2 / numberOfProcessedSamplesPlusOne;
 
-        mLastBodyKinematics = kinematics;
+        lastBodyKinematics = kinematics;
 
-        mNumberOfProcessedSamples++;
-        mNumberOfProcessedSamplesPlusOne++;
+        numberOfProcessedSamples++;
+        numberOfProcessedSamplesPlusOne++;
 
-        if (mListener != null) {
-            mListener.onBodyKinematicsAdded(this);
+        if (listener != null) {
+            listener.onBodyKinematicsAdded(this);
         }
 
-        mRunning = false;
+        running = false;
     }
 
     /**
@@ -3114,36 +3081,36 @@ public class BodyKinematicsBiasEstimator {
      * @throws LockedException if estimator is currently running.
      */
     public boolean reset() throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        if (mNumberOfProcessedSamples == 0) {
+        if (numberOfProcessedSamples == 0) {
             return false;
         }
 
-        mRunning = true;
-        mLastBodyKinematics = null;
-        mBiasFx = 0.0;
-        mBiasFy = 0.0;
-        mBiasFz = 0.0;
-        mBiasAngularRateX = 0.0;
-        mBiasAngularRateY = 0.0;
-        mBiasAngularRateZ = 0.0;
-        mVarianceFx = 0.0;
-        mVarianceFy = 0.0;
-        mVarianceFz = 0.0;
-        mVarianceAngularRateX = 0.0;
-        mVarianceAngularRateY = 0.0;
-        mVarianceAngularRateZ = 0.0;
-        mNumberOfProcessedSamples = 0;
-        mNumberOfProcessedSamplesPlusOne = 1;
+        running = true;
+        lastBodyKinematics = null;
+        biasFx = 0.0;
+        biasFy = 0.0;
+        biasFz = 0.0;
+        biasAngularRateX = 0.0;
+        biasAngularRateY = 0.0;
+        biasAngularRateZ = 0.0;
+        varianceFx = 0.0;
+        varianceFy = 0.0;
+        varianceFz = 0.0;
+        varianceAngularRateX = 0.0;
+        varianceAngularRateY = 0.0;
+        varianceAngularRateZ = 0.0;
+        numberOfProcessedSamples = 0;
+        numberOfProcessedSamplesPlusOne = 1;
 
-        if (mListener != null) {
-            mListener.onReset(this);
+        if (listener != null) {
+            listener.onReset(this);
         }
 
-        mRunning = false;
+        running = false;
 
         return true;
     }
@@ -3166,19 +3133,19 @@ public class BodyKinematicsBiasEstimator {
      * constant due to gravity and Earth rotation.
      */
     private void rebuildExpectedKinematics() {
-        if (mFrame == null) {
+        if (frame == null) {
             return;
         }
-        if (mExpectedKinematics == null) {
-            mExpectedKinematics = new BodyKinematics();
+        if (expectedKinematics == null) {
+            expectedKinematics = new BodyKinematics();
         }
 
-        final CoordinateTransformation ecefC = getEcefC();
-        final double x = mFrame.getX();
-        final double y = mFrame.getY();
-        final double z = mFrame.getZ();
-        ECEFKinematicsEstimator.estimateKinematics(mTimeInterval, ecefC, ecefC,
+        final var ecefC = getEcefC();
+        final var x = frame.getX();
+        final var y = frame.getY();
+        final var z = frame.getZ();
+        ECEFKinematicsEstimator.estimateKinematics(timeInterval, ecefC, ecefC,
                 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-                x, y, z, mExpectedKinematics);
+                x, y, z, expectedKinematics);
     }
 }

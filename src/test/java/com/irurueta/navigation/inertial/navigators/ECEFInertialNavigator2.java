@@ -27,7 +27,6 @@ import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.geodesic.Constants;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.inertial.ECEFGravity;
 import com.irurueta.navigation.inertial.estimators.ECEFGravityEstimator;
 
 /**
@@ -75,12 +74,12 @@ class ECEFInertialNavigator2 {
         }
 
         try {
-            // Attitude update
+            // Attitude update.
             // From (2.145) determine the Earth rotation over the update interval
-            final double alphaIe = EARTH_ROTATION_RATE * timeInterval;
-            final double sinAlpha = Math.sin(alphaIe);
-            final double cosAlpha = Math.cos(alphaIe);
-            final Matrix cEarth = Matrix.identity(Rotation3D.INHOM_COORDS, Rotation3D.INHOM_COORDS);
+            final var alphaIe = EARTH_ROTATION_RATE * timeInterval;
+            final var sinAlpha = Math.sin(alphaIe);
+            final var cosAlpha = Math.cos(alphaIe);
+            final var cEarth = Matrix.identity(Rotation3D.INHOM_COORDS, Rotation3D.INHOM_COORDS);
             cEarth.setElementAt(0, 0, cosAlpha);
             cEarth.setElementAt(0, 1, sinAlpha);
             cEarth.setElementAt(0, 2, 0.0);
@@ -92,23 +91,23 @@ class ECEFInertialNavigator2 {
             cEarth.setElementAt(2, 2, 1.0);
 
             // Calculate attitude increment, magnitude, and skew-symmetric matrix
-            final Matrix alphaIbb = new Matrix(ROWS, 1);
+            final var alphaIbb = new Matrix(ROWS, 1);
             alphaIbb.setElementAtIndex(0, angularRateX * timeInterval);
             alphaIbb.setElementAtIndex(1, angularRateY * timeInterval);
             alphaIbb.setElementAtIndex(2, angularRateZ * timeInterval);
 
-            final double magAlpha = Utils.normF(alphaIbb);
+            final var magAlpha = Utils.normF(alphaIbb);
 
-            final Matrix skewAlphaIbb = Utils.skewMatrix(alphaIbb);
+            final var skewAlphaIbb = Utils.skewMatrix(alphaIbb);
 
-            // Obtain coordinate transformation matrix from the new attitude with
+            // Get coordinate transformation matrix from the new attitude with
             // respect an inertial frame to the old using Rodrigues' formula, (5.73)
             final Matrix cNewOld;
             final Matrix skewAlphaIbb2;
             if (magAlpha > ALPHA_THRESHOLD) {
-                final double magAlpha2 = magAlpha * magAlpha;
-                final double value1 = Math.sin(magAlpha) / magAlpha;
-                final double value2 = (1.0 - Math.cos(magAlpha)) / magAlpha2;
+                final var magAlpha2 = magAlpha * magAlpha;
+                final var value1 = Math.sin(magAlpha) / magAlpha;
+                final var value2 = (1.0 - Math.cos(magAlpha)) / magAlpha2;
                 skewAlphaIbb2 = skewAlphaIbb.multiplyAndReturnNew(skewAlphaIbb);
                 cNewOld = Matrix.identity(Rotation3D.INHOM_COORDS, Rotation3D.INHOM_COORDS)
                         .addAndReturnNew(skewAlphaIbb.multiplyByScalarAndReturnNew(value1))
@@ -120,24 +119,23 @@ class ECEFInertialNavigator2 {
             }
 
             // Update attitude using (5.75)
-            final Matrix oldCbe = oldC.getMatrix();
-            final Matrix cbe = cEarth.multiplyAndReturnNew(oldCbe).multiplyAndReturnNew(cNewOld);
+            final var oldCbe = oldC.getMatrix();
+            final var cbe = cEarth.multiplyAndReturnNew(oldCbe).multiplyAndReturnNew(cNewOld);
 
-            // Specific force frame transformation
+            // Specific force frame transformation.
             // Calculate the average body-to-ECEF-frame coordinate transformation
             // matrix over the update interval using (5.84) and (5.85).
             final Matrix aveCbe;
-            final Matrix skewAlphaIe = Utils.skewMatrix(new double[]{0.0, 0.0, alphaIe});
+            final var skewAlphaIe = Utils.skewMatrix(new double[]{0.0, 0.0, alphaIe});
             if (magAlpha > ALPHA_THRESHOLD) {
-                final double magAlpha2 = magAlpha * magAlpha;
-                final double value1 = (1.0 - Math.cos(magAlpha)) / magAlpha2;
-                final double value2 = (1.0 - Math.sin(magAlpha) / magAlpha) / magAlpha2;
+                final var magAlpha2 = magAlpha * magAlpha;
+                final var value1 = (1.0 - Math.cos(magAlpha)) / magAlpha2;
+                final var value2 = (1.0 - Math.sin(magAlpha) / magAlpha) / magAlpha2;
 
-                aveCbe = oldCbe.multiplyAndReturnNew(
-                                Matrix.identity(Rotation3D.INHOM_COORDS, Rotation3D.INHOM_COORDS)
-                                        .addAndReturnNew(skewAlphaIbb.multiplyByScalarAndReturnNew(value1))
-                                        .addAndReturnNew(skewAlphaIbb2
-                                                .multiplyByScalarAndReturnNew(value2)))
+                aveCbe = oldCbe.multiplyAndReturnNew(Matrix.identity(Rotation3D.INHOM_COORDS, Rotation3D.INHOM_COORDS)
+                                .addAndReturnNew(skewAlphaIbb.multiplyByScalarAndReturnNew(value1))
+                                .addAndReturnNew(skewAlphaIbb2
+                                        .multiplyByScalarAndReturnNew(value2)))
                         .subtractAndReturnNew(skewAlphaIe.multiplyAndReturnNew(oldCbe)
                                 .multiplyByScalarAndReturnNew(0.5));
             } else {
@@ -146,41 +144,39 @@ class ECEFInertialNavigator2 {
             }
 
             // Transform specific force to ECEF-frame resolving axes using (5.85)
-            final Matrix fibb = new Matrix(ROWS, 1);
+            final var fibb = new Matrix(ROWS, 1);
             fibb.setElementAtIndex(0, fx);
             fibb.setElementAtIndex(1, fy);
             fibb.setElementAtIndex(2, fz);
 
-            final Matrix fibe = aveCbe.multiplyAndReturnNew(fibb);
+            final var fibe = aveCbe.multiplyAndReturnNew(fibb);
 
             // Update velocity
             // From (5.36)
-            final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(oldX, oldY, oldZ);
-            final Matrix g = gravity.asMatrix();
+            final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(oldX, oldY, oldZ);
+            final var g = gravity.asMatrix();
 
-            final Matrix oldVebe = new Matrix(ROWS, 1);
+            final var oldVebe = new Matrix(ROWS, 1);
             oldVebe.setElementAtIndex(0, oldVx);
             oldVebe.setElementAtIndex(1, oldVy);
             oldVebe.setElementAtIndex(2, oldVz);
 
-            final Matrix skewOmegaIe = Utils.skewMatrix(new double[]{0.0, 0.0, EARTH_ROTATION_RATE});
-            final Matrix vebe = oldVebe.addAndReturnNew(
-                    fibe.addAndReturnNew(g).subtractAndReturnNew(
-                                    skewOmegaIe.multiplyAndReturnNew(oldVebe)
-                                            .multiplyByScalarAndReturnNew(2.0))
-                            .multiplyByScalarAndReturnNew(timeInterval));
+            final var skewOmegaIe = Utils.skewMatrix(new double[]{0.0, 0.0, EARTH_ROTATION_RATE});
+            final var vebe = oldVebe.addAndReturnNew(fibe.addAndReturnNew(g).subtractAndReturnNew(
+                    skewOmegaIe.multiplyAndReturnNew(oldVebe).multiplyByScalarAndReturnNew(2.0))
+                    .multiplyByScalarAndReturnNew(timeInterval));
 
-            final double newVx = vebe.getElementAtIndex(0);
-            final double newVy = vebe.getElementAtIndex(1);
-            final double newVz = vebe.getElementAtIndex(2);
+            final var newVx = vebe.getElementAtIndex(0);
+            final var newVy = vebe.getElementAtIndex(1);
+            final var newVz = vebe.getElementAtIndex(2);
 
             // Update cartesian position
             // From (5.38)
-            final double newX = oldX + (newVx + oldVx) * 0.5 * timeInterval;
-            final double newY = oldY + (newVy + oldVy) * 0.5 * timeInterval;
-            final double newZ = oldZ + (newVz + oldVz) * 0.5 * timeInterval;
+            final var newX = oldX + (newVx + oldVx) * 0.5 * timeInterval;
+            final var newY = oldY + (newVy + oldVy) * 0.5 * timeInterval;
+            final var newZ = oldZ + (newVz + oldVz) * 0.5 * timeInterval;
 
-            final CoordinateTransformation newC = new CoordinateTransformation(FrameType.BODY_FRAME,
+            final var newC = new CoordinateTransformation(FrameType.BODY_FRAME,
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
             newC.setMatrix(cbe);
             result.setCoordinateTransformation(newC);

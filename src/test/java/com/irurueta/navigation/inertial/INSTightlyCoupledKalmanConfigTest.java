@@ -20,15 +20,13 @@ import com.irurueta.units.Distance;
 import com.irurueta.units.DistanceUnit;
 import com.irurueta.units.Speed;
 import com.irurueta.units.SpeedUnit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class INSTightlyCoupledKalmanConfigTest {
+class INSTightlyCoupledKalmanConfigTest {
 
     private static final double MIN_VALUE = 1e-4;
     private static final double MAX_VALUE = 1e-3;
@@ -36,9 +34,9 @@ public class INSTightlyCoupledKalmanConfigTest {
     private static final double THRESHOLD = 1e-6;
 
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         // test empty constructor
-        INSTightlyCoupledKalmanConfig config = new INSTightlyCoupledKalmanConfig();
+        var config = new INSTightlyCoupledKalmanConfig();
 
         // check default values
         assertEquals(0.0, config.getGyroNoisePSD(), 0.0);
@@ -51,17 +49,17 @@ public class INSTightlyCoupledKalmanConfigTest {
         assertEquals(0.0, config.getRangeRateSD(), 0.0);
 
         // test constructor with values
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gyroNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double accelerometerNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double accelerometerBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gyroBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double clockFrequencyPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double clockPhasePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double pseudoRangeSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double rangeRateSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var randomizer = new UniformRandomizer();
+        final var gyroNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var accelerometerNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var accelerometerBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gyroBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var clockFrequencyPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var clockPhasePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var pseudoRangeSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var rangeRateSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        config = new INSTightlyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD,
+        config = new INSTightlyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD, 
                 gyroBiasPSD, clockFrequencyPSD, clockPhasePSD, pseudoRangeSD, rangeRateSD);
 
         // check default values
@@ -75,10 +73,10 @@ public class INSTightlyCoupledKalmanConfigTest {
         assertEquals(rangeRateSD, config.getRangeRateSD(), 0.0);
 
         // test constructor with values
-        final Distance pseudoRangeSDDistance = new Distance(pseudoRangeSD, DistanceUnit.METER);
-        final Speed rangeRateSDSpeed = new Speed(rangeRateSD, SpeedUnit.METERS_PER_SECOND);
+        final var pseudoRangeSDDistance = new Distance(pseudoRangeSD, DistanceUnit.METER);
+        final var rangeRateSDSpeed = new Speed(rangeRateSD, SpeedUnit.METERS_PER_SECOND);
 
-        config = new INSTightlyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD,
+        config = new INSTightlyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD, 
                 gyroBiasPSD, clockFrequencyPSD, clockPhasePSD, pseudoRangeSDDistance, rangeRateSDSpeed);
 
         // check default values
@@ -92,7 +90,7 @@ public class INSTightlyCoupledKalmanConfigTest {
         assertEquals(rangeRateSD, config.getRangeRateSD(), 0.0);
 
         // test copy constructor
-        final INSTightlyCoupledKalmanConfig config2 = new INSTightlyCoupledKalmanConfig(config);
+        final var config2 = new INSTightlyCoupledKalmanConfig(config);
 
         // check default values
         assertEquals(gyroNoisePSD, config2.getGyroNoisePSD(), 0.0);
@@ -106,15 +104,15 @@ public class INSTightlyCoupledKalmanConfigTest {
     }
 
     @Test
-    public void testGetSetGyroNoisePSD() {
-        final INSTightlyCoupledKalmanConfig config = new INSTightlyCoupledKalmanConfig();
+    void testGetSetGyroNoisePSD() {
+        final var config = new INSTightlyCoupledKalmanConfig();
 
         // check default value
         assertEquals(0.0, config.getGyroNoisePSD(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gyroNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var gyroNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
         config.setGyroNoisePSD(gyroNoisePSD);
 
@@ -123,15 +121,15 @@ public class INSTightlyCoupledKalmanConfigTest {
     }
 
     @Test
-    public void testGetSetAccelerometerNoisePSD() {
-        final INSTightlyCoupledKalmanConfig config = new INSTightlyCoupledKalmanConfig();
+    void testGetSetAccelerometerNoisePSD() {
+        final var config = new INSTightlyCoupledKalmanConfig();
 
         // check default value
         assertEquals(0.0, config.getAccelerometerNoisePSD(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double accelerometerNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var accelerometerNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
         config.setAccelerometerNoisePSD(accelerometerNoisePSD);
 
@@ -140,15 +138,15 @@ public class INSTightlyCoupledKalmanConfigTest {
     }
 
     @Test
-    public void testGetSetAccelerometerBiasPSD() {
-        final INSTightlyCoupledKalmanConfig config = new INSTightlyCoupledKalmanConfig();
+    void testGetSetAccelerometerBiasPSD() {
+        final var config = new INSTightlyCoupledKalmanConfig();
 
         // check default value
         assertEquals(0.0, config.getAccelerometerBiasPSD(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double accelerometerBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var accelerometerBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
         config.setAccelerometerBiasPSD(accelerometerBiasPSD);
 
@@ -157,15 +155,15 @@ public class INSTightlyCoupledKalmanConfigTest {
     }
 
     @Test
-    public void testGetSetGyroBiasPSD() {
-        final INSTightlyCoupledKalmanConfig config = new INSTightlyCoupledKalmanConfig();
+    void testGetSetGyroBiasPSD() {
+        final var config = new INSTightlyCoupledKalmanConfig();
 
         // check default value
         assertEquals(0.0, config.getGyroBiasPSD(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gyroBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var gyroBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
         config.setGyroBiasPSD(gyroBiasPSD);
 
@@ -174,15 +172,15 @@ public class INSTightlyCoupledKalmanConfigTest {
     }
 
     @Test
-    public void testGetSetClockFrequencyPSD() {
-        final INSTightlyCoupledKalmanConfig config = new INSTightlyCoupledKalmanConfig();
+    void testGetSetClockFrequencyPSD() {
+        final var config = new INSTightlyCoupledKalmanConfig();
 
         // check default value
         assertEquals(0.0, config.getClockFrequencyPSD(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double clockFrequencyPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var clockFrequencyPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
         config.setClockFrequencyPSD(clockFrequencyPSD);
 
@@ -191,15 +189,15 @@ public class INSTightlyCoupledKalmanConfigTest {
     }
 
     @Test
-    public void testGetSetClockPhasePSD() {
-        final INSTightlyCoupledKalmanConfig config = new INSTightlyCoupledKalmanConfig();
+    void testGetSetClockPhasePSD() {
+        final var config = new INSTightlyCoupledKalmanConfig();
 
         // check default value
         assertEquals(0.0, config.getClockPhasePSD(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double clockPhasePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var clockPhasePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
         config.setClockPhasePSD(clockPhasePSD);
 
@@ -208,15 +206,15 @@ public class INSTightlyCoupledKalmanConfigTest {
     }
 
     @Test
-    public void testGetSetPseudoRangeSD() {
-        final INSTightlyCoupledKalmanConfig config = new INSTightlyCoupledKalmanConfig();
+    void testGetSetPseudoRangeSD() {
+        final var config = new INSTightlyCoupledKalmanConfig();
 
         // check default value
         assertEquals(0.0, config.getPseudoRangeSD(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double pseudoRangeSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var pseudoRangeSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
         config.setPseudoRangeSD(pseudoRangeSD);
 
@@ -225,15 +223,15 @@ public class INSTightlyCoupledKalmanConfigTest {
     }
 
     @Test
-    public void testGetSetRangeRateSD() {
-        final INSTightlyCoupledKalmanConfig config = new INSTightlyCoupledKalmanConfig();
+    void testGetSetRangeRateSD() {
+        final var config = new INSTightlyCoupledKalmanConfig();
 
         // check default value
         assertEquals(0.0, config.getRangeRateSD(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double rangeRateSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var rangeRateSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
         config.setRangeRateSD(rangeRateSD);
 
@@ -242,8 +240,8 @@ public class INSTightlyCoupledKalmanConfigTest {
     }
 
     @Test
-    public void testSetValues() {
-        final INSTightlyCoupledKalmanConfig config = new INSTightlyCoupledKalmanConfig();
+    void testSetValues() {
+        final var config = new INSTightlyCoupledKalmanConfig();
 
         // check default values
         assertEquals(0.0, config.getGyroNoisePSD(), 0.0);
@@ -256,15 +254,15 @@ public class INSTightlyCoupledKalmanConfigTest {
         assertEquals(0.0, config.getRangeRateSD(), 0.0);
 
         // set new values
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gyroNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double accelerometerNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double accelerometerBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gyroBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double clockFrequencyPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double clockPhasePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double pseudoRangeSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double rangeRateSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var randomizer = new UniformRandomizer();
+        final var gyroNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var accelerometerNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var accelerometerBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gyroBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var clockFrequencyPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var clockPhasePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var pseudoRangeSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var rangeRateSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
         config.setValues(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD,
                 clockPhasePSD, pseudoRangeSD, rangeRateSD);
@@ -281,62 +279,62 @@ public class INSTightlyCoupledKalmanConfigTest {
     }
 
     @Test
-    public void testGetSetPseudoRangeSDDistance() {
-        final INSTightlyCoupledKalmanConfig config = new INSTightlyCoupledKalmanConfig();
+    void testGetSetPseudoRangeSDDistance() {
+        final var config = new INSTightlyCoupledKalmanConfig();
 
         // check default value
-        final Distance distance1 = config.getPseudoRangeSDDistance();
+        final var distance1 = config.getPseudoRangeSDDistance();
 
         assertEquals(0.0, distance1.getValue().doubleValue(), 0.0);
         assertEquals(DistanceUnit.METER, distance1.getUnit());
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double pseudoRangeSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var pseudoRangeSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final Distance distance2 = new Distance(pseudoRangeSD, DistanceUnit.METER);
+        final var distance2 = new Distance(pseudoRangeSD, DistanceUnit.METER);
 
         config.setPseudoRangeSD(distance2);
 
         // check
-        final Distance distance3 = new Distance(0.0, DistanceUnit.KILOMETER);
+        final var distance3 = new Distance(0.0, DistanceUnit.KILOMETER);
         config.getPseudoRangeSDDistance(distance3);
-        final Distance distance4 = config.getPseudoRangeSDDistance();
+        final var distance4 = config.getPseudoRangeSDDistance();
 
         assertEquals(distance2, distance3);
         assertEquals(distance2, distance4);
     }
 
     @Test
-    public void testGetSetRangeRateSDSpeed() {
-        final INSTightlyCoupledKalmanConfig config = new INSTightlyCoupledKalmanConfig();
+    void testGetSetRangeRateSDSpeed() {
+        final var config = new INSTightlyCoupledKalmanConfig();
 
         // check default value
-        final Speed speed1 = config.getRangeRateSDSpeed();
+        final var speed1 = config.getRangeRateSDSpeed();
 
         assertEquals(0.0, speed1.getValue().doubleValue(), 0.0);
         assertEquals(SpeedUnit.METERS_PER_SECOND, speed1.getUnit());
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double rangeRateSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var rangeRateSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final Speed speed2 = new Speed(rangeRateSD, SpeedUnit.METERS_PER_SECOND);
+        final var speed2 = new Speed(rangeRateSD, SpeedUnit.METERS_PER_SECOND);
 
         config.setRangeRateSD(speed2);
 
         // check
-        final Speed speed3 = new Speed(0.0, SpeedUnit.KILOMETERS_PER_HOUR);
+        final var speed3 = new Speed(0.0, SpeedUnit.KILOMETERS_PER_HOUR);
         config.getRangeRateSDSpeed(speed3);
-        final Speed speed4 = config.getRangeRateSDSpeed();
+        final var speed4 = config.getRangeRateSDSpeed();
 
         assertEquals(speed2, speed3);
         assertEquals(speed2, speed4);
     }
 
     @Test
-    public void testSetValues2() {
-        final INSTightlyCoupledKalmanConfig config = new INSTightlyCoupledKalmanConfig();
+    void testSetValues2() {
+        final var config = new INSTightlyCoupledKalmanConfig();
 
         // check default values
         assertEquals(0.0, config.getGyroNoisePSD(), 0.0);
@@ -349,18 +347,18 @@ public class INSTightlyCoupledKalmanConfigTest {
         assertEquals(0.0, config.getRangeRateSD(), 0.0);
 
         // set new values
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gyroNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double accelerometerNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double accelerometerBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gyroBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double clockFrequencyPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double clockPhasePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double pseudoRangeSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double rangeRateSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var randomizer = new UniformRandomizer();
+        final var gyroNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var accelerometerNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var accelerometerBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gyroBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var clockFrequencyPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var clockPhasePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var pseudoRangeSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var rangeRateSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final Distance pseudoRangeSDDistance = new Distance(pseudoRangeSD, DistanceUnit.METER);
-        final Speed rangeRateSDSpeed = new Speed(rangeRateSD, SpeedUnit.METERS_PER_SECOND);
+        final var pseudoRangeSDDistance = new Distance(pseudoRangeSD, DistanceUnit.METER);
+        final var rangeRateSDSpeed = new Speed(rangeRateSD, SpeedUnit.METERS_PER_SECOND);
 
         config.setValues(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD,
                 clockPhasePSD, pseudoRangeSDDistance, rangeRateSDSpeed);
@@ -377,21 +375,20 @@ public class INSTightlyCoupledKalmanConfigTest {
     }
 
     @Test
-    public void testCopyTo() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gyroNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double accelerometerNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double accelerometerBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gyroBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double clockFrequencyPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double clockPhasePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double pseudoRangeSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double rangeRateSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+    void testCopyTo() {
+        final var randomizer = new UniformRandomizer();
+        final var gyroNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var accelerometerNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var accelerometerBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gyroBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var clockFrequencyPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var clockPhasePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var pseudoRangeSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var rangeRateSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final INSTightlyCoupledKalmanConfig config1 = new INSTightlyCoupledKalmanConfig(gyroNoisePSD,
-                accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD, clockPhasePSD,
-                pseudoRangeSD, rangeRateSD);
-        final INSTightlyCoupledKalmanConfig config2 = new INSTightlyCoupledKalmanConfig();
+        final var config1 = new INSTightlyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD,
+                gyroBiasPSD, clockFrequencyPSD, clockPhasePSD, pseudoRangeSD, rangeRateSD);
+        final var config2 = new INSTightlyCoupledKalmanConfig();
 
         config1.copyTo(config2);
 
@@ -407,21 +404,20 @@ public class INSTightlyCoupledKalmanConfigTest {
     }
 
     @Test
-    public void testCopyFrom() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gyroNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double accelerometerNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double accelerometerBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gyroBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double clockFrequencyPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double clockPhasePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double pseudoRangeSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double rangeRateSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+    void testCopyFrom() {
+        final var randomizer = new UniformRandomizer();
+        final var gyroNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var accelerometerNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var accelerometerBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gyroBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var clockFrequencyPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var clockPhasePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var pseudoRangeSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var rangeRateSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final INSTightlyCoupledKalmanConfig config1 = new INSTightlyCoupledKalmanConfig(gyroNoisePSD,
-                accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD, clockPhasePSD,
-                pseudoRangeSD, rangeRateSD);
-        final INSTightlyCoupledKalmanConfig config2 = new INSTightlyCoupledKalmanConfig();
+        final var config1 = new INSTightlyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD,
+                gyroBiasPSD, clockFrequencyPSD, clockPhasePSD, pseudoRangeSD, rangeRateSD);
+        final var config2 = new INSTightlyCoupledKalmanConfig();
 
         config2.copyFrom(config1);
 
@@ -437,48 +433,44 @@ public class INSTightlyCoupledKalmanConfigTest {
     }
 
     @Test
-    public void testHashCode() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gyroNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double accelerometerNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double accelerometerBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gyroBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double clockFrequencyPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double clockPhasePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double pseudoRangeSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double rangeRateSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+    void testHashCode() {
+        final var randomizer = new UniformRandomizer();
+        final var gyroNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var accelerometerNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var accelerometerBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gyroBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var clockFrequencyPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var clockPhasePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var pseudoRangeSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var rangeRateSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final INSTightlyCoupledKalmanConfig config1 = new INSTightlyCoupledKalmanConfig(gyroNoisePSD,
-                accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD, clockPhasePSD,
-                pseudoRangeSD, rangeRateSD);
-        final INSTightlyCoupledKalmanConfig config2 = new INSTightlyCoupledKalmanConfig(gyroNoisePSD,
-                accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD, clockPhasePSD,
-                pseudoRangeSD, rangeRateSD);
-        final INSTightlyCoupledKalmanConfig config3 = new INSTightlyCoupledKalmanConfig();
+        final var config1 = new INSTightlyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD,
+                gyroBiasPSD, clockFrequencyPSD, clockPhasePSD, pseudoRangeSD, rangeRateSD);
+        final var config2 = new INSTightlyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD,
+                gyroBiasPSD, clockFrequencyPSD, clockPhasePSD, pseudoRangeSD, rangeRateSD);
+        final var config3 = new INSTightlyCoupledKalmanConfig();
 
         assertEquals(config1.hashCode(), config2.hashCode());
         assertNotEquals(config1.hashCode(), config3.hashCode());
     }
 
     @Test
-    public void testEquals() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gyroNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double accelerometerNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double accelerometerBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gyroBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double clockFrequencyPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double clockPhasePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double pseudoRangeSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double rangeRateSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+    void testEquals() {
+        final var randomizer = new UniformRandomizer();
+        final var gyroNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var accelerometerNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var accelerometerBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gyroBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var clockFrequencyPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var clockPhasePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var pseudoRangeSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var rangeRateSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final INSTightlyCoupledKalmanConfig config1 = new INSTightlyCoupledKalmanConfig(gyroNoisePSD,
-                accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD, clockPhasePSD,
-                pseudoRangeSD, rangeRateSD);
-        final INSTightlyCoupledKalmanConfig config2 = new INSTightlyCoupledKalmanConfig(gyroNoisePSD,
-                accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD, clockPhasePSD,
-                pseudoRangeSD, rangeRateSD);
-        final INSTightlyCoupledKalmanConfig config3 = new INSTightlyCoupledKalmanConfig();
+        final var config1 = new INSTightlyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD,
+                gyroBiasPSD, clockFrequencyPSD, clockPhasePSD, pseudoRangeSD, rangeRateSD);
+        final var config2 = new INSTightlyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD,
+                gyroBiasPSD, clockFrequencyPSD, clockPhasePSD, pseudoRangeSD, rangeRateSD);
+        final var config3 = new INSTightlyCoupledKalmanConfig();
 
         //noinspection EqualsWithItself
         assertEquals(config1, config1);
@@ -486,30 +478,28 @@ public class INSTightlyCoupledKalmanConfigTest {
         assertTrue(config1.equals(config1));
         assertTrue(config1.equals(config2));
         assertFalse(config1.equals(config3));
-        assertNotEquals(config1, null);
+        assertNotEquals(null, config1);
         assertFalse(config1.equals(null));
-        assertNotEquals(config1, new Object());
+        assertNotEquals(new Object(), config1);
     }
 
     @Test
-    public void testEqualsWithThreshold() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gyroNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double accelerometerNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double accelerometerBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gyroBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double clockFrequencyPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double clockPhasePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double pseudoRangeSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double rangeRateSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+    void testEqualsWithThreshold() {
+        final var randomizer = new UniformRandomizer();
+        final var gyroNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var accelerometerNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var accelerometerBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gyroBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var clockFrequencyPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var clockPhasePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var pseudoRangeSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var rangeRateSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final INSTightlyCoupledKalmanConfig config1 = new INSTightlyCoupledKalmanConfig(gyroNoisePSD,
-                accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD, clockPhasePSD,
-                pseudoRangeSD, rangeRateSD);
-        final INSTightlyCoupledKalmanConfig config2 = new INSTightlyCoupledKalmanConfig(gyroNoisePSD,
-                accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD, clockPhasePSD,
-                pseudoRangeSD, rangeRateSD);
-        final INSTightlyCoupledKalmanConfig config3 = new INSTightlyCoupledKalmanConfig();
+        final var config1 = new INSTightlyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD,
+                gyroBiasPSD, clockFrequencyPSD, clockPhasePSD, pseudoRangeSD, rangeRateSD);
+        final var config2 = new INSTightlyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD,
+                gyroBiasPSD, clockFrequencyPSD, clockPhasePSD, pseudoRangeSD, rangeRateSD);
+        final var config3 = new INSTightlyCoupledKalmanConfig();
 
         assertTrue(config1.equals(config1, THRESHOLD));
         assertTrue(config1.equals(config2, THRESHOLD));
@@ -518,53 +508,51 @@ public class INSTightlyCoupledKalmanConfigTest {
     }
 
     @Test
-    public void testClone() throws CloneNotSupportedException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gyroNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double accelerometerNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double accelerometerBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gyroBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double clockFrequencyPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double clockPhasePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double pseudoRangeSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double rangeRateSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+    void testClone() throws CloneNotSupportedException {
+        final var randomizer = new UniformRandomizer();
+        final var gyroNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var accelerometerNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var accelerometerBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gyroBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var clockFrequencyPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var clockPhasePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var pseudoRangeSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var rangeRateSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final INSTightlyCoupledKalmanConfig config1 = new INSTightlyCoupledKalmanConfig(gyroNoisePSD,
-                accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD, clockPhasePSD,
-                pseudoRangeSD, rangeRateSD);
+        final var config1 = new INSTightlyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD,
+                gyroBiasPSD, clockFrequencyPSD, clockPhasePSD, pseudoRangeSD, rangeRateSD);
 
-        final Object config2 = config1.clone();
+        final var config2 = config1.clone();
 
         assertEquals(config1, config2);
     }
 
     @Test
-    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double gyroNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double accelerometerNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double accelerometerBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gyroBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double clockFrequencyPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double clockPhasePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double pseudoRangeSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double rangeRateSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+    void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final var randomizer = new UniformRandomizer();
+        final var gyroNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var accelerometerNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var accelerometerBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var gyroBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var clockFrequencyPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var clockPhasePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var pseudoRangeSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var rangeRateSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final INSTightlyCoupledKalmanConfig config1 = new INSTightlyCoupledKalmanConfig(gyroNoisePSD,
-                accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD, clockPhasePSD,
-                pseudoRangeSD, rangeRateSD);
+        final var config1 = new INSTightlyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD,
+                gyroBiasPSD, clockFrequencyPSD, clockPhasePSD, pseudoRangeSD, rangeRateSD);
 
-        final byte[] bytes = SerializationHelper.serialize(config1);
+        final var bytes = SerializationHelper.serialize(config1);
 
-        final INSTightlyCoupledKalmanConfig config2 = SerializationHelper.deserialize(bytes);
+        final var config2 = SerializationHelper.deserialize(bytes);
 
         assertEquals(config1, config2);
         assertNotSame(config1, config2);
     }
 
     @Test
-    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
-        final Field field = INSTightlyCoupledKalmanConfig.class.getDeclaredField("serialVersionUID");
+    void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final var field = INSTightlyCoupledKalmanConfig.class.getDeclaredField("serialVersionUID");
         field.setAccessible(true);
 
         assertEquals(0L, field.get(null));

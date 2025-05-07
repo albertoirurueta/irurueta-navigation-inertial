@@ -70,6 +70,17 @@ public class ECEFGravity extends GravityOrGravitation<ECEFGravity> {
     }
 
     /**
+     * Computes and returns hash code for this instance. Hash codes are almost unique
+     * values that are useful for fast classification and storage of objects in collections.
+     *
+     * @return Hash code.
+     */
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    /**
      * Checks if provided object is a ECEFGravity instance having exactly the same contents
      * as this instance.
      *
@@ -89,7 +100,7 @@ public class ECEFGravity extends GravityOrGravitation<ECEFGravity> {
         }
 
         //noinspection PatternVariableCanBeUsed
-        final ECEFGravity other = (ECEFGravity) obj;
+        final var other = (ECEFGravity) obj;
         return equals(other);
     }
 
@@ -101,7 +112,7 @@ public class ECEFGravity extends GravityOrGravitation<ECEFGravity> {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final ECEFGravity result = (ECEFGravity) super.clone();
+        final var result = (ECEFGravity) super.clone();
         copyTo(result);
         return result;
     }

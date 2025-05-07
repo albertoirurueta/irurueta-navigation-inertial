@@ -19,13 +19,11 @@ import com.irurueta.navigation.LockedException;
 import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeUnit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import java.util.Random;
+import static org.junit.jupiter.api.Assertions.*;
 
-import static org.junit.Assert.*;
-
-public class TimeIntervalEstimatorTest implements TimeIntervalEstimatorListener {
+class TimeIntervalEstimatorTest implements TimeIntervalEstimatorListener {
 
     private static final double TIME_INTERVAL_SECONDS = 0.02;
     private static final double TIME_INTERVAL_STD = 1e-3;
@@ -34,15 +32,15 @@ public class TimeIntervalEstimatorTest implements TimeIntervalEstimatorListener 
     private static final double SMALL_ABSOLUTE_ERROR = 1e-9;
     private static final double LARGE_ABSOLUTE_ERROR = 5e-4;
 
-    private int mStart;
-    private int mTimestampAdded;
-    private int mFinish;
-    private int mReset;
+    private int start;
+    private int timestampAdded;
+    private int finish;
+    private int reset;
 
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         // test empty constructor
-        TimeIntervalEstimator estimator = new TimeIntervalEstimator();
+        var estimator = new TimeIntervalEstimator();
 
         // check default values
         assertEquals(TimeIntervalEstimator.DEFAULT_TOTAL_SAMPLES, estimator.getTotalSamples());
@@ -122,7 +120,7 @@ public class TimeIntervalEstimatorTest implements TimeIntervalEstimatorListener 
         assertFalse(estimator.isRunning());
         assertFalse(estimator.isFinished());
 
-        final TimeIntervalEstimator estimator2 = new TimeIntervalEstimator(estimator);
+        final var estimator2 = new TimeIntervalEstimator(estimator);
 
         // check
         assertEquals(estimator.getTotalSamples(), estimator2.getTotalSamples());
@@ -138,13 +136,13 @@ public class TimeIntervalEstimatorTest implements TimeIntervalEstimatorListener 
     }
 
     @Test
-    public void testGetSetTotalSamples() throws LockedException {
-        final TimeIntervalEstimator estimator = new TimeIntervalEstimator();
+    void testGetSetTotalSamples() throws LockedException {
+        final var estimator = new TimeIntervalEstimator();
 
         // check default value
         assertEquals(TimeIntervalEstimator.DEFAULT_TOTAL_SAMPLES, estimator.getTotalSamples());
 
-        // set new value
+        // set a new value
         estimator.setTotalSamples(1);
 
         // check
@@ -155,13 +153,13 @@ public class TimeIntervalEstimatorTest implements TimeIntervalEstimatorListener 
     }
 
     @Test
-    public void testGetSetListener() throws LockedException {
-        final TimeIntervalEstimator estimator = new TimeIntervalEstimator();
+    void testGetSetListener() throws LockedException {
+        final var estimator = new TimeIntervalEstimator();
 
         // check default value
         assertNull(estimator.getListener());
 
-        // set new value
+        // set a new value
         estimator.setListener(this);
 
         // check
@@ -169,31 +167,31 @@ public class TimeIntervalEstimatorTest implements TimeIntervalEstimatorListener 
     }
 
     @Test
-    public void testAddTimestampAndReset1() throws LockedException {
-        final TimeIntervalEstimator estimator = new TimeIntervalEstimator(this);
+    void testAddTimestampAndReset1() throws LockedException {
+        final var estimator = new TimeIntervalEstimator(this);
 
         reset();
-        assertEquals(0, mStart);
-        assertEquals(0, mTimestampAdded);
-        assertEquals(0, mFinish);
-        assertEquals(0, mReset);
+        assertEquals(0, start);
+        assertEquals(0, timestampAdded);
+        assertEquals(0, finish);
+        assertEquals(0, reset);
         assertFalse(estimator.isFinished());
         assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertNull(estimator.getLastTimestamp());
         assertFalse(estimator.isRunning());
 
-        final GaussianRandomizer randomizer = new GaussianRandomizer(new Random(), 0.0, TIME_INTERVAL_STD);
-        final int totalSamples = estimator.getTotalSamples();
+        final var randomizer = new GaussianRandomizer(0.0, TIME_INTERVAL_STD);
+        final var totalSamples = estimator.getTotalSamples();
         Double lastTimestamp = null;
-        final Time lastTimestampTime1 = new Time(0.0, TimeUnit.MINUTE);
+        final var lastTimestampTime1 = new Time(0.0, TimeUnit.MINUTE);
         Time lastTimestampTime2;
-        for (int i = 0; i < totalSamples; i++) {
+        for (var i = 0; i < totalSamples; i++) {
             if (lastTimestamp != null) {
                 assertEquals(lastTimestamp, estimator.getLastTimestamp());
             }
 
-            final double noise = randomizer.nextDouble();
-            final double timestamp = i * TIME_INTERVAL_SECONDS + noise;
+            final var noise = randomizer.nextDouble();
+            final var timestamp = i * TIME_INTERVAL_SECONDS + noise;
 
             estimator.addTimestamp(timestamp);
 
@@ -214,15 +212,15 @@ public class TimeIntervalEstimatorTest implements TimeIntervalEstimatorListener 
         assertEquals(totalSamples, estimator.getNumberOfProcessedSamples());
         assertTrue(estimator.isFinished());
         assertFalse(estimator.isRunning());
-        assertEquals(1, mStart);
-        assertEquals(totalSamples, mTimestampAdded);
-        assertEquals(1, mFinish);
-        assertEquals(0, mReset);
+        assertEquals(1, start);
+        assertEquals(totalSamples, timestampAdded);
+        assertEquals(1, finish);
+        assertEquals(0, reset);
 
-        final double averageTimeInterval = estimator.getAverageTimeInterval();
-        final Time averageTimeInterval1 = new Time(0.0, TimeUnit.MILLISECOND);
+        final var averageTimeInterval = estimator.getAverageTimeInterval();
+        final var averageTimeInterval1 = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getAverageTimeIntervalAsTime(averageTimeInterval1);
-        final Time averageTimeInterval2 = estimator.getAverageTimeIntervalAsTime();
+        final var averageTimeInterval2 = estimator.getAverageTimeIntervalAsTime();
 
         assertEquals(averageTimeInterval1, averageTimeInterval2);
         assertEquals(averageTimeInterval, averageTimeInterval1.getValue().doubleValue(), 0.0);
@@ -230,14 +228,14 @@ public class TimeIntervalEstimatorTest implements TimeIntervalEstimatorListener 
 
         assertEquals(TIME_INTERVAL_SECONDS, averageTimeInterval, ABSOLUTE_ERROR);
 
-        final double timeIntervalVariance = estimator.getTimeIntervalVariance();
-        final double timeIntervalStandardDeviation = estimator.getTimeIntervalStandardDeviation();
+        final var timeIntervalVariance = estimator.getTimeIntervalVariance();
+        final var timeIntervalStandardDeviation = estimator.getTimeIntervalStandardDeviation();
 
         assertEquals(timeIntervalStandardDeviation * timeIntervalStandardDeviation, timeIntervalVariance,
                 SMALL_ABSOLUTE_ERROR);
 
-        final Time timeIntervalStd1 = estimator.getTimeIntervalStandardDeviationAsTime();
-        final Time timeIntervalStd2 = new Time(0.0, TimeUnit.MILLISECOND);
+        final var timeIntervalStd1 = estimator.getTimeIntervalStandardDeviationAsTime();
+        final var timeIntervalStd2 = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getTimeIntervalStandardDeviationAsTime(timeIntervalStd2);
 
         assertEquals(timeIntervalStd1, timeIntervalStd2);
@@ -255,36 +253,36 @@ public class TimeIntervalEstimatorTest implements TimeIntervalEstimatorListener 
         assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertNull(estimator.getLastTimestamp());
         assertFalse(estimator.isRunning());
-        assertEquals(1, mReset);
+        assertEquals(1, reset);
     }
 
     @Test
-    public void testAddTimestampAndReset2() throws LockedException {
-        final TimeIntervalEstimator estimator = new TimeIntervalEstimator(this);
+    void testAddTimestampAndReset2() throws LockedException {
+        final var estimator = new TimeIntervalEstimator(this);
 
         reset();
-        assertEquals(0, mStart);
-        assertEquals(0, mTimestampAdded);
-        assertEquals(0, mFinish);
-        assertEquals(0, mReset);
+        assertEquals(0, start);
+        assertEquals(0, timestampAdded);
+        assertEquals(0, finish);
+        assertEquals(0, reset);
         assertFalse(estimator.isFinished());
         assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertNull(estimator.getLastTimestamp());
         assertFalse(estimator.isRunning());
 
-        final GaussianRandomizer randomizer = new GaussianRandomizer(new Random(), 0.0, TIME_INTERVAL_STD);
-        final int totalSamples = estimator.getTotalSamples();
+        final var randomizer = new GaussianRandomizer(0.0, TIME_INTERVAL_STD);
+        final var totalSamples = estimator.getTotalSamples();
         Double lastTimestamp = null;
-        final Time lastTimestampTime1 = new Time(0.0, TimeUnit.MINUTE);
+        final var lastTimestampTime1 = new Time(0.0, TimeUnit.MINUTE);
         Time lastTimestampTime2;
-        final Time timestamp = new Time(0.0, TimeUnit.SECOND);
-        for (int i = 0; i < totalSamples; i++) {
+        final var timestamp = new Time(0.0, TimeUnit.SECOND);
+        for (var i = 0; i < totalSamples; i++) {
             if (lastTimestamp != null) {
                 assertEquals(lastTimestamp, estimator.getLastTimestamp());
             }
 
-            final double noise = randomizer.nextDouble();
-            final double value = i * TIME_INTERVAL_SECONDS + noise;
+            final var noise = randomizer.nextDouble();
+            final var value = i * TIME_INTERVAL_SECONDS + noise;
             timestamp.setValue(value);
 
             assertTrue(estimator.addTimestamp(timestamp));
@@ -305,15 +303,15 @@ public class TimeIntervalEstimatorTest implements TimeIntervalEstimatorListener 
         assertEquals(totalSamples, estimator.getNumberOfProcessedSamples());
         assertTrue(estimator.isFinished());
         assertFalse(estimator.isRunning());
-        assertEquals(1, mStart);
-        assertEquals(totalSamples, mTimestampAdded);
-        assertEquals(1, mFinish);
-        assertEquals(0, mReset);
+        assertEquals(1, start);
+        assertEquals(totalSamples, timestampAdded);
+        assertEquals(1, finish);
+        assertEquals(0, reset);
 
-        final double averageTimeInterval = estimator.getAverageTimeInterval();
-        final Time averageTimeInterval1 = new Time(0.0, TimeUnit.MILLISECOND);
+        final var averageTimeInterval = estimator.getAverageTimeInterval();
+        final var averageTimeInterval1 = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getAverageTimeIntervalAsTime(averageTimeInterval1);
-        final Time averageTimeInterval2 = estimator.getAverageTimeIntervalAsTime();
+        final var averageTimeInterval2 = estimator.getAverageTimeIntervalAsTime();
 
         assertEquals(averageTimeInterval1, averageTimeInterval2);
         assertEquals(averageTimeInterval, averageTimeInterval1.getValue().doubleValue(), 0.0);
@@ -321,14 +319,14 @@ public class TimeIntervalEstimatorTest implements TimeIntervalEstimatorListener 
 
         assertEquals(TIME_INTERVAL_SECONDS, averageTimeInterval, ABSOLUTE_ERROR);
 
-        final double timeIntervalVariance = estimator.getTimeIntervalVariance();
-        final double timeIntervalStandardDeviation = estimator.getTimeIntervalStandardDeviation();
+        final var timeIntervalVariance = estimator.getTimeIntervalVariance();
+        final var timeIntervalStandardDeviation = estimator.getTimeIntervalStandardDeviation();
 
         assertEquals(timeIntervalStandardDeviation * timeIntervalStandardDeviation, timeIntervalVariance,
                 SMALL_ABSOLUTE_ERROR);
 
-        final Time timeIntervalStd1 = estimator.getTimeIntervalStandardDeviationAsTime();
-        final Time timeIntervalStd2 = new Time(0.0, TimeUnit.MILLISECOND);
+        final var timeIntervalStd1 = estimator.getTimeIntervalStandardDeviationAsTime();
+        final var timeIntervalStd2 = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getTimeIntervalStandardDeviationAsTime(timeIntervalStd2);
 
         assertEquals(timeIntervalStd1, timeIntervalStd2);
@@ -346,12 +344,12 @@ public class TimeIntervalEstimatorTest implements TimeIntervalEstimatorListener 
         assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertNull(estimator.getLastTimestamp());
         assertFalse(estimator.isRunning());
-        assertEquals(1, mReset);
+        assertEquals(1, reset);
     }
 
     @Test
-    public void testCopyFrom() throws LockedException {
-        final TimeIntervalEstimator estimator1 = new TimeIntervalEstimator(this);
+    void testCopyFrom() throws LockedException {
+        final var estimator1 = new TimeIntervalEstimator(this);
 
         reset();
         assertFalse(estimator1.isFinished());
@@ -359,18 +357,18 @@ public class TimeIntervalEstimatorTest implements TimeIntervalEstimatorListener 
         assertNull(estimator1.getLastTimestamp());
         assertFalse(estimator1.isRunning());
 
-        GaussianRandomizer randomizer = new GaussianRandomizer(new Random(), 0.0, TIME_INTERVAL_STD);
-        final int totalSamples = estimator1.getTotalSamples();
+        final var randomizer = new GaussianRandomizer(0.0, TIME_INTERVAL_STD);
+        final var totalSamples = estimator1.getTotalSamples();
         Double lastTimestamp = null;
-        final Time lastTimestampTime1 = new Time(0.0, TimeUnit.MINUTE);
+        final var lastTimestampTime1 = new Time(0.0, TimeUnit.MINUTE);
         Time lastTimestampTime2;
-        for (int i = 0; i < totalSamples; i++) {
+        for (var i = 0; i < totalSamples; i++) {
             if (lastTimestamp != null) {
                 assertEquals(lastTimestamp, estimator1.getLastTimestamp());
             }
 
-            final double noise = randomizer.nextDouble();
-            final double timestamp = i * TIME_INTERVAL_SECONDS + noise;
+            final var noise = randomizer.nextDouble();
+            final var timestamp = i * TIME_INTERVAL_SECONDS + noise;
 
             estimator1.addTimestamp(timestamp);
 
@@ -391,15 +389,15 @@ public class TimeIntervalEstimatorTest implements TimeIntervalEstimatorListener 
         assertEquals(totalSamples, estimator1.getNumberOfProcessedSamples());
         assertTrue(estimator1.isFinished());
         assertFalse(estimator1.isRunning());
-        assertEquals(1, mStart);
-        assertEquals(totalSamples, mTimestampAdded);
-        assertEquals(1, mFinish);
-        assertEquals(0, mReset);
+        assertEquals(1, start);
+        assertEquals(totalSamples, timestampAdded);
+        assertEquals(1, finish);
+        assertEquals(0, reset);
 
-        final double averageTimeInterval = estimator1.getAverageTimeInterval();
-        final Time averageTimeInterval1 = new Time(0.0, TimeUnit.MILLISECOND);
+        final var averageTimeInterval = estimator1.getAverageTimeInterval();
+        final var averageTimeInterval1 = new Time(0.0, TimeUnit.MILLISECOND);
         estimator1.getAverageTimeIntervalAsTime(averageTimeInterval1);
-        final Time averageTimeInterval2 = estimator1.getAverageTimeIntervalAsTime();
+        final var averageTimeInterval2 = estimator1.getAverageTimeIntervalAsTime();
 
         assertEquals(averageTimeInterval1, averageTimeInterval2);
         assertEquals(averageTimeInterval, averageTimeInterval1.getValue().doubleValue(), 0.0);
@@ -407,14 +405,14 @@ public class TimeIntervalEstimatorTest implements TimeIntervalEstimatorListener 
 
         assertEquals(TIME_INTERVAL_SECONDS, averageTimeInterval, ABSOLUTE_ERROR);
 
-        final double timeIntervalVariance = estimator1.getTimeIntervalVariance();
-        final double timeIntervalStandardDeviation = estimator1.getTimeIntervalStandardDeviation();
+        final var timeIntervalVariance = estimator1.getTimeIntervalVariance();
+        final var timeIntervalStandardDeviation = estimator1.getTimeIntervalStandardDeviation();
 
         assertEquals(timeIntervalStandardDeviation * timeIntervalStandardDeviation, timeIntervalVariance,
                 SMALL_ABSOLUTE_ERROR);
 
-        final Time timeIntervalStd1 = estimator1.getTimeIntervalStandardDeviationAsTime();
-        final Time timeIntervalStd2 = new Time(0.0, TimeUnit.MILLISECOND);
+        final var timeIntervalStd1 = estimator1.getTimeIntervalStandardDeviationAsTime();
+        final var timeIntervalStd2 = new Time(0.0, TimeUnit.MILLISECOND);
         estimator1.getTimeIntervalStandardDeviationAsTime(timeIntervalStd2);
 
         assertEquals(timeIntervalStd1, timeIntervalStd2);
@@ -426,7 +424,7 @@ public class TimeIntervalEstimatorTest implements TimeIntervalEstimatorListener 
         assertFalse(estimator1.addTimestamp(0.0));
 
         // copy from
-        final TimeIntervalEstimator estimator2 = new TimeIntervalEstimator();
+        final var estimator2 = new TimeIntervalEstimator();
         estimator2.copyFrom(estimator1);
 
         // check
@@ -436,8 +434,8 @@ public class TimeIntervalEstimatorTest implements TimeIntervalEstimatorListener 
         assertEquals(estimator2.isRunning(), estimator1.isRunning());
         assertEquals(estimator1.getAverageTimeInterval(), estimator2.getAverageTimeInterval(), 0.0);
         assertEquals(estimator1.getAverageTimeIntervalAsTime(), estimator2.getAverageTimeIntervalAsTime());
-        assertEquals(estimator1.getTimeIntervalStandardDeviation(),
-                estimator2.getTimeIntervalStandardDeviation(), 0.0);
+        assertEquals(estimator1.getTimeIntervalStandardDeviation(), estimator2.getTimeIntervalStandardDeviation(),
+                0.0);
         assertEquals(estimator1.getTimeIntervalStandardDeviationAsTime(),
                 estimator2.getTimeIntervalStandardDeviationAsTime());
 
@@ -463,8 +461,8 @@ public class TimeIntervalEstimatorTest implements TimeIntervalEstimatorListener 
     }
 
     @Test
-    public void testCopyTo() throws LockedException {
-        final TimeIntervalEstimator estimator1 = new TimeIntervalEstimator(this);
+    void testCopyTo() throws LockedException {
+        final var estimator1 = new TimeIntervalEstimator(this);
 
         reset();
         assertFalse(estimator1.isFinished());
@@ -472,18 +470,18 @@ public class TimeIntervalEstimatorTest implements TimeIntervalEstimatorListener 
         assertNull(estimator1.getLastTimestamp());
         assertFalse(estimator1.isRunning());
 
-        GaussianRandomizer randomizer = new GaussianRandomizer(new Random(), 0.0, TIME_INTERVAL_STD);
-        final int totalSamples = estimator1.getTotalSamples();
+        var randomizer = new GaussianRandomizer(0.0, TIME_INTERVAL_STD);
+        final var totalSamples = estimator1.getTotalSamples();
         Double lastTimestamp = null;
-        final Time lastTimestampTime1 = new Time(0.0, TimeUnit.MINUTE);
+        final var lastTimestampTime1 = new Time(0.0, TimeUnit.MINUTE);
         Time lastTimestampTime2;
-        for (int i = 0; i < totalSamples; i++) {
+        for (var i = 0; i < totalSamples; i++) {
             if (lastTimestamp != null) {
                 assertEquals(lastTimestamp, estimator1.getLastTimestamp());
             }
 
-            final double noise = randomizer.nextDouble();
-            final double timestamp = i * TIME_INTERVAL_SECONDS + noise;
+            final var noise = randomizer.nextDouble();
+            final var timestamp = i * TIME_INTERVAL_SECONDS + noise;
 
             estimator1.addTimestamp(timestamp);
 
@@ -504,15 +502,15 @@ public class TimeIntervalEstimatorTest implements TimeIntervalEstimatorListener 
         assertEquals(totalSamples, estimator1.getNumberOfProcessedSamples());
         assertTrue(estimator1.isFinished());
         assertFalse(estimator1.isRunning());
-        assertEquals(1, mStart);
-        assertEquals(totalSamples, mTimestampAdded);
-        assertEquals(1, mFinish);
-        assertEquals(0, mReset);
+        assertEquals(1, start);
+        assertEquals(totalSamples, timestampAdded);
+        assertEquals(1, finish);
+        assertEquals(0, reset);
 
-        final double averageTimeInterval = estimator1.getAverageTimeInterval();
-        final Time averageTimeInterval1 = new Time(0.0, TimeUnit.MILLISECOND);
+        final var averageTimeInterval = estimator1.getAverageTimeInterval();
+        final var averageTimeInterval1 = new Time(0.0, TimeUnit.MILLISECOND);
         estimator1.getAverageTimeIntervalAsTime(averageTimeInterval1);
-        final Time averageTimeInterval2 = estimator1.getAverageTimeIntervalAsTime();
+        final var averageTimeInterval2 = estimator1.getAverageTimeIntervalAsTime();
 
         assertEquals(averageTimeInterval1, averageTimeInterval2);
         assertEquals(averageTimeInterval, averageTimeInterval1.getValue().doubleValue(), 0.0);
@@ -520,14 +518,14 @@ public class TimeIntervalEstimatorTest implements TimeIntervalEstimatorListener 
 
         assertEquals(TIME_INTERVAL_SECONDS, averageTimeInterval, ABSOLUTE_ERROR);
 
-        final double timeIntervalVariance = estimator1.getTimeIntervalVariance();
-        final double timeIntervalStandardDeviation = estimator1.getTimeIntervalStandardDeviation();
+        final var timeIntervalVariance = estimator1.getTimeIntervalVariance();
+        final var timeIntervalStandardDeviation = estimator1.getTimeIntervalStandardDeviation();
 
         assertEquals(timeIntervalStandardDeviation * timeIntervalStandardDeviation, timeIntervalVariance,
                 SMALL_ABSOLUTE_ERROR);
 
-        final Time timeIntervalStd1 = estimator1.getTimeIntervalStandardDeviationAsTime();
-        final Time timeIntervalStd2 = new Time(0.0, TimeUnit.MILLISECOND);
+        final var timeIntervalStd1 = estimator1.getTimeIntervalStandardDeviationAsTime();
+        final var timeIntervalStd2 = new Time(0.0, TimeUnit.MILLISECOND);
         estimator1.getTimeIntervalStandardDeviationAsTime(timeIntervalStd2);
 
         assertEquals(timeIntervalStd1, timeIntervalStd2);
@@ -539,7 +537,7 @@ public class TimeIntervalEstimatorTest implements TimeIntervalEstimatorListener 
         assertFalse(estimator1.addTimestamp(0.0));
 
         // copy from
-        final TimeIntervalEstimator estimator2 = new TimeIntervalEstimator();
+        final var estimator2 = new TimeIntervalEstimator();
         estimator1.copyTo(estimator2);
 
         // check
@@ -549,7 +547,8 @@ public class TimeIntervalEstimatorTest implements TimeIntervalEstimatorListener 
         assertEquals(estimator2.isRunning(), estimator1.isRunning());
         assertEquals(estimator1.getAverageTimeInterval(), estimator2.getAverageTimeInterval(), 0.0);
         assertEquals(estimator1.getAverageTimeIntervalAsTime(), estimator2.getAverageTimeIntervalAsTime());
-        assertEquals(estimator1.getTimeIntervalStandardDeviation(), estimator2.getTimeIntervalStandardDeviation(), 0.0);
+        assertEquals(estimator1.getTimeIntervalStandardDeviation(), estimator2.getTimeIntervalStandardDeviation(),
+                0.0);
         assertEquals(estimator1.getTimeIntervalStandardDeviationAsTime(),
                 estimator2.getTimeIntervalStandardDeviationAsTime());
 
@@ -577,33 +576,33 @@ public class TimeIntervalEstimatorTest implements TimeIntervalEstimatorListener 
     @Override
     public void onStart(final TimeIntervalEstimator estimator) {
         checkLocked(estimator);
-        mStart++;
+        start++;
     }
 
     @Override
     public void onTimestampAdded(final TimeIntervalEstimator estimator) {
         checkLocked(estimator);
-        mTimestampAdded++;
+        timestampAdded++;
     }
 
     @Override
     public void onFinish(final TimeIntervalEstimator estimator) {
         assertFalse(estimator.isRunning());
         assertTrue(estimator.isFinished());
-        mFinish++;
+        finish++;
     }
 
     @Override
     public void onReset(final TimeIntervalEstimator estimator) {
         checkLocked(estimator);
-        mReset++;
+        reset++;
     }
 
     private void reset() {
-        mStart = 0;
-        mTimestampAdded = 0;
-        mFinish = 0;
-        mReset = 0;
+        start = 0;
+        timestampAdded = 0;
+        finish = 0;
+        reset = 0;
     }
 
     private static void checkLocked(final TimeIntervalEstimator estimator) {

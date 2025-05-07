@@ -169,19 +169,19 @@ public class ECIGravitationEstimator {
             final double x, final double y, final double z, final ECIGravitation result) {
 
         // Calculate distance from center of the Earth
-        final double magR = Math.sqrt(x * x + y * y + z * z);
+        final var magR = Math.sqrt(x * x + y * y + z * z);
 
         // If the input position is 0,0,0, produce a dummy output
         if (magR == 0.0) {
             result.setCoordinates(0.0, 0.0, 0.0);
         } else {
-            final double zScale = 5.0 * Math.pow(z / magR, 2.0);
-            final double tmp1 = -EARTH_GRAVITATIONAL_CONSTANT / Math.pow(magR, 3.0);
-            final double tmp2 = 1.5 * EARTH_SECOND_GRAVITATIONAL_CONSTANT * Math.pow(
-                    EARTH_EQUATORIAL_RADIUS_WGS84 / magR, 2.0);
-            final double gx = tmp1 * (1.0 + tmp2 * (1.0 - zScale)) * x;
-            final double gy = tmp1 * (1.0 + tmp2 * (1.0 - zScale)) * y;
-            final double gz = tmp1 * (1.0 + tmp2 * (3.0 - zScale)) * z;
+            final var zScale = 5.0 * Math.pow(z / magR, 2.0);
+            final var tmp1 = -EARTH_GRAVITATIONAL_CONSTANT / Math.pow(magR, 3.0);
+            final var tmp2 = 1.5 * EARTH_SECOND_GRAVITATIONAL_CONSTANT * Math.pow(EARTH_EQUATORIAL_RADIUS_WGS84 / magR,
+                    2.0);
+            final var gx = tmp1 * (1.0 + tmp2 * (1.0 - zScale)) * x;
+            final var gy = tmp1 * (1.0 + tmp2 * (1.0 - zScale)) * y;
+            final var gz = tmp1 * (1.0 + tmp2 * (3.0 - zScale)) * z;
 
             result.setCoordinates(gx, gy, gz);
         }
@@ -199,7 +199,7 @@ public class ECIGravitationEstimator {
      * @return a new gravitation instance containing estimated acceleration due to gravity.
      */
     public static ECIGravitation estimateGravitationAndReturnNew(final double x, final double y, final double z) {
-        final ECIGravitation result = new ECIGravitation();
+        final var result = new ECIGravitation();
         estimateGravitation(x, y, z, result);
         return result;
     }
@@ -278,7 +278,7 @@ public class ECIGravitationEstimator {
      * @return a new gravitation instance containing estimated acceleration due to gravity.
      */
     public static ECIGravitation estimateGravitationAndReturnNew(final Distance x, final Distance y, final Distance z) {
-        final ECIGravitation result = new ECIGravitation();
+        final var result = new ECIGravitation();
         estimateGravitation(x, y, z, result);
         return result;
     }

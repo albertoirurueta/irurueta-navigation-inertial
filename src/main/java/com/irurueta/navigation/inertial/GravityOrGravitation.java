@@ -38,17 +38,17 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
     /**
      * Acceleration due to gravity through ECI or ECEF x-axis expressed in meters per squared second (m/s^2).
      */
-    double mGx;
+    double gx;
 
     /**
      * Acceleration due to gravity through ECI or ECEF y-axis expressed in meters per squared second (m/s^2).
      */
-    double mGy;
+    double gy;
 
     /**
      * Acceleration due to gravity through ECI or ECEF z-axis expressed in meters per squared second (m/s^2).
      */
-    double mGz;
+    double gz;
 
     /**
      * Constructor.
@@ -93,7 +93,7 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
      * @return acceleration due to gravity through ECI or ECEF x-axis.
      */
     public double getGx() {
-        return mGx;
+        return gx;
     }
 
     /**
@@ -102,7 +102,7 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
      * @param gx acceleration due to gravity through ECI or ECEF x-axis.
      */
     public void setGx(final double gx) {
-        mGx = gx;
+        this.gx = gx;
     }
 
     /**
@@ -111,7 +111,7 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
      * @return acceleration due to gravity through ECI or ECEF y-axis.
      */
     public double getGy() {
-        return mGy;
+        return gy;
     }
 
     /**
@@ -120,7 +120,7 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
      * @param gy acceleration due to gravity through ECI or ECEF y-axis.
      */
     public void setGy(final double gy) {
-        mGy = gy;
+        this.gy = gy;
     }
 
     /**
@@ -129,7 +129,7 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
      * @return acceleration due to gravity through ECI or ECEF z-axis.
      */
     public double getGz() {
-        return mGz;
+        return gz;
     }
 
     /**
@@ -138,7 +138,7 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
      * @param gz acceleration due to gravity through ECI or ECEF z-axis.
      */
     public void setGz(final double gz) {
-        mGz = gz;
+        this.gz = gz;
     }
 
     /**
@@ -149,9 +149,9 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
      * @param gz acceleration due to gravity through ECI or ECEF z-axis expressed in meters per squared second (m/s^2).
      */
     public void setCoordinates(final double gx, final double gy, final double gz) {
-        mGx = gx;
-        mGy = gy;
-        mGz = gz;
+        this.gx = gx;
+        this.gy = gy;
+        this.gz = gz;
     }
 
     /**
@@ -160,7 +160,7 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
      * @param result instance where acceleration due to gravity through ECI or ECEF x-axis will be stored.
      */
     public void getGxAsAcceleration(final Acceleration result) {
-        result.setValue(mGx);
+        result.setValue(gx);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -170,7 +170,7 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
      * @return acceleration due to gravity through ECI or ECEF x-axis.
      */
     public Acceleration getGxAsAcceleration() {
-        return new Acceleration(mGx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(gx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -179,7 +179,7 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
      * @param gravityX acceleration due to gravity through ECI or ECEF x-axis to be set.
      */
     public void setGx(final Acceleration gravityX) {
-        mGx = AccelerationConverter.convert(gravityX.getValue().doubleValue(), gravityX.getUnit(),
+        gx = AccelerationConverter.convert(gravityX.getValue().doubleValue(), gravityX.getUnit(),
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -189,7 +189,7 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
      * @param result instance where acceleration due to gravity through ECI or ECEF y-axis will be stored.
      */
     public void getGyAsAcceleration(final Acceleration result) {
-        result.setValue(mGy);
+        result.setValue(gy);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -199,7 +199,7 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
      * @return acceleration due to gravity through ECI or ECEF y-axis.
      */
     public Acceleration getGyAsAcceleration() {
-        return new Acceleration(mGy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(gy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -208,7 +208,7 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
      * @param gravityY acceleration due to gravity through ECI or ECEF y-axis to be set.
      */
     public void setGy(final Acceleration gravityY) {
-        mGy = AccelerationConverter.convert(gravityY.getValue().doubleValue(), gravityY.getUnit(),
+        gy = AccelerationConverter.convert(gravityY.getValue().doubleValue(), gravityY.getUnit(),
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -218,7 +218,7 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
      * @param result instance where acceleration due to gravity through ECI or ECEF z-axis will be stored.
      */
     public void getGzAsAcceleration(final Acceleration result) {
-        result.setValue(mGz);
+        result.setValue(gz);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -228,7 +228,7 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
      * @return acceleration due to gravity through ECI or ECEF z-axis.
      */
     public Acceleration getGzAsAcceleration() {
-        return new Acceleration(mGz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(gz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -237,7 +237,7 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
      * @param gravityZ acceleration due to gravity through ECI or ECEF z-axis to be set.
      */
     public void setGz(final Acceleration gravityZ) {
-        mGz = AccelerationConverter.convert(gravityZ.getValue().doubleValue(), gravityZ.getUnit(),
+        gz = AccelerationConverter.convert(gravityZ.getValue().doubleValue(), gravityZ.getUnit(),
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -260,7 +260,7 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
      * @return gravity norm.
      */
     public double getNorm() {
-        return Math.sqrt(mGx * mGx + mGy * mGy + mGz * mGz);
+        return Math.sqrt(gx * gx + gy * gy + gz * gz);
     }
 
     /**
@@ -288,9 +288,9 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
      * @param output destination instance where data will be copied to.
      */
     public void copyTo(final T output) {
-        output.mGx = mGx;
-        output.mGy = mGy;
-        output.mGz = mGz;
+        output.gx = gx;
+        output.gy = gy;
+        output.gz = gz;
     }
 
     /**
@@ -299,9 +299,9 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
      * @param input instance to copy data from.
      */
     public void copyFrom(final T input) {
-        mGx = input.mGx;
-        mGy = input.mGy;
-        mGz = input.mGz;
+        gx = input.gx;
+        gy = input.gy;
+        gz = input.gz;
     }
 
     /**
@@ -316,9 +316,9 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
             throw new IllegalArgumentException();
         }
 
-        result[0] = mGx;
-        result[1] = mGy;
-        result[2] = mGz;
+        result[0] = gx;
+        result[1] = gy;
+        result[2] = gz;
     }
 
     /**
@@ -327,7 +327,7 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
      * @return array containing gravity coordinates in x,y,z order.
      */
     public double[] asArray() {
-        final double[] result = new double[COMPONENTS];
+        final var result = new double[COMPONENTS];
         asArray(result);
         return result;
     }
@@ -349,9 +349,9 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
             }
         }
 
-        result.setElementAtIndex(0, mGx);
-        result.setElementAtIndex(1, mGy);
-        result.setElementAtIndex(2, mGz);
+        result.setElementAtIndex(0, gx);
+        result.setElementAtIndex(1, gy);
+        result.setElementAtIndex(2, gz);
     }
 
     /**
@@ -379,7 +379,7 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
      */
     @Override
     public int hashCode() {
-        return Objects.hash(mGx, mGy, mGz);
+        return Objects.hash(gx, gy, gz);
     }
 
 
@@ -417,7 +417,7 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
             return false;
         }
 
-        return Math.abs(mGx - other.mGx) <= threshold && Math.abs(mGy - other.mGy) <= threshold
-                && Math.abs(mGz - other.mGz) <= threshold;
+        return Math.abs(gx - other.gx) <= threshold && Math.abs(gy - other.gy) <= threshold
+                && Math.abs(gz - other.gz) <= threshold;
     }
 }

@@ -20,15 +20,13 @@ import com.irurueta.navigation.inertial.SerializationHelper;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeUnit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class TimedBodyKinematicsTest {
+class TimedBodyKinematicsTest {
 
     private static final double MIN_SPECIFIC_FORCE = -9.81;
     private static final double MAX_SPECIFIC_FORCE = 9.81;
@@ -42,22 +40,22 @@ public class TimedBodyKinematicsTest {
     private static final double THRESHOLD = 1e-6;
 
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         // test empty constructor
-        TimedBodyKinematics timedBodyKinematics = new TimedBodyKinematics();
+        var timedBodyKinematics = new TimedBodyKinematics();
 
         // check default values
         assertNull(timedBodyKinematics.getKinematics());
         assertEquals(0.0, timedBodyKinematics.getTimestampSeconds(), 0.0);
-        Time time1 = timedBodyKinematics.getTimestamp();
+        var time1 = timedBodyKinematics.getTimestamp();
         assertEquals(0.0, time1.getValue().doubleValue(), 0.0);
         assertEquals(TimeUnit.SECOND, time1.getUnit());
-        Time time2 = new Time(0.0, TimeUnit.HOUR);
+        var time2 = new Time(0.0, TimeUnit.HOUR);
         timedBodyKinematics.getTimestamp(time2);
         assertEquals(time1, time2);
 
         // test constructor with body kinematics
-        final BodyKinematics kinematics = createBodyKinematics();
+        final var kinematics = createBodyKinematics();
         timedBodyKinematics = new TimedBodyKinematics(kinematics);
 
         // check default values
@@ -71,8 +69,8 @@ public class TimedBodyKinematicsTest {
         assertEquals(time1, time2);
 
         // test constructor with timestamp in seconds
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+        final var randomizer = new UniformRandomizer();
+        final var timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
 
         timedBodyKinematics = new TimedBodyKinematics(timestampSeconds);
 
@@ -87,7 +85,7 @@ public class TimedBodyKinematicsTest {
         assertEquals(time1, time2);
 
         // test constructor with timestamp
-        final Time time = new Time(timestampSeconds, TimeUnit.SECOND);
+        final var time = new Time(timestampSeconds, TimeUnit.SECOND);
         timedBodyKinematics = new TimedBodyKinematics(time);
 
         // check
@@ -125,7 +123,7 @@ public class TimedBodyKinematicsTest {
         assertEquals(time1, time2);
 
         // test copy constructor
-        final TimedBodyKinematics timedBodyKinematics2 = new TimedBodyKinematics(timedBodyKinematics);
+        final var timedBodyKinematics2 = new TimedBodyKinematics(timedBodyKinematics);
 
         // check
         assertEquals(kinematics, timedBodyKinematics2.getKinematics());
@@ -138,14 +136,14 @@ public class TimedBodyKinematicsTest {
     }
 
     @Test
-    public void testGetSetKinematics() {
-        final TimedBodyKinematics timedBodyKinematics = new TimedBodyKinematics();
+    void testGetSetKinematics() {
+        final var timedBodyKinematics = new TimedBodyKinematics();
 
         // check default value
         assertNull(timedBodyKinematics.getKinematics());
 
-        // set new value
-        final BodyKinematics kinematics = new BodyKinematics();
+        // set a new value
+        final var kinematics = new BodyKinematics();
         timedBodyKinematics.setKinematics(kinematics);
 
         // check
@@ -153,15 +151,15 @@ public class TimedBodyKinematicsTest {
     }
 
     @Test
-    public void testGetSetTimestampSeconds() {
-        final TimedBodyKinematics timedBodyKinematics = new TimedBodyKinematics();
+    void testGetSetTimestampSeconds() {
+        final var timedBodyKinematics = new TimedBodyKinematics();
 
         // check default value
         assertEquals(0.0, timedBodyKinematics.getTimestampSeconds(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
 
         timedBodyKinematics.setTimestampSeconds(timestampSeconds);
 
@@ -170,24 +168,24 @@ public class TimedBodyKinematicsTest {
     }
 
     @Test
-    public void testGetSetTimestamp() {
-        final TimedBodyKinematics timedBodyKinematics = new TimedBodyKinematics();
+    void testGetSetTimestamp() {
+        final var timedBodyKinematics = new TimedBodyKinematics();
 
         // check default value
-        final Time time1 = timedBodyKinematics.getTimestamp();
+        final var time1 = timedBodyKinematics.getTimestamp();
 
         assertEquals(0.0, time1.getValue().doubleValue(), 0.0);
         assertEquals(TimeUnit.SECOND, time1.getUnit());
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
 
-        final Time time2 = new Time(timestampSeconds, TimeUnit.SECOND);
+        final var time2 = new Time(timestampSeconds, TimeUnit.SECOND);
         timedBodyKinematics.setTimestamp(time2);
 
-        final Time time3 = timedBodyKinematics.getTimestamp();
-        final Time time4 = new Time(0.0, TimeUnit.HOUR);
+        final var time3 = timedBodyKinematics.getTimestamp();
+        final var time4 = new Time(0.0, TimeUnit.HOUR);
         timedBodyKinematics.getTimestamp(time4);
 
         // check
@@ -196,14 +194,14 @@ public class TimedBodyKinematicsTest {
     }
 
     @Test
-    public void testCopyFromWhenBodyKinematicsIsAvailableAtSourceAndDestinationIsEmpty() {
-        final BodyKinematics kinematics = createBodyKinematics();
+    void testCopyFromWhenBodyKinematicsIsAvailableAtSourceAndDestinationIsEmpty() {
+        final var kinematics = createBodyKinematics();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+        final var randomizer = new UniformRandomizer();
+        final var timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
 
-        final TimedBodyKinematics timedBodyKinematics1 = new TimedBodyKinematics(kinematics, timestampSeconds);
-        final TimedBodyKinematics timedBodyKinematics2 = new TimedBodyKinematics();
+        final var timedBodyKinematics1 = new TimedBodyKinematics(kinematics, timestampSeconds);
+        final var timedBodyKinematics2 = new TimedBodyKinematics();
 
         timedBodyKinematics2.copyFrom(timedBodyKinematics1);
 
@@ -213,14 +211,14 @@ public class TimedBodyKinematicsTest {
     }
 
     @Test
-    public void testCopyFromWhenDestinationHasKinematics() {
-        final BodyKinematics kinematics = createBodyKinematics();
+    void testCopyFromWhenDestinationHasKinematics() {
+        final var kinematics = createBodyKinematics();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+        final var randomizer = new UniformRandomizer();
+        final var timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
 
-        final TimedBodyKinematics timedBodyKinematics1 = new TimedBodyKinematics();
-        final TimedBodyKinematics timedBodyKinematics2 = new TimedBodyKinematics(kinematics, timestampSeconds);
+        final var timedBodyKinematics1 = new TimedBodyKinematics();
+        final var timedBodyKinematics2 = new TimedBodyKinematics(kinematics, timestampSeconds);
 
         timedBodyKinematics2.copyFrom(timedBodyKinematics1);
 
@@ -230,16 +228,16 @@ public class TimedBodyKinematicsTest {
     }
 
     @Test
-    public void testCopyFromWhenSourceAndDestinationHasKinematics() {
-        final BodyKinematics kinematics1 = createBodyKinematics();
-        final BodyKinematics kinematics2 = createBodyKinematics();
+    void testCopyFromWhenSourceAndDestinationHasKinematics() {
+        final var kinematics1 = createBodyKinematics();
+        final var kinematics2 = createBodyKinematics();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timestampSeconds1 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
-        final double timestampSeconds2 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+        final var randomizer = new UniformRandomizer();
+        final var timestampSeconds1 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+        final var timestampSeconds2 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
 
-        final TimedBodyKinematics timedBodyKinematics1 = new TimedBodyKinematics(kinematics1, timestampSeconds1);
-        final TimedBodyKinematics timedBodyKinematics2 = new TimedBodyKinematics(kinematics2, timestampSeconds2);
+        final var timedBodyKinematics1 = new TimedBodyKinematics(kinematics1, timestampSeconds1);
+        final var timedBodyKinematics2 = new TimedBodyKinematics(kinematics2, timestampSeconds2);
 
         timedBodyKinematics2.copyFrom(timedBodyKinematics1);
 
@@ -249,16 +247,16 @@ public class TimedBodyKinematicsTest {
     }
 
     @Test
-    public void testCopyTo() {
-        final BodyKinematics kinematics1 = createBodyKinematics();
-        final BodyKinematics kinematics2 = createBodyKinematics();
+    void testCopyTo() {
+        final var kinematics1 = createBodyKinematics();
+        final var kinematics2 = createBodyKinematics();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timestampSeconds1 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
-        final double timestampSeconds2 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+        final var randomizer = new UniformRandomizer();
+        final var timestampSeconds1 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+        final var timestampSeconds2 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
 
-        final TimedBodyKinematics timedBodyKinematics1 = new TimedBodyKinematics(kinematics1, timestampSeconds1);
-        final TimedBodyKinematics timedBodyKinematics2 = new TimedBodyKinematics(kinematics2, timestampSeconds2);
+        final var timedBodyKinematics1 = new TimedBodyKinematics(kinematics1, timestampSeconds1);
+        final var timedBodyKinematics2 = new TimedBodyKinematics(kinematics2, timestampSeconds2);
 
         timedBodyKinematics1.copyTo(timedBodyKinematics2);
 
@@ -268,34 +266,34 @@ public class TimedBodyKinematicsTest {
     }
 
     @Test
-    public void testHashCode() {
-        final BodyKinematics kinematics1 = createBodyKinematics();
-        final BodyKinematics kinematics2 = createBodyKinematics();
+    void testHashCode() {
+        final var kinematics1 = createBodyKinematics();
+        final var kinematics2 = createBodyKinematics();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timestampSeconds1 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
-        final double timestampSeconds2 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+        final var randomizer = new UniformRandomizer();
+        final var timestampSeconds1 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+        final var timestampSeconds2 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
 
-        final TimedBodyKinematics timedBodyKinematics1 = new TimedBodyKinematics(kinematics1, timestampSeconds1);
-        final TimedBodyKinematics timedBodyKinematics2 = new TimedBodyKinematics(kinematics1, timestampSeconds1);
-        final TimedBodyKinematics timedBodyKinematics3 = new TimedBodyKinematics(kinematics2, timestampSeconds2);
+        final var timedBodyKinematics1 = new TimedBodyKinematics(kinematics1, timestampSeconds1);
+        final var timedBodyKinematics2 = new TimedBodyKinematics(kinematics1, timestampSeconds1);
+        final var timedBodyKinematics3 = new TimedBodyKinematics(kinematics2, timestampSeconds2);
 
         assertEquals(timedBodyKinematics1.hashCode(), timedBodyKinematics2.hashCode());
         assertNotEquals(timedBodyKinematics1.hashCode(), timedBodyKinematics3.hashCode());
     }
 
     @Test
-    public void testEquals() {
-        final BodyKinematics kinematics1 = createBodyKinematics();
-        final BodyKinematics kinematics2 = createBodyKinematics();
+    void testEquals() {
+        final var kinematics1 = createBodyKinematics();
+        final var kinematics2 = createBodyKinematics();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timestampSeconds1 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
-        final double timestampSeconds2 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+        final var randomizer = new UniformRandomizer();
+        final var timestampSeconds1 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+        final var timestampSeconds2 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
 
-        final TimedBodyKinematics timedBodyKinematics1 = new TimedBodyKinematics(kinematics1, timestampSeconds1);
-        final TimedBodyKinematics timedBodyKinematics2 = new TimedBodyKinematics(kinematics1, timestampSeconds1);
-        final TimedBodyKinematics timedBodyKinematics3 = new TimedBodyKinematics(kinematics2, timestampSeconds2);
+        final var timedBodyKinematics1 = new TimedBodyKinematics(kinematics1, timestampSeconds1);
+        final var timedBodyKinematics2 = new TimedBodyKinematics(kinematics1, timestampSeconds1);
+        final var timedBodyKinematics3 = new TimedBodyKinematics(kinematics2, timestampSeconds2);
 
         //noinspection EqualsWithItself
         assertEquals(timedBodyKinematics1, timedBodyKinematics1);
@@ -304,23 +302,23 @@ public class TimedBodyKinematicsTest {
         assertTrue(timedBodyKinematics1.equals(timedBodyKinematics2));
         assertFalse(timedBodyKinematics1.equals(timedBodyKinematics3));
         // noinspection ConstantConditions,SimplifiableJUnitAssertion
-        assertNotEquals(timedBodyKinematics1, null);
+        assertNotEquals(null, timedBodyKinematics1);
         assertFalse(timedBodyKinematics1.equals(null));
-        assertNotEquals(timedBodyKinematics1, new Object());
+        assertNotEquals(new Object(), timedBodyKinematics1);
     }
 
     @Test
-    public void testEqualsWithThreshold() {
-        final BodyKinematics kinematics1 = createBodyKinematics();
-        final BodyKinematics kinematics2 = createBodyKinematics();
+    void testEqualsWithThreshold() {
+        final var kinematics1 = createBodyKinematics();
+        final var kinematics2 = createBodyKinematics();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timestampSeconds1 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
-        final double timestampSeconds2 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+        final var randomizer = new UniformRandomizer();
+        final var timestampSeconds1 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+        final var timestampSeconds2 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
 
-        final TimedBodyKinematics timedBodyKinematics1 = new TimedBodyKinematics(kinematics1, timestampSeconds1);
-        final TimedBodyKinematics timedBodyKinematics2 = new TimedBodyKinematics(kinematics1, timestampSeconds1);
-        final TimedBodyKinematics timedBodyKinematics3 = new TimedBodyKinematics(kinematics2, timestampSeconds2);
+        final var timedBodyKinematics1 = new TimedBodyKinematics(kinematics1, timestampSeconds1);
+        final var timedBodyKinematics2 = new TimedBodyKinematics(kinematics1, timestampSeconds1);
+        final var timedBodyKinematics3 = new TimedBodyKinematics(kinematics2, timestampSeconds2);
 
         assertTrue(timedBodyKinematics1.equals(timedBodyKinematics1, THRESHOLD));
         assertTrue(timedBodyKinematics1.equals(timedBodyKinematics2, THRESHOLD));
@@ -329,54 +327,54 @@ public class TimedBodyKinematicsTest {
     }
 
     @Test
-    public void testClone() throws CloneNotSupportedException {
-        final BodyKinematics kinematics = createBodyKinematics();
+    void testClone() throws CloneNotSupportedException {
+        final var kinematics = createBodyKinematics();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+        final var randomizer = new UniformRandomizer();
+        final var timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
 
-        final TimedBodyKinematics timedBodyKinematics1 = new TimedBodyKinematics(kinematics, timestampSeconds);
+        final var timedBodyKinematics1 = new TimedBodyKinematics(kinematics, timestampSeconds);
 
-        final Object timedBodyKinematics2 = timedBodyKinematics1.clone();
+        final var timedBodyKinematics2 = timedBodyKinematics1.clone();
 
         // check
         assertEquals(timedBodyKinematics1, timedBodyKinematics2);
     }
 
     @Test
-    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
-        final BodyKinematics kinematics = createBodyKinematics();
+    void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final var kinematics = createBodyKinematics();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+        final var randomizer = new UniformRandomizer();
+        final var timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
 
-        final TimedBodyKinematics timedBodyKinematics1 = new TimedBodyKinematics(kinematics, timestampSeconds);
+        final var timedBodyKinematics1 = new TimedBodyKinematics(kinematics, timestampSeconds);
 
-        final byte[] bytes = SerializationHelper.serialize(timedBodyKinematics1);
+        final var bytes = SerializationHelper.serialize(timedBodyKinematics1);
 
-        final TimedBodyKinematics timedBodyKinematics2 = SerializationHelper.deserialize(bytes);
+        final var timedBodyKinematics2 = SerializationHelper.deserialize(bytes);
 
         assertEquals(timedBodyKinematics1, timedBodyKinematics2);
         assertNotSame(timedBodyKinematics1, timedBodyKinematics2);
     }
 
     @Test
-    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
-        final Field field = TimedBodyKinematics.class.getDeclaredField("serialVersionUID");
+    void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final var field = TimedBodyKinematics.class.getDeclaredField("serialVersionUID");
         field.setAccessible(true);
 
         assertEquals(0L, field.get(null));
     }
 
     private static BodyKinematics createBodyKinematics() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-        final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var randomizer = new UniformRandomizer();
+        final var fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final var fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
 
-        final double angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final var angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
 
         return new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
     }

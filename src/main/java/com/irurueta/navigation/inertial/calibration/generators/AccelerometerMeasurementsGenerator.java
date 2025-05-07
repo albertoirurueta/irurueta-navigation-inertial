@@ -70,13 +70,13 @@ public class AccelerometerMeasurementsGenerator extends
 
     /**
      * Gets corresponding acceleration triad from provided input sample.
-     * This method must store the result into {@link #mTriad}.
+     * This method must store the result into {@link #triad}.
      *
      * @param sample input sample.
      */
     @Override
     protected void getAccelerationTriadFromInputSample(final BodyKinematics sample) {
-        sample.getSpecificForceTriad(mTriad);
+        sample.getSpecificForceTriad(triad);
     }
 
     /**
@@ -111,17 +111,17 @@ public class AccelerometerMeasurementsGenerator extends
         // since it is not needed for accelerometer calibration
         if (!isStaticIntervalSkipped()) {
 
-            final BodyKinematics kinematics = new BodyKinematics();
+            final var kinematics = new BodyKinematics();
             kinematics.setSpecificForceCoordinates(accumulatedAvgX, accumulatedAvgY, accumulatedAvgZ);
 
-            final StandardDeviationBodyKinematics measurement = new StandardDeviationBodyKinematics();
+            final var measurement = new StandardDeviationBodyKinematics();
             measurement.setKinematics(kinematics);
 
-            final double avgStd = (accumulatedStdX + accumulatedStdY + accumulatedStdZ) / 3.0;
+            final var avgStd = (accumulatedStdX + accumulatedStdY + accumulatedStdZ) / 3.0;
             measurement.setSpecificForceStandardDeviation(avgStd);
 
-            if (mListener != null) {
-                mListener.onGeneratedMeasurement(this, measurement);
+            if (listener != null) {
+                listener.onGeneratedMeasurement(this, measurement);
             }
         }
     }

@@ -54,61 +54,61 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
     /**
      * Listener to handle generated events.
      */
-    protected L mListener;
+    protected L listener;
 
     /**
      * An acceleration triad.
      * This is reused for memory efficiency.
      */
-    protected final AccelerationTriad mTriad = new AccelerationTriad();
+    protected final AccelerationTriad triad = new AccelerationTriad();
 
     /**
      * Static/dynamic interval detector using accelerometer samples.
      */
-    protected final AccelerationTriadStaticIntervalDetector mStaticIntervalDetector;
+    protected final AccelerationTriadStaticIntervalDetector staticIntervalDetector;
 
     /**
      * Indicates whether generator is running or not.
      */
-    private boolean mRunning;
+    private boolean running;
 
     /**
      * Minimum number of samples required in a static interval to be taken into account.
      * Smaller static intervals will be discarded.
      */
-    private int mMinStaticSamples = DEFAULT_MIN_STATIC_SAMPLES;
+    private int minStaticSamples = DEFAULT_MIN_STATIC_SAMPLES;
 
     /**
      * Maximum number of samples allowed in dynamic intervals.
      * Larger dynamic intervals will be discarded.
      */
-    private int mMaxDynamicSamples = DEFAULT_MAX_DYNAMIC_SAMPLES;
+    private int maxDynamicSamples = DEFAULT_MAX_DYNAMIC_SAMPLES;
 
     /**
      * Number of samples that have been processed in a static period so far.
      */
-    private int mProcessedStaticSamples;
+    private int processedStaticSamples;
 
     /**
      * Number of samples that have been processed in a dynamic period so far.
      */
-    private int mProcessedDynamicSamples;
+    private int processedDynamicSamples;
 
     /**
      * Indicates whether static interval must be skipped.
      */
-    private boolean mSkipStaticInterval;
+    private boolean skipStaticInterval;
 
     /**
      * Indicates whether dynamic interval must be skipped.
      */
-    private boolean mSkipDynamicInterval;
+    private boolean skipDynamicInterval;
 
     /**
      * Constructor.
      */
     protected MeasurementsGenerator() {
-        mStaticIntervalDetector = new AccelerationTriadStaticIntervalDetector();
+        staticIntervalDetector = new AccelerationTriadStaticIntervalDetector();
         try {
             setupListener();
         } catch (final LockedException ignore) {
@@ -123,7 +123,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      */
     protected MeasurementsGenerator(final L listener) {
         this();
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -132,7 +132,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @return time interval between input samples.
      */
     public double getTimeInterval() {
-        return mStaticIntervalDetector.getTimeInterval();
+        return staticIntervalDetector.getTimeInterval();
     }
 
     /**
@@ -143,7 +143,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @throws LockedException          if generator is currently running.
      */
     public void setTimeInterval(final double timeInterval) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
@@ -151,7 +151,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
             throw new IllegalArgumentException();
         }
 
-        mStaticIntervalDetector.setTimeInterval(timeInterval);
+        staticIntervalDetector.setTimeInterval(timeInterval);
     }
 
     /**
@@ -181,8 +181,8 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @throws LockedException          if estimator is currently running.
      */
     public void setTimeInterval(final Time timeInterval) throws LockedException {
-        setTimeInterval(TimeConverter.convert(timeInterval.getValue().doubleValue(),
-                timeInterval.getUnit(), TimeUnit.SECOND));
+        setTimeInterval(TimeConverter.convert(timeInterval.getValue().doubleValue(), timeInterval.getUnit(),
+                TimeUnit.SECOND));
     }
 
     /**
@@ -192,7 +192,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @return minimum number of samples required in a static interval to be taken into account.
      */
     public int getMinStaticSamples() {
-        return mMinStaticSamples;
+        return minStaticSamples;
     }
 
     /**
@@ -205,7 +205,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @throws IllegalArgumentException if provided value is less than 2.
      */
     public void setMinStaticSamples(final int minStaticSamples) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
@@ -213,7 +213,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
             throw new IllegalArgumentException();
         }
 
-        mMinStaticSamples = minStaticSamples;
+        this.minStaticSamples = minStaticSamples;
     }
 
     /**
@@ -222,7 +222,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @return maximum number of samples allowed in dynamic intervals.
      */
     public int getMaxDynamicSamples() {
-        return mMaxDynamicSamples;
+        return maxDynamicSamples;
     }
 
     /**
@@ -233,7 +233,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @throws IllegalArgumentException if provided value is less than 2.
      */
     public void setMaxDynamicSamples(final int maxDynamicSamples) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
@@ -241,7 +241,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
             throw new IllegalArgumentException();
         }
 
-        mMaxDynamicSamples = maxDynamicSamples;
+        this.maxDynamicSamples = maxDynamicSamples;
     }
 
     /**
@@ -250,7 +250,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @return listener to handle generated events.
      */
     public L getListener() {
-        return mListener;
+        return listener;
     }
 
     /**
@@ -260,11 +260,11 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @throws LockedException if generator is busy.
      */
     public void setListener(final L listener) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -274,7 +274,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @return length of number of samples to keep within the window.
      */
     public int getWindowSize() {
-        return mStaticIntervalDetector.getWindowSize();
+        return staticIntervalDetector.getWindowSize();
     }
 
     /**
@@ -288,11 +288,11 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @throws IllegalArgumentException if provided value is not valid.
      */
     public void setWindowSize(final int windowSize) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mStaticIntervalDetector.setWindowSize(windowSize);
+        staticIntervalDetector.setWindowSize(windowSize);
     }
 
     /**
@@ -302,7 +302,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @return number of samples to be processed initially.
      */
     public int getInitialStaticSamples() {
-        return mStaticIntervalDetector.getInitialStaticSamples();
+        return staticIntervalDetector.getInitialStaticSamples();
     }
 
     /**
@@ -315,11 +315,11 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      *                                  {@link TriadStaticIntervalDetector#MINIMUM_INITIAL_STATIC_SAMPLES}
      */
     public void setInitialStaticSamples(final int initialStaticSamples) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mStaticIntervalDetector.setInitialStaticSamples(initialStaticSamples);
+        staticIntervalDetector.setInitialStaticSamples(initialStaticSamples);
     }
 
     /**
@@ -330,7 +330,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @return factor to be applied to detected base noise level.
      */
     public double getThresholdFactor() {
-        return mStaticIntervalDetector.getThresholdFactor();
+        return staticIntervalDetector.getThresholdFactor();
     }
 
     /**
@@ -343,11 +343,11 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @throws IllegalArgumentException if provided value is zero or negative.
      */
     public void setThresholdFactor(final double thresholdFactor) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mStaticIntervalDetector.setThresholdFactor(thresholdFactor);
+        staticIntervalDetector.setThresholdFactor(thresholdFactor);
     }
 
     /**
@@ -359,7 +359,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @return factor to determine that a sudden movement has occurred.
      */
     public double getInstantaneousNoiseLevelFactor() {
-        return mStaticIntervalDetector.getInstantaneousNoiseLevelFactor();
+        return staticIntervalDetector.getInstantaneousNoiseLevelFactor();
     }
 
     /**
@@ -375,11 +375,11 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @throws IllegalArgumentException if provided value is zero or negative.
      */
     public void setInstantaneousNoiseLevelFactor(final double instantaneousNoiseLevelFactor) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mStaticIntervalDetector.setInstantaneousNoiseLevelFactor(instantaneousNoiseLevelFactor);
+        staticIntervalDetector.setInstantaneousNoiseLevelFactor(instantaneousNoiseLevelFactor);
     }
 
     /**
@@ -393,7 +393,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * been excessive motion.
      */
     public double getBaseNoiseLevelAbsoluteThreshold() {
-        return mStaticIntervalDetector.getBaseNoiseLevelAbsoluteThreshold();
+        return staticIntervalDetector.getBaseNoiseLevelAbsoluteThreshold();
     }
 
     /**
@@ -411,11 +411,11 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      */
     public void setBaseNoiseLevelAbsoluteThreshold(final double baseNoiseLevelAbsoluteThreshold)
             throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mStaticIntervalDetector.setBaseNoiseLevelAbsoluteThreshold(baseNoiseLevelAbsoluteThreshold);
+        staticIntervalDetector.setBaseNoiseLevelAbsoluteThreshold(baseNoiseLevelAbsoluteThreshold);
     }
 
     /**
@@ -428,7 +428,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * excessive motion.
      */
     public Acceleration getBaseNoiseLevelAbsoluteThresholdAsMeasurement() {
-        return mStaticIntervalDetector.getBaseNoiseLevelAbsoluteThresholdAsMeasurement();
+        return staticIntervalDetector.getBaseNoiseLevelAbsoluteThresholdAsMeasurement();
     }
 
     /**
@@ -440,7 +440,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @param result instance where result will be stored.
      */
     public void getBaseNoiseLevelAbsoluteThresholdAsMeasurement(final Acceleration result) {
-        mStaticIntervalDetector.getBaseNoiseLevelAbsoluteThresholdAsMeasurement(result);
+        staticIntervalDetector.getBaseNoiseLevelAbsoluteThresholdAsMeasurement(result);
     }
 
     /**
@@ -457,11 +457,11 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      */
     public void setBaseNoiseLevelAbsoluteThreshold(final Acceleration baseNoiseLevelAbsoluteThreshold)
             throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mStaticIntervalDetector.setBaseNoiseLevelAbsoluteThreshold(baseNoiseLevelAbsoluteThreshold);
+        staticIntervalDetector.setBaseNoiseLevelAbsoluteThreshold(baseNoiseLevelAbsoluteThreshold);
     }
 
     /**
@@ -470,7 +470,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @return internal status of this generator.
      */
     public TriadStaticIntervalDetector.Status getStatus() {
-        return mStaticIntervalDetector.getStatus();
+        return staticIntervalDetector.getStatus();
     }
 
     /**
@@ -482,7 +482,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @return accelerometer base noise level.
      */
     public double getAccelerometerBaseNoiseLevel() {
-        return mStaticIntervalDetector.getBaseNoiseLevel();
+        return staticIntervalDetector.getBaseNoiseLevel();
     }
 
     /**
@@ -494,7 +494,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @return measurement base noise level.
      */
     public Acceleration getAccelerometerBaseNoiseLevelAsMeasurement() {
-        return mStaticIntervalDetector.getBaseNoiseLevelAsMeasurement();
+        return staticIntervalDetector.getBaseNoiseLevelAsMeasurement();
     }
 
     /**
@@ -506,7 +506,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @param result instance where result will be stored.
      */
     public void getAccelerometerBaseNoiseLevelAsMeasurement(final Acceleration result) {
-        mStaticIntervalDetector.getBaseNoiseLevelAsMeasurement(result);
+        staticIntervalDetector.getBaseNoiseLevelAsMeasurement(result);
     }
 
     /**
@@ -516,7 +516,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @return accelerometer base noise level PSD.
      */
     public double getAccelerometerBaseNoiseLevelPsd() {
-        return mStaticIntervalDetector.getBaseNoiseLevelPsd();
+        return staticIntervalDetector.getBaseNoiseLevelPsd();
     }
 
     /**
@@ -527,7 +527,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      */
     @Override
     public double getAccelerometerBaseNoiseLevelRootPsd() {
-        return mStaticIntervalDetector.getBaseNoiseLevelRootPsd();
+        return staticIntervalDetector.getBaseNoiseLevelRootPsd();
     }
 
     /**
@@ -537,7 +537,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @return threshold to determine static/dynamic period changes.
      */
     public double getThreshold() {
-        return mStaticIntervalDetector.getThreshold();
+        return staticIntervalDetector.getThreshold();
     }
 
     /**
@@ -546,7 +546,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @return threshold to determine static/dynamic period changes.
      */
     public Acceleration getThresholdAsMeasurement() {
-        return mStaticIntervalDetector.getThresholdAsMeasurement();
+        return staticIntervalDetector.getThresholdAsMeasurement();
     }
 
     /**
@@ -555,7 +555,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @param result instance where result will be stored.
      */
     public void getThresholdAsMeasurement(final Acceleration result) {
-        mStaticIntervalDetector.getThresholdAsMeasurement(result);
+        staticIntervalDetector.getThresholdAsMeasurement(result);
     }
 
     /**
@@ -564,7 +564,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @return number of samples that have been processed in a static period so far.
      */
     public int getProcessedStaticSamples() {
-        return mProcessedStaticSamples;
+        return processedStaticSamples;
     }
 
     /**
@@ -573,7 +573,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @return number of samples that have been processed in a dynamic period so far.
      */
     public int getProcessedDynamicSamples() {
-        return mProcessedDynamicSamples;
+        return processedDynamicSamples;
     }
 
     /**
@@ -582,7 +582,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @return true if last static interval must be skipped.
      */
     public boolean isStaticIntervalSkipped() {
-        return mSkipStaticInterval;
+        return skipStaticInterval;
     }
 
     /**
@@ -591,7 +591,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @return true if last dynamic interval must be skipped.
      */
     public boolean isDynamicIntervalSkipped() {
-        return mSkipDynamicInterval;
+        return skipDynamicInterval;
     }
 
     /**
@@ -600,7 +600,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @return true if generator is running, false otherwise.
      */
     public boolean isRunning() {
-        return mRunning;
+        return running;
     }
 
     /**
@@ -613,21 +613,21 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @throws LockedException if generator is busy processing a previous sample.
      */
     public boolean process(final I sample) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mRunning = true;
+        running = true;
         checkProcessedSamples();
 
         getAccelerationTriadFromInputSample(sample);
-        final boolean result = mStaticIntervalDetector.process(mTriad);
+        final var result = staticIntervalDetector.process(triad);
 
         if (result) {
             updateCounters();
             postProcess(sample);
         }
-        mRunning = false;
+        running = false;
 
         return result;
     }
@@ -638,21 +638,21 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @throws LockedException if generator is busy.
      */
     public void reset() throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mStaticIntervalDetector.reset();
+        staticIntervalDetector.reset();
 
-        mProcessedDynamicSamples = 0;
-        mProcessedStaticSamples = 0;
+        processedDynamicSamples = 0;
+        processedStaticSamples = 0;
 
-        mSkipDynamicInterval = false;
-        mSkipStaticInterval = false;
+        skipDynamicInterval = false;
+        skipStaticInterval = false;
 
-        if (mListener != null) {
+        if (listener != null) {
             //noinspection unchecked
-            mListener.onReset((G) this);
+            listener.onReset((G) this);
         }
     }
 
@@ -666,7 +666,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
 
     /**
      * Gets corresponding acceleration triad from provided input sample.
-     * This method must store the result into {@link #mTriad}.
+     * This method must store the result into {@link #triad}.
      *
      * @param sample input sample.
      */
@@ -717,13 +717,13 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * Check processed samples so far before processing a new one.
      */
     protected void checkProcessedSamples() {
-        if (mProcessedDynamicSamples > mMaxDynamicSamples) {
-            final boolean wasSkipped = mSkipDynamicInterval;
-            mSkipDynamicInterval = true;
+        if (processedDynamicSamples > maxDynamicSamples) {
+            final var wasSkipped = skipDynamicInterval;
+            skipDynamicInterval = true;
 
-            if (mListener != null && !wasSkipped) {
+            if (listener != null && !wasSkipped) {
                 //noinspection unchecked
-                mListener.onDynamicIntervalSkipped((G) this);
+                listener.onDynamicIntervalSkipped((G) this);
             }
         }
     }
@@ -732,13 +732,13 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * Updates counters of processed samples.
      */
     protected void updateCounters() {
-        final TriadStaticIntervalDetector.Status status = mStaticIntervalDetector.getStatus();
+        final TriadStaticIntervalDetector.Status status = staticIntervalDetector.getStatus();
         if (status == TriadStaticIntervalDetector.Status.STATIC_INTERVAL) {
-            mProcessedStaticSamples++;
-            mProcessedDynamicSamples = 0;
+            processedStaticSamples++;
+            processedDynamicSamples = 0;
         } else if (status == TriadStaticIntervalDetector.Status.DYNAMIC_INTERVAL) {
-            mProcessedDynamicSamples++;
-            mProcessedStaticSamples = 0;
+            processedDynamicSamples++;
+            processedStaticSamples = 0;
         }
     }
 
@@ -748,106 +748,104 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @throws LockedException if static interval detector is busy.
      */
     private void setupListener() throws LockedException {
-        final AccelerationTriadStaticIntervalDetectorListener listener =
-                new AccelerationTriadStaticIntervalDetectorListener() {
-                    @Override
-                    public void onInitializationStarted(final AccelerationTriadStaticIntervalDetector detector) {
+        final var listener = new AccelerationTriadStaticIntervalDetectorListener() {
+            @Override
+            public void onInitializationStarted(final AccelerationTriadStaticIntervalDetector detector) {
 
-                        if (mListener != null) {
-                            //noinspection unchecked
-                            mListener.onInitializationStarted((G) MeasurementsGenerator.this);
-                        }
+                if (MeasurementsGenerator.this.listener != null) {
+                    //noinspection unchecked
+                    MeasurementsGenerator.this.listener.onInitializationStarted((G) MeasurementsGenerator.this);
+                }
+            }
+
+            @Override
+            public void onInitializationCompleted(
+                    final AccelerationTriadStaticIntervalDetector detector, final double baseNoiseLevel) {
+
+                handleInitializationCompleted();
+
+                if (MeasurementsGenerator.this.listener != null) {
+                    //noinspection unchecked
+                    MeasurementsGenerator.this.listener.onInitializationCompleted((G) MeasurementsGenerator.this, baseNoiseLevel);
+                }
+            }
+
+            @Override
+            public void onError(
+                    final AccelerationTriadStaticIntervalDetector detector,
+                    final double accumulatedNoiseLevel,
+                    final double instantaneousNoiseLevel,
+                    final TriadStaticIntervalDetector.ErrorReason reason) {
+
+                handleInitializationFailed();
+
+                if (MeasurementsGenerator.this.listener != null) {
+                    //noinspection unchecked
+                    MeasurementsGenerator.this.listener.onError((G) MeasurementsGenerator.this, reason);
+                }
+            }
+
+            @Override
+            public void onStaticIntervalDetected(
+                    final AccelerationTriadStaticIntervalDetector detector,
+                    final double instantaneousAvgX,
+                    final double instantaneousAvgY,
+                    final double instantaneousAvgZ,
+                    final double instantaneousStdX,
+                    final double instantaneousStdY,
+                    final double instantaneousStdZ) {
+
+                handleDynamicToStaticChange();
+                skipDynamicInterval = false;
+
+                if (MeasurementsGenerator.this.listener != null) {
+                    //noinspection unchecked
+                    MeasurementsGenerator.this.listener.onStaticIntervalDetected((G) MeasurementsGenerator.this);
+                }
+            }
+
+            @Override
+            public void onDynamicIntervalDetected(
+                    final AccelerationTriadStaticIntervalDetector detector,
+                    final double instantaneousAvgX,
+                    final double instantaneousAvgY,
+                    final double instantaneousAvgZ,
+                    final double instantaneousStdX,
+                    final double instantaneousStdY,
+                    final double instantaneousStdZ,
+                    final double accumulatedAvgX,
+                    final double accumulatedAvgY,
+                    final double accumulatedAvgZ,
+                    final double accumulatedStdX,
+                    final double accumulatedStdY,
+                    final double accumulatedStdZ) {
+
+                if (processedStaticSamples < minStaticSamples) {
+                    final var wasSkipped = skipStaticInterval;
+                    skipStaticInterval = true;
+
+                    if (MeasurementsGenerator.this.listener != null && !wasSkipped) {
+                        //noinspection unchecked
+                        MeasurementsGenerator.this.listener.onStaticIntervalSkipped((G) MeasurementsGenerator.this);
                     }
+                }
 
-                    @Override
-                    public void onInitializationCompleted(
-                            final AccelerationTriadStaticIntervalDetector detector, final double baseNoiseLevel) {
+                handleStaticToDynamicChange(
+                        accumulatedAvgX, accumulatedAvgY, accumulatedAvgZ,
+                        accumulatedStdX, accumulatedStdY, accumulatedStdZ);
+                skipStaticInterval = false;
 
-                        handleInitializationCompleted();
+                if (MeasurementsGenerator.this.listener != null) {
+                    //noinspection unchecked
+                    MeasurementsGenerator.this.listener.onDynamicIntervalDetected((G) MeasurementsGenerator.this);
+                }
+            }
 
-                        if (mListener != null) {
-                            //noinspection unchecked
-                            mListener.onInitializationCompleted((G) MeasurementsGenerator.this, baseNoiseLevel);
-                        }
-                    }
-
-                    @Override
-                    public void onError(
-                            final AccelerationTriadStaticIntervalDetector detector,
-                            final double accumulatedNoiseLevel,
-                            final double instantaneousNoiseLevel,
-                            final TriadStaticIntervalDetector.ErrorReason reason) {
-
-                        handleInitializationFailed();
-
-                        if (mListener != null) {
-                            //noinspection unchecked
-                            mListener.onError((G) MeasurementsGenerator.this, reason);
-                        }
-                    }
-
-                    @Override
-                    public void onStaticIntervalDetected(
-                            final AccelerationTriadStaticIntervalDetector detector,
-                            final double instantaneousAvgX,
-                            final double instantaneousAvgY,
-                            final double instantaneousAvgZ,
-                            final double instantaneousStdX,
-                            final double instantaneousStdY,
-                            final double instantaneousStdZ) {
-
-                        handleDynamicToStaticChange();
-                        mSkipDynamicInterval = false;
-
-                        if (mListener != null) {
-                            //noinspection unchecked
-                            mListener.onStaticIntervalDetected((G) MeasurementsGenerator.this);
-                        }
-                    }
-
-                    @Override
-                    public void onDynamicIntervalDetected(
-                            final AccelerationTriadStaticIntervalDetector detector,
-                            final double instantaneousAvgX,
-                            final double instantaneousAvgY,
-                            final double instantaneousAvgZ,
-                            final double instantaneousStdX,
-                            final double instantaneousStdY,
-                            final double instantaneousStdZ,
-                            final double accumulatedAvgX,
-                            final double accumulatedAvgY,
-                            final double accumulatedAvgZ,
-                            final double accumulatedStdX,
-                            final double accumulatedStdY,
-                            final double accumulatedStdZ) {
-
-                        if (mProcessedStaticSamples < mMinStaticSamples) {
-                            final boolean wasSkipped = mSkipStaticInterval;
-                            mSkipStaticInterval = true;
-
-                            if (mListener != null && !wasSkipped) {
-                                //noinspection unchecked
-                                mListener.onStaticIntervalSkipped((G) MeasurementsGenerator.this);
-                            }
-                        }
-
-                        handleStaticToDynamicChange(
-                                accumulatedAvgX, accumulatedAvgY, accumulatedAvgZ,
-                                accumulatedStdX, accumulatedStdY, accumulatedStdZ);
-                        mSkipStaticInterval = false;
-
-                        if (mListener != null) {
-                            //noinspection unchecked
-                            mListener.onDynamicIntervalDetected((G) MeasurementsGenerator.this);
-                        }
-                    }
-
-                    @Override
-                    public void onReset(
-                            final AccelerationTriadStaticIntervalDetector detector) {
-                        // no action needed
-                    }
-                };
-        mStaticIntervalDetector.setListener(listener);
+            @Override
+            public void onReset(final AccelerationTriadStaticIntervalDetector detector) {
+                // no action needed
+            }
+        };
+        staticIntervalDetector.setListener(listener);
     }
 }

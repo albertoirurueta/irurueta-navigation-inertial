@@ -27,8 +27,6 @@ import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.NEDVelocity;
 import com.irurueta.navigation.geodesic.Constants;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.inertial.NEDGravity;
-import com.irurueta.navigation.inertial.RadiiOfCurvature;
 import com.irurueta.navigation.inertial.estimators.NEDGravityEstimator;
 import com.irurueta.navigation.inertial.estimators.RadiiOfCurvatureEstimator;
 import com.irurueta.units.*;
@@ -13235,36 +13233,35 @@ public class NEDInertialNavigator {
 
         try {
             // Calculate attitude increment, magnitude, and skew-symmetric matrix
-            final Matrix alphaIbb = new Matrix(ROWS, 1);
+            final var alphaIbb = new Matrix(ROWS, 1);
             alphaIbb.setElementAtIndex(0, angularRateX * timeInterval);
             alphaIbb.setElementAtIndex(1, angularRateY * timeInterval);
             alphaIbb.setElementAtIndex(2, angularRateZ * timeInterval);
 
-            final double magAlpha = Utils.normF(alphaIbb);
-            final Matrix skewAlpha = Utils.skewMatrix(alphaIbb);
+            final var magAlpha = Utils.normF(alphaIbb);
+            final var skewAlpha = Utils.skewMatrix(alphaIbb);
 
             // From (2.123), determine the angular rate of the ECEF frame with respect
             // the ECI frame, resolved about NED
-            final Matrix omegaIen = new Matrix(ROWS, 1);
+            final var omegaIen = new Matrix(ROWS, 1);
             omegaIen.setElementAtIndex(0, Math.cos(oldLatitude) * EARTH_ROTATION_RATE);
             omegaIen.setElementAtIndex(2, -Math.sin(oldLatitude) * EARTH_ROTATION_RATE);
 
             // From (5.44), determine the angular rate of the NED frame with respect
             // the ECEF frame, resolved about NED
-            final RadiiOfCurvature oldRadiiOfCurvature = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(
-                    oldLatitude);
-            final double oldRe = oldRadiiOfCurvature.getRe();
-            final double oldRn = oldRadiiOfCurvature.getRn();
+            final var oldRadiiOfCurvature = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(oldLatitude);
+            final var oldRe = oldRadiiOfCurvature.getRe();
+            final var oldRn = oldRadiiOfCurvature.getRn();
 
-            final double oldRePlusHeight = oldRe + oldHeight;
-            final Matrix oldOmegaEnN = new Matrix(ROWS, 1);
+            final var oldRePlusHeight = oldRe + oldHeight;
+            final var oldOmegaEnN = new Matrix(ROWS, 1);
             oldOmegaEnN.setElementAtIndex(0, oldVe / oldRePlusHeight);
             oldOmegaEnN.setElementAtIndex(1, -oldVn / (oldRn + oldHeight));
             oldOmegaEnN.setElementAtIndex(2, -oldVe * Math.tan(oldLatitude) / oldRePlusHeight);
 
-            final Matrix oldCbn = oldC.getMatrix();
+            final var oldCbn = oldC.getMatrix();
 
-            final Matrix skewOmega = Utils.skewMatrix(oldOmegaEnN.addAndReturnNew(omegaIen));
+            final var skewOmega = Utils.skewMatrix(oldOmegaEnN.addAndReturnNew(omegaIen));
             skewOmega.multiplyByScalar(0.5);
             skewOmega.multiply(oldCbn);
 
@@ -13272,13 +13269,13 @@ public class NEDInertialNavigator {
             // matrix over the update interval using (5.84) and (5.86)
             final Matrix aveCbn;
             if (magAlpha > ALPHA_THRESHOLD) {
-                final double magAlpha2 = magAlpha * magAlpha;
-                final double value1 = (1.0 - Math.cos(magAlpha)) / magAlpha2;
-                final double value2 = (1.0 - Math.sin(magAlpha) / magAlpha) / magAlpha2;
+                final var magAlpha2 = magAlpha * magAlpha;
+                final var value1 = (1.0 - Math.cos(magAlpha)) / magAlpha2;
+                final var value2 = (1.0 - Math.sin(magAlpha) / magAlpha) / magAlpha2;
 
-                final Matrix tmp1 = Matrix.identity(ROWS, ROWS);
-                final Matrix tmp2 = skewAlpha.multiplyByScalarAndReturnNew(value1);
-                final Matrix tmp3 = skewAlpha.multiplyByScalarAndReturnNew(value2);
+                final var tmp1 = Matrix.identity(ROWS, ROWS);
+                final var tmp2 = skewAlpha.multiplyByScalarAndReturnNew(value1);
+                final var tmp3 = skewAlpha.multiplyByScalarAndReturnNew(value2);
                 tmp3.multiply(skewAlpha);
 
                 tmp1.add(tmp2);
@@ -13291,7 +13288,7 @@ public class NEDInertialNavigator {
             }
 
             // Transform specific force to ECEF-frame resolving axes using (5.86)
-            final Matrix fIbb = new Matrix(ROWS, 1);
+            final var fIbb = new Matrix(ROWS, 1);
             fIbb.setElementAtIndex(0, fx);
             fIbb.setElementAtIndex(1, fy);
             fIbb.setElementAtIndex(2, fz);
@@ -13301,66 +13298,65 @@ public class NEDInertialNavigator {
 
             // Update velocity
             // From (5.54),
-            final NEDGravity gravity = NEDGravityEstimator.estimateGravityAndReturnNew(oldLatitude, oldHeight);
-            final Matrix g = gravity.asMatrix();
+            final var gravity = NEDGravityEstimator.estimateGravityAndReturnNew(oldLatitude, oldHeight);
+            final var g = gravity.asMatrix();
             aveCbn.add(g);
             aveCbn.multiplyByScalar(timeInterval);
 
-            final Matrix oldVebn = new Matrix(ROWS, 1);
+            final var oldVebn = new Matrix(ROWS, 1);
             oldVebn.setElementAtIndex(0, oldVn);
             oldVebn.setElementAtIndex(1, oldVe);
             oldVebn.setElementAtIndex(2, oldVd);
 
-            final Matrix skewOmega2 = Utils.skewMatrix(oldOmegaEnN.addAndReturnNew(
+            final var skewOmega2 = Utils.skewMatrix(oldOmegaEnN.addAndReturnNew(
                     omegaIen.multiplyByScalarAndReturnNew(2.0)));
             skewOmega2.multiply(oldVebn);
             skewOmega2.multiplyByScalar(timeInterval);
 
-            final Matrix vEbn = oldVebn.addAndReturnNew(aveCbn);
+            final var vEbn = oldVebn.addAndReturnNew(aveCbn);
             vEbn.subtract(skewOmega2);
 
-            final double vn = vEbn.getElementAtIndex(0);
-            final double ve = vEbn.getElementAtIndex(1);
-            final double vd = vEbn.getElementAtIndex(2);
+            final var vn = vEbn.getElementAtIndex(0);
+            final var ve = vEbn.getElementAtIndex(1);
+            final var vd = vEbn.getElementAtIndex(2);
 
             // Update curvilinear position
             // Update height using (5.56)
-            final double height = oldHeight - 0.5 * timeInterval * (oldVd + vd);
+            final var height = oldHeight - 0.5 * timeInterval * (oldVd + vd);
 
             // Update latitude using (5.56)
-            final double latitude = oldLatitude
+            final var latitude = oldLatitude
                     + 0.5 * timeInterval * (oldVn / (oldRn + oldHeight) + vn / (oldRn + height));
 
             // Calculate meridian and transverse radii of curvature
-            final RadiiOfCurvature radiiOfCurvature = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(
-                    latitude);
-            final double rn = radiiOfCurvature.getRn();
-            final double re = radiiOfCurvature.getRe();
+            final var radiiOfCurvature = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(latitude);
+            final var rn = radiiOfCurvature.getRn();
+            final var re = radiiOfCurvature.getRe();
 
             // Update longitude using (5.56)
-            final double longitude = oldLongitude
+            final var longitude = oldLongitude
                     + 0.5 * timeInterval * (oldVe / ((oldRe + oldHeight) * Math.cos(oldLatitude))
                     + ve / ((re + height) * Math.cos(latitude)));
 
             // Attitude update
             // From (5.44), determine the angular rate of the NED frame with respect the
             // ECEF frame, resolved about NED
-            final double rePlusHeight = re + height;
-            final Matrix omegaEnN = new Matrix(ROWS, 1);
+            final var rePlusHeight = re + height;
+            final var omegaEnN = new Matrix(ROWS, 1);
             omegaEnN.setElementAtIndex(0, ve / rePlusHeight);
             omegaEnN.setElementAtIndex(1, -vn / (rn + height));
             omegaEnN.setElementAtIndex(2, -ve * Math.tan(latitude) / rePlusHeight);
 
             // Obtain coordinate transformation matrix from the new attitude with respect
             // an inertial frame to the old using Rodrigues' formula, (5.73)
-            final Matrix cNewOld = Matrix.identity(ROWS, ROWS);
+            final var cNewOld = Matrix.identity(ROWS, ROWS);
             if (magAlpha > ALPHA_THRESHOLD) {
-                final double magAlpha2 = magAlpha * magAlpha;
-                final double value1 = Math.sin(magAlpha) / magAlpha;
-                final double value2 = (1.0 - Math.cos(magAlpha)) / magAlpha2;
+                final var magAlpha2 = magAlpha * magAlpha;
+                final var value1 = Math.sin(magAlpha) / magAlpha;
+                final var value2 = (1.0 - Math.cos(magAlpha)) / magAlpha2;
 
-                final Matrix tmp1 = skewAlpha.multiplyByScalarAndReturnNew(value1);
-                final Matrix tmp2 = skewAlpha.multiplyByScalarAndReturnNew(value2);
+                final var tmp1 = skewAlpha.multiplyByScalarAndReturnNew(value1);
+                final var tmp2 = skewAlpha.multiplyByScalarAndReturnNew(value2);
                 tmp2.multiply(skewAlpha);
 
                 cNewOld.add(tmp1);
@@ -13375,10 +13371,10 @@ public class NEDInertialNavigator {
             omegaIen.add(omegaEnN);
             omegaIen.add(oldOmegaEnN);
 
-            final Matrix skewOmega3 = Utils.skewMatrix(omegaIen);
+            final var skewOmega3 = Utils.skewMatrix(omegaIen);
             skewOmega3.multiplyByScalar(timeInterval);
 
-            final Matrix cbn = Matrix.identity(ROWS, ROWS);
+            final var cbn = Matrix.identity(ROWS, ROWS);
             cbn.subtract(skewOmega3);
             cbn.multiply(oldCbn);
             cbn.multiply(cNewOld);
@@ -13386,8 +13382,8 @@ public class NEDInertialNavigator {
             result.setPosition(latitude, longitude, height);
             result.setVelocityCoordinates(vn, ve, vd);
 
-            final CoordinateTransformation c = new CoordinateTransformation(cbn,
-                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME, accuracyThreshold);
+            final var c = new CoordinateTransformation(cbn, FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME,
+                    accuracyThreshold);
             result.setCoordinateTransformation(c);
 
         } catch (final AlgebraException | InvalidRotationMatrixException e) {
@@ -17702,7 +17698,7 @@ public class NEDInertialNavigator {
             final double angularRateX, final double angularRateY, final double angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -17757,7 +17753,7 @@ public class NEDInertialNavigator {
             final double angularRateX, final double angularRateY, final double angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -17811,7 +17807,7 @@ public class NEDInertialNavigator {
             final double angularRateX, final double angularRateY, final double angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -17865,7 +17861,7 @@ public class NEDInertialNavigator {
             final double angularRateX, final double angularRateY, final double angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -17916,7 +17912,7 @@ public class NEDInertialNavigator {
             final double angularRateX, final double angularRateY, final double angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -17967,7 +17963,7 @@ public class NEDInertialNavigator {
             final double angularRateX, final double angularRateY, final double angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -18016,7 +18012,7 @@ public class NEDInertialNavigator {
             final double angularRateX, final double angularRateY, final double angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldPosition, oldC, oldVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 accuracyThreshold, result);
         return result;
@@ -18110,7 +18106,7 @@ public class NEDInertialNavigator {
             final double angularRateX, final double angularRateY, final double angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldPosition, oldC, oldVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 accuracyThreshold, result);
         return result;
@@ -18192,7 +18188,7 @@ public class NEDInertialNavigator {
             final CoordinateTransformation oldC, final double oldVn, final double oldVe, final double oldVd,
             final BodyKinematics kinematics, final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldVn, oldVe, oldVd, kinematics,
                 accuracyThreshold, result);
         return result;
@@ -18263,7 +18259,7 @@ public class NEDInertialNavigator {
             final CoordinateTransformation oldC, final double oldVn, final double oldVe, final double oldVd,
             final BodyKinematics kinematics, final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldVn, oldVe, oldVd, kinematics,
                 accuracyThreshold, result);
         return result;
@@ -18333,7 +18329,7 @@ public class NEDInertialNavigator {
             final double oldVn, final double oldVe, final double oldVd, final BodyKinematics kinematics,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd, kinematics, accuracyThreshold, result);
         return result;
     }
@@ -18400,7 +18396,7 @@ public class NEDInertialNavigator {
             final double oldVn, final double oldVe, final double oldVd, final BodyKinematics kinematics,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd, kinematics, accuracyThreshold, result);
         return result;
     }
@@ -18464,7 +18460,7 @@ public class NEDInertialNavigator {
             final CoordinateTransformation oldC, final NEDVelocity oldVelocity, final BodyKinematics kinematics,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldVelocity, kinematics,
                 accuracyThreshold, result);
         return result;
@@ -18526,7 +18522,7 @@ public class NEDInertialNavigator {
             final CoordinateTransformation oldC, final NEDVelocity oldVelocity, final BodyKinematics kinematics,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldVelocity, kinematics,
                 accuracyThreshold, result);
         return result;
@@ -18586,7 +18582,7 @@ public class NEDInertialNavigator {
             final double timeInterval, final NEDPosition oldPosition, final CoordinateTransformation oldC,
             final NEDVelocity oldVelocity, final BodyKinematics kinematics, final double accuracyThreshold)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldPosition, oldC, oldVelocity, kinematics, accuracyThreshold, result);
         return result;
     }
@@ -18644,7 +18640,7 @@ public class NEDInertialNavigator {
             final Time timeInterval, final NEDPosition oldPosition, final CoordinateTransformation oldC,
             final NEDVelocity oldVelocity, final BodyKinematics kinematics, final double accuracyThreshold)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldPosition, oldC, oldVelocity, kinematics, accuracyThreshold, result);
         return result;
     }
@@ -18726,7 +18722,7 @@ public class NEDInertialNavigator {
             final double angularRateX, final double angularRateY, final double angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -18781,7 +18777,7 @@ public class NEDInertialNavigator {
             final double angularRateX, final double angularRateY, final double angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -18832,7 +18828,7 @@ public class NEDInertialNavigator {
             final double angularRateX, final double angularRateY, final double angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -18883,7 +18879,7 @@ public class NEDInertialNavigator {
             final double angularRateX, final double angularRateY, final double angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -18920,7 +18916,7 @@ public class NEDInertialNavigator {
             final CoordinateTransformation oldC, final double oldVn, final double oldVe, final double oldVd,
             final BodyKinematics kinematics, final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldVn, oldVe, oldVd, kinematics,
                 accuracyThreshold, result);
         return result;
@@ -18991,7 +18987,7 @@ public class NEDInertialNavigator {
             final CoordinateTransformation oldC, final double oldVn, final double oldVe, final double oldVd,
             final BodyKinematics kinematics, final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldVn, oldVe, oldVd, kinematics,
                 accuracyThreshold, result);
         return result;
@@ -19058,7 +19054,7 @@ public class NEDInertialNavigator {
             final CoordinateTransformation oldC, final NEDVelocity oldVelocity, final BodyKinematics kinematics,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldVelocity, kinematics,
                 accuracyThreshold, result);
         return result;
@@ -19120,7 +19116,7 @@ public class NEDInertialNavigator {
             final CoordinateTransformation oldC, final NEDVelocity oldVelocity, final BodyKinematics kinematics,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldVelocity, kinematics,
                 accuracyThreshold, result);
         return result;
@@ -19204,7 +19200,7 @@ public class NEDInertialNavigator {
             final double angularRateX, final double angularRateY, final double angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -19259,7 +19255,7 @@ public class NEDInertialNavigator {
             final double angularRateX, final double angularRateY, final double angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -19313,7 +19309,7 @@ public class NEDInertialNavigator {
             final double angularRateX, final double angularRateY, final double angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldPosition, oldC, oldSpeedN, oldSpeedE, oldSpeedD, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -19367,7 +19363,7 @@ public class NEDInertialNavigator {
             final double angularRateX, final double angularRateY, final double angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldPosition, oldC, oldSpeedN, oldSpeedE, oldSpeedD, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -19404,7 +19400,7 @@ public class NEDInertialNavigator {
             final CoordinateTransformation oldC, final Speed oldSpeedN, final Speed oldSpeedE, final Speed oldSpeedD,
             final BodyKinematics kinematics, final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
                 kinematics, accuracyThreshold, result);
         return result;
@@ -19475,7 +19471,7 @@ public class NEDInertialNavigator {
             final CoordinateTransformation oldC, final Speed oldSpeedN, final Speed oldSpeedE, final Speed oldSpeedD,
             final BodyKinematics kinematics, final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
                 kinematics, accuracyThreshold, result);
         return result;
@@ -19545,7 +19541,7 @@ public class NEDInertialNavigator {
             final Speed oldSpeedN, final Speed oldSpeedE, final Speed oldSpeedD, final BodyKinematics kinematics,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldPosition, oldC, oldSpeedN, oldSpeedE, oldSpeedD, kinematics, accuracyThreshold,
                 result);
         return result;
@@ -19613,7 +19609,7 @@ public class NEDInertialNavigator {
             final Speed oldSpeedN, final Speed oldSpeedE, final Speed oldSpeedD, final BodyKinematics kinematics,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldPosition, oldC, oldSpeedN, oldSpeedE, oldSpeedD, kinematics, accuracyThreshold,
                 result);
         return result;
@@ -19697,7 +19693,7 @@ public class NEDInertialNavigator {
             final double angularRateX, final double angularRateY, final double angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -19749,7 +19745,7 @@ public class NEDInertialNavigator {
             final double angularRateX, final double angularRateY, final double angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -19800,7 +19796,7 @@ public class NEDInertialNavigator {
             final double angularRateX, final double angularRateY, final double angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -19851,7 +19847,7 @@ public class NEDInertialNavigator {
             final double angularRateX, final double angularRateY, final double angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -19899,7 +19895,7 @@ public class NEDInertialNavigator {
             final double angularRateX, final double angularRateY, final double angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -19947,7 +19943,7 @@ public class NEDInertialNavigator {
             final double angularRateX, final double angularRateY, final double angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -19993,7 +19989,7 @@ public class NEDInertialNavigator {
             final double angularRateX, final double angularRateY, final double angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldPosition, oldC, oldVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 accuracyThreshold, result);
         return result;
@@ -20081,7 +20077,7 @@ public class NEDInertialNavigator {
             final double angularRateX, final double angularRateY, final double angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldPosition, oldC, oldVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 accuracyThreshold, result);
         return result;
@@ -20175,7 +20171,7 @@ public class NEDInertialNavigator {
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -20227,7 +20223,7 @@ public class NEDInertialNavigator {
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -20278,7 +20274,7 @@ public class NEDInertialNavigator {
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -20329,7 +20325,7 @@ public class NEDInertialNavigator {
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -20377,7 +20373,7 @@ public class NEDInertialNavigator {
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -20425,7 +20421,7 @@ public class NEDInertialNavigator {
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -20471,7 +20467,7 @@ public class NEDInertialNavigator {
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldPosition, oldC, oldVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 accuracyThreshold, result);
         return result;
@@ -20559,7 +20555,7 @@ public class NEDInertialNavigator {
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldPosition, oldC, oldVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 accuracyThreshold, result);
         return result;
@@ -20656,7 +20652,7 @@ public class NEDInertialNavigator {
             final double angularRateX, final double angularRateY, final double angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -20711,7 +20707,7 @@ public class NEDInertialNavigator {
             final double angularRateX, final double angularRateY, final double angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -20760,7 +20756,7 @@ public class NEDInertialNavigator {
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -20809,7 +20805,7 @@ public class NEDInertialNavigator {
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -20858,7 +20854,7 @@ public class NEDInertialNavigator {
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -20907,7 +20903,7 @@ public class NEDInertialNavigator {
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -20955,7 +20951,7 @@ public class NEDInertialNavigator {
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldPosition, oldC, oldSpeedN, oldSpeedE, oldSpeedD, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -21003,7 +20999,7 @@ public class NEDInertialNavigator {
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldPosition, oldC, oldSpeedN, oldSpeedE, oldSpeedD, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -21048,7 +21044,7 @@ public class NEDInertialNavigator {
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -21093,7 +21089,7 @@ public class NEDInertialNavigator {
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -21136,7 +21132,7 @@ public class NEDInertialNavigator {
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldPosition, oldC, oldVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 accuracyThreshold, result);
         return result;
@@ -21218,7 +21214,7 @@ public class NEDInertialNavigator {
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldPosition, oldC, oldVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 accuracyThreshold, result);
         return result;
@@ -21306,7 +21302,7 @@ public class NEDInertialNavigator {
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -21355,7 +21351,7 @@ public class NEDInertialNavigator {
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -21403,7 +21399,7 @@ public class NEDInertialNavigator {
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -21451,7 +21447,7 @@ public class NEDInertialNavigator {
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -21500,7 +21496,7 @@ public class NEDInertialNavigator {
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -21549,7 +21545,7 @@ public class NEDInertialNavigator {
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, accuracyThreshold, result);
         return result;
@@ -21586,7 +21582,7 @@ public class NEDInertialNavigator {
             final CoordinateTransformation oldC, final Speed oldSpeedN, final Speed oldSpeedE, final Speed oldSpeedD,
             final BodyKinematics kinematics, final double accuracyThreshold) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
                 kinematics, accuracyThreshold, result);
         return result;
@@ -21657,7 +21653,7 @@ public class NEDInertialNavigator {
             final CoordinateTransformation oldC, final Speed oldSpeedN, final Speed oldSpeedE,
             final Speed oldSpeedD, final BodyKinematics kinematics, final double accuracyThreshold)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
                 kinematics, accuracyThreshold, result);
         return result;
@@ -21732,7 +21728,7 @@ public class NEDInertialNavigator {
             final double timeInterval, final NEDFrame oldFrame, final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, accuracyThreshold,
                 result);
         return result;
@@ -21811,7 +21807,7 @@ public class NEDInertialNavigator {
             final Time timeInterval, final NEDFrame oldFrame, final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, accuracyThreshold,
                 result);
         return result;
@@ -21873,7 +21869,7 @@ public class NEDInertialNavigator {
     public static NEDFrame navigateNEDAndReturnNew(
             final double timeInterval, final NEDFrame oldFrame, final BodyKinematics kinematics,
             final double accuracyThreshold) throws InertialNavigatorException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldFrame, kinematics, accuracyThreshold, result);
         return result;
     }
@@ -21916,7 +21912,7 @@ public class NEDInertialNavigator {
     public static NEDFrame navigateNEDAndReturnNew(
             final Time timeInterval, final NEDFrame oldFrame, final BodyKinematics kinematics,
             final double accuracyThreshold) throws InertialNavigatorException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldFrame, kinematics, accuracyThreshold, result);
         return result;
     }
@@ -21974,7 +21970,7 @@ public class NEDInertialNavigator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final double angularRateX, final double angularRateY, final double angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, accuracyThreshold,
                 result);
         return result;
@@ -22049,7 +22045,7 @@ public class NEDInertialNavigator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final double angularRateX, final double angularRateY, final double angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, accuracyThreshold,
                 result);
         return result;
@@ -22124,7 +22120,7 @@ public class NEDInertialNavigator {
             final double fx, final double fy, final double fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, accuracyThreshold,
                 result);
         return result;
@@ -22197,7 +22193,7 @@ public class NEDInertialNavigator {
             final Time timeInterval, final NEDFrame oldFrame, final double fx, final double fy, final double fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, accuracyThreshold,
                 result);
         return result;
@@ -22271,7 +22267,7 @@ public class NEDInertialNavigator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, accuracyThreshold,
                 result);
         return result;
@@ -22346,7 +22342,7 @@ public class NEDInertialNavigator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
             final double accuracyThreshold) throws InertialNavigatorException {
-        final NEDFrame result = new NEDFrame();
+        final var result = new NEDFrame();
         navigateNED(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, accuracyThreshold,
                 result);
         return result;

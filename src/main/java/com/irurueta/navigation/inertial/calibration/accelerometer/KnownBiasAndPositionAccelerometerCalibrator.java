@@ -23,7 +23,6 @@ import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.NEDVelocity;
 import com.irurueta.navigation.frames.converters.ECEFtoNEDPositionVelocityConverter;
 import com.irurueta.navigation.frames.converters.NEDtoECEFPositionVelocityConverter;
-import com.irurueta.navigation.inertial.ECEFGravity;
 import com.irurueta.navigation.inertial.calibration.StandardDeviationBodyKinematics;
 import com.irurueta.navigation.inertial.estimators.ECEFGravityEstimator;
 import com.irurueta.units.Acceleration;
@@ -60,7 +59,7 @@ public class KnownBiasAndPositionAccelerometerCalibrator extends
     /**
      * Position where body kinematics measures have been taken.
      */
-    private ECEFPosition mPosition;
+    private ECEFPosition position;
 
     /**
      * Constructor.
@@ -86,8 +85,7 @@ public class KnownBiasAndPositionAccelerometerCalibrator extends
      *                     deviations taken at the same position with zero velocity
      *                     and unknown different orientations.
      */
-    public KnownBiasAndPositionAccelerometerCalibrator(
-            final Collection<StandardDeviationBodyKinematics> measurements) {
+    public KnownBiasAndPositionAccelerometerCalibrator(final Collection<StandardDeviationBodyKinematics> measurements) {
         super(measurements);
     }
 
@@ -569,8 +567,8 @@ public class KnownBiasAndPositionAccelerometerCalibrator extends
      */
     public KnownBiasAndPositionAccelerometerCalibrator(
             final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
-            final double biasX, final double biasY, final double biasZ, final double initialSx,
-            final double initialSy, final double initialSz) {
+            final double biasX, final double biasY, final double biasZ,
+            final double initialSx, final double initialSy, final double initialSz) {
         super(measurements, commonAxisUsed, biasX, biasY, biasZ, initialSx, initialSy, initialSz);
     }
 
@@ -595,8 +593,8 @@ public class KnownBiasAndPositionAccelerometerCalibrator extends
      */
     public KnownBiasAndPositionAccelerometerCalibrator(
             final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
-            final double biasX, final double biasY, final double biasZ, final double initialSx,
-            final double initialSy, final double initialSz,
+            final double biasX, final double biasY, final double biasZ,
+            final double initialSx, final double initialSy, final double initialSz,
             final KnownBiasAndPositionAccelerometerCalibrationListener listener) {
         super(measurements, commonAxisUsed, biasX, biasY, biasZ, initialSx, initialSy, initialSz, listener);
     }
@@ -612,8 +610,8 @@ public class KnownBiasAndPositionAccelerometerCalibrator extends
      * @param initialSz initial z scaling factor.
      */
     public KnownBiasAndPositionAccelerometerCalibrator(
-            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ, final double initialSx,
-            final double initialSy, final double initialSz) {
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final double initialSx, final double initialSy, final double initialSz) {
         super(biasX, biasY, biasZ, initialSx, initialSy, initialSz);
     }
 
@@ -629,8 +627,8 @@ public class KnownBiasAndPositionAccelerometerCalibrator extends
      * @param listener  listener to handle events raised by this calibrator.
      */
     public KnownBiasAndPositionAccelerometerCalibrator(
-            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ, final double initialSx,
-            final double initialSy, final double initialSz,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final double initialSx, final double initialSy, final double initialSz,
             final KnownBiasAndPositionAccelerometerCalibrationListener listener) {
         super(biasX, biasY, biasZ, initialSx, initialSy, initialSz, listener);
     }
@@ -650,8 +648,8 @@ public class KnownBiasAndPositionAccelerometerCalibrator extends
      */
     public KnownBiasAndPositionAccelerometerCalibrator(
             final Collection<StandardDeviationBodyKinematics> measurements,
-            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ, final double initialSx,
-            final double initialSy, final double initialSz) {
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final double initialSx, final double initialSy, final double initialSz) {
         super(measurements, biasX, biasY, biasZ, initialSx, initialSy, initialSz);
     }
 
@@ -671,8 +669,8 @@ public class KnownBiasAndPositionAccelerometerCalibrator extends
      */
     public KnownBiasAndPositionAccelerometerCalibrator(
             final Collection<StandardDeviationBodyKinematics> measurements,
-            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ, final double initialSx,
-            final double initialSy, final double initialSz,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final double initialSx, final double initialSy, final double initialSz,
             final KnownBiasAndPositionAccelerometerCalibrationListener listener) {
         super(measurements, biasX, biasY, biasZ, initialSx, initialSy, initialSz, listener);
     }
@@ -1109,9 +1107,9 @@ public class KnownBiasAndPositionAccelerometerCalibrator extends
      */
     public KnownBiasAndPositionAccelerometerCalibrator(
             final boolean commonAxisUsed, final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
-            final double initialSx, final double initialSy, final double initialSz, final double initialMxy,
-            final double initialMxz, final double initialMyx, final double initialMyz, final double initialMzx,
-            final double initialMzy) {
+            final double initialSx, final double initialSy, final double initialSz,
+            final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy) {
         super(commonAxisUsed, biasX, biasY, biasZ, initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy);
     }
@@ -2148,8 +2146,8 @@ public class KnownBiasAndPositionAccelerometerCalibrator extends
      */
     public KnownBiasAndPositionAccelerometerCalibrator(
             final ECEFPosition position, final Collection<StandardDeviationBodyKinematics> measurements,
-            final double biasX, final double biasY, final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz) {
+            final double biasX, final double biasY, final double biasZ,
+            final double initialSx, final double initialSy, final double initialSz) {
         this(measurements, biasX, biasY, biasZ, initialSx, initialSy, initialSz);
         try {
             setPosition(position);
@@ -4104,8 +4102,7 @@ public class KnownBiasAndPositionAccelerometerCalibrator extends
             final NEDPosition position, final boolean commonAxisUsed, final double biasX, final double biasY,
             final double biasZ, final double initialSx, final double initialSy, final double initialSz,
             final KnownBiasAndPositionAccelerometerCalibrationListener listener) {
-        this(convertPosition(position), commonAxisUsed, biasX, biasY, biasZ, initialSx, initialSy, initialSz,
-                listener);
+        this(convertPosition(position), commonAxisUsed, biasX, biasY, biasZ, initialSx, initialSy, initialSz, listener);
     }
 
     /**
@@ -4282,8 +4279,7 @@ public class KnownBiasAndPositionAccelerometerCalibrator extends
             final NEDPosition position, final boolean commonAxisUsed, final Acceleration biasX,
             final Acceleration biasY, final Acceleration biasZ, final double initialSx, final double initialSy,
             final double initialSz, final KnownBiasAndPositionAccelerometerCalibrationListener listener) {
-        this(convertPosition(position), commonAxisUsed, biasX, biasY, biasZ, initialSx, initialSy, initialSz,
-                listener);
+        this(convertPosition(position), commonAxisUsed, biasX, biasY, biasZ, initialSx, initialSy, initialSz, listener);
     }
 
     /**
@@ -5228,7 +5224,7 @@ public class KnownBiasAndPositionAccelerometerCalibrator extends
      * @return position where body kinematics measures have been taken.
      */
     public ECEFPosition getEcefPosition() {
-        return mPosition;
+        return position;
     }
 
     /**
@@ -5243,13 +5239,13 @@ public class KnownBiasAndPositionAccelerometerCalibrator extends
             throw new LockedException();
         }
 
-        mPosition = position;
+        this.position = position;
         if (position != null) {
-            final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
-                    mPosition.getX(), mPosition.getY(), mPosition.getZ());
-            mGroundTruthGravityNorm = gravity.getNorm();
+            final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+                    this.position.getX(), this.position.getY(), this.position.getZ());
+            groundTruthGravityNorm = gravity.getNorm();
         } else {
-            mGroundTruthGravityNorm = null;
+            groundTruthGravityNorm = null;
         }
     }
 
@@ -5261,7 +5257,7 @@ public class KnownBiasAndPositionAccelerometerCalibrator extends
      * not available.
      */
     public NEDPosition getNedPosition() {
-        final NEDPosition result = new NEDPosition();
+        final var result = new NEDPosition();
         return getNedPosition(result) ? result : null;
     }
 
@@ -5274,10 +5270,10 @@ public class KnownBiasAndPositionAccelerometerCalibrator extends
      */
     public boolean getNedPosition(final NEDPosition result) {
 
-        if (mPosition != null) {
-            final NEDVelocity velocity = new NEDVelocity();
+        if (position != null) {
+            final var velocity = new NEDVelocity();
             ECEFtoNEDPositionVelocityConverter.convertECEFtoNED(
-                    mPosition.getX(), mPosition.getY(), mPosition.getZ(),
+                    position.getX(), position.getY(), position.getZ(),
                     0.0, 0.0, 0.0, result, velocity);
             return true;
         } else {
@@ -5303,7 +5299,7 @@ public class KnownBiasAndPositionAccelerometerCalibrator extends
      */
     @Override
     public boolean isReady() {
-        return super.isReady() && mPosition != null;
+        return super.isReady() && position != null;
     }
 
     /**
@@ -5314,8 +5310,8 @@ public class KnownBiasAndPositionAccelerometerCalibrator extends
      * @return converted position expressed in ECEF coordinates.
      */
     private static ECEFPosition convertPosition(final NEDPosition position) {
-        final ECEFVelocity velocity = new ECEFVelocity();
-        final ECEFPosition result = new ECEFPosition();
+        final var velocity = new ECEFVelocity();
+        final var result = new ECEFPosition();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
                 position.getLatitude(), position.getLongitude(), position.getHeight(),
                 0.0, 0.0, 0.0, result, velocity);

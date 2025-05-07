@@ -3382,8 +3382,7 @@ public class KnownGravityNormAccelerometerCalibrator extends
             final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] initialBias,
             final KnownGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                initialBias, listener);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
     }
 
     /**
@@ -3707,8 +3706,7 @@ public class KnownGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final KnownGravityNormAccelerometerCalibratorListener listener) {
+            final Acceleration groundTruthGravityNorm, final KnownGravityNormAccelerometerCalibratorListener listener) {
         this(convertAcceleration(groundTruthGravityNorm), listener);
     }
 
@@ -3722,8 +3720,7 @@ public class KnownGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements) {
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements) {
         this(convertAcceleration(groundTruthGravityNorm), measurements);
     }
 

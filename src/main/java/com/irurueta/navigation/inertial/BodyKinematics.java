@@ -56,37 +56,37 @@ public class BodyKinematics implements Serializable, Cloneable {
      * Specific force of body frame with respect ECI, ECEF or NED frame resolved along body-frame x-axis, averaged
      * over time interval and expressed in meters per squared second (m/s^2).
      */
-    private double mFx;
+    private double fx;
 
     /**
      * Specific force of body frame with respect ECI, ECEF or NED frame resolved along body-frame y-axis, averaged
      * over time interval and expressed in meters per squared second (m/s^2).
      */
-    private double mFy;
+    private double fy;
 
     /**
      * Specific force of body frame with respect ECI, ECEF or NED frame resolved along body-frame z-axis, averaged
      * over time interval and expressed in meters per squared second (m/s^2).
      */
-    private double mFz;
+    private double fz;
 
     /**
      * Angular rate of body frame with respect ECI, ECEF or NED frame, resolved about body-frame x-axis, averaged
      * over time interval and expressed in radians per second (rad/s).
      */
-    private double mAngularRateX;
+    private double angularRateX;
 
     /**
      * Angular rate of body frame with respect ECI, ECEF or NED frame, resolved about body-frame y-axis, averaged
      * over time interval and expressed in radians per second (rad/s).
      */
-    private double mAngularRateY;
+    private double angularRateY;
 
     /**
      * Angular rate of body frame with respect ECI, ECEF or NED frame, resolved about body-frame z-axis, averaged
      * over time interval and expressed in radians per second (rad/s).
      */
-    private double mAngularRateZ;
+    private double angularRateZ;
 
     /**
      * Constructor.
@@ -217,7 +217,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      * @return specific force of body frame with respect ECI, ECEF or NED frame resolved along body-frame x-axis.
      */
     public double getFx() {
-        return mFx;
+        return fx;
     }
 
     /**
@@ -227,7 +227,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      * @param fx specific force of body frame with respect ECI, ECEF or NED frame resolved along body-frame x-axis.
      */
     public void setFx(final double fx) {
-        mFx = fx;
+        this.fx = fx;
     }
 
     /**
@@ -237,7 +237,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      * @return specific force of body frame with respect ECI, ECEF or NED frame resolved along body-frame y-axis.
      */
     public double getFy() {
-        return mFy;
+        return fy;
     }
 
     /**
@@ -247,7 +247,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      * @param fy specific force of body frame with respect ECI, ECEF or NED frame resolved along body-frame y-axis.
      */
     public void setFy(final double fy) {
-        mFy = fy;
+        this.fy = fy;
     }
 
     /**
@@ -257,7 +257,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      * @return specific force of body frame with respect ECI, ECEF or NED frame resolved along body-frame z-axis.
      */
     public double getFz() {
-        return mFz;
+        return fz;
     }
 
     /**
@@ -267,7 +267,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      * @param fz specific force of body frame with respect ECI, ECEF or NED frame resolved along body-frame z-axis.
      */
     public void setFz(final double fz) {
-        mFz = fz;
+        this.fz = fz;
     }
 
     /**
@@ -282,9 +282,9 @@ public class BodyKinematics implements Serializable, Cloneable {
      *           averaged over time interval and expressed in meters per squared second (m/s^2).
      */
     public void setSpecificForceCoordinates(final double fx, final double fy, final double fz) {
-        mFx = fx;
-        mFy = fy;
-        mFz = fz;
+        this.fx = fx;
+        this.fy = fy;
+        this.fz = fz;
     }
 
     /**
@@ -295,7 +295,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      *               body-frame x-axis will be stored.
      */
     public void getSpecificForceX(final Acceleration result) {
-        result.setValue(mFx);
+        result.setValue(fx);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -307,7 +307,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      * body-frame x-axis.
      */
     public Acceleration getSpecificForceX() {
-        return new Acceleration(mFx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(fx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -318,7 +318,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      *                       body-frame x-axis that will be set.
      */
     public void setSpecificForceX(final Acceleration specificForceX) {
-        mFx = AccelerationConverter.convert(specificForceX.getValue().doubleValue(), specificForceX.getUnit(),
+        fx = AccelerationConverter.convert(specificForceX.getValue().doubleValue(), specificForceX.getUnit(),
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -330,7 +330,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      *               body-frame y-axis will be stored.
      */
     public void getSpecificForceY(final Acceleration result) {
-        result.setValue(mFy);
+        result.setValue(fy);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -342,7 +342,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      * body-frame y-axis.
      */
     public Acceleration getSpecificForceY() {
-        return new Acceleration(mFy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(fy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -353,7 +353,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      *                       body-frame y-axis that will be set.
      */
     public void setSpecificForceY(final Acceleration specificForceY) {
-        mFy = AccelerationConverter.convert(specificForceY.getValue().doubleValue(), specificForceY.getUnit(),
+        fy = AccelerationConverter.convert(specificForceY.getValue().doubleValue(), specificForceY.getUnit(),
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -365,7 +365,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      *               body-frame z-axis will be stored.
      */
     public void getSpecificForceZ(final Acceleration result) {
-        result.setValue(mFz);
+        result.setValue(fz);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -377,7 +377,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      * body-frame z-axis.
      */
     public Acceleration getSpecificForceZ() {
-        return new Acceleration(mFz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(fz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -388,7 +388,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      *                       body-frame z-axis that will be set.
      */
     public void setSpecificForceZ(final Acceleration specificForceZ) {
-        mFz = AccelerationConverter.convert(specificForceZ.getValue().doubleValue(), specificForceZ.getUnit(),
+        fz = AccelerationConverter.convert(specificForceZ.getValue().doubleValue(), specificForceZ.getUnit(),
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -416,7 +416,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      * @return specific force triad.
      */
     public AccelerationTriad getSpecificForceTriad() {
-        return new AccelerationTriad(AccelerationUnit.METERS_PER_SQUARED_SECOND, mFx, mFy, mFz);
+        return new AccelerationTriad(AccelerationUnit.METERS_PER_SQUARED_SECOND, fx, fy, fz);
     }
 
     /**
@@ -425,7 +425,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      * @param result instance where result will be stored.
      */
     public void getSpecificForceTriad(final AccelerationTriad result) {
-        result.setValueCoordinatesAndUnit(mFx, mFy, mFz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        result.setValueCoordinatesAndUnit(fx, fy, fz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -435,9 +435,9 @@ public class BodyKinematics implements Serializable, Cloneable {
      */
     public void setSpecificForceTriad(final AccelerationTriad triad) {
         final AccelerationUnit unit = triad.getUnit();
-        mFx = AccelerationConverter.convert(triad.getValueX(), unit, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        mFy = AccelerationConverter.convert(triad.getValueY(), unit, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        mFz = AccelerationConverter.convert(triad.getValueZ(), unit, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        fx = AccelerationConverter.convert(triad.getValueX(), unit, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        fy = AccelerationConverter.convert(triad.getValueY(), unit, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        fz = AccelerationConverter.convert(triad.getValueZ(), unit, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -447,7 +447,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      * @return angular rate of body frame with respect ECI, ECEF or NED frame resolved about body-frame x-axis.
      */
     public double getAngularRateX() {
-        return mAngularRateX;
+        return angularRateX;
     }
 
     /**
@@ -458,7 +458,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      *                     about body-frame x-axis.
      */
     public void setAngularRateX(final double angularRateX) {
-        mAngularRateX = angularRateX;
+        this.angularRateX = angularRateX;
     }
 
     /**
@@ -468,7 +468,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      * @return angular rate of body frame with respect ECI, ECEF or NED frame resolved about body-frame y-axis.
      */
     public double getAngularRateY() {
-        return mAngularRateY;
+        return angularRateY;
     }
 
     /**
@@ -479,7 +479,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      *                     about body-frame y-axis.
      */
     public void setAngularRateY(final double angularRateY) {
-        mAngularRateY = angularRateY;
+        this.angularRateY = angularRateY;
     }
 
     /**
@@ -489,7 +489,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      * @return angular rate of body frame with respect ECI, ECEF or NED frame resolved about body-frame z-axis.
      */
     public double getAngularRateZ() {
-        return mAngularRateZ;
+        return angularRateZ;
     }
 
     /**
@@ -500,7 +500,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      *                     about body-frame z-axis.
      */
     public void setAngularRateZ(final double angularRateZ) {
-        mAngularRateZ = angularRateZ;
+        this.angularRateZ = angularRateZ;
     }
 
     /**
@@ -516,9 +516,9 @@ public class BodyKinematics implements Serializable, Cloneable {
      */
     public void setAngularRateCoordinates(
             final double angularRateX, final double angularRateY, final double angularRateZ) {
-        mAngularRateX = angularRateX;
-        mAngularRateY = angularRateY;
-        mAngularRateZ = angularRateZ;
+        this.angularRateX = angularRateX;
+        this.angularRateY = angularRateY;
+        this.angularRateZ = angularRateZ;
     }
 
     /**
@@ -529,7 +529,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      *               body-frame x-axis will be stored.
      */
     public void getAngularSpeedX(final AngularSpeed result) {
-        result.setValue(mAngularRateX);
+        result.setValue(angularRateX);
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -541,7 +541,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      * body-frame X-axis.
      */
     public AngularSpeed getAngularSpeedX() {
-        return new AngularSpeed(mAngularRateX, AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(angularRateX, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -552,7 +552,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      *                      x-axis that will be set.
      */
     public void setAngularSpeedX(final AngularSpeed angularSpeedX) {
-        mAngularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(), angularSpeedX.getUnit(),
+        angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(), angularSpeedX.getUnit(),
                 AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -564,7 +564,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      *               body-frame y-axis will be stored.
      */
     public void getAngularSpeedY(final AngularSpeed result) {
-        result.setValue(mAngularRateY);
+        result.setValue(angularRateY);
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -576,7 +576,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      * body-frame y-axis.
      */
     public AngularSpeed getAngularSpeedY() {
-        return new AngularSpeed(mAngularRateY, AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(angularRateY, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -587,7 +587,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      *                      y-axis that will be set.
      */
     public void setAngularSpeedY(final AngularSpeed angularSpeedY) {
-        mAngularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(), angularSpeedY.getUnit(),
+        angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(), angularSpeedY.getUnit(),
                 AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -599,7 +599,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      *               body-frame z-axis will be stored.
      */
     public void getAngularSpeedZ(final AngularSpeed result) {
-        result.setValue(mAngularRateZ);
+        result.setValue(angularRateZ);
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -611,7 +611,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      * body-frame z-axis.
      */
     public AngularSpeed getAngularSpeedZ() {
-        return new AngularSpeed(mAngularRateZ, AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(angularRateZ, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -622,7 +622,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      *                      z-axis, that will be set.
      */
     public void setAngularSpeedZ(final AngularSpeed angularSpeedZ) {
-        mAngularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(), angularSpeedZ.getUnit(),
+        angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(), angularSpeedZ.getUnit(),
                 AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -650,7 +650,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      * @return angular rate triad.
      */
     public AngularSpeedTriad getAngularRateTriad() {
-        return new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND, mAngularRateX, mAngularRateY, mAngularRateZ);
+        return new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND, angularRateX, angularRateY, angularRateZ);
     }
 
     /**
@@ -659,7 +659,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      * @param result angular rate triad.
      */
     public void getAngularRateTriad(final AngularSpeedTriad result) {
-        result.setValueCoordinatesAndUnit(mAngularRateX, mAngularRateY, mAngularRateZ,
+        result.setValueCoordinatesAndUnit(angularRateX, angularRateY, angularRateZ,
                 AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -670,9 +670,9 @@ public class BodyKinematics implements Serializable, Cloneable {
      */
     public void setAngularRateTriad(final AngularSpeedTriad triad) {
         final AngularSpeedUnit unit = triad.getUnit();
-        mAngularRateX = AngularSpeedConverter.convert(triad.getValueX(), unit, AngularSpeedUnit.RADIANS_PER_SECOND);
-        mAngularRateY = AngularSpeedConverter.convert(triad.getValueY(), unit, AngularSpeedUnit.RADIANS_PER_SECOND);
-        mAngularRateZ = AngularSpeedConverter.convert(triad.getValueZ(), unit, AngularSpeedUnit.RADIANS_PER_SECOND);
+        angularRateX = AngularSpeedConverter.convert(triad.getValueX(), unit, AngularSpeedUnit.RADIANS_PER_SECOND);
+        angularRateY = AngularSpeedConverter.convert(triad.getValueY(), unit, AngularSpeedUnit.RADIANS_PER_SECOND);
+        angularRateZ = AngularSpeedConverter.convert(triad.getValueZ(), unit, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -681,7 +681,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      * @return norm of specific force.
      */
     public double getSpecificForceNorm() {
-        return Math.sqrt(mFx * mFx + mFy * mFy + mFz * mFz);
+        return Math.sqrt(fx * fx + fy * fy + fz * fz);
     }
 
     /**
@@ -709,8 +709,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      * @return norm of angular rate.
      */
     public double getAngularRateNorm() {
-        return Math.sqrt(mAngularRateX * mAngularRateX + mAngularRateY * mAngularRateY
-                + mAngularRateZ * mAngularRateZ);
+        return Math.sqrt(angularRateX * angularRateX + angularRateY * angularRateY + angularRateZ * angularRateZ);
     }
 
     /**
@@ -738,12 +737,12 @@ public class BodyKinematics implements Serializable, Cloneable {
      * @param output destination instance where data will be copied to.
      */
     public void copyTo(final BodyKinematics output) {
-        output.mFx = mFx;
-        output.mFy = mFy;
-        output.mFz = mFz;
-        output.mAngularRateX = mAngularRateX;
-        output.mAngularRateY = mAngularRateY;
-        output.mAngularRateZ = mAngularRateZ;
+        output.fx = fx;
+        output.fy = fy;
+        output.fz = fz;
+        output.angularRateX = angularRateX;
+        output.angularRateY = angularRateY;
+        output.angularRateZ = angularRateZ;
     }
 
     /**
@@ -752,12 +751,12 @@ public class BodyKinematics implements Serializable, Cloneable {
      * @param input instance to copy data from.
      */
     public void copyFrom(final BodyKinematics input) {
-        mFx = input.mFx;
-        mFy = input.mFy;
-        mFz = input.mFz;
-        mAngularRateX = input.mAngularRateX;
-        mAngularRateY = input.mAngularRateY;
-        mAngularRateZ = input.mAngularRateZ;
+        fx = input.fx;
+        fy = input.fy;
+        fz = input.fz;
+        angularRateX = input.angularRateX;
+        angularRateY = input.angularRateY;
+        angularRateZ = input.angularRateZ;
     }
 
     /**
@@ -772,9 +771,9 @@ public class BodyKinematics implements Serializable, Cloneable {
             throw new IllegalArgumentException();
         }
 
-        result[0] = mFx;
-        result[1] = mFy;
-        result[2] = mFz;
+        result[0] = fx;
+        result[1] = fy;
+        result[2] = fz;
     }
 
     /**
@@ -783,7 +782,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      * @return array containing specific force coordinates in x,y,z order.
      */
     public double[] asSpecificForceArray() {
-        final double[] result = new double[COMPONENTS];
+        final var result = new double[COMPONENTS];
         asSpecificForceArray(result);
         return result;
     }
@@ -804,9 +803,9 @@ public class BodyKinematics implements Serializable, Cloneable {
             }
         }
 
-        result.setElementAtIndex(0, mFx);
-        result.setElementAtIndex(1, mFy);
-        result.setElementAtIndex(2, mFz);
+        result.setElementAtIndex(0, fx);
+        result.setElementAtIndex(1, fy);
+        result.setElementAtIndex(2, fz);
     }
 
     /**
@@ -838,9 +837,9 @@ public class BodyKinematics implements Serializable, Cloneable {
             throw new IllegalArgumentException();
         }
 
-        result[0] = mAngularRateX;
-        result[1] = mAngularRateY;
-        result[2] = mAngularRateZ;
+        result[0] = angularRateX;
+        result[1] = angularRateY;
+        result[2] = angularRateZ;
     }
 
     /**
@@ -849,7 +848,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      * @return array containing angular rate coordinates in x,y,z order.
      */
     public double[] asAngularRateArray() {
-        final double[] result = new double[COMPONENTS];
+        final var result = new double[COMPONENTS];
         asAngularRateArray(result);
         return result;
     }
@@ -870,9 +869,9 @@ public class BodyKinematics implements Serializable, Cloneable {
             }
         }
 
-        result.setElementAtIndex(0, mAngularRateX);
-        result.setElementAtIndex(1, mAngularRateY);
-        result.setElementAtIndex(2, mAngularRateZ);
+        result.setElementAtIndex(0, angularRateX);
+        result.setElementAtIndex(1, angularRateY);
+        result.setElementAtIndex(2, angularRateZ);
     }
 
     /**
@@ -900,7 +899,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(mFx, mFy, mFz, mAngularRateX, mAngularRateY, mAngularRateZ);
+        return Objects.hash(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
     }
 
     /**
@@ -928,10 +927,10 @@ public class BodyKinematics implements Serializable, Cloneable {
             return false;
         }
 
-        return Math.abs(mFx - other.mFx) <= threshold && Math.abs(mFy - other.mFy) <= threshold
-                && Math.abs(mFz - other.mFz) <= threshold && Math.abs(mAngularRateX - other.mAngularRateX) <= threshold
-                && Math.abs(mAngularRateY - other.mAngularRateY) <= threshold
-                && Math.abs(mAngularRateZ - other.mAngularRateZ) <= threshold;
+        return Math.abs(fx - other.fx) <= threshold && Math.abs(fy - other.fy) <= threshold
+                && Math.abs(fz - other.fz) <= threshold && Math.abs(angularRateX - other.angularRateX) <= threshold
+                && Math.abs(angularRateY - other.angularRateY) <= threshold
+                && Math.abs(angularRateZ - other.angularRateZ) <= threshold;
     }
 
     /**
@@ -962,7 +961,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final BodyKinematics result = (BodyKinematics) super.clone();
+        final var result = (BodyKinematics) super.clone();
         copyTo(result);
         return result;
     }

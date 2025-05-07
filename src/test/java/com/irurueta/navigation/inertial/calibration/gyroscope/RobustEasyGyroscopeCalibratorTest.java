@@ -20,72 +20,71 @@ import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsSequence;
 import com.irurueta.navigation.inertial.calibration.StandardDeviationTimedBodyKinematics;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
-import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCalibratorListener {
+class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCalibratorListener {
 
     @Test
-    public void testCreate1() {
+    void testCreate1() {
         // RANSAC
-        RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustEasyGyroscopeCalibrator.create(RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustEasyGyroscopeCalibrator.class, calibrator);
 
         // LMedS
         calibrator = RobustEasyGyroscopeCalibrator.create(RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustEasyGyroscopeCalibrator.class, calibrator);
 
         // MSAC
         calibrator = RobustEasyGyroscopeCalibrator.create(RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustEasyGyroscopeCalibrator.class, calibrator);
 
         // PROSAC
         calibrator = RobustEasyGyroscopeCalibrator.create(RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustEasyGyroscopeCalibrator.class, calibrator);
 
         // PROMedS
         calibrator = RobustEasyGyroscopeCalibrator.create(RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustEasyGyroscopeCalibrator.class, calibrator);
     }
 
     @Test
-    public void testCreate2() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate2() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(sequences, initialBias,
-                initialMg, initialGg, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustEasyGyroscopeCalibrator.create(sequences, initialBias, initialMg, initialGg, 
+                RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
         assertEquals(initialGg, calibrator.getInitialGg());
 
         // LMedS
-        calibrator = RobustEasyGyroscopeCalibrator.create(sequences, initialBias, initialMg, initialGg,
+        calibrator = RobustEasyGyroscopeCalibrator.create(sequences, initialBias, initialMg, initialGg, 
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -96,7 +95,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -107,7 +106,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -118,7 +117,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -126,18 +125,18 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreate3() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate3() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(sequences, initialBias,
-                initialMg, initialGg, this, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustEasyGyroscopeCalibrator.create(sequences, initialBias, initialMg, initialGg,
+                this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -149,7 +148,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -161,7 +160,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -173,7 +172,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -185,7 +184,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -194,18 +193,18 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreate4() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate4() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(sequences, initialBias,
-                initialMg, initialGg, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustEasyGyroscopeCalibrator.create(sequences, initialBias, initialMg, initialGg,
+                RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -216,7 +215,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -227,7 +226,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -238,7 +237,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -249,7 +248,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -257,18 +256,18 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreate5() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate5() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(sequences, initialBias,
-                initialMg, initialGg, this, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustEasyGyroscopeCalibrator.create(sequences, initialBias, initialMg, initialGg,
+                this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -280,7 +279,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -292,7 +291,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -304,7 +303,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -316,7 +315,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -325,20 +324,20 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreate6() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final double[] accelerometerBias = new double[3];
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate6() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new double[3];
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(sequences, initialBias,
-                initialMg, initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustEasyGyroscopeCalibrator.create(sequences, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -351,7 +350,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -364,7 +363,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -377,7 +376,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -390,7 +389,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -400,20 +399,20 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreate7() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final double[] accelerometerBias = new double[3];
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate7() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new double[3];
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(sequences, initialBias,
-                initialMg, initialGg, accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustEasyGyroscopeCalibrator.create(sequences, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -427,7 +426,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -441,7 +440,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -455,7 +454,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -469,7 +468,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -480,20 +479,20 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreate8() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate8() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(sequences, initialBias,
-                initialMg, initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustEasyGyroscopeCalibrator.create(sequences, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -506,7 +505,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -519,7 +518,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -532,7 +531,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -545,7 +544,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -555,20 +554,20 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreate9() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate9() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(sequences, initialBias,
-                initialMg, initialGg, accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustEasyGyroscopeCalibrator.create(sequences, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -582,7 +581,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -596,7 +595,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -610,7 +609,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -624,7 +623,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -635,175 +634,174 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreate10() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate10() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(sequences,
-                false, false, initialBias, initialMg, initialGg,
-                RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustEasyGyroscopeCalibrator);
-        assertSame(sequences, calibrator.getSequences());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-
-        // LMedS
-        calibrator = RobustEasyGyroscopeCalibrator.create(sequences, false,
-                false, initialBias, initialMg, initialGg, RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustEasyGyroscopeCalibrator);
-        assertSame(sequences, calibrator.getSequences());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-
-        // MSAC
-        calibrator = RobustEasyGyroscopeCalibrator.create(sequences, false,
-                false, initialBias, initialMg, initialGg, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustEasyGyroscopeCalibrator);
-        assertSame(sequences, calibrator.getSequences());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-
-        // PROSAC
-        calibrator = RobustEasyGyroscopeCalibrator.create(sequences, false,
-                false, initialBias, initialMg, initialGg, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustEasyGyroscopeCalibrator);
-        assertSame(sequences, calibrator.getSequences());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-
-        // PROMedS
-        calibrator = RobustEasyGyroscopeCalibrator.create(sequences, false,
-                false, initialBias, initialMg, initialGg, RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustEasyGyroscopeCalibrator);
-        assertSame(sequences, calibrator.getSequences());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-    }
-
-    @Test
-    public void testCreate11() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-
-        // RANSAC
-        RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(sequences, false,
-                false, initialBias, initialMg, initialGg, this,
-                RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustEasyGyroscopeCalibrator);
-        assertSame(sequences, calibrator.getSequences());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertSame(this, calibrator.getListener());
-
-        // LMedS
-        calibrator = RobustEasyGyroscopeCalibrator.create(sequences, false,
-                false, initialBias, initialMg, initialGg, this,
-                RobustEstimatorMethod.LMEDS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustEasyGyroscopeCalibrator);
-        assertSame(sequences, calibrator.getSequences());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertSame(this, calibrator.getListener());
-
-        // MSAC
-        calibrator = RobustEasyGyroscopeCalibrator.create(sequences, false,
-                false, initialBias, initialMg, initialGg, this,
-                RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustEasyGyroscopeCalibrator);
-        assertSame(sequences, calibrator.getSequences());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertSame(this, calibrator.getListener());
-
-        // PROSAC
-        calibrator = RobustEasyGyroscopeCalibrator.create(sequences, false,
-                false, initialBias, initialMg, initialGg, this,
-                RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustEasyGyroscopeCalibrator);
-        assertSame(sequences, calibrator.getSequences());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertSame(this, calibrator.getListener());
-
-        // PROMedS
-        calibrator = RobustEasyGyroscopeCalibrator.create(sequences, false,
-                false, initialBias, initialMg, initialGg, this,
-                RobustEstimatorMethod.PROMEDS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustEasyGyroscopeCalibrator);
-        assertSame(sequences, calibrator.getSequences());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertSame(this, calibrator.getListener());
-    }
-
-    @Test
-    public void testCreate12() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-
-        // RANSAC
-        RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(sequences, false,
+        var calibrator = RobustEasyGyroscopeCalibrator.create(sequences, false,
                 false, initialBias, initialMg, initialGg, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustEasyGyroscopeCalibrator.class, calibrator);
+        assertSame(sequences, calibrator.getSequences());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+
+        // LMedS
+        calibrator = RobustEasyGyroscopeCalibrator.create(sequences, false,
+                false, initialBias, initialMg, initialGg, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustEasyGyroscopeCalibrator.class, calibrator);
+        assertSame(sequences, calibrator.getSequences());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+
+        // MSAC
+        calibrator = RobustEasyGyroscopeCalibrator.create(sequences, false,
+                false, initialBias, initialMg, initialGg, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustEasyGyroscopeCalibrator.class, calibrator);
+        assertSame(sequences, calibrator.getSequences());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+
+        // PROSAC
+        calibrator = RobustEasyGyroscopeCalibrator.create(sequences, false,
+                false, initialBias, initialMg, initialGg, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustEasyGyroscopeCalibrator.class, calibrator);
+        assertSame(sequences, calibrator.getSequences());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+
+        // PROMedS
+        calibrator = RobustEasyGyroscopeCalibrator.create(sequences, false,
+                false, initialBias, initialMg, initialGg, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustEasyGyroscopeCalibrator.class, calibrator);
+        assertSame(sequences, calibrator.getSequences());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+    }
+
+    @Test
+    void testCreate11() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+
+        // RANSAC
+        var calibrator = RobustEasyGyroscopeCalibrator.create(sequences, false,
+                false, initialBias, initialMg, initialGg, this,
+                RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustEasyGyroscopeCalibrator.class, calibrator);
+        assertSame(sequences, calibrator.getSequences());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+        assertSame(this, calibrator.getListener());
+
+        // LMedS
+        calibrator = RobustEasyGyroscopeCalibrator.create(sequences, false,
+                false, initialBias, initialMg, initialGg, this,
+                RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertInstanceOf(LMedSRobustEasyGyroscopeCalibrator.class, calibrator);
+        assertSame(sequences, calibrator.getSequences());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+        assertSame(this, calibrator.getListener());
+
+        // MSAC
+        calibrator = RobustEasyGyroscopeCalibrator.create(sequences, false,
+                false, initialBias, initialMg, initialGg, this,
+                RobustEstimatorMethod.MSAC);
+
+        // check
+        assertInstanceOf(MSACRobustEasyGyroscopeCalibrator.class, calibrator);
+        assertSame(sequences, calibrator.getSequences());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+        assertSame(this, calibrator.getListener());
+
+        // PROSAC
+        calibrator = RobustEasyGyroscopeCalibrator.create(sequences, false,
+                false, initialBias, initialMg, initialGg, this,
+                RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertInstanceOf(PROSACRobustEasyGyroscopeCalibrator.class, calibrator);
+        assertSame(sequences, calibrator.getSequences());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+        assertSame(this, calibrator.getListener());
+
+        // PROMedS
+        calibrator = RobustEasyGyroscopeCalibrator.create(sequences, false,
+                false, initialBias, initialMg, initialGg, this,
+                RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertInstanceOf(PROMedSRobustEasyGyroscopeCalibrator.class, calibrator);
+        assertSame(sequences, calibrator.getSequences());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+        assertSame(this, calibrator.getListener());
+    }
+
+    @Test
+    void testCreate12() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+
+        // RANSAC
+        var calibrator = RobustEasyGyroscopeCalibrator.create(sequences, false,
+                false, initialBias, initialMg, initialGg, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertInstanceOf(RANSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -816,7 +814,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 false, initialBias, initialMg, initialGg, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -829,7 +827,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 false, initialBias, initialMg, initialGg, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -842,7 +840,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 false, initialBias, initialMg, initialGg, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -855,7 +853,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 false, initialBias, initialMg, initialGg, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -865,19 +863,19 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreate13() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate13() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(sequences, false,
+        var calibrator = RobustEasyGyroscopeCalibrator.create(sequences, false,
                 false, initialBias, initialMg, initialGg, this,
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -892,7 +890,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -907,7 +905,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -922,7 +920,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -937,7 +935,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -948,21 +946,21 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreate14() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final double[] accelerometerBias = new double[3];
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate14() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new double[3];
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(sequences, false,
+        var calibrator = RobustEasyGyroscopeCalibrator.create(sequences, false,
                 false, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -978,7 +976,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -994,7 +992,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -1010,7 +1008,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -1026,7 +1024,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -1038,21 +1036,21 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreate15() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final double[] accelerometerBias = new double[3];
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate15() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new double[3];
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(sequences, false,
+        var calibrator = RobustEasyGyroscopeCalibrator.create(sequences, false,
                 false, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
                 this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -1069,7 +1067,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -1086,7 +1084,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -1103,7 +1101,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -1120,7 +1118,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -1133,21 +1131,21 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreate16() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate16() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(sequences,
+        var calibrator = RobustEasyGyroscopeCalibrator.create(sequences,
                 false, false, initialBias, initialMg, initialGg,
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -1163,7 +1161,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -1179,7 +1177,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -1195,7 +1193,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -1211,7 +1209,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -1223,21 +1221,21 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreate17() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate17() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(sequences,
-                false, false, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustEasyGyroscopeCalibrator.create(sequences, false,
+                false, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
+                this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -1254,7 +1252,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -1271,7 +1269,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -1288,7 +1286,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -1305,7 +1303,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -1318,60 +1316,59 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreate18() {
-        final double[] qualityScores = new double[10];
+    void testCreate18() {
+        final var qualityScores = new double[10];
 
         // RANSAC
-        RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
 
         // LMedS
         calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
 
         // MSAC
         calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
         calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
         calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
-    public void testCreate19() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate19() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, sequences,
-                initialBias, initialMg, initialGg, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, sequences, initialBias, initialMg,
+                initialGg, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1383,7 +1380,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1395,7 +1392,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1407,7 +1404,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1419,7 +1416,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1428,19 +1425,19 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreate20() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate20() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, sequences,
-                initialBias, initialMg, initialGg, this, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, sequences, initialBias, initialMg,
+                initialGg, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1453,7 +1450,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1466,7 +1463,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1479,7 +1476,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1492,7 +1489,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1502,19 +1499,19 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreate21() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate21() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, sequences,
-                initialBias, initialMg, initialGg, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, sequences, initialBias, initialMg,
+                initialGg, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1526,7 +1523,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1538,7 +1535,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1550,7 +1547,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1562,7 +1559,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1571,19 +1568,19 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreate22() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate22() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, sequences,
-                initialBias, initialMg, initialGg, this, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, sequences, initialBias, initialMg,
+                initialGg, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1596,7 +1593,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1609,7 +1606,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1622,7 +1619,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1635,7 +1632,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1645,21 +1642,21 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreate23() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final double[] accelerometerBias = new double[3];
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate23() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new double[3];
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, sequences,
-                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, sequences, initialBias, initialMg,
+                initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1673,7 +1670,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1687,7 +1684,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1701,7 +1698,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1715,7 +1712,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1726,22 +1723,21 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreate24() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final double[] accelerometerBias = new double[3];
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate24() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new double[3];
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, sequences,
-                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, this,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, sequences, initialBias, initialMg,
+                initialGg, accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1756,7 +1752,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1771,7 +1767,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1786,7 +1782,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1801,7 +1797,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1813,21 +1809,21 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreate25() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate25() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, sequences,
-                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, sequences, initialBias, initialMg,
+                initialGg, accelerometerBias, accelerometerMa, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1841,7 +1837,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1855,7 +1851,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1869,7 +1865,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1883,7 +1879,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 accelerometerBias, accelerometerMa, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1894,22 +1890,21 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreate26() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate26() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, sequences,
-                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, this,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, sequences, initialBias, initialMg,
+                initialGg, accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1924,7 +1919,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1939,7 +1934,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1954,7 +1949,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1969,7 +1964,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
         assertEquals(initialMg, calibrator.getInitialMg());
@@ -1981,20 +1976,19 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreate27() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate27() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, sequences,
-                false, false, initialBias, initialMg, initialGg,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, sequences, false,
+                false, initialBias, initialMg, initialGg, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2008,7 +2002,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 false, initialBias, initialMg, initialGg, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2022,7 +2016,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 false, initialBias, initialMg, initialGg, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2036,7 +2030,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 false, initialBias, initialMg, initialGg, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2050,7 +2044,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 false, initialBias, initialMg, initialGg, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2061,20 +2055,20 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreate28() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate28() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, sequences,
-                false, false, initialBias, initialMg, initialGg, this,
+        var calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, sequences, false,
+                false, initialBias, initialMg, initialGg, this,
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2090,7 +2084,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2106,7 +2100,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2122,7 +2116,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2138,7 +2132,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2150,20 +2144,19 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreate29() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate29() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, sequences,
-                false, false, initialBias, initialMg, initialGg,
-                RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, sequences, false,
+                false, initialBias, initialMg, initialGg, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2177,7 +2170,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 false, initialBias, initialMg, initialGg, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2191,7 +2184,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 false, initialBias, initialMg, initialGg, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2205,7 +2198,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 false, initialBias, initialMg, initialGg, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2219,7 +2212,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 false, initialBias, initialMg, initialGg, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2230,20 +2223,20 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreate30() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreate30() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
         // RANSAC
-        RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, sequences,
-                false, false, initialBias, initialMg, initialGg, this,
+        var calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, sequences, false,
+                false, initialBias, initialMg, initialGg, this,
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2259,7 +2252,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2275,7 +2268,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2291,7 +2284,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2307,7 +2300,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2319,22 +2312,22 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreate31() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final double[] accelerometerBias = new double[3];
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate31() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new double[3];
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, sequences,
-                false, false, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, sequences, false,
+                false, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
+                RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2351,7 +2344,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2368,7 +2361,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2385,7 +2378,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2402,7 +2395,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2415,22 +2408,22 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreate32() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final double[] accelerometerBias = new double[3];
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate32() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new double[3];
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, sequences,
-                false, false, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, sequences, false,
+                false, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
+                this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2448,7 +2441,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2466,7 +2459,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2484,7 +2477,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2502,7 +2495,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2516,22 +2509,22 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreate33() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate33() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, sequences,
-                false, false, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, sequences, false,
+                false, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
+                RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2548,7 +2541,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2565,7 +2558,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2582,7 +2575,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2599,7 +2592,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2612,22 +2605,22 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreate34() throws WrongSizeException {
-        final double[] qualityScores = new double[10];
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreate34() throws WrongSizeException {
+        final var qualityScores = new double[10];
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
         // RANSAC
-        RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, sequences,
-                false, false, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, this, RobustEstimatorMethod.RANSAC);
+        var calibrator = RobustEasyGyroscopeCalibrator.create(qualityScores, sequences, false,
+                false, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
+                this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(calibrator instanceof RANSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(RANSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2645,7 +2638,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(calibrator instanceof LMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(LMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2663,7 +2656,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(calibrator instanceof MSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(MSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2681,7 +2674,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(calibrator instanceof PROSACRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROSACRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2699,7 +2692,7 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
                 this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(calibrator instanceof PROMedSRobustEasyGyroscopeCalibrator);
+        assertInstanceOf(PROMedSRobustEasyGyroscopeCalibrator.class, calibrator);
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
@@ -2713,22 +2706,21 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreateWithDefaultMethod1() {
-        final RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create();
+    void testCreateWithDefaultMethod1() {
+        final var calibrator = RobustEasyGyroscopeCalibrator.create();
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
     }
 
     @Test
-    public void testCreateWithDefaultMethod2() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreateWithDefaultMethod2() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
-        final RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(sequences, initialBias,
-                initialMg, initialGg);
+        final var calibrator = RobustEasyGyroscopeCalibrator.create(sequences, initialBias, initialMg, initialGg);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -2739,14 +2731,14 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreateWithDefaultMethod3() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreateWithDefaultMethod3() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
-        final RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(sequences, initialBias,
-                initialMg, initialGg, this);
+        final var calibrator = RobustEasyGyroscopeCalibrator.create(sequences, initialBias, initialMg, initialGg,
+                this);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -2758,14 +2750,13 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreateWithDefaultMethod4() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreateWithDefaultMethod4() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
-        final RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(sequences, initialBias,
-                initialMg, initialGg);
+        final var calibrator = RobustEasyGyroscopeCalibrator.create(sequences, initialBias, initialMg, initialGg);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -2776,14 +2767,14 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreateWithDefaultMethod5() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreateWithDefaultMethod5() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
-        final RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(sequences, initialBias,
-                initialMg, initialGg, this);
+        final var calibrator = RobustEasyGyroscopeCalibrator.create(sequences, initialBias, initialMg, initialGg,
+                this);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -2795,16 +2786,16 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreateWithDefaultMethod6() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final double[] accelerometerBias = new double[3];
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreateWithDefaultMethod6() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new double[3];
+        final var accelerometerMa = new Matrix(3, 3);
 
-        final RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(sequences, initialBias,
-                initialMg, initialGg, accelerometerBias, accelerometerMa);
+        final var calibrator = RobustEasyGyroscopeCalibrator.create(sequences, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -2817,16 +2808,16 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreateWithDefaultMethod7() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final double[] accelerometerBias = new double[3];
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreateWithDefaultMethod7() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new double[3];
+        final var accelerometerMa = new Matrix(3, 3);
 
-        final RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(sequences, initialBias,
-                initialMg, initialGg, accelerometerBias, accelerometerMa, this);
+        final var calibrator = RobustEasyGyroscopeCalibrator.create(sequences, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa, this);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -2840,16 +2831,16 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreateWithDefaultMethod8() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreateWithDefaultMethod8() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
-        final RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(sequences, initialBias,
-                initialMg, initialGg, accelerometerBias, accelerometerMa);
+        final var calibrator = RobustEasyGyroscopeCalibrator.create(sequences, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -2862,16 +2853,16 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreateWithDefaultMethod9() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreateWithDefaultMethod9() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
-        final RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(sequences, initialBias,
-                initialMg, initialGg, accelerometerBias, accelerometerMa, this);
+        final var calibrator = RobustEasyGyroscopeCalibrator.create(sequences, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa, this);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -2885,14 +2876,14 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreateWithDefaultMethod10() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreateWithDefaultMethod10() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
-        final RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(sequences,
-                false, false, initialBias, initialMg, initialGg);
+        final var calibrator = RobustEasyGyroscopeCalibrator.create(sequences, false,
+                false, initialBias, initialMg, initialGg);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -2905,14 +2896,103 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreateWithDefaultMethod11() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
+    void testCreateWithDefaultMethod11() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
 
-        final RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(sequences,
-                false, false, initialBias, initialMg, initialGg,
+        final var calibrator = RobustEasyGyroscopeCalibrator.create(sequences, false,
+                false, initialBias, initialMg, initialGg, this);
+
+        // check
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(sequences, calibrator.getSequences());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+        assertSame(this, calibrator.getListener());
+    }
+
+    @Test
+    void testCreateWithDefaultMethod12() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+
+        final var calibrator = RobustEasyGyroscopeCalibrator.create(sequences, false,
+                false, initialBias, initialMg, initialGg);
+
+        // check
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(sequences, calibrator.getSequences());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+    }
+
+    @Test
+    void testCreateWithDefaultMethod13() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+
+        final var calibrator = RobustEasyGyroscopeCalibrator.create(sequences, false,
+                false, initialBias, initialMg, initialGg, this);
+
+        // check
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(sequences, calibrator.getSequences());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+        assertSame(this, calibrator.getListener());
+    }
+
+    @Test
+    void testCreateWithDefaultMethod14() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new double[3];
+        final var accelerometerMa = new Matrix(3, 3);
+
+        final var calibrator = RobustEasyGyroscopeCalibrator.create(sequences, false,
+                false, initialBias, initialMg, initialGg, accelerometerBias,
+                accelerometerMa);
+
+        // check
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(sequences, calibrator.getSequences());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
+        assertEquals(initialMg, calibrator.getInitialMg());
+        assertEquals(initialGg, calibrator.getInitialGg());
+        assertArrayEquals(accelerometerBias, calibrator.getAccelerometerBias(), 0.0);
+        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
+    }
+
+    @Test
+    void testCreateWithDefaultMethod15() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new double[3];
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new double[3];
+        final var accelerometerMa = new Matrix(3, 3);
+
+        final var calibrator = RobustEasyGyroscopeCalibrator.create(sequences, false,
+                false, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
                 this);
 
         // check
@@ -2920,97 +3000,6 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
         assertSame(sequences, calibrator.getSequences());
         assertFalse(calibrator.isCommonAxisUsed());
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertEquals(initialBias, calibrator.getInitialBiasAsMatrix());
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertSame(this, calibrator.getListener());
-    }
-
-    @Test
-    public void testCreateWithDefaultMethod12() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-
-        final RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(sequences,
-                false, false, initialBias, initialMg, initialGg);
-
-        // check
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertSame(sequences, calibrator.getSequences());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-    }
-
-    @Test
-    public void testCreateWithDefaultMethod13() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-
-        final RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(sequences,
-                false, false, initialBias, initialMg, initialGg,
-                this);
-
-        // check
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertSame(sequences, calibrator.getSequences());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertSame(this, calibrator.getListener());
-    }
-
-    @Test
-    public void testCreateWithDefaultMethod14() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final double[] accelerometerBias = new double[3];
-        final Matrix accelerometerMa = new Matrix(3, 3);
-
-        final RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(sequences,
-                false, false, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa);
-
-        // check
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertSame(sequences, calibrator.getSequences());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
-        assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
-        assertEquals(initialMg, calibrator.getInitialMg());
-        assertEquals(initialGg, calibrator.getInitialGg());
-        assertArrayEquals(accelerometerBias, calibrator.getAccelerometerBias(), 0.0);
-        assertEquals(accelerometerMa, calibrator.getAccelerometerMa());
-    }
-
-    @Test
-    public void testCreateWithDefaultMethod15() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final double[] initialBias = new double[3];
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final double[] accelerometerBias = new double[3];
-        final Matrix accelerometerMa = new Matrix(3, 3);
-
-        final RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(sequences,
-                false, false, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, this);
-
-        // check
-        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
-        assertSame(sequences, calibrator.getSequences());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
         assertArrayEquals(initialBias, calibrator.getInitialBias(), 0.0);
         assertEquals(initialMg, calibrator.getInitialMg());
         assertEquals(initialGg, calibrator.getInitialGg());
@@ -3020,17 +3009,17 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreateWithDefaultMethod16() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreateWithDefaultMethod16() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
-        final RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(sequences,
-                false, false, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa);
+        final var calibrator = RobustEasyGyroscopeCalibrator.create(sequences, false,
+                false, initialBias, initialMg, initialGg, accelerometerBias,
+                accelerometerMa);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
@@ -3045,17 +3034,17 @@ public class RobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCal
     }
 
     @Test
-    public void testCreateWithDefaultMethod17() throws WrongSizeException {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = Collections.emptyList();
-        final Matrix initialBias = new Matrix(3, 1);
-        final Matrix initialMg = new Matrix(3, 3);
-        final Matrix initialGg = new Matrix(3, 3);
-        final Matrix accelerometerBias = new Matrix(3, 1);
-        final Matrix accelerometerMa = new Matrix(3, 3);
+    void testCreateWithDefaultMethod17() throws WrongSizeException {
+        final var sequences = Collections.<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>emptyList();
+        final var initialBias = new Matrix(3, 1);
+        final var initialMg = new Matrix(3, 3);
+        final var initialGg = new Matrix(3, 3);
+        final var accelerometerBias = new Matrix(3, 1);
+        final var accelerometerMa = new Matrix(3, 3);
 
-        final RobustEasyGyroscopeCalibrator calibrator = RobustEasyGyroscopeCalibrator.create(sequences,
-                false, false, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, this);
+        final var calibrator = RobustEasyGyroscopeCalibrator.create(sequences, false,
+                false, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
+                this);
 
         // check
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());

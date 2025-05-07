@@ -24,8 +24,6 @@ import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.NEDVelocity;
 import com.irurueta.navigation.geodesic.Constants;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.inertial.NEDGravity;
-import com.irurueta.navigation.inertial.RadiiOfCurvature;
 import com.irurueta.units.*;
 
 /**
@@ -2529,52 +2527,51 @@ public class NEDKinematicsEstimator {
             try {
                 // From (2.123), determine the angular rate of the NED frame
                 // with respect the ECI frame, resolved about NED
-                final Matrix omegaIen = new Matrix(ROWS, 1);
+                final var omegaIen = new Matrix(ROWS, 1);
                 omegaIen.setElementAtIndex(0, EARTH_ROTATION_RATE * Math.cos(oldLatitude));
                 omegaIen.setElementAtIndex(2, -EARTH_ROTATION_RATE * Math.sin(oldLatitude));
 
                 // From (5.44), determine the angular rate of the NED frame
                 // with respect the NED frame, resolved about NED
-                final RadiiOfCurvature oldRadiiOfCurvature = RadiiOfCurvatureEstimator
-                        .estimateRadiiOfCurvatureAndReturnNew(oldLatitude);
-                final double oldRn = oldRadiiOfCurvature.getRn();
-                final double oldRe = oldRadiiOfCurvature.getRe();
+                final var oldRadiiOfCurvature = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(
+                        oldLatitude);
+                final var oldRn = oldRadiiOfCurvature.getRn();
+                final var oldRe = oldRadiiOfCurvature.getRe();
 
-                final RadiiOfCurvature radiiOfCurvature = RadiiOfCurvatureEstimator
-                        .estimateRadiiOfCurvatureAndReturnNew(latitude);
-                final double rn = radiiOfCurvature.getRn();
-                final double re = radiiOfCurvature.getRe();
+                final var radiiOfCurvature = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(latitude);
+                final var rn = radiiOfCurvature.getRn();
+                final var re = radiiOfCurvature.getRe();
 
-                final Matrix oldOmegaEnN = new Matrix(ROWS, 1);
+                final var oldOmegaEnN = new Matrix(ROWS, 1);
                 oldOmegaEnN.setElementAtIndex(0, oldVe / (oldRe + oldHeight));
                 oldOmegaEnN.setElementAtIndex(1, -oldVn / (oldRn + oldHeight));
                 oldOmegaEnN.setElementAtIndex(2, -oldVe * Math.tan(oldLatitude) / (oldRe + oldHeight));
 
-                final Matrix omegaEnN = new Matrix(ROWS, 1);
+                final var omegaEnN = new Matrix(ROWS, 1);
                 omegaEnN.setElementAtIndex(0, ve / (re + height));
                 omegaEnN.setElementAtIndex(1, -vn / (rn + height));
                 omegaEnN.setElementAtIndex(2, -ve * Math.tan(latitude) / (re + height));
 
                 // Obtain coordinate transformation matrix from the old attitude (with
                 // respect the inertial frame) to the new using (5.77)
-                final Matrix cbn = c.getMatrix();
+                final var cbn = c.getMatrix();
                 cbn.transpose();
 
-                final Matrix omega = omegaIen.addAndReturnNew(omegaEnN.multiplyByScalarAndReturnNew(0.5));
+                final var omega = omegaIen.addAndReturnNew(omegaEnN.multiplyByScalarAndReturnNew(0.5));
                 omega.add(oldOmegaEnN.multiplyByScalarAndReturnNew(0.5));
-                final Matrix skew1 = Utils.skewMatrix(omega);
+                final var skew1 = Utils.skewMatrix(omega);
                 skew1.multiplyByScalar(timeInterval);
 
-                final Matrix tmp1 = Matrix.identity(ROWS, ROWS);
+                final var tmp1 = Matrix.identity(ROWS, ROWS);
                 tmp1.subtract(skew1);
 
-                final Matrix oldCbn = oldC.getMatrix();
+                final var oldCbn = oldC.getMatrix();
                 cbn.multiply(tmp1);
                 cbn.multiply(oldCbn);
                 // cbn contains transformation matrix from the old to the new attitude (cOldNew)
 
                 // Calculate the approximate angular rate with respect an inertial frame
-                final Matrix alphaIbb = new Matrix(ROWS, 1);
+                final var alphaIbb = new Matrix(ROWS, 1);
                 alphaIbb.setElementAtIndex(0,
                         0.5 * (cbn.getElementAt(1, 2) - cbn.getElementAt(2, 1)));
                 alphaIbb.setElementAtIndex(1,
@@ -2583,33 +2580,33 @@ public class NEDKinematicsEstimator {
                         0.5 * (cbn.getElementAt(0, 1) - cbn.getElementAt(1, 0)));
 
                 // Calculate and apply the scaling factor
-                final double temp = Math.acos(0.5 * (Utils.trace(cbn) - 1.0));
+                final var temp = Math.acos(0.5 * (Utils.trace(cbn) - 1.0));
                 if (temp > SCALING_THRESHOLD) {
                     // Scaling is 1 if temp is less than this
                     alphaIbb.multiplyByScalar(temp / Math.sin(temp));
                 }
 
                 // Calculate the angular rate
-                final double angularRateX = alphaIbb.getElementAtIndex(0) / timeInterval;
-                final double angularRateY = alphaIbb.getElementAtIndex(1) / timeInterval;
-                final double angularRateZ = alphaIbb.getElementAtIndex(2) / timeInterval;
+                final var angularRateX = alphaIbb.getElementAtIndex(0) / timeInterval;
+                final var angularRateY = alphaIbb.getElementAtIndex(1) / timeInterval;
+                final var angularRateZ = alphaIbb.getElementAtIndex(2) / timeInterval;
 
                 // Calculate the specific force resolved about NED-frame axes
                 // From (5.54)
-                final Matrix tmp2 = new Matrix(ROWS, 1);
+                final var tmp2 = new Matrix(ROWS, 1);
                 tmp2.setElementAtIndex(0, (vn - oldVn) / timeInterval);
                 tmp2.setElementAtIndex(1, (ve - oldVe) / timeInterval);
                 tmp2.setElementAtIndex(2, (vd - oldVd) / timeInterval);
 
-                final NEDGravity gravity = NEDGravityEstimator.estimateGravityAndReturnNew(oldLatitude, oldHeight);
-                final Matrix g = gravity.asMatrix();
+                final var gravity = NEDGravityEstimator.estimateGravityAndReturnNew(oldLatitude, oldHeight);
+                final var g = gravity.asMatrix();
 
-                final Matrix oldVebn = new Matrix(ROWS, 1);
+                final var oldVebn = new Matrix(ROWS, 1);
                 oldVebn.setElementAtIndex(0, oldVn);
                 oldVebn.setElementAtIndex(1, oldVe);
                 oldVebn.setElementAtIndex(2, oldVd);
 
-                final Matrix skew2 = Utils.skewMatrix(oldOmegaEnN.addAndReturnNew(
+                final var skew2 = Utils.skewMatrix(oldOmegaEnN.addAndReturnNew(
                         omegaIen.multiplyByScalarAndReturnNew(2.0)));
                 skew2.multiply(oldVebn);
 
@@ -2619,24 +2616,24 @@ public class NEDKinematicsEstimator {
 
                 // Calculate the average body-to-NED coordinate transformation
                 // matrix over the update interval using (5.84) and (5.86)
-                final double magAlpha = Utils.normF(alphaIbb);
-                final Matrix skewAlpha = Utils.skewMatrix(alphaIbb);
+                final var magAlpha = Utils.normF(alphaIbb);
+                final var skewAlpha = Utils.skewMatrix(alphaIbb);
 
                 oldOmegaEnN.add(omegaIen);
-                final Matrix tmp3 = Utils.skewMatrix(oldOmegaEnN);
+                final var tmp3 = Utils.skewMatrix(oldOmegaEnN);
                 tmp3.multiplyByScalar(0.5);
                 tmp3.multiply(oldCbn);
 
                 if (magAlpha > ALPHA_THRESHOLD) {
-                    final double magAlpha2 = magAlpha * magAlpha;
-                    final double value1 = (1.0 - Math.cos(magAlpha)) / magAlpha2;
-                    final double value2 = (1.0 - Math.sin(magAlpha) / magAlpha) / magAlpha2;
+                    final var magAlpha2 = magAlpha * magAlpha;
+                    final var value1 = (1.0 - Math.cos(magAlpha)) / magAlpha2;
+                    final var value2 = (1.0 - Math.sin(magAlpha) / magAlpha) / magAlpha2;
 
-                    final Matrix tmp4 = skewAlpha.multiplyByScalarAndReturnNew(value1);
-                    final Matrix tmp5 = skewAlpha.multiplyByScalarAndReturnNew(value2);
+                    final var tmp4 = skewAlpha.multiplyByScalarAndReturnNew(value1);
+                    final var tmp5 = skewAlpha.multiplyByScalarAndReturnNew(value2);
                     tmp5.multiply(skewAlpha);
 
-                    final Matrix tmp6 = Matrix.identity(ROWS, ROWS);
+                    final var tmp6 = Matrix.identity(ROWS, ROWS);
                     tmp6.add(tmp4);
                     tmp6.add(tmp5);
 
@@ -2647,12 +2644,12 @@ public class NEDKinematicsEstimator {
                 // oldCbn now contains average body-to-NED (aveCbn)
 
                 // Transform specific force to body-frame resolving axes using (5.81)
-                final Matrix fIbb = Utils.inverse(oldCbn);
+                final var fIbb = Utils.inverse(oldCbn);
                 fIbb.multiply(tmp2);
 
-                final double specificForceX = fIbb.getElementAtIndex(0);
-                final double specificForceY = fIbb.getElementAtIndex(1);
-                final double specificForceZ = fIbb.getElementAtIndex(2);
+                final var specificForceX = fIbb.getElementAtIndex(0);
+                final var specificForceY = fIbb.getElementAtIndex(1);
+                final var specificForceZ = fIbb.getElementAtIndex(2);
 
                 // save result data
                 result.setSpecificForceCoordinates(specificForceX, specificForceY, specificForceZ);
@@ -3904,7 +3901,7 @@ public class NEDKinematicsEstimator {
             final double vn, final double ve, final double vd,
             final double oldVn, final double oldVe, final double oldVd, final double latitude, final double height,
             final double oldLatitude, final double oldHeight) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
                 oldLatitude, oldHeight, result);
         return result;
@@ -3942,7 +3939,7 @@ public class NEDKinematicsEstimator {
             final double vn, final double ve, final double vd,
             final double oldVn, final double oldVe, final double oldVd, final double latitude, final double height,
             final double oldLatitude, final double oldHeight) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
                 oldLatitude, oldHeight, result);
         return result;
@@ -3970,7 +3967,7 @@ public class NEDKinematicsEstimator {
             final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
             final NEDVelocity velocity, final NEDVelocity oldVelocity, final double latitude, final double height,
             final double oldLatitude, final double oldHeight) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, latitude, height, oldLatitude, oldHeight,
                 result);
         return result;
@@ -3998,7 +3995,7 @@ public class NEDKinematicsEstimator {
             final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
             final NEDVelocity velocity, final NEDVelocity oldVelocity, final double latitude, final double height,
             final double oldLatitude, final double oldHeight) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, latitude, height, oldLatitude, oldHeight,
                 result);
         return result;
@@ -4026,7 +4023,7 @@ public class NEDKinematicsEstimator {
             final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
             final NEDVelocity velocity, final NEDVelocity oldVelocity, final Angle latitude, final Distance height,
             final Angle oldLatitude, final Distance oldHeight) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, latitude, height, oldLatitude, oldHeight,
                 result);
         return result;
@@ -4054,7 +4051,7 @@ public class NEDKinematicsEstimator {
             final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
             final NEDVelocity velocity, final NEDVelocity oldVelocity, final Angle latitude, final Distance height,
             final Angle oldLatitude, final Distance oldHeight) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, latitude, height, oldLatitude, oldHeight,
                 result);
         return result;
@@ -4090,7 +4087,7 @@ public class NEDKinematicsEstimator {
             final double vn, final double ve, final double vd,
             final double oldVn, final double oldVe, final double oldVd, final NEDPosition position,
             final NEDPosition oldPosition) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, position, oldPosition, result);
         return result;
     }
@@ -4125,7 +4122,7 @@ public class NEDKinematicsEstimator {
             final double vn, final double ve, final double vd,
             final double oldVn, final double oldVe, final double oldVd, final NEDPosition position,
             final NEDPosition oldPosition) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, position, oldPosition, result);
         return result;
     }
@@ -4159,7 +4156,7 @@ public class NEDKinematicsEstimator {
             final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
             final Speed vn, final Speed ve, final Speed vd, final Speed oldVn, final Speed oldVe, final Speed oldVd,
             final NEDPosition position, final NEDPosition oldPosition) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, position, oldPosition, result);
         return result;
     }
@@ -4193,7 +4190,7 @@ public class NEDKinematicsEstimator {
             final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
             final Speed vn, final Speed ve, final Speed vd, final Speed oldVn, final Speed oldVe, final Speed oldVd,
             final NEDPosition position, final NEDPosition oldPosition) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, position, oldPosition, result);
         return result;
     }
@@ -4218,7 +4215,7 @@ public class NEDKinematicsEstimator {
             final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
             final NEDVelocity velocity, final NEDVelocity oldVelocity, final NEDPosition position,
             final NEDPosition oldPosition) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, position, oldPosition, result);
         return result;
     }
@@ -4243,7 +4240,7 @@ public class NEDKinematicsEstimator {
             final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
             final NEDVelocity velocity, final NEDVelocity oldVelocity, final NEDPosition position,
             final NEDPosition oldPosition) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, position, oldPosition, result);
         return result;
     }
@@ -4271,7 +4268,7 @@ public class NEDKinematicsEstimator {
             final double timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
             final double oldVn, final double oldVe, final double oldVd,
             final double oldLatitude, final double oldHeight) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd, oldLatitude, oldHeight, result);
         return result;
     }
@@ -4299,7 +4296,7 @@ public class NEDKinematicsEstimator {
             final Time timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
             final double oldVn, final double oldVe, final double oldVd,
             final double oldLatitude, final double oldHeight) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd, oldLatitude, oldHeight, result);
         return result;
     }
@@ -4322,7 +4319,7 @@ public class NEDKinematicsEstimator {
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final double timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
             final NEDVelocity oldVelocity, final double oldLatitude, final double oldHeight) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, frame, oldC, oldVelocity, oldLatitude, oldHeight, result);
         return result;
     }
@@ -4345,7 +4342,7 @@ public class NEDKinematicsEstimator {
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final Time timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
             final NEDVelocity oldVelocity, final double oldLatitude, final double oldHeight) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, frame, oldC, oldVelocity, oldLatitude, oldHeight, result);
         return result;
     }
@@ -4368,7 +4365,7 @@ public class NEDKinematicsEstimator {
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final double timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
             final NEDVelocity oldVelocity, final Angle oldLatitude, final Distance oldHeight) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, frame, oldC, oldVelocity, oldLatitude, oldHeight, result);
         return result;
     }
@@ -4391,7 +4388,7 @@ public class NEDKinematicsEstimator {
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final Time timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
             final NEDVelocity oldVelocity, final Angle oldLatitude, final Distance oldHeight) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, frame, oldC, oldVelocity, oldLatitude, oldHeight, result);
         return result;
     }
@@ -4417,7 +4414,7 @@ public class NEDKinematicsEstimator {
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final double timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
             final double oldVn, final double oldVe, final double oldVd, final NEDPosition oldPosition) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd, oldPosition, result);
         return result;
     }
@@ -4443,7 +4440,7 @@ public class NEDKinematicsEstimator {
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final Time timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
             final double oldVn, final double oldVe, final double oldVd, final NEDPosition oldPosition) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd, oldPosition, result);
         return result;
     }
@@ -4469,7 +4466,7 @@ public class NEDKinematicsEstimator {
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final double timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
             final Speed oldVn, final Speed oldVe, final Speed oldVd, final NEDPosition oldPosition) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd, oldPosition, result);
         return result;
     }
@@ -4495,7 +4492,7 @@ public class NEDKinematicsEstimator {
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final Time timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
             final Speed oldVn, final Speed oldVe, final Speed oldVd, final NEDPosition oldPosition) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd, oldPosition, result);
         return result;
     }
@@ -4517,7 +4514,7 @@ public class NEDKinematicsEstimator {
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final double timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
             final NEDVelocity oldVelocity, final NEDPosition oldPosition) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, frame, oldC, oldVelocity, oldPosition, result);
         return result;
     }
@@ -4539,7 +4536,7 @@ public class NEDKinematicsEstimator {
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final Time timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
             final NEDVelocity oldVelocity, final NEDPosition oldPosition) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, frame, oldC, oldVelocity, oldPosition, result);
         return result;
     }
@@ -4567,7 +4564,7 @@ public class NEDKinematicsEstimator {
             final double timeInterval, final CoordinateTransformation c,
             final double vn, final double ve, final double vd, final double latitude, final double height,
             final NEDFrame oldFrame) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, vn, ve, vd, latitude, height, oldFrame, result);
         return result;
     }
@@ -4595,7 +4592,7 @@ public class NEDKinematicsEstimator {
             final Time timeInterval, final CoordinateTransformation c,
             final double vn, final double ve, final double vd, final double latitude, final double height,
             final NEDFrame oldFrame) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, vn, ve, vd, latitude, height, oldFrame, result);
         return result;
     }
@@ -4617,7 +4614,7 @@ public class NEDKinematicsEstimator {
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final double timeInterval, final CoordinateTransformation c, final NEDVelocity velocity,
             final double latitude, final double height, final NEDFrame oldFrame) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, velocity, latitude, height, oldFrame, result);
         return result;
     }
@@ -4639,7 +4636,7 @@ public class NEDKinematicsEstimator {
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final Time timeInterval, final CoordinateTransformation c, final NEDVelocity velocity,
             final double latitude, final double height, final NEDFrame oldFrame) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, velocity, latitude, height, oldFrame, result);
         return result;
     }
@@ -4661,7 +4658,7 @@ public class NEDKinematicsEstimator {
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final double timeInterval, final CoordinateTransformation c, final NEDVelocity velocity,
             final Angle latitude, final Distance height, final NEDFrame oldFrame) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, velocity, latitude, height, oldFrame, result);
         return result;
     }
@@ -4683,7 +4680,7 @@ public class NEDKinematicsEstimator {
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final Time timeInterval, final CoordinateTransformation c, final NEDVelocity velocity,
             final Angle latitude, final Distance height, final NEDFrame oldFrame) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, velocity, latitude, height, oldFrame, result);
         return result;
     }
@@ -4709,7 +4706,7 @@ public class NEDKinematicsEstimator {
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final double timeInterval, final CoordinateTransformation c,
             final double vn, final double ve, final double vd, final NEDPosition position, final NEDFrame oldFrame) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, vn, ve, vd, position, oldFrame, result);
         return result;
     }
@@ -4735,7 +4732,7 @@ public class NEDKinematicsEstimator {
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final Time timeInterval, final CoordinateTransformation c,
             final double vn, final double ve, final double vd, final NEDPosition position, final NEDFrame oldFrame) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, vn, ve, vd, position, oldFrame, result);
         return result;
     }
@@ -4761,7 +4758,7 @@ public class NEDKinematicsEstimator {
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final double timeInterval, final CoordinateTransformation c, final Speed vn, final Speed ve, final Speed vd,
             final NEDPosition position, final NEDFrame oldFrame) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, vn, ve, vd, position, oldFrame, result);
         return result;
     }
@@ -4787,7 +4784,7 @@ public class NEDKinematicsEstimator {
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final Time timeInterval, final CoordinateTransformation c, final Speed vn, final Speed ve, final Speed vd,
             final NEDPosition position, final NEDFrame oldFrame) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, vn, ve, vd, position, oldFrame, result);
         return result;
     }
@@ -4808,7 +4805,7 @@ public class NEDKinematicsEstimator {
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final double timeInterval, final CoordinateTransformation c, final NEDVelocity velocity,
             final NEDPosition position, final NEDFrame oldFrame) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, velocity, position, oldFrame, result);
         return result;
     }
@@ -4829,7 +4826,7 @@ public class NEDKinematicsEstimator {
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final Time timeInterval, final CoordinateTransformation c, final NEDVelocity velocity,
             final NEDPosition position, final NEDFrame oldFrame) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, velocity, position, oldFrame, result);
         return result;
     }
@@ -4846,7 +4843,7 @@ public class NEDKinematicsEstimator {
      */
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final double timeInterval, final NEDFrame frame, final NEDFrame oldFrame) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, frame, oldFrame, result);
         return result;
     }
@@ -4863,7 +4860,7 @@ public class NEDKinematicsEstimator {
      */
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final Time timeInterval, final NEDFrame frame, final NEDFrame oldFrame) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, frame, oldFrame, result);
         return result;
     }
@@ -4899,7 +4896,7 @@ public class NEDKinematicsEstimator {
             final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
             final Speed vn, final Speed ve, final Speed vd, final Speed oldVn, final Speed oldVe, final Speed oldVd,
             final double latitude, final double height, final double oldLatitude, final double oldHeight) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
                 oldLatitude, oldHeight, result);
         return result;
@@ -4936,7 +4933,7 @@ public class NEDKinematicsEstimator {
             final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
             final Speed vn, final Speed ve, final Speed vd, final Speed oldVn, final Speed oldVe, final Speed oldVd,
             final double latitude, final double height, final double oldLatitude, final double oldHeight) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
                 oldLatitude, oldHeight, result);
         return result;
@@ -4974,7 +4971,7 @@ public class NEDKinematicsEstimator {
             final double vn, final double ve, final double vd,
             final double oldVn, final double oldVe, final double oldVd, final Angle latitude, final double height,
             final Angle oldLatitude, final double oldHeight) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
                 oldLatitude, oldHeight, result);
         return result;
@@ -5012,7 +5009,7 @@ public class NEDKinematicsEstimator {
             final double vn, final double ve, final double vd,
             final double oldVn, final double oldVe, final double oldVd, final Angle latitude, final double height,
             final Angle oldLatitude, final double oldHeight) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
                 oldLatitude, oldHeight, result);
         return result;
@@ -5050,7 +5047,7 @@ public class NEDKinematicsEstimator {
             final double vn, final double ve, final double vd,
             final double oldVn, final double oldVe, final double oldVd, final double latitude, final Distance height,
             final double oldLatitude, final Distance oldHeight) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
                 oldLatitude, oldHeight, result);
         return result;
@@ -5088,7 +5085,7 @@ public class NEDKinematicsEstimator {
             final double vn, final double ve, final double vd,
             final double oldVn, final double oldVe, final double oldVd, final double latitude, final Distance height,
             final double oldLatitude, final Distance oldHeight) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
                 oldLatitude, oldHeight, result);
         return result;
@@ -5125,7 +5122,7 @@ public class NEDKinematicsEstimator {
             final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
             final Speed vn, final Speed ve, final Speed vd, final Speed oldVn, final Speed oldVe, final Speed oldVd,
             final Angle latitude, final Distance height, final Angle oldLatitude, final Distance oldHeight) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
                 oldLatitude, oldHeight, result);
         return result;
@@ -5162,7 +5159,7 @@ public class NEDKinematicsEstimator {
             final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
             final Speed vn, final Speed ve, final Speed vd, final Speed oldVn, final Speed oldVe, final Speed oldVd,
             final Angle latitude, final Distance height, final Angle oldLatitude, final Distance oldHeight) {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
                 oldLatitude, oldHeight, result);
         return result;

@@ -21,11 +21,9 @@ import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.geometry.AxisRotation3D;
 import com.irurueta.geometry.InvalidRotationMatrixException;
 import com.irurueta.geometry.Quaternion;
-import com.irurueta.geometry.Rotation3D;
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.frames.CoordinateTransformation;
-import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.ECEFPosition;
 import com.irurueta.navigation.frames.ECEFVelocity;
 import com.irurueta.navigation.frames.FrameType;
@@ -58,7 +56,6 @@ import com.irurueta.units.TimeConverter;
 import com.irurueta.units.TimeUnit;
 
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.List;
 
 /**
@@ -190,194 +187,194 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * specific force and find cross biases introduced by the accelerometer.
      * This is expressed in meters per squared second (m/s^2).
      */
-    private double mAccelerometerBiasX;
+    private double accelerometerBiasX;
 
     /**
      * Known y-coordinate of accelerometer bias to be used to fix measured
      * specific force and find cross biases introduced by the accelerometer.
      * This is expressed in meters per squared second (m/s^2).
      */
-    private double mAccelerometerBiasY;
+    private double accelerometerBiasY;
 
     /**
      * Known z-coordinate of accelerometer bias to be used to fix measured
      * specific force and find cross biases introduced by the accelerometer.
      * This is expressed in meters per squared second (m/s^2).
      */
-    private double mAccelerometerBiasZ;
+    private double accelerometerBiasZ;
 
     /**
      * Known accelerometer x scaling factor to be used to fix measured
      * specific force and find cross biases introduced by the accelerometer.
      */
-    private double mAccelerometerSx;
+    private double accelerometerSx;
 
     /**
      * Known accelerometer y scaling factor to be used to fix measured
      * specific force and find cross biases introduced by the accelerometer.
      */
-    private double mAccelerometerSy;
+    private double accelerometerSy;
 
     /**
      * Known accelerometer z scaling factor to be used to fix measured
      * specific force and find cross biases introduced by the accelerometer.
      */
-    private double mAccelerometerSz;
+    private double accelerometerSz;
 
     /**
      * Known accelerometer x-y cross coupling error to be used to fix measured
      * specific force and find cross biases introduced by the accelerometer.
      */
-    private double mAccelerometerMxy;
+    private double accelerometerMxy;
 
     /**
      * Know accelerometer x-z cross coupling error to be used to fix measured
      * specific force and find cross biases introduced by the accelerometer.
      */
-    private double mAccelerometerMxz;
+    private double accelerometerMxz;
 
     /**
      * Known accelerometer y-x cross coupling error to be used to fix measured
      * specific force and find cross biases introduced by the accelerometer.
      */
-    private double mAccelerometerMyx;
+    private double accelerometerMyx;
 
     /**
      * Known accelerometer y-z cross coupling error to be used to fix measured
      * specific force and find cross biases introduced by the accelerometer.
      */
-    private double mAccelerometerMyz;
+    private double accelerometerMyz;
 
     /**
      * Known accelerometer z-x cross coupling error to be used to fix measured
      * specific force and find cross biases introduced by the accelerometer.
      */
-    private double mAccelerometerMzx;
+    private double accelerometerMzx;
 
     /**
      * Known accelerometer z-y cross coupling error to be used to fix measured
      * specific force and find cross biases introduced by the accelerometer.
      */
-    private double mAccelerometerMzy;
+    private double accelerometerMzy;
 
     /**
      * Initial x-coordinate of gyroscope bias to be used to find a solution.
      * This is expressed in radians per second (rad/s).
      */
-    private double mInitialBiasX;
+    private double initialBiasX;
 
     /**
      * Initial y-coordinate of gyroscope bias to be used to find a solution.
      * This is expressed in radians per second (rad/s).
      */
-    private double mInitialBiasY;
+    private double initialBiasY;
 
     /**
      * Initial z-coordinate of gyroscope bias to be used to find a solution.
      * This is expressed in radians per second (rad/s).
      */
-    private double mInitialBiasZ;
+    private double initialBiasZ;
 
     /**
      * Initial gyroscope x scaling factor.
      */
-    private double mInitialSx;
+    private double initialSx;
 
     /**
      * Initial gyroscope y scaling factor.
      */
-    private double mInitialSy;
+    private double initialSy;
 
     /**
      * Initial gyroscope z scaling factor.
      */
-    private double mInitialSz;
+    private double initialSz;
 
     /**
      * Initial gyroscope x-y cross coupling error.
      */
-    private double mInitialMxy;
+    private double initialMxy;
 
     /**
      * Initial gyroscope x-z cross coupling error.
      */
-    private double mInitialMxz;
+    private double initialMxz;
 
     /**
      * Initial gyroscope y-x cross coupling error.
      */
-    private double mInitialMyx;
+    private double initialMyx;
 
     /**
      * Initial gyroscope y-z cross coupling error.
      */
-    private double mInitialMyz;
+    private double initialMyz;
 
     /**
      * Initial gyroscope z-x cross coupling error.
      */
-    private double mInitialMzx;
+    private double initialMzx;
 
     /**
      * Initial gyroscope z-y cross coupling error.
      */
-    private double mInitialMzy;
+    private double initialMzy;
 
     /**
      * Initial G-dependent cross biases introduced on the gyroscope by the
      * specific forces sensed by the accelerometer.
      */
-    private Matrix mInitialGg;
+    private Matrix initialGg;
 
     /**
      * Constant rotation rate at which the turntable is spinning.
      * This is expressed in radians per second (rad/s).
      */
-    private double mTurntableRotationRate = DEFAULT_TURNTABLE_ROTATION_RATE;
+    private double turntableRotationRate = DEFAULT_TURNTABLE_ROTATION_RATE;
 
     /**
      * Time interval between measurements being captured expressed in
      * second (s).
      */
-    private double mTimeInterval = DEFAULT_TIME_INTERVAL;
+    private double timeInterval = DEFAULT_TIME_INTERVAL;
 
     /**
      * Contains a collection of body kinematics measurements taken at
      * a given position with different unknown orientations and containing
      * the standard deviations of accelerometer and gyroscope measurements.
      */
-    protected List<StandardDeviationBodyKinematics> mMeasurements;
+    protected List<StandardDeviationBodyKinematics> measurements;
 
     /**
      * Position where body kinematics measures have been taken.
      */
-    private ECEFPosition mPosition;
+    private ECEFPosition position;
 
     /**
      * This flag indicates whether z-axis is assumed to be common for accelerometer
      * and gyroscope.
      * When enabled, this eliminates 3 variables from Mg matrix.
      */
-    private boolean mCommonAxisUsed = DEFAULT_USE_COMMON_Z_AXIS;
+    private boolean commonAxisUsed = DEFAULT_USE_COMMON_Z_AXIS;
 
     /**
      * This flag indicates whether G-dependent cross biases are being
      * estimated or not.
      * When enabled, this adds 9 variables from Gg matrix.
      */
-    private boolean mEstimateGDependentCrossBiases = DEFAULT_ESTIMATE_G_DEPENDENT_CROSS_BIASES;
+    private boolean estimateGDependentCrossBiases = DEFAULT_ESTIMATE_G_DEPENDENT_CROSS_BIASES;
 
     /**
      * Listener to be notified of events such as when calibration starts, ends or its
      * progress significantly changes.
      */
-    protected RobustTurntableGyroscopeCalibratorListener mListener;
+    protected RobustTurntableGyroscopeCalibratorListener listener;
 
     /**
      * Estimated angular rate biases for each IMU axis expressed in radians per
      * second (rad/s).
      */
-    private double[] mEstimatedBiases;
+    private double[] estimatedBiases;
 
     /**
      * Estimated gyroscope scale factors and cross coupling errors.
@@ -418,58 +415,58 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * </pre>
      * Values of this matrix are unit-less.
      */
-    private Matrix mEstimatedMg;
+    private Matrix estimatedMg;
 
     /**
      * Estimated G-dependent cross biases introduced on the gyroscope by the
      * specific forces sensed by the accelerometer.
      * This instance allows any 3x3 matrix.
      */
-    private Matrix mEstimatedGg;
+    private Matrix estimatedGg;
 
     /**
      * Estimated covariance matrix for estimated parameters.
      */
-    private Matrix mEstimatedCovariance;
+    private Matrix estimatedCovariance;
 
     /**
      * Estimated chi square value.
      */
-    private double mEstimatedChiSq;
+    private double estimatedChiSq;
 
     /**
      * Estimated mean square error respect to provided measurements.
      */
-    private double mEstimatedMse;
+    private double estimatedMse;
 
     /**
      * Indicates whether calibrator is running.
      */
-    protected boolean mRunning;
+    protected boolean running;
 
     /**
      * Amount of progress variation before notifying a progress change during calibration.
      */
-    protected float mProgressDelta = DEFAULT_PROGRESS_DELTA;
+    protected float progressDelta = DEFAULT_PROGRESS_DELTA;
 
     /**
      * Amount of confidence expressed as a value between 0.0 and 1.0 (which is equivalent
      * to 100%). The amount of confidence indicates the probability that the estimated
      * result is correct. Usually this value will be close to 1.0, but not exactly 1.0.
      */
-    protected double mConfidence = DEFAULT_CONFIDENCE;
+    protected double confidence = DEFAULT_CONFIDENCE;
 
     /**
      * Maximum allowed number of iterations. When the maximum number of iterations is
      * exceeded, result will not be available, however an approximate result will be
      * available for retrieval.
      */
-    protected int mMaxIterations = DEFAULT_MAX_ITERATIONS;
+    protected int maxIterations = DEFAULT_MAX_ITERATIONS;
 
     /**
      * Data related to inliers found after calibration.
      */
-    protected InliersData mInliersData;
+    protected InliersData inliersData;
 
     /**
      * Indicates whether result must be refined using a non linear calibrator over
@@ -477,30 +474,30 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * If true, inliers will be computed and kept in any implementation regardless of the
      * settings.
      */
-    protected boolean mRefineResult = DEFAULT_REFINE_RESULT;
+    protected boolean refineResult = DEFAULT_REFINE_RESULT;
 
     /**
      * Size of subsets to be checked during robust estimation.
      */
-    protected int mPreliminarySubsetSize = TurntableGyroscopeCalibrator.MINIMUM_MEASUREMENTS_GENERAL_AND_CROSS_BIASES;
+    protected int preliminarySubsetSize = TurntableGyroscopeCalibrator.MINIMUM_MEASUREMENTS_GENERAL_AND_CROSS_BIASES;
 
     /**
      * Indicates whether covariance must be kept after refining result.
      * This setting is only taken into account if result is refined.
      */
-    private boolean mKeepCovariance = DEFAULT_KEEP_COVARIANCE;
+    private boolean keepCovariance = DEFAULT_KEEP_COVARIANCE;
 
     /**
      * Inner non-robust calibrator.
      */
-    private final TurntableGyroscopeCalibrator mInnerCalibrator = new TurntableGyroscopeCalibrator();
+    private final TurntableGyroscopeCalibrator innerCalibrator = new TurntableGyroscopeCalibrator();
 
     /**
      * Constructor.
      */
     protected RobustTurntableGyroscopeCalibrator() {
         try {
-            mInitialGg = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+            initialGg = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         } catch (final WrongSizeException ignore) {
             // never happens
         }
@@ -542,8 +539,8 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
             final List<StandardDeviationBodyKinematics> measurements, final Matrix initialBias, final Matrix initialMg,
             final Matrix initialGg) {
         this();
-        mPosition = position;
-        mMeasurements = measurements;
+        this.position = position;
+        this.measurements = measurements;
         try {
             setTurntableRotationRate(turntableRotationRate);
             setTimeInterval(timeInterval);
@@ -593,7 +590,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
             final List<StandardDeviationBodyKinematics> measurements, final Matrix initialBias, final Matrix initialMg,
             final Matrix initialGg, final RobustTurntableGyroscopeCalibratorListener listener) {
         this(position, turntableRotationRate, timeInterval, measurements, initialBias, initialMg, initialGg);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -632,8 +629,8 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
             final List<StandardDeviationBodyKinematics> measurements, final double[] initialBias,
             final Matrix initialMg, final Matrix initialGg) {
         this();
-        mPosition = position;
-        mMeasurements = measurements;
+        this.position = position;
+        this.measurements = measurements;
         try {
             setTurntableRotationRate(turntableRotationRate);
             setTimeInterval(timeInterval);
@@ -683,7 +680,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
             final List<StandardDeviationBodyKinematics> measurements, final double[] initialBias,
             final Matrix initialMg, final Matrix initialGg, final RobustTurntableGyroscopeCalibratorListener listener) {
         this(position, turntableRotationRate, timeInterval, measurements, initialBias, initialMg, initialGg);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -783,7 +780,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
             final RobustTurntableGyroscopeCalibratorListener listener) {
         this(position, turntableRotationRate, timeInterval, measurements, initialBias, initialMg, initialGg,
                 accelerometerBias, accelerometerMa);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -881,7 +878,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
             final RobustTurntableGyroscopeCalibratorListener listener) {
         this(position, turntableRotationRate, timeInterval, measurements, initialBias, initialMg, initialGg,
                 accelerometerBias, accelerometerMa);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -931,8 +928,8 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
             final boolean estimateGDependentCrossBiases, final Matrix initialBias, final Matrix initialMg,
             final Matrix initialGg) {
         this(position, turntableRotationRate, timeInterval, measurements, initialBias, initialMg, initialGg);
-        mCommonAxisUsed = commonAxisUsed;
-        mEstimateGDependentCrossBiases = estimateGDependentCrossBiases;
+        this.commonAxisUsed = commonAxisUsed;
+        this.estimateGDependentCrossBiases = estimateGDependentCrossBiases;
     }
 
     /**
@@ -984,7 +981,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
             final Matrix initialGg, final RobustTurntableGyroscopeCalibratorListener listener) {
         this(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
                 estimateGDependentCrossBiases, initialBias, initialMg, initialGg);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1035,8 +1032,8 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
             final boolean estimateGDependentCrossBiases, final double[] initialBias, final Matrix initialMg,
             final Matrix initialGg) {
         this(position, turntableRotationRate, timeInterval, measurements, initialBias, initialMg, initialGg);
-        mCommonAxisUsed = commonAxisUsed;
-        mEstimateGDependentCrossBiases = estimateGDependentCrossBiases;
+        this.commonAxisUsed = commonAxisUsed;
+        this.estimateGDependentCrossBiases = estimateGDependentCrossBiases;
     }
 
     /**
@@ -1090,7 +1087,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
             final Matrix initialGg, final RobustTurntableGyroscopeCalibratorListener listener) {
         this(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
                 estimateGDependentCrossBiases, initialBias, initialMg, initialGg);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1149,8 +1146,8 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
             final Matrix initialGg, final double[] accelerometerBias, final Matrix accelerometerMa) {
         this(position, turntableRotationRate, timeInterval, measurements, initialBias, initialMg, initialGg,
                 accelerometerBias, accelerometerMa);
-        mCommonAxisUsed = commonAxisUsed;
-        mEstimateGDependentCrossBiases = estimateGDependentCrossBiases;
+        this.commonAxisUsed = commonAxisUsed;
+        this.estimateGDependentCrossBiases = estimateGDependentCrossBiases;
     }
 
     /**
@@ -1211,7 +1208,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
             final RobustTurntableGyroscopeCalibratorListener listener) {
         this(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
                 estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1268,8 +1265,8 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
             final Matrix initialGg, final Matrix accelerometerBias, final Matrix accelerometerMa) {
         this(position, turntableRotationRate, timeInterval, measurements, initialBias, initialMg, initialGg,
                 accelerometerBias, accelerometerMa);
-        mCommonAxisUsed = commonAxisUsed;
-        mEstimateGDependentCrossBiases = estimateGDependentCrossBiases;
+        this.commonAxisUsed = commonAxisUsed;
+        this.estimateGDependentCrossBiases = estimateGDependentCrossBiases;
     }
 
     /**
@@ -1329,7 +1326,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
             final RobustTurntableGyroscopeCalibratorListener listener) {
         this(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
                 estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2127,7 +2124,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public double getAccelerometerBiasX() {
-        return mAccelerometerBiasX;
+        return accelerometerBiasX;
     }
 
     /**
@@ -2141,10 +2138,10 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public void setAccelerometerBiasX(final double accelerometerBiasX) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mAccelerometerBiasX = accelerometerBiasX;
+        this.accelerometerBiasX = accelerometerBiasX;
     }
 
     /**
@@ -2157,7 +2154,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public double getAccelerometerBiasY() {
-        return mAccelerometerBiasY;
+        return accelerometerBiasY;
     }
 
     /**
@@ -2171,10 +2168,10 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public void setAccelerometerBiasY(final double accelerometerBiasY) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mAccelerometerBiasY = accelerometerBiasY;
+        this.accelerometerBiasY = accelerometerBiasY;
     }
 
     /**
@@ -2187,7 +2184,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public double getAccelerometerBiasZ() {
-        return mAccelerometerBiasZ;
+        return accelerometerBiasZ;
     }
 
     /**
@@ -2201,10 +2198,10 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public void setAccelerometerBiasZ(final double accelerometerBiasZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mAccelerometerBiasZ = accelerometerBiasZ;
+        this.accelerometerBiasZ = accelerometerBiasZ;
     }
 
     /**
@@ -2216,7 +2213,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public Acceleration getAccelerometerBiasXAsAcceleration() {
-        return new Acceleration(mAccelerometerBiasX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(accelerometerBiasX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -2228,7 +2225,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public void getAccelerometerBiasXAsAcceleration(final Acceleration result) {
-        result.setValue(mAccelerometerBiasX);
+        result.setValue(accelerometerBiasX);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -2242,10 +2239,10 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public void setAccelerometerBiasX(final Acceleration accelerometerBiasX) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mAccelerometerBiasX = convertAcceleration(accelerometerBiasX);
+        this.accelerometerBiasX = convertAcceleration(accelerometerBiasX);
     }
 
     /**
@@ -2257,7 +2254,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public Acceleration getAccelerometerBiasYAsAcceleration() {
-        return new Acceleration(mAccelerometerBiasY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(accelerometerBiasY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -2269,7 +2266,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public void getAccelerometerBiasYAsAcceleration(final Acceleration result) {
-        result.setValue(mAccelerometerBiasY);
+        result.setValue(accelerometerBiasY);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -2283,10 +2280,10 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public void setAccelerometerBiasY(final Acceleration accelerometerBiasY) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mAccelerometerBiasY = convertAcceleration(accelerometerBiasY);
+        this.accelerometerBiasY = convertAcceleration(accelerometerBiasY);
     }
 
     /**
@@ -2298,7 +2295,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public Acceleration getAccelerometerBiasZAsAcceleration() {
-        return new Acceleration(mAccelerometerBiasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(accelerometerBiasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -2310,7 +2307,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public void getAccelerometerBiasZAsAcceleration(final Acceleration result) {
-        result.setValue(mAccelerometerBiasZ);
+        result.setValue(accelerometerBiasZ);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -2324,10 +2321,10 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public void setAccelerometerBiasZ(final Acceleration accelerometerBiasZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mAccelerometerBiasZ = convertAcceleration(accelerometerBiasZ);
+        this.accelerometerBiasZ = convertAcceleration(accelerometerBiasZ);
     }
 
     /**
@@ -2344,13 +2341,13 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
     public void setAccelerometerBias(
             final double accelerometerBiasX, final double accelerometerBiasY, final double accelerometerBiasZ)
             throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mAccelerometerBiasX = accelerometerBiasX;
-        mAccelerometerBiasY = accelerometerBiasY;
-        mAccelerometerBiasZ = accelerometerBiasZ;
+        this.accelerometerBiasX = accelerometerBiasX;
+        this.accelerometerBiasY = accelerometerBiasY;
+        this.accelerometerBiasZ = accelerometerBiasZ;
     }
 
     /**
@@ -2366,13 +2363,13 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
     public void setAccelerometerBias(
             final Acceleration accelerometerBiasX, final Acceleration accelerometerBiasY,
             final Acceleration accelerometerBiasZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mAccelerometerBiasX = convertAcceleration(accelerometerBiasX);
-        mAccelerometerBiasY = convertAcceleration(accelerometerBiasY);
-        mAccelerometerBiasZ = convertAcceleration(accelerometerBiasZ);
+        this.accelerometerBiasX = convertAcceleration(accelerometerBiasX);
+        this.accelerometerBiasY = convertAcceleration(accelerometerBiasY);
+        this.accelerometerBiasZ = convertAcceleration(accelerometerBiasZ);
     }
 
     /**
@@ -2384,7 +2381,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public double[] getAccelerometerBias() {
-        final double[] result = new double[BodyKinematics.COMPONENTS];
+        final var result = new double[BodyKinematics.COMPONENTS];
         getAccelerometerBias(result);
         return result;
     }
@@ -2404,9 +2401,9 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
             throw new IllegalArgumentException();
         }
 
-        result[0] = mAccelerometerBiasX;
-        result[1] = mAccelerometerBiasY;
-        result[2] = mAccelerometerBiasZ;
+        result[0] = accelerometerBiasX;
+        result[1] = accelerometerBiasY;
+        result[2] = accelerometerBiasZ;
     }
 
     /**
@@ -2421,7 +2418,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public void setAccelerometerBias(final double[] accelerometerBias) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
@@ -2429,9 +2426,9 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
             throw new IllegalArgumentException();
         }
 
-        mAccelerometerBiasX = accelerometerBias[0];
-        mAccelerometerBiasY = accelerometerBias[1];
-        mAccelerometerBiasZ = accelerometerBias[2];
+        accelerometerBiasX = accelerometerBias[0];
+        accelerometerBiasY = accelerometerBias[1];
+        accelerometerBiasZ = accelerometerBias[2];
     }
 
     /**
@@ -2467,9 +2464,9 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
         if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
-        result.setElementAtIndex(0, mAccelerometerBiasX);
-        result.setElementAtIndex(1, mAccelerometerBiasY);
-        result.setElementAtIndex(2, mAccelerometerBiasZ);
+        result.setElementAtIndex(0, accelerometerBiasX);
+        result.setElementAtIndex(1, accelerometerBiasY);
+        result.setElementAtIndex(2, accelerometerBiasZ);
     }
 
     /**
@@ -2483,16 +2480,16 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public void setAccelerometerBias(final Matrix accelerometerBias) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (accelerometerBias.getRows() != BodyKinematics.COMPONENTS || accelerometerBias.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
-        mAccelerometerBiasX = accelerometerBias.getElementAtIndex(0);
-        mAccelerometerBiasY = accelerometerBias.getElementAtIndex(1);
-        mAccelerometerBiasZ = accelerometerBias.getElementAtIndex(2);
+        accelerometerBiasX = accelerometerBias.getElementAtIndex(0);
+        accelerometerBiasY = accelerometerBias.getElementAtIndex(1);
+        accelerometerBiasZ = accelerometerBias.getElementAtIndex(2);
     }
 
     /**
@@ -2503,7 +2500,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public double getAccelerometerSx() {
-        return mAccelerometerSx;
+        return accelerometerSx;
     }
 
     /**
@@ -2515,10 +2512,10 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public void setAccelerometerSx(final double accelerometerSx) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mAccelerometerSx = accelerometerSx;
+        this.accelerometerSx = accelerometerSx;
     }
 
     /**
@@ -2529,7 +2526,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public double getAccelerometerSy() {
-        return mAccelerometerSy;
+        return accelerometerSy;
     }
 
     /**
@@ -2541,10 +2538,10 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public void setAccelerometerSy(final double accelerometerSy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mAccelerometerSy = accelerometerSy;
+        this.accelerometerSy = accelerometerSy;
     }
 
     /**
@@ -2555,7 +2552,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public double getAccelerometerSz() {
-        return mAccelerometerSz;
+        return accelerometerSz;
     }
 
     /**
@@ -2567,10 +2564,10 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public void setAccelerometerSz(final double accelerometerSz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mAccelerometerSz = accelerometerSz;
+        this.accelerometerSz = accelerometerSz;
     }
 
     /**
@@ -2582,7 +2579,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public double getAccelerometerMxy() {
-        return mAccelerometerMxy;
+        return accelerometerMxy;
     }
 
     /**
@@ -2595,10 +2592,10 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public void setAccelerometerMxy(final double accelerometerMxy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mAccelerometerMxy = accelerometerMxy;
+        this.accelerometerMxy = accelerometerMxy;
     }
 
     /**
@@ -2610,7 +2607,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public double getAccelerometerMxz() {
-        return mAccelerometerMxz;
+        return accelerometerMxz;
     }
 
     /**
@@ -2623,10 +2620,10 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public void setAccelerometerMxz(final double accelerometerMxz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mAccelerometerMxz = accelerometerMxz;
+        this.accelerometerMxz = accelerometerMxz;
     }
 
     /**
@@ -2638,7 +2635,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public double getAccelerometerMyx() {
-        return mAccelerometerMyx;
+        return accelerometerMyx;
     }
 
     /**
@@ -2652,10 +2649,10 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public void setAccelerometerMyx(final double accelerometerMyx) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mAccelerometerMyx = accelerometerMyx;
+        this.accelerometerMyx = accelerometerMyx;
     }
 
     /**
@@ -2667,7 +2664,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public double getAccelerometerMyz() {
-        return mAccelerometerMyz;
+        return accelerometerMyz;
     }
 
     /**
@@ -2681,10 +2678,10 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public void setAccelerometerMyz(final double accelerometerMyz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mAccelerometerMyz = accelerometerMyz;
+        this.accelerometerMyz = accelerometerMyz;
     }
 
     /**
@@ -2696,7 +2693,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public double getAccelerometerMzx() {
-        return mAccelerometerMzx;
+        return accelerometerMzx;
     }
 
     /**
@@ -2710,10 +2707,10 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public void setAccelerometerMzx(final double accelerometerMzx) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mAccelerometerMzx = accelerometerMzx;
+        this.accelerometerMzx = accelerometerMzx;
     }
 
     /**
@@ -2725,7 +2722,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public double getAccelerometerMzy() {
-        return mAccelerometerMzy;
+        return accelerometerMzy;
     }
 
     /**
@@ -2739,10 +2736,10 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public void setAccelerometerMzy(final double accelerometerMzy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mAccelerometerMzy = accelerometerMzy;
+        this.accelerometerMzy = accelerometerMzy;
     }
 
     /**
@@ -2759,12 +2756,12 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
     public void setAccelerometerScalingFactors(
             final double accelerometerSx, final double accelerometerSy, final double accelerometerSz)
             throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mAccelerometerSx = accelerometerSx;
-        mAccelerometerSy = accelerometerSy;
-        mAccelerometerSz = accelerometerSz;
+        this.accelerometerSx = accelerometerSx;
+        this.accelerometerSy = accelerometerSy;
+        this.accelerometerSz = accelerometerSz;
     }
 
     /**
@@ -2791,15 +2788,15 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
             final double accelerometerMxy, final double accelerometerMxz,
             final double accelerometerMyx, final double accelerometerMyz,
             final double accelerometerMzx, final double accelerometerMzy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mAccelerometerMxy = accelerometerMxy;
-        mAccelerometerMxz = accelerometerMxz;
-        mAccelerometerMyx = accelerometerMyx;
-        mAccelerometerMyz = accelerometerMyz;
-        mAccelerometerMzx = accelerometerMzx;
-        mAccelerometerMzy = accelerometerMzy;
+        this.accelerometerMxy = accelerometerMxy;
+        this.accelerometerMxz = accelerometerMxz;
+        this.accelerometerMyx = accelerometerMyx;
+        this.accelerometerMyz = accelerometerMyz;
+        this.accelerometerMzx = accelerometerMzx;
+        this.accelerometerMzy = accelerometerMzy;
     }
 
     /**
@@ -2830,7 +2827,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
             final double accelerometerMxy, final double accelerometerMxz, final double accelerometerMyx,
             final double accelerometerMyz, final double accelerometerMzx, final double accelerometerMzy)
             throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         setAccelerometerScalingFactors(accelerometerSx, accelerometerSy, accelerometerSz);
@@ -2870,17 +2867,17 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
         if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        result.setElementAtIndex(0, mAccelerometerSx);
-        result.setElementAtIndex(1, mAccelerometerMyx);
-        result.setElementAtIndex(2, mAccelerometerMzx);
+        result.setElementAtIndex(0, accelerometerSx);
+        result.setElementAtIndex(1, accelerometerMyx);
+        result.setElementAtIndex(2, accelerometerMzx);
 
-        result.setElementAtIndex(3, mAccelerometerMxy);
-        result.setElementAtIndex(4, mAccelerometerSy);
-        result.setElementAtIndex(5, mAccelerometerMzy);
+        result.setElementAtIndex(3, accelerometerMxy);
+        result.setElementAtIndex(4, accelerometerSy);
+        result.setElementAtIndex(5, accelerometerMzy);
 
-        result.setElementAtIndex(6, mAccelerometerMxz);
-        result.setElementAtIndex(7, mAccelerometerMyz);
-        result.setElementAtIndex(8, mAccelerometerSz);
+        result.setElementAtIndex(6, accelerometerMxz);
+        result.setElementAtIndex(7, accelerometerMyz);
+        result.setElementAtIndex(8, accelerometerSz);
     }
 
     /**
@@ -2894,7 +2891,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public void setAccelerometerMa(final Matrix accelerometerMa) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (accelerometerMa.getRows() != BodyKinematics.COMPONENTS
@@ -2902,17 +2899,17 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
             throw new IllegalArgumentException();
         }
 
-        mAccelerometerSx = accelerometerMa.getElementAtIndex(0);
-        mAccelerometerMyx = accelerometerMa.getElementAtIndex(1);
-        mAccelerometerMzx = accelerometerMa.getElementAtIndex(2);
+        accelerometerSx = accelerometerMa.getElementAtIndex(0);
+        accelerometerMyx = accelerometerMa.getElementAtIndex(1);
+        accelerometerMzx = accelerometerMa.getElementAtIndex(2);
 
-        mAccelerometerMxy = accelerometerMa.getElementAtIndex(3);
-        mAccelerometerSy = accelerometerMa.getElementAtIndex(4);
-        mAccelerometerMzy = accelerometerMa.getElementAtIndex(5);
+        accelerometerMxy = accelerometerMa.getElementAtIndex(3);
+        accelerometerSy = accelerometerMa.getElementAtIndex(4);
+        accelerometerMzy = accelerometerMa.getElementAtIndex(5);
 
-        mAccelerometerMxz = accelerometerMa.getElementAtIndex(6);
-        mAccelerometerMyz = accelerometerMa.getElementAtIndex(7);
-        mAccelerometerSz = accelerometerMa.getElementAtIndex(8);
+        accelerometerMxz = accelerometerMa.getElementAtIndex(6);
+        accelerometerMyz = accelerometerMa.getElementAtIndex(7);
+        accelerometerSz = accelerometerMa.getElementAtIndex(8);
     }
 
     /**
@@ -2923,7 +2920,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @return initial x-coordinate of gyroscope bias.
      */
     public double getInitialBiasX() {
-        return mInitialBiasX;
+        return initialBiasX;
     }
 
     /**
@@ -2935,10 +2932,10 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @throws LockedException if calibrator is currently running.
      */
     public void setInitialBiasX(final double initialBiasX) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialBiasX = initialBiasX;
+        this.initialBiasX = initialBiasX;
     }
 
     /**
@@ -2949,7 +2946,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @return initial y-coordinate of gyroscope bias.
      */
     public double getInitialBiasY() {
-        return mInitialBiasY;
+        return initialBiasY;
     }
 
     /**
@@ -2961,10 +2958,10 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @throws LockedException if calibrator is currently running.
      */
     public void setInitialBiasY(final double initialBiasY) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialBiasY = initialBiasY;
+        this.initialBiasY = initialBiasY;
     }
 
     /**
@@ -2975,7 +2972,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @return initial z-coordinate of gyroscope bias.
      */
     public double getInitialBiasZ() {
-        return mInitialBiasZ;
+        return initialBiasZ;
     }
 
     /**
@@ -2987,10 +2984,10 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @throws LockedException if calibrator is currently running.
      */
     public void setInitialBiasZ(final double initialBiasZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialBiasZ = initialBiasZ;
+        this.initialBiasZ = initialBiasZ;
     }
 
     /**
@@ -3000,7 +2997,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @return initial x-coordinate of gyroscope bias.
      */
     public AngularSpeed getInitialBiasAngularSpeedX() {
-        return new AngularSpeed(mInitialBiasX, AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(initialBiasX, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -3010,7 +3007,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @param result instance where result data will be stored.
      */
     public void getInitialBiasAngularSpeedX(final AngularSpeed result) {
-        result.setValue(mInitialBiasX);
+        result.setValue(initialBiasX);
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -3022,10 +3019,10 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @throws LockedException if calibrator is currently running.
      */
     public void setInitialBiasX(final AngularSpeed initialBiasX) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialBiasX = convertAngularSpeed(initialBiasX);
+        this.initialBiasX = convertAngularSpeed(initialBiasX);
     }
 
     /**
@@ -3035,7 +3032,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @return initial y-coordinate of gyroscope bias.
      */
     public AngularSpeed getInitialBiasAngularSpeedY() {
-        return new AngularSpeed(mInitialBiasY, AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(initialBiasY, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -3045,7 +3042,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @param result instance where result data will be stored.
      */
     public void getInitialBiasAngularSpeedY(final AngularSpeed result) {
-        result.setValue(mInitialBiasY);
+        result.setValue(initialBiasY);
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -3057,10 +3054,10 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @throws LockedException if calibrator is currently running.
      */
     public void setInitialBiasY(final AngularSpeed initialBiasY) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialBiasY = convertAngularSpeed(initialBiasY);
+        this.initialBiasY = convertAngularSpeed(initialBiasY);
     }
 
     /**
@@ -3070,7 +3067,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @return initial z-coordinate of gyroscope bias.
      */
     public AngularSpeed getInitialBiasAngularSpeedZ() {
-        return new AngularSpeed(mInitialBiasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(initialBiasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -3080,7 +3077,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @param result instance where result data will be stored.
      */
     public void getInitialBiasAngularSpeedZ(final AngularSpeed result) {
-        result.setValue(mInitialBiasZ);
+        result.setValue(initialBiasZ);
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -3092,10 +3089,10 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @throws LockedException if calibrator is currently running.
      */
     public void setInitialBiasZ(final AngularSpeed initialBiasZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialBiasZ = convertAngularSpeed(initialBiasZ);
+        this.initialBiasZ = convertAngularSpeed(initialBiasZ);
     }
 
     /**
@@ -3109,12 +3106,12 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     public void setInitialBias(
             final double initialBiasX, final double initialBiasY, final double initialBiasZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialBiasX = initialBiasX;
-        mInitialBiasY = initialBiasY;
-        mInitialBiasZ = initialBiasZ;
+        this.initialBiasX = initialBiasX;
+        this.initialBiasY = initialBiasY;
+        this.initialBiasZ = initialBiasZ;
     }
 
     /**
@@ -3128,12 +3125,12 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
     public void setInitialBias(
             final AngularSpeed initialBiasX, final AngularSpeed initialBiasY, final AngularSpeed initialBiasZ)
             throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialBiasX = convertAngularSpeed(initialBiasX);
-        mInitialBiasY = convertAngularSpeed(initialBiasY);
-        mInitialBiasZ = convertAngularSpeed(initialBiasZ);
+        this.initialBiasX = convertAngularSpeed(initialBiasX);
+        this.initialBiasY = convertAngularSpeed(initialBiasY);
+        this.initialBiasZ = convertAngularSpeed(initialBiasZ);
     }
 
     /**
@@ -3143,7 +3140,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public double getInitialSx() {
-        return mInitialSx;
+        return initialSx;
     }
 
     /**
@@ -3154,10 +3151,10 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public void setInitialSx(final double initialSx) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialSx = initialSx;
+        this.initialSx = initialSx;
     }
 
     /**
@@ -3167,7 +3164,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public double getInitialSy() {
-        return mInitialSy;
+        return initialSy;
     }
 
     /**
@@ -3178,10 +3175,10 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public void setInitialSy(final double initialSy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialSy = initialSy;
+        this.initialSy = initialSy;
     }
 
     /**
@@ -3191,7 +3188,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public double getInitialSz() {
-        return mInitialSz;
+        return initialSz;
     }
 
     /**
@@ -3202,10 +3199,10 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public void setInitialSz(final double initialSz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialSz = initialSz;
+        this.initialSz = initialSz;
     }
 
     /**
@@ -3215,7 +3212,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public double getInitialMxy() {
-        return mInitialMxy;
+        return initialMxy;
     }
 
     /**
@@ -3226,10 +3223,10 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public void setInitialMxy(final double initialMxy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMxy = initialMxy;
+        this.initialMxy = initialMxy;
     }
 
     /**
@@ -3239,7 +3236,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public double getInitialMxz() {
-        return mInitialMxz;
+        return initialMxz;
     }
 
     /**
@@ -3250,10 +3247,10 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public void setInitialMxz(final double initialMxz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMxz = initialMxz;
+        this.initialMxz = initialMxz;
     }
 
     /**
@@ -3263,7 +3260,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public double getInitialMyx() {
-        return mInitialMyx;
+        return initialMyx;
     }
 
     /**
@@ -3274,10 +3271,10 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public void setInitialMyx(final double initialMyx) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMyx = initialMyx;
+        this.initialMyx = initialMyx;
     }
 
     /**
@@ -3287,7 +3284,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public double getInitialMyz() {
-        return mInitialMyz;
+        return initialMyz;
     }
 
     /**
@@ -3298,10 +3295,10 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public void setInitialMyz(final double initialMyz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMyz = initialMyz;
+        this.initialMyz = initialMyz;
     }
 
     /**
@@ -3311,7 +3308,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public double getInitialMzx() {
-        return mInitialMzx;
+        return initialMzx;
     }
 
     /**
@@ -3322,10 +3319,10 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public void setInitialMzx(final double initialMzx) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMzx = initialMzx;
+        this.initialMzx = initialMzx;
     }
 
     /**
@@ -3335,7 +3332,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public double getInitialMzy() {
-        return mInitialMzy;
+        return initialMzy;
     }
 
     /**
@@ -3346,10 +3343,10 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public void setInitialMzy(final double initialMzy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMzy = initialMzy;
+        this.initialMzy = initialMzy;
     }
 
     /**
@@ -3363,12 +3360,12 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
     @Override
     public void setInitialScalingFactors(
             final double initialSx, final double initialSy, final double initialSz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialSx = initialSx;
-        mInitialSy = initialSy;
-        mInitialSz = initialSz;
+        this.initialSx = initialSx;
+        this.initialSy = initialSy;
+        this.initialSz = initialSz;
     }
 
     /**
@@ -3387,15 +3384,15 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy)
             throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMxy = initialMxy;
-        mInitialMxz = initialMxz;
-        mInitialMyx = initialMyx;
-        mInitialMyz = initialMyz;
-        mInitialMzx = initialMzx;
-        mInitialMzy = initialMzy;
+        this.initialMxy = initialMxy;
+        this.initialMxz = initialMxz;
+        this.initialMyx = initialMyx;
+        this.initialMyz = initialMyz;
+        this.initialMzx = initialMzx;
+        this.initialMzy = initialMzy;
     }
 
     /**
@@ -3418,7 +3415,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
             final double initialSx, final double initialSy, final double initialSz,
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         setInitialScalingFactors(initialSx, initialSy, initialSz);
@@ -3450,9 +3447,9 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
         if (result.length != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        result[0] = mInitialBiasX;
-        result[1] = mInitialBiasY;
-        result[2] = mInitialBiasZ;
+        result[0] = initialBiasX;
+        result[1] = initialBiasY;
+        result[2] = initialBiasZ;
     }
 
     /**
@@ -3465,16 +3462,16 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
     public void setInitialBias(final double[] initialBias) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
         if (initialBias.length != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        mInitialBiasX = initialBias[0];
-        mInitialBiasY = initialBias[1];
-        mInitialBiasZ = initialBias[2];
+        initialBiasX = initialBias[0];
+        initialBiasY = initialBias[1];
+        initialBiasZ = initialBias[2];
     }
 
     /**
@@ -3509,9 +3506,9 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
         if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
-        result.setElementAtIndex(0, mInitialBiasX);
-        result.setElementAtIndex(1, mInitialBiasY);
-        result.setElementAtIndex(2, mInitialBiasZ);
+        result.setElementAtIndex(0, initialBiasX);
+        result.setElementAtIndex(1, initialBiasY);
+        result.setElementAtIndex(2, initialBiasZ);
     }
 
     /**
@@ -3523,16 +3520,16 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
     public void setInitialBias(final Matrix initialBias) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (initialBias.getRows() != BodyKinematics.COMPONENTS || initialBias.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
-        mInitialBiasX = initialBias.getElementAtIndex(0);
-        mInitialBiasY = initialBias.getElementAtIndex(1);
-        mInitialBiasZ = initialBias.getElementAtIndex(2);
+        initialBiasX = initialBias.getElementAtIndex(0);
+        initialBiasY = initialBias.getElementAtIndex(1);
+        initialBiasZ = initialBias.getElementAtIndex(2);
     }
 
     /**
@@ -3541,7 +3538,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @return initial bias coordinates.
      */
     public AngularSpeedTriad getInitialBiasAsTriad() {
-        return new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND, mInitialBiasX, mInitialBiasY, mInitialBiasZ);
+        return new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND, initialBiasX, initialBiasY, initialBiasZ);
     }
 
     /**
@@ -3550,7 +3547,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @param result instance where result will be stored.
      */
     public void getInitialBiasAsTriad(final AngularSpeedTriad result) {
-        result.setValueCoordinatesAndUnit(mInitialBiasX, mInitialBiasY, mInitialBiasZ,
+        result.setValueCoordinatesAndUnit(initialBiasX, initialBiasY, initialBiasZ,
                 AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -3561,13 +3558,13 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @throws LockedException if calibrator is currently running.
      */
     public void setInitialBias(final AngularSpeedTriad initialBias) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mInitialBiasX = convertAngularSpeed(initialBias.getValueX(), initialBias.getUnit());
-        mInitialBiasY = convertAngularSpeed(initialBias.getValueY(), initialBias.getUnit());
-        mInitialBiasZ = convertAngularSpeed(initialBias.getValueZ(), initialBias.getUnit());
+        initialBiasX = convertAngularSpeed(initialBias.getValueX(), initialBias.getUnit());
+        initialBiasY = convertAngularSpeed(initialBias.getValueY(), initialBias.getUnit());
+        initialBiasZ = convertAngularSpeed(initialBias.getValueZ(), initialBias.getUnit());
     }
 
     /**
@@ -3602,17 +3599,17 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
         if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        result.setElementAtIndex(0, mInitialSx);
-        result.setElementAtIndex(1, mInitialMyx);
-        result.setElementAtIndex(2, mInitialMzx);
+        result.setElementAtIndex(0, initialSx);
+        result.setElementAtIndex(1, initialMyx);
+        result.setElementAtIndex(2, initialMzx);
 
-        result.setElementAtIndex(3, mInitialMxy);
-        result.setElementAtIndex(4, mInitialSy);
-        result.setElementAtIndex(5, mInitialMzy);
+        result.setElementAtIndex(3, initialMxy);
+        result.setElementAtIndex(4, initialSy);
+        result.setElementAtIndex(5, initialMzy);
 
-        result.setElementAtIndex(6, mInitialMxz);
-        result.setElementAtIndex(7, mInitialMyz);
-        result.setElementAtIndex(8, mInitialSz);
+        result.setElementAtIndex(6, initialMxz);
+        result.setElementAtIndex(7, initialMyz);
+        result.setElementAtIndex(8, initialSz);
     }
 
     /**
@@ -3624,24 +3621,24 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public void setInitialMg(final Matrix initialMg) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (initialMg.getRows() != BodyKinematics.COMPONENTS || initialMg.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
-        mInitialSx = initialMg.getElementAtIndex(0);
-        mInitialMyx = initialMg.getElementAtIndex(1);
-        mInitialMzx = initialMg.getElementAtIndex(2);
+        initialSx = initialMg.getElementAtIndex(0);
+        initialMyx = initialMg.getElementAtIndex(1);
+        initialMzx = initialMg.getElementAtIndex(2);
 
-        mInitialMxy = initialMg.getElementAtIndex(3);
-        mInitialSy = initialMg.getElementAtIndex(4);
-        mInitialMzy = initialMg.getElementAtIndex(5);
+        initialMxy = initialMg.getElementAtIndex(3);
+        initialSy = initialMg.getElementAtIndex(4);
+        initialMzy = initialMg.getElementAtIndex(5);
 
-        mInitialMxz = initialMg.getElementAtIndex(6);
-        mInitialMyz = initialMg.getElementAtIndex(7);
-        mInitialSz = initialMg.getElementAtIndex(8);
+        initialMxz = initialMg.getElementAtIndex(6);
+        initialMyz = initialMg.getElementAtIndex(7);
+        initialSz = initialMg.getElementAtIndex(8);
     }
 
     /**
@@ -3652,7 +3649,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public Matrix getInitialGg() {
-        return new Matrix(mInitialGg);
+        return new Matrix(initialGg);
     }
 
     /**
@@ -3669,7 +3666,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
             throw new IllegalArgumentException();
         }
 
-        result.copyFrom(mInitialGg);
+        result.copyFrom(initialGg);
     }
 
     /**
@@ -3682,7 +3679,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public void setInitialGg(final Matrix initialGg) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
@@ -3690,7 +3687,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
             throw new IllegalArgumentException();
         }
 
-        initialGg.copyTo(mInitialGg);
+        initialGg.copyTo(this.initialGg);
     }
 
     /**
@@ -3700,7 +3697,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @return constant rotation rate of turntable.
      */
     public double getTurntableRotationRate() {
-        return mTurntableRotationRate;
+        return turntableRotationRate;
     }
 
     /**
@@ -3713,14 +3710,14 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      *                                  negative.
      */
     public void setTurntableRotationRate(final double turntableRotationRate) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (turntableRotationRate <= 0.0) {
             throw new IllegalArgumentException();
         }
 
-        mTurntableRotationRate = turntableRotationRate;
+        this.turntableRotationRate = turntableRotationRate;
     }
 
     /**
@@ -3729,7 +3726,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @return constant rotation rate of turntable.
      */
     public AngularSpeed getTurntableRotationRateAsAngularSpeed() {
-        return new AngularSpeed(mTurntableRotationRate, AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(turntableRotationRate, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -3738,7 +3735,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @param result instance where result will be stored.
      */
     public void getTurntableRotationRateAsAngularSpeed(final AngularSpeed result) {
-        result.setValue(mTurntableRotationRate);
+        result.setValue(turntableRotationRate);
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -3751,7 +3748,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      *                                  negative.
      */
     public void setTurntableRotationRate(final AngularSpeed turntableRotationRate) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         setTurntableRotationRate(convertAngularSpeed(turntableRotationRate));
@@ -3764,7 +3761,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @return time interval between measurements.
      */
     public double getTimeInterval() {
-        return mTimeInterval;
+        return timeInterval;
     }
 
     /**
@@ -3777,14 +3774,14 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      *                                  negative.
      */
     public void setTimeInterval(final double timeInterval) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
         if (timeInterval <= 0.0) {
             throw new IllegalArgumentException();
         }
-        mTimeInterval = timeInterval;
+        this.timeInterval = timeInterval;
     }
 
     /**
@@ -3793,7 +3790,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @return time interval between measurements.
      */
     public Time getTimeIntervalAsTime() {
-        return new Time(mTimeInterval, TimeUnit.SECOND);
+        return new Time(timeInterval, TimeUnit.SECOND);
     }
 
     /**
@@ -3802,7 +3799,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @param result instance where result will be stored.
      */
     public void getTimeIntervalAsTime(final Time result) {
-        result.setValue(mTimeInterval);
+        result.setValue(timeInterval);
         result.setUnit(TimeUnit.SECOND);
     }
 
@@ -3813,7 +3810,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @throws LockedException if calibrator is currently running.
      */
     public void setTimeInterval(final Time timeInterval) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         setTimeInterval(convertTime(timeInterval));
@@ -3829,7 +3826,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public List<StandardDeviationBodyKinematics> getMeasurements() {
-        return mMeasurements;
+        return measurements;
     }
 
     /**
@@ -3843,10 +3840,10 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public void setMeasurements(final List<StandardDeviationBodyKinematics> measurements) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -3856,7 +3853,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @return position where body kinematics measures have been taken.
      */
     public ECEFPosition getEcefPosition() {
-        return mPosition;
+        return position;
     }
 
     /**
@@ -3867,11 +3864,11 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @throws LockedException if calibrator is currently running.
      */
     public void setPosition(final ECEFPosition position) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -3882,7 +3879,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * not available.
      */
     public NEDPosition getNedPosition() {
-        final NEDPosition result = new NEDPosition();
+        final var result = new NEDPosition();
         return getNedPosition(result) ? result : null;
     }
 
@@ -3894,11 +3891,10 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @return true if NED position could be computed, false otherwise.
      */
     public boolean getNedPosition(final NEDPosition result) {
-
-        if (mPosition != null) {
-            final NEDVelocity velocity = new NEDVelocity();
+        if (position != null) {
+            final var velocity = new NEDVelocity();
             ECEFtoNEDPositionVelocityConverter.convertECEFtoNED(
-                    mPosition.getX(), mPosition.getY(), mPosition.getZ(),
+                    position.getX(), position.getY(), position.getZ(),
                     0.0, 0.0, 0.0, result, velocity);
             return true;
         } else {
@@ -3914,11 +3910,11 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @throws LockedException if calibrator is currently running.
      */
     public void setPosition(final NEDPosition position) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mPosition = convertPosition(position);
+        this.position = convertPosition(position);
     }
 
     /**
@@ -3952,7 +3948,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public boolean isCommonAxisUsed() {
-        return mCommonAxisUsed;
+        return commonAxisUsed;
     }
 
     /**
@@ -3966,11 +3962,11 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public void setCommonAxisUsed(final boolean commonAxisUsed) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -3982,7 +3978,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * false otherwise.
      */
     public boolean isGDependentCrossBiasesEstimated() {
-        return mEstimateGDependentCrossBiases;
+        return estimateGDependentCrossBiases;
     }
 
     /**
@@ -3996,11 +3992,11 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @throws LockedException if calibrator is currently running.
      */
     public void setGDependentCrossBiasesEstimated(final boolean estimateGDependentCrossBiases) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mEstimateGDependentCrossBiases = estimateGDependentCrossBiases;
+        this.estimateGDependentCrossBiases = estimateGDependentCrossBiases;
     }
 
     /**
@@ -4009,7 +4005,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @return listener to handle events raised by this estimator.
      */
     public RobustTurntableGyroscopeCalibratorListener getListener() {
-        return mListener;
+        return listener;
     }
 
     /**
@@ -4018,13 +4014,12 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @param listener listener to handle events raised by this estimator.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setListener(
-            final RobustTurntableGyroscopeCalibratorListener listener) throws LockedException {
-        if (mRunning) {
+    public void setListener(final RobustTurntableGyroscopeCalibratorListener listener) throws LockedException {
+        if (running) {
             throw new LockedException();
         }
 
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -4034,14 +4029,14 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public int getMinimumRequiredMeasurementsOrSequences() {
-        if (mCommonAxisUsed) {
-            if (mEstimateGDependentCrossBiases) {
+        if (commonAxisUsed) {
+            if (estimateGDependentCrossBiases) {
                 return TurntableGyroscopeCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS_AND_CROSS_BIASES;
             } else {
                 return TurntableGyroscopeCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS;
             }
         } else {
-            if (mEstimateGDependentCrossBiases) {
+            if (estimateGDependentCrossBiases) {
                 return TurntableGyroscopeCalibrator.MINIMUM_MEASUREMENTS_GENERAL_AND_CROSS_BIASES;
             } else {
                 return TurntableGyroscopeCalibrator.MINIMUM_MEASUREMENTS_GENERAL;
@@ -4056,7 +4051,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public boolean isReady() {
-        return mMeasurements != null && mMeasurements.size() >= getMinimumRequiredMeasurementsOrSequences();
+        return measurements != null && measurements.size() >= getMinimumRequiredMeasurementsOrSequences();
     }
 
     /**
@@ -4066,7 +4061,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public boolean isRunning() {
-        return mRunning;
+        return running;
     }
 
     /**
@@ -4077,7 +4072,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * calibration.
      */
     public float getProgressDelta() {
-        return mProgressDelta;
+        return progressDelta;
     }
 
     /**
@@ -4090,13 +4085,13 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @throws LockedException          if calibrator is currently running.
      */
     public void setProgressDelta(final float progressDelta) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (progressDelta < MIN_PROGRESS_DELTA || progressDelta > MAX_PROGRESS_DELTA) {
             throw new IllegalArgumentException();
         }
-        mProgressDelta = progressDelta;
+        this.progressDelta = progressDelta;
     }
 
     /**
@@ -4108,7 +4103,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @return amount of confidence as a value between 0.0 and 1.0.
      */
     public double getConfidence() {
-        return mConfidence;
+        return confidence;
     }
 
     /**
@@ -4122,13 +4117,13 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @throws LockedException          if calibrator is currently running.
      */
     public void setConfidence(final double confidence) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (confidence < MIN_CONFIDENCE || confidence > MAX_CONFIDENCE) {
             throw new IllegalArgumentException();
         }
-        mConfidence = confidence;
+        this.confidence = confidence;
     }
 
     /**
@@ -4139,7 +4134,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @return maximum allowed number of iterations.
      */
     public int getMaxIterations() {
-        return mMaxIterations;
+        return maxIterations;
     }
 
     /**
@@ -4152,13 +4147,13 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @throws LockedException          if calibrator is currently running.
      */
     public void setMaxIterations(final int maxIterations) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (maxIterations < MIN_ITERATIONS) {
             throw new IllegalArgumentException();
         }
-        mMaxIterations = maxIterations;
+        this.maxIterations = maxIterations;
     }
 
     /**
@@ -4167,7 +4162,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @return data related to inliers found after estimation.
      */
     public InliersData getInliersData() {
-        return mInliersData;
+        return inliersData;
     }
 
     /**
@@ -4177,7 +4172,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * without further refining.
      */
     public boolean isResultRefined() {
-        return mRefineResult;
+        return refineResult;
     }
 
     /**
@@ -4188,10 +4183,10 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @throws LockedException if calibrator is currently running.
      */
     public void setResultRefined(final boolean refineResult) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mRefineResult = refineResult;
+        this.refineResult = refineResult;
     }
 
     /**
@@ -4201,7 +4196,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @return true if covariance must be kept after refining result, false otherwise.
      */
     public boolean isCovarianceKept() {
-        return mKeepCovariance;
+        return keepCovariance;
     }
 
     /**
@@ -4213,10 +4208,10 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @throws LockedException if calibrator is currently running.
      */
     public void setCovarianceKept(final boolean keepCovariance) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mKeepCovariance = keepCovariance;
+        this.keepCovariance = keepCovariance;
     }
 
     /**
@@ -4255,7 +4250,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public double[] getEstimatedBiases() {
-        return mEstimatedBiases;
+        return estimatedBiases;
     }
 
     /**
@@ -4268,8 +4263,8 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public boolean getEstimatedBiases(final double[] result) {
-        if (mEstimatedBiases != null) {
-            System.arraycopy(mEstimatedBiases, 0, result, 0, mEstimatedBiases.length);
+        if (estimatedBiases != null) {
+            System.arraycopy(estimatedBiases, 0, result, 0, estimatedBiases.length);
             return true;
         } else {
             return false;
@@ -4285,7 +4280,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public Matrix getEstimatedBiasesAsMatrix() {
-        return mEstimatedBiases != null ? Matrix.newFromArray(mEstimatedBiases) : null;
+        return estimatedBiases != null ? Matrix.newFromArray(estimatedBiases) : null;
     }
 
     /**
@@ -4298,8 +4293,8 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public boolean getEstimatedBiasesAsMatrix(final Matrix result) throws WrongSizeException {
-        if (mEstimatedBiases != null) {
-            result.fromArray(mEstimatedBiases);
+        if (estimatedBiases != null) {
+            result.fromArray(estimatedBiases);
             return true;
         } else {
             return false;
@@ -4314,7 +4309,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public Double getEstimatedBiasX() {
-        return mEstimatedBiases != null ? mEstimatedBiases[0] : null;
+        return estimatedBiases != null ? estimatedBiases[0] : null;
     }
 
     /**
@@ -4325,7 +4320,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public Double getEstimatedBiasY() {
-        return mEstimatedBiases != null ? mEstimatedBiases[1] : null;
+        return estimatedBiases != null ? estimatedBiases[1] : null;
     }
 
     /**
@@ -4336,7 +4331,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public Double getEstimatedBiasZ() {
-        return mEstimatedBiases != null ? mEstimatedBiases[2] : null;
+        return estimatedBiases != null ? estimatedBiases[2] : null;
     }
 
     /**
@@ -4346,8 +4341,8 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public AngularSpeed getEstimatedBiasAngularSpeedX() {
-        return mEstimatedBiases != null ?
-                new AngularSpeed(mEstimatedBiases[0], AngularSpeedUnit.RADIANS_PER_SECOND) : null;
+        return estimatedBiases != null
+                ? new AngularSpeed(estimatedBiases[0], AngularSpeedUnit.RADIANS_PER_SECOND) : null;
     }
 
     /**
@@ -4358,8 +4353,8 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public boolean getEstimatedBiasAngularSpeedX(final AngularSpeed result) {
-        if (mEstimatedBiases != null) {
-            result.setValue(mEstimatedBiases[0]);
+        if (estimatedBiases != null) {
+            result.setValue(estimatedBiases[0]);
             result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
             return true;
         } else {
@@ -4374,8 +4369,8 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public AngularSpeed getEstimatedBiasAngularSpeedY() {
-        return mEstimatedBiases != null ?
-                new AngularSpeed(mEstimatedBiases[1], AngularSpeedUnit.RADIANS_PER_SECOND) : null;
+        return estimatedBiases != null
+                ? new AngularSpeed(estimatedBiases[1], AngularSpeedUnit.RADIANS_PER_SECOND) : null;
     }
 
     /**
@@ -4386,8 +4381,8 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public boolean getEstimatedBiasAngularSpeedY(final AngularSpeed result) {
-        if (mEstimatedBiases != null) {
-            result.setValue(mEstimatedBiases[1]);
+        if (estimatedBiases != null) {
+            result.setValue(estimatedBiases[1]);
             result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
             return true;
         } else {
@@ -4402,8 +4397,8 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public AngularSpeed getEstimatedBiasAngularSpeedZ() {
-        return mEstimatedBiases != null ?
-                new AngularSpeed(mEstimatedBiases[2], AngularSpeedUnit.RADIANS_PER_SECOND) : null;
+        return estimatedBiases != null
+                ? new AngularSpeed(estimatedBiases[2], AngularSpeedUnit.RADIANS_PER_SECOND) : null;
     }
 
     /**
@@ -4414,8 +4409,8 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public boolean getEstimatedBiasAngularSpeedZ(final AngularSpeed result) {
-        if (mEstimatedBiases != null) {
-            result.setValue(mEstimatedBiases[2]);
+        if (estimatedBiases != null) {
+            result.setValue(estimatedBiases[2]);
             result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
             return true;
         } else {
@@ -4430,9 +4425,10 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public AngularSpeedTriad getEstimatedBiasAsTriad() {
-        return mEstimatedBiases != null ?
-                new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND,
-                        mEstimatedBiases[0], mEstimatedBiases[1], mEstimatedBiases[2]) : null;
+        return estimatedBiases != null
+                ? new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND,
+                estimatedBiases[0], estimatedBiases[1], estimatedBiases[2])
+                : null;
     }
 
     /**
@@ -4444,9 +4440,9 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public boolean getEstimatedBiasAsTriad(final AngularSpeedTriad result) {
-        if (mEstimatedBiases != null) {
+        if (estimatedBiases != null) {
             result.setValueCoordinatesAndUnit(
-                    mEstimatedBiases[0], mEstimatedBiases[1], mEstimatedBiases[2], AngularSpeedUnit.RADIANS_PER_SECOND);
+                    estimatedBiases[0], estimatedBiases[1], estimatedBiases[2], AngularSpeedUnit.RADIANS_PER_SECOND);
             return true;
         } else {
             return false;
@@ -4497,7 +4493,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public Matrix getEstimatedMg() {
-        return mEstimatedMg;
+        return estimatedMg;
     }
 
     /**
@@ -4508,7 +4504,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public Double getEstimatedSx() {
-        return mEstimatedMg != null ? mEstimatedMg.getElementAt(0, 0) : null;
+        return estimatedMg != null ? estimatedMg.getElementAt(0, 0) : null;
     }
 
     /**
@@ -4519,7 +4515,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public Double getEstimatedSy() {
-        return mEstimatedMg != null ? mEstimatedMg.getElementAt(1, 1) : null;
+        return estimatedMg != null ? estimatedMg.getElementAt(1, 1) : null;
     }
 
     /**
@@ -4530,7 +4526,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public Double getEstimatedSz() {
-        return mEstimatedMg != null ? mEstimatedMg.getElementAt(2, 2) : null;
+        return estimatedMg != null ? estimatedMg.getElementAt(2, 2) : null;
     }
 
     /**
@@ -4541,7 +4537,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public Double getEstimatedMxy() {
-        return mEstimatedMg != null ? mEstimatedMg.getElementAt(0, 1) : null;
+        return estimatedMg != null ? estimatedMg.getElementAt(0, 1) : null;
     }
 
     /**
@@ -4552,7 +4548,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public Double getEstimatedMxz() {
-        return mEstimatedMg != null ? mEstimatedMg.getElementAt(0, 2) : null;
+        return estimatedMg != null ? estimatedMg.getElementAt(0, 2) : null;
     }
 
     /**
@@ -4563,7 +4559,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public Double getEstimatedMyx() {
-        return mEstimatedMg != null ? mEstimatedMg.getElementAt(1, 0) : null;
+        return estimatedMg != null ? estimatedMg.getElementAt(1, 0) : null;
     }
 
     /**
@@ -4574,7 +4570,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public Double getEstimatedMyz() {
-        return mEstimatedMg != null ? mEstimatedMg.getElementAt(1, 2) : null;
+        return estimatedMg != null ? estimatedMg.getElementAt(1, 2) : null;
     }
 
     /**
@@ -4585,7 +4581,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public Double getEstimatedMzx() {
-        return mEstimatedMg != null ? mEstimatedMg.getElementAt(2, 0) : null;
+        return estimatedMg != null ? estimatedMg.getElementAt(2, 0) : null;
     }
 
     /**
@@ -4596,7 +4592,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public Double getEstimatedMzy() {
-        return mEstimatedMg != null ? mEstimatedMg.getElementAt(2, 1) : null;
+        return estimatedMg != null ? estimatedMg.getElementAt(2, 1) : null;
     }
 
     /**
@@ -4608,7 +4604,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public Matrix getEstimatedGg() {
-        return mEstimatedGg;
+        return estimatedGg;
     }
 
     /**
@@ -4618,7 +4614,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public double getEstimatedMse() {
-        return mEstimatedMse;
+        return estimatedMse;
     }
 
     /**
@@ -4628,7 +4624,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public double getEstimatedChiSq() {
-        return mEstimatedChiSq;
+        return estimatedChiSq;
     }
 
     /**
@@ -4642,7 +4638,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public Matrix getEstimatedCovariance() {
-        return mEstimatedCovariance;
+        return estimatedCovariance;
     }
 
     /**
@@ -4651,7 +4647,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @return variance of estimated x coordinate of gyroscope bias or null if not available.
      */
     public Double getEstimatedBiasXVariance() {
-        return mEstimatedCovariance != null ? mEstimatedCovariance.getElementAt(0, 0) : null;
+        return estimatedCovariance != null ? estimatedCovariance.getElementAt(0, 0) : null;
     }
 
     /**
@@ -4662,7 +4658,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * available.
      */
     public Double getEstimatedBiasXStandardDeviation() {
-        final Double variance = getEstimatedBiasXVariance();
+        final var variance = getEstimatedBiasXVariance();
         return variance != null ? Math.sqrt(variance) : null;
     }
 
@@ -4673,9 +4669,8 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * available.
      */
     public AngularSpeed getEstimatedBiasXStandardDeviationAsAngularSpeed() {
-        return mEstimatedCovariance != null ?
-                new AngularSpeed(getEstimatedBiasXStandardDeviation(), AngularSpeedUnit.RADIANS_PER_SECOND) :
-                null;
+        return estimatedCovariance != null
+                ? new AngularSpeed(getEstimatedBiasXStandardDeviation(), AngularSpeedUnit.RADIANS_PER_SECOND) : null;
     }
 
     /**
@@ -4686,7 +4681,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * false otherwise.
      */
     public boolean getEstimatedBiasXStandardDeviationAsAngularSpeed(final AngularSpeed result) {
-        if (mEstimatedCovariance != null) {
+        if (estimatedCovariance != null) {
             result.setValue(getEstimatedBiasXStandardDeviation());
             result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
             return true;
@@ -4701,7 +4696,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @return variance of estimated y coordinate of gyroscope bias or null if not available.
      */
     public Double getEstimatedBiasYVariance() {
-        return mEstimatedCovariance != null ? mEstimatedCovariance.getElementAt(1, 1) : null;
+        return estimatedCovariance != null ? estimatedCovariance.getElementAt(1, 1) : null;
     }
 
     /**
@@ -4712,7 +4707,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * available.
      */
     public Double getEstimatedBiasYStandardDeviation() {
-        final Double variance = getEstimatedBiasYVariance();
+        final var variance = getEstimatedBiasYVariance();
         return variance != null ? Math.sqrt(variance) : null;
     }
 
@@ -4723,9 +4718,8 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * available.
      */
     public AngularSpeed getEstimatedBiasYStandardDeviationAsAngularSpeed() {
-        return mEstimatedCovariance != null ?
-                new AngularSpeed(getEstimatedBiasYStandardDeviation(), AngularSpeedUnit.RADIANS_PER_SECOND) :
-                null;
+        return estimatedCovariance != null
+                ? new AngularSpeed(getEstimatedBiasYStandardDeviation(), AngularSpeedUnit.RADIANS_PER_SECOND) : null;
     }
 
     /**
@@ -4736,7 +4730,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * false otherwise.
      */
     public boolean getEstimatedBiasYStandardDeviationAsAngularSpeed(final AngularSpeed result) {
-        if (mEstimatedCovariance != null) {
+        if (estimatedCovariance != null) {
             result.setValue(getEstimatedBiasYStandardDeviation());
             result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
             return true;
@@ -4751,7 +4745,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @return variance of estimated z coordinate of gyroscope bias or null if not available.
      */
     public Double getEstimatedBiasZVariance() {
-        return mEstimatedCovariance != null ? mEstimatedCovariance.getElementAt(2, 2) : null;
+        return estimatedCovariance != null ? estimatedCovariance.getElementAt(2, 2) : null;
     }
 
     /**
@@ -4762,7 +4756,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * available.
      */
     public Double getEstimatedBiasZStandardDeviation() {
-        final Double variance = getEstimatedBiasZVariance();
+        final var variance = getEstimatedBiasZVariance();
         return variance != null ? Math.sqrt(variance) : null;
     }
 
@@ -4773,7 +4767,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * available.
      */
     public AngularSpeed getEstimatedBiasZStandardDeviationAsAngularSpeed() {
-        return mEstimatedCovariance != null ?
+        return estimatedCovariance != null ?
                 new AngularSpeed(getEstimatedBiasZStandardDeviation(), AngularSpeedUnit.RADIANS_PER_SECOND) :
                 null;
     }
@@ -4786,7 +4780,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * false otherwise.
      */
     public boolean getEstimatedBiasZStandardDeviationAsAngularSpeed(final AngularSpeed result) {
-        if (mEstimatedCovariance != null) {
+        if (estimatedCovariance != null) {
             result.setValue(getEstimatedBiasZStandardDeviation());
             result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
             return true;
@@ -4801,11 +4795,12 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @return standard deviation of estimated gyroscope bias coordinates.
      */
     public AngularSpeedTriad getEstimatedBiasStandardDeviation() {
-        return mEstimatedCovariance != null ?
-                new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND,
-                        getEstimatedBiasXStandardDeviation(),
-                        getEstimatedBiasYStandardDeviation(),
-                        getEstimatedBiasZStandardDeviation()) : null;
+        return estimatedCovariance != null
+                ? new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND,
+                getEstimatedBiasXStandardDeviation(),
+                getEstimatedBiasYStandardDeviation(),
+                getEstimatedBiasZStandardDeviation())
+                : null;
     }
 
     /**
@@ -4816,7 +4811,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * otherwise.
      */
     public boolean getEstimatedBiasStandardDeviation(final AngularSpeedTriad result) {
-        if (mEstimatedCovariance != null) {
+        if (estimatedCovariance != null) {
             result.setValueCoordinatesAndUnit(
                     getEstimatedBiasXStandardDeviation(),
                     getEstimatedBiasYStandardDeviation(),
@@ -4836,9 +4831,10 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * if not available.
      */
     public Double getEstimatedBiasStandardDeviationAverage() {
-        return mEstimatedCovariance != null ?
-                (getEstimatedBiasXStandardDeviation() + getEstimatedBiasYStandardDeviation() +
-                        getEstimatedBiasZStandardDeviation()) / 3.0 : null;
+        return estimatedCovariance != null
+                ? (getEstimatedBiasXStandardDeviation() + getEstimatedBiasYStandardDeviation()
+                + getEstimatedBiasZStandardDeviation()) / 3.0
+                : null;
     }
 
     /**
@@ -4847,9 +4843,9 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @return average of estimated standard deviation of gyroscope bias coordinates or null.
      */
     public AngularSpeed getEstimatedBiasStandardDeviationAverageAsAngularSpeed() {
-        return mEstimatedCovariance != null ?
-                new AngularSpeed(getEstimatedBiasStandardDeviationAverage(),
-                        AngularSpeedUnit.RADIANS_PER_SECOND) : null;
+        return estimatedCovariance != null
+                ? new AngularSpeed(getEstimatedBiasStandardDeviationAverage(), AngularSpeedUnit.RADIANS_PER_SECOND)
+                : null;
     }
 
     /**
@@ -4860,7 +4856,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * false otherwise.
      */
     public boolean getEstimatedBiasStandardDeviationAverageAsAngularSpeed(final AngularSpeed result) {
-        if (mEstimatedCovariance != null) {
+        if (estimatedCovariance != null) {
             result.setValue(getEstimatedBiasStandardDeviationAverage());
             result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
             return true;
@@ -4880,9 +4876,9 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      */
     @Override
     public Double getEstimatedBiasStandardDeviationNorm() {
-        return mEstimatedCovariance != null ?
-                Math.sqrt(getEstimatedBiasXVariance() + getEstimatedBiasYVariance() + getEstimatedBiasZVariance()) :
-                null;
+        return estimatedCovariance != null
+                ? Math.sqrt(getEstimatedBiasXVariance() + getEstimatedBiasYVariance() + getEstimatedBiasZVariance())
+                : null;
     }
 
     /**
@@ -4894,8 +4890,9 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * if not available.
      */
     public AngularSpeed getEstimatedBiasStandardDeviationNormAsAngularSpeed() {
-        return mEstimatedCovariance != null ?
-                new AngularSpeed(getEstimatedBiasStandardDeviationNorm(), AngularSpeedUnit.RADIANS_PER_SECOND) : null;
+        return estimatedCovariance != null
+                ? new AngularSpeed(getEstimatedBiasStandardDeviationNorm(), AngularSpeedUnit.RADIANS_PER_SECOND)
+                : null;
     }
 
     /**
@@ -4908,7 +4905,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * available, false otherwise.
      */
     public boolean getEstimatedBiasStandardDeviationNormAsAngularSpeed(final AngularSpeed result) {
-        if (mEstimatedCovariance != null) {
+        if (estimatedCovariance != null) {
             result.setValue(getEstimatedBiasStandardDeviationNorm());
             result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
             return true;
@@ -4924,7 +4921,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @return size of subsets to be checked during robust estimation.
      */
     public int getPreliminarySubsetSize() {
-        return mPreliminarySubsetSize;
+        return preliminarySubsetSize;
     }
 
     /**
@@ -4937,14 +4934,14 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      *                                  {@link #getMinimumRequiredMeasurementsOrSequences}.
      */
     public void setPreliminarySubsetSize(final int preliminarySubsetSize) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (preliminarySubsetSize < getMinimumRequiredMeasurementsOrSequences()) {
             throw new IllegalArgumentException();
         }
 
-        mPreliminarySubsetSize = preliminarySubsetSize;
+        this.preliminarySubsetSize = preliminarySubsetSize;
     }
 
     /**
@@ -10883,97 +10880,96 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
         // [Ωmeasy]   [by]     [0   1   0]   [myx   sy     myz]  [Ωtruey]   [g21   g22   g23][ftruey]
         // [Ωmeasz]   [bz]     [0   0   1]   [mzx   mzy    sz ]  [Ωtruez]   [g31   g32   g33][ftruez]
 
-        final BodyKinematics measuredKinematics = measurement.getKinematics();
+        final var measuredKinematics = measurement.getKinematics();
 
-        final double[] specificForce = new double[]{
+        final var specificForce = new double[]{
                 measuredKinematics.getFx(),
                 measuredKinematics.getFy(),
                 measuredKinematics.getFz()
         };
 
         try {
-            final double[] axis1 = ArrayUtils.normalizeAndReturnNew(specificForce);
-            final Quaternion rot1 = new Quaternion(axis1, 0.0);
+            final var axis1 = ArrayUtils.normalizeAndReturnNew(specificForce);
+            final var rot1 = new Quaternion(axis1, 0.0);
 
-            final CoordinateTransformation nedC1 = new CoordinateTransformation(
+            final var nedC1 = new CoordinateTransformation(
                     rot1.asInhomogeneousMatrix(), FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDPosition nedPosition = getNedPosition();
-            final NEDFrame nedFrame1 = new NEDFrame(nedPosition, nedC1);
-            final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
-            double timeInterval = mTimeInterval;
-            double angleIncrement = mTurntableRotationRate * timeInterval;
+            final var nedPosition = getNedPosition();
+            final var nedFrame1 = new NEDFrame(nedPosition, nedC1);
+            final var ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
+            var ti = this.timeInterval;
+            var angleIncrement = turntableRotationRate * ti;
             if (Math.abs(angleIncrement) > Math.PI / 2.0) {
                 // angle = rot_rate * interval
                 // rot_rate * interval / x = angle / x
 
                 // if we want angle / x = pi / 2, then:
-                final double x = Math.abs(angleIncrement) / (Math.PI / 2.0);
-                timeInterval /= x;
-                angleIncrement = mTurntableRotationRate * timeInterval;
+                final var x = Math.abs(angleIncrement) / (Math.PI / 2.0);
+                ti /= x;
+                angleIncrement = turntableRotationRate * ti;
             }
-            final Rotation3D rot = new AxisRotation3D(axis1, angleIncrement);
-            final Rotation3D rot2 = rot1.combineAndReturnNew(rot);
-            final CoordinateTransformation nedC2 =
-                    new CoordinateTransformation(rot2.asInhomogeneousMatrix(), FrameType.BODY_FRAME,
-                            FrameType.LOCAL_NAVIGATION_FRAME);
+            final var rot = new AxisRotation3D(axis1, angleIncrement);
+            final var rot2 = rot1.combineAndReturnNew(rot);
+            final var nedC2 = new CoordinateTransformation(rot2.asInhomogeneousMatrix(), FrameType.BODY_FRAME,
+                    FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame nedFrame2 = new NEDFrame(nedPosition, nedC2);
-            final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
+            final var nedFrame2 = new NEDFrame(nedPosition, nedC2);
+            final var ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
 
-            final BodyKinematics expectedKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
-                    timeInterval, ecefFrame2, ecefFrame1);
+            final var expectedKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                    ti, ecefFrame2, ecefFrame1);
 
-            final double angularRateMeasX1 = measuredKinematics.getAngularRateX();
-            final double angularRateMeasY1 = measuredKinematics.getAngularRateY();
-            final double angularRateMeasZ1 = measuredKinematics.getAngularRateZ();
+            final var angularRateMeasX1 = measuredKinematics.getAngularRateX();
+            final var angularRateMeasY1 = measuredKinematics.getAngularRateY();
+            final var angularRateMeasZ1 = measuredKinematics.getAngularRateZ();
 
-            final double angularRateTrueX = expectedKinematics.getAngularRateX();
-            final double angularRateTrueY = expectedKinematics.getAngularRateY();
-            final double angularRateTrueZ = expectedKinematics.getAngularRateZ();
+            final var angularRateTrueX = expectedKinematics.getAngularRateX();
+            final var angularRateTrueY = expectedKinematics.getAngularRateY();
+            final var angularRateTrueZ = expectedKinematics.getAngularRateZ();
 
-            final double fTrueX = expectedKinematics.getFx();
-            final double fTrueY = expectedKinematics.getFy();
-            final double fTrueZ = expectedKinematics.getFz();
+            final var fTrueX = expectedKinematics.getFx();
+            final var fTrueY = expectedKinematics.getFy();
+            final var fTrueZ = expectedKinematics.getFz();
 
-            final double[] b = preliminaryResult.mEstimatedBiases;
-            final double bx = b[0];
-            final double by = b[1];
-            final double bz = b[2];
+            final var b = preliminaryResult.estimatedBiases;
+            final var bx = b[0];
+            final var by = b[1];
+            final var bz = b[2];
 
-            final Matrix mg = preliminaryResult.mEstimatedMg;
+            final var mg = preliminaryResult.estimatedMg;
 
-            final Matrix gg = preliminaryResult.mEstimatedGg;
+            final var gg = preliminaryResult.estimatedGg;
 
-            final Matrix m1 = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+            final var m1 = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
             m1.add(mg);
 
-            final Matrix angularRateTrue = new Matrix(BodyKinematics.COMPONENTS, 1);
+            final var angularRateTrue = new Matrix(BodyKinematics.COMPONENTS, 1);
             angularRateTrue.setElementAtIndex(0, angularRateTrueX);
             angularRateTrue.setElementAtIndex(1, angularRateTrueY);
             angularRateTrue.setElementAtIndex(2, angularRateTrueZ);
 
             m1.multiply(angularRateTrue);
 
-            final Matrix fTrue = new Matrix(BodyKinematics.COMPONENTS, 1);
+            final var fTrue = new Matrix(BodyKinematics.COMPONENTS, 1);
             fTrue.setElementAtIndex(0, fTrueX);
             fTrue.setElementAtIndex(1, fTrueY);
             fTrue.setElementAtIndex(2, fTrueZ);
-            final Matrix m2 = gg.multiplyAndReturnNew(fTrue);
+            final var m2 = gg.multiplyAndReturnNew(fTrue);
 
             m1.add(m2);
 
-            final double angularRateMeasX2 = bx + m1.getElementAtIndex(0);
-            final double angularRateMeasY2 = by + m1.getElementAtIndex(1);
-            final double angularRateMeasZ2 = bz + m1.getElementAtIndex(2);
+            final var angularRateMeasX2 = bx + m1.getElementAtIndex(0);
+            final var angularRateMeasY2 = by + m1.getElementAtIndex(1);
+            final var angularRateMeasZ2 = bz + m1.getElementAtIndex(2);
 
-            final double sqrNormMeas1 = angularRateMeasX1 * angularRateMeasX1 + angularRateMeasY1 * angularRateMeasY1
+            final var sqrNormMeas1 = angularRateMeasX1 * angularRateMeasX1 + angularRateMeasY1 * angularRateMeasY1
                     + angularRateMeasZ1 * angularRateMeasZ1;
-            final double sqrNormMeas2 = angularRateMeasX2 * angularRateMeasX2 + angularRateMeasY2 * angularRateMeasY2
+            final var sqrNormMeas2 = angularRateMeasX2 * angularRateMeasX2 + angularRateMeasY2 * angularRateMeasY2
                     + angularRateMeasZ2 * angularRateMeasZ2;
 
-            final double normMeas1 = Math.sqrt(sqrNormMeas1);
-            final double normMeas2 = Math.sqrt(sqrNormMeas2);
+            final var normMeas1 = Math.sqrt(sqrNormMeas1);
+            final var normMeas2 = Math.sqrt(sqrNormMeas2);
 
             return Math.abs(normMeas1 - normMeas2);
 
@@ -10989,49 +10985,48 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @param samplesIndices indices of samples picked by the robust estimator.
      * @param solutions      list where estimated preliminary solution will be stored.
      */
-    protected void computePreliminarySolutions(
-            final int[] samplesIndices, final List<PreliminaryResult> solutions) {
+    protected void computePreliminarySolutions(final int[] samplesIndices, final List<PreliminaryResult> solutions) {
 
-        final List<StandardDeviationBodyKinematics> measurements = new ArrayList<>();
+        final var meas = new ArrayList<StandardDeviationBodyKinematics>();
 
-        for (final int samplesIndex : samplesIndices) {
-            measurements.add(mMeasurements.get(samplesIndex));
+        for (final var samplesIndex : samplesIndices) {
+            meas.add(this.measurements.get(samplesIndex));
         }
 
         try {
-            final PreliminaryResult result = new PreliminaryResult();
-            result.mEstimatedBiases = getInitialBias();
-            result.mEstimatedMg = getInitialMg();
-            result.mEstimatedGg = getInitialGg();
+            final var result = new PreliminaryResult();
+            result.estimatedBiases = getInitialBias();
+            result.estimatedMg = getInitialMg();
+            result.estimatedGg = getInitialGg();
 
-            mInnerCalibrator.setTurntableRotationRate(mTurntableRotationRate);
-            mInnerCalibrator.setTimeInterval(mTimeInterval);
-            mInnerCalibrator.setGDependentCrossBiasesEstimated(mEstimateGDependentCrossBiases);
-            mInnerCalibrator.setInitialBias(result.mEstimatedBiases);
-            mInnerCalibrator.setInitialMg(result.mEstimatedMg);
-            mInnerCalibrator.setInitialGg(result.mEstimatedGg);
-            mInnerCalibrator.setAccelerometerBias(mAccelerometerBiasX, mAccelerometerBiasY, mAccelerometerBiasZ);
-            mInnerCalibrator.setAccelerometerScalingFactorsAndCrossCouplingErrors(
-                    mAccelerometerSx, mAccelerometerSy, mAccelerometerSz,
-                    mAccelerometerMxy, mAccelerometerMxz, mAccelerometerMyx,
-                    mAccelerometerMyz, mAccelerometerMzx, mAccelerometerMzy);
-            mInnerCalibrator.setCommonAxisUsed(mCommonAxisUsed);
-            mInnerCalibrator.setMeasurements(measurements);
-            mInnerCalibrator.setPosition(mPosition);
-            mInnerCalibrator.calibrate();
+            innerCalibrator.setTurntableRotationRate(turntableRotationRate);
+            innerCalibrator.setTimeInterval(timeInterval);
+            innerCalibrator.setGDependentCrossBiasesEstimated(estimateGDependentCrossBiases);
+            innerCalibrator.setInitialBias(result.estimatedBiases);
+            innerCalibrator.setInitialMg(result.estimatedMg);
+            innerCalibrator.setInitialGg(result.estimatedGg);
+            innerCalibrator.setAccelerometerBias(accelerometerBiasX, accelerometerBiasY, accelerometerBiasZ);
+            innerCalibrator.setAccelerometerScalingFactorsAndCrossCouplingErrors(
+                    accelerometerSx, accelerometerSy, accelerometerSz,
+                    accelerometerMxy, accelerometerMxz, accelerometerMyx,
+                    accelerometerMyz, accelerometerMzx, accelerometerMzy);
+            innerCalibrator.setCommonAxisUsed(commonAxisUsed);
+            innerCalibrator.setMeasurements(meas);
+            innerCalibrator.setPosition(position);
+            innerCalibrator.calibrate();
 
-            mInnerCalibrator.getEstimatedBiases(result.mEstimatedBiases);
-            result.mEstimatedMg = mInnerCalibrator.getEstimatedMg();
-            result.mEstimatedGg = mInnerCalibrator.getEstimatedGg();
+            innerCalibrator.getEstimatedBiases(result.estimatedBiases);
+            result.estimatedMg = innerCalibrator.getEstimatedMg();
+            result.estimatedGg = innerCalibrator.getEstimatedGg();
 
-            if (mKeepCovariance) {
-                result.mCovariance = mInnerCalibrator.getEstimatedCovariance();
+            if (keepCovariance) {
+                result.covariance = innerCalibrator.getEstimatedCovariance();
             } else {
-                result.mCovariance = null;
+                result.covariance = null;
             }
 
-            result.mEstimatedMse = mInnerCalibrator.getEstimatedMse();
-            result.mEstimatedChiSq = mInnerCalibrator.getEstimatedChiSq();
+            result.estimatedMse = innerCalibrator.getEstimatedMse();
+            result.estimatedChiSq = innerCalibrator.getEstimatedChiSq();
 
             solutions.add(result);
         } catch (final LockedException | CalibrationException | NotReadyException e) {
@@ -11049,63 +11044,63 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @param preliminaryResult a preliminary result.
      */
     protected void attemptRefine(final PreliminaryResult preliminaryResult) {
-        if (mRefineResult && mInliersData != null) {
-            final BitSet inliers = mInliersData.getInliers();
-            final int nSamples = mMeasurements.size();
+        if (refineResult && inliersData != null) {
+            final var inliers = inliersData.getInliers();
+            final var nSamples = measurements.size();
 
-            final List<StandardDeviationBodyKinematics> inlierMeasurements = new ArrayList<>();
-            for (int i = 0; i < nSamples; i++) {
+            final var inlierMeasurements = new ArrayList<StandardDeviationBodyKinematics>();
+            for (var i = 0; i < nSamples; i++) {
                 if (inliers.get(i)) {
                     // sample is inlier
-                    inlierMeasurements.add(mMeasurements.get(i));
+                    inlierMeasurements.add(measurements.get(i));
                 }
             }
 
             try {
-                mInnerCalibrator.setTurntableRotationRate(mTurntableRotationRate);
-                mInnerCalibrator.setTimeInterval(mTimeInterval);
-                mInnerCalibrator.setGDependentCrossBiasesEstimated(mEstimateGDependentCrossBiases);
-                mInnerCalibrator.setInitialBias(preliminaryResult.mEstimatedBiases);
-                mInnerCalibrator.setInitialMg(preliminaryResult.mEstimatedMg);
-                mInnerCalibrator.setInitialGg(preliminaryResult.mEstimatedGg);
-                mInnerCalibrator.setAccelerometerBias(mAccelerometerBiasX, mAccelerometerBiasY, mAccelerometerBiasZ);
-                mInnerCalibrator.setAccelerometerScalingFactorsAndCrossCouplingErrors(
-                        mAccelerometerSx, mAccelerometerSy, mAccelerometerSz,
-                        mAccelerometerMxy, mAccelerometerMxz, mAccelerometerMyx,
-                        mAccelerometerMyz, mAccelerometerMzx, mAccelerometerMzy);
-                mInnerCalibrator.setCommonAxisUsed(mCommonAxisUsed);
-                mInnerCalibrator.setMeasurements(inlierMeasurements);
-                mInnerCalibrator.setPosition(mPosition);
-                mInnerCalibrator.calibrate();
+                innerCalibrator.setTurntableRotationRate(turntableRotationRate);
+                innerCalibrator.setTimeInterval(timeInterval);
+                innerCalibrator.setGDependentCrossBiasesEstimated(estimateGDependentCrossBiases);
+                innerCalibrator.setInitialBias(preliminaryResult.estimatedBiases);
+                innerCalibrator.setInitialMg(preliminaryResult.estimatedMg);
+                innerCalibrator.setInitialGg(preliminaryResult.estimatedGg);
+                innerCalibrator.setAccelerometerBias(accelerometerBiasX, accelerometerBiasY, accelerometerBiasZ);
+                innerCalibrator.setAccelerometerScalingFactorsAndCrossCouplingErrors(
+                        accelerometerSx, accelerometerSy, accelerometerSz,
+                        accelerometerMxy, accelerometerMxz, accelerometerMyx,
+                        accelerometerMyz, accelerometerMzx, accelerometerMzy);
+                innerCalibrator.setCommonAxisUsed(commonAxisUsed);
+                innerCalibrator.setMeasurements(inlierMeasurements);
+                innerCalibrator.setPosition(position);
+                innerCalibrator.calibrate();
 
-                mEstimatedBiases = mInnerCalibrator.getEstimatedBiases();
-                mEstimatedMg = mInnerCalibrator.getEstimatedMg();
-                mEstimatedGg = mInnerCalibrator.getEstimatedGg();
+                estimatedBiases = innerCalibrator.getEstimatedBiases();
+                estimatedMg = innerCalibrator.getEstimatedMg();
+                estimatedGg = innerCalibrator.getEstimatedGg();
 
-                if (mKeepCovariance) {
-                    mEstimatedCovariance = mInnerCalibrator.getEstimatedCovariance();
+                if (keepCovariance) {
+                    estimatedCovariance = innerCalibrator.getEstimatedCovariance();
                 } else {
-                    mEstimatedCovariance = null;
+                    estimatedCovariance = null;
                 }
 
-                mEstimatedMse = mInnerCalibrator.getEstimatedMse();
-                mEstimatedChiSq = mInnerCalibrator.getEstimatedChiSq();
+                estimatedMse = innerCalibrator.getEstimatedMse();
+                estimatedChiSq = innerCalibrator.getEstimatedChiSq();
 
             } catch (final LockedException | CalibrationException | NotReadyException e) {
-                mEstimatedCovariance = preliminaryResult.mCovariance;
-                mEstimatedBiases = preliminaryResult.mEstimatedBiases;
-                mEstimatedMg = preliminaryResult.mEstimatedMg;
-                mEstimatedGg = preliminaryResult.mEstimatedGg;
-                mEstimatedMse = preliminaryResult.mEstimatedMse;
-                mEstimatedChiSq = preliminaryResult.mEstimatedChiSq;
+                estimatedCovariance = preliminaryResult.covariance;
+                estimatedBiases = preliminaryResult.estimatedBiases;
+                estimatedMg = preliminaryResult.estimatedMg;
+                estimatedGg = preliminaryResult.estimatedGg;
+                estimatedMse = preliminaryResult.estimatedMse;
+                estimatedChiSq = preliminaryResult.estimatedChiSq;
             }
         } else {
-            mEstimatedCovariance = preliminaryResult.mCovariance;
-            mEstimatedBiases = preliminaryResult.mEstimatedBiases;
-            mEstimatedMg = preliminaryResult.mEstimatedMg;
-            mEstimatedGg = preliminaryResult.mEstimatedGg;
-            mEstimatedMse = preliminaryResult.mEstimatedMse;
-            mEstimatedChiSq = preliminaryResult.mEstimatedChiSq;
+            estimatedCovariance = preliminaryResult.covariance;
+            estimatedBiases = preliminaryResult.estimatedBiases;
+            estimatedMg = preliminaryResult.estimatedMg;
+            estimatedGg = preliminaryResult.estimatedGg;
+            estimatedMse = preliminaryResult.estimatedMse;
+            estimatedChiSq = preliminaryResult.estimatedChiSq;
         }
     }
 
@@ -11117,8 +11112,8 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * @return converted position expressed in ECEF coordinates.
      */
     private static ECEFPosition convertPosition(final NEDPosition position) {
-        final ECEFVelocity velocity = new ECEFVelocity();
-        final ECEFPosition result = new ECEFPosition();
+        final var velocity = new ECEFVelocity();
+        final var result = new ECEFPosition();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
                 position.getLatitude(), position.getLongitude(), position.getHeight(),
                 0.0, 0.0, 0.0, result, velocity);
@@ -11175,7 +11170,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
          * Estimated gyroscope biases for each IMU axis expressed in radians per second
          * (rad/s).
          */
-        private double[] mEstimatedBiases;
+        private double[] estimatedBiases;
 
         /**
          * Estimated gyroscope scale factors and cross coupling errors.
@@ -11216,28 +11211,28 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
          * </pre>
          * Values of this matrix are unit-less.
          */
-        private Matrix mEstimatedMg;
+        private Matrix estimatedMg;
 
         /**
          * Estimated G-dependent cross biases introduced on the gyroscope by the
          * specific forces sensed by the accelerometer.
          * This instance allows any 3x3 matrix.
          */
-        private Matrix mEstimatedGg;
+        private Matrix estimatedGg;
 
         /**
          * Covariance matrix for estimated result.
          */
-        private Matrix mCovariance;
+        private Matrix covariance;
 
         /**
          * Estimated Mean Square Error.
          */
-        private double mEstimatedMse;
+        private double estimatedMse;
 
         /**
          * Estimated chi square value.
          */
-        private double mEstimatedChiSq;
+        private double estimatedChiSq;
     }
 }

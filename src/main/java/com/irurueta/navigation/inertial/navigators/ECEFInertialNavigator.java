@@ -29,7 +29,6 @@ import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.geodesic.Constants;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.inertial.ECEFGravity;
 import com.irurueta.navigation.inertial.estimators.ECEFGravityEstimator;
 import com.irurueta.units.*;
 
@@ -6678,26 +6677,26 @@ public class ECEFInertialNavigator {
         try {
             // Attitude update
             // From (2.145) determine the Earth rotation over the update interval
-            final double alpha = EARTH_ROTATION_RATE * timeInterval;
-            final Matrix cEarth = CoordinateTransformation.eciToEcefMatrixFromAngle(alpha);
+            final var alpha = EARTH_ROTATION_RATE * timeInterval;
+            final var cEarth = CoordinateTransformation.eciToEcefMatrixFromAngle(alpha);
 
             // Calculate attitude increment, magnitude, and skew-symmetric matrix
-            final double alphaX = angularRateX * timeInterval;
-            final double alphaY = angularRateY * timeInterval;
-            final double alphaZ = angularRateZ * timeInterval;
+            final var alphaX = angularRateX * timeInterval;
+            final var alphaY = angularRateY * timeInterval;
+            final var alphaZ = angularRateZ * timeInterval;
 
-            final double alphaNorm = Math.sqrt(alphaX * alphaX + alphaY * alphaY + alphaZ * alphaZ);
-            final Matrix alphaSkew1 = Utils.skewMatrix(new double[]{alphaX, alphaY, alphaZ});
+            final var alphaNorm = Math.sqrt(alphaX * alphaX + alphaY * alphaY + alphaZ * alphaZ);
+            final var alphaSkew1 = Utils.skewMatrix(new double[]{alphaX, alphaY, alphaZ});
 
             // Obtain coordinate transformation matrix from the new attitude with
             // respect an inertial frame to the old using Rodrigues' formula, (5.73)
-            final Matrix cNewOld = Matrix.identity(ROWS, ROWS);
+            final var cNewOld = Matrix.identity(ROWS, ROWS);
             if (alphaNorm > ALPHA_THRESHOLD) {
-                final double alphaNorm2 = alphaNorm * alphaNorm;
-                final double value1 = Math.sin(alphaNorm) / alphaNorm;
-                final double value2 = (1.0 - Math.cos(alphaNorm)) / alphaNorm2;
-                final Matrix tmp1 = alphaSkew1.multiplyByScalarAndReturnNew(value1);
-                final Matrix tmp2 = alphaSkew1.multiplyByScalarAndReturnNew(value2);
+                final var alphaNorm2 = alphaNorm * alphaNorm;
+                final var value1 = Math.sin(alphaNorm) / alphaNorm;
+                final var value2 = (1.0 - Math.cos(alphaNorm)) / alphaNorm2;
+                final var tmp1 = alphaSkew1.multiplyByScalarAndReturnNew(value1);
+                final var tmp2 = alphaSkew1.multiplyByScalarAndReturnNew(value2);
                 tmp2.multiply(alphaSkew1);
 
                 cNewOld.add(tmp1);
@@ -6707,7 +6706,7 @@ public class ECEFInertialNavigator {
             }
 
             // Update attitude using (5.75)
-            final Matrix oldCbe = oldC.getMatrix();
+            final var oldCbe = oldC.getMatrix();
             cEarth.multiply(oldCbe);
             // cbe = cEarth * oldCbe * cNewOld
             cEarth.multiply(cNewOld);
@@ -6715,20 +6714,20 @@ public class ECEFInertialNavigator {
             // Specific force frame transformation
             // Calculate the average body-to-ECEF-frame coordinate transformation
             // matrix over the update interval using (5.84) and (5.85).
-            final Matrix alphaSkew2 = Utils.skewMatrix(new double[]{0.0, 0.0, alpha});
+            final var alphaSkew2 = Utils.skewMatrix(new double[]{0.0, 0.0, alpha});
             alphaSkew2.multiplyByScalar(0.5);
             // 0.5 * alphaSkew2 * oldCbe
             alphaSkew2.multiply(oldCbe);
 
             if (alphaNorm > ALPHA_THRESHOLD) {
-                final double alphaNorm2 = alphaNorm * alphaNorm;
-                final double value1 = (1.0 - Math.cos(alphaNorm)) / alphaNorm2;
-                final double value2 = (1.0 - Math.sin(alphaNorm) / alphaNorm) / alphaNorm2;
-                final Matrix tmp1 = alphaSkew1.multiplyByScalarAndReturnNew(value1);
-                final Matrix tmp2 = alphaSkew1.multiplyByScalarAndReturnNew(value2);
+                final var alphaNorm2 = alphaNorm * alphaNorm;
+                final var value1 = (1.0 - Math.cos(alphaNorm)) / alphaNorm2;
+                final var value2 = (1.0 - Math.sin(alphaNorm) / alphaNorm) / alphaNorm2;
+                final var tmp1 = alphaSkew1.multiplyByScalarAndReturnNew(value1);
+                final var tmp2 = alphaSkew1.multiplyByScalarAndReturnNew(value2);
                 tmp2.multiply(alphaSkew1);
 
-                final Matrix tmp3 = Matrix.identity(ROWS, ROWS);
+                final var tmp3 = Matrix.identity(ROWS, ROWS);
                 tmp3.add(tmp1);
                 tmp3.add(tmp2);
 
@@ -6740,7 +6739,7 @@ public class ECEFInertialNavigator {
             // oldCbe now contains the average body-to-ECEF-frame coordinate transformation
 
             // Transform specific force to ECEF-frame resolving axes using (5.85)
-            final Matrix fibb = new Matrix(ROWS, 1);
+            final var fibb = new Matrix(ROWS, 1);
             fibb.setElementAtIndex(0, fx);
             fibb.setElementAtIndex(1, fy);
             fibb.setElementAtIndex(2, fz);
@@ -6750,15 +6749,15 @@ public class ECEFInertialNavigator {
 
             // Update velocity
             // From (5.36)
-            final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(oldX, oldY, oldZ);
-            final Matrix g = gravity.asMatrix();
+            final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(oldX, oldY, oldZ);
+            final var g = gravity.asMatrix();
 
-            final Matrix oldVebe = new Matrix(ROWS, 1);
+            final var oldVebe = new Matrix(ROWS, 1);
             oldVebe.setElementAtIndex(0, oldVx);
             oldVebe.setElementAtIndex(1, oldVy);
             oldVebe.setElementAtIndex(2, oldVz);
 
-            final Matrix skew3 = Utils.skewMatrix(new double[]{0.0, 0.0, EARTH_ROTATION_RATE});
+            final var skew3 = Utils.skewMatrix(new double[]{0.0, 0.0, EARTH_ROTATION_RATE});
             // 2.0 * omegaSkew
             skew3.multiplyByScalar(2.0);
             // 2.0 * omegaSkew * oldVebe
@@ -6775,18 +6774,18 @@ public class ECEFInertialNavigator {
             // oldVebe + timeInterval * (fibe + g - 2.0 * omegaSkew * oldVebe)
             oldVebe.add(oldCbe);
 
-            final double newVx = oldVebe.getElementAtIndex(0);
-            final double newVy = oldVebe.getElementAtIndex(1);
-            final double newVz = oldVebe.getElementAtIndex(2);
+            final var newVx = oldVebe.getElementAtIndex(0);
+            final var newVy = oldVebe.getElementAtIndex(1);
+            final var newVz = oldVebe.getElementAtIndex(2);
 
             // Update cartesian position
             // From (5.38)
-            final double newX = oldX + (newVx + oldVx) * 0.5 * timeInterval;
-            final double newY = oldY + (newVy + oldVy) * 0.5 * timeInterval;
-            final double newZ = oldZ + (newVz + oldVz) * 0.5 * timeInterval;
+            final var newX = oldX + (newVx + oldVx) * 0.5 * timeInterval;
+            final var newY = oldY + (newVy + oldVy) * 0.5 * timeInterval;
+            final var newZ = oldZ + (newVz + oldVz) * 0.5 * timeInterval;
 
-            final CoordinateTransformation newC =
-                    new CoordinateTransformation(FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
+            final var newC = new CoordinateTransformation(FrameType.BODY_FRAME,
+                    FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
             // cEarth contains cBe
             newC.setMatrix(cEarth);
 
@@ -10212,7 +10211,7 @@ public class ECEFInertialNavigator {
             final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -10266,7 +10265,7 @@ public class ECEFInertialNavigator {
             final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -10315,7 +10314,7 @@ public class ECEFInertialNavigator {
             final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -10364,7 +10363,7 @@ public class ECEFInertialNavigator {
             final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -10413,7 +10412,7 @@ public class ECEFInertialNavigator {
             final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -10462,7 +10461,7 @@ public class ECEFInertialNavigator {
             final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -10505,7 +10504,7 @@ public class ECEFInertialNavigator {
             final ECEFVelocity oldVelocity, final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldPosition, oldC, oldVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 result);
         return result;
@@ -10548,7 +10547,7 @@ public class ECEFInertialNavigator {
             final ECEFVelocity oldVelocity, final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldPosition, oldC, oldVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 result);
         return result;
@@ -10585,7 +10584,7 @@ public class ECEFInertialNavigator {
             final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
             final BodyKinematics kinematics) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics, result);
         return result;
     }
@@ -10621,7 +10620,7 @@ public class ECEFInertialNavigator {
             final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
             final BodyKinematics kinematics) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics, result);
         return result;
     }
@@ -10651,7 +10650,7 @@ public class ECEFInertialNavigator {
             final double timeInterval, final ECEFPosition oldPosition, final CoordinateTransformation oldC,
             final double oldVx, final double oldVy, final double oldVz, final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, kinematics, result);
         return result;
     }
@@ -10681,7 +10680,7 @@ public class ECEFInertialNavigator {
             final Time timeInterval, final ECEFPosition oldPosition, final CoordinateTransformation oldC,
             final double oldVx, final double oldVy, final double oldVz, final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, kinematics, result);
         return result;
     }
@@ -10711,7 +10710,7 @@ public class ECEFInertialNavigator {
             final double timeInterval, final double oldX, final double oldY, final double oldZ,
             final CoordinateTransformation oldC, final ECEFVelocity oldVelocity, final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldVelocity, kinematics, result);
         return result;
     }
@@ -10741,7 +10740,7 @@ public class ECEFInertialNavigator {
             final Time timeInterval, final double oldX, final double oldY, final double oldZ,
             final CoordinateTransformation oldC, final ECEFVelocity oldVelocity, final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldVelocity, kinematics, result);
         return result;
     }
@@ -10766,7 +10765,7 @@ public class ECEFInertialNavigator {
             final double timeInterval, final ECEFPosition oldPosition, final CoordinateTransformation oldC,
             final ECEFVelocity oldVelocity, final BodyKinematics kinematics) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldPosition, oldC, oldVelocity, kinematics, result);
         return result;
     }
@@ -10791,7 +10790,7 @@ public class ECEFInertialNavigator {
             final Time timeInterval, final ECEFPosition oldPosition, final CoordinateTransformation oldC,
             final ECEFVelocity oldVelocity, final BodyKinematics kinematics) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldPosition, oldC, oldVelocity, kinematics, result);
         return result;
     }
@@ -10840,7 +10839,7 @@ public class ECEFInertialNavigator {
             final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -10890,7 +10889,7 @@ public class ECEFInertialNavigator {
             final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -10934,7 +10933,7 @@ public class ECEFInertialNavigator {
             final ECEFVelocity oldVelocity, final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldPosition, oldC, oldVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 result);
         return result;
@@ -10978,7 +10977,7 @@ public class ECEFInertialNavigator {
             final ECEFVelocity oldVelocity, final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldPosition, oldC, oldVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 result);
         return result;
@@ -11010,7 +11009,7 @@ public class ECEFInertialNavigator {
             final double timeInterval, final Point3D oldPosition, final CoordinateTransformation oldC,
             final double oldVx, final double oldVy, final double oldVz, final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, kinematics, result);
         return result;
     }
@@ -11041,7 +11040,7 @@ public class ECEFInertialNavigator {
             final Time timeInterval, final Point3D oldPosition, final CoordinateTransformation oldC,
             final double oldVx, final double oldVy, final double oldVz, final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, kinematics, result);
         return result;
     }
@@ -11067,7 +11066,7 @@ public class ECEFInertialNavigator {
             final double timeInterval, final Point3D oldPosition, final CoordinateTransformation oldC,
             final ECEFVelocity oldVelocity, final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldPosition, oldC, oldVelocity, kinematics, result);
         return result;
     }
@@ -11093,7 +11092,7 @@ public class ECEFInertialNavigator {
             final Time timeInterval, final Point3D oldPosition, final CoordinateTransformation oldC,
             final ECEFVelocity oldVelocity, final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldPosition, oldC, oldVelocity, kinematics, result);
         return result;
     }
@@ -11146,7 +11145,7 @@ public class ECEFInertialNavigator {
             final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -11200,7 +11199,7 @@ public class ECEFInertialNavigator {
             final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -11249,7 +11248,7 @@ public class ECEFInertialNavigator {
             final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -11298,7 +11297,7 @@ public class ECEFInertialNavigator {
             final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -11335,7 +11334,7 @@ public class ECEFInertialNavigator {
             final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
             final BodyKinematics kinematics) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics, result);
         return result;
     }
@@ -11371,7 +11370,7 @@ public class ECEFInertialNavigator {
             final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
             final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics, result);
         return result;
     }
@@ -11401,7 +11400,7 @@ public class ECEFInertialNavigator {
             final double timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
             final CoordinateTransformation oldC, final ECEFVelocity oldVelocity, final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldVelocity, kinematics, result);
         return result;
     }
@@ -11431,7 +11430,7 @@ public class ECEFInertialNavigator {
             final Time timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
             final CoordinateTransformation oldC, final ECEFVelocity oldVelocity, final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldVelocity, kinematics, result);
         return result;
     }
@@ -11484,7 +11483,7 @@ public class ECEFInertialNavigator {
             final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -11538,7 +11537,7 @@ public class ECEFInertialNavigator {
             final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -11587,7 +11586,7 @@ public class ECEFInertialNavigator {
             final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldPosition, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -11636,7 +11635,7 @@ public class ECEFInertialNavigator {
             final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldPosition, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -11673,7 +11672,7 @@ public class ECEFInertialNavigator {
             final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
             final BodyKinematics kinematics) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result);
         return result;
     }
@@ -11709,7 +11708,7 @@ public class ECEFInertialNavigator {
             final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
             final BodyKinematics kinematics) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result);
         return result;
     }
@@ -11739,7 +11738,7 @@ public class ECEFInertialNavigator {
             final double timeInterval, final ECEFPosition oldPosition, final CoordinateTransformation oldC,
             final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ, final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldPosition, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result);
         return result;
     }
@@ -11769,7 +11768,7 @@ public class ECEFInertialNavigator {
             final Time timeInterval, final ECEFPosition oldPosition, final CoordinateTransformation oldC,
             final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ, final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldPosition, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result);
         return result;
     }
@@ -11819,7 +11818,7 @@ public class ECEFInertialNavigator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -11870,7 +11869,7 @@ public class ECEFInertialNavigator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -11916,7 +11915,7 @@ public class ECEFInertialNavigator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -11962,7 +11961,7 @@ public class ECEFInertialNavigator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -12008,7 +12007,7 @@ public class ECEFInertialNavigator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -12054,7 +12053,7 @@ public class ECEFInertialNavigator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -12094,7 +12093,7 @@ public class ECEFInertialNavigator {
             final ECEFVelocity oldVelocity, final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldPosition, oldC, oldVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 result);
         return result;
@@ -12134,7 +12133,7 @@ public class ECEFInertialNavigator {
             final ECEFVelocity oldVelocity, final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldPosition, oldC, oldVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -12185,7 +12184,7 @@ public class ECEFInertialNavigator {
             final double fx, final double fy, final double fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -12236,7 +12235,7 @@ public class ECEFInertialNavigator {
             final double fx, final double fy, final double fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy,
                 fz, angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -12282,7 +12281,7 @@ public class ECEFInertialNavigator {
             final double fx, final double fy, final double fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -12328,7 +12327,7 @@ public class ECEFInertialNavigator {
             final double fx, final double fy, final double fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -12374,7 +12373,7 @@ public class ECEFInertialNavigator {
             final double fx, final double fy, final double fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -12420,7 +12419,7 @@ public class ECEFInertialNavigator {
             final double fx, final double fy, final double fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -12460,7 +12459,7 @@ public class ECEFInertialNavigator {
             final ECEFVelocity oldVelocity, final double fx, final double fy, final double fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldPosition, oldC, oldVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 result);
         return result;
@@ -12500,7 +12499,7 @@ public class ECEFInertialNavigator {
             final ECEFVelocity oldVelocity, final double fx, final double fy, final double fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldPosition, oldC, oldVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 result);
         return result;
@@ -12554,7 +12553,7 @@ public class ECEFInertialNavigator {
             final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -12608,7 +12607,7 @@ public class ECEFInertialNavigator {
             final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -12656,7 +12655,7 @@ public class ECEFInertialNavigator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -12704,7 +12703,7 @@ public class ECEFInertialNavigator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -12747,7 +12746,7 @@ public class ECEFInertialNavigator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldPosition, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -12790,7 +12789,7 @@ public class ECEFInertialNavigator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldPosition, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -12833,7 +12832,7 @@ public class ECEFInertialNavigator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -12876,7 +12875,7 @@ public class ECEFInertialNavigator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -12913,7 +12912,7 @@ public class ECEFInertialNavigator {
             final ECEFVelocity oldVelocity, final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldPosition, oldC, oldVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 result);
         return result;
@@ -12950,7 +12949,7 @@ public class ECEFInertialNavigator {
             final ECEFVelocity oldVelocity, final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldPosition, oldC, oldVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 result);
         return result;
@@ -12998,7 +12997,7 @@ public class ECEFInertialNavigator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -13046,7 +13045,7 @@ public class ECEFInertialNavigator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy,
                 fz, angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -13089,7 +13088,7 @@ public class ECEFInertialNavigator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -13132,7 +13131,7 @@ public class ECEFInertialNavigator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -13175,7 +13174,7 @@ public class ECEFInertialNavigator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -13218,7 +13217,7 @@ public class ECEFInertialNavigator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldVelocity, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
         return result;
@@ -13255,7 +13254,7 @@ public class ECEFInertialNavigator {
             final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
             final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result);
         return result;
     }
@@ -13291,7 +13290,7 @@ public class ECEFInertialNavigator {
             final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
             final BodyKinematics kinematics) throws InertialNavigatorException,
             InvalidSourceAndDestinationFrameTypeException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result);
         return result;
     }
@@ -13328,7 +13327,7 @@ public class ECEFInertialNavigator {
             final double timeInterval, final ECEFFrame oldFrame, final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
@@ -13366,7 +13365,7 @@ public class ECEFInertialNavigator {
             final double fx, final double fy, final double fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
@@ -13386,7 +13385,7 @@ public class ECEFInertialNavigator {
     public static ECEFFrame navigateECEFAndReturnNew(
             final double timeInterval, final ECEFFrame oldFrame, final BodyKinematics kinematics)
             throws InertialNavigatorException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldFrame, kinematics, result);
         return result;
     }
@@ -13406,7 +13405,7 @@ public class ECEFInertialNavigator {
     public static ECEFFrame navigateECEFAndReturnNew(
             final Time timeInterval, final ECEFFrame oldFrame, final BodyKinematics kinematics)
             throws InertialNavigatorException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldFrame, kinematics, result);
         return result;
     }
@@ -13441,7 +13440,7 @@ public class ECEFInertialNavigator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
@@ -13476,7 +13475,7 @@ public class ECEFInertialNavigator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
@@ -13511,7 +13510,7 @@ public class ECEFInertialNavigator {
             final double fx, final double fy, final double fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
@@ -13545,7 +13544,7 @@ public class ECEFInertialNavigator {
             final Time timeInterval, final ECEFFrame oldFrame, final double fx, final double fy, final double fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
@@ -13577,7 +13576,7 @@ public class ECEFInertialNavigator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
@@ -13609,7 +13608,7 @@ public class ECEFInertialNavigator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException {
-        final ECEFFrame result = new ECEFFrame();
+        final var result = new ECEFFrame();
         navigateECEF(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
         return result;
     }

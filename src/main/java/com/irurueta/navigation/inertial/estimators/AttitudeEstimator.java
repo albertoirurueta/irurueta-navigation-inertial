@@ -56,7 +56,7 @@ public class AttitudeEstimator {
      * This is used to determine magnetic declination angle at a given Earth
      * position and instant.
      */
-    private final WMMEarthMagneticFluxDensityEstimator mWMMEstimator;
+    private final WMMEarthMagneticFluxDensityEstimator wmmEstimator;
 
     /**
      * Constructor.
@@ -67,7 +67,7 @@ public class AttitudeEstimator {
      *                     model.
      */
     public AttitudeEstimator() throws IOException {
-        mWMMEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
     }
 
     /**
@@ -78,7 +78,7 @@ public class AttitudeEstimator {
      * @throws NullPointerException if provided model is null.
      */
     public AttitudeEstimator(final WorldMagneticModel model) {
-        mWMMEstimator = new WMMEarthMagneticFluxDensityEstimator(model);
+        wmmEstimator = new WMMEarthMagneticFluxDensityEstimator(model);
     }
 
     /**
@@ -115,7 +115,7 @@ public class AttitudeEstimator {
             final double latitude, final double longitude, final double height,
             final double year, final double fx, final double fy, final double fz,
             final double bx, final double by, final double bz, final CoordinateTransformation result) {
-        final double declination = mWMMEstimator.getDeclination(latitude, longitude, height, year);
+        final var declination = wmmEstimator.getDeclination(latitude, longitude, height, year);
         getAttitude(latitude, height, fx, fy, fz, bx, by, bz, declination, result);
     }
 
@@ -153,7 +153,7 @@ public class AttitudeEstimator {
             final double latitude, final double longitude, final double height,
             final double year, final double fx, final double fy, final double fz,
             final double bx, final double by, final double bz) {
-        final double declination = mWMMEstimator.getDeclination(latitude, longitude, height, year);
+        final var declination = wmmEstimator.getDeclination(latitude, longitude, height, year);
         return getAttitude(latitude, height, fx, fy, fz, bx, by, bz, declination);
     }
 
@@ -191,7 +191,7 @@ public class AttitudeEstimator {
             final double latitude, final double longitude, final double height,
             final GregorianCalendar calendar, final double fx, final double fy, final double fz,
             final double bx, final double by, final double bz, final CoordinateTransformation result) {
-        final double declination = mWMMEstimator.getDeclination(latitude, longitude, height, calendar);
+        final var declination = wmmEstimator.getDeclination(latitude, longitude, height, calendar);
         getAttitude(latitude, height, fx, fy, fz, bx, by, bz, declination, result);
     }
 
@@ -229,7 +229,7 @@ public class AttitudeEstimator {
             final double latitude, final double longitude, final double height,
             final GregorianCalendar calendar, final double fx, final double fy, final double fz,
             final double bx, final double by, final double bz) {
-        final double declination = mWMMEstimator.getDeclination(latitude, longitude, height, calendar);
+        final var declination = wmmEstimator.getDeclination(latitude, longitude, height, calendar);
         return getAttitude(latitude, height, fx, fy, fz, bx, by, bz, declination);
     }
 
@@ -267,7 +267,7 @@ public class AttitudeEstimator {
             final double latitude, final double longitude, final double height, final Date timestamp,
             final double fx, final double fy, final double fz, final double bx, final double by, final double bz,
             final CoordinateTransformation result) {
-        final double declination = mWMMEstimator.getDeclination(latitude, longitude, height, timestamp);
+        final var declination = wmmEstimator.getDeclination(latitude, longitude, height, timestamp);
         getAttitude(latitude, height, fx, fy, fz, bx, by, bz, declination, result);
     }
 
@@ -304,7 +304,7 @@ public class AttitudeEstimator {
     public CoordinateTransformation getAttitude(
             final double latitude, final double longitude, final double height, final Date timestamp,
             final double fx, final double fy, final double fz, final double bx, final double by, final double bz) {
-        final double declination = mWMMEstimator.getDeclination(latitude, longitude, height, timestamp);
+        final var declination = wmmEstimator.getDeclination(latitude, longitude, height, timestamp);
         return getAttitude(latitude, height, fx, fy, fz, bx, by, bz, declination);
     }
 
@@ -489,9 +489,9 @@ public class AttitudeEstimator {
         result.setSourceType(FrameType.LOCAL_NAVIGATION_FRAME);
         result.setDestinationType(FrameType.BODY_FRAME);
 
-        final double roll = LevelingEstimator.getRoll(fy, fz);
-        final double pitch = LevelingEstimator.getPitch(fx, fy, fz);
-        final double yaw = getYaw(bx, by, bz, declination, roll, pitch);
+        final var roll = LevelingEstimator.getRoll(fy, fz);
+        final var pitch = LevelingEstimator.getPitch(fx, fy, fz);
+        final var yaw = getYaw(bx, by, bz, declination, roll, pitch);
 
         result.setEulerAngles(roll, pitch, yaw);
     }
@@ -530,9 +530,9 @@ public class AttitudeEstimator {
             final double fx, final double fy, final double fz,
             final double bx, final double by, final double bz, final double declination) {
 
-        final double roll = LevelingEstimator.getRoll(fy, fz);
-        final double pitch = LevelingEstimator.getPitch(fx, fy, fz);
-        final double yaw = getYaw(bx, by, bz, declination, roll, pitch);
+        final var roll = LevelingEstimator.getRoll(fy, fz);
+        final var pitch = LevelingEstimator.getPitch(fx, fy, fz);
+        final var yaw = getYaw(bx, by, bz, declination, roll, pitch);
 
         return new CoordinateTransformation(roll, pitch, yaw, FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
     }
@@ -750,9 +750,9 @@ public class AttitudeEstimator {
         LevelingEstimator2.getPartialAttitude(latitude, height, fx, fy, fz, result);
 
         // fix yaw angle
-        final double roll = result.getRollEulerAngle();
-        final double pitch = result.getPitchEulerAngle();
-        final double yaw = getYaw(bx, by, bz, declination, roll, pitch);
+        final var roll = result.getRollEulerAngle();
+        final var pitch = result.getPitchEulerAngle();
+        final var yaw = getYaw(bx, by, bz, declination, roll, pitch);
 
         result.setEulerAngles(roll, pitch, yaw);
     }
@@ -797,8 +797,7 @@ public class AttitudeEstimator {
             final double latitude, final double height, final double fx, final double fy, final double fz,
             final double bx, final double by, final double bz, final double declination) {
 
-        final CoordinateTransformation result = new CoordinateTransformation(
-                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
+        final var result = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
         getAttitude(latitude, height, fx, fy, fz, bx, by, bz, declination, result);
         return result;
     }
@@ -1028,14 +1027,14 @@ public class AttitudeEstimator {
     public static double getMagneticHeading(
             final double bx, final double by, final double bz, final double roll, final double pitch) {
 
-        final double sinRoll = Math.sin(roll);
-        final double cosRoll = Math.cos(roll);
+        final var sinRoll = Math.sin(roll);
+        final var cosRoll = Math.cos(roll);
 
-        final double sinPitch = Math.sin(pitch);
-        final double cosPitch = Math.cos(pitch);
+        final var sinPitch = Math.sin(pitch);
+        final var cosPitch = Math.cos(pitch);
 
-        final double tmp1 = -by * cosRoll + bz * sinRoll;
-        final double tmp2 = bx * cosPitch + by * sinRoll * sinPitch + bz * cosRoll * sinPitch;
+        final var tmp1 = -by * cosRoll + bz * sinRoll;
+        final var tmp2 = bx * cosPitch + by * sinRoll * sinPitch + bz * cosRoll * sinPitch;
 
         return Math.atan2(tmp1, tmp2);
     }
@@ -1233,7 +1232,7 @@ public class AttitudeEstimator {
      *                    or using {@link EarthMagneticFluxDensityEstimator#getDeclination(NEDMagneticFluxDensity)}
      * @param roll        known body roll angle expressed in radians (rad).
      * @param pitch       known body pitch angle expressed in radians (rad).
-     * @return body yaw angle (a.k.a true heading) expressed in radians (rad).
+     * @return body yaw angle (a.k.a. true heading) expressed in radians (rad).
      * @see WMMEarthMagneticFluxDensityEstimator
      * @see EarthMagneticFluxDensityEstimator
      */
@@ -1258,7 +1257,7 @@ public class AttitudeEstimator {
      *                    or using {@link EarthMagneticFluxDensityEstimator#getDeclination(NEDMagneticFluxDensity)}
      * @param roll        known body roll angle expressed in radians (rad).
      * @param pitch       known body pitch angle expressed in radians (rad).
-     * @return body yaw angle (a.k.a true heading) expressed in radians (rad).
+     * @return body yaw angle (a.k.a. true heading) expressed in radians (rad).
      * @see WMMEarthMagneticFluxDensityEstimator
      * @see EarthMagneticFluxDensityEstimator
      */
@@ -1286,7 +1285,7 @@ public class AttitudeEstimator {
      *                    or using {@link EarthMagneticFluxDensityEstimator#getDeclination(NEDMagneticFluxDensity)}
      * @param roll        known body roll angle.
      * @param pitch       known body pitch angle.
-     * @return body yaw angle (a.k.a true heading) expressed in radians (rad).
+     * @return body yaw angle (a.k.a. true heading) expressed in radians (rad).
      * @see WMMEarthMagneticFluxDensityEstimator
      * @see EarthMagneticFluxDensityEstimator
      */
@@ -1310,7 +1309,7 @@ public class AttitudeEstimator {
      *                    or using {@link EarthMagneticFluxDensityEstimator#getDeclination(NEDMagneticFluxDensity)}
      * @param roll        known body roll angle.
      * @param pitch       known body pitch angle.
-     * @return body yaw angle (a.k.a true heading) expressed in radians (rad).
+     * @return body yaw angle (a.k.a. true heading) expressed in radians (rad).
      * @see WMMEarthMagneticFluxDensityEstimator
      * @see EarthMagneticFluxDensityEstimator
      */

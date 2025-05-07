@@ -38,22 +38,22 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>> impleme
     /**
      * Contains x coordinate of measurement value.
      */
-    private double mValueX;
+    private double valueX;
 
     /**
      * Contains y coordinate of measurement value.
      */
-    private double mValueY;
+    private double valueY;
 
     /**
      * Contains z coordinate of measurement value.
      */
-    private double mValueZ;
+    private double valueZ;
 
     /**
      * Contains unit of measurement.
      */
-    private U mUnit;
+    private U unit;
 
     /**
      * Constructor.
@@ -66,7 +66,7 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>> impleme
             throw new IllegalArgumentException();
         }
 
-        mUnit = unit;
+        this.unit = unit;
     }
 
     /**
@@ -98,7 +98,7 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>> impleme
      * @return x coordinate of measurement value.
      */
     public double getValueX() {
-        return mValueX;
+        return valueX;
     }
 
     /**
@@ -107,7 +107,7 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>> impleme
      * @param valueX x coordinate of measurement value.
      */
     public void setValueX(final double valueX) {
-        mValueX = valueX;
+        this.valueX = valueX;
     }
 
     /**
@@ -116,7 +116,7 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>> impleme
      * @return y coordinate of measurement value.
      */
     public double getValueY() {
-        return mValueY;
+        return valueY;
     }
 
     /**
@@ -125,7 +125,7 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>> impleme
      * @param valueY y coordinate of measurement value.
      */
     public void setValueY(final double valueY) {
-        mValueY = valueY;
+        this.valueY = valueY;
     }
 
     /**
@@ -134,7 +134,7 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>> impleme
      * @return z coordinate of measurement value.
      */
     public double getValueZ() {
-        return mValueZ;
+        return valueZ;
     }
 
     /**
@@ -143,7 +143,7 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>> impleme
      * @param valueZ z coordinate of measurement value.
      */
     public void setValueZ(final double valueZ) {
-        mValueZ = valueZ;
+        this.valueZ = valueZ;
     }
 
     /**
@@ -154,9 +154,9 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>> impleme
      * @param valueZ z coordinate of measurement.
      */
     public void setValueCoordinates(final double valueX, final double valueY, final double valueZ) {
-        mValueX = valueX;
-        mValueY = valueY;
-        mValueZ = valueZ;
+        this.valueX = valueX;
+        this.valueY = valueY;
+        this.valueZ = valueZ;
     }
 
     /**
@@ -165,7 +165,7 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>> impleme
      * @return unit of measurement.
      */
     public U getUnit() {
-        return mUnit;
+        return unit;
     }
 
     /**
@@ -178,7 +178,7 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>> impleme
         if (unit == null) {
             throw new IllegalArgumentException();
         }
-        mUnit = unit;
+        this.unit = unit;
     }
 
     /**
@@ -202,7 +202,7 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>> impleme
      * @return array containing measurement values.
      */
     public double[] getValuesAsArray() {
-        return new double[]{mValueX, mValueY, mValueZ};
+        return new double[]{valueX, valueY, valueZ};
     }
 
     /**
@@ -216,9 +216,9 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>> impleme
         if (result.length != COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        result[0] = mValueX;
-        result[1] = mValueY;
-        result[2] = mValueZ;
+        result[0] = valueX;
+        result[1] = valueY;
+        result[2] = valueZ;
     }
 
     /**
@@ -233,9 +233,9 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>> impleme
             throw new IllegalArgumentException();
         }
 
-        mValueX = values[0];
-        mValueY = values[1];
-        mValueZ = values[2];
+        valueX = values[0];
+        valueY = values[1];
+        valueZ = values[2];
     }
 
     /**
@@ -265,9 +265,9 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>> impleme
         if (result.getRows() != COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
-        result.setElementAtIndex(0, mValueX);
-        result.setElementAtIndex(1, mValueY);
-        result.setElementAtIndex(2, mValueZ);
+        result.setElementAtIndex(0, valueX);
+        result.setElementAtIndex(1, valueY);
+        result.setElementAtIndex(2, valueZ);
     }
 
     /**
@@ -281,9 +281,9 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>> impleme
             throw new IllegalArgumentException();
         }
 
-        mValueX = values.getElementAtIndex(0);
-        mValueY = values.getElementAtIndex(1);
-        mValueZ = values.getElementAtIndex(2);
+        valueX = values.getElementAtIndex(0);
+        valueY = values.getElementAtIndex(1);
+        valueZ = values.getElementAtIndex(2);
     }
 
     /**
@@ -368,7 +368,7 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>> impleme
      * @return squared norm for triad values.
      */
     public double getSqrNorm() {
-        return mValueX * mValueX + mValueY * mValueY + mValueZ * mValueZ;
+        return valueX * valueX + valueY * valueY + valueZ * valueZ;
     }
 
     /**
@@ -412,10 +412,10 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>> impleme
      * @param input instance to copy data from.
      */
     public void copyFrom(final Triad<U, T> input) {
-        mValueX = input.mValueX;
-        mValueY = input.mValueY;
-        mValueZ = input.mValueZ;
-        mUnit = input.mUnit;
+        valueX = input.valueX;
+        valueY = input.valueY;
+        valueZ = input.valueZ;
+        unit = input.unit;
     }
 
     /**
@@ -426,7 +426,7 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>> impleme
      */
     @Override
     public int hashCode() {
-        return Objects.hash(mValueX, mValueY, mValueZ, mUnit);
+        return Objects.hash(valueX, valueY, valueZ, unit);
     }
 
     /**
@@ -453,8 +453,8 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>> impleme
             return false;
         }
 
-        return Math.abs(mValueX - other.mValueX) <= threshold && Math.abs(mValueY - other.mValueY) <= threshold
-                && Math.abs(mValueZ - other.mValueZ) <= threshold && Objects.equals(mUnit, other.mUnit);
+        return Math.abs(valueX - other.valueX) <= threshold && Math.abs(valueY - other.valueY) <= threshold
+                && Math.abs(valueZ - other.valueZ) <= threshold && Objects.equals(unit, other.unit);
     }
 
 
@@ -475,7 +475,7 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>> impleme
         }
 
         //noinspection unchecked
-        final Triad<U, T> triad = (Triad<U, T>) o;
+        final var triad = (Triad<U, T>) o;
         return equals(triad);
     }
 }

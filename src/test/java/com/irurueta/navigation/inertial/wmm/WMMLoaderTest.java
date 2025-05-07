@@ -15,16 +15,16 @@
  */
 package com.irurueta.navigation.inertial.wmm;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class WMMLoaderTest {
+class WMMLoaderTest {
 
     private static final String RESOURCE = "wmm.cof";
 
@@ -33,42 +33,41 @@ public class WMMLoaderTest {
     private static final String FILE_PATH = "./src/main/resources/com/irurueta/navigation/inertial/wmm/wmm.cof";
 
     @Test
-    public void testLoadFromResource() throws IOException {
-        final WorldMagneticModel model = WMMLoader.loadFromResource(RESOURCE);
+    void testLoadFromResource() throws IOException {
+        final var model = WMMLoader.loadFromResource(RESOURCE);
         assertNotNull(model);
     }
 
     @Test
-    public void testLoadFromUrl() throws IOException {
-        final WorldMagneticModel model = WMMLoader.loadFromUrl(URL);
+    void testLoadFromUrl() throws IOException {
+        final var model = WMMLoader.loadFromUrl(URL);
         assertNotNull(model);
     }
 
     @Test
-    public void testLoadFromFile() throws IOException {
-        final WorldMagneticModel model = WMMLoader.loadFromFile(FILE_PATH);
+    void testLoadFromFile() throws IOException {
+        final var model = WMMLoader.loadFromFile(FILE_PATH);
         assertNotNull(model);
     }
 
     @Test
-    public void testLoad1() throws IOException {
-        final URL url = new URL(URL);
-        final WorldMagneticModel model = WMMLoader.load(url);
+    void testLoad1() throws IOException {
+        final var url = new URL(URL);
+        final var model = WMMLoader.load(url);
         assertNotNull(model);
     }
 
     @Test
-    public void testLoad2() throws IOException {
-        final File file = new File(FILE_PATH);
-        final WorldMagneticModel model = WMMLoader.load(file);
+    void testLoad2() throws IOException {
+        final var file = new File(FILE_PATH);
+        final var model = WMMLoader.load(file);
         assertNotNull(model);
     }
 
     @Test
-    public void testLoad3() throws IOException {
-        final FileInputStream stream =
-                new FileInputStream(FILE_PATH);
-        final WorldMagneticModel model = WMMLoader.load(stream);
+    void testLoad3() throws IOException {
+        final var stream = new FileInputStream(FILE_PATH);
+        final var model = WMMLoader.load(stream);
         stream.close();
 
         assertNotNull(model);

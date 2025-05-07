@@ -15,15 +15,15 @@
  */
 package com.irurueta.navigation.inertial;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class InertialExceptionTest {
+class InertialExceptionTest {
 
     @Test
-    public void testConstructor() {
-        InertialException ex = new InertialException();
+    void testConstructor() {
+        var ex = new InertialException();
         assertNotNull(ex);
 
         ex = new InertialException("message");

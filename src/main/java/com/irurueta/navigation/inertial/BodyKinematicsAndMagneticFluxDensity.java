@@ -35,12 +35,12 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
     /**
      * Body kinematics containing sensed specific force and angular rate.
      */
-    private BodyKinematics mKinematics;
+    private BodyKinematics kinematics;
 
     /**
      * Body magnetic flux density.
      */
-    private BodyMagneticFluxDensity mMagneticFluxDensity;
+    private BodyMagneticFluxDensity magneticFluxDensity;
 
     /**
      * Constructor.
@@ -55,7 +55,7 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
      *                   and angular rate.
      */
     public BodyKinematicsAndMagneticFluxDensity(final BodyKinematics kinematics) {
-        mKinematics = kinematics;
+        this.kinematics = kinematics;
     }
 
     /**
@@ -64,7 +64,7 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
      * @param magneticFluxDensity body magnetic flux density.
      */
     public BodyKinematicsAndMagneticFluxDensity(final BodyMagneticFluxDensity magneticFluxDensity) {
-        mMagneticFluxDensity = magneticFluxDensity;
+        this.magneticFluxDensity = magneticFluxDensity;
     }
 
     /**
@@ -76,8 +76,8 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
      */
     public BodyKinematicsAndMagneticFluxDensity(
             final BodyKinematics kinematics, final BodyMagneticFluxDensity magneticFluxDensity) {
-        mKinematics = kinematics;
-        mMagneticFluxDensity = magneticFluxDensity;
+        this.kinematics = kinematics;
+        this.magneticFluxDensity = magneticFluxDensity;
     }
 
     /**
@@ -95,7 +95,7 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
      * @return body kinematics containing sensed specific force and angular rate.
      */
     public BodyKinematics getKinematics() {
-        return mKinematics;
+        return kinematics;
     }
 
     /**
@@ -105,7 +105,7 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
      *                   angular rate.
      */
     public void setKinematics(final BodyKinematics kinematics) {
-        mKinematics = kinematics;
+        this.kinematics = kinematics;
     }
 
     /**
@@ -114,7 +114,7 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
      * @return body magnetic flux density.
      */
     public BodyMagneticFluxDensity getMagneticFluxDensity() {
-        return mMagneticFluxDensity;
+        return magneticFluxDensity;
     }
 
     /**
@@ -123,7 +123,7 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
      * @param magneticFluxDensity body magnetic flux density.
      */
     public void setMagneticFluxDensity(final BodyMagneticFluxDensity magneticFluxDensity) {
-        mMagneticFluxDensity = magneticFluxDensity;
+        this.magneticFluxDensity = magneticFluxDensity;
     }
 
     /**
@@ -132,24 +132,24 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
      * @param input instance to copy data from.
      */
     public void copyFrom(final BodyKinematicsAndMagneticFluxDensity input) {
-        if (input.mKinematics != null) {
-            if (mKinematics == null) {
-                mKinematics = new BodyKinematics(input.mKinematics);
+        if (input.kinematics != null) {
+            if (kinematics == null) {
+                kinematics = new BodyKinematics(input.kinematics);
             } else {
-                mKinematics.copyFrom(input.mKinematics);
+                kinematics.copyFrom(input.kinematics);
             }
         } else {
-            mKinematics = null;
+            kinematics = null;
         }
 
-        if (input.mMagneticFluxDensity != null) {
-            if (mMagneticFluxDensity == null) {
-                mMagneticFluxDensity = new BodyMagneticFluxDensity(input.mMagneticFluxDensity);
+        if (input.magneticFluxDensity != null) {
+            if (magneticFluxDensity == null) {
+                magneticFluxDensity = new BodyMagneticFluxDensity(input.magneticFluxDensity);
             } else {
-                mMagneticFluxDensity.copyFrom(input.mMagneticFluxDensity);
+                magneticFluxDensity.copyFrom(input.magneticFluxDensity);
             }
         } else {
-            mMagneticFluxDensity = null;
+            magneticFluxDensity = null;
         }
     }
 
@@ -171,7 +171,7 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
      */
     @Override
     public int hashCode() {
-        return Objects.hash(mKinematics, mMagneticFluxDensity);
+        return Objects.hash(kinematics, magneticFluxDensity);
     }
 
     /**
@@ -198,10 +198,10 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
             return false;
         }
 
-        return ((other.mKinematics == null && mKinematics == null)
-                || (mKinematics != null && mKinematics.equals(other.mKinematics, threshold)))
-                && ((other.mMagneticFluxDensity == null && mMagneticFluxDensity == null)
-                || (mMagneticFluxDensity != null && mMagneticFluxDensity.equals(other.mMagneticFluxDensity, threshold)));
+        return ((other.kinematics == null && kinematics == null)
+                || (kinematics != null && kinematics.equals(other.kinematics, threshold)))
+                && ((other.magneticFluxDensity == null && magneticFluxDensity == null)
+                || (magneticFluxDensity != null && magneticFluxDensity.equals(other.magneticFluxDensity, threshold)));
     }
 
     /**
@@ -221,7 +221,7 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
             return false;
         }
 
-        final BodyKinematicsAndMagneticFluxDensity other = (BodyKinematicsAndMagneticFluxDensity) obj;
+        final var other = (BodyKinematicsAndMagneticFluxDensity) obj;
         return equals(other);
     }
 
@@ -233,7 +233,7 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final BodyKinematicsAndMagneticFluxDensity result = (BodyKinematicsAndMagneticFluxDensity) super.clone();
+        final var result = (BodyKinematicsAndMagneticFluxDensity) super.clone();
         copyTo(result);
         return result;
     }

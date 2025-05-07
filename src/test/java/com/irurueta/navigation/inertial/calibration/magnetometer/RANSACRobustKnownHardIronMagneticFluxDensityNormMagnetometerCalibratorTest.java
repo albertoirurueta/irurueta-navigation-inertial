@@ -35,7 +35,7 @@ import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.MagneticFluxDensity;
 import com.irurueta.units.MagneticFluxDensityUnit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,11 +44,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest implements
+class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest implements
         RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener {
 
     private static final double MIN_HARD_IRON = -1e-5;
@@ -98,15 +97,14 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         END_TIMESTAMP_MILLIS = END_CALENDAR.getTimeInMillis();
     }
 
-    private int mCalibrateStart;
-    private int mCalibrateEnd;
-    private int mCalibrateNextIteration;
-    private int mCalibrateProgressChange;
+    private int calibrateStart;
+    private int calibrateEnd;
+    private int calibrateNextIteration;
+    private int calibrateProgressChange;
 
     @Test
-    public void testConstructor1() throws WrongSizeException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testConstructor1() throws WrongSizeException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default values
         assertEquals(RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -130,20 +128,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(new double[3], b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(new Matrix(3, 1), bm1);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -156,17 +154,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(0.0, bTriad1.getValueX(), 0.0);
         assertEquals(0.0, bTriad1.getValueY(), 0.0);
         assertEquals(0.0, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -207,17 +205,16 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
-    public void testConstructor2() throws WrongSizeException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(this);
+    void testConstructor2() throws WrongSizeException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(this);
 
         // check default values
-        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 
                 calibrator.getThreshold(), 0.0);
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
@@ -236,20 +233,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(new double[3], b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(new Matrix(3, 1), bm1);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -262,17 +259,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(0.0, bTriad1.getValueX(), 0.0);
         assertEquals(0.0, bTriad1.getValueY(), 0.0);
         assertEquals(0.0, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -313,18 +310,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
-    public void testConstructor3() throws WrongSizeException {
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements);
+    void testConstructor3() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements);
 
         // check default values
-        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 
                 calibrator.getThreshold(), 0.0);
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
@@ -343,20 +339,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(new double[3], b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(new Matrix(3, 1), bm1);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -369,17 +365,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(0.0, bTriad1.getValueX(), 0.0);
         assertEquals(0.0, bTriad1.getValueY(), 0.0);
         assertEquals(0.0, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
-        assertEquals(mm1, new Matrix(3, 3));
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm1 = calibrator.getInitialMm();
+        assertEquals(new Matrix(3, 3), mm1);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -420,14 +416,14 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
-    public void testConstructor4() throws WrongSizeException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(true);
+    void testConstructor4() throws WrongSizeException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                true);
 
         // check default values
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -449,20 +445,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(new double[3], b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(new Matrix(3, 1), bm1);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -475,17 +471,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(0.0, bTriad1.getValueX(), 0.0);
         assertEquals(0.0, bTriad1.getValueY(), 0.0);
         assertEquals(0.0, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -526,24 +522,23 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
-    public void testConstructor5() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+    void testConstructor5() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron);
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron);
 
         // check default values
-        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 
                 calibrator.getThreshold(), 0.0);
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
@@ -562,20 +557,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -588,17 +583,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -639,7 +634,7 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -648,16 +643,15 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testConstructor6() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+    void testConstructor6() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(bm);
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(bm);
 
         // check default values
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -679,20 +673,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -705,17 +699,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
-        assertEquals(mm1, new Matrix(3, 3));
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm1 = calibrator.getInitialMm();
+        assertEquals(new Matrix(3, 3), mm1);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -756,7 +750,7 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -769,28 +763,27 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testConstructor7() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
-        final Matrix mm = generateSoftIronGeneral();
+    void testConstructor7() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double sx = mm.getElementAt(0, 0);
-        final double sy = mm.getElementAt(1, 1);
-        final double sz = mm.getElementAt(2, 2);
-        final double mxy = mm.getElementAt(0, 1);
-        final double mxz = mm.getElementAt(0, 2);
-        final double myx = mm.getElementAt(1, 0);
-        final double myz = mm.getElementAt(1, 2);
-        final double mzx = mm.getElementAt(2, 0);
-        final double mzy = mm.getElementAt(2, 1);
+        final var sx = mm.getElementAt(0, 0);
+        final var sy = mm.getElementAt(1, 1);
+        final var sz = mm.getElementAt(2, 2);
+        final var mxy = mm.getElementAt(0, 1);
+        final var mxz = mm.getElementAt(0, 2);
+        final var myx = mm.getElementAt(1, 0);
+        final var myz = mm.getElementAt(1, 2);
+        final var mzx = mm.getElementAt(2, 0);
+        final var mzy = mm.getElementAt(2, 1);
 
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(bm, mm);
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(bm, mm);
 
         // check default values
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -812,17 +805,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(bm1, bm);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -835,20 +828,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(mm1, mm);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -889,7 +882,7 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -908,10 +901,10 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testConstructor8() throws WrongSizeException {
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements, this);
+    void testConstructor8() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements, 
+                this);
 
         // check default values
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -933,20 +926,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(new double[3], b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(new Matrix(3, 1), bm1);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -959,17 +952,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(0.0, bTriad1.getValueX(), 0.0);
         assertEquals(0.0, bTriad1.getValueY(), 0.0);
         assertEquals(0.0, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -1010,16 +1003,15 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
-    public void testConstructor9() throws WrongSizeException {
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements,
-                        true);
+    void testConstructor9() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements,
+                true);
 
         // check default values
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -1041,20 +1033,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(new double[3], b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(new Matrix(3, 1), bm1);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -1067,17 +1059,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(0.0, bTriad1.getValueX(), 0.0);
         assertEquals(0.0, bTriad1.getValueY(), 0.0);
         assertEquals(0.0, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -1118,16 +1110,15 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
-    public void testConstructor10() throws WrongSizeException {
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements,
-                        true, this);
+    void testConstructor10() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements,
+                true, this);
 
         // check default values
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -1149,20 +1140,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(new double[3], b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(new Matrix(3, 1), bm1);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -1175,17 +1166,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(0.0, bTriad1.getValueX(), 0.0);
         assertEquals(0.0, bTriad1.getValueY(), 0.0);
         assertEquals(0.0, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -1226,23 +1217,23 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
-    public void testConstructor11() throws WrongSizeException {
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+    void testConstructor11() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var randomizer = new UniformRandomizer();
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements, hardIron);
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements, 
+                hardIron);
 
         // check default values
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -1264,20 +1255,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -1290,17 +1281,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -1341,7 +1332,7 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -1351,19 +1342,18 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testConstructor12() throws WrongSizeException {
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+    void testConstructor12() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var randomizer = new UniformRandomizer();
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements, hardIron,
-                        this);
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements, 
+                hardIron, this);
 
         // check default values
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -1385,20 +1375,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(hardIron, b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -1411,17 +1401,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -1462,7 +1452,7 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -1472,19 +1462,18 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testConstructor13() throws WrongSizeException {
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+    void testConstructor13() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var randomizer = new UniformRandomizer();
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements,
-                        true, hardIron);
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements,
+                true, hardIron);
 
         // check default values
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -1506,20 +1495,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(hardIron, b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -1532,17 +1521,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -1583,7 +1572,7 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -1593,26 +1582,25 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testConstructor14() throws WrongSizeException {
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+    void testConstructor14() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var randomizer = new UniformRandomizer();
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements,
-                        true, hardIron, this);
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements,
+                true, hardIron, this);
 
         // check default values
-        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 
                 calibrator.getThreshold(), 0.0);
-        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS, 
                 calibrator.isComputeAndKeepInliersEnabled());
-        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS, 
                 calibrator.isComputeAndKeepResiduals());
         assertEquals(bmx, calibrator.getHardIronX(), 0.0);
         assertEquals(bmy, calibrator.getHardIronY(), 0.0);
@@ -1627,20 +1615,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -1653,17 +1641,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -1704,28 +1692,28 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class,
-                () -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements, true,
-                        new double[1], this));
+                () -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements, 
+                        true, new double[1], this));
     }
 
     @Test
-    public void testConstructor15() throws WrongSizeException {
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+    void testConstructor15() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var randomizer = new UniformRandomizer();
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements, bm);
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements, 
+                bm);
 
         // check default values
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -1747,20 +1735,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -1773,17 +1761,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -1824,7 +1812,7 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -1837,19 +1825,18 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testConstructor16() throws WrongSizeException {
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+    void testConstructor16() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var randomizer = new UniformRandomizer();
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements, bm,
-                        this);
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements, 
+                bm, this);
 
         // check default values
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -1871,20 +1858,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -1897,17 +1884,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -1948,7 +1935,7 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -1963,19 +1950,18 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testConstructor17() throws WrongSizeException {
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+    void testConstructor17() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var randomizer = new UniformRandomizer();
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements,
-                        true, bm);
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements,
+                true, bm);
 
         // check default values
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -1997,20 +1983,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(hardIron, b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -2023,17 +2009,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -2074,7 +2060,7 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -2089,22 +2075,21 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testConstructor18() throws WrongSizeException {
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+    void testConstructor18() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var randomizer = new UniformRandomizer();
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements,
-                        true, bm, this);
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements,
+                true, bm, this);
 
         // check default values
-        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 
                 calibrator.getThreshold(), 0.0);
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
@@ -2123,20 +2108,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(hardIron, b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -2149,17 +2134,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -2200,7 +2185,7 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -2215,30 +2200,30 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testConstructor19() throws WrongSizeException {
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+    void testConstructor19() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
-        final Matrix mm = generateSoftIronGeneral();
+        final var randomizer = new UniformRandomizer();
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double sx = mm.getElementAt(0, 0);
-        final double sy = mm.getElementAt(1, 1);
-        final double sz = mm.getElementAt(2, 2);
-        final double mxy = mm.getElementAt(0, 1);
-        final double mxz = mm.getElementAt(0, 2);
-        final double myx = mm.getElementAt(1, 0);
-        final double myz = mm.getElementAt(1, 2);
-        final double mzx = mm.getElementAt(2, 0);
-        final double mzy = mm.getElementAt(2, 1);
+        final var sx = mm.getElementAt(0, 0);
+        final var sy = mm.getElementAt(1, 1);
+        final var sz = mm.getElementAt(2, 2);
+        final var mxy = mm.getElementAt(0, 1);
+        final var mxz = mm.getElementAt(0, 2);
+        final var myx = mm.getElementAt(1, 0);
+        final var myz = mm.getElementAt(1, 2);
+        final var mzx = mm.getElementAt(2, 0);
+        final var mzy = mm.getElementAt(2, 1);
 
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements, bm, mm);
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements, 
+                bm, mm);
 
         // check default values
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -2260,17 +2245,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(bm1, bm);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -2283,20 +2268,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(mm1, mm);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -2337,7 +2322,7 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -2356,31 +2341,30 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testConstructor20() throws WrongSizeException {
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+    void testConstructor20() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
-        final Matrix mm = generateSoftIronGeneral();
+        final var randomizer = new UniformRandomizer();
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double sx = mm.getElementAt(0, 0);
-        final double sy = mm.getElementAt(1, 1);
-        final double sz = mm.getElementAt(2, 2);
-        final double mxy = mm.getElementAt(0, 1);
-        final double mxz = mm.getElementAt(0, 2);
-        final double myx = mm.getElementAt(1, 0);
-        final double myz = mm.getElementAt(1, 2);
-        final double mzx = mm.getElementAt(2, 0);
-        final double mzy = mm.getElementAt(2, 1);
+        final var sx = mm.getElementAt(0, 0);
+        final var sy = mm.getElementAt(1, 1);
+        final var sz = mm.getElementAt(2, 2);
+        final var mxy = mm.getElementAt(0, 1);
+        final var mxz = mm.getElementAt(0, 2);
+        final var myx = mm.getElementAt(1, 0);
+        final var myz = mm.getElementAt(1, 2);
+        final var mzx = mm.getElementAt(2, 0);
+        final var mzy = mm.getElementAt(2, 1);
 
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements, bm, mm,
-                        this);
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements, 
+                bm, mm, this);
 
         // check default values
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -2402,17 +2386,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(bm1, bm);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -2425,20 +2409,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(mm1, mm);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -2479,7 +2463,7 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -2502,31 +2486,30 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testConstructor21() throws WrongSizeException {
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+    void testConstructor21() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
-        final Matrix mm = generateSoftIronGeneral();
+        final var randomizer = new UniformRandomizer();
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double sx = mm.getElementAt(0, 0);
-        final double sy = mm.getElementAt(1, 1);
-        final double sz = mm.getElementAt(2, 2);
-        final double mxy = mm.getElementAt(0, 1);
-        final double mxz = mm.getElementAt(0, 2);
-        final double myx = mm.getElementAt(1, 0);
-        final double myz = mm.getElementAt(1, 2);
-        final double mzx = mm.getElementAt(2, 0);
-        final double mzy = mm.getElementAt(2, 1);
+        final var sx = mm.getElementAt(0, 0);
+        final var sy = mm.getElementAt(1, 1);
+        final var sz = mm.getElementAt(2, 2);
+        final var mxy = mm.getElementAt(0, 1);
+        final var mxz = mm.getElementAt(0, 2);
+        final var myx = mm.getElementAt(1, 0);
+        final var myz = mm.getElementAt(1, 2);
+        final var mzx = mm.getElementAt(2, 0);
+        final var mzy = mm.getElementAt(2, 1);
 
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements,
-                        true, bm, mm);
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements,
+                true, bm, mm);
 
         // check default values
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -2548,17 +2531,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(bm1, bm);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -2571,20 +2554,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(mm1, mm);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -2625,7 +2608,7 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -2648,31 +2631,30 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testConstructor22() throws WrongSizeException {
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+    void testConstructor22() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
-        final Matrix mm = generateSoftIronGeneral();
+        final var randomizer = new UniformRandomizer();
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double sx = mm.getElementAt(0, 0);
-        final double sy = mm.getElementAt(1, 1);
-        final double sz = mm.getElementAt(2, 2);
-        final double mxy = mm.getElementAt(0, 1);
-        final double mxz = mm.getElementAt(0, 2);
-        final double myx = mm.getElementAt(1, 0);
-        final double myz = mm.getElementAt(1, 2);
-        final double mzx = mm.getElementAt(2, 0);
-        final double mzy = mm.getElementAt(2, 1);
+        final var sx = mm.getElementAt(0, 0);
+        final var sy = mm.getElementAt(1, 1);
+        final var sz = mm.getElementAt(2, 2);
+        final var mxy = mm.getElementAt(0, 1);
+        final var mxz = mm.getElementAt(0, 2);
+        final var myx = mm.getElementAt(1, 0);
+        final var myz = mm.getElementAt(1, 2);
+        final var mzx = mm.getElementAt(2, 0);
+        final var mzy = mm.getElementAt(2, 1);
 
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements,
-                        true, bm, mm, this);
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements,
+                true, bm, mm, this);
 
         // check default values
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -2694,17 +2676,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(bm1, bm);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -2717,20 +2699,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(mm1, mm);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -2771,7 +2753,7 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
@@ -2794,17 +2776,16 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testConstructor23() throws WrongSizeException, IOException {
-        final UniformRandomizer randomizer = new UniformRandomizer();
-        final NEDPosition position = createPosition(randomizer);
-        final GregorianCalendar calendar = new GregorianCalendar();
+    void testConstructor23() throws WrongSizeException, IOException {
+        final var randomizer = new UniformRandomizer();
+        final var position = createPosition(randomizer);
+        final var calendar = new GregorianCalendar();
         calendar.setTime(new Date(createTimestamp(randomizer)));
-        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
-        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+        final var year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final var groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
 
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm);
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                groundTruthMagneticFluxDensityNorm);
 
         // check default values
         assertEquals(RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -2828,20 +2809,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(new double[3], b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(new Matrix(3, 1), bm1);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -2854,17 +2835,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(0.0, bTriad1.getValueX(), 0.0);
         assertEquals(0.0, bTriad1.getValueY(), 0.0);
         assertEquals(0.0, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -2904,10 +2885,10 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(groundTruthMagneticFluxDensityNorm, calibrator.getGroundTruthMagneticFluxDensityNorm(), 0.0);
-        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
-        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
         assertEquals(b3, b4);
 
@@ -2918,17 +2899,16 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testConstructor24() throws WrongSizeException, IOException {
-        final UniformRandomizer randomizer = new UniformRandomizer();
-        final NEDPosition position = createPosition(randomizer);
-        final GregorianCalendar calendar = new GregorianCalendar();
+    void testConstructor24() throws WrongSizeException, IOException {
+        final var randomizer = new UniformRandomizer();
+        final var position = createPosition(randomizer);
+        final var calendar = new GregorianCalendar();
         calendar.setTime(new Date(createTimestamp(randomizer)));
-        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
-        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+        final var year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final var groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
 
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, this);
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                groundTruthMagneticFluxDensityNorm, this);
 
         // check default values
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -2950,20 +2930,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(new double[3], b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(new Matrix(3, 1), bm1);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -2976,17 +2956,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(0.0, bTriad1.getValueX(), 0.0);
         assertEquals(0.0, bTriad1.getValueY(), 0.0);
         assertEquals(0.0, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -3026,10 +3006,10 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(groundTruthMagneticFluxDensityNorm, calibrator.getGroundTruthMagneticFluxDensityNorm(), 0.0);
-        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
-        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
         assertEquals(b3, b4);
 
@@ -3040,18 +3020,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testConstructor25() throws WrongSizeException, IOException {
-        final UniformRandomizer randomizer = new UniformRandomizer();
-        final NEDPosition position = createPosition(randomizer);
-        final GregorianCalendar calendar = new GregorianCalendar();
+    void testConstructor25() throws WrongSizeException, IOException {
+        final var randomizer = new UniformRandomizer();
+        final var position = createPosition(randomizer);
+        final var calendar = new GregorianCalendar();
         calendar.setTime(new Date(createTimestamp(randomizer)));
-        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
-        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+        final var year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final var groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements);
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                groundTruthMagneticFluxDensityNorm, measurements);
 
         // check default values
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -3073,20 +3052,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(new double[3], b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(new Matrix(3, 1), bm1);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -3099,17 +3078,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(0.0, bTriad1.getValueX(), 0.0);
         assertEquals(0.0, bTriad1.getValueY(), 0.0);
         assertEquals(0.0, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -3149,10 +3128,10 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(groundTruthMagneticFluxDensityNorm, calibrator.getGroundTruthMagneticFluxDensityNorm(), 0.0);
-        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
-        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
         assertEquals(b3, b4);
 
@@ -3163,17 +3142,16 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testConstructor26() throws WrongSizeException, IOException {
-        final UniformRandomizer randomizer = new UniformRandomizer();
-        final NEDPosition position = createPosition(randomizer);
-        final GregorianCalendar calendar = new GregorianCalendar();
+    void testConstructor26() throws WrongSizeException, IOException {
+        final var randomizer = new UniformRandomizer();
+        final var position = createPosition(randomizer);
+        final var calendar = new GregorianCalendar();
         calendar.setTime(new Date(createTimestamp(randomizer)));
-        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
-        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+        final var year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final var groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
 
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, true);
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                groundTruthMagneticFluxDensityNorm, true);
 
         // check default values
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -3195,20 +3173,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(new double[3], b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(new Matrix(3, 1), bm1);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -3221,17 +3199,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(0.0, bTriad1.getValueX(), 0.0);
         assertEquals(0.0, bTriad1.getValueY(), 0.0);
         assertEquals(0.0, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -3271,10 +3249,10 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(groundTruthMagneticFluxDensityNorm, calibrator.getGroundTruthMagneticFluxDensityNorm(), 0.0);
-        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
-        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
         assertEquals(b3, b4);
 
@@ -3285,23 +3263,22 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testConstructor27() throws WrongSizeException, IOException {
-        final UniformRandomizer randomizer = new UniformRandomizer();
-        final NEDPosition position = createPosition(randomizer);
-        final GregorianCalendar calendar = new GregorianCalendar();
+    void testConstructor27() throws WrongSizeException, IOException {
+        final var randomizer = new UniformRandomizer();
+        final var position = createPosition(randomizer);
+        final var calendar = new GregorianCalendar();
         calendar.setTime(new Date(createTimestamp(randomizer)));
-        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
-        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+        final var year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final var groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, hardIron);
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                groundTruthMagneticFluxDensityNorm, hardIron);
 
         // check default values
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -3323,20 +3300,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -3349,17 +3326,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -3399,10 +3376,10 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(groundTruthMagneticFluxDensityNorm, calibrator.getGroundTruthMagneticFluxDensityNorm(), 0.0);
-        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
-        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
         assertEquals(b3, b4);
 
@@ -3416,23 +3393,22 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testConstructor28() throws WrongSizeException, IOException {
-        final UniformRandomizer randomizer = new UniformRandomizer();
-        final NEDPosition position = createPosition(randomizer);
-        final GregorianCalendar calendar = new GregorianCalendar();
+    void testConstructor28() throws WrongSizeException, IOException {
+        final var randomizer = new UniformRandomizer();
+        final var position = createPosition(randomizer);
+        final var calendar = new GregorianCalendar();
         calendar.setTime(new Date(createTimestamp(randomizer)));
-        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
-        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+        final var year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final var groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, bm);
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                groundTruthMagneticFluxDensityNorm, bm);
 
         // check default values
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -3454,20 +3430,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -3480,17 +3456,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -3530,10 +3506,10 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(groundTruthMagneticFluxDensityNorm, calibrator.getGroundTruthMagneticFluxDensityNorm(), 0.0);
-        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
-        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
         assertEquals(b3, b4);
 
@@ -3552,35 +3528,34 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testConstructor29() throws WrongSizeException, IOException {
-        final UniformRandomizer randomizer = new UniformRandomizer();
-        final NEDPosition position = createPosition(randomizer);
-        final GregorianCalendar calendar = new GregorianCalendar();
+    void testConstructor29() throws WrongSizeException, IOException {
+        final var randomizer = new UniformRandomizer();
+        final var position = createPosition(randomizer);
+        final var calendar = new GregorianCalendar();
         calendar.setTime(new Date(createTimestamp(randomizer)));
-        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
-        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+        final var year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final var groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
-        final Matrix mm = generateSoftIronGeneral();
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double sx = mm.getElementAt(0, 0);
-        final double sy = mm.getElementAt(1, 1);
-        final double sz = mm.getElementAt(2, 2);
-        final double mxy = mm.getElementAt(0, 1);
-        final double mxz = mm.getElementAt(0, 2);
-        final double myx = mm.getElementAt(1, 0);
-        final double myz = mm.getElementAt(1, 2);
-        final double mzx = mm.getElementAt(2, 0);
-        final double mzy = mm.getElementAt(2, 1);
+        final var sx = mm.getElementAt(0, 0);
+        final var sy = mm.getElementAt(1, 1);
+        final var sz = mm.getElementAt(2, 2);
+        final var mxy = mm.getElementAt(0, 1);
+        final var mxz = mm.getElementAt(0, 2);
+        final var myx = mm.getElementAt(1, 0);
+        final var myz = mm.getElementAt(1, 2);
+        final var mzx = mm.getElementAt(2, 0);
+        final var mzy = mm.getElementAt(2, 1);
 
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, bm, mm);
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                groundTruthMagneticFluxDensityNorm, bm, mm);
 
         // check default values
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -3602,17 +3577,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(hardIron, b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(bm1, bm);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -3625,20 +3600,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(mm1, mm);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -3678,10 +3653,10 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(groundTruthMagneticFluxDensityNorm, calibrator.getGroundTruthMagneticFluxDensityNorm(), 0.0);
-        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
-        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
         assertEquals(b3, b4);
 
@@ -3708,18 +3683,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testConstructor30() throws WrongSizeException, IOException {
-        final UniformRandomizer randomizer = new UniformRandomizer();
-        final NEDPosition position = createPosition(randomizer);
-        final GregorianCalendar calendar = new GregorianCalendar();
+    void testConstructor30() throws WrongSizeException, IOException {
+        final var randomizer = new UniformRandomizer();
+        final var position = createPosition(randomizer);
+        final var calendar = new GregorianCalendar();
         calendar.setTime(new Date(createTimestamp(randomizer)));
-        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
-        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+        final var year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final var groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, this);
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                groundTruthMagneticFluxDensityNorm, measurements, this);
 
         // check default values
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -3741,20 +3715,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(new double[3], b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(new Matrix(3, 1), bm1);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -3767,17 +3741,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(0.0, bTriad1.getValueX(), 0.0);
         assertEquals(0.0, bTriad1.getValueY(), 0.0);
         assertEquals(0.0, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -3817,10 +3791,10 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(groundTruthMagneticFluxDensityNorm, calibrator.getGroundTruthMagneticFluxDensityNorm(), 0.0);
-        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
-        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
         assertEquals(b3, b4);
 
@@ -3831,18 +3805,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testConstructor31() throws WrongSizeException, IOException {
-        final UniformRandomizer randomizer = new UniformRandomizer();
-        final NEDPosition position = createPosition(randomizer);
-        final GregorianCalendar calendar = new GregorianCalendar();
+    void testConstructor31() throws WrongSizeException, IOException {
+        final var randomizer = new UniformRandomizer();
+        final var position = createPosition(randomizer);
+        final var calendar = new GregorianCalendar();
         calendar.setTime(new Date(createTimestamp(randomizer)));
-        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
-        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+        final var year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final var groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, true);
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                groundTruthMagneticFluxDensityNorm, measurements, true);
 
         // check default values
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -3864,20 +3837,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
-        assertArrayEquals(b1, new double[3], 0.0);
-        final double[] b2 = new double[3];
+        final var b1 = calibrator.getHardIron();
+        assertArrayEquals(new double[3], b1, 0.0);
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
-        assertEquals(bm1, new Matrix(3, 1));
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm1 = calibrator.getHardIronMatrix();
+        assertEquals(new Matrix(3, 1), bm1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -3890,17 +3863,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(0.0, bTriad1.getValueX(), 0.0);
         assertEquals(0.0, bTriad1.getValueY(), 0.0);
         assertEquals(0.0, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -3939,10 +3912,10 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
-        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
-        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
         assertEquals(b3, b4);
 
@@ -3953,18 +3926,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testConstructor32() throws WrongSizeException, IOException {
-        final UniformRandomizer randomizer = new UniformRandomizer();
-        final NEDPosition position = createPosition(randomizer);
-        final GregorianCalendar calendar = new GregorianCalendar();
+    void testConstructor32() throws WrongSizeException, IOException {
+        final var randomizer = new UniformRandomizer();
+        final var position = createPosition(randomizer);
+        final var calendar = new GregorianCalendar();
         calendar.setTime(new Date(createTimestamp(randomizer)));
-        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
-        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+        final var year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final var groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, true, this);
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                groundTruthMagneticFluxDensityNorm, measurements, true, this);
 
         // check default values
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -3986,20 +3958,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(new double[3], b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(new Matrix(3, 1), bm1);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -4012,17 +3984,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(0.0, bTriad1.getValueX(), 0.0);
         assertEquals(0.0, bTriad1.getValueY(), 0.0);
         assertEquals(0.0, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -4061,10 +4033,10 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
-        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
-        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
         assertEquals(b3, b4);
 
@@ -4075,25 +4047,24 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testConstructor33() throws WrongSizeException, IOException {
-        final UniformRandomizer randomizer = new UniformRandomizer();
-        final NEDPosition position = createPosition(randomizer);
-        final GregorianCalendar calendar = new GregorianCalendar();
+    void testConstructor33() throws WrongSizeException, IOException {
+        final var randomizer = new UniformRandomizer();
+        final var position = createPosition(randomizer);
+        final var calendar = new GregorianCalendar();
         calendar.setTime(new Date(createTimestamp(randomizer)));
-        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
-        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+        final var year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final var groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron);
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                groundTruthMagneticFluxDensityNorm, measurements, hardIron);
 
         // check default values
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -4115,20 +4086,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(hardIron, b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -4141,17 +4112,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -4190,10 +4161,10 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
-        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
-        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
         assertEquals(b3, b4);
 
@@ -4207,25 +4178,24 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testConstructor34() throws WrongSizeException, IOException {
-        final UniformRandomizer randomizer = new UniformRandomizer();
-        final NEDPosition position = createPosition(randomizer);
-        final GregorianCalendar calendar = new GregorianCalendar();
+    void testConstructor34() throws WrongSizeException, IOException {
+        final var randomizer = new UniformRandomizer();
+        final var position = createPosition(randomizer);
+        final var calendar = new GregorianCalendar();
         calendar.setTime(new Date(createTimestamp(randomizer)));
-        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
-        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+        final var year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final var groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron, this);
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                groundTruthMagneticFluxDensityNorm, measurements, hardIron, this);
 
         // check default values
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -4247,20 +4217,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -4273,17 +4243,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -4322,10 +4292,10 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
-        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
-        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
         assertEquals(b3, b4);
 
@@ -4339,25 +4309,24 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testConstructor35() throws WrongSizeException, IOException {
-        final UniformRandomizer randomizer = new UniformRandomizer();
-        final NEDPosition position = createPosition(randomizer);
-        final GregorianCalendar calendar = new GregorianCalendar();
+    void testConstructor35() throws WrongSizeException, IOException {
+        final var randomizer = new UniformRandomizer();
+        final var position = createPosition(randomizer);
+        final var calendar = new GregorianCalendar();
         calendar.setTime(new Date(createTimestamp(randomizer)));
-        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
-        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+        final var year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final var groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, true, hardIron);
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                groundTruthMagneticFluxDensityNorm, measurements, true, hardIron);
 
         // check default values
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -4379,20 +4348,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -4405,17 +4374,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -4454,10 +4423,10 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
-        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
-        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
         assertEquals(b3, b4);
 
@@ -4471,25 +4440,24 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testConstructor36() throws WrongSizeException, IOException {
-        final UniformRandomizer randomizer = new UniformRandomizer();
-        final NEDPosition position = createPosition(randomizer);
-        final GregorianCalendar calendar = new GregorianCalendar();
+    void testConstructor36() throws WrongSizeException, IOException {
+        final var randomizer = new UniformRandomizer();
+        final var position = createPosition(randomizer);
+        final var calendar = new GregorianCalendar();
         calendar.setTime(new Date(createTimestamp(randomizer)));
-        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
-        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+        final var year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final var groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, true, hardIron, this);
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                groundTruthMagneticFluxDensityNorm, measurements, true, hardIron, this);
 
         // check default values
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -4511,20 +4479,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -4537,17 +4505,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -4586,10 +4554,10 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
-        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
-        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
         assertEquals(b3, b4);
 
@@ -4605,25 +4573,24 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testConstructor37() throws WrongSizeException, IOException {
-        final UniformRandomizer randomizer = new UniformRandomizer();
-        final NEDPosition position = createPosition(randomizer);
-        final GregorianCalendar calendar = new GregorianCalendar();
+    void testConstructor37() throws WrongSizeException, IOException {
+        final var randomizer = new UniformRandomizer();
+        final var position = createPosition(randomizer);
+        final var calendar = new GregorianCalendar();
         calendar.setTime(new Date(createTimestamp(randomizer)));
-        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
-        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+        final var year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final var groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, bm);
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                groundTruthMagneticFluxDensityNorm, measurements, bm);
 
         // check default values
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -4645,20 +4612,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -4671,17 +4638,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -4720,10 +4687,10 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
-        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
-        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
         assertEquals(b3, b4);
 
@@ -4742,25 +4709,24 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testConstructor38() throws WrongSizeException, IOException {
-        final UniformRandomizer randomizer = new UniformRandomizer();
-        final NEDPosition position = createPosition(randomizer);
-        final GregorianCalendar calendar = new GregorianCalendar();
+    void testConstructor38() throws WrongSizeException, IOException {
+        final var randomizer = new UniformRandomizer();
+        final var position = createPosition(randomizer);
+        final var calendar = new GregorianCalendar();
         calendar.setTime(new Date(createTimestamp(randomizer)));
-        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
-        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+        final var year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final var groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, bm, this);
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                groundTruthMagneticFluxDensityNorm, measurements, bm, this);
 
         // check default values
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -4782,20 +4748,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -4808,17 +4774,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -4857,10 +4823,10 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
-        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
-        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
         assertEquals(b3, b4);
 
@@ -4879,28 +4845,27 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testConstructor39() throws WrongSizeException, IOException {
-        final UniformRandomizer randomizer = new UniformRandomizer();
-        final NEDPosition position = createPosition(randomizer);
-        final GregorianCalendar calendar = new GregorianCalendar();
+    void testConstructor39() throws WrongSizeException, IOException {
+        final var randomizer = new UniformRandomizer();
+        final var position = createPosition(randomizer);
+        final var calendar = new GregorianCalendar();
         calendar.setTime(new Date(createTimestamp(randomizer)));
-        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
-        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+        final var year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final var groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, true, bm);
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                groundTruthMagneticFluxDensityNorm, measurements, true, bm);
 
         // check default values
-        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 
                 calibrator.getThreshold(), 0.0);
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
@@ -4919,20 +4884,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -4945,17 +4910,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -4994,10 +4959,10 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
-        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
-        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
         assertEquals(b3, b4);
 
@@ -5016,25 +4981,24 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testConstructor40() throws WrongSizeException, IOException {
-        final UniformRandomizer randomizer = new UniformRandomizer();
-        final NEDPosition position = createPosition(randomizer);
-        final GregorianCalendar calendar = new GregorianCalendar();
+    void testConstructor40() throws WrongSizeException, IOException {
+        final var randomizer = new UniformRandomizer();
+        final var position = createPosition(randomizer);
+        final var calendar = new GregorianCalendar();
         calendar.setTime(new Date(createTimestamp(randomizer)));
-        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
-        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+        final var year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final var groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
 
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, true, bm, this);
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                groundTruthMagneticFluxDensityNorm, measurements, true, bm, this);
 
         // check default values
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -5056,20 +5020,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(hardIron, b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(bm1, bm);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -5082,17 +5046,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(new Matrix(3, 3), mm1);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -5131,10 +5095,10 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
-        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
-        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
         assertEquals(b3, b4);
 
@@ -5153,40 +5117,39 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testConstructor41() throws WrongSizeException, IOException {
-        final UniformRandomizer randomizer = new UniformRandomizer();
-        final NEDPosition position = createPosition(randomizer);
-        final GregorianCalendar calendar = new GregorianCalendar();
+    void testConstructor41() throws WrongSizeException, IOException {
+        final var randomizer = new UniformRandomizer();
+        final var position = createPosition(randomizer);
+        final var calendar = new GregorianCalendar();
         calendar.setTime(new Date(createTimestamp(randomizer)));
-        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
-        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+        final var year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final var groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
-        final Matrix mm = generateSoftIronGeneral();
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double sx = mm.getElementAt(0, 0);
-        final double sy = mm.getElementAt(1, 1);
-        final double sz = mm.getElementAt(2, 2);
-        final double mxy = mm.getElementAt(0, 1);
-        final double mxz = mm.getElementAt(0, 2);
-        final double myx = mm.getElementAt(1, 0);
-        final double myz = mm.getElementAt(1, 2);
-        final double mzx = mm.getElementAt(2, 0);
-        final double mzy = mm.getElementAt(2, 1);
+        final var sx = mm.getElementAt(0, 0);
+        final var sy = mm.getElementAt(1, 1);
+        final var sz = mm.getElementAt(2, 2);
+        final var mxy = mm.getElementAt(0, 1);
+        final var mxz = mm.getElementAt(0, 2);
+        final var myx = mm.getElementAt(1, 0);
+        final var myz = mm.getElementAt(1, 2);
+        final var mzx = mm.getElementAt(2, 0);
+        final var mzy = mm.getElementAt(2, 1);
 
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, bm, mm);
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                groundTruthMagneticFluxDensityNorm, measurements, bm, mm);
 
         // check default values
-        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 
                 calibrator.getThreshold(), 0.0);
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
@@ -5205,17 +5168,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(hardIron, b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(bm1, bm);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -5228,20 +5191,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(mm1, mm);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -5280,10 +5243,10 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
-        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
-        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
         assertEquals(b3, b4);
 
@@ -5310,37 +5273,36 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testConstructor42() throws WrongSizeException, IOException {
-        final UniformRandomizer randomizer = new UniformRandomizer();
-        final NEDPosition position = createPosition(randomizer);
-        final GregorianCalendar calendar = new GregorianCalendar();
+    void testConstructor42() throws WrongSizeException, IOException {
+        final var randomizer = new UniformRandomizer();
+        final var position = createPosition(randomizer);
+        final var calendar = new GregorianCalendar();
         calendar.setTime(new Date(createTimestamp(randomizer)));
-        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
-        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+        final var year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final var groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
-        final Matrix mm = generateSoftIronGeneral();
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double sx = mm.getElementAt(0, 0);
-        final double sy = mm.getElementAt(1, 1);
-        final double sz = mm.getElementAt(2, 2);
-        final double mxy = mm.getElementAt(0, 1);
-        final double mxz = mm.getElementAt(0, 2);
-        final double myx = mm.getElementAt(1, 0);
-        final double myz = mm.getElementAt(1, 2);
-        final double mzx = mm.getElementAt(2, 0);
-        final double mzy = mm.getElementAt(2, 1);
+        final var sx = mm.getElementAt(0, 0);
+        final var sy = mm.getElementAt(1, 1);
+        final var sz = mm.getElementAt(2, 2);
+        final var mxy = mm.getElementAt(0, 1);
+        final var mxz = mm.getElementAt(0, 2);
+        final var myx = mm.getElementAt(1, 0);
+        final var myz = mm.getElementAt(1, 2);
+        final var mzx = mm.getElementAt(2, 0);
+        final var mzy = mm.getElementAt(2, 1);
 
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, bm, mm, this);
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                groundTruthMagneticFluxDensityNorm, measurements, bm, mm, this);
 
         // check default values
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -5362,17 +5324,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(bm1, bm);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -5385,20 +5347,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(mm1, mm);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -5437,10 +5399,10 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
-        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
-        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
         assertEquals(b3, b4);
 
@@ -5467,37 +5429,36 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testConstructor43() throws WrongSizeException, IOException {
-        final UniformRandomizer randomizer = new UniformRandomizer();
-        final NEDPosition position = createPosition(randomizer);
-        final GregorianCalendar calendar = new GregorianCalendar();
+    void testConstructor43() throws WrongSizeException, IOException {
+        final var randomizer = new UniformRandomizer();
+        final var position = createPosition(randomizer);
+        final var calendar = new GregorianCalendar();
         calendar.setTime(new Date(createTimestamp(randomizer)));
-        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
-        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+        final var year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final var groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
-        final Matrix mm = generateSoftIronGeneral();
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double sx = mm.getElementAt(0, 0);
-        final double sy = mm.getElementAt(1, 1);
-        final double sz = mm.getElementAt(2, 2);
-        final double mxy = mm.getElementAt(0, 1);
-        final double mxz = mm.getElementAt(0, 2);
-        final double myx = mm.getElementAt(1, 0);
-        final double myz = mm.getElementAt(1, 2);
-        final double mzx = mm.getElementAt(2, 0);
-        final double mzy = mm.getElementAt(2, 1);
+        final var sx = mm.getElementAt(0, 0);
+        final var sy = mm.getElementAt(1, 1);
+        final var sz = mm.getElementAt(2, 2);
+        final var mxy = mm.getElementAt(0, 1);
+        final var mxz = mm.getElementAt(0, 2);
+        final var myx = mm.getElementAt(1, 0);
+        final var myz = mm.getElementAt(1, 2);
+        final var mzx = mm.getElementAt(2, 0);
+        final var mzy = mm.getElementAt(2, 1);
 
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, true, bm, mm);
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                groundTruthMagneticFluxDensityNorm, measurements, true, bm, mm);
 
         // check default values
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -5519,17 +5480,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(bm1, bm);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -5542,20 +5503,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(mm1, mm);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -5594,10 +5555,10 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
-        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
-        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
         assertEquals(b3, b4);
 
@@ -5624,37 +5585,36 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testConstructor44() throws WrongSizeException, IOException {
-        final UniformRandomizer randomizer = new UniformRandomizer();
-        final NEDPosition position = createPosition(randomizer);
-        final GregorianCalendar calendar = new GregorianCalendar();
+    void testConstructor44() throws WrongSizeException, IOException {
+        final var randomizer = new UniformRandomizer();
+        final var position = createPosition(randomizer);
+        final var calendar = new GregorianCalendar();
         calendar.setTime(new Date(createTimestamp(randomizer)));
-        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
-        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+        final var year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final var groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix bm = Matrix.newFromArray(hardIron);
-        final double bmx = hardIron[0];
-        final double bmy = hardIron[1];
-        final double bmz = hardIron[2];
-        final Matrix mm = generateSoftIronGeneral();
+        final var hardIron = generateHardIron(randomizer);
+        final var bm = Matrix.newFromArray(hardIron);
+        final var bmx = hardIron[0];
+        final var bmy = hardIron[1];
+        final var bmz = hardIron[2];
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double sx = mm.getElementAt(0, 0);
-        final double sy = mm.getElementAt(1, 1);
-        final double sz = mm.getElementAt(2, 2);
-        final double mxy = mm.getElementAt(0, 1);
-        final double mxz = mm.getElementAt(0, 2);
-        final double myx = mm.getElementAt(1, 0);
-        final double myz = mm.getElementAt(1, 2);
-        final double mzx = mm.getElementAt(2, 0);
-        final double mzy = mm.getElementAt(2, 1);
+        final var sx = mm.getElementAt(0, 0);
+        final var sy = mm.getElementAt(1, 1);
+        final var sz = mm.getElementAt(2, 2);
+        final var mxy = mm.getElementAt(0, 1);
+        final var mxz = mm.getElementAt(0, 2);
+        final var myx = mm.getElementAt(1, 0);
+        final var myz = mm.getElementAt(1, 2);
+        final var mzx = mm.getElementAt(2, 0);
+        final var mzy = mm.getElementAt(2, 1);
 
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, true, bm, mm, this);
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                groundTruthMagneticFluxDensityNorm, measurements, true, bm, mm, this);
 
         // check default values
         assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
@@ -5676,17 +5636,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
-        final double[] b1 = calibrator.getHardIron();
+        final var b1 = calibrator.getHardIron();
         assertArrayEquals(hardIron, b1, 0.0);
-        final double[] b2 = new double[3];
+        final var b2 = new double[3];
         calibrator.getHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
-        final Matrix bm1 = calibrator.getHardIronMatrix();
+        final var bm1 = calibrator.getHardIronMatrix();
         assertEquals(bm1, bm);
-        MagneticFluxDensity mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        var mb1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -5699,20 +5659,20 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
-        final MagneticFluxDensityTriad bTriad1 = calibrator.getHardIronAsTriad();
+        final var bTriad1 = calibrator.getHardIronAsTriad();
         assertEquals(bmx, bTriad1.getValueX(), 0.0);
         assertEquals(bmy, bTriad1.getValueY(), 0.0);
         assertEquals(bmz, bTriad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-        final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
+        final var bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
-        final Matrix bm2 = new Matrix(3, 1);
+        final var bm2 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(bm2);
         assertEquals(bm1, bm2);
-        final Matrix mm1 = calibrator.getInitialMm();
+        final var mm1 = calibrator.getInitialMm();
         assertEquals(mm1, mm);
-        final Matrix mm2 = new Matrix(3, 3);
+        final var mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
@@ -5751,10 +5711,10 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
-        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
-        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
         assertEquals(b3, b4);
 
@@ -5781,15 +5741,14 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testGetSetThreshold() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testGetSetThreshold() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertEquals(RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator.DEFAULT_THRESHOLD,
                 calibrator.getThreshold(), 0.0);
 
-        // set new value
+        // set a new value
         calibrator.setThreshold(THRESHOLD);
 
         // check
@@ -5800,9 +5759,8 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testIsSetComputeAndKeepInliersEnabled() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testIsSetComputeAndKeepInliersEnabled() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertEquals(
@@ -5810,7 +5768,7 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
                 calibrator.isComputeAndKeepInliersEnabled());
         assertFalse(calibrator.isComputeAndKeepInliersEnabled());
 
-        // set new value
+        // set a new value
         calibrator.setComputeAndKeepInliersEnabled(true);
 
         // check
@@ -5818,9 +5776,8 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testIsSetComputeAndKeepResiduals() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testIsSetComputeAndKeepResiduals() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertEquals(
@@ -5828,7 +5785,7 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
                 calibrator.isComputeAndKeepResiduals());
         assertFalse(calibrator.isComputeAndKeepResiduals());
 
-        // set new value
+        // set a new value
         calibrator.setComputeAndKeepResidualsEnabled(true);
 
         // check
@@ -5836,32 +5793,31 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testGetSetGroundTruthMagneticFluxDensityNorm1() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testGetSetGroundTruthMagneticFluxDensityNorm1() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity norm1 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var norm1 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(norm1));
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer();
-        final double groundTruthMagneticFluxDensity = randomizer.nextDouble();
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var groundTruthMagneticFluxDensity = randomizer.nextDouble();
         calibrator.setGroundTruthMagneticFluxDensityNorm(groundTruthMagneticFluxDensity);
 
         // check
-        final Double value = calibrator.getGroundTruthMagneticFluxDensityNorm();
+        final var value = calibrator.getGroundTruthMagneticFluxDensityNorm();
         assertEquals(groundTruthMagneticFluxDensity, value, 0.0);
 
-        final MagneticFluxDensity norm2 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        final var norm2 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensity, norm2.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, norm2.getUnit());
         assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(norm1));
         assertEquals(norm1, norm2);
 
-        // set new value
+        // set a new value
         calibrator.setGroundTruthMagneticFluxDensityNorm((Double) null);
 
         // check
@@ -5873,34 +5829,32 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testGetSetGroundTruthMagneticFluxDensityNorm2() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testGetSetGroundTruthMagneticFluxDensityNorm2() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity norm1 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var norm1 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(norm1));
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer();
-        final double groundTruthMagneticFluxDensity = randomizer.nextDouble();
-        final MagneticFluxDensity norm2 = new MagneticFluxDensity(groundTruthMagneticFluxDensity,
-                MagneticFluxDensityUnit.TESLA);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var groundTruthMagneticFluxDensity = randomizer.nextDouble();
+        final var norm2 = new MagneticFluxDensity(groundTruthMagneticFluxDensity, MagneticFluxDensityUnit.TESLA);
         calibrator.setGroundTruthMagneticFluxDensityNorm(norm2);
 
         // check
-        final Double value = calibrator.getGroundTruthMagneticFluxDensityNorm();
+        final var value = calibrator.getGroundTruthMagneticFluxDensityNorm();
         assertEquals(groundTruthMagneticFluxDensity, value, 0.0);
 
-        final MagneticFluxDensity norm3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        final var norm3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensity, norm3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, norm3.getUnit());
         assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(norm1));
         assertEquals(norm1, norm3);
 
-        // set new value
+        // set a new value
         calibrator.setGroundTruthMagneticFluxDensityNorm((MagneticFluxDensity) null);
 
         // check
@@ -5913,17 +5867,16 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testGetSetHardIronX() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testGetSetHardIronX() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getHardIronX(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final double hardIronX = hardIron[0];
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var hardIron = generateHardIron(randomizer);
+        final var hardIronX = hardIron[0];
 
         calibrator.setHardIronX(hardIronX);
 
@@ -5932,17 +5885,16 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testGetSetHardIronY() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testGetSetHardIronY() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getHardIronY(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final double hardIronY = hardIron[1];
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var hardIron = generateHardIron(randomizer);
+        final var hardIronY = hardIron[1];
 
         calibrator.setHardIronY(hardIronY);
 
@@ -5951,17 +5903,16 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testGetSetHardIronZ() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testGetSetHardIronZ() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getHardIronZ(), 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final double hardIronZ = hardIron[2];
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var hardIron = generateHardIron(randomizer);
+        final var hardIronZ = hardIron[2];
 
         calibrator.setHardIronZ(hardIronZ);
 
@@ -5970,26 +5921,25 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testGetSetHardIronXAsMagneticFluxDensity() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testGetSetHardIronXAsMagneticFluxDensity() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
-        final MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        final var b1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(0.0, b1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b1.getUnit());
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] mb = generateHardIron(randomizer);
-        final double hardIronX = mb[0];
-        final MagneticFluxDensity b2 = new MagneticFluxDensity(hardIronX, MagneticFluxDensityUnit.TESLA);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var mb = generateHardIron(randomizer);
+        final var hardIronX = mb[0];
+        final var b2 = new MagneticFluxDensity(hardIronX, MagneticFluxDensityUnit.TESLA);
 
         calibrator.setHardIronX(b2);
 
         // check
-        final MagneticFluxDensity b3 = calibrator.getHardIronXAsMagneticFluxDensity();
-        final MagneticFluxDensity b4 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var b3 = calibrator.getHardIronXAsMagneticFluxDensity();
+        final var b4 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(b4);
 
         assertEquals(b2, b3);
@@ -5997,26 +5947,25 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testGetSetHardIronYAsMagneticFluxDensity() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testGetSetHardIronYAsMagneticFluxDensity() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
-        final MagneticFluxDensity b1 = calibrator.getHardIronYAsMagneticFluxDensity();
+        final var b1 = calibrator.getHardIronYAsMagneticFluxDensity();
         assertEquals(0.0, b1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b1.getUnit());
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] mb = generateHardIron(randomizer);
-        final double hardIronY = mb[1];
-        final MagneticFluxDensity b2 = new MagneticFluxDensity(hardIronY, MagneticFluxDensityUnit.TESLA);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var mb = generateHardIron(randomizer);
+        final var hardIronY = mb[1];
+        final var b2 = new MagneticFluxDensity(hardIronY, MagneticFluxDensityUnit.TESLA);
 
         calibrator.setHardIronY(b2);
 
         // check
-        final MagneticFluxDensity b3 = calibrator.getHardIronYAsMagneticFluxDensity();
-        final MagneticFluxDensity b4 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var b3 = calibrator.getHardIronYAsMagneticFluxDensity();
+        final var b4 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronYAsMagneticFluxDensity(b4);
 
         assertEquals(b2, b3);
@@ -6024,26 +5973,25 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testGetSetHardIronZAsMagneticFluxDensity() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testGetSetHardIronZAsMagneticFluxDensity() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
-        final MagneticFluxDensity b1 = calibrator.getHardIronZAsMagneticFluxDensity();
+        final var b1 = calibrator.getHardIronZAsMagneticFluxDensity();
         assertEquals(0.0, b1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b1.getUnit());
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] mb = generateHardIron(randomizer);
-        final double hardIronZ = mb[2];
-        final MagneticFluxDensity b2 = new MagneticFluxDensity(hardIronZ, MagneticFluxDensityUnit.TESLA);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var mb = generateHardIron(randomizer);
+        final var hardIronZ = mb[2];
+        final var b2 = new MagneticFluxDensity(hardIronZ, MagneticFluxDensityUnit.TESLA);
 
         calibrator.setHardIronZ(b2);
 
         // check
-        final MagneticFluxDensity b3 = calibrator.getHardIronZAsMagneticFluxDensity();
-        final MagneticFluxDensity b4 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+        final var b3 = calibrator.getHardIronZAsMagneticFluxDensity();
+        final var b4 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronZAsMagneticFluxDensity(b4);
 
         assertEquals(b2, b3);
@@ -6051,9 +5999,8 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testSetHardIronCoordinates1() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testSetHardIronCoordinates1() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getHardIronX(), 0.0);
@@ -6061,11 +6008,11 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getHardIronZ(), 0.0);
 
         // set new values
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final double hardIronX = hardIron[0];
-        final double hardIronY = hardIron[1];
-        final double hardIronZ = hardIron[2];
+        final var randomizer = new UniformRandomizer();
+        final var hardIron = generateHardIron(randomizer);
+        final var hardIronX = hardIron[0];
+        final var hardIronY = hardIron[1];
+        final var hardIronZ = hardIron[2];
 
         calibrator.setHardIronCoordinates(hardIronX, hardIronY, hardIronZ);
 
@@ -6076,23 +6023,22 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testSetHardIronCoordinates2() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testSetHardIronCoordinates2() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
-        final MagneticFluxDensity def = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final var def = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
 
         // check default value
         assertEquals(def, calibrator.getHardIronXAsMagneticFluxDensity());
         assertEquals(def, calibrator.getHardIronYAsMagneticFluxDensity());
         assertEquals(def, calibrator.getHardIronZAsMagneticFluxDensity());
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] mb = generateHardIron(randomizer);
-        final MagneticFluxDensity hardIronX = new MagneticFluxDensity(mb[0], MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity hardIronY = new MagneticFluxDensity(mb[1], MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity hardIronZ = new MagneticFluxDensity(mb[2], MagneticFluxDensityUnit.TESLA);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var mb = generateHardIron(randomizer);
+        final var hardIronX = new MagneticFluxDensity(mb[0], MagneticFluxDensityUnit.TESLA);
+        final var hardIronY = new MagneticFluxDensity(mb[1], MagneticFluxDensityUnit.TESLA);
+        final var hardIronZ = new MagneticFluxDensity(mb[2], MagneticFluxDensityUnit.TESLA);
 
         calibrator.setHardIronCoordinates(hardIronX, hardIronY, hardIronZ);
 
@@ -6103,33 +6049,31 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testGetSetHardIronAsTriad() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testGetSetHardIronAsTriad() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default values
-        final MagneticFluxDensityTriad triad1 = calibrator.getHardIronAsTriad();
+        final var triad1 = calibrator.getHardIronAsTriad();
         assertEquals(0.0, triad1.getValueX(), 0.0);
         assertEquals(0.0, triad1.getValueY(), 0.0);
         assertEquals(0.0, triad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, triad1.getUnit());
-        final MagneticFluxDensityTriad triad2 = new MagneticFluxDensityTriad();
+        final var triad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(triad2);
         assertEquals(triad1, triad2);
 
         // set new values
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] mb = generateHardIron(randomizer);
-        final double hardIronX = mb[0];
-        final double hardIronY = mb[1];
-        final double hardIronZ = mb[2];
+        final var randomizer = new UniformRandomizer();
+        final var mb = generateHardIron(randomizer);
+        final var hardIronX = mb[0];
+        final var hardIronY = mb[1];
+        final var hardIronZ = mb[2];
 
-        final MagneticFluxDensityTriad triad3 = new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA,
-                hardIronX, hardIronY, hardIronZ);
+        final var triad3 = new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA, hardIronX, hardIronY, hardIronZ);
         calibrator.setHardIron(triad3);
 
-        final MagneticFluxDensityTriad triad4 = calibrator.getHardIronAsTriad();
-        final MagneticFluxDensityTriad triad5 = new MagneticFluxDensityTriad();
+        final var triad4 = calibrator.getHardIronAsTriad();
+        final var triad5 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(triad5);
 
         assertEquals(triad3, triad4);
@@ -6137,18 +6081,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testGetSetInitialSx() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testGetSetInitialSx() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
 
-        // set new value
-        final Matrix mm = generateSoftIronGeneral();
+        // set a new value
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double sx = mm.getElementAt(0, 0);
+        final var sx = mm.getElementAt(0, 0);
         calibrator.setInitialSx(sx);
 
         // check
@@ -6156,18 +6099,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testGetSetInitialSy() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testGetSetInitialSy() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getInitialSy(), 0.0);
 
-        // set new value
-        final Matrix mm = generateSoftIronGeneral();
+        // set a new value
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double sy = mm.getElementAt(1, 1);
+        final var sy = mm.getElementAt(1, 1);
         calibrator.setInitialSy(sy);
 
         // check
@@ -6175,18 +6117,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testGetSetInitialSz() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testGetSetInitialSz() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getInitialSz(), 0.0);
 
-        // set new value
-        final Matrix mm = generateSoftIronGeneral();
+        // set a new value
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double sz = mm.getElementAt(2, 2);
+        final var sz = mm.getElementAt(2, 2);
         calibrator.setInitialSz(sz);
 
         // check
@@ -6194,18 +6135,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testGetSetInitialMxy() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testGetSetInitialMxy() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
 
-        // set new value
-        final Matrix mm = generateSoftIronGeneral();
+        // set a new value
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double mxy = mm.getElementAt(0, 1);
+        final var mxy = mm.getElementAt(0, 1);
         calibrator.setInitialMxy(mxy);
 
         // check
@@ -6213,18 +6153,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testGetSetInitialMxz() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testGetSetInitialMxz() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
 
-        // set new value
-        final Matrix mm = generateSoftIronGeneral();
+        // set a new value
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double mxz = mm.getElementAt(0, 2);
+        final var mxz = mm.getElementAt(0, 2);
         calibrator.setInitialMxz(mxz);
 
         // check
@@ -6232,18 +6171,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testGetSetInitialMyx() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testGetSetInitialMyx() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
 
-        // set new value
-        final Matrix mm = generateSoftIronGeneral();
+        // set a new value
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double myx = mm.getElementAt(1, 0);
+        final var myx = mm.getElementAt(1, 0);
         calibrator.setInitialMyx(myx);
 
         // check
@@ -6251,18 +6189,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testGetSetInitialMyz() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testGetSetInitialMyz() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
 
-        // set new value
-        final Matrix mm = generateSoftIronGeneral();
+        // set a new value
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double myz = mm.getElementAt(1, 2);
+        final var myz = mm.getElementAt(1, 2);
         calibrator.setInitialMyz(myz);
 
         // check
@@ -6270,18 +6207,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testGetSetInitialMzx() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testGetSetInitialMzx() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
 
-        // set new value
-        final Matrix mm = generateSoftIronGeneral();
+        // set a new value
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double mzx = mm.getElementAt(2, 0);
+        final var mzx = mm.getElementAt(2, 0);
         calibrator.setInitialMzx(mzx);
 
         // check
@@ -6289,18 +6225,17 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testGetSetInitialMzy() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testGetSetInitialMzy() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
-        // set new value
-        final Matrix mm = generateSoftIronGeneral();
+        // set a new value
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double mzy = mm.getElementAt(2, 1);
+        final var mzy = mm.getElementAt(2, 1);
         calibrator.setInitialMzy(mzy);
 
         // check
@@ -6308,9 +6243,8 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testSetInitialScalingFactors() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testSetInitialScalingFactors() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -6318,12 +6252,12 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialSz(), 0.0);
 
         // set new values
-        final Matrix mm = generateSoftIronGeneral();
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double sx = mm.getElementAt(0, 0);
-        final double sy = mm.getElementAt(1, 1);
-        final double sz = mm.getElementAt(2, 2);
+        final var sx = mm.getElementAt(0, 0);
+        final var sy = mm.getElementAt(1, 1);
+        final var sz = mm.getElementAt(2, 2);
 
         calibrator.setInitialScalingFactors(sx, sy, sz);
 
@@ -6334,9 +6268,8 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testSetInitialCrossCouplingErrors() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testSetInitialCrossCouplingErrors() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
@@ -6347,15 +6280,15 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         // set new values
-        final Matrix mm = generateSoftIronGeneral();
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double mxy = mm.getElementAt(0, 1);
-        final double mxz = mm.getElementAt(0, 2);
-        final double myx = mm.getElementAt(1, 0);
-        final double myz = mm.getElementAt(1, 2);
-        final double mzx = mm.getElementAt(2, 0);
-        final double mzy = mm.getElementAt(2, 1);
+        final var mxy = mm.getElementAt(0, 1);
+        final var mxz = mm.getElementAt(0, 2);
+        final var myx = mm.getElementAt(1, 0);
+        final var myz = mm.getElementAt(1, 2);
+        final var mzx = mm.getElementAt(2, 0);
+        final var mzy = mm.getElementAt(2, 1);
 
         calibrator.setInitialCrossCouplingErrors(mxy, mxz, myx, myz, mzx, mzy);
 
@@ -6369,9 +6302,8 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testSetInitialScalingFactorsAndCrossCouplingErrors() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testSetInitialScalingFactorsAndCrossCouplingErrors() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -6385,18 +6317,18 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         // set new values
-        final Matrix mm = generateSoftIronGeneral();
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final double sx = mm.getElementAt(0, 0);
-        final double sy = mm.getElementAt(1, 1);
-        final double sz = mm.getElementAt(2, 2);
-        final double mxy = mm.getElementAt(0, 1);
-        final double mxz = mm.getElementAt(0, 2);
-        final double myx = mm.getElementAt(1, 0);
-        final double myz = mm.getElementAt(1, 2);
-        final double mzx = mm.getElementAt(2, 0);
-        final double mzy = mm.getElementAt(2, 1);
+        final var sx = mm.getElementAt(0, 0);
+        final var sy = mm.getElementAt(1, 1);
+        final var sz = mm.getElementAt(2, 2);
+        final var mxy = mm.getElementAt(0, 1);
+        final var mxz = mm.getElementAt(0, 2);
+        final var myx = mm.getElementAt(1, 0);
+        final var myz = mm.getElementAt(1, 2);
+        final var mzx = mm.getElementAt(2, 0);
+        final var mzy = mm.getElementAt(2, 1);
 
         calibrator.setInitialScalingFactorsAndCrossCouplingErrors(sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy);
 
@@ -6413,24 +6345,23 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testGetSetHardIron() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testGetSetHardIron() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertArrayEquals(new double[3], calibrator.getHardIron(), 0.0);
-        final double[] hardIron1 = new double[3];
+        final var hardIron1 = new double[3];
         calibrator.getHardIron(hardIron1);
         assertArrayEquals(new double[3], hardIron1, 0.0);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double[] hardIron2 = generateHardIron(randomizer);
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var hardIron2 = generateHardIron(randomizer);
         calibrator.setHardIron(hardIron2);
 
         // check
         assertArrayEquals(hardIron2, calibrator.getHardIron(), 0.0);
-        final double[] hardIron3 = new double[3];
+        final var hardIron3 = new double[3];
         calibrator.getHardIron(hardIron3);
         assertArrayEquals(hardIron2, hardIron3, 0.0);
 
@@ -6440,24 +6371,23 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testGetSetHardIronAsMatrix() throws WrongSizeException, LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testGetSetHardIronAsMatrix() throws WrongSizeException, LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertEquals(new Matrix(3, 1), calibrator.getHardIronMatrix());
-        final Matrix hardIron1 = new Matrix(3, 1);
+        final var hardIron1 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(hardIron1);
-        assertEquals(hardIron1, new Matrix(3, 1));
+        assertEquals(new Matrix(3, 1), hardIron1);
 
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Matrix hardIron2 = Matrix.newFromArray(generateHardIron(randomizer));
+        // set a new value
+        final var randomizer = new UniformRandomizer();
+        final var hardIron2 = Matrix.newFromArray(generateHardIron(randomizer));
         calibrator.setHardIron(hardIron2);
 
         // check
         assertEquals(hardIron2, calibrator.getHardIronMatrix());
-        final Matrix hardIron3 = new Matrix(3, 1);
+        final var hardIron3 = new Matrix(3, 1);
         calibrator.getHardIronMatrix(hardIron3);
         assertEquals(hardIron2, hardIron3);
 
@@ -6473,23 +6403,22 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testGetSetInitialMm() throws WrongSizeException, LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testGetSetInitialMm() throws WrongSizeException, LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check initial value
         assertEquals(new Matrix(3, 3), calibrator.getInitialMm());
-        final Matrix mm1 = new Matrix(3, 3);
+        final var mm1 = new Matrix(3, 3);
         calibrator.getInitialMm(mm1);
         assertEquals(new Matrix(3, 3), mm1);
 
-        // set new value
-        final Matrix mm2 = generateSoftIronGeneral();
+        // set a new value
+        final var mm2 = generateSoftIronGeneral();
         calibrator.setInitialMm(mm2);
 
         // check
         assertEquals(mm2, calibrator.getInitialMm());
-        final Matrix mm3 = new Matrix(3, 3);
+        final var mm3 = new Matrix(3, 3);
         calibrator.getInitialMm(mm3);
         assertEquals(mm2, mm3);
 
@@ -6505,15 +6434,14 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testGetSetMeasurements() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testGetSetMeasurements() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertNull(calibrator.getMeasurements());
 
-        // set new value
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
+        // set a new value
+        final var measurements = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
         calibrator.setMeasurements(measurements);
 
         // check
@@ -6521,14 +6449,13 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testIsSetCommonAxisUsed() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testIsSetCommonAxisUsed() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertFalse(calibrator.isCommonAxisUsed());
 
-        // set new value
+        // set a new value
         calibrator.setCommonAxisUsed(true);
 
         // check
@@ -6536,14 +6463,13 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testGetSetListener() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testGetSetListener() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertNull(calibrator.getListener());
 
-        // set new value
+        // set a new value
         calibrator.setListener(this);
 
         // check
@@ -6551,15 +6477,14 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testGetMinimumRequiredMeasurements() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testGetMinimumRequiredMeasurements() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isCommonAxisUsed());
 
-        // set new value
+        // set a new value
         calibrator.setCommonAxisUsed(true);
 
         // check
@@ -6568,40 +6493,39 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testIsReady() throws LockedException, IOException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testIsReady() throws LockedException, IOException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // initially there are no measurements
         assertFalse(calibrator.isReady());
         assertNull(calibrator.getMeasurements());
 
         // set not enough measurements
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements1 = Collections.emptyList();
+        final var measurements1 = Collections.<StandardDeviationBodyMagneticFluxDensity>emptyList();
         calibrator.setMeasurements(measurements1);
 
         // check
         assertFalse(calibrator.isReady());
 
         // set enough measurements
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final NEDPosition position = createPosition(randomizer);
-        final Date timestamp = new Date(createTimestamp(randomizer));
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix softIron = generateSoftIronGeneral();
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements2 = generateMeasures(hardIron, softIron,
-                calibrator.getMinimumRequiredMeasurements(), wmmEstimator, randomizer, position, timestamp);
+        final var randomizer = new UniformRandomizer();
+        final var position = createPosition(randomizer);
+        final var timestamp = new Date(createTimestamp(randomizer));
+        final var hardIron = generateHardIron(randomizer);
+        final var softIron = generateSoftIronGeneral();
+        final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final var measurements2 = generateMeasures(hardIron, softIron, calibrator.getMinimumRequiredMeasurements(),
+                wmmEstimator, randomizer, position, timestamp);
         calibrator.setMeasurements(measurements2);
 
         // check
         assertFalse(calibrator.isReady());
 
         // set ground truth magnetic flux density norm
-        final GregorianCalendar calendar = new GregorianCalendar();
+        final var calendar = new GregorianCalendar();
         calendar.setTime(timestamp);
-        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
-        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+        final var year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final var groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
 
         calibrator.setGroundTruthMagneticFluxDensityNorm(groundTruthMagneticFluxDensityNorm);
 
@@ -6610,14 +6534,13 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testGetSetProgressDelta() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testGetSetProgressDelta() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertEquals(0.05f, calibrator.getProgressDelta(), 0.0);
 
-        // set new value
+        // set a new value
         calibrator.setProgressDelta(0.01f);
 
         // check
@@ -6629,14 +6552,13 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testGetSetConfidence() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testGetSetConfidence() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertEquals(0.99, calibrator.getConfidence(), 0.0);
 
-        // set new value
+        // set a new value
         calibrator.setConfidence(0.5);
 
         // check
@@ -6648,14 +6570,13 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testGetSetMaxIterations() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testGetSetMaxIterations() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertEquals(5000, calibrator.getMaxIterations());
 
-        // set new value
+        // set a new value
         calibrator.setMaxIterations(100);
 
         assertEquals(100, calibrator.getMaxIterations());
@@ -6665,14 +6586,13 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testIsSetResultRefined() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testIsSetResultRefined() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertTrue(calibrator.isResultRefined());
 
-        // set new value
+        // set a new value
         calibrator.setResultRefined(false);
 
         // check
@@ -6680,14 +6600,13 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testIsSetCovarianceKept() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testIsSetCovarianceKept() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertTrue(calibrator.isCovarianceKept());
 
-        // set new value
+        // set a new value
         calibrator.setCovarianceKept(false);
 
         // check
@@ -6695,14 +6614,13 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testGetSetQualityScores() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testGetSetQualityScores() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertNull(calibrator.getQualityScores());
 
-        // set new value
+        // set a new value
         calibrator.setQualityScores(new double[3]);
 
         // check
@@ -6710,16 +6628,15 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testGetSetPreliminarySubsetSize() throws LockedException {
-        final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+    void testGetSetPreliminarySubsetSize() throws LockedException {
+        final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertEquals(
                 RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
                 calibrator.getPreliminarySubsetSize());
 
-        // set new value
+        // set a new value
         calibrator.setPreliminarySubsetSize(11);
 
         // check
@@ -6730,26 +6647,26 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testCalibrateGeneralNoNoiseInlier() throws IOException, LockedException, NotReadyException {
+    void testCalibrateGeneralNoNoiseInlier() throws IOException, LockedException, NotReadyException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
-            final double[] hardIron = generateHardIron(randomizer);
-            final Matrix bm = Matrix.newFromArray(hardIron);
-            final Matrix mm = generateSoftIronGeneral();
+            final var hardIron = generateHardIron(randomizer);
+            final var bm = Matrix.newFromArray(hardIron);
+            final var mm = generateSoftIronGeneral();
             assertNotNull(mm);
 
-            final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
+            final var noiseRandomizer = new GaussianRandomizer(0.0,
                     OUTLIER_ERROR_FACTOR * MAGNETOMETER_NOISE_STD);
 
-            final NEDPosition position = createPosition(randomizer);
-            final Date timestamp = new Date(createTimestamp(randomizer));
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements = new ArrayList<>();
-            for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
-                final CoordinateTransformation cnb = generateBodyC(randomizer);
+            final var position = createPosition(randomizer);
+            final var timestamp = new Date(createTimestamp(randomizer));
+            final var measurements = new ArrayList<StandardDeviationBodyMagneticFluxDensity>();
+            for (var i = 0; i < MEASUREMENT_NUMBER; i++) {
+                final var cnb = generateBodyC(randomizer);
 
                 final StandardDeviationBodyMagneticFluxDensity b;
                 if (randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE) {
@@ -6761,26 +6678,23 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
                 }
                 measurements.add(b);
             }
-            final GregorianCalendar calendar = new GregorianCalendar();
+            final var calendar = new GregorianCalendar();
             calendar.setTime(timestamp);
-            final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
-            final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year)
-                    .getNorm();
+            final var year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+            final var groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
 
-            final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                    new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                            groundTruthMagneticFluxDensityNorm, measurements, false, bm, mm,
-                            this);
+            final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, false, bm, mm, this);
             calibrator.setThreshold(THRESHOLD);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
-            assertEquals(0, mCalibrateNextIteration);
-            assertEquals(0, mCalibrateProgressChange);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
+            assertEquals(0, calibrateNextIteration);
+            assertEquals(0, calibrateProgressChange);
 
             try {
                 calibrator.calibrate();
@@ -6791,12 +6705,12 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
-            assertTrue(mCalibrateNextIteration > 0);
-            assertTrue(mCalibrateProgressChange >= 0);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
+            assertTrue(calibrateNextIteration > 0);
+            assertTrue(calibrateProgressChange >= 0);
 
-            final Matrix estimatedMm = calibrator.getEstimatedMm();
+            final var estimatedMm = calibrator.getEstimatedMm();
 
             if (!mm.equals(estimatedMm, ABSOLUTE_ERROR)) {
                 continue;
@@ -6808,7 +6722,7 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
+            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
             break;
@@ -6818,27 +6732,27 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testCalibrateCommonAxisNoNoiseInlier() throws IOException, LockedException, CalibrationException,
+    void testCalibrateCommonAxisNoNoiseInlier() throws IOException, LockedException, CalibrationException,
             NotReadyException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
-            final double[] hardIron = generateHardIron(randomizer);
-            final Matrix bm = Matrix.newFromArray(hardIron);
-            final Matrix mm = generateSoftIronCommonAxis();
+            final var hardIron = generateHardIron(randomizer);
+            final var bm = Matrix.newFromArray(hardIron);
+            final var mm = generateSoftIronCommonAxis();
             assertNotNull(mm);
 
-            final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
+            final var noiseRandomizer = new GaussianRandomizer(0.0,
                     OUTLIER_ERROR_FACTOR * MAGNETOMETER_NOISE_STD);
 
-            final NEDPosition position = createPosition(randomizer);
-            final Date timestamp = new Date(createTimestamp(randomizer));
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements = new ArrayList<>();
-            for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
-                final CoordinateTransformation cnb = generateBodyC(randomizer);
+            final var position = createPosition(randomizer);
+            final var timestamp = new Date(createTimestamp(randomizer));
+            final var measurements = new ArrayList<StandardDeviationBodyMagneticFluxDensity>();
+            for (var i = 0; i < MEASUREMENT_NUMBER; i++) {
+                final var cnb = generateBodyC(randomizer);
 
                 final StandardDeviationBodyMagneticFluxDensity b;
                 if (randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE) {
@@ -6850,26 +6764,23 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
                 }
                 measurements.add(b);
             }
-            final GregorianCalendar calendar = new GregorianCalendar();
+            final var calendar = new GregorianCalendar();
             calendar.setTime(timestamp);
-            final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
-            final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year)
-                    .getNorm();
+            final var year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+            final var groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
 
-            final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                    new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                            groundTruthMagneticFluxDensityNorm, measurements, true, bm, mm,
-                            this);
+            final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, true, bm, mm, this);
             calibrator.setThreshold(THRESHOLD);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
-            assertEquals(0, mCalibrateNextIteration);
-            assertEquals(0, mCalibrateProgressChange);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
+            assertEquals(0, calibrateNextIteration);
+            assertEquals(0, calibrateProgressChange);
 
             try {
                 calibrator.calibrate();
@@ -6880,12 +6791,12 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
-            assertTrue(mCalibrateNextIteration > 0);
-            assertTrue(mCalibrateProgressChange >= 0);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
+            assertTrue(calibrateNextIteration > 0);
+            assertTrue(calibrateProgressChange >= 0);
 
-            final Matrix estimatedMm = calibrator.getEstimatedMm();
+            final var estimatedMm = calibrator.getEstimatedMm();
 
             if (!mm.equals(estimatedMm, ABSOLUTE_ERROR)) {
                 continue;
@@ -6897,7 +6808,7 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
+            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
             break;
@@ -6907,28 +6818,27 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testCalibrateGeneralWithInlierNoise() throws IOException, LockedException, NotReadyException {
+    void testCalibrateGeneralWithInlierNoise() throws IOException, LockedException, NotReadyException {
 
-        int numValid = 0;
-        for (int t = 0; t < 2 * TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        var numValid = 0;
+        for (var t = 0; t < 2 * TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
-            final double[] hardIron = generateHardIron(randomizer);
-            final Matrix bm = Matrix.newFromArray(hardIron);
-            final Matrix mm = generateSoftIronGeneral();
+            final var hardIron = generateHardIron(randomizer);
+            final var bm = Matrix.newFromArray(hardIron);
+            final var mm = generateSoftIronGeneral();
             assertNotNull(mm);
 
-            final GaussianRandomizer inlierNoiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
-                    MAGNETOMETER_NOISE_STD);
-            final GaussianRandomizer outlierNoiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
+            final var inlierNoiseRandomizer = new GaussianRandomizer(0.0, MAGNETOMETER_NOISE_STD);
+            final var outlierNoiseRandomizer = new GaussianRandomizer(0.0,
                     OUTLIER_ERROR_FACTOR * MAGNETOMETER_NOISE_STD);
 
-            final NEDPosition position = createPosition(randomizer);
-            final Date timestamp = new Date(createTimestamp(randomizer));
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements = new ArrayList<>();
-            for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
-                final CoordinateTransformation cnb = generateBodyC(randomizer);
+            final var position = createPosition(randomizer);
+            final var timestamp = new Date(createTimestamp(randomizer));
+            final var measurements = new ArrayList<StandardDeviationBodyMagneticFluxDensity>();
+            for (var i = 0; i < MEASUREMENT_NUMBER; i++) {
+                final var cnb = generateBodyC(randomizer);
 
                 final StandardDeviationBodyMagneticFluxDensity b;
                 if (randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE) {
@@ -6940,25 +6850,23 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
                 }
                 measurements.add(b);
             }
-            final GregorianCalendar calendar = new GregorianCalendar();
+            final var calendar = new GregorianCalendar();
             calendar.setTime(timestamp);
-            final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
-            final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+            final var year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+            final var groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
 
-            final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                    new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                            groundTruthMagneticFluxDensityNorm, measurements, false, bm, mm,
-                            this);
+            final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, false, bm, mm, this);
             calibrator.setThreshold(THRESHOLD);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
-            assertEquals(0, mCalibrateNextIteration);
-            assertEquals(0, mCalibrateProgressChange);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
+            assertEquals(0, calibrateNextIteration);
+            assertEquals(0, calibrateProgressChange);
 
             try {
                 calibrator.calibrate();
@@ -6969,12 +6877,12 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
-            assertTrue(mCalibrateNextIteration > 0);
-            assertTrue(mCalibrateProgressChange >= 0);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
+            assertTrue(calibrateNextIteration > 0);
+            assertTrue(calibrateProgressChange >= 0);
 
-            final Matrix estimatedMm = calibrator.getEstimatedMm();
+            final var estimatedMm = calibrator.getEstimatedMm();
 
             if (!mm.equals(estimatedMm, VERY_LARGE_ABSOLUTE_ERROR)) {
                 continue;
@@ -6986,7 +6894,7 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
+            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
             break;
@@ -6996,29 +6904,28 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testCalibrateCommonAxisWithInlierNoise() throws IOException, LockedException, CalibrationException,
+    void testCalibrateCommonAxisWithInlierNoise() throws IOException, LockedException, CalibrationException,
             NotReadyException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
-            final double[] hardIron = generateHardIron(randomizer);
-            final Matrix bm = Matrix.newFromArray(hardIron);
-            final Matrix mm = generateSoftIronCommonAxis();
+            final var hardIron = generateHardIron(randomizer);
+            final var bm = Matrix.newFromArray(hardIron);
+            final var mm = generateSoftIronCommonAxis();
             assertNotNull(mm);
 
-            final GaussianRandomizer inlierNoiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
-                    MAGNETOMETER_NOISE_STD);
-            final GaussianRandomizer outlierNoiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
+            final var inlierNoiseRandomizer = new GaussianRandomizer(0.0, MAGNETOMETER_NOISE_STD);
+            final var outlierNoiseRandomizer = new GaussianRandomizer(0.0,
                     OUTLIER_ERROR_FACTOR * MAGNETOMETER_NOISE_STD);
 
-            final NEDPosition position = createPosition(randomizer);
-            final Date timestamp = new Date(createTimestamp(randomizer));
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements = new ArrayList<>();
-            for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
-                final CoordinateTransformation cnb = generateBodyC(randomizer);
+            final var position = createPosition(randomizer);
+            final var timestamp = new Date(createTimestamp(randomizer));
+            final var measurements = new ArrayList<StandardDeviationBodyMagneticFluxDensity>();
+            for (var i = 0; i < MEASUREMENT_NUMBER; i++) {
+                final var cnb = generateBodyC(randomizer);
 
                 final StandardDeviationBodyMagneticFluxDensity b;
                 if (randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE) {
@@ -7030,38 +6937,35 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
                 }
                 measurements.add(b);
             }
-            final GregorianCalendar calendar = new GregorianCalendar();
+            final var calendar = new GregorianCalendar();
             calendar.setTime(timestamp);
-            final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
-            final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year)
-                    .getNorm();
+            final var year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+            final var groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
 
-            final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                    new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                            groundTruthMagneticFluxDensityNorm, measurements, true, bm, mm,
-                            this);
+            final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, true, bm, mm, this);
             calibrator.setThreshold(THRESHOLD);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
-            assertEquals(0, mCalibrateNextIteration);
-            assertEquals(0, mCalibrateProgressChange);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
+            assertEquals(0, calibrateNextIteration);
+            assertEquals(0, calibrateProgressChange);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
-            assertTrue(mCalibrateNextIteration > 0);
-            assertTrue(mCalibrateProgressChange >= 0);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
+            assertTrue(calibrateNextIteration > 0);
+            assertTrue(calibrateProgressChange >= 0);
 
-            final Matrix estimatedMm = calibrator.getEstimatedMm();
+            final var estimatedMm = calibrator.getEstimatedMm();
 
             if (!mm.equals(estimatedMm, VERY_LARGE_ABSOLUTE_ERROR)) {
                 continue;
@@ -7073,7 +6977,7 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
+            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
             break;
@@ -7083,27 +6987,27 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     @Test
-    public void testCalibrateGeneralNoRefinement() throws IOException, LockedException, CalibrationException,
+    void testCalibrateGeneralNoRefinement() throws IOException, LockedException, CalibrationException,
             NotReadyException {
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
-            final double[] hardIron = generateHardIron(randomizer);
-            final Matrix bm = Matrix.newFromArray(hardIron);
-            final Matrix mm = generateSoftIronGeneral();
+            final var hardIron = generateHardIron(randomizer);
+            final var bm = Matrix.newFromArray(hardIron);
+            final var mm = generateSoftIronGeneral();
             assertNotNull(mm);
 
-            final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
+            final var noiseRandomizer = new GaussianRandomizer(0.0,
                     OUTLIER_ERROR_FACTOR * MAGNETOMETER_NOISE_STD);
 
-            final NEDPosition position = createPosition(randomizer);
-            final Date timestamp = new Date(createTimestamp(randomizer));
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements = new ArrayList<>();
-            for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
-                final CoordinateTransformation cnb = generateBodyC(randomizer);
+            final var position = createPosition(randomizer);
+            final var timestamp = new Date(createTimestamp(randomizer));
+            final var measurements = new ArrayList<StandardDeviationBodyMagneticFluxDensity>();
+            for (var i = 0; i < MEASUREMENT_NUMBER; i++) {
+                final var cnb = generateBodyC(randomizer);
 
                 final StandardDeviationBodyMagneticFluxDensity b;
                 if (randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE) {
@@ -7115,16 +7019,13 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
                 }
                 measurements.add(b);
             }
-            final GregorianCalendar calendar = new GregorianCalendar();
+            final var calendar = new GregorianCalendar();
             calendar.setTime(timestamp);
-            final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
-            final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year)
-                    .getNorm();
+            final var year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+            final var groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
 
-            final RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
-                    new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                            groundTruthMagneticFluxDensityNorm, measurements, false, bm, mm,
-                            this);
+            final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, false, bm, mm, this);
             calibrator.setThreshold(THRESHOLD);
             calibrator.setResultRefined(false);
 
@@ -7132,22 +7033,22 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
-            assertEquals(0, mCalibrateNextIteration);
-            assertEquals(0, mCalibrateProgressChange);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
+            assertEquals(0, calibrateNextIteration);
+            assertEquals(0, calibrateProgressChange);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
-            assertTrue(mCalibrateNextIteration > 0);
-            assertTrue(mCalibrateProgressChange >= 0);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
+            assertTrue(calibrateNextIteration > 0);
+            assertTrue(calibrateProgressChange >= 0);
 
-            final Matrix estimatedMm = calibrator.getEstimatedMm();
+            final var estimatedMm = calibrator.getEstimatedMm();
 
             if (!mm.equals(estimatedMm, ABSOLUTE_ERROR)) {
                 continue;
@@ -7159,7 +7060,7 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
+            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
             break;
@@ -7171,34 +7072,34 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     @Override
     public void onCalibrateStart(final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator) {
         checkLocked((RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator) calibrator);
-        mCalibrateStart++;
+        calibrateStart++;
     }
 
     @Override
     public void onCalibrateEnd(final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator) {
         checkLocked((RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator) calibrator);
-        mCalibrateEnd++;
+        calibrateEnd++;
     }
 
     @Override
     public void onCalibrateNextIteration(
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator, final int iteration) {
         checkLocked((RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator) calibrator);
-        mCalibrateNextIteration++;
+        calibrateNextIteration++;
     }
 
     @Override
     public void onCalibrateProgressChange(
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator, final float progress) {
         checkLocked((RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator) calibrator);
-        mCalibrateProgressChange++;
+        calibrateProgressChange++;
     }
 
     private void reset() {
-        mCalibrateStart = 0;
-        mCalibrateEnd = 0;
-        mCalibrateNextIteration = 0;
-        mCalibrateProgressChange = 0;
+        calibrateStart = 0;
+        calibrateEnd = 0;
+        calibrateNextIteration = 0;
+        calibrateProgressChange = 0;
     }
 
     private static void checkLocked(
@@ -7270,10 +7171,10 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(9, covariance.getRows());
         assertEquals(9, covariance.getColumns());
 
-        for (int j = 0; j < 9; j++) {
-            final boolean colIsZero = j == 5 || j == 7 || j == 8;
-            for (int i = 0; i < 9; i++) {
-                final boolean rowIsZero = i == 5 || i == 7 || i == 8;
+        for (var j = 0; j < 9; j++) {
+            final var colIsZero = j == 5 || j == 7 || j == 8;
+            for (var i = 0; i < 9; i++) {
+                final var rowIsZero = i == 5 || i == 7 || i == 8;
                 if (colIsZero || rowIsZero) {
                     assertEquals(0.0, covariance.getElementAt(i, j), 0.0);
                 }
@@ -7285,14 +7186,14 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
         assertEquals(9, covariance.getRows());
         assertEquals(9, covariance.getColumns());
 
-        for (int i = 0; i < 9; i++) {
-            assertNotEquals(covariance.getElementAt(i, i), 0.0);
+        for (var i = 0; i < 9; i++) {
+            assertNotEquals(0.0, covariance.getElementAt(i, i));
         }
     }
 
     private static NEDMagneticFluxDensity getMagneticFluxDensityAtPosition(
             final NEDPosition position, final double year) throws IOException {
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         return wmmEstimator.estimate(position, year);
     }
 
@@ -7304,9 +7205,9 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
             final NEDPosition position,
             final Date timestamp) {
 
-        final List<StandardDeviationBodyMagneticFluxDensity> result = new ArrayList<>();
-        for (int i = 0; i < numberOfMeasurements; i++) {
-            final CoordinateTransformation cnb = generateBodyC(randomizer);
+        final var result = new ArrayList<StandardDeviationBodyMagneticFluxDensity>();
+        for (var i = 0; i < numberOfMeasurements; i++) {
+            final var cnb = generateBodyC(randomizer);
             result.add(generateMeasure(hardIron, softIron, wmmEstimator, null, position, timestamp,
                     cnb));
         }
@@ -7318,11 +7219,10 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
             final GaussianRandomizer noiseRandomizer, final NEDPosition position, final Date timestamp,
             final CoordinateTransformation cnb) {
 
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
+        final var earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity truthMagnetic = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
-        final BodyMagneticFluxDensity measuredMagnetic = generateMeasuredMagneticFluxDensity(truthMagnetic, hardIron,
-                softIron);
+        final var truthMagnetic = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final var measuredMagnetic = generateMeasuredMagneticFluxDensity(truthMagnetic, hardIron, softIron);
 
         if (noiseRandomizer != null) {
             measuredMagnetic.setBx(measuredMagnetic.getBx() + noiseRandomizer.nextDouble());
@@ -7330,15 +7230,14 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
             measuredMagnetic.setBz(measuredMagnetic.getBz() + noiseRandomizer.nextDouble());
         }
 
-        final double std = noiseRandomizer != null ? noiseRandomizer.getStandardDeviation() : MAGNETOMETER_NOISE_STD;
+        final var std = noiseRandomizer != null ? noiseRandomizer.getStandardDeviation() : MAGNETOMETER_NOISE_STD;
         return new StandardDeviationBodyMagneticFluxDensity(measuredMagnetic, std);
     }
 
     private static CoordinateTransformation generateBodyC(final UniformRandomizer randomizer) {
-
-        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final var yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         return new CoordinateTransformation(roll, pitch, yaw1, FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
     }
@@ -7349,7 +7248,7 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     private static double[] generateHardIron(final UniformRandomizer randomizer) {
-        final double[] result = new double[BodyMagneticFluxDensity.COMPONENTS];
+        final var result = new double[BodyMagneticFluxDensity.COMPONENTS];
         randomizer.fill(result, MIN_HARD_IRON, MAX_HARD_IRON);
         return result;
     }
@@ -7365,11 +7264,11 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     private static Matrix generateSoftIronCommonAxis() {
-        final Matrix mm = generateSoftIronGeneral();
+        final var mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        for (int col = 0; col < mm.getColumns(); col++) {
-            for (int row = 0; row < mm.getRows(); row++) {
+        for (var col = 0; col < mm.getColumns(); col++) {
+            for (var row = 0; row < mm.getRows(); row++) {
                 if (row > col) {
                     mm.setElementAt(row, col, 0.0);
                 }
@@ -7379,9 +7278,9 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
     }
 
     private static NEDPosition createPosition(final UniformRandomizer randomizer) {
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT_METERS, MAX_HEIGHT_METERS);
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT_METERS, MAX_HEIGHT_METERS);
 
         return new NEDPosition(latitude, longitude, height);
     }

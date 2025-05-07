@@ -19,6 +19,7 @@ import com.irurueta.algebra.AlgebraException;
 import com.irurueta.algebra.FrobeniusNormComputer;
 import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.Quaternion;
+import com.irurueta.geometry.Rotation3D;
 import com.irurueta.geometry.RotationException;
 
 /**
@@ -105,8 +106,8 @@ public class SuhQuaternionStepIntegrator extends QuaternionStepIntegrator {
      */
     public SuhQuaternionStepIntegrator() {
         try {
-            omega0 = new Matrix(Quaternion.INHOM_COORDS, 1);
-            omega1 = new Matrix(Quaternion.INHOM_COORDS, 1);
+            omega0 = new Matrix(Rotation3D.INHOM_COORDS, 1);
+            omega1 = new Matrix(Rotation3D.INHOM_COORDS, 1);
             quat = new Matrix(Quaternion.N_PARAMS, 1);
             omegaSkew0 = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
             omegaSkew1 = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
@@ -197,19 +198,19 @@ public class SuhQuaternionStepIntegrator extends QuaternionStepIntegrator {
             final double currentWx, final double currentWy, final double currentWz,
             final double dt, final Quaternion result) throws RotationException {
         try {
-            final Matrix omega0 = new Matrix(Quaternion.INHOM_COORDS, 1);
-            final Matrix omega1 = new Matrix(Quaternion.INHOM_COORDS, 1);
-            final Matrix quat = new Matrix(Quaternion.N_PARAMS, 1);
-            final Matrix omegaSkew0 = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
-            final Matrix omegaSkew1 = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
-            final Matrix constant = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
-            final Matrix omegaSkew10 = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
-            final Matrix identity = Matrix.identity(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
-            final Matrix omegaSkew1A = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
-            final Matrix omegaSkew0A = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
-            final Matrix omegaSkew1B = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
-            final Matrix tmp = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
-            final Matrix quatResult = new Matrix(Quaternion.N_PARAMS, 1);
+            final var omega0 = new Matrix(Rotation3D.INHOM_COORDS, 1);
+            final var omega1 = new Matrix(Rotation3D.INHOM_COORDS, 1);
+            final var quat = new Matrix(Quaternion.N_PARAMS, 1);
+            final var omegaSkew0 = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
+            final var omegaSkew1 = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
+            final var constant = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
+            final var omegaSkew10 = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
+            final var identity = Matrix.identity(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
+            final var omegaSkew1A = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
+            final var omegaSkew0A = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
+            final var omegaSkew1B = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
+            final var tmp = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
+            final var quatResult = new Matrix(Quaternion.N_PARAMS, 1);
             integrationStep(initialAttitude, initialWx, initialWy, initialWz,
                     currentWx, currentWy, currentWz, dt, result, omega0, omega1, quat, omegaSkew0,
                     omegaSkew1, constant, omegaSkew10, identity, omegaSkew1A, omegaSkew0A,
@@ -274,14 +275,14 @@ public class SuhQuaternionStepIntegrator extends QuaternionStepIntegrator {
             // angular speed at end timestamp t1
             copyAngularSpeedToMatrix(currentWx, currentWy, currentWz, omega1);
 
-            final double norm1 = FrobeniusNormComputer.norm(omega1);
-            final double sqrNorm1 = norm1 * norm1;
+            final var norm1 = FrobeniusNormComputer.norm(omega1);
+            final var sqrNorm1 = norm1 * norm1;
 
             computeOmegaSkew(omega0, omegaSkew0);
             computeOmegaSkew(omega1, omegaSkew1);
 
-            final double dt2 = dt * dt;
-            final double dt3 = dt * dt2;
+            final var dt2 = dt * dt;
+            final var dt3 = dt * dt2;
 
             constant.initialize(sqrNorm1 * dt2 / 6.0);
 

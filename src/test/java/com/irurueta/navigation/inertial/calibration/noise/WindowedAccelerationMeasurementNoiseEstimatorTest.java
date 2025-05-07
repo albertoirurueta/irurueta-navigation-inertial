@@ -26,15 +26,14 @@ import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationUnit;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeUnit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class WindowedAccelerationMeasurementNoiseEstimatorTest implements
+class WindowedAccelerationMeasurementNoiseEstimatorTest implements 
         WindowedAccelerationMeasurementNoiseEstimatorListener {
 
     private static final double MIN_ACCELEROMETER_VALUE = -2.0 * 9.81;
@@ -45,25 +44,24 @@ public class WindowedAccelerationMeasurementNoiseEstimatorTest implements
 
     private static final double ABSOLUTE_ERROR = 1e-6;
 
-    private int mStart;
-    private int mMeasurementAdded;
-    private int mWindowFilled;
-    private int mReset;
+    private int start;
+    private int measurementAdded;
+    private int windowFilled;
+    private int reset;
 
     @Test
-    public void testConstructor1() {
-        final WindowedAccelerationMeasurementNoiseEstimator estimator =
-                new WindowedAccelerationMeasurementNoiseEstimator();
+    void testConstructor1() {
+        final var estimator = new WindowedAccelerationMeasurementNoiseEstimator();
 
         // check default values
         assertEquals(WindowedAccelerationMeasurementNoiseEstimator.DEFAULT_WINDOW_SIZE, estimator.getWindowSize());
         assertEquals(WindowedAccelerationMeasurementNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
                 estimator.getTimeInterval(), 0.0);
-        final Time time1 = estimator.getTimeIntervalAsTime();
-        assertEquals(WindowedAccelerationMeasurementNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
+        final var time1 = estimator.getTimeIntervalAsTime();
+        assertEquals(WindowedAccelerationMeasurementNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS, 
                 time1.getValue().doubleValue(), 0.0);
         assertEquals(TimeUnit.SECOND, time1.getUnit());
-        final Time time2 = new Time(0.0, TimeUnit.HOUR);
+        final var time2 = new Time(0.0, TimeUnit.HOUR);
         estimator.getTimeIntervalAsTime(time2);
         assertEquals(time1, time2);
         assertNull(estimator.getListener());
@@ -74,18 +72,18 @@ public class WindowedAccelerationMeasurementNoiseEstimatorTest implements
         assertNull(estimator.getLastWindowedMeasurement());
         assertFalse(estimator.getLastWindowedMeasurement(null));
         assertEquals(0.0, estimator.getAvg(), 0.0);
-        final Acceleration avg1 = estimator.getAvgAsMeasurement();
+        final var avg1 = estimator.getAvgAsMeasurement();
         assertEquals(0.0, avg1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, avg1.getUnit());
-        final Acceleration avg2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var avg2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgAsMeasurement(avg2);
         assertEquals(avg1, avg2);
         assertEquals(0.0, estimator.getVariance(), 0.0);
         assertEquals(0.0, estimator.getStandardDeviation(), 0.0);
-        final Acceleration std1 = estimator.getStandardDeviationAsMeasurement();
+        final var std1 = estimator.getStandardDeviationAsMeasurement();
         assertEquals(0.0, std1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, std1.getUnit());
-        final Acceleration std2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var std2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationAsMeasurement(std2);
         assertEquals(std1, std2);
         assertEquals(0.0, estimator.getPsd(), 0.0);
@@ -99,19 +97,18 @@ public class WindowedAccelerationMeasurementNoiseEstimatorTest implements
     }
 
     @Test
-    public void testConstructor2() {
-        final WindowedAccelerationMeasurementNoiseEstimator estimator =
-                new WindowedAccelerationMeasurementNoiseEstimator(this);
+    void testConstructor2() {
+        final var estimator = new WindowedAccelerationMeasurementNoiseEstimator(this);
 
         // check default values
         assertEquals(WindowedAccelerationMeasurementNoiseEstimator.DEFAULT_WINDOW_SIZE, estimator.getWindowSize());
         assertEquals(WindowedAccelerationMeasurementNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
                 estimator.getTimeInterval(), 0.0);
-        final Time time1 = estimator.getTimeIntervalAsTime();
+        final var time1 = estimator.getTimeIntervalAsTime();
         assertEquals(WindowedAccelerationMeasurementNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
                 time1.getValue().doubleValue(), 0.0);
         assertEquals(TimeUnit.SECOND, time1.getUnit());
-        final Time time2 = new Time(0.0, TimeUnit.HOUR);
+        final var time2 = new Time(0.0, TimeUnit.HOUR);
         estimator.getTimeIntervalAsTime(time2);
         assertEquals(time1, time2);
         assertSame(this, estimator.getListener());
@@ -122,18 +119,18 @@ public class WindowedAccelerationMeasurementNoiseEstimatorTest implements
         assertNull(estimator.getLastWindowedMeasurement());
         assertFalse(estimator.getLastWindowedMeasurement(null));
         assertEquals(0.0, estimator.getAvg(), 0.0);
-        final Acceleration avg1 = estimator.getAvgAsMeasurement();
+        final var avg1 = estimator.getAvgAsMeasurement();
         assertEquals(0.0, avg1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, avg1.getUnit());
-        final Acceleration avg2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var avg2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgAsMeasurement(avg2);
         assertEquals(avg1, avg2);
         assertEquals(0.0, estimator.getVariance(), 0.0);
         assertEquals(0.0, estimator.getStandardDeviation(), 0.0);
-        final Acceleration std1 = estimator.getStandardDeviationAsMeasurement();
+        final var std1 = estimator.getStandardDeviationAsMeasurement();
         assertEquals(0.0, std1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, std1.getUnit());
-        final Acceleration std2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var std2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationAsMeasurement(std2);
         assertEquals(std1, std2);
         assertEquals(0.0, estimator.getPsd(), 0.0);
@@ -147,14 +144,13 @@ public class WindowedAccelerationMeasurementNoiseEstimatorTest implements
     }
 
     @Test
-    public void testGetSetWindowSize() throws LockedException {
-        final WindowedAccelerationMeasurementNoiseEstimator estimator =
-                new WindowedAccelerationMeasurementNoiseEstimator();
+    void testGetSetWindowSize() throws LockedException {
+        final var estimator = new WindowedAccelerationMeasurementNoiseEstimator();
 
         // check default value
         assertEquals(WindowedAccelerationMeasurementNoiseEstimator.DEFAULT_WINDOW_SIZE, estimator.getWindowSize());
 
-        // set new value
+        // set a new value
         estimator.setWindowSize(3);
 
         // check
@@ -166,15 +162,14 @@ public class WindowedAccelerationMeasurementNoiseEstimatorTest implements
     }
 
     @Test
-    public void testGetSetTimeInterval() throws LockedException {
-        final WindowedAccelerationMeasurementNoiseEstimator estimator =
-                new WindowedAccelerationMeasurementNoiseEstimator();
+    void testGetSetTimeInterval() throws LockedException {
+        final var estimator = new WindowedAccelerationMeasurementNoiseEstimator();
 
         // check default value
         assertEquals(WindowedAccelerationMeasurementNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
                 estimator.getTimeInterval(), 0.0);
 
-        // set new value
+        // set a new value
         estimator.setTimeInterval(1.0);
 
         // check
@@ -185,23 +180,22 @@ public class WindowedAccelerationMeasurementNoiseEstimatorTest implements
     }
 
     @Test
-    public void testGetSetTimeIntervalAsTime() throws LockedException {
-        final WindowedAccelerationMeasurementNoiseEstimator estimator =
-                new WindowedAccelerationMeasurementNoiseEstimator();
+    void testGetSetTimeIntervalAsTime() throws LockedException {
+        final var estimator = new WindowedAccelerationMeasurementNoiseEstimator();
 
         // check default value
-        final Time time1 = estimator.getTimeIntervalAsTime();
+        final var time1 = estimator.getTimeIntervalAsTime();
         assertEquals(WindowedAccelerationMeasurementNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
                 time1.getValue().doubleValue(), 0.0);
         assertEquals(TimeUnit.SECOND, time1.getUnit());
 
-        // set new value
-        final Time time2 = new Time(500, TimeUnit.MILLISECOND);
+        // set a new value
+        final var time2 = new Time(500, TimeUnit.MILLISECOND);
         estimator.setTimeInterval(time2);
 
         // check
-        final Time time3 = estimator.getTimeIntervalAsTime();
-        final Time time4 = new Time(0.0, TimeUnit.SECOND);
+        final var time3 = estimator.getTimeIntervalAsTime();
+        final var time4 = new Time(0.0, TimeUnit.SECOND);
         estimator.getTimeIntervalAsTime(time4);
 
         assertTrue(time2.equals(time3, ABSOLUTE_ERROR));
@@ -209,14 +203,13 @@ public class WindowedAccelerationMeasurementNoiseEstimatorTest implements
     }
 
     @Test
-    public void testGetSetListener() throws LockedException {
-        final WindowedAccelerationMeasurementNoiseEstimator estimator =
-                new WindowedAccelerationMeasurementNoiseEstimator();
+    void testGetSetListener() throws LockedException {
+        final var estimator = new WindowedAccelerationMeasurementNoiseEstimator();
 
         // check default value
         assertNull(estimator.getListener());
 
-        // set new value
+        // set a new value
         estimator.setListener(this);
 
         // check
@@ -224,39 +217,37 @@ public class WindowedAccelerationMeasurementNoiseEstimatorTest implements
     }
 
     @Test
-    public void testAddMeasurementAndProcessAndThenReset1() throws WrongSizeException, LockedException {
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = getAccelNoiseRootPsd();
-        final double gyroNoiseRootPSD = getGyroNoiseRootPsd();
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+    void testAddMeasurementAndProcessAndThenReset1() throws WrongSizeException, LockedException {
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = getAccelNoiseRootPsd();
+        final var gyroNoiseRootPSD = getGyroNoiseRootPsd();
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
+        
+        final var randomizer = new UniformRandomizer();
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var omegaX = 0.0;
+        final var omegaY = 0.0;
+        final var omegaZ = 0.0;
 
-        final Random random = new Random();
-        final UniformRandomizer randomizer = new UniformRandomizer(random);
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double omegaX = 0.0;
-        final double omegaY = 0.0;
-        final double omegaZ = 0.0;
+        final var trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
-
-        final WindowedAccelerationMeasurementNoiseEstimator estimator =
-                new WindowedAccelerationMeasurementNoiseEstimator(this);
+        final var estimator = new WindowedAccelerationMeasurementNoiseEstimator(this);
 
         reset();
-        assertEquals(0, mStart);
-        assertEquals(0, mMeasurementAdded);
-        assertEquals(0, mWindowFilled);
-        assertEquals(0, mReset);
+        assertEquals(0, start);
+        assertEquals(0, measurementAdded);
+        assertEquals(0, windowFilled);
+        assertEquals(0, reset);
         assertFalse(estimator.isWindowFilled());
         assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertEquals(0, estimator.getNumberOfAddedSamples());
@@ -269,17 +260,18 @@ public class WindowedAccelerationMeasurementNoiseEstimatorTest implements
         assertFalse(estimator.getLastWindowedMeasurement(null));
         assertFalse(estimator.isRunning());
 
-        final BodyKinematics kinematics = new BodyKinematics();
-        final BodyKinematics firstKinematics = new BodyKinematics();
-        final int windowSize = estimator.getWindowSize();
-        final double timeInterval = estimator.getTimeInterval();
-        final Acceleration firstMeasurement = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration lastMeasurement = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration measurement = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var kinematics = new BodyKinematics();
+        final var firstKinematics = new BodyKinematics();
+        final var windowSize = estimator.getWindowSize();
+        final var timeInterval = estimator.getTimeInterval();
+        final var firstMeasurement = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var lastMeasurement = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var measurement = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         double value;
         double avg = 0.0;
-        final List<Acceleration> measurements = new ArrayList<>();
-        for (int i = 0; i < windowSize; i++) {
+        final var measurements = new ArrayList<Acceleration>();
+        final var random = new Random();
+        for (var i = 0; i < windowSize; i++) {
             if (estimator.getFirstWindowedMeasurement(firstMeasurement)) {
                 assertEquals(firstMeasurement, estimator.getFirstWindowedMeasurement());
                 assertEquals(firstMeasurement.getValue().doubleValue(), estimator.getFirstWindowedMeasurementValue(),
@@ -317,45 +309,45 @@ public class WindowedAccelerationMeasurementNoiseEstimatorTest implements
 
         avg /= windowSize;
 
-        double v = 0.0;
-        for (int i = 0; i < windowSize; i++) {
+        var v = 0.0;
+        for (var i = 0; i < windowSize; i++) {
             measurement.setValue(measurements.get(i).getValue());
             measurement.setUnit(measurements.get(i).getUnit());
 
             value = measurement.getValue().doubleValue();
 
-            final double diff = value - avg;
+            final var diff = value - avg;
 
             v += diff * diff;
         }
 
         v /= (windowSize - 1);
 
-        final double std = Math.sqrt(v);
+        final var std = Math.sqrt(v);
 
         assertEquals(avg, estimator.getAvg(), ABSOLUTE_ERROR);
 
-        final Acceleration a1 = estimator.getAvgAsMeasurement();
+        final var a1 = estimator.getAvgAsMeasurement();
         assertEquals(avg, a1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, a1.getUnit());
-        final Acceleration a2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var a2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgAsMeasurement(a2);
         assertEquals(a1, a2);
 
         assertEquals(v, estimator.getVariance(), ABSOLUTE_ERROR);
         assertEquals(std, estimator.getStandardDeviation(), ABSOLUTE_ERROR);
 
-        final Acceleration std1 = estimator.getStandardDeviationAsMeasurement();
+        final var std1 = estimator.getStandardDeviationAsMeasurement();
         assertEquals(std, std1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, std1.getUnit());
-        final Acceleration std2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var std2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationAsMeasurement(std2);
         assertEquals(std1, std2);
 
-        final double psd = v * timeInterval;
+        final var psd = v * timeInterval;
         assertEquals(psd, estimator.getPsd(), ABSOLUTE_ERROR);
 
-        final double rootPsd = Math.sqrt(psd);
+        final var rootPsd = Math.sqrt(psd);
         assertEquals(rootPsd, estimator.getRootPsd(), ABSOLUTE_ERROR);
         assertEquals(estimator.getRootPsd(), estimator.getAccelerometerBaseNoiseLevelRootPsd(), 0.0);
 
@@ -365,10 +357,10 @@ public class WindowedAccelerationMeasurementNoiseEstimatorTest implements
         assertFalse(estimator.isRunning());
         assertTrue(estimator.isWindowFilled());
 
-        assertEquals(1, mStart);
-        assertEquals(mMeasurementAdded, windowSize);
-        assertEquals(1, mWindowFilled);
-        assertEquals(0, mReset);
+        assertEquals(1, start);
+        assertEquals(measurementAdded, windowSize);
+        assertEquals(1, windowFilled);
+        assertEquals(0, reset);
 
         // if we add more measurements, window filled is not called again
         BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors, random, kinematics);
@@ -388,15 +380,15 @@ public class WindowedAccelerationMeasurementNoiseEstimatorTest implements
         assertEquals(measurements.get(1), estimator.getFirstWindowedMeasurement());
         assertEquals(measurements.get(windowSize), estimator.getLastWindowedMeasurement());
 
-        assertEquals(1, mStart);
-        assertEquals(windowSize + 1, mMeasurementAdded);
-        assertEquals(1, mWindowFilled);
-        assertEquals(0, mReset);
+        assertEquals(1, start);
+        assertEquals(windowSize + 1, measurementAdded);
+        assertEquals(1, windowFilled);
+        assertEquals(0, reset);
 
         // reset
         assertTrue(estimator.reset());
 
-        assertEquals(1, mReset);
+        assertEquals(1, reset);
 
         assertNull(estimator.getFirstWindowedMeasurementValue());
         assertNull(estimator.getFirstWindowedMeasurement());
@@ -418,39 +410,37 @@ public class WindowedAccelerationMeasurementNoiseEstimatorTest implements
     }
 
     @Test
-    public void testAddMeasurementAndProcessAndThenReset2() throws WrongSizeException, LockedException {
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = getAccelNoiseRootPsd();
-        final double gyroNoiseRootPSD = getGyroNoiseRootPsd();
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+    void testAddMeasurementAndProcessAndThenReset2() throws WrongSizeException, LockedException {
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = getAccelNoiseRootPsd();
+        final var gyroNoiseRootPSD = getGyroNoiseRootPsd();
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final Random random = new Random();
-        final UniformRandomizer randomizer = new UniformRandomizer(random);
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double omegaX = 0.0;
-        final double omegaY = 0.0;
-        final double omegaZ = 0.0;
+        final var randomizer = new UniformRandomizer();
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var omegaX = 0.0;
+        final var omegaY = 0.0;
+        final var omegaZ = 0.0;
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
+        final var trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final WindowedAccelerationMeasurementNoiseEstimator estimator =
-                new WindowedAccelerationMeasurementNoiseEstimator(this);
+        final var estimator = new WindowedAccelerationMeasurementNoiseEstimator(this);
 
         reset();
-        assertEquals(0, mStart);
-        assertEquals(0, mMeasurementAdded);
-        assertEquals(0, mWindowFilled);
-        assertEquals(0, mReset);
+        assertEquals(0, start);
+        assertEquals(0, measurementAdded);
+        assertEquals(0, windowFilled);
+        assertEquals(0, reset);
         assertFalse(estimator.isWindowFilled());
         assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertEquals(0, estimator.getNumberOfAddedSamples());
@@ -463,17 +453,18 @@ public class WindowedAccelerationMeasurementNoiseEstimatorTest implements
         assertFalse(estimator.getLastWindowedMeasurement(null));
         assertFalse(estimator.isRunning());
 
-        final BodyKinematics kinematics = new BodyKinematics();
-        final BodyKinematics firstKinematics = new BodyKinematics();
+        final var kinematics = new BodyKinematics();
+        final var firstKinematics = new BodyKinematics();
         final int windowSize = estimator.getWindowSize();
-        final double timeInterval = estimator.getTimeInterval();
-        final Acceleration firstMeasurement = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration lastMeasurement = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration measurement = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var timeInterval = estimator.getTimeInterval();
+        final var firstMeasurement = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var lastMeasurement = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var measurement = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         double value;
-        double avg = 0.0;
-        final List<Acceleration> measurements = new ArrayList<>();
-        for (int i = 0; i < windowSize; i++) {
+        var avg = 0.0;
+        final var measurements = new ArrayList<Acceleration>();
+        final var random = new Random();
+        for (var i = 0; i < windowSize; i++) {
             if (estimator.getFirstWindowedMeasurement(firstMeasurement)) {
                 assertEquals(firstMeasurement, estimator.getFirstWindowedMeasurement());
                 assertEquals(firstMeasurement.getValue().doubleValue(), estimator.getFirstWindowedMeasurementValue(),
@@ -512,44 +503,44 @@ public class WindowedAccelerationMeasurementNoiseEstimatorTest implements
         avg /= windowSize;
 
         double v = 0.0;
-        for (int i = 0; i < windowSize; i++) {
+        for (var i = 0; i < windowSize; i++) {
             measurement.setValue(measurements.get(i).getValue());
             measurement.setUnit(measurements.get(i).getUnit());
 
             value = measurement.getValue().doubleValue();
 
-            final double diff = value - avg;
+            final var diff = value - avg;
 
             v += diff * diff;
         }
 
         v /= (windowSize - 1);
 
-        final double std = Math.sqrt(v);
+        final var std = Math.sqrt(v);
 
         assertEquals(avg, estimator.getAvg(), ABSOLUTE_ERROR);
 
-        final Acceleration a1 = estimator.getAvgAsMeasurement();
+        final var a1 = estimator.getAvgAsMeasurement();
         assertEquals(avg, a1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, a1.getUnit());
-        final Acceleration a2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var a2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgAsMeasurement(a2);
         assertEquals(a1, a2);
 
         assertEquals(v, estimator.getVariance(), ABSOLUTE_ERROR);
         assertEquals(std, estimator.getStandardDeviation(), ABSOLUTE_ERROR);
 
-        final Acceleration std1 = estimator.getStandardDeviationAsMeasurement();
+        final var std1 = estimator.getStandardDeviationAsMeasurement();
         assertEquals(std, std1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, std1.getUnit());
-        final Acceleration std2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var std2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationAsMeasurement(std2);
         assertEquals(std1, std2);
 
-        final double psd = v * timeInterval;
+        final var psd = v * timeInterval;
         assertEquals(psd, estimator.getPsd(), ABSOLUTE_ERROR);
 
-        final double rootPsd = Math.sqrt(psd);
+        final var rootPsd = Math.sqrt(psd);
         assertEquals(rootPsd, estimator.getRootPsd(), ABSOLUTE_ERROR);
         assertEquals(estimator.getRootPsd(), estimator.getAccelerometerBaseNoiseLevelRootPsd(), 0.0);
 
@@ -559,10 +550,10 @@ public class WindowedAccelerationMeasurementNoiseEstimatorTest implements
         assertFalse(estimator.isRunning());
         assertTrue(estimator.isWindowFilled());
 
-        assertEquals(1, mStart);
-        assertEquals(windowSize, mMeasurementAdded);
-        assertEquals(1, mWindowFilled);
-        assertEquals(0, mReset);
+        assertEquals(1, start);
+        assertEquals(windowSize, measurementAdded);
+        assertEquals(1, windowFilled);
+        assertEquals(0, reset);
 
         // if we add more measurements, window filled is not called again
         BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors, random, kinematics);
@@ -581,15 +572,15 @@ public class WindowedAccelerationMeasurementNoiseEstimatorTest implements
         assertEquals(measurements.get(1), estimator.getFirstWindowedMeasurement());
         assertEquals(measurements.get(windowSize), estimator.getLastWindowedMeasurement());
 
-        assertEquals(1, mStart);
-        assertEquals(windowSize + 1, mMeasurementAdded);
-        assertEquals(1, mWindowFilled);
-        assertEquals(0, mReset);
+        assertEquals(1, start);
+        assertEquals(windowSize + 1, measurementAdded);
+        assertEquals(1, windowFilled);
+        assertEquals(0, reset);
 
         // reset
         assertTrue(estimator.reset());
 
-        assertEquals(1, mReset);
+        assertEquals(1, reset);
 
         assertNull(estimator.getFirstWindowedMeasurementValue());
         assertNull(estimator.getFirstWindowedMeasurement());
@@ -611,39 +602,37 @@ public class WindowedAccelerationMeasurementNoiseEstimatorTest implements
     }
 
     @Test
-    public void testAddMeasurement1() throws WrongSizeException, LockedException {
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = getAccelNoiseRootPsd();
-        final double gyroNoiseRootPSD = getGyroNoiseRootPsd();
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+    void testAddMeasurement1() throws WrongSizeException, LockedException {
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = getAccelNoiseRootPsd();
+        final var gyroNoiseRootPSD = getGyroNoiseRootPsd();
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final Random random = new Random();
-        final UniformRandomizer randomizer = new UniformRandomizer(random);
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double omegaX = 0.0;
-        final double omegaY = 0.0;
-        final double omegaZ = 0.0;
+        final var randomizer = new UniformRandomizer();
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var omegaX = 0.0;
+        final var omegaY = 0.0;
+        final var omegaZ = 0.0;
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
+        final var trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final WindowedAccelerationMeasurementNoiseEstimator estimator =
-                new WindowedAccelerationMeasurementNoiseEstimator(this);
+        final var estimator = new WindowedAccelerationMeasurementNoiseEstimator(this);
 
         reset();
-        assertEquals(0, mStart);
-        assertEquals(0, mMeasurementAdded);
-        assertEquals(0, mWindowFilled);
-        assertEquals(0, mReset);
+        assertEquals(0, start);
+        assertEquals(0, measurementAdded);
+        assertEquals(0, windowFilled);
+        assertEquals(0, reset);
         assertFalse(estimator.isWindowFilled());
         assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertEquals(0, estimator.getNumberOfAddedSamples());
@@ -656,16 +645,17 @@ public class WindowedAccelerationMeasurementNoiseEstimatorTest implements
         assertFalse(estimator.getLastWindowedMeasurement(null));
         assertFalse(estimator.isRunning());
 
-        final BodyKinematics kinematics = new BodyKinematics();
-        final BodyKinematics firstKinematics = new BodyKinematics();
-        final int windowSize = estimator.getWindowSize();
-        final double timeInterval = estimator.getTimeInterval();
-        final Acceleration firstMeasurement = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration lastMeasurement = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration measurement = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var kinematics = new BodyKinematics();
+        final var firstKinematics = new BodyKinematics();
+        final var windowSize = estimator.getWindowSize();
+        final var timeInterval = estimator.getTimeInterval();
+        final var firstMeasurement = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var lastMeasurement = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var measurement = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         double value;
-        final List<Acceleration> measurements = new ArrayList<>();
-        for (int i = 0; i < windowSize; i++) {
+        final var measurements = new ArrayList<Acceleration>();
+        final var random = new Random();
+        for (var i = 0; i < windowSize; i++) {
             if (estimator.getFirstWindowedMeasurement(firstMeasurement)) {
                 assertEquals(firstMeasurement, estimator.getFirstWindowedMeasurement());
                 assertEquals(firstMeasurement.getValue().doubleValue(), estimator.getFirstWindowedMeasurementValue(),
@@ -699,10 +689,10 @@ public class WindowedAccelerationMeasurementNoiseEstimatorTest implements
             assertFalse(estimator.isRunning());
         }
 
-        assertEquals(1, mStart);
-        assertEquals(windowSize, mMeasurementAdded);
-        assertEquals(1, mWindowFilled);
-        assertEquals(0, mReset);
+        assertEquals(1, start);
+        assertEquals(windowSize, measurementAdded);
+        assertEquals(1, windowFilled);
+        assertEquals(0, reset);
 
         assertEquals(windowSize, measurements.size());
         assertEquals(measurements.get(0), estimator.getFirstWindowedMeasurement());
@@ -727,39 +717,37 @@ public class WindowedAccelerationMeasurementNoiseEstimatorTest implements
     }
 
     @Test
-    public void testAddMeasurement2() throws WrongSizeException, LockedException {
-        final Matrix ba = generateBa();
-        final Matrix bg = generateBg();
-        final Matrix ma = generateMa();
-        final Matrix mg = generateMg();
-        final Matrix gg = generateGg();
-        final double accelNoiseRootPSD = getAccelNoiseRootPsd();
-        final double gyroNoiseRootPSD = getGyroNoiseRootPsd();
-        final double accelQuantLevel = 0.0;
-        final double gyroQuantLevel = 0.0;
+    void testAddMeasurement2() throws WrongSizeException, LockedException {
+        final var ba = generateBa();
+        final var bg = generateBg();
+        final var ma = generateMa();
+        final var mg = generateMg();
+        final var gg = generateGg();
+        final var accelNoiseRootPSD = getAccelNoiseRootPsd();
+        final var gyroNoiseRootPSD = getGyroNoiseRootPsd();
+        final var accelQuantLevel = 0.0;
+        final var gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+        final var errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                 gyroQuantLevel);
 
-        final Random random = new Random();
-        final UniformRandomizer randomizer = new UniformRandomizer(random);
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
-        final double omegaX = 0.0;
-        final double omegaY = 0.0;
-        final double omegaZ = 0.0;
+        final var randomizer = new UniformRandomizer();
+        final var fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final var omegaX = 0.0;
+        final var omegaY = 0.0;
+        final var omegaZ = 0.0;
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
+        final var trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final WindowedAccelerationMeasurementNoiseEstimator estimator =
-                new WindowedAccelerationMeasurementNoiseEstimator(this);
+        final var estimator = new WindowedAccelerationMeasurementNoiseEstimator(this);
 
         reset();
-        assertEquals(0, mStart);
-        assertEquals(0, mMeasurementAdded);
-        assertEquals(0, mWindowFilled);
-        assertEquals(0, mReset);
+        assertEquals(0, start);
+        assertEquals(0, measurementAdded);
+        assertEquals(0, windowFilled);
+        assertEquals(0, reset);
         assertFalse(estimator.isWindowFilled());
         assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertEquals(0, estimator.getNumberOfAddedSamples());
@@ -772,15 +760,16 @@ public class WindowedAccelerationMeasurementNoiseEstimatorTest implements
         assertFalse(estimator.getLastWindowedMeasurement(null));
         assertFalse(estimator.isRunning());
 
-        final BodyKinematics kinematics = new BodyKinematics();
-        final BodyKinematics firstKinematics = new BodyKinematics();
+        final var kinematics = new BodyKinematics();
+        final var firstKinematics = new BodyKinematics();
         final int windowSize = estimator.getWindowSize();
-        final double timeInterval = estimator.getTimeInterval();
-        final Acceleration firstMeasurement = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration lastMeasurement = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration measurement = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final List<Acceleration> measurements = new ArrayList<>();
-        for (int i = 0; i < windowSize; i++) {
+        final var timeInterval = estimator.getTimeInterval();
+        final var firstMeasurement = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var lastMeasurement = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var measurement = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var measurements = new ArrayList<Acceleration>();
+        final var random = new Random();
+        for (var i = 0; i < windowSize; i++) {
             if (estimator.getFirstWindowedMeasurement(firstMeasurement)) {
                 assertEquals(firstMeasurement, estimator.getFirstWindowedMeasurement());
                 assertEquals(firstMeasurement.getValue().doubleValue(), estimator.getFirstWindowedMeasurementValue(),
@@ -813,16 +802,17 @@ public class WindowedAccelerationMeasurementNoiseEstimatorTest implements
             assertFalse(estimator.isRunning());
         }
 
-        assertEquals(1, mStart);
-        assertEquals(windowSize, mMeasurementAdded);
-        assertEquals(1, mWindowFilled);
-        assertEquals(0, mReset);
+        assertEquals(1, start);
+        assertEquals(windowSize, measurementAdded);
+        assertEquals(1, windowFilled);
+        assertEquals(0, reset);
 
         assertEquals(windowSize, measurements.size());
         assertEquals(measurements.get(0), estimator.getFirstWindowedMeasurement());
         assertTrue(estimator.getFirstWindowedMeasurement(firstMeasurement));
         assertEquals(firstMeasurement, measurements.get(0));
-        assertEquals(firstMeasurement.getValue().doubleValue(), estimator.getFirstWindowedMeasurementValue(), 0.0);
+        assertEquals(firstMeasurement.getValue().doubleValue(), estimator.getFirstWindowedMeasurementValue(),
+                0.0);
         assertEquals(measurements.get(windowSize - 1), estimator.getLastWindowedMeasurement());
         assertTrue(estimator.getLastWindowedMeasurement(lastMeasurement));
         assertEquals(lastMeasurement, measurements.get(windowSize - 1));
@@ -843,29 +833,29 @@ public class WindowedAccelerationMeasurementNoiseEstimatorTest implements
     @Override
     public void onStart(final WindowedAccelerationMeasurementNoiseEstimator estimator) {
         checkLocked(estimator);
-        mStart++;
+        start++;
     }
 
     @Override
     public void onMeasurementAdded(final WindowedAccelerationMeasurementNoiseEstimator estimator) {
-        mMeasurementAdded++;
+        measurementAdded++;
     }
 
     @Override
     public void onWindowFilled(final WindowedAccelerationMeasurementNoiseEstimator estimator) {
-        mWindowFilled++;
+        windowFilled++;
     }
 
     @Override
     public void onReset(final WindowedAccelerationMeasurementNoiseEstimator estimator) {
-        mReset++;
+        reset++;
     }
 
     private void reset() {
-        mStart = 0;
-        mMeasurementAdded = 0;
-        mWindowFilled = 0;
-        mReset = 0;
+        start = 0;
+        measurementAdded = 0;
+        windowFilled = 0;
+        reset = 0;
     }
 
     private void checkLocked(final WindowedAccelerationMeasurementNoiseEstimator estimator) {
@@ -875,7 +865,7 @@ public class WindowedAccelerationMeasurementNoiseEstimatorTest implements
         assertThrows(LockedException.class, () -> estimator.setTimeInterval(new Time(0.0, TimeUnit.SECOND)));
         assertThrows(LockedException.class, () -> estimator.setListener(this));
         assertThrows(LockedException.class, () -> estimator.addMeasurementAndProcess(0.0));
-        final Acceleration a = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var a = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         assertThrows(LockedException.class, () -> estimator.addMeasurementAndProcess(a));
         assertThrows(LockedException.class, () -> estimator.addMeasurement(0.0));
         assertThrows(LockedException.class, () -> estimator.addMeasurement(a));
@@ -897,7 +887,7 @@ public class WindowedAccelerationMeasurementNoiseEstimatorTest implements
     }
 
     private static Matrix generateMa() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
+        final var result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 500e-6, -300e-6, 200e-6,
                 -150e-6, -600e-6, 250e-6,
@@ -908,7 +898,7 @@ public class WindowedAccelerationMeasurementNoiseEstimatorTest implements
     }
 
     private static Matrix generateMg() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
+        final var result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 400e-6, -300e-6, 250e-6,
                 0.0, -300e-6, -150e-6,
@@ -919,8 +909,8 @@ public class WindowedAccelerationMeasurementNoiseEstimatorTest implements
     }
 
     private static Matrix generateGg() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
-        final double tmp = DEG_TO_RAD / (3600 * 9.80665);
+        final var result = new Matrix(3, 3);
+        final var tmp = DEG_TO_RAD / (3600 * 9.80665);
         result.fromArray(new double[]{
                 0.9 * tmp, -1.1 * tmp, -0.6 * tmp,
                 -0.5 * tmp, 1.9 * tmp, -1.6 * tmp,

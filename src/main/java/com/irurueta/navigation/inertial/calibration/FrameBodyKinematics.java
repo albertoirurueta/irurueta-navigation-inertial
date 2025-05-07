@@ -45,25 +45,25 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
     /**
      * Current body kinematics measurement. Contains accelerometer and gyroscope measurements.
      */
-    private BodyKinematics mKinematics;
+    private BodyKinematics kinematics;
 
     /**
      * Contains current body position, velocity (which will typically be zero) and orientation
      * resolved around ECEF axes.
      */
-    private ECEFFrame mFrame;
+    private ECEFFrame frame;
 
     /**
      * Contains body position, velocity (which will typically be zero) and orientation
      * resolved around ECEF axes of previous IMU measurement.
      */
-    private ECEFFrame mPreviousFrame;
+    private ECEFFrame previousFrame;
 
     /**
      * Time interval expressed in seconds (s) between IMU measurements used to obtain
      * current frame and previous frame.
      */
-    private double mTimeInterval;
+    private double timeInterval;
 
     /**
      * Constructor.
@@ -77,7 +77,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * @param kinematics current body kinematics measurement.
      */
     public FrameBodyKinematics(final BodyKinematics kinematics) {
-        mKinematics = kinematics;
+        this.kinematics = kinematics;
     }
 
     /**
@@ -86,7 +86,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * @param frame current ECEF frame associated to measurement.
      */
     public FrameBodyKinematics(final ECEFFrame frame) {
-        mFrame = frame;
+        this.frame = frame;
     }
 
     /**
@@ -129,7 +129,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      */
     public FrameBodyKinematics(final ECEFFrame frame, final ECEFFrame previousFrame) {
         this(frame);
-        mPreviousFrame = previousFrame;
+        this.previousFrame = previousFrame;
     }
 
     /**
@@ -213,7 +213,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      */
     public FrameBodyKinematics(final BodyKinematics kinematics, final ECEFFrame frame) {
         this(kinematics);
-        mFrame = frame;
+        this.frame = frame;
     }
 
     /**
@@ -237,7 +237,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      */
     public FrameBodyKinematics(final BodyKinematics kinematics, final ECEFFrame frame, final ECEFFrame previousFrame) {
         this(kinematics, frame);
-        mPreviousFrame = previousFrame;
+        this.previousFrame = previousFrame;
     }
 
     /**
@@ -338,7 +338,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * @return current body kinematics measurement.
      */
     public BodyKinematics getKinematics() {
-        return mKinematics;
+        return kinematics;
     }
 
     /**
@@ -348,7 +348,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * @param kinematics current body kinematics measurement to be set.
      */
     public void setKinematics(final BodyKinematics kinematics) {
-        mKinematics = kinematics;
+        this.kinematics = kinematics;
     }
 
     /**
@@ -361,7 +361,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * not available.
      */
     public ECEFFrame getFrame() {
-        return mFrame;
+        return frame;
     }
 
     /**
@@ -373,7 +373,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * @param frame current ECEF frame
      */
     public void setFrame(final ECEFFrame frame) {
-        mFrame = frame;
+        this.frame = frame;
     }
 
     /**
@@ -386,7 +386,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * not available.
      */
     public NEDFrame getNedFrame() {
-        return mFrame != null ? ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(mFrame) : null;
+        return frame != null ? ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(frame) : null;
     }
 
     /**
@@ -399,8 +399,8 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * @return true if result instance was updated, false otherwise.
      */
     public boolean getNedFrame(final NEDFrame result) {
-        if (mFrame != null) {
-            ECEFtoNEDFrameConverter.convertECEFtoNED(mFrame, result);
+        if (frame != null) {
+            ECEFtoNEDFrameConverter.convertECEFtoNED(frame, result);
             return true;
         } else {
             return false;
@@ -421,13 +421,13 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      */
     public void setNedFrame(final NEDFrame nedFrame) {
         if (nedFrame != null) {
-            if (mFrame != null) {
-                NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
+            if (frame != null) {
+                NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);
             } else {
-                mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+                frame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
             }
         } else {
-            mFrame = null;
+            frame = null;
         }
     }
 
@@ -441,7 +441,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * null if not available.
      */
     public ECEFFrame getPreviousFrame() {
-        return mPreviousFrame;
+        return previousFrame;
     }
 
     /**
@@ -454,7 +454,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      *                      measurement.
      */
     public void setPreviousFrame(final ECEFFrame previousFrame) {
-        mPreviousFrame = previousFrame;
+        this.previousFrame = previousFrame;
     }
 
     /**
@@ -467,7 +467,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * null if not available.
      */
     public NEDFrame getPreviousNedFrame() {
-        return mPreviousFrame != null ? ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(mPreviousFrame) : null;
+        return previousFrame != null ? ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(previousFrame) : null;
     }
 
     /**
@@ -480,8 +480,8 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * @return true if result instance was updated, false otherwise.
      */
     public boolean getPreviousNedFrame(final NEDFrame result) {
-        if (mPreviousFrame != null) {
-            ECEFtoNEDFrameConverter.convertECEFtoNED(mPreviousFrame, result);
+        if (previousFrame != null) {
+            ECEFtoNEDFrameConverter.convertECEFtoNED(previousFrame, result);
             return true;
         } else {
             return false;
@@ -499,13 +499,13 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      */
     public void setPreviousNedFrame(final NEDFrame previousNedFrame) {
         if (previousNedFrame != null) {
-            if (mPreviousFrame != null) {
-                NEDtoECEFFrameConverter.convertNEDtoECEF(previousNedFrame, mPreviousFrame);
+            if (previousFrame != null) {
+                NEDtoECEFFrameConverter.convertNEDtoECEF(previousNedFrame, previousFrame);
             } else {
-                mPreviousFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
+                previousFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
             }
         } else {
-            mPreviousFrame = null;
+            previousFrame = null;
         }
     }
 
@@ -516,7 +516,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * @return time interval expressed in seconds (s) between IMU measurements.
      */
     public double getTimeInterval() {
-        return mTimeInterval;
+        return timeInterval;
     }
 
     /**
@@ -532,7 +532,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
             throw new IllegalArgumentException();
         }
 
-        mTimeInterval = timeInterval;
+        this.timeInterval = timeInterval;
     }
 
     /**
@@ -542,7 +542,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * @return time interval between IMU measurements.
      */
     public Time getTimeIntervalAsTime() {
-        return new Time(mTimeInterval, TimeUnit.SECOND);
+        return new Time(timeInterval, TimeUnit.SECOND);
     }
 
     /**
@@ -552,7 +552,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * @param result instance where result will be stored.
      */
     public void getTimeIntervalAsTime(final Time result) {
-        result.setValue(mTimeInterval);
+        result.setValue(timeInterval);
         result.setUnit(TimeUnit.SECOND);
     }
 
@@ -574,37 +574,37 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * @param input instance to copy dara from.
      */
     public void copyFrom(final FrameBodyKinematics input) {
-        if (input.mKinematics != null) {
-            if (mKinematics == null) {
-                mKinematics = new BodyKinematics(input.mKinematics);
+        if (input.kinematics != null) {
+            if (kinematics == null) {
+                kinematics = new BodyKinematics(input.kinematics);
             } else {
-                mKinematics.copyFrom(input.mKinematics);
+                kinematics.copyFrom(input.kinematics);
             }
         } else {
-            mKinematics = null;
+            kinematics = null;
         }
 
-        if (input.mFrame != null) {
-            if (mFrame == null) {
-                mFrame = new ECEFFrame(input.mFrame);
+        if (input.frame != null) {
+            if (frame == null) {
+                frame = new ECEFFrame(input.frame);
             } else {
-                mFrame.copyFrom(input.mFrame);
+                frame.copyFrom(input.frame);
             }
         } else {
-            mFrame = null;
+            frame = null;
         }
 
-        if (input.mPreviousFrame != null) {
-            if (mPreviousFrame == null) {
-                mPreviousFrame = new ECEFFrame(input.mPreviousFrame);
+        if (input.previousFrame != null) {
+            if (previousFrame == null) {
+                previousFrame = new ECEFFrame(input.previousFrame);
             } else {
-                mPreviousFrame.copyFrom(input.mPreviousFrame);
+                previousFrame.copyFrom(input.previousFrame);
             }
         } else {
-            mPreviousFrame = null;
+            previousFrame = null;
         }
 
-        mTimeInterval = input.mTimeInterval;
+        timeInterval = input.timeInterval;
     }
 
     /**
@@ -624,7 +624,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(mKinematics, mFrame, mPreviousFrame, mTimeInterval);
+        return Objects.hash(kinematics, frame, previousFrame, timeInterval);
     }
 
     /**
@@ -651,13 +651,13 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
             return false;
         }
 
-        return ((other.mKinematics == null && mKinematics == null)
-                || (mKinematics != null && mKinematics.equals(other.mKinematics, threshold)))
-                && ((other.mFrame == null && mFrame == null)
-                || (mFrame != null && mFrame.equals(other.mFrame, threshold)))
-                && ((other.mPreviousFrame == null && mPreviousFrame == null)
-                || (mPreviousFrame != null && mPreviousFrame.equals(other.mPreviousFrame, threshold)))
-                && Math.abs(other.mTimeInterval - mTimeInterval) <= threshold;
+        return ((other.kinematics == null && kinematics == null)
+                || (kinematics != null && kinematics.equals(other.kinematics, threshold)))
+                && ((other.frame == null && frame == null)
+                || (frame != null && frame.equals(other.frame, threshold)))
+                && ((other.previousFrame == null && previousFrame == null)
+                || (previousFrame != null && previousFrame.equals(other.previousFrame, threshold)))
+                && Math.abs(other.timeInterval - timeInterval) <= threshold;
     }
 
     /**
@@ -675,7 +675,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        final FrameBodyKinematics other = (FrameBodyKinematics) obj;
+        final var other = (FrameBodyKinematics) obj;
         return equals(other);
     }
 
@@ -687,7 +687,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final FrameBodyKinematics result = (FrameBodyKinematics) super.clone();
+        final var result = (FrameBodyKinematics) super.clone();
         copyTo(result);
         return result;
     }

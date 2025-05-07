@@ -22,7 +22,6 @@ import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.frames.CoordinateTransformation;
-import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.NEDFrame;
 import com.irurueta.navigation.frames.converters.ECEFtoNEDFrameConverter;
@@ -115,25 +114,25 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      * horizontal orientation while the phone remains on a
      * flat surface.
      */
-    private Collection<FrameBodyMagneticFluxDensity> mMeasurements;
+    private Collection<FrameBodyMagneticFluxDensity> measurements;
 
     /**
      * This flag indicates whether z-axis is assumed to be common for accelerometer,
      * gyroscope and magnetometer.
      * When enabled, this eliminates 3 variables from Mm matrix.
      */
-    private boolean mCommonAxisUsed = DEFAULT_USE_COMMON_Z_AXIS;
+    private boolean commonAxisUsed = DEFAULT_USE_COMMON_Z_AXIS;
 
     /**
      * Listener to handle events raised by this calibrator.
      */
-    private KnownFrameMagnetometerLinearLeastSquaresCalibratorListener mListener;
+    private KnownFrameMagnetometerLinearLeastSquaresCalibratorListener listener;
 
     /**
      * Estimated magnetometer hard-iron biases for each magnetometer axis
      * expressed in Teslas (T).
      */
-    private double[] mEstimatedHardIron;
+    private double[] estimatedHardIron;
 
     /**
      * Estimated magnetometer soft-iron matrix containing scale factors
@@ -175,17 +174,17 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      * </pre>
      * Values of this matrix are unit-less.
      */
-    private Matrix mEstimatedMm;
+    private Matrix estimatedMm;
 
     /**
      * Indicates whether calibrator is running.
      */
-    private boolean mRunning;
+    private boolean running;
 
     /**
      * Contains Earth's magnetic model.
      */
-    private WorldMagneticModel mMagneticModel;
+    private WorldMagneticModel magneticModel;
 
     /**
      * Constructor.
@@ -200,7 +199,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     public KnownFrameMagnetometerLinearLeastSquaresCalibrator(
             final KnownFrameMagnetometerLinearLeastSquaresCalibratorListener listener) {
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -212,7 +211,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
     public KnownFrameMagnetometerLinearLeastSquaresCalibrator(
             final Collection<? extends FrameBodyMagneticFluxDensity> measurements) {
         //noinspection unchecked
-        mMeasurements = (Collection<FrameBodyMagneticFluxDensity>) measurements;
+        this.measurements = (Collection<FrameBodyMagneticFluxDensity>) measurements;
     }
 
     /**
@@ -226,7 +225,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
             final Collection<? extends FrameBodyMagneticFluxDensity> measurements,
             final KnownFrameMagnetometerLinearLeastSquaresCalibratorListener listener) {
         this(measurements);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -236,7 +235,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      *                       for the accelerometer, gyroscope and magnetometer.
      */
     public KnownFrameMagnetometerLinearLeastSquaresCalibrator(final boolean commonAxisUsed) {
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -250,7 +249,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
             final boolean commonAxisUsed,
             final KnownFrameMagnetometerLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -264,7 +263,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
     public KnownFrameMagnetometerLinearLeastSquaresCalibrator(
             final Collection<? extends FrameBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed) {
         this(measurements);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -280,7 +279,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
             final Collection<? extends FrameBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final KnownFrameMagnetometerLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -290,7 +289,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      *                      will be used instead.
      */
     public KnownFrameMagnetometerLinearLeastSquaresCalibrator(final WorldMagneticModel magneticModel) {
-        mMagneticModel = magneticModel;
+        this.magneticModel = magneticModel;
     }
 
     /**
@@ -304,7 +303,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
             final WorldMagneticModel magneticModel,
             final KnownFrameMagnetometerLinearLeastSquaresCalibratorListener listener) {
         this(listener);
-        mMagneticModel = magneticModel;
+        this.magneticModel = magneticModel;
     }
 
     /**
@@ -319,7 +318,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
             final Collection<? extends FrameBodyMagneticFluxDensity> measurements,
             final WorldMagneticModel magneticModel) {
         this(measurements);
-        mMagneticModel = magneticModel;
+        this.magneticModel = magneticModel;
     }
 
     /**
@@ -336,7 +335,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
             final WorldMagneticModel magneticModel,
             final KnownFrameMagnetometerLinearLeastSquaresCalibratorListener listener) {
         this(measurements, listener);
-        mMagneticModel = magneticModel;
+        this.magneticModel = magneticModel;
     }
 
     /**
@@ -350,7 +349,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
     public KnownFrameMagnetometerLinearLeastSquaresCalibrator(
             final boolean commonAxisUsed, final WorldMagneticModel magneticModel) {
         this(commonAxisUsed);
-        mMagneticModel = magneticModel;
+        this.magneticModel = magneticModel;
     }
 
     /**
@@ -366,7 +365,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
             final boolean commonAxisUsed, final WorldMagneticModel magneticModel,
             final KnownFrameMagnetometerLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed, listener);
-        mMagneticModel = magneticModel;
+        this.magneticModel = magneticModel;
     }
 
     /**
@@ -383,7 +382,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
             final Collection<? extends FrameBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final WorldMagneticModel magneticModel) {
         this(measurements, commonAxisUsed);
-        mMagneticModel = magneticModel;
+        this.magneticModel = magneticModel;
     }
 
     /**
@@ -402,7 +401,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
             final WorldMagneticModel magneticModel,
             final KnownFrameMagnetometerLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed, listener);
-        mMagneticModel = magneticModel;
+        this.magneticModel = magneticModel;
     }
 
     /**
@@ -423,7 +422,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public Collection<FrameBodyMagneticFluxDensity> getMeasurements() {
-        return mMeasurements;
+        return measurements;
     }
 
     /**
@@ -447,11 +446,11 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
     @Override
     public void setMeasurements(final Collection<? extends FrameBodyMagneticFluxDensity> measurements)
             throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         //noinspection unchecked
-        mMeasurements = (Collection<FrameBodyMagneticFluxDensity>) measurements;
+        this.measurements = (Collection<FrameBodyMagneticFluxDensity>) measurements;
     }
 
     /**
@@ -496,7 +495,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean isCommonAxisUsed() {
-        return mCommonAxisUsed;
+        return commonAxisUsed;
     }
 
     /**
@@ -511,11 +510,11 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setCommonAxisUsed(final boolean commonAxisUsed) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -525,7 +524,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public KnownFrameMagnetometerLinearLeastSquaresCalibratorListener getListener() {
-        return mListener;
+        return listener;
     }
 
     /**
@@ -537,11 +536,11 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
     @Override
     public void setListener(final KnownFrameMagnetometerLinearLeastSquaresCalibratorListener listener)
             throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -561,7 +560,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean isReady() {
-        return mMeasurements != null && mMeasurements.size() >= MINIMUM_MEASUREMENTS;
+        return measurements != null && measurements.size() >= MINIMUM_MEASUREMENTS;
     }
 
     /**
@@ -571,7 +570,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean isRunning() {
-        return mRunning;
+        return running;
     }
 
     /**
@@ -580,7 +579,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      * @return Earth's magnetic model or null if not provided.
      */
     public WorldMagneticModel getMagneticModel() {
-        return mMagneticModel;
+        return magneticModel;
     }
 
     /**
@@ -591,10 +590,10 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     public void setMagneticModel(final WorldMagneticModel magneticModel) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mMagneticModel = magneticModel;
+        this.magneticModel = magneticModel;
     }
 
     /**
@@ -607,7 +606,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public void calibrate() throws LockedException, NotReadyException, CalibrationException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
@@ -616,26 +615,26 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
         }
 
         try {
-            mRunning = true;
+            running = true;
 
-            if (mListener != null) {
-                mListener.onCalibrateStart(this);
+            if (listener != null) {
+                listener.onCalibrateStart(this);
             }
 
-            if (mCommonAxisUsed) {
+            if (commonAxisUsed) {
                 calibrateCommonAxis();
             } else {
                 calibrateGeneral();
             }
 
-            if (mListener != null) {
-                mListener.onCalibrateEnd(this);
+            if (listener != null) {
+                listener.onCalibrateEnd(this);
             }
 
         } catch (final AlgebraException | IOException e) {
             throw new CalibrationException(e);
         } finally {
-            mRunning = false;
+            running = false;
         }
     }
 
@@ -648,7 +647,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public double[] getEstimatedHardIron() {
-        return mEstimatedHardIron;
+        return estimatedHardIron;
     }
 
     /**
@@ -662,8 +661,8 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean getEstimatedHardIron(final double[] result) {
-        if (mEstimatedHardIron != null) {
-            System.arraycopy(mEstimatedHardIron, 0, result, 0, mEstimatedHardIron.length);
+        if (estimatedHardIron != null) {
+            System.arraycopy(estimatedHardIron, 0, result, 0, estimatedHardIron.length);
             return true;
         } else {
             return false;
@@ -679,7 +678,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public Matrix getEstimatedHardIronAsMatrix() {
-        return mEstimatedHardIron != null ? Matrix.newFromArray(mEstimatedHardIron) : null;
+        return estimatedHardIron != null ? Matrix.newFromArray(estimatedHardIron) : null;
     }
 
     /**
@@ -692,8 +691,8 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean getEstimatedHardIronAsMatrix(final Matrix result) throws WrongSizeException {
-        if (mEstimatedHardIron != null) {
-            result.fromArray(mEstimatedHardIron);
+        if (estimatedHardIron != null) {
+            result.fromArray(estimatedHardIron);
             return true;
         } else {
             return false;
@@ -709,7 +708,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedHardIronX() {
-        return mEstimatedHardIron != null ? mEstimatedHardIron[0] : null;
+        return estimatedHardIron != null ? estimatedHardIron[0] : null;
     }
 
     /**
@@ -721,7 +720,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedHardIronY() {
-        return mEstimatedHardIron != null ? mEstimatedHardIron[1] : null;
+        return estimatedHardIron != null ? estimatedHardIron[1] : null;
     }
 
     /**
@@ -733,7 +732,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedHardIronZ() {
-        return mEstimatedHardIron != null ? mEstimatedHardIron[2] : null;
+        return estimatedHardIron != null ? estimatedHardIron[2] : null;
     }
 
     /**
@@ -743,8 +742,8 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public MagneticFluxDensity getEstimatedHardIronXAsMagneticFluxDensity() {
-        return mEstimatedHardIron != null ?
-                new MagneticFluxDensity(mEstimatedHardIron[0], MagneticFluxDensityUnit.TESLA) : null;
+        return estimatedHardIron != null
+                ? new MagneticFluxDensity(estimatedHardIron[0], MagneticFluxDensityUnit.TESLA) : null;
     }
 
     /**
@@ -755,8 +754,8 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean getEstimatedHardIronXAsMagneticFluxDensity(final MagneticFluxDensity result) {
-        if (mEstimatedHardIron != null) {
-            result.setValue(mEstimatedHardIron[0]);
+        if (estimatedHardIron != null) {
+            result.setValue(estimatedHardIron[0]);
             result.setUnit(MagneticFluxDensityUnit.TESLA);
             return true;
         } else {
@@ -771,8 +770,8 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public MagneticFluxDensity getEstimatedHardIronYAsMagneticFluxDensity() {
-        return mEstimatedHardIron != null ?
-                new MagneticFluxDensity(mEstimatedHardIron[1], MagneticFluxDensityUnit.TESLA) : null;
+        return estimatedHardIron != null
+                ? new MagneticFluxDensity(estimatedHardIron[1], MagneticFluxDensityUnit.TESLA) : null;
     }
 
     /**
@@ -783,8 +782,8 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean getEstimatedHardIronYAsMagneticFluxDensity(final MagneticFluxDensity result) {
-        if (mEstimatedHardIron != null) {
-            result.setValue(mEstimatedHardIron[1]);
+        if (estimatedHardIron != null) {
+            result.setValue(estimatedHardIron[1]);
             result.setUnit(MagneticFluxDensityUnit.TESLA);
             return true;
         } else {
@@ -799,8 +798,8 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public MagneticFluxDensity getEstimatedHardIronZAsMagneticFluxDensity() {
-        return mEstimatedHardIron != null ?
-                new MagneticFluxDensity(mEstimatedHardIron[2], MagneticFluxDensityUnit.TESLA) : null;
+        return estimatedHardIron != null
+                ? new MagneticFluxDensity(estimatedHardIron[2], MagneticFluxDensityUnit.TESLA) : null;
     }
 
     /**
@@ -811,8 +810,8 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean getEstimatedHardIronZAsMagneticFluxDensity(final MagneticFluxDensity result) {
-        if (mEstimatedHardIron != null) {
-            result.setValue(mEstimatedHardIron[2]);
+        if (estimatedHardIron != null) {
+            result.setValue(estimatedHardIron[2]);
             result.setUnit(MagneticFluxDensityUnit.TESLA);
             return true;
         } else {
@@ -827,9 +826,9 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public MagneticFluxDensityTriad getEstimatedHardIronAsTriad() {
-        return mEstimatedHardIron != null ?
-                new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA,
-                        mEstimatedHardIron[0], mEstimatedHardIron[1], mEstimatedHardIron[2]) : null;
+        return estimatedHardIron != null
+                ? new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA,
+                estimatedHardIron[0], estimatedHardIron[1], estimatedHardIron[2]) : null;
     }
 
     /**
@@ -841,9 +840,9 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean getEstimatedHardIronAsTriad(final MagneticFluxDensityTriad result) {
-        if (mEstimatedHardIron != null) {
+        if (estimatedHardIron != null) {
             result.setValueCoordinatesAndUnit(
-                    mEstimatedHardIron[0], mEstimatedHardIron[1], mEstimatedHardIron[2], MagneticFluxDensityUnit.TESLA);
+                    estimatedHardIron[0], estimatedHardIron[1], estimatedHardIron[2], MagneticFluxDensityUnit.TESLA);
             return true;
         } else {
             return false;
@@ -895,7 +894,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public Matrix getEstimatedMm() {
-        return mEstimatedMm;
+        return estimatedMm;
     }
 
     /**
@@ -905,7 +904,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedSx() {
-        return mEstimatedMm != null ? mEstimatedMm.getElementAt(0, 0) : null;
+        return estimatedMm != null ? estimatedMm.getElementAt(0, 0) : null;
     }
 
     /**
@@ -915,7 +914,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedSy() {
-        return mEstimatedMm != null ? mEstimatedMm.getElementAt(1, 1) : null;
+        return estimatedMm != null ? estimatedMm.getElementAt(1, 1) : null;
     }
 
     /**
@@ -925,7 +924,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedSz() {
-        return mEstimatedMm != null ? mEstimatedMm.getElementAt(2, 2) : null;
+        return estimatedMm != null ? estimatedMm.getElementAt(2, 2) : null;
     }
 
     /**
@@ -935,7 +934,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedMxy() {
-        return mEstimatedMm != null ? mEstimatedMm.getElementAt(0, 1) : null;
+        return estimatedMm != null ? estimatedMm.getElementAt(0, 1) : null;
     }
 
     /**
@@ -945,7 +944,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedMxz() {
-        return mEstimatedMm != null ? mEstimatedMm.getElementAt(0, 2) : null;
+        return estimatedMm != null ? estimatedMm.getElementAt(0, 2) : null;
     }
 
     /**
@@ -955,7 +954,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedMyx() {
-        return mEstimatedMm != null ? mEstimatedMm.getElementAt(1, 0) : null;
+        return estimatedMm != null ? estimatedMm.getElementAt(1, 0) : null;
     }
 
     /**
@@ -965,7 +964,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedMyz() {
-        return mEstimatedMm != null ? mEstimatedMm.getElementAt(1, 2) : null;
+        return estimatedMm != null ? estimatedMm.getElementAt(1, 2) : null;
     }
 
     /**
@@ -975,7 +974,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedMzx() {
-        return mEstimatedMm != null ? mEstimatedMm.getElementAt(2, 0) : null;
+        return estimatedMm != null ? estimatedMm.getElementAt(2, 0) : null;
     }
 
     /**
@@ -985,7 +984,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedMzy() {
-        return mEstimatedMm != null ? mEstimatedMm.getElementAt(2, 1) : null;
+        return estimatedMm != null ? estimatedMm.getElementAt(2, 1) : null;
     }
 
     /**
@@ -1043,37 +1042,35 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
         //                                                                   [myz]
 
         final WMMEarthMagneticFluxDensityEstimator wmmEstimator;
-        if (mMagneticModel != null) {
-            wmmEstimator = new WMMEarthMagneticFluxDensityEstimator(mMagneticModel);
+        if (magneticModel != null) {
+            wmmEstimator = new WMMEarthMagneticFluxDensityEstimator(magneticModel);
         } else {
             wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         }
 
-        final BodyMagneticFluxDensity expectedMagneticFluxDensity = new BodyMagneticFluxDensity();
-        final NEDFrame nedFrame = new NEDFrame();
-        final NEDMagneticFluxDensity earthB = new NEDMagneticFluxDensity();
-        final CoordinateTransformation cbn = new CoordinateTransformation(
-                FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
-        final CoordinateTransformation cnb = new CoordinateTransformation(
-                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
+        final var expectedMagneticFluxDensity = new BodyMagneticFluxDensity();
+        final var nedFrame = new NEDFrame();
+        final var earthB = new NEDMagneticFluxDensity();
+        final var cbn = new CoordinateTransformation(FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+        final var cnb = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
 
-        final int rows = EQUATIONS_PER_MEASUREMENT * mMeasurements.size();
-        final Matrix a = new Matrix(rows, COMMON_Z_AXIS_UNKNOWNS);
-        final Matrix b = new Matrix(rows, 1);
-        int i = 0;
-        for (final FrameBodyMagneticFluxDensity measurement : mMeasurements) {
-            final BodyMagneticFluxDensity measuredMagneticFluxDensity = measurement.getMagneticFluxDensity();
+        final var rows = EQUATIONS_PER_MEASUREMENT * measurements.size();
+        final var a = new Matrix(rows, COMMON_Z_AXIS_UNKNOWNS);
+        final var b = new Matrix(rows, 1);
+        var i = 0;
+        for (final var measurement : measurements) {
+            final var measuredMagneticFluxDensity = measurement.getMagneticFluxDensity();
 
             // estimate Earth magnetic flux density at frame position and
             // timestamp using WMM
-            final ECEFFrame ecefFrame = measurement.getFrame();
+            final var ecefFrame = measurement.getFrame();
             ECEFtoNEDFrameConverter.convertECEFtoNED(ecefFrame, nedFrame);
 
-            final double year = measurement.getYear();
+            final var year = measurement.getYear();
 
-            final double latitude = nedFrame.getLatitude();
-            final double longitude = nedFrame.getLongitude();
-            final double height = nedFrame.getHeight();
+            final var latitude = nedFrame.getLatitude();
+            final var longitude = nedFrame.getLongitude();
+            final var height = nedFrame.getHeight();
 
             nedFrame.getCoordinateTransformation(cbn);
             cbn.inverse(cnb);
@@ -1085,13 +1082,13 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
             // estimated Earth magnetic flux density
             BodyMagneticFluxDensityEstimator.estimate(earthB, cnb, expectedMagneticFluxDensity);
 
-            final double bMeasX = measuredMagneticFluxDensity.getBx();
-            final double bMeasY = measuredMagneticFluxDensity.getBy();
-            final double bMeasZ = measuredMagneticFluxDensity.getBz();
+            final var bMeasX = measuredMagneticFluxDensity.getBx();
+            final var bMeasY = measuredMagneticFluxDensity.getBy();
+            final var bMeasZ = measuredMagneticFluxDensity.getBz();
 
-            final double bTrueX = expectedMagneticFluxDensity.getBx();
-            final double bTrueY = expectedMagneticFluxDensity.getBy();
-            final double bTrueZ = expectedMagneticFluxDensity.getBz();
+            final var bTrueX = expectedMagneticFluxDensity.getBx();
+            final var bTrueY = expectedMagneticFluxDensity.getBy();
+            final var bTrueZ = expectedMagneticFluxDensity.getBz();
 
             a.setElementAt(i, 0, 1.0);
             a.setElementAt(i, 3, bTrueX);
@@ -1115,17 +1112,17 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
             i++;
         }
 
-        final Matrix unknowns = Utils.solve(a, b);
+        final var unknowns = Utils.solve(a, b);
 
-        final double bx = unknowns.getElementAtIndex(0);
-        final double by = unknowns.getElementAtIndex(1);
-        final double bz = unknowns.getElementAtIndex(2);
-        final double sx = unknowns.getElementAtIndex(3);
-        final double sy = unknowns.getElementAtIndex(4);
-        final double sz = unknowns.getElementAtIndex(5);
-        final double mxy = unknowns.getElementAtIndex(6);
-        final double mxz = unknowns.getElementAtIndex(7);
-        final double myz = unknowns.getElementAtIndex(8);
+        final var bx = unknowns.getElementAtIndex(0);
+        final var by = unknowns.getElementAtIndex(1);
+        final var bz = unknowns.getElementAtIndex(2);
+        final var sx = unknowns.getElementAtIndex(3);
+        final var sy = unknowns.getElementAtIndex(4);
+        final var sz = unknowns.getElementAtIndex(5);
+        final var mxy = unknowns.getElementAtIndex(6);
+        final var mxz = unknowns.getElementAtIndex(7);
+        final var myz = unknowns.getElementAtIndex(8);
 
         fillHardIronBiases(bx, by, bz);
         fillMm(sx, sy, sz, mxy, mxz, 0.0, myz, 0.0, 0.0);
@@ -1181,37 +1178,35 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
         //                                                                                              [mzy]
 
         final WMMEarthMagneticFluxDensityEstimator wmmEstimator;
-        if (mMagneticModel != null) {
-            wmmEstimator = new WMMEarthMagneticFluxDensityEstimator(mMagneticModel);
+        if (magneticModel != null) {
+            wmmEstimator = new WMMEarthMagneticFluxDensityEstimator(magneticModel);
         } else {
             wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         }
 
-        final BodyMagneticFluxDensity expectedMagneticFluxDensity = new BodyMagneticFluxDensity();
-        final NEDFrame nedFrame = new NEDFrame();
-        final NEDMagneticFluxDensity earthB = new NEDMagneticFluxDensity();
-        final CoordinateTransformation cbn = new CoordinateTransformation(
-                FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
-        final CoordinateTransformation cnb = new CoordinateTransformation(
-                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
+        final var expectedMagneticFluxDensity = new BodyMagneticFluxDensity();
+        final var nedFrame = new NEDFrame();
+        final var earthB = new NEDMagneticFluxDensity();
+        final var cbn = new CoordinateTransformation(FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+        final var cnb = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
 
-        final int rows = EQUATIONS_PER_MEASUREMENT * mMeasurements.size();
-        final Matrix a = new Matrix(rows, GENERAL_UNKNOWNS);
-        final Matrix b = new Matrix(rows, 1);
-        int i = 0;
-        for (final FrameBodyMagneticFluxDensity measurement : mMeasurements) {
-            final BodyMagneticFluxDensity measuredMagneticFluxDensity = measurement.getMagneticFluxDensity();
+        final var rows = EQUATIONS_PER_MEASUREMENT * measurements.size();
+        final var a = new Matrix(rows, GENERAL_UNKNOWNS);
+        final var b = new Matrix(rows, 1);
+        var i = 0;
+        for (final var measurement : measurements) {
+            final var measuredMagneticFluxDensity = measurement.getMagneticFluxDensity();
 
             // estimate Earth magnetic flux density at frame position and
             // timestamp using WMM
-            final ECEFFrame ecefFrame = measurement.getFrame();
+            final var ecefFrame = measurement.getFrame();
             ECEFtoNEDFrameConverter.convertECEFtoNED(ecefFrame, nedFrame);
 
-            final double year = measurement.getYear();
+            final var year = measurement.getYear();
 
-            final double latitude = nedFrame.getLatitude();
-            final double longitude = nedFrame.getLongitude();
-            final double height = nedFrame.getHeight();
+            final var latitude = nedFrame.getLatitude();
+            final var longitude = nedFrame.getLongitude();
+            final var height = nedFrame.getHeight();
 
             nedFrame.getCoordinateTransformation(cbn);
             cbn.inverse(cnb);
@@ -1223,13 +1218,13 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
             // estimated Earth magnetic flux density
             BodyMagneticFluxDensityEstimator.estimate(earthB, cnb, expectedMagneticFluxDensity);
 
-            final double bMeasX = measuredMagneticFluxDensity.getBx();
-            final double bMeasY = measuredMagneticFluxDensity.getBy();
-            final double bMeasZ = measuredMagneticFluxDensity.getBz();
+            final var bMeasX = measuredMagneticFluxDensity.getBx();
+            final var bMeasY = measuredMagneticFluxDensity.getBy();
+            final var bMeasZ = measuredMagneticFluxDensity.getBz();
 
-            final double bTrueX = expectedMagneticFluxDensity.getBx();
-            final double bTrueY = expectedMagneticFluxDensity.getBy();
-            final double bTrueZ = expectedMagneticFluxDensity.getBz();
+            final var bTrueX = expectedMagneticFluxDensity.getBx();
+            final var bTrueY = expectedMagneticFluxDensity.getBy();
+            final var bTrueZ = expectedMagneticFluxDensity.getBz();
 
             a.setElementAt(i, 0, 1.0);
             a.setElementAt(i, 3, bTrueX);
@@ -1256,20 +1251,20 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
             i++;
         }
 
-        final Matrix unknowns = Utils.solve(a, b);
+        final var unknowns = Utils.solve(a, b);
 
-        final double bx = unknowns.getElementAtIndex(0);
-        final double by = unknowns.getElementAtIndex(1);
-        final double bz = unknowns.getElementAtIndex(2);
-        final double sx = unknowns.getElementAtIndex(3);
-        final double sy = unknowns.getElementAtIndex(4);
-        final double sz = unknowns.getElementAtIndex(5);
-        final double mxy = unknowns.getElementAtIndex(6);
-        final double mxz = unknowns.getElementAtIndex(7);
-        final double myx = unknowns.getElementAtIndex(8);
-        final double myz = unknowns.getElementAtIndex(9);
-        final double mzx = unknowns.getElementAtIndex(10);
-        final double mzy = unknowns.getElementAtIndex(11);
+        final var bx = unknowns.getElementAtIndex(0);
+        final var by = unknowns.getElementAtIndex(1);
+        final var bz = unknowns.getElementAtIndex(2);
+        final var sx = unknowns.getElementAtIndex(3);
+        final var sy = unknowns.getElementAtIndex(4);
+        final var sz = unknowns.getElementAtIndex(5);
+        final var mxy = unknowns.getElementAtIndex(6);
+        final var mxz = unknowns.getElementAtIndex(7);
+        final var myx = unknowns.getElementAtIndex(8);
+        final var myz = unknowns.getElementAtIndex(9);
+        final var mzx = unknowns.getElementAtIndex(10);
+        final var mzy = unknowns.getElementAtIndex(11);
 
         fillHardIronBiases(bx, by, bz);
         fillMm(sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy);
@@ -1283,13 +1278,13 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      * @param bz z coordinate of bias.
      */
     private void fillHardIronBiases(final double bx, final double by, final double bz) {
-        if (mEstimatedHardIron == null) {
-            mEstimatedHardIron = new double[BodyMagneticFluxDensity.COMPONENTS];
+        if (estimatedHardIron == null) {
+            estimatedHardIron = new double[BodyMagneticFluxDensity.COMPONENTS];
         }
 
-        mEstimatedHardIron[0] = bx;
-        mEstimatedHardIron[1] = by;
-        mEstimatedHardIron[2] = bz;
+        estimatedHardIron[0] = bx;
+        estimatedHardIron[1] = by;
+        estimatedHardIron[2] = bz;
     }
 
     /**
@@ -1309,20 +1304,20 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
     private void fillMm(final double sx, final double sy, final double sz,
                         final double mxy, final double mxz, final double myx,
                         final double myz, final double mzx, final double mzy) throws WrongSizeException {
-        if (mEstimatedMm == null) {
-            mEstimatedMm = new Matrix(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
+        if (estimatedMm == null) {
+            estimatedMm = new Matrix(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
         }
 
-        mEstimatedMm.setElementAt(0, 0, sx);
-        mEstimatedMm.setElementAt(1, 0, myx);
-        mEstimatedMm.setElementAt(2, 0, mzx);
+        estimatedMm.setElementAt(0, 0, sx);
+        estimatedMm.setElementAt(1, 0, myx);
+        estimatedMm.setElementAt(2, 0, mzx);
 
-        mEstimatedMm.setElementAt(0, 1, mxy);
-        mEstimatedMm.setElementAt(1, 1, sy);
-        mEstimatedMm.setElementAt(2, 1, mzy);
+        estimatedMm.setElementAt(0, 1, mxy);
+        estimatedMm.setElementAt(1, 1, sy);
+        estimatedMm.setElementAt(2, 1, mzy);
 
-        mEstimatedMm.setElementAt(0, 2, mxz);
-        mEstimatedMm.setElementAt(1, 2, myz);
-        mEstimatedMm.setElementAt(2, 2, sz);
+        estimatedMm.setElementAt(0, 2, mxz);
+        estimatedMm.setElementAt(1, 2, myz);
+        estimatedMm.setElementAt(2, 2, sz);
     }
 }

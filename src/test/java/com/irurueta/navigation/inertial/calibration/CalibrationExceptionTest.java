@@ -15,15 +15,15 @@
  */
 package com.irurueta.navigation.inertial.calibration;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class CalibrationExceptionTest {
+class CalibrationExceptionTest {
 
     @Test
-    public void testConstructor() {
-        CalibrationException ex = new CalibrationException();
+    void testConstructor() {
+        var ex = new CalibrationException();
         assertNotNull(ex);
 
         ex = new CalibrationException("message");

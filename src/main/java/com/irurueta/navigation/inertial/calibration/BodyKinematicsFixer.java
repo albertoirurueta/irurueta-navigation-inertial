@@ -30,32 +30,32 @@ public class BodyKinematicsFixer {
     /**
      * Fixes specific force (acceleration) components of body kinematics measurements.
      */
-    private final AccelerationFixer mAccelerationFixer = new AccelerationFixer();
+    private final AccelerationFixer accelerationFixer = new AccelerationFixer();
 
     /**
      * Fixes angular rate components of body kinematics measurements.
      */
-    private final AngularRateFixer mAngularRateFixer = new AngularRateFixer();
+    private final AngularRateFixer angularRateFixer = new AngularRateFixer();
 
     /**
      * Contains measured acceleration to be reused.
      */
-    private final AccelerationTriad mMeasuredAcceleration = new AccelerationTriad();
+    private final AccelerationTriad measuredAcceleration = new AccelerationTriad();
 
     /**
      * Contains measured angular speed to be reused.
      */
-    private final AngularSpeedTriad mMeasuredAngularSpeed = new AngularSpeedTriad();
+    private final AngularSpeedTriad measuredAngularSpeed = new AngularSpeedTriad();
 
     /**
      * Contains fixed acceleration to be reused.
      */
-    private final AccelerationTriad mFixedAcceleration = new AccelerationTriad();
+    private final AccelerationTriad fixedAcceleration = new AccelerationTriad();
 
     /**
      * Contains fixed angular speed to be reused.
      */
-    private final AngularSpeedTriad mFixedAngularSpeed = new AngularSpeedTriad();
+    private final AngularSpeedTriad fixedAngularSpeed = new AngularSpeedTriad();
 
     /**
      * Gets acceleration bias values expressed in meters per squared second (m/s^2).
@@ -63,7 +63,7 @@ public class BodyKinematicsFixer {
      * @return bias values expressed in meters per squared second.
      */
     public Matrix getAccelerationBias() {
-        return mAccelerationFixer.getBias();
+        return accelerationFixer.getBias();
     }
 
     /**
@@ -72,7 +72,7 @@ public class BodyKinematicsFixer {
      * @param result instance where result will be stored.
      */
     public void getAccelerationBias(final Matrix result) {
-        mAccelerationFixer.getBias(result);
+        accelerationFixer.getBias(result);
     }
 
     /**
@@ -83,7 +83,7 @@ public class BodyKinematicsFixer {
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
     public void setAccelerationBias(final Matrix bias) {
-        mAccelerationFixer.setBias(bias);
+        accelerationFixer.setBias(bias);
     }
 
     /**
@@ -92,7 +92,7 @@ public class BodyKinematicsFixer {
      * @return bias values expressed in meters per squared second.
      */
     public double[] getAccelerationBiasArray() {
-        return mAccelerationFixer.getBiasArray();
+        return accelerationFixer.getBiasArray();
     }
 
     /**
@@ -102,7 +102,7 @@ public class BodyKinematicsFixer {
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
     public void getAccelerationBiasArray(final double[] result) {
-        mAccelerationFixer.getBiasArray(result);
+        accelerationFixer.getBiasArray(result);
     }
 
     /**
@@ -113,7 +113,7 @@ public class BodyKinematicsFixer {
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
     public void setAccelerationBias(final double[] bias) {
-        mAccelerationFixer.setBias(bias);
+        accelerationFixer.setBias(bias);
     }
 
     /**
@@ -122,7 +122,7 @@ public class BodyKinematicsFixer {
      * @return acceleration bias.
      */
     public AccelerationTriad getAccelerationBiasAsTriad() {
-        return mAccelerationFixer.getBiasAsTriad();
+        return accelerationFixer.getBiasAsTriad();
     }
 
     /**
@@ -131,7 +131,7 @@ public class BodyKinematicsFixer {
      * @param result instance where result will be stored.
      */
     public void getAccelerationBiasAsTriad(final AccelerationTriad result) {
-        mAccelerationFixer.getBiasAsTriad(result);
+        accelerationFixer.getBiasAsTriad(result);
     }
 
     /**
@@ -140,7 +140,7 @@ public class BodyKinematicsFixer {
      * @param bias acceleration bias to be set.
      */
     public void setAccelerationBias(final AccelerationTriad bias) {
-        mAccelerationFixer.setBias(bias);
+        accelerationFixer.setBias(bias);
     }
 
     /**
@@ -150,7 +150,7 @@ public class BodyKinematicsFixer {
      * @return x-coordinate of bias expressed in meters per squared second (m/s^2).
      */
     public double getAccelerationBiasX() {
-        return mAccelerationFixer.getBiasX();
+        return accelerationFixer.getBiasX();
     }
 
     /**
@@ -161,7 +161,7 @@ public class BodyKinematicsFixer {
      *              (m/s^2).
      */
     public void setAccelerationBiasX(final double biasX) {
-        mAccelerationFixer.setBiasX(biasX);
+        accelerationFixer.setBiasX(biasX);
     }
 
     /**
@@ -171,7 +171,7 @@ public class BodyKinematicsFixer {
      * @return y-coordinate of bias expressed in meters per squared second (m/s^2).
      */
     public double getAccelerationBiasY() {
-        return mAccelerationFixer.getBiasY();
+        return accelerationFixer.getBiasY();
     }
 
     /**
@@ -182,7 +182,7 @@ public class BodyKinematicsFixer {
      *              (m/s^2).
      */
     public void setAccelerationBiasY(final double biasY) {
-        mAccelerationFixer.setBiasY(biasY);
+        accelerationFixer.setBiasY(biasY);
     }
 
     /**
@@ -192,7 +192,7 @@ public class BodyKinematicsFixer {
      * @return z-coordinate of bias expressed in meters per squared second (m/s^2).
      */
     public double getAccelerationBiasZ() {
-        return mAccelerationFixer.getBiasZ();
+        return accelerationFixer.getBiasZ();
     }
 
     /**
@@ -202,7 +202,7 @@ public class BodyKinematicsFixer {
      * @param biasZ z-coordinate of bias expressed in meters per squared second (m/s^2).
      */
     public void setAccelerationBiasZ(final double biasZ) {
-        mAccelerationFixer.setBiasZ(biasZ);
+        accelerationFixer.setBiasZ(biasZ);
     }
 
     /**
@@ -214,7 +214,7 @@ public class BodyKinematicsFixer {
      * @param biasZ z-coordinate of bias.
      */
     public void setAccelerationBias(final double biasX, final double biasY, final double biasZ) {
-        mAccelerationFixer.setBias(biasX, biasY, biasZ);
+        accelerationFixer.setBias(biasX, biasY, biasZ);
     }
 
     /**
@@ -223,7 +223,7 @@ public class BodyKinematicsFixer {
      * @return acceleration x-coordinate of bias.
      */
     public Acceleration getAccelerationBiasXAsAcceleration() {
-        return mAccelerationFixer.getBiasXAsAcceleration();
+        return accelerationFixer.getBiasXAsAcceleration();
     }
 
     /**
@@ -232,7 +232,7 @@ public class BodyKinematicsFixer {
      * @param result instance where result will be stored.
      */
     public void getAccelerationBiasXAsAcceleration(final Acceleration result) {
-        mAccelerationFixer.getBiasXAsAcceleration(result);
+        accelerationFixer.getBiasXAsAcceleration(result);
     }
 
     /**
@@ -241,7 +241,7 @@ public class BodyKinematicsFixer {
      * @param biasX acceleration x-coordinate of bias.
      */
     public void setAccelerationBiasX(final Acceleration biasX) {
-        mAccelerationFixer.setBiasX(biasX);
+        accelerationFixer.setBiasX(biasX);
     }
 
     /**
@@ -250,7 +250,7 @@ public class BodyKinematicsFixer {
      * @return acceleration y-coordinate of bias.
      */
     public Acceleration getAccelerationBiasYAsAcceleration() {
-        return mAccelerationFixer.getBiasYAsAcceleration();
+        return accelerationFixer.getBiasYAsAcceleration();
     }
 
     /**
@@ -259,7 +259,7 @@ public class BodyKinematicsFixer {
      * @param result instance where result will be stored.
      */
     public void getAccelerationBiasYAsAcceleration(final Acceleration result) {
-        mAccelerationFixer.getBiasYAsAcceleration(result);
+        accelerationFixer.getBiasYAsAcceleration(result);
     }
 
     /**
@@ -268,7 +268,7 @@ public class BodyKinematicsFixer {
      * @param biasY acceleration y-coordinate of bias.
      */
     public void setAccelerationBiasY(final Acceleration biasY) {
-        mAccelerationFixer.setBiasY(biasY);
+        accelerationFixer.setBiasY(biasY);
     }
 
     /**
@@ -277,7 +277,7 @@ public class BodyKinematicsFixer {
      * @return acceleration z-coordinate of bias.
      */
     public Acceleration getAccelerationBiasZAsAcceleration() {
-        return mAccelerationFixer.getBiasZAsAcceleration();
+        return accelerationFixer.getBiasZAsAcceleration();
     }
 
     /**
@@ -286,7 +286,7 @@ public class BodyKinematicsFixer {
      * @param result instance where result will be stored.
      */
     public void getAccelerationBiasZAsAcceleration(final Acceleration result) {
-        mAccelerationFixer.getBiasZAsAcceleration(result);
+        accelerationFixer.getBiasZAsAcceleration(result);
     }
 
     /**
@@ -295,7 +295,7 @@ public class BodyKinematicsFixer {
      * @param biasZ z-coordinate of bias.
      */
     public void setAccelerationBiasZ(final Acceleration biasZ) {
-        mAccelerationFixer.setBiasZ(biasZ);
+        accelerationFixer.setBiasZ(biasZ);
     }
 
     /**
@@ -306,7 +306,7 @@ public class BodyKinematicsFixer {
      * @param biasZ z-coordinate of bias.
      */
     public void setAccelerationBias(final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ) {
-        mAccelerationFixer.setBias(biasX, biasY, biasZ);
+        accelerationFixer.setBias(biasX, biasY, biasZ);
     }
 
     /**
@@ -315,7 +315,7 @@ public class BodyKinematicsFixer {
      * @return acceleration cross coupling errors matrix.
      */
     public Matrix getAccelerationCrossCouplingErrors() {
-        return mAccelerationFixer.getCrossCouplingErrors();
+        return accelerationFixer.getCrossCouplingErrors();
     }
 
     /**
@@ -324,7 +324,7 @@ public class BodyKinematicsFixer {
      * @param result instance where result will be stored.
      */
     public void getAccelerationCrossCouplingErrors(final Matrix result) {
-        mAccelerationFixer.getCrossCouplingErrors(result);
+        accelerationFixer.getCrossCouplingErrors(result);
     }
 
     /**
@@ -336,7 +336,7 @@ public class BodyKinematicsFixer {
      * @throws IllegalArgumentException if provided matrix is not 3x3.
      */
     public void setAccelerationCrossCouplingErrors(final Matrix crossCouplingErrors) throws AlgebraException {
-        mAccelerationFixer.setCrossCouplingErrors(crossCouplingErrors);
+        accelerationFixer.setCrossCouplingErrors(crossCouplingErrors);
     }
 
     /**
@@ -345,7 +345,7 @@ public class BodyKinematicsFixer {
      * @return x scaling factor.
      */
     public double getAccelerationSx() {
-        return mAccelerationFixer.getSx();
+        return accelerationFixer.getSx();
     }
 
     /**
@@ -353,10 +353,10 @@ public class BodyKinematicsFixer {
      *
      * @param sx x scaling factor.
      * @throws AlgebraException if provided value makes cross coupling matrix
-     *                          non invertible.
+     *                          non-invertible.
      */
     public void setAccelerationSx(final double sx) throws AlgebraException {
-        mAccelerationFixer.setSx(sx);
+        accelerationFixer.setSx(sx);
     }
 
     /**
@@ -365,7 +365,7 @@ public class BodyKinematicsFixer {
      * @return y scaling factor.
      */
     public double getAccelerationSy() {
-        return mAccelerationFixer.getSy();
+        return accelerationFixer.getSy();
     }
 
     /**
@@ -373,10 +373,10 @@ public class BodyKinematicsFixer {
      *
      * @param sy y scaling factor.
      * @throws AlgebraException if provided value makes cross coupling matrix
-     *                          non invertible.
+     *                          non-invertible.
      */
     public void setAccelerationSy(final double sy) throws AlgebraException {
-        mAccelerationFixer.setSy(sy);
+        accelerationFixer.setSy(sy);
     }
 
     /**
@@ -385,7 +385,7 @@ public class BodyKinematicsFixer {
      * @return z scaling factor.
      */
     public double getAccelerationSz() {
-        return mAccelerationFixer.getSz();
+        return accelerationFixer.getSz();
     }
 
     /**
@@ -393,10 +393,10 @@ public class BodyKinematicsFixer {
      *
      * @param sz z scaling factor.
      * @throws AlgebraException if provided value makes cross coupling matrix
-     *                          non invertible.
+     *                          non-invertible.
      */
     public void setAccelerationSz(final double sz) throws AlgebraException {
-        mAccelerationFixer.setSz(sz);
+        accelerationFixer.setSz(sz);
     }
 
     /**
@@ -405,7 +405,7 @@ public class BodyKinematicsFixer {
      * @return acceleration x-y cross coupling error.
      */
     public double getAccelerationMxy() {
-        return mAccelerationFixer.getMxy();
+        return accelerationFixer.getMxy();
     }
 
     /**
@@ -413,10 +413,10 @@ public class BodyKinematicsFixer {
      *
      * @param mxy acceleration x-y cross coupling error.
      * @throws AlgebraException if provided value makes cross coupling matrix
-     *                          non invertible.
+     *                          non-invertible.
      */
     public void setAccelerationMxy(final double mxy) throws AlgebraException {
-        mAccelerationFixer.setMxy(mxy);
+        accelerationFixer.setMxy(mxy);
     }
 
     /**
@@ -425,7 +425,7 @@ public class BodyKinematicsFixer {
      * @return acceleration x-z cross coupling error.
      */
     public double getAccelerationMxz() {
-        return mAccelerationFixer.getMxz();
+        return accelerationFixer.getMxz();
     }
 
     /**
@@ -433,10 +433,10 @@ public class BodyKinematicsFixer {
      *
      * @param mxz acceleration x-z cross coupling error.
      * @throws AlgebraException if provided value makes cross coupling matrix
-     *                          non invertible.
+     *                          non-invertible.
      */
     public void setAccelerationMxz(final double mxz) throws AlgebraException {
-        mAccelerationFixer.setMxz(mxz);
+        accelerationFixer.setMxz(mxz);
     }
 
     /**
@@ -445,7 +445,7 @@ public class BodyKinematicsFixer {
      * @return acceleration y-x cross coupling error.
      */
     public double getAccelerationMyx() {
-        return mAccelerationFixer.getMyx();
+        return accelerationFixer.getMyx();
     }
 
     /**
@@ -453,10 +453,10 @@ public class BodyKinematicsFixer {
      *
      * @param myx acceleration y-x cross coupling error.
      * @throws AlgebraException if provided value makes cross coupling matrix
-     *                          non invertible.
+     *                          non-invertible.
      */
     public void setAccelerationMyx(final double myx) throws AlgebraException {
-        mAccelerationFixer.setMyx(myx);
+        accelerationFixer.setMyx(myx);
     }
 
     /**
@@ -465,7 +465,7 @@ public class BodyKinematicsFixer {
      * @return y-z cross coupling error.
      */
     public double getAccelerationMyz() {
-        return mAccelerationFixer.getMyz();
+        return accelerationFixer.getMyz();
     }
 
     /**
@@ -473,10 +473,10 @@ public class BodyKinematicsFixer {
      *
      * @param myz y-z cross coupling error.
      * @throws AlgebraException if provided value makes cross coupling matrix
-     *                          non invertible.
+     *                          non-invertible.
      */
     public void setAccelerationMyz(final double myz) throws AlgebraException {
-        mAccelerationFixer.setMyz(myz);
+        accelerationFixer.setMyz(myz);
     }
 
     /**
@@ -485,7 +485,7 @@ public class BodyKinematicsFixer {
      * @return acceleration z-x cross coupling error.
      */
     public double getAccelerationMzx() {
-        return mAccelerationFixer.getMzx();
+        return accelerationFixer.getMzx();
     }
 
     /**
@@ -493,10 +493,10 @@ public class BodyKinematicsFixer {
      *
      * @param mzx acceleration z-x cross coupling error.
      * @throws AlgebraException if provided value makes cross coupling matrix
-     *                          non invertible.
+     *                          non-invertible.
      */
     public void setAccelerationMzx(final double mzx) throws AlgebraException {
-        mAccelerationFixer.setMzx(mzx);
+        accelerationFixer.setMzx(mzx);
     }
 
     /**
@@ -505,7 +505,7 @@ public class BodyKinematicsFixer {
      * @return acceleration z-y cross coupling error.
      */
     public double getAccelerationMzy() {
-        return mAccelerationFixer.getMzy();
+        return accelerationFixer.getMzy();
     }
 
     /**
@@ -513,10 +513,10 @@ public class BodyKinematicsFixer {
      *
      * @param mzy acceleration z-y cross coupling error.
      * @throws AlgebraException if provided value makes cross coupling matrix
-     *                          non invertible.
+     *                          non-invertible.
      */
     public void setAccelerationMzy(final double mzy) throws AlgebraException {
-        mAccelerationFixer.setMzy(mzy);
+        accelerationFixer.setMzy(mzy);
     }
 
     /**
@@ -526,11 +526,11 @@ public class BodyKinematicsFixer {
      * @param sy y scaling factor.
      * @param sz z scaling factor.
      * @throws AlgebraException if provided values make cross coupling matrix
-     *                          non invertible.
+     *                          non-invertible.
      */
     public void setAccelerationScalingFactors(final double sx, final double sy, final double sz)
             throws AlgebraException {
-        mAccelerationFixer.setScalingFactors(sx, sy, sz);
+        accelerationFixer.setScalingFactors(sx, sy, sz);
     }
 
     /**
@@ -543,12 +543,12 @@ public class BodyKinematicsFixer {
      * @param mzx z-x cross coupling error.
      * @param mzy z-y cross coupling error.
      * @throws AlgebraException if provided values make cross coupling matrix
-     *                          non invertible.
+     *                          non-invertible.
      */
     public void setAccelerationCrossCouplingErrors(
             final double mxy, final double mxz, final double myx,
             final double myz, final double mzx, final double mzy) throws AlgebraException {
-        mAccelerationFixer.setCrossCouplingErrors(mxy, mxz, myx, myz, mzx, mzy);
+        accelerationFixer.setCrossCouplingErrors(mxy, mxz, myx, myz, mzx, mzy);
     }
 
     /**
@@ -564,13 +564,13 @@ public class BodyKinematicsFixer {
      * @param mzx z-x cross coupling error.
      * @param mzy z-y cross coupling error.
      * @throws AlgebraException if provided values make cross coupling matrix
-     *                          non invertible.
+     *                          non-invertible.
      */
     public void setAccelerationScalingFactorsAndCrossCouplingErrors(
             final double sx, final double sy, final double sz,
             final double mxy, final double mxz, final double myx,
             final double myz, final double mzx, final double mzy) throws AlgebraException {
-        mAccelerationFixer.setScalingFactorsAndCrossCouplingErrors(sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy);
+        accelerationFixer.setScalingFactorsAndCrossCouplingErrors(sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy);
     }
 
     /**
@@ -579,7 +579,7 @@ public class BodyKinematicsFixer {
      * @return angular speed bias values expressed in radians per second.
      */
     public Matrix getAngularSpeedBias() {
-        return mAngularRateFixer.getBias();
+        return angularRateFixer.getBias();
     }
 
     /**
@@ -588,7 +588,7 @@ public class BodyKinematicsFixer {
      * @param result instance where result will be stored.
      */
     public void getAngularSpeedBias(final Matrix result) {
-        mAngularRateFixer.getBias(result);
+        angularRateFixer.getBias(result);
     }
 
     /**
@@ -598,7 +598,7 @@ public class BodyKinematicsFixer {
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
     public void setAngularSpeedBias(final Matrix bias) {
-        mAngularRateFixer.setBias(bias);
+        angularRateFixer.setBias(bias);
     }
 
     /**
@@ -607,7 +607,7 @@ public class BodyKinematicsFixer {
      * @return bias values expressed in radians per second.
      */
     public double[] getAngularSpeedBiasArray() {
-        return mAngularRateFixer.getBiasArray();
+        return angularRateFixer.getBiasArray();
     }
 
     /**
@@ -617,7 +617,7 @@ public class BodyKinematicsFixer {
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
     public void getAngularSpeedBiasArray(final double[] result) {
-        mAngularRateFixer.getBiasArray(result);
+        angularRateFixer.getBiasArray(result);
     }
 
     /**
@@ -628,7 +628,7 @@ public class BodyKinematicsFixer {
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
     public void setAngularSpeedBias(final double[] bias) {
-        mAngularRateFixer.setBias(bias);
+        angularRateFixer.setBias(bias);
     }
 
     /**
@@ -637,7 +637,7 @@ public class BodyKinematicsFixer {
      * @return angular speed bias.
      */
     public AngularSpeedTriad getAngularSpeedBiasAsTriad() {
-        return mAngularRateFixer.getBiasAsTriad();
+        return angularRateFixer.getBiasAsTriad();
     }
 
     /**
@@ -646,7 +646,7 @@ public class BodyKinematicsFixer {
      * @param result instance where result will be stored.
      */
     public void getAngularSpeedBiasAsTriad(final AngularSpeedTriad result) {
-        mAngularRateFixer.getBiasAsTriad(result);
+        angularRateFixer.getBiasAsTriad(result);
     }
 
     /**
@@ -655,7 +655,7 @@ public class BodyKinematicsFixer {
      * @param bias angular speed bias to be set.
      */
     public void setAngularSpeedBias(final AngularSpeedTriad bias) {
-        mAngularRateFixer.setBias(bias);
+        angularRateFixer.setBias(bias);
     }
 
     /**
@@ -665,7 +665,7 @@ public class BodyKinematicsFixer {
      * @return x-coordinate of bias expressed in radians per second (rad/s).
      */
     public double getAngularSpeedBiasX() {
-        return mAngularRateFixer.getBiasX();
+        return angularRateFixer.getBiasX();
     }
 
     /**
@@ -675,7 +675,7 @@ public class BodyKinematicsFixer {
      * @param biasX x-coordinate of bias expressed in radians per second (rad/s).
      */
     public void setAngularSpeedBiasX(final double biasX) {
-        mAngularRateFixer.setBiasX(biasX);
+        angularRateFixer.setBiasX(biasX);
     }
 
     /**
@@ -685,7 +685,7 @@ public class BodyKinematicsFixer {
      * @return y-coordinate of bias expressed in radians per second (rad/s).
      */
     public double getAngularSpeedBiasY() {
-        return mAngularRateFixer.getBiasY();
+        return angularRateFixer.getBiasY();
     }
 
     /**
@@ -695,7 +695,7 @@ public class BodyKinematicsFixer {
      * @param biasY y-coordinate of bias expressed in radians per second (rad/s).
      */
     public void setAngularSpeedBiasY(final double biasY) {
-        mAngularRateFixer.setBiasY(biasY);
+        angularRateFixer.setBiasY(biasY);
     }
 
     /**
@@ -705,7 +705,7 @@ public class BodyKinematicsFixer {
      * @return z-coordinate of bias expressed in radians per second (rad/s).
      */
     public double getAngularSpeedBiasZ() {
-        return mAngularRateFixer.getBiasZ();
+        return angularRateFixer.getBiasZ();
     }
 
     /**
@@ -715,7 +715,7 @@ public class BodyKinematicsFixer {
      * @param biasZ z-coordinate of bias expressed in radians per second (rad/s).
      */
     public void setAngularSpeedBiasZ(final double biasZ) {
-        mAngularRateFixer.setBiasZ(biasZ);
+        angularRateFixer.setBiasZ(biasZ);
     }
 
     /**
@@ -727,7 +727,7 @@ public class BodyKinematicsFixer {
      * @param biasZ z-coordinate of bias.
      */
     public void setAngularSpeedBias(final double biasX, final double biasY, final double biasZ) {
-        mAngularRateFixer.setBias(biasX, biasY, biasZ);
+        angularRateFixer.setBias(biasX, biasY, biasZ);
     }
 
     /**
@@ -736,7 +736,7 @@ public class BodyKinematicsFixer {
      * @return x-coordinate of bias.
      */
     public AngularSpeed getAngularSpeedBiasXAsAngularSpeed() {
-        return mAngularRateFixer.getBiasXAsAngularSpeed();
+        return angularRateFixer.getBiasXAsAngularSpeed();
     }
 
     /**
@@ -745,7 +745,7 @@ public class BodyKinematicsFixer {
      * @param result instance where result will be stored.
      */
     public void getAngularSpeedBiasXAsAngularSpeed(final AngularSpeed result) {
-        mAngularRateFixer.getBiasXAsAngularSpeed(result);
+        angularRateFixer.getBiasXAsAngularSpeed(result);
     }
 
     /**
@@ -754,7 +754,7 @@ public class BodyKinematicsFixer {
      * @param biasX x-coordinate of bias.
      */
     public void setAngularSpeedBiasX(final AngularSpeed biasX) {
-        mAngularRateFixer.setBiasX(biasX);
+        angularRateFixer.setBiasX(biasX);
     }
 
     /**
@@ -763,7 +763,7 @@ public class BodyKinematicsFixer {
      * @return y-coordinate of bias.
      */
     public AngularSpeed getAngularSpeedBiasYAsAngularSpeed() {
-        return mAngularRateFixer.getBiasYAsAngularSpeed();
+        return angularRateFixer.getBiasYAsAngularSpeed();
     }
 
     /**
@@ -772,7 +772,7 @@ public class BodyKinematicsFixer {
      * @param result instance where result will be stored.
      */
     public void getAngularSpeedBiasYAsAngularSpeed(final AngularSpeed result) {
-        mAngularRateFixer.getBiasYAsAngularSpeed(result);
+        angularRateFixer.getBiasYAsAngularSpeed(result);
     }
 
     /**
@@ -781,7 +781,7 @@ public class BodyKinematicsFixer {
      * @param biasY y-coordinate of bias.
      */
     public void setAngularSpeedBiasY(final AngularSpeed biasY) {
-        mAngularRateFixer.setBiasY(biasY);
+        angularRateFixer.setBiasY(biasY);
     }
 
     /**
@@ -790,7 +790,7 @@ public class BodyKinematicsFixer {
      * @return z-coordinate of bias.
      */
     public AngularSpeed getAngularSpeedBiasZAsAngularSpeed() {
-        return mAngularRateFixer.getBiasZAsAngularSpeed();
+        return angularRateFixer.getBiasZAsAngularSpeed();
     }
 
     /**
@@ -799,7 +799,7 @@ public class BodyKinematicsFixer {
      * @param result instance where result will be stored.
      */
     public void getAngularSpeedBiasZAsAngularSpeed(final AngularSpeed result) {
-        mAngularRateFixer.getBiasZAsAngularSpeed(result);
+        angularRateFixer.getBiasZAsAngularSpeed(result);
     }
 
     /**
@@ -808,7 +808,7 @@ public class BodyKinematicsFixer {
      * @param biasZ z-coordinate of bias.
      */
     public void setAngularSpeedBiasZ(final AngularSpeed biasZ) {
-        mAngularRateFixer.setBiasZ(biasZ);
+        angularRateFixer.setBiasZ(biasZ);
     }
 
     /**
@@ -819,7 +819,7 @@ public class BodyKinematicsFixer {
      * @param biasZ z-coordinate of bias.
      */
     public void setAngularSpeedBias(final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ) {
-        mAngularRateFixer.setBias(biasX, biasY, biasZ);
+        angularRateFixer.setBias(biasX, biasY, biasZ);
     }
 
     /**
@@ -828,7 +828,7 @@ public class BodyKinematicsFixer {
      * @return cross coupling errors matrix.
      */
     public Matrix getAngularSpeedCrossCouplingErrors() {
-        return mAngularRateFixer.getCrossCouplingErrors();
+        return angularRateFixer.getCrossCouplingErrors();
     }
 
     /**
@@ -837,7 +837,7 @@ public class BodyKinematicsFixer {
      * @param result instance where result will be stored.
      */
     public void getAngularSpeedCrossCouplingErrors(final Matrix result) {
-        mAngularRateFixer.getCrossCouplingErrors(result);
+        angularRateFixer.getCrossCouplingErrors(result);
     }
 
     /**
@@ -848,7 +848,7 @@ public class BodyKinematicsFixer {
      * @throws IllegalArgumentException if provided matrix is not 3x3.
      */
     public void setAngularSpeedCrossCouplingErrors(final Matrix crossCouplingErrors) throws AlgebraException {
-        mAngularRateFixer.setCrossCouplingErrors(crossCouplingErrors);
+        angularRateFixer.setCrossCouplingErrors(crossCouplingErrors);
     }
 
     /**
@@ -857,7 +857,7 @@ public class BodyKinematicsFixer {
      * @return x scaling factor.
      */
     public double getAngularSpeedSx() {
-        return mAngularRateFixer.getSx();
+        return angularRateFixer.getSx();
     }
 
     /**
@@ -865,10 +865,10 @@ public class BodyKinematicsFixer {
      *
      * @param sx x scaling factor.
      * @throws AlgebraException if provided value makes cross coupling matrix
-     *                          non invertible.
+     *                          non-invertible.
      */
     public void setAngularSpeedSx(final double sx) throws AlgebraException {
-        mAngularRateFixer.setSx(sx);
+        angularRateFixer.setSx(sx);
     }
 
     /**
@@ -877,7 +877,7 @@ public class BodyKinematicsFixer {
      * @return y scaling factor.
      */
     public double getAngularSpeedSy() {
-        return mAngularRateFixer.getSy();
+        return angularRateFixer.getSy();
     }
 
     /**
@@ -885,10 +885,10 @@ public class BodyKinematicsFixer {
      *
      * @param sy y scaling factor.
      * @throws AlgebraException if provided value makes cross coupling matrix
-     *                          non invertible.
+     *                          non-invertible.
      */
     public void setAngularSpeedSy(final double sy) throws AlgebraException {
-        mAngularRateFixer.setSy(sy);
+        angularRateFixer.setSy(sy);
     }
 
     /**
@@ -897,7 +897,7 @@ public class BodyKinematicsFixer {
      * @return z scaling factor.
      */
     public double getAngularSpeedSz() {
-        return mAngularRateFixer.getSz();
+        return angularRateFixer.getSz();
     }
 
     /**
@@ -905,10 +905,10 @@ public class BodyKinematicsFixer {
      *
      * @param sz z scaling factor.
      * @throws AlgebraException if provided value makes cross coupling matrix
-     *                          non invertible.
+     *                          non-invertible.
      */
     public void setAngularSpeedSz(final double sz) throws AlgebraException {
-        mAngularRateFixer.setSz(sz);
+        angularRateFixer.setSz(sz);
     }
 
     /**
@@ -917,7 +917,7 @@ public class BodyKinematicsFixer {
      * @return x-y cross coupling error.
      */
     public double getAngularSpeedMxy() {
-        return mAngularRateFixer.getMxy();
+        return angularRateFixer.getMxy();
     }
 
     /**
@@ -925,10 +925,10 @@ public class BodyKinematicsFixer {
      *
      * @param mxy x-y cross coupling error.
      * @throws AlgebraException if provided value makes cross coupling matrix
-     *                          non invertible.
+     *                          non-invertible.
      */
     public void setAngularSpeedMxy(final double mxy) throws AlgebraException {
-        mAngularRateFixer.setMxy(mxy);
+        angularRateFixer.setMxy(mxy);
     }
 
     /**
@@ -937,7 +937,7 @@ public class BodyKinematicsFixer {
      * @return x-z cross coupling error.
      */
     public double getAngularSpeedMxz() {
-        return mAngularRateFixer.getMxz();
+        return angularRateFixer.getMxz();
     }
 
     /**
@@ -945,10 +945,10 @@ public class BodyKinematicsFixer {
      *
      * @param mxz x-z cross coupling error.
      * @throws AlgebraException if provided value makes cross coupling matrix
-     *                          non invertible.
+     *                          non-invertible.
      */
     public void setAngularSpeedMxz(final double mxz) throws AlgebraException {
-        mAngularRateFixer.setMxz(mxz);
+        angularRateFixer.setMxz(mxz);
     }
 
     /**
@@ -957,7 +957,7 @@ public class BodyKinematicsFixer {
      * @return y-x cross coupling error.
      */
     public double getAngularSpeedMyx() {
-        return mAngularRateFixer.getMyx();
+        return angularRateFixer.getMyx();
     }
 
     /**
@@ -965,10 +965,10 @@ public class BodyKinematicsFixer {
      *
      * @param myx y-x cross coupling error.
      * @throws AlgebraException if provided value makes cross coupling matrix
-     *                          non invertible.
+     *                          non-invertible.
      */
     public void setAngularSpeedMyx(final double myx) throws AlgebraException {
-        mAngularRateFixer.setMyx(myx);
+        angularRateFixer.setMyx(myx);
     }
 
     /**
@@ -977,7 +977,7 @@ public class BodyKinematicsFixer {
      * @return y-z cross coupling error.
      */
     public double getAngularSpeedMyz() {
-        return mAngularRateFixer.getMyz();
+        return angularRateFixer.getMyz();
     }
 
     /**
@@ -985,10 +985,10 @@ public class BodyKinematicsFixer {
      *
      * @param myz y-z cross coupling error.
      * @throws AlgebraException if provided value makes cross coupling matrix
-     *                          non invertible.
+     *                          non-invertible.
      */
     public void setAngularSpeedMyz(final double myz) throws AlgebraException {
-        mAngularRateFixer.setMyz(myz);
+        angularRateFixer.setMyz(myz);
     }
 
     /**
@@ -997,7 +997,7 @@ public class BodyKinematicsFixer {
      * @return z-x cross coupling error.
      */
     public double getAngularSpeedMzx() {
-        return mAngularRateFixer.getMzx();
+        return angularRateFixer.getMzx();
     }
 
     /**
@@ -1005,10 +1005,10 @@ public class BodyKinematicsFixer {
      *
      * @param mzx z-x cross coupling error.
      * @throws AlgebraException if provided value makes cross coupling matrix
-     *                          non invertible.
+     *                          non-invertible.
      */
     public void setAngularSpeedMzx(final double mzx) throws AlgebraException {
-        mAngularRateFixer.setMzx(mzx);
+        angularRateFixer.setMzx(mzx);
     }
 
     /**
@@ -1017,7 +1017,7 @@ public class BodyKinematicsFixer {
      * @return z-y cross coupling error.
      */
     public double getAngularSpeedMzy() {
-        return mAngularRateFixer.getMzy();
+        return angularRateFixer.getMzy();
     }
 
     /**
@@ -1025,10 +1025,10 @@ public class BodyKinematicsFixer {
      *
      * @param mzy z-y cross coupling error.
      * @throws AlgebraException if provided value makes cross coupling matrix
-     *                          non invertible.
+     *                          non-invertible.
      */
     public void setAngularSpeedMzy(final double mzy) throws AlgebraException {
-        mAngularRateFixer.setMzy(mzy);
+        angularRateFixer.setMzy(mzy);
     }
 
     /**
@@ -1038,11 +1038,11 @@ public class BodyKinematicsFixer {
      * @param sy y scaling factor.
      * @param sz z scaling factor.
      * @throws AlgebraException if provided values make cross coupling matrix
-     *                          non invertible.
+     *                          non-invertible.
      */
     public void setAngularSpeedScalingFactors(final double sx, final double sy, final double sz)
             throws AlgebraException {
-        mAngularRateFixer.setScalingFactors(sx, sy, sz);
+        angularRateFixer.setScalingFactors(sx, sy, sz);
     }
 
     /**
@@ -1055,12 +1055,12 @@ public class BodyKinematicsFixer {
      * @param mzx z-x cross coupling error.
      * @param mzy z-y cross coupling error.
      * @throws AlgebraException if provided values make cross coupling matrix
-     *                          non invertible.
+     *                          non-invertible.
      */
     public void setAngularSpeedCrossCouplingErrors(
             final double mxy, final double mxz, final double myx,
             final double myz, final double mzx, final double mzy) throws AlgebraException {
-        mAngularRateFixer.setCrossCouplingErrors(mxy, mxz, myx, myz, mzx, mzy);
+        angularRateFixer.setCrossCouplingErrors(mxy, mxz, myx, myz, mzx, mzy);
     }
 
     /**
@@ -1076,13 +1076,13 @@ public class BodyKinematicsFixer {
      * @param mzx z-x cross coupling error.
      * @param mzy z-y cross coupling error.
      * @throws AlgebraException if provided values make cross coupling matrix
-     *                          non invertible.
+     *                          non-invertible.
      */
     public void setAngularSpeedScalingFactorsAndCrossCouplingErrors(
             final double sx, final double sy, final double sz,
             final double mxy, final double mxz, final double myx,
             final double myz, final double mzx, final double mzy) throws AlgebraException {
-        mAngularRateFixer.setScalingFactorsAndCrossCouplingErrors(sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy);
+        angularRateFixer.setScalingFactorsAndCrossCouplingErrors(sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy);
     }
 
     /**
@@ -1091,7 +1091,7 @@ public class BodyKinematicsFixer {
      * @return g-dependant cross biases matrix.
      */
     public Matrix getAngularSpeedGDependantCrossBias() {
-        return mAngularRateFixer.getGDependantCrossBias();
+        return angularRateFixer.getGDependantCrossBias();
     }
 
     /**
@@ -1100,7 +1100,7 @@ public class BodyKinematicsFixer {
      * @param result instance where result will be stored.
      */
     public void getAngularSpeedGDependantCrossBias(final Matrix result) {
-        mAngularRateFixer.getGDependantCrossBias(result);
+        angularRateFixer.getGDependantCrossBias(result);
     }
 
     /**
@@ -1110,7 +1110,7 @@ public class BodyKinematicsFixer {
      * @throws IllegalArgumentException if provided matrix is not 3x3.
      */
     public void setAngularSpeedGDependantCrossBias(final Matrix gDependantCrossBias) {
-        mAngularRateFixer.setGDependantCrossBias(gDependantCrossBias);
+        angularRateFixer.setGDependantCrossBias(gDependantCrossBias);
     }
 
     /**
@@ -1126,13 +1126,13 @@ public class BodyKinematicsFixer {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public void fix(final BodyKinematics measuredKinematics, final BodyKinematics result) throws AlgebraException {
-        measuredKinematics.getSpecificForceTriad(mMeasuredAcceleration);
-        measuredKinematics.getAngularRateTriad(mMeasuredAngularSpeed);
+        measuredKinematics.getSpecificForceTriad(measuredAcceleration);
+        measuredKinematics.getAngularRateTriad(measuredAngularSpeed);
 
-        fix(mMeasuredAcceleration, mMeasuredAngularSpeed, mFixedAcceleration, mFixedAngularSpeed);
+        fix(measuredAcceleration, measuredAngularSpeed, fixedAcceleration, fixedAngularSpeed);
 
-        result.setSpecificForceTriad(mFixedAcceleration);
-        result.setAngularRateTriad(mFixedAngularSpeed);
+        result.setSpecificForceTriad(fixedAcceleration);
+        result.setAngularRateTriad(fixedAngularSpeed);
     }
 
     /**
@@ -1150,12 +1150,13 @@ public class BodyKinematicsFixer {
      *                              stored.
      * @throws AlgebraException if there are numerical instabilities.
      */
-    public void fix(final AccelerationTriad measuredSpecificForce, final AngularSpeedTriad measuredAngularSpeed,
-                    final AccelerationTriad fixedSpecificForce, final AngularSpeedTriad fixedAngularSpeed)
+    public void fix(
+            final AccelerationTriad measuredSpecificForce, final AngularSpeedTriad measuredAngularSpeed,
+            final AccelerationTriad fixedSpecificForce, final AngularSpeedTriad fixedAngularSpeed)
             throws AlgebraException {
 
-        mAccelerationFixer.fix(measuredSpecificForce, fixedSpecificForce);
-        mAngularRateFixer.fix(measuredAngularSpeed, fixedSpecificForce, fixedAngularSpeed);
+        accelerationFixer.fix(measuredSpecificForce, fixedSpecificForce);
+        angularRateFixer.fix(measuredAngularSpeed, fixedSpecificForce, fixedAngularSpeed);
     }
 
     /**
@@ -1174,10 +1175,10 @@ public class BodyKinematicsFixer {
      */
     public void fix(final BodyKinematics measuredKinematics, final AccelerationTriad fixedSpecificForce,
                     final AngularSpeedTriad fixedAngularSpeed) throws AlgebraException {
-        measuredKinematics.getSpecificForceTriad(mMeasuredAcceleration);
-        measuredKinematics.getAngularRateTriad(mMeasuredAngularSpeed);
+        measuredKinematics.getSpecificForceTriad(measuredAcceleration);
+        measuredKinematics.getAngularRateTriad(measuredAngularSpeed);
 
-        fix(mMeasuredAcceleration, mMeasuredAngularSpeed, fixedSpecificForce, fixedAngularSpeed);
+        fix(measuredAcceleration, measuredAngularSpeed, fixedSpecificForce, fixedAngularSpeed);
     }
 
     /**
@@ -1195,10 +1196,10 @@ public class BodyKinematicsFixer {
      */
     public void fix(final AccelerationTriad measuredSpecificForce, final AngularSpeedTriad measuredAngularSpeed,
                     final BodyKinematics result) throws AlgebraException {
-        fix(measuredSpecificForce, measuredAngularSpeed, mFixedAcceleration, mFixedAngularSpeed);
+        fix(measuredSpecificForce, measuredAngularSpeed, fixedAcceleration, fixedAngularSpeed);
 
-        result.setSpecificForceTriad(mFixedAcceleration);
-        result.setAngularRateTriad(mFixedAngularSpeed);
+        result.setSpecificForceTriad(fixedAcceleration);
+        result.setAngularRateTriad(fixedAngularSpeed);
     }
 
     /**
@@ -1213,7 +1214,7 @@ public class BodyKinematicsFixer {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public BodyKinematics fixAndReturnNew(final BodyKinematics measuredKinematics) throws AlgebraException {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         fix(measuredKinematics, result);
         return result;
     }
@@ -1233,7 +1234,7 @@ public class BodyKinematicsFixer {
     public BodyKinematics fixAndReturnNew(
             final AccelerationTriad measuredSpecificForce, final AngularSpeedTriad measuredAngularSpeed)
             throws AlgebraException {
-        final BodyKinematics result = new BodyKinematics();
+        final var result = new BodyKinematics();
         fix(measuredSpecificForce, measuredAngularSpeed, result);
         return result;
     }

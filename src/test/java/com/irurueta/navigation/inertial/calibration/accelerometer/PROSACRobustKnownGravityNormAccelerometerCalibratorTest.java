@@ -20,7 +20,6 @@ import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.frames.CoordinateTransformation;
-import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.ECEFPosition;
 import com.irurueta.navigation.frames.ECEFVelocity;
 import com.irurueta.navigation.frames.FrameType;
@@ -31,7 +30,6 @@ import com.irurueta.navigation.frames.NEDVelocity;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.frames.converters.NEDtoECEFPositionVelocityConverter;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.inertial.ECEFGravity;
 import com.irurueta.navigation.inertial.calibration.AccelerationTriad;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsGenerator;
 import com.irurueta.navigation.inertial.calibration.CalibrationException;
@@ -44,16 +42,15 @@ import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationUnit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
+class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements 
         RobustKnownGravityNormAccelerometerCalibratorListener {
 
     private static final double TIME_INTERVAL_SECONDS = 0.02;
@@ -86,19 +83,18 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
 
     private static final int TIMES = 100;
 
-    private int mCalibrateStart;
-    private int mCalibrateEnd;
-    private int mCalibrateNextIteration;
-    private int mCalibrateProgressChange;
+    private int calibrateStart;
+    private int calibrateEnd;
+    private int calibrateNextIteration;
+    private int calibrateProgressChange;
 
     @Test
-    public void testConstructor1() throws WrongSizeException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testConstructor1() throws WrongSizeException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -107,10 +103,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -125,12 +121,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -142,19 +138,19 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertNull(calibrator.getMeasurements());
@@ -168,12 +164,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(), 
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -234,13 +230,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor2() throws WrongSizeException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(this);
+    void testConstructor2() throws WrongSizeException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(this);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -249,10 +244,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -267,12 +262,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -284,19 +279,19 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertNull(calibrator.getMeasurements());
@@ -310,12 +305,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -376,15 +371,14 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor3() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor3() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(measurements);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(measurements);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -393,10 +387,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -411,12 +405,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -428,19 +422,19 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -454,12 +448,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -520,9 +514,8 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor4() throws WrongSizeException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(true);
+    void testConstructor4() throws WrongSizeException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(true);
 
         // check default values
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
@@ -535,10 +528,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -553,12 +546,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -570,38 +563,38 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertNull(calibrator.getMeasurements());
-        assertEquals(AccelerometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_KINEMATICS,
+        assertEquals(AccelerometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_KINEMATICS, 
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS, 
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -662,19 +655,18 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor5() throws WrongSizeException {
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+    void testConstructor5() throws WrongSizeException {
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(bias);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(bias);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -683,10 +675,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -701,12 +693,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -719,16 +711,16 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertNull(calibrator.getMeasurements());
@@ -742,12 +734,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -812,19 +804,18 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor6() throws WrongSizeException {
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+    void testConstructor6() throws WrongSizeException {
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(ba);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(ba);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -833,10 +824,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -851,12 +842,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -869,16 +860,16 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertNull(calibrator.getMeasurements());
@@ -892,12 +883,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -964,30 +955,29 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor7() throws WrongSizeException {
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+    void testConstructor7() throws WrongSizeException {
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final Matrix ma = generateMaGeneral();
-        final double sx = ma.getElementAt(0, 0);
-        final double sy = ma.getElementAt(1, 1);
-        final double sz = ma.getElementAt(2, 2);
-        final double mxy = ma.getElementAt(0, 1);
-        final double mxz = ma.getElementAt(0, 2);
-        final double myx = ma.getElementAt(1, 0);
-        final double myz = ma.getElementAt(1, 2);
-        final double mzx = ma.getElementAt(2, 0);
-        final double mzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var sx = ma.getElementAt(0, 0);
+        final var sy = ma.getElementAt(1, 1);
+        final var sz = ma.getElementAt(2, 2);
+        final var mxy = ma.getElementAt(0, 1);
+        final var mxz = ma.getElementAt(0, 2);
+        final var myx = ma.getElementAt(1, 0);
+        final var myz = ma.getElementAt(1, 2);
+        final var mzx = ma.getElementAt(2, 0);
+        final var mzy = ma.getElementAt(2, 1);
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(ba, ma);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(ba, ma);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -996,10 +986,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -1014,12 +1004,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -1032,15 +1022,15 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(ma, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertNull(calibrator.getMeasurements());
@@ -1054,12 +1044,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(), 
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -1120,40 +1110,39 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
-        assertThrows(IllegalArgumentException.class, () -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                m1, ma));
+        assertThrows(IllegalArgumentException.class, () -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(m1,
+                ma));
         final var m2 = new Matrix(3, 3);
-        assertThrows(IllegalArgumentException.class, () -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                m2, ma));
+        assertThrows(IllegalArgumentException.class, () -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(m2,
+                ma));
         final var m3 = new Matrix(1, 3);
-        assertThrows(IllegalArgumentException.class, () -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                ba, m3));
+        assertThrows(IllegalArgumentException.class, () -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(ba,
+                m3));
         final var m4 = new Matrix(3, 1);
-        assertThrows(IllegalArgumentException.class, () -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                ba, m4));
+        assertThrows(IllegalArgumentException.class, () -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(ba,
+                m4));
     }
 
     @Test
-    public void testConstructor8() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor8() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final double gravityNorm = gravity.getNorm();
+        final var gravityNorm = gravity.getNorm();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -1162,10 +1151,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -1180,12 +1169,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -1197,19 +1186,19 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertNull(calibrator.getMeasurements());
@@ -1223,12 +1212,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -1279,14 +1268,14 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNull(calibrator.getEstimatedBiasStandardDeviationNorm());
         assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAcceleration());
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAcceleration(null));
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL, 
                 calibrator.getPreliminarySubsetSize());
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -1294,28 +1283,27 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor9() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor9() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final double gravityNorm = gravity.getNorm();
+        final var gravityNorm = gravity.getNorm();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -1324,10 +1312,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -1342,12 +1330,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -1359,19 +1347,19 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -1385,12 +1373,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -1448,7 +1436,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -1456,28 +1444,28 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor10() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor10() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final double gravityNorm = gravity.getNorm();
+        final var gravityNorm = gravity.getNorm();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements, this);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements,
+                this);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -1486,10 +1474,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -1504,12 +1492,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -1521,19 +1509,19 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -1547,12 +1535,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -1610,7 +1598,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -1618,29 +1606,28 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor11() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor11() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final double gravityNorm = gravity.getNorm();
+        final var gravityNorm = gravity.getNorm();
 
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements,
-                        true);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements,
+                true);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -1649,10 +1636,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -1667,12 +1654,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -1684,19 +1671,19 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -1710,12 +1697,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -1773,7 +1760,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -1781,29 +1768,28 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor12() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor12() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final double gravityNorm = gravity.getNorm();
+        final var gravityNorm = gravity.getNorm();
 
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements,
-                        true, this);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements,
+                true, this);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -1812,10 +1798,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -1830,12 +1816,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -1847,19 +1833,19 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -1936,7 +1922,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -1944,34 +1930,33 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor13() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor13() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final double gravityNorm = gravity.getNorm();
+        final var gravityNorm = gravity.getNorm();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements, bias);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements, bias);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -1980,10 +1965,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -1998,12 +1983,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -2016,16 +2001,16 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -2039,12 +2024,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -2102,7 +2087,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration()
                 .equals(gravity.getNormAsAcceleration(), ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -2114,30 +2099,30 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor14() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor14() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final double gravityNorm = gravity.getNorm();
+        final var gravityNorm = gravity.getNorm();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements, bias, this);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements, bias,
+                this);
 
         // check default values
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
@@ -2150,10 +2135,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -2168,12 +2153,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -2186,16 +2171,16 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -2209,12 +2194,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -2272,7 +2257,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -2284,35 +2269,34 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor15() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor15() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final double gravityNorm = gravity.getNorm();
+        final var gravityNorm = gravity.getNorm();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements, true,
-                        bias);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements,
+                true, bias);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -2321,10 +2305,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -2339,12 +2323,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -2357,16 +2341,16 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -2380,12 +2364,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -2443,7 +2427,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -2455,35 +2439,34 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor16() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor16() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final double gravityNorm = gravity.getNorm();
+        final var gravityNorm = gravity.getNorm();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements,
-                        true, bias, this);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements,
+                true, bias, this);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -2492,10 +2475,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -2510,12 +2493,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -2528,16 +2511,16 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -2551,12 +2534,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -2614,7 +2597,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -2626,30 +2609,29 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor17() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor17() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final double gravityNorm = gravity.getNorm();
+        final var gravityNorm = gravity.getNorm();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements, ba);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements, ba);
 
         // check default values
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
@@ -2662,10 +2644,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -2680,12 +2662,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -2698,16 +2680,16 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -2721,12 +2703,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -2784,7 +2766,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -2800,34 +2782,34 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor18() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor18() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final double gravityNorm = gravity.getNorm();
+        final var gravityNorm = gravity.getNorm();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements, ba, this);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements, ba,
+                this);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -2836,10 +2818,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -2854,12 +2836,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -2872,16 +2854,16 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -2895,362 +2877,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
-        assertNull(calibrator.getInliersData());
-        assertTrue(calibrator.isResultRefined());
-        assertTrue(calibrator.isCovarianceKept());
-        assertNull(calibrator.getQualityScores());
-        assertNull(calibrator.getEstimatedBiases());
-        assertFalse(calibrator.getEstimatedBiases(null));
-        assertNull(calibrator.getEstimatedBiasesAsMatrix());
-        assertFalse(calibrator.getEstimatedBiasesAsMatrix(null));
-        assertNull(calibrator.getEstimatedBiasFx());
-        assertNull(calibrator.getEstimatedBiasFy());
-        assertNull(calibrator.getEstimatedBiasFz());
-        assertNull(calibrator.getEstimatedBiasFxAsAcceleration());
-        assertFalse(calibrator.getEstimatedBiasFxAsAcceleration(null));
-        assertNull(calibrator.getEstimatedBiasFyAsAcceleration());
-        assertFalse(calibrator.getEstimatedBiasFyAsAcceleration(null));
-        assertNull(calibrator.getEstimatedBiasFzAsAcceleration());
-        assertFalse(calibrator.getEstimatedBiasFzAsAcceleration(null));
-        assertNull(calibrator.getEstimatedBiasAsTriad());
-        assertFalse(calibrator.getEstimatedBiasAsTriad(null));
-        assertNull(calibrator.getEstimatedMa());
-        assertNull(calibrator.getEstimatedSx());
-        assertNull(calibrator.getEstimatedSy());
-        assertNull(calibrator.getEstimatedSz());
-        assertNull(calibrator.getEstimatedMxy());
-        assertNull(calibrator.getEstimatedMxz());
-        assertNull(calibrator.getEstimatedMyx());
-        assertNull(calibrator.getEstimatedMyz());
-        assertNull(calibrator.getEstimatedMzx());
-        assertNull(calibrator.getEstimatedMzy());
-        assertNull(calibrator.getEstimatedCovariance());
-        assertNull(calibrator.getEstimatedBiasFxVariance());
-        assertNull(calibrator.getEstimatedBiasFxStandardDeviation());
-        assertNull(calibrator.getEstimatedBiasFxStandardDeviationAsAcceleration());
-        assertFalse(calibrator.getEstimatedBiasFxStandardDeviationAsAcceleration(null));
-        assertNull(calibrator.getEstimatedBiasFyVariance());
-        assertNull(calibrator.getEstimatedBiasFyStandardDeviation());
-        assertNull(calibrator.getEstimatedBiasFyStandardDeviationAsAcceleration());
-        assertFalse(calibrator.getEstimatedBiasFyStandardDeviationAsAcceleration(null));
-        assertNull(calibrator.getEstimatedBiasFzVariance());
-        assertNull(calibrator.getEstimatedBiasFzStandardDeviation());
-        assertNull(calibrator.getEstimatedBiasFzStandardDeviationAsAcceleration());
-        assertFalse(calibrator.getEstimatedBiasFzStandardDeviationAsAcceleration(null));
-        assertNull(calibrator.getEstimatedBiasStandardDeviation());
-        assertFalse(calibrator.getEstimatedBiasStandardDeviation(null));
-        assertNull(calibrator.getEstimatedBiasStandardDeviationAverage());
-        assertNull(calibrator.getEstimatedBiasStandardDeviationAverageAsAcceleration());
-        assertFalse(calibrator.getEstimatedBiasStandardDeviationAverageAsAcceleration(null));
-        assertNull(calibrator.getEstimatedBiasStandardDeviationNorm());
-        assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAcceleration());
-        assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAcceleration(null));
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
-                calibrator.getPreliminarySubsetSize());
-        assertNotNull(calibrator.getGroundTruthGravityNorm());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
-        assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration()
-                .equals(gravity.getNormAsAcceleration(), ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
-        assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
-        assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
-        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
-
-        // Force IllegalArgumentException
-        final var m1 = new Matrix(1, 1);
-        assertThrows(IllegalArgumentException.class, () -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                gravityNorm, measurements, m1, this));
-        final var m2 = new Matrix(3, 3);
-        assertThrows(IllegalArgumentException.class, () -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                gravityNorm, measurements, m2, this));
-    }
-
-    @Test
-    public void testConstructor19() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
-                ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final double gravityNorm = gravity.getNorm();
-
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
-
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements,
-                        true, ba);
-
-        // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
-                calibrator.isComputeAndKeepInliersEnabled());
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
-                calibrator.isComputeAndKeepResiduals());
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
-        assertEquals(by, calibrator.getInitialBiasY(), 0.0);
-        assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
-        assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
-        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
-        calibrator.getInitialBiasXAsAcceleration(acceleration2);
-        assertEquals(acceleration1, acceleration2);
-        acceleration1 = calibrator.getInitialBiasYAsAcceleration();
-        assertEquals(by, acceleration1.getValue().doubleValue(), 0.0);
-        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
-        calibrator.getInitialBiasYAsAcceleration(acceleration2);
-        assertEquals(acceleration1, acceleration2);
-        acceleration1 = calibrator.getInitialBiasZAsAcceleration();
-        assertEquals(bz, acceleration1.getValue().doubleValue(), 0.0);
-        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
-        calibrator.getInitialBiasZAsAcceleration(acceleration2);
-        assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
-        assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
-        assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
-        assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
-        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
-        calibrator.getInitialBiasAsTriad(initialBiasTriad2);
-        assertEquals(initialBiasTriad1, initialBiasTriad2);
-        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
-        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
-        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
-        calibrator.getInitialBias(bias2);
-        assertArrayEquals(bias, bias2, 0.0);
-        assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
-        calibrator.getInitialBiasAsMatrix(biasMatrix2);
-        assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
-        assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
-        calibrator.getInitialMa(ma2);
-        assertEquals(ma1, ma2);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(AccelerometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_KINEMATICS,
-                calibrator.getMeasurementType());
-        assertTrue(calibrator.isOrderedMeasurementsRequired());
-        assertTrue(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertNull(calibrator.getListener());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
-                calibrator.getMinimumRequiredMeasurements());
-        assertFalse(calibrator.isReady());
-        assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
-        assertNull(calibrator.getInliersData());
-        assertTrue(calibrator.isResultRefined());
-        assertTrue(calibrator.isCovarianceKept());
-        assertNull(calibrator.getQualityScores());
-        assertNull(calibrator.getEstimatedBiases());
-        assertFalse(calibrator.getEstimatedBiases(null));
-        assertNull(calibrator.getEstimatedBiasesAsMatrix());
-        assertFalse(calibrator.getEstimatedBiasesAsMatrix(null));
-        assertNull(calibrator.getEstimatedBiasFx());
-        assertNull(calibrator.getEstimatedBiasFy());
-        assertNull(calibrator.getEstimatedBiasFz());
-        assertNull(calibrator.getEstimatedBiasFxAsAcceleration());
-        assertFalse(calibrator.getEstimatedBiasFxAsAcceleration(null));
-        assertNull(calibrator.getEstimatedBiasFyAsAcceleration());
-        assertFalse(calibrator.getEstimatedBiasFyAsAcceleration(null));
-        assertNull(calibrator.getEstimatedBiasFzAsAcceleration());
-        assertFalse(calibrator.getEstimatedBiasFzAsAcceleration(null));
-        assertNull(calibrator.getEstimatedBiasAsTriad());
-        assertFalse(calibrator.getEstimatedBiasAsTriad(null));
-        assertNull(calibrator.getEstimatedMa());
-        assertNull(calibrator.getEstimatedSx());
-        assertNull(calibrator.getEstimatedSy());
-        assertNull(calibrator.getEstimatedSz());
-        assertNull(calibrator.getEstimatedMxy());
-        assertNull(calibrator.getEstimatedMxz());
-        assertNull(calibrator.getEstimatedMyx());
-        assertNull(calibrator.getEstimatedMyz());
-        assertNull(calibrator.getEstimatedMzx());
-        assertNull(calibrator.getEstimatedMzy());
-        assertNull(calibrator.getEstimatedCovariance());
-        assertNull(calibrator.getEstimatedBiasFxVariance());
-        assertNull(calibrator.getEstimatedBiasFxStandardDeviation());
-        assertNull(calibrator.getEstimatedBiasFxStandardDeviationAsAcceleration());
-        assertFalse(calibrator.getEstimatedBiasFxStandardDeviationAsAcceleration(null));
-        assertNull(calibrator.getEstimatedBiasFyVariance());
-        assertNull(calibrator.getEstimatedBiasFyStandardDeviation());
-        assertNull(calibrator.getEstimatedBiasFyStandardDeviationAsAcceleration());
-        assertFalse(calibrator.getEstimatedBiasFyStandardDeviationAsAcceleration(null));
-        assertNull(calibrator.getEstimatedBiasFzVariance());
-        assertNull(calibrator.getEstimatedBiasFzStandardDeviation());
-        assertNull(calibrator.getEstimatedBiasFzStandardDeviationAsAcceleration());
-        assertFalse(calibrator.getEstimatedBiasFzStandardDeviationAsAcceleration(null));
-        assertNull(calibrator.getEstimatedBiasStandardDeviation());
-        assertFalse(calibrator.getEstimatedBiasStandardDeviation(null));
-        assertNull(calibrator.getEstimatedBiasStandardDeviationAverage());
-        assertNull(calibrator.getEstimatedBiasStandardDeviationAverageAsAcceleration());
-        assertFalse(calibrator.getEstimatedBiasStandardDeviationAverageAsAcceleration(null));
-        assertNull(calibrator.getEstimatedBiasStandardDeviationNorm());
-        assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAcceleration());
-        assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAcceleration(null));
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
-                calibrator.getPreliminarySubsetSize());
-        assertNotNull(calibrator.getGroundTruthGravityNorm());
-        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
-        assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration()
-                .equals(gravity.getNormAsAcceleration(), ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
-        assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
-        assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
-        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
-
-        // Force IllegalArgumentException
-        final var m1 = new Matrix(1, 1);
-        assertThrows(IllegalArgumentException.class, () -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                gravityNorm, measurements, true, m1));
-        final var m2 = new Matrix(3, 3);
-        assertThrows(IllegalArgumentException.class, () -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                gravityNorm, measurements, true, m2));
-    }
-
-    @Test
-    public void testConstructor20() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
-                ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final double gravityNorm = gravity.getNorm();
-
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
-
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements, true,
-                        ba, this);
-
-        // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
-                calibrator.isComputeAndKeepInliersEnabled());
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
-                calibrator.isComputeAndKeepResiduals());
-        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
-        assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
-        assertEquals(by, calibrator.getInitialBiasY(), 0.0);
-        assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
-        assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
-        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
-        calibrator.getInitialBiasXAsAcceleration(acceleration2);
-        assertEquals(acceleration1, acceleration2);
-        acceleration1 = calibrator.getInitialBiasYAsAcceleration();
-        assertEquals(by, acceleration1.getValue().doubleValue(), 0.0);
-        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
-        calibrator.getInitialBiasYAsAcceleration(acceleration2);
-        assertEquals(acceleration1, acceleration2);
-        acceleration1 = calibrator.getInitialBiasZAsAcceleration();
-        assertEquals(bz, acceleration1.getValue().doubleValue(), 0.0);
-        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
-        calibrator.getInitialBiasZAsAcceleration(acceleration2);
-        assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
-        assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
-        assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
-        assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
-        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
-        calibrator.getInitialBiasAsTriad(initialBiasTriad2);
-        assertEquals(initialBiasTriad1, initialBiasTriad2);
-        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
-        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
-        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
-        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
-        calibrator.getInitialBias(bias2);
-        assertArrayEquals(bias, bias2, 0.0);
-        assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
-        calibrator.getInitialBiasAsMatrix(biasMatrix2);
-        assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
-        assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
-        calibrator.getInitialMa(ma2);
-        assertEquals(ma1, ma2);
-        assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(AccelerometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_KINEMATICS,
-                calibrator.getMeasurementType());
-        assertTrue(calibrator.isOrderedMeasurementsRequired());
-        assertTrue(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(this, calibrator.getListener());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
-                calibrator.getMinimumRequiredMeasurements());
-        assertFalse(calibrator.isReady());
-        assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -3308,7 +2940,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -3317,52 +2949,41 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                gravityNorm, measurements, true, m1, this));
+                gravityNorm, measurements, m1, this));
         final var m2 = new Matrix(3, 3);
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                gravityNorm, measurements, true, m2, this));
+                gravityNorm, measurements, m2, this));
     }
 
     @Test
-    public void testConstructor21() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor19() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final double gravityNorm = gravity.getNorm();
+        final var gravityNorm = gravity.getNorm();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final Matrix ma = generateMaGeneral();
-        final double sx = ma.getElementAt(0, 0);
-        final double sy = ma.getElementAt(1, 1);
-        final double sz = ma.getElementAt(2, 2);
-        final double mxy = ma.getElementAt(0, 1);
-        final double mxz = ma.getElementAt(0, 2);
-        final double myx = ma.getElementAt(1, 0);
-        final double myz = ma.getElementAt(1, 2);
-        final double mzx = ma.getElementAt(2, 0);
-        final double mzy = ma.getElementAt(2, 1);
-
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements, ba, ma);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements,
+                true, ba);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -3371,10 +2992,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -3389,52 +3010,53 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
-        assertEquals(sx, calibrator.getInitialSx(), 0.0);
-        assertEquals(sy, calibrator.getInitialSy(), 0.0);
-        assertEquals(sz, calibrator.getInitialSz(), 0.0);
-        assertEquals(mxy, calibrator.getInitialMxy(), 0.0);
-        assertEquals(mxz, calibrator.getInitialMxz(), 0.0);
-        assertEquals(myx, calibrator.getInitialMyx(), 0.0);
-        assertEquals(myz, calibrator.getInitialMyz(), 0.0);
-        assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
-        assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        assertEquals(ma, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
+        assertEquals(ma1, calibrator.getInitialMa());
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
-        assertEquals(ma, ma2);
+        assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
         assertEquals(AccelerometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_KINEMATICS,
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -3490,9 +3112,367 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration()
-                .equals(gravity.getNormAsAcceleration(), ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
+                ABSOLUTE_ERROR));
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
+        assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
+        assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+
+        // Force IllegalArgumentException
+        final var m1 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                gravityNorm, measurements, true, m1));
+        final var m2 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                gravityNorm, measurements, true, m2));
+    }
+
+    @Test
+    void testConstructor20() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+                ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
+        final var gravityNorm = gravity.getNorm();
+
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
+
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements,
+                true, ba, this);
+
+        // check default values
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
+        assertEquals(by, calibrator.getInitialBiasY(), 0.0);
+        assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        calibrator.getInitialBiasXAsAcceleration(acceleration2);
+        assertEquals(acceleration1, acceleration2);
+        acceleration1 = calibrator.getInitialBiasYAsAcceleration();
+        assertEquals(by, acceleration1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
+        acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        calibrator.getInitialBiasYAsAcceleration(acceleration2);
+        assertEquals(acceleration1, acceleration2);
+        acceleration1 = calibrator.getInitialBiasZAsAcceleration();
+        assertEquals(bz, acceleration1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
+        acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        calibrator.getInitialBiasZAsAcceleration(acceleration2);
+        assertEquals(acceleration1, acceleration2);
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
+        assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
+        assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
+        final var initialBiasTriad2 = new AccelerationTriad();
+        calibrator.getInitialBiasAsTriad(initialBiasTriad2);
+        assertEquals(initialBiasTriad1, initialBiasTriad2);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
+        assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
+        final var bias2 = new double[3];
+        calibrator.getInitialBias(bias2);
+        assertArrayEquals(bias, bias2, 0.0);
+        assertEquals(ba, calibrator.getInitialBiasAsMatrix());
+        final var biasMatrix2 = new Matrix(3, 1);
+        calibrator.getInitialBiasAsMatrix(biasMatrix2);
+        assertEquals(ba, biasMatrix2);
+        final var ma1 = new Matrix(3, 3);
+        assertEquals(ma1, calibrator.getInitialMa());
+        final var ma2 = new Matrix(3, 3);
+        calibrator.getInitialMa(ma2);
+        assertEquals(ma1, ma2);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(AccelerometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_KINEMATICS,
+                calibrator.getMeasurementType());
+        assertTrue(calibrator.isOrderedMeasurementsRequired());
+        assertTrue(calibrator.isQualityScoresRequired());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
+                calibrator.getMinimumRequiredMeasurements());
+        assertFalse(calibrator.isReady());
+        assertFalse(calibrator.isRunning());
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
+        assertNull(calibrator.getInliersData());
+        assertTrue(calibrator.isResultRefined());
+        assertTrue(calibrator.isCovarianceKept());
+        assertNull(calibrator.getQualityScores());
+        assertNull(calibrator.getEstimatedBiases());
+        assertFalse(calibrator.getEstimatedBiases(null));
+        assertNull(calibrator.getEstimatedBiasesAsMatrix());
+        assertFalse(calibrator.getEstimatedBiasesAsMatrix(null));
+        assertNull(calibrator.getEstimatedBiasFx());
+        assertNull(calibrator.getEstimatedBiasFy());
+        assertNull(calibrator.getEstimatedBiasFz());
+        assertNull(calibrator.getEstimatedBiasFxAsAcceleration());
+        assertFalse(calibrator.getEstimatedBiasFxAsAcceleration(null));
+        assertNull(calibrator.getEstimatedBiasFyAsAcceleration());
+        assertFalse(calibrator.getEstimatedBiasFyAsAcceleration(null));
+        assertNull(calibrator.getEstimatedBiasFzAsAcceleration());
+        assertFalse(calibrator.getEstimatedBiasFzAsAcceleration(null));
+        assertNull(calibrator.getEstimatedBiasAsTriad());
+        assertFalse(calibrator.getEstimatedBiasAsTriad(null));
+        assertNull(calibrator.getEstimatedMa());
+        assertNull(calibrator.getEstimatedSx());
+        assertNull(calibrator.getEstimatedSy());
+        assertNull(calibrator.getEstimatedSz());
+        assertNull(calibrator.getEstimatedMxy());
+        assertNull(calibrator.getEstimatedMxz());
+        assertNull(calibrator.getEstimatedMyx());
+        assertNull(calibrator.getEstimatedMyz());
+        assertNull(calibrator.getEstimatedMzx());
+        assertNull(calibrator.getEstimatedMzy());
+        assertNull(calibrator.getEstimatedCovariance());
+        assertNull(calibrator.getEstimatedBiasFxVariance());
+        assertNull(calibrator.getEstimatedBiasFxStandardDeviation());
+        assertNull(calibrator.getEstimatedBiasFxStandardDeviationAsAcceleration());
+        assertFalse(calibrator.getEstimatedBiasFxStandardDeviationAsAcceleration(null));
+        assertNull(calibrator.getEstimatedBiasFyVariance());
+        assertNull(calibrator.getEstimatedBiasFyStandardDeviation());
+        assertNull(calibrator.getEstimatedBiasFyStandardDeviationAsAcceleration());
+        assertFalse(calibrator.getEstimatedBiasFyStandardDeviationAsAcceleration(null));
+        assertNull(calibrator.getEstimatedBiasFzVariance());
+        assertNull(calibrator.getEstimatedBiasFzStandardDeviation());
+        assertNull(calibrator.getEstimatedBiasFzStandardDeviationAsAcceleration());
+        assertFalse(calibrator.getEstimatedBiasFzStandardDeviationAsAcceleration(null));
+        assertNull(calibrator.getEstimatedBiasStandardDeviation());
+        assertFalse(calibrator.getEstimatedBiasStandardDeviation(null));
+        assertNull(calibrator.getEstimatedBiasStandardDeviationAverage());
+        assertNull(calibrator.getEstimatedBiasStandardDeviationAverageAsAcceleration());
+        assertFalse(calibrator.getEstimatedBiasStandardDeviationAverageAsAcceleration(null));
+        assertNull(calibrator.getEstimatedBiasStandardDeviationNorm());
+        assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAcceleration());
+        assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAcceleration(null));
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+                calibrator.getPreliminarySubsetSize());
+        assertNotNull(calibrator.getGroundTruthGravityNorm());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
+        assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
+                ABSOLUTE_ERROR));
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
+        assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
+        assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+
+        // Force IllegalArgumentException
+        final var m1 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                gravityNorm, measurements, true, m1, this));
+        final var m2 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                gravityNorm, measurements, true, m2, this));
+    }
+
+    @Test
+    void testConstructor21() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
+
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+                ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
+        final var gravityNorm = gravity.getNorm();
+
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
+
+        final var ma = generateMaGeneral();
+        final var sx = ma.getElementAt(0, 0);
+        final var sy = ma.getElementAt(1, 1);
+        final var sz = ma.getElementAt(2, 2);
+        final var mxy = ma.getElementAt(0, 1);
+        final var mxz = ma.getElementAt(0, 2);
+        final var myx = ma.getElementAt(1, 0);
+        final var myz = ma.getElementAt(1, 2);
+        final var mzx = ma.getElementAt(2, 0);
+        final var mzy = ma.getElementAt(2, 1);
+
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements, ba,
+                ma);
+
+        // check default values
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(RobustEstimatorMethod.PROSAC, calibrator.getMethod());
+        assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
+        assertEquals(by, calibrator.getInitialBiasY(), 0.0);
+        assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        calibrator.getInitialBiasXAsAcceleration(acceleration2);
+        assertEquals(acceleration1, acceleration2);
+        acceleration1 = calibrator.getInitialBiasYAsAcceleration();
+        assertEquals(by, acceleration1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
+        acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        calibrator.getInitialBiasYAsAcceleration(acceleration2);
+        assertEquals(acceleration1, acceleration2);
+        acceleration1 = calibrator.getInitialBiasZAsAcceleration();
+        assertEquals(bz, acceleration1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
+        acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        calibrator.getInitialBiasZAsAcceleration(acceleration2);
+        assertEquals(acceleration1, acceleration2);
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
+        assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
+        assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
+        final var initialBiasTriad2 = new AccelerationTriad();
+        calibrator.getInitialBiasAsTriad(initialBiasTriad2);
+        assertEquals(initialBiasTriad1, initialBiasTriad2);
+        assertEquals(sx, calibrator.getInitialSx(), 0.0);
+        assertEquals(sy, calibrator.getInitialSy(), 0.0);
+        assertEquals(sz, calibrator.getInitialSz(), 0.0);
+        assertEquals(mxy, calibrator.getInitialMxy(), 0.0);
+        assertEquals(mxz, calibrator.getInitialMxz(), 0.0);
+        assertEquals(myx, calibrator.getInitialMyx(), 0.0);
+        assertEquals(myz, calibrator.getInitialMyz(), 0.0);
+        assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
+        assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
+        assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
+        final var bias2 = new double[3];
+        calibrator.getInitialBias(bias2);
+        assertArrayEquals(bias, bias2, 0.0);
+        assertEquals(ba, calibrator.getInitialBiasAsMatrix());
+        final var biasMatrix2 = new Matrix(3, 1);
+        calibrator.getInitialBiasAsMatrix(biasMatrix2);
+        assertEquals(ba, biasMatrix2);
+        assertEquals(ma, calibrator.getInitialMa());
+        final var ma2 = new Matrix(3, 3);
+        calibrator.getInitialMa(ma2);
+        assertEquals(ma, ma2);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(AccelerometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_KINEMATICS,
+                calibrator.getMeasurementType());
+        assertTrue(calibrator.isOrderedMeasurementsRequired());
+        assertTrue(calibrator.isQualityScoresRequired());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertNull(calibrator.getListener());
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+                calibrator.getMinimumRequiredMeasurements());
+        assertFalse(calibrator.isReady());
+        assertFalse(calibrator.isRunning());
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
+        assertNull(calibrator.getInliersData());
+        assertTrue(calibrator.isResultRefined());
+        assertTrue(calibrator.isCovarianceKept());
+        assertNull(calibrator.getQualityScores());
+        assertNull(calibrator.getEstimatedBiases());
+        assertFalse(calibrator.getEstimatedBiases(null));
+        assertNull(calibrator.getEstimatedBiasesAsMatrix());
+        assertFalse(calibrator.getEstimatedBiasesAsMatrix(null));
+        assertNull(calibrator.getEstimatedBiasFx());
+        assertNull(calibrator.getEstimatedBiasFy());
+        assertNull(calibrator.getEstimatedBiasFz());
+        assertNull(calibrator.getEstimatedBiasFxAsAcceleration());
+        assertFalse(calibrator.getEstimatedBiasFxAsAcceleration(null));
+        assertNull(calibrator.getEstimatedBiasFyAsAcceleration());
+        assertFalse(calibrator.getEstimatedBiasFyAsAcceleration(null));
+        assertNull(calibrator.getEstimatedBiasFzAsAcceleration());
+        assertFalse(calibrator.getEstimatedBiasFzAsAcceleration(null));
+        assertNull(calibrator.getEstimatedBiasAsTriad());
+        assertFalse(calibrator.getEstimatedBiasAsTriad(null));
+        assertNull(calibrator.getEstimatedMa());
+        assertNull(calibrator.getEstimatedSx());
+        assertNull(calibrator.getEstimatedSy());
+        assertNull(calibrator.getEstimatedSz());
+        assertNull(calibrator.getEstimatedMxy());
+        assertNull(calibrator.getEstimatedMxz());
+        assertNull(calibrator.getEstimatedMyx());
+        assertNull(calibrator.getEstimatedMyz());
+        assertNull(calibrator.getEstimatedMzx());
+        assertNull(calibrator.getEstimatedMzy());
+        assertNull(calibrator.getEstimatedCovariance());
+        assertNull(calibrator.getEstimatedBiasFxVariance());
+        assertNull(calibrator.getEstimatedBiasFxStandardDeviation());
+        assertNull(calibrator.getEstimatedBiasFxStandardDeviationAsAcceleration());
+        assertFalse(calibrator.getEstimatedBiasFxStandardDeviationAsAcceleration(null));
+        assertNull(calibrator.getEstimatedBiasFyVariance());
+        assertNull(calibrator.getEstimatedBiasFyStandardDeviation());
+        assertNull(calibrator.getEstimatedBiasFyStandardDeviationAsAcceleration());
+        assertFalse(calibrator.getEstimatedBiasFyStandardDeviationAsAcceleration(null));
+        assertNull(calibrator.getEstimatedBiasFzVariance());
+        assertNull(calibrator.getEstimatedBiasFzStandardDeviation());
+        assertNull(calibrator.getEstimatedBiasFzStandardDeviationAsAcceleration());
+        assertFalse(calibrator.getEstimatedBiasFzStandardDeviationAsAcceleration(null));
+        assertNull(calibrator.getEstimatedBiasStandardDeviation());
+        assertFalse(calibrator.getEstimatedBiasStandardDeviation(null));
+        assertNull(calibrator.getEstimatedBiasStandardDeviationAverage());
+        assertNull(calibrator.getEstimatedBiasStandardDeviationAverageAsAcceleration());
+        assertFalse(calibrator.getEstimatedBiasStandardDeviationAverageAsAcceleration(null));
+        assertNull(calibrator.getEstimatedBiasStandardDeviationNorm());
+        assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAcceleration());
+        assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAcceleration(null));
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+                calibrator.getPreliminarySubsetSize());
+        assertNotNull(calibrator.getGroundTruthGravityNorm());
+        assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
+        assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
+        assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
+                ABSOLUTE_ERROR));
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -3514,46 +3494,45 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor22() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor22() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final double gravityNorm = gravity.getNorm();
+        final var gravityNorm = gravity.getNorm();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final Matrix ma = generateMaGeneral();
-        final double sx = ma.getElementAt(0, 0);
-        final double sy = ma.getElementAt(1, 1);
-        final double sz = ma.getElementAt(2, 2);
-        final double mxy = ma.getElementAt(0, 1);
-        final double mxz = ma.getElementAt(0, 2);
-        final double myx = ma.getElementAt(1, 0);
-        final double myz = ma.getElementAt(1, 2);
-        final double mzx = ma.getElementAt(2, 0);
-        final double mzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var sx = ma.getElementAt(0, 0);
+        final var sy = ma.getElementAt(1, 1);
+        final var sz = ma.getElementAt(2, 2);
+        final var mxy = ma.getElementAt(0, 1);
+        final var mxz = ma.getElementAt(0, 2);
+        final var myx = ma.getElementAt(1, 0);
+        final var myz = ma.getElementAt(1, 2);
+        final var mzx = ma.getElementAt(2, 0);
+        final var mzy = ma.getElementAt(2, 1);
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements, ba, ma,
-                        this);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements, ba,
+                ma, this);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -3562,10 +3541,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -3580,12 +3559,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -3598,15 +3577,15 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(ma, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -3620,12 +3599,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -3683,7 +3662,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -3705,46 +3684,45 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor23() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor23() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final double gravityNorm = gravity.getNorm();
+        final var gravityNorm = gravity.getNorm();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final Matrix ma = generateMaGeneral();
-        final double sx = ma.getElementAt(0, 0);
-        final double sy = ma.getElementAt(1, 1);
-        final double sz = ma.getElementAt(2, 2);
-        final double mxy = ma.getElementAt(0, 1);
-        final double mxz = ma.getElementAt(0, 2);
-        final double myx = ma.getElementAt(1, 0);
-        final double myz = ma.getElementAt(1, 2);
-        final double mzx = ma.getElementAt(2, 0);
-        final double mzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var sx = ma.getElementAt(0, 0);
+        final var sy = ma.getElementAt(1, 1);
+        final var sz = ma.getElementAt(2, 2);
+        final var mxy = ma.getElementAt(0, 1);
+        final var mxz = ma.getElementAt(0, 2);
+        final var myx = ma.getElementAt(1, 0);
+        final var myz = ma.getElementAt(1, 2);
+        final var mzx = ma.getElementAt(2, 0);
+        final var mzy = ma.getElementAt(2, 1);
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements,
-                        true, ba, ma);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements,
+                true, ba, ma);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -3753,10 +3731,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -3771,12 +3749,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -3789,15 +3767,15 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(ma, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -3874,7 +3852,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -3896,42 +3874,41 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor24() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor24() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final double gravityNorm = gravity.getNorm();
+        final var gravityNorm = gravity.getNorm();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final Matrix ma = generateMaGeneral();
-        final double sx = ma.getElementAt(0, 0);
-        final double sy = ma.getElementAt(1, 1);
-        final double sz = ma.getElementAt(2, 2);
-        final double mxy = ma.getElementAt(0, 1);
-        final double mxz = ma.getElementAt(0, 2);
-        final double myx = ma.getElementAt(1, 0);
-        final double myz = ma.getElementAt(1, 2);
-        final double mzx = ma.getElementAt(2, 0);
-        final double mzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var sx = ma.getElementAt(0, 0);
+        final var sy = ma.getElementAt(1, 1);
+        final var sz = ma.getElementAt(2, 2);
+        final var mxy = ma.getElementAt(0, 1);
+        final var mxz = ma.getElementAt(0, 2);
+        final var myx = ma.getElementAt(1, 0);
+        final var myz = ma.getElementAt(1, 2);
+        final var mzx = ma.getElementAt(2, 0);
+        final var mzy = ma.getElementAt(2, 1);
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements,
-                        true, ba, ma, this);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements,
+                true, ba, ma, this);
 
         // check default values
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
@@ -3944,10 +3921,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -3962,12 +3939,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -3980,15 +3957,15 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(ma, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -4002,12 +3979,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -4063,9 +4040,9 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
-        assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration()
-                .equals(gravity.getNormAsAcceleration(), ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
+                ABSOLUTE_ERROR));
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -4087,26 +4064,25 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor25() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor25() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final Acceleration gravityNorm = gravity.getNormAsAcceleration();
+        final var gravityNorm = gravity.getNormAsAcceleration();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -4115,10 +4091,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -4133,12 +4109,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -4150,19 +4126,19 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertNull(calibrator.getMeasurements());
@@ -4176,12 +4152,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -4239,7 +4215,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -4247,24 +4223,23 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor26() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor26() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final Acceleration gravityNorm = gravity.getNormAsAcceleration();
+        final var gravityNorm = gravity.getNormAsAcceleration();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements);
 
         // check default values
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
@@ -4277,10 +4252,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -4295,12 +4270,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -4312,19 +4287,19 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -4338,12 +4313,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -4401,7 +4376,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -4409,28 +4384,28 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor27() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor27() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final Acceleration gravityNorm = gravity.getNormAsAcceleration();
+        final var gravityNorm = gravity.getNormAsAcceleration();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements, this);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements,
+                this);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -4439,10 +4414,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -4457,12 +4432,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -4474,19 +4449,19 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -4500,12 +4475,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -4563,7 +4538,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -4571,29 +4546,28 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor28() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor28() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final Acceleration gravityNorm = gravity.getNormAsAcceleration();
+        final var gravityNorm = gravity.getNormAsAcceleration();
 
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements,
-                        true);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements,
+                true);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -4602,10 +4576,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -4620,12 +4594,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -4637,19 +4611,19 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -4663,12 +4637,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -4726,7 +4700,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -4734,29 +4708,28 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor29() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor29() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final Acceleration gravityNorm = gravity.getNormAsAcceleration();
+        final var gravityNorm = gravity.getNormAsAcceleration();
 
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements,
-                        true, this);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements,
+                true, this);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -4765,10 +4738,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -4783,12 +4756,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -4800,19 +4773,19 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -4826,12 +4799,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -4889,7 +4862,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -4897,34 +4870,33 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor30() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor30() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final Acceleration gravityNorm = gravity.getNormAsAcceleration();
+        final var gravityNorm = gravity.getNormAsAcceleration();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements, bias);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements, bias);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -4933,10 +4905,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -4951,12 +4923,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -4969,16 +4941,16 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -4992,12 +4964,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -5055,7 +5027,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -5067,34 +5039,34 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor31() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor31() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final Acceleration gravityNorm = gravity.getNormAsAcceleration();
+        final var gravityNorm = gravity.getNormAsAcceleration();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements, bias, this);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements, bias,
+                this);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -5103,10 +5075,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -5121,12 +5093,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -5139,16 +5111,16 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -5162,8 +5134,8 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
         assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
                 calibrator.getConfidence(), 0.0);
         assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
@@ -5225,7 +5197,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -5237,35 +5209,34 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor32() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor32() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final Acceleration gravityNorm = gravity.getNormAsAcceleration();
+        final var gravityNorm = gravity.getNormAsAcceleration();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements, true,
-                        bias);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements,
+                true, bias);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -5274,10 +5245,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -5292,12 +5263,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -5310,16 +5281,16 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -5333,12 +5304,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -5396,7 +5367,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -5408,31 +5379,30 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor33() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor33() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final Acceleration gravityNorm = gravity.getNormAsAcceleration();
+        final var gravityNorm = gravity.getNormAsAcceleration();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements, true,
-                        bias, this);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements,
+                true, bias, this);
 
         // check default values
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
@@ -5445,10 +5415,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -5463,12 +5433,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -5481,16 +5451,16 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -5567,7 +5537,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -5579,30 +5549,29 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor34() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor34() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final Acceleration gravityNorm = gravity.getNormAsAcceleration();
+        final var gravityNorm = gravity.getNormAsAcceleration();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements, ba);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements, ba);
 
         // check default values
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
@@ -5615,10 +5584,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -5633,12 +5602,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -5651,16 +5620,16 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -5674,12 +5643,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -5736,7 +5705,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(), ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -5752,34 +5721,34 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor35() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor35() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final Acceleration gravityNorm = gravity.getNormAsAcceleration();
+        final var gravityNorm = gravity.getNormAsAcceleration();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements, ba, this);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements, ba,
+                this);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -5788,10 +5757,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -5806,12 +5775,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -5824,16 +5793,16 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -5847,12 +5816,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -5910,7 +5879,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -5926,31 +5895,30 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor36() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor36() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final Acceleration gravityNorm = gravity.getNormAsAcceleration();
+        final var gravityNorm = gravity.getNormAsAcceleration();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements, true,
-                        ba);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements,
+                true, ba);
 
         // check default values
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
@@ -5963,10 +5931,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -5981,12 +5949,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -5999,16 +5967,16 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -6022,12 +5990,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -6085,7 +6053,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -6101,35 +6069,34 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor37() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor37() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final Acceleration gravityNorm = gravity.getNormAsAcceleration();
+        final var gravityNorm = gravity.getNormAsAcceleration();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements, true,
-                        ba, this);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements,
+                true, ba, this);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -6138,10 +6105,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -6156,12 +6123,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -6174,16 +6141,16 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -6197,12 +6164,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -6260,7 +6227,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -6276,45 +6243,45 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor38() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor38() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final Acceleration gravityNorm = gravity.getNormAsAcceleration();
+        final var gravityNorm = gravity.getNormAsAcceleration();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final Matrix ma = generateMaGeneral();
-        final double sx = ma.getElementAt(0, 0);
-        final double sy = ma.getElementAt(1, 1);
-        final double sz = ma.getElementAt(2, 2);
-        final double mxy = ma.getElementAt(0, 1);
-        final double mxz = ma.getElementAt(0, 2);
-        final double myx = ma.getElementAt(1, 0);
-        final double myz = ma.getElementAt(1, 2);
-        final double mzx = ma.getElementAt(2, 0);
-        final double mzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var sx = ma.getElementAt(0, 0);
+        final var sy = ma.getElementAt(1, 1);
+        final var sz = ma.getElementAt(2, 2);
+        final var mxy = ma.getElementAt(0, 1);
+        final var mxz = ma.getElementAt(0, 2);
+        final var myx = ma.getElementAt(1, 0);
+        final var myz = ma.getElementAt(1, 2);
+        final var mzx = ma.getElementAt(2, 0);
+        final var mzy = ma.getElementAt(2, 1);
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements, ba, ma);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements, ba,
+                ma);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -6323,10 +6290,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialBiasX(), bx, 0.0);
         assertEquals(calibrator.getInitialBiasY(), by, 0.0);
         assertEquals(calibrator.getInitialBiasZ(), bz, 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -6341,12 +6308,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -6359,15 +6326,15 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(ma, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -6381,12 +6348,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -6444,7 +6411,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -6466,42 +6433,41 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor39() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor39() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final Acceleration gravityNorm = gravity.getNormAsAcceleration();
+        final var gravityNorm = gravity.getNormAsAcceleration();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final Matrix ma = generateMaGeneral();
-        final double sx = ma.getElementAt(0, 0);
-        final double sy = ma.getElementAt(1, 1);
-        final double sz = ma.getElementAt(2, 2);
-        final double mxy = ma.getElementAt(0, 1);
-        final double mxz = ma.getElementAt(0, 2);
-        final double myx = ma.getElementAt(1, 0);
-        final double myz = ma.getElementAt(1, 2);
-        final double mzx = ma.getElementAt(2, 0);
-        final double mzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var sx = ma.getElementAt(0, 0);
+        final var sy = ma.getElementAt(1, 1);
+        final var sz = ma.getElementAt(2, 2);
+        final var mxy = ma.getElementAt(0, 1);
+        final var mxz = ma.getElementAt(0, 2);
+        final var myx = ma.getElementAt(1, 0);
+        final var myz = ma.getElementAt(1, 2);
+        final var mzx = ma.getElementAt(2, 0);
+        final var mzy = ma.getElementAt(2, 1);
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements, ba, ma,
-                        this);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements, ba,
+                ma, this);
 
         // check default values
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
@@ -6514,10 +6480,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -6532,12 +6498,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -6550,15 +6516,15 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(ma, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -6572,12 +6538,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -6634,7 +6600,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(), ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -6656,46 +6622,45 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor40() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor40() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final Acceleration gravityNorm = gravity.getNormAsAcceleration();
+        final var gravityNorm = gravity.getNormAsAcceleration();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final Matrix ma = generateMaGeneral();
-        final double sx = ma.getElementAt(0, 0);
-        final double sy = ma.getElementAt(1, 1);
-        final double sz = ma.getElementAt(2, 2);
-        final double mxy = ma.getElementAt(0, 1);
-        final double mxz = ma.getElementAt(0, 2);
-        final double myx = ma.getElementAt(1, 0);
-        final double myz = ma.getElementAt(1, 2);
-        final double mzx = ma.getElementAt(2, 0);
-        final double mzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var sx = ma.getElementAt(0, 0);
+        final var sy = ma.getElementAt(1, 1);
+        final var sz = ma.getElementAt(2, 2);
+        final var mxy = ma.getElementAt(0, 1);
+        final var mxz = ma.getElementAt(0, 2);
+        final var myx = ma.getElementAt(1, 0);
+        final var myz = ma.getElementAt(1, 2);
+        final var mzx = ma.getElementAt(2, 0);
+        final var mzy = ma.getElementAt(2, 1);
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm,
-                        measurements, true, ba, ma);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements,
+                true, ba, ma);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -6704,10 +6669,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -6722,12 +6687,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -6740,15 +6705,15 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(ma, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -6762,12 +6727,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -6825,7 +6790,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -6847,42 +6812,41 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor41() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor41() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final Acceleration gravityNorm = gravity.getNormAsAcceleration();
+        final var gravityNorm = gravity.getNormAsAcceleration();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final Matrix ma = generateMaGeneral();
-        final double sx = ma.getElementAt(0, 0);
-        final double sy = ma.getElementAt(1, 1);
-        final double sz = ma.getElementAt(2, 2);
-        final double mxy = ma.getElementAt(0, 1);
-        final double mxz = ma.getElementAt(0, 2);
-        final double myx = ma.getElementAt(1, 0);
-        final double myz = ma.getElementAt(1, 2);
-        final double mzx = ma.getElementAt(2, 0);
-        final double mzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var sx = ma.getElementAt(0, 0);
+        final var sy = ma.getElementAt(1, 1);
+        final var sz = ma.getElementAt(2, 2);
+        final var mxy = ma.getElementAt(0, 1);
+        final var mxz = ma.getElementAt(0, 2);
+        final var myx = ma.getElementAt(1, 0);
+        final var myz = ma.getElementAt(1, 2);
+        final var mzx = ma.getElementAt(2, 0);
+        final var mzy = ma.getElementAt(2, 1);
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements, true,
-                        ba, ma, this);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(gravityNorm, measurements,
+                true, ba, ma, this);
 
         // check default values
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
@@ -6895,10 +6859,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -6913,12 +6877,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -6931,15 +6895,15 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(ma, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -6953,12 +6917,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -7016,7 +6980,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -7038,30 +7002,30 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor42() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor42() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final double gravityNorm = gravity.getNorm();
+        final var gravityNorm = gravity.getNorm();
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, measurements);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm,
+                measurements);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -7070,10 +7034,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -7088,12 +7052,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -7105,19 +7069,19 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -7131,12 +7095,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -7194,7 +7158,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -7206,31 +7170,30 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor43() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor43() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final double gravityNorm = gravity.getNorm();
+        final var gravityNorm = gravity.getNorm();
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, measurements,
-                        this);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm,
+                measurements, this);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -7239,10 +7202,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -7257,12 +7220,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -7274,19 +7237,19 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -7300,12 +7263,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -7363,7 +7326,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -7375,31 +7338,30 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor44() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor44() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final double gravityNorm = gravity.getNorm();
+        final var gravityNorm = gravity.getNorm();
 
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, measurements,
-                        true);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm,
+                measurements, true);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -7408,10 +7370,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -7426,12 +7388,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -7443,19 +7405,19 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -7469,12 +7431,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -7532,7 +7494,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -7544,31 +7506,30 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor45() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor45() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final double gravityNorm = gravity.getNorm();
+        final var gravityNorm = gravity.getNorm();
 
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, measurements,
-                        true, this);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm,
+                measurements, true, this);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -7577,10 +7538,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -7595,12 +7556,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -7612,19 +7573,19 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -7638,12 +7599,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -7701,7 +7662,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -7713,36 +7674,36 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor46() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor46() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final double gravityNorm = gravity.getNorm();
+        final var gravityNorm = gravity.getNorm();
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, measurements, bias);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm,
+                measurements, bias);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -7751,10 +7712,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -7769,12 +7730,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -7787,16 +7748,16 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -7810,12 +7771,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -7873,7 +7834,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -7887,37 +7848,36 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor47() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor47() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final double gravityNorm = gravity.getNorm();
+        final var gravityNorm = gravity.getNorm();
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, measurements, bias,
-                        this);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm,
+                measurements, bias, this);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -7926,10 +7886,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -7944,12 +7904,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -7962,16 +7922,16 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -7985,12 +7945,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -8048,7 +8008,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -8062,37 +8022,36 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor48() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor48() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final double gravityNorm = gravity.getNorm();
+        final var gravityNorm = gravity.getNorm();
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, measurements,
-                        true, bias);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm,
+                measurements, true, bias);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -8101,10 +8060,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -8119,12 +8078,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -8137,16 +8096,16 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -8160,12 +8119,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -8223,7 +8182,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -8237,37 +8196,36 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor49() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor49() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final double gravityNorm = gravity.getNorm();
+        final var gravityNorm = gravity.getNorm();
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, measurements,
-                        true, bias, this);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm,
+                measurements, true, bias, this);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -8276,10 +8234,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -8294,12 +8252,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -8312,16 +8270,16 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -8335,12 +8293,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -8398,7 +8356,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -8413,36 +8371,36 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor50() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor50() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final double gravityNorm = gravity.getNorm();
+        final var gravityNorm = gravity.getNorm();
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, measurements, ba);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm,
+                measurements, ba);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -8451,10 +8409,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -8469,12 +8427,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -8487,16 +8445,16 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -8510,12 +8468,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -8573,7 +8531,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -8591,37 +8549,36 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor51() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor51() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final double gravityNorm = gravity.getNorm();
+        final var gravityNorm = gravity.getNorm();
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, measurements, ba,
-                        this);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm,
+                measurements, ba, this);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -8630,10 +8587,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -8648,12 +8605,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -8666,16 +8623,16 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -8689,12 +8646,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -8752,7 +8709,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -8770,37 +8727,36 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor52() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor52() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final double gravityNorm = gravity.getNorm();
+        final var gravityNorm = gravity.getNorm();
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, measurements,
-                        true, ba);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm,
+                measurements, true, ba);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -8809,10 +8765,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -8827,12 +8783,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -8845,16 +8801,16 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -8868,12 +8824,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -8931,7 +8887,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -8949,37 +8905,36 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor53() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor53() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final double gravityNorm = gravity.getNorm();
+        final var gravityNorm = gravity.getNorm();
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, measurements,
-                        true, ba, this);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm,
+                measurements, true, ba, this);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -8988,10 +8943,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -9006,12 +8961,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -9024,16 +8979,16 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -9047,12 +9002,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -9110,7 +9065,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -9128,48 +9083,47 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor54() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor54() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final double gravityNorm = gravity.getNorm();
+        final var gravityNorm = gravity.getNorm();
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final Matrix ma = generateMaGeneral();
-        final double sx = ma.getElementAt(0, 0);
-        final double sy = ma.getElementAt(1, 1);
-        final double sz = ma.getElementAt(2, 2);
-        final double mxy = ma.getElementAt(0, 1);
-        final double mxz = ma.getElementAt(0, 2);
-        final double myx = ma.getElementAt(1, 0);
-        final double myz = ma.getElementAt(1, 2);
-        final double mzx = ma.getElementAt(2, 0);
-        final double mzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var sx = ma.getElementAt(0, 0);
+        final var sy = ma.getElementAt(1, 1);
+        final var sz = ma.getElementAt(2, 2);
+        final var mxy = ma.getElementAt(0, 1);
+        final var mxz = ma.getElementAt(0, 2);
+        final var myx = ma.getElementAt(1, 0);
+        final var myz = ma.getElementAt(1, 2);
+        final var mzx = ma.getElementAt(2, 0);
+        final var mzy = ma.getElementAt(2, 1);
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, measurements, ba,
-                        ma);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm,
+                measurements, ba, ma);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -9178,10 +9132,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -9196,12 +9150,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -9214,15 +9168,15 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(calibrator.getInitialMzy(), mzy, 0.0);
         assertArrayEquals(calibrator.getInitialBias(), bias, 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(calibrator.getInitialBiasAsMatrix(), ba);
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(ma, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -9236,12 +9190,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -9299,7 +9253,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -9323,48 +9277,47 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor55() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor55() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final double gravityNorm = gravity.getNorm();
+        final var gravityNorm = gravity.getNorm();
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final Matrix ma = generateMaGeneral();
-        final double sx = ma.getElementAt(0, 0);
-        final double sy = ma.getElementAt(1, 1);
-        final double sz = ma.getElementAt(2, 2);
-        final double mxy = ma.getElementAt(0, 1);
-        final double mxz = ma.getElementAt(0, 2);
-        final double myx = ma.getElementAt(1, 0);
-        final double myz = ma.getElementAt(1, 2);
-        final double mzx = ma.getElementAt(2, 0);
-        final double mzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var sx = ma.getElementAt(0, 0);
+        final var sy = ma.getElementAt(1, 1);
+        final var sz = ma.getElementAt(2, 2);
+        final var mxy = ma.getElementAt(0, 1);
+        final var mxz = ma.getElementAt(0, 2);
+        final var myx = ma.getElementAt(1, 0);
+        final var myz = ma.getElementAt(1, 2);
+        final var mzx = ma.getElementAt(2, 0);
+        final var mzy = ma.getElementAt(2, 1);
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, measurements, ba,
-                        ma, this);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm,
+                measurements, ba, ma, this);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -9373,10 +9326,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -9391,12 +9344,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -9409,15 +9362,15 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(ma, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -9431,12 +9384,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -9494,7 +9447,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -9518,48 +9471,47 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor56() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor56() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final double gravityNorm = gravity.getNorm();
+        final var gravityNorm = gravity.getNorm();
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final Matrix ma = generateMaGeneral();
-        final double sx = ma.getElementAt(0, 0);
-        final double sy = ma.getElementAt(1, 1);
-        final double sz = ma.getElementAt(2, 2);
-        final double mxy = ma.getElementAt(0, 1);
-        final double mxz = ma.getElementAt(0, 2);
-        final double myx = ma.getElementAt(1, 0);
-        final double myz = ma.getElementAt(1, 2);
-        final double mzx = ma.getElementAt(2, 0);
-        final double mzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var sx = ma.getElementAt(0, 0);
+        final var sy = ma.getElementAt(1, 1);
+        final var sz = ma.getElementAt(2, 2);
+        final var mxy = ma.getElementAt(0, 1);
+        final var mxz = ma.getElementAt(0, 2);
+        final var myx = ma.getElementAt(1, 0);
+        final var myz = ma.getElementAt(1, 2);
+        final var mzx = ma.getElementAt(2, 0);
+        final var mzy = ma.getElementAt(2, 1);
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, measurements,
-                        true, ba, ma);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm,
+                measurements, true, ba, ma);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -9568,10 +9520,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -9586,12 +9538,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -9604,15 +9556,15 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(ma, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -9626,12 +9578,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -9689,7 +9641,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration()
                 .equals(gravity.getNormAsAcceleration(), ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -9713,48 +9665,47 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor57() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor57() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final double gravityNorm = gravity.getNorm();
+        final var gravityNorm = gravity.getNorm();
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final Matrix ma = generateMaGeneral();
-        final double sx = ma.getElementAt(0, 0);
-        final double sy = ma.getElementAt(1, 1);
-        final double sz = ma.getElementAt(2, 2);
-        final double mxy = ma.getElementAt(0, 1);
-        final double mxz = ma.getElementAt(0, 2);
-        final double myx = ma.getElementAt(1, 0);
-        final double myz = ma.getElementAt(1, 2);
-        final double mzx = ma.getElementAt(2, 0);
-        final double mzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var sx = ma.getElementAt(0, 0);
+        final var sy = ma.getElementAt(1, 1);
+        final var sz = ma.getElementAt(2, 2);
+        final var mxy = ma.getElementAt(0, 1);
+        final var mxz = ma.getElementAt(0, 2);
+        final var myx = ma.getElementAt(1, 0);
+        final var myz = ma.getElementAt(1, 2);
+        final var mzx = ma.getElementAt(2, 0);
+        final var mzy = ma.getElementAt(2, 1);
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, measurements,
-                        true, ba, ma, this);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm,
+                measurements, true, ba, ma, this);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -9763,10 +9714,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -9781,12 +9732,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -9799,15 +9750,15 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(ma, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -9821,12 +9772,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -9884,7 +9835,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -9908,28 +9859,27 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor58() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor58() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final Acceleration gravityNorm = gravity.getNormAsAcceleration();
+        final var gravityNorm = gravity.getNormAsAcceleration();
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -9938,10 +9888,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -9956,12 +9906,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -9973,19 +9923,19 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertNull(calibrator.getMeasurements());
@@ -9999,12 +9949,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -10062,7 +10012,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -10074,30 +10024,30 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor59() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor59() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final Acceleration gravityNorm = gravity.getNormAsAcceleration();
+        final var gravityNorm = gravity.getNormAsAcceleration();
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, measurements);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm,
+                measurements);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -10106,10 +10056,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -10124,12 +10074,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -10141,19 +10091,19 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -10167,12 +10117,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -10230,7 +10180,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -10242,31 +10192,30 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor60() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor60() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final Acceleration gravityNorm = gravity.getNormAsAcceleration();
+        final var gravityNorm = gravity.getNormAsAcceleration();
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, measurements,
-                        this);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm,
+                measurements, this);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -10275,10 +10224,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -10293,12 +10242,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -10310,19 +10259,19 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -10336,12 +10285,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -10399,7 +10348,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -10411,31 +10360,30 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor61() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor61() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final Acceleration gravityNorm = gravity.getNormAsAcceleration();
+        final var gravityNorm = gravity.getNormAsAcceleration();
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, measurements,
-                        true);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm,
+                measurements, true);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -10444,10 +10392,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -10462,12 +10410,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -10479,19 +10427,19 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -10505,12 +10453,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -10568,7 +10516,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -10580,31 +10528,30 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor62() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+    void testConstructor62() throws WrongSizeException {
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final Acceleration gravityNorm = gravity.getNormAsAcceleration();
+        final var gravityNorm = gravity.getNormAsAcceleration();
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, measurements,
-                        true, this);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm,
+                measurements, true, this);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -10613,10 +10560,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -10631,12 +10578,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(0.0, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(0.0, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -10648,19 +10595,19 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
-        final double[] bias1 = new double[3];
+        final var bias1 = new double[3];
         assertArrayEquals(bias1, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        final Matrix biasMatrix1 = new Matrix(3, 1);
+        final var biasMatrix1 = new Matrix(3, 1);
         assertEquals(biasMatrix1, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -10674,12 +10621,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -10730,14 +10677,14 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNull(calibrator.getEstimatedBiasStandardDeviationNorm());
         assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAcceleration());
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAcceleration(null));
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL, 
                 calibrator.getPreliminarySubsetSize());
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -10749,36 +10696,36 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor63() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor63() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final Acceleration gravityNorm = gravity.getNormAsAcceleration();
+        final var gravityNorm = gravity.getNormAsAcceleration();
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, measurements, bias);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, 
+                measurements, bias);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -10787,10 +10734,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -10805,12 +10752,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -10823,16 +10770,16 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -10846,12 +10793,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -10909,7 +10856,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -10923,37 +10870,36 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor64() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor64() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final Acceleration gravityNorm = gravity.getNormAsAcceleration();
+        final var gravityNorm = gravity.getNormAsAcceleration();
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, measurements, bias,
-                        this);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, 
+                measurements, bias, this);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -10962,10 +10908,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -10980,12 +10926,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -10998,35 +10944,35 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(AccelerometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_KINEMATICS,
+        assertEquals(AccelerometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_KINEMATICS, 
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
         assertFalse(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL, 
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -11084,7 +11030,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -11098,37 +11044,36 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor65() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor65() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final Acceleration gravityNorm = gravity.getNormAsAcceleration();
+        final var gravityNorm = gravity.getNormAsAcceleration();
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, measurements,
-                        true, bias);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, 
+                measurements, true, bias);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -11137,10 +11082,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -11155,12 +11100,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -11173,16 +11118,16 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -11196,12 +11141,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -11252,14 +11197,14 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNull(calibrator.getEstimatedBiasStandardDeviationNorm());
         assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAcceleration());
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAcceleration(null));
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL, 
                 calibrator.getPreliminarySubsetSize());
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -11273,37 +11218,36 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor66() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor66() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final Acceleration gravityNorm = gravity.getNormAsAcceleration();
+        final var gravityNorm = gravity.getNormAsAcceleration();
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, measurements,
-                        true, bias, this);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, 
+                measurements, true, bias, this);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -11312,10 +11256,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -11330,12 +11274,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -11348,20 +11292,20 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(AccelerometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_KINEMATICS,
+        assertEquals(AccelerometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_KINEMATICS, 
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
@@ -11371,12 +11315,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -11434,7 +11378,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -11448,36 +11392,36 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor67() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor67() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final Acceleration gravityNorm = gravity.getNormAsAcceleration();
+        final var gravityNorm = gravity.getNormAsAcceleration();
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, measurements, ba);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, 
+                measurements, ba);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -11486,10 +11430,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -11504,12 +11448,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -11522,16 +11466,16 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -11545,12 +11489,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -11608,7 +11552,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -11626,37 +11570,36 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor68() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor68() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final Acceleration gravityNorm = gravity.getNormAsAcceleration();
+        final var gravityNorm = gravity.getNormAsAcceleration();
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, measurements, ba,
-                        this);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, 
+                measurements, ba, this);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -11665,10 +11608,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -11683,12 +11626,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -11701,16 +11644,16 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -11724,12 +11667,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -11780,14 +11723,14 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNull(calibrator.getEstimatedBiasStandardDeviationNorm());
         assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAcceleration());
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAcceleration(null));
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL, 
                 calibrator.getPreliminarySubsetSize());
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -11805,37 +11748,36 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor69() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor69() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final Acceleration gravityNorm = gravity.getNormAsAcceleration();
+        final var gravityNorm = gravity.getNormAsAcceleration();
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, measurements,
-                        true, ba);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, 
+                measurements, true, ba);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -11844,10 +11786,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -11862,12 +11804,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -11880,16 +11822,16 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -11903,12 +11845,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -11966,7 +11908,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -11984,37 +11926,36 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor70() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor70() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final Acceleration gravityNorm = gravity.getNormAsAcceleration();
+        final var gravityNorm = gravity.getNormAsAcceleration();
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, measurements,
-                        true, ba, this);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, 
+                measurements, true, ba, this);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -12023,10 +11964,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -12041,12 +11982,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -12059,20 +12000,20 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        final Matrix ma1 = new Matrix(3, 3);
+        final var ma1 = new Matrix(3, 3);
         assertEquals(ma1, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(measurements, calibrator.getMeasurements());
-        assertEquals(AccelerometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_KINEMATICS,
+        assertEquals(AccelerometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_KINEMATICS, 
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
@@ -12082,12 +12023,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -12145,7 +12086,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -12163,48 +12104,47 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor71() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor71() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final Acceleration gravityNorm = gravity.getNormAsAcceleration();
+        final var gravityNorm = gravity.getNormAsAcceleration();
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final Matrix ma = generateMaGeneral();
-        final double sx = ma.getElementAt(0, 0);
-        final double sy = ma.getElementAt(1, 1);
-        final double sz = ma.getElementAt(2, 2);
-        final double mxy = ma.getElementAt(0, 1);
-        final double mxz = ma.getElementAt(0, 2);
-        final double myx = ma.getElementAt(1, 0);
-        final double myz = ma.getElementAt(1, 2);
-        final double mzx = ma.getElementAt(2, 0);
-        final double mzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var sx = ma.getElementAt(0, 0);
+        final var sy = ma.getElementAt(1, 1);
+        final var sz = ma.getElementAt(2, 2);
+        final var mxy = ma.getElementAt(0, 1);
+        final var mxz = ma.getElementAt(0, 2);
+        final var myx = ma.getElementAt(1, 0);
+        final var myz = ma.getElementAt(1, 2);
+        final var mzx = ma.getElementAt(2, 0);
+        final var mzy = ma.getElementAt(2, 1);
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, measurements, ba,
-                        ma);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, 
+                measurements, ba, ma);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -12213,10 +12153,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -12231,12 +12171,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -12249,15 +12189,15 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(ma, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -12271,12 +12211,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -12334,7 +12274,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -12358,48 +12298,47 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor72() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor72() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final Acceleration gravityNorm = gravity.getNormAsAcceleration();
+        final var gravityNorm = gravity.getNormAsAcceleration();
 
-        final double[] qualityScores = new double[13];
+        final var qualityScores = new double[13];
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final Matrix ma = generateMaGeneral();
-        final double sx = ma.getElementAt(0, 0);
-        final double sy = ma.getElementAt(1, 1);
-        final double sz = ma.getElementAt(2, 2);
-        final double mxy = ma.getElementAt(0, 1);
-        final double mxz = ma.getElementAt(0, 2);
-        final double myx = ma.getElementAt(1, 0);
-        final double myz = ma.getElementAt(1, 2);
-        final double mzx = ma.getElementAt(2, 0);
-        final double mzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var sx = ma.getElementAt(0, 0);
+        final var sy = ma.getElementAt(1, 1);
+        final var sz = ma.getElementAt(2, 2);
+        final var mxy = ma.getElementAt(0, 1);
+        final var mxz = ma.getElementAt(0, 2);
+        final var myx = ma.getElementAt(1, 0);
+        final var myz = ma.getElementAt(1, 2);
+        final var mzx = ma.getElementAt(2, 0);
+        final var mzy = ma.getElementAt(2, 1);
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, measurements, ba,
-                        ma, this);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, 
+                measurements, ba, ma, this);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -12408,10 +12347,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -12426,12 +12365,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -12444,15 +12383,15 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(ma, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -12466,12 +12405,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -12529,7 +12468,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -12553,48 +12492,47 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor73() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor73() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final Acceleration gravityNorm = gravity.getNormAsAcceleration();
+        final var gravityNorm = gravity.getNormAsAcceleration();
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final Matrix ma = generateMaGeneral();
-        final double sx = ma.getElementAt(0, 0);
-        final double sy = ma.getElementAt(1, 1);
-        final double sz = ma.getElementAt(2, 2);
-        final double mxy = ma.getElementAt(0, 1);
-        final double mxz = ma.getElementAt(0, 2);
-        final double myx = ma.getElementAt(1, 0);
-        final double myz = ma.getElementAt(1, 2);
-        final double mzx = ma.getElementAt(2, 0);
-        final double mzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var sx = ma.getElementAt(0, 0);
+        final var sy = ma.getElementAt(1, 1);
+        final var sz = ma.getElementAt(2, 2);
+        final var mxy = ma.getElementAt(0, 1);
+        final var mxz = ma.getElementAt(0, 2);
+        final var myx = ma.getElementAt(1, 0);
+        final var myz = ma.getElementAt(1, 2);
+        final var mzx = ma.getElementAt(2, 0);
+        final var mzy = ma.getElementAt(2, 1);
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, measurements,
-                        true, ba, ma);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, 
+                measurements, true, ba, ma);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -12603,10 +12541,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -12621,12 +12559,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -12639,15 +12577,15 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(ma, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -12661,12 +12599,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -12724,7 +12662,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -12748,48 +12686,47 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testConstructor74() throws WrongSizeException {
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+    void testConstructor74() throws WrongSizeException {
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final Acceleration gravityNorm = gravity.getNormAsAcceleration();
+        final var gravityNorm = gravity.getNormAsAcceleration();
 
-        final double[] qualityScores = new double[10];
+        final var qualityScores = new double[10];
 
-        final Matrix ba = generateBa();
-        final double bx = ba.getElementAtIndex(0);
-        final double by = ba.getElementAtIndex(1);
-        final double bz = ba.getElementAtIndex(2);
-        final double[] bias = ba.getBuffer();
+        final var ba = generateBa();
+        final var bx = ba.getElementAtIndex(0);
+        final var by = ba.getElementAtIndex(1);
+        final var bz = ba.getElementAtIndex(2);
+        final var bias = ba.getBuffer();
 
-        final Matrix ma = generateMaGeneral();
-        final double sx = ma.getElementAt(0, 0);
-        final double sy = ma.getElementAt(1, 1);
-        final double sz = ma.getElementAt(2, 2);
-        final double mxy = ma.getElementAt(0, 1);
-        final double mxz = ma.getElementAt(0, 2);
-        final double myx = ma.getElementAt(1, 0);
-        final double myz = ma.getElementAt(1, 2);
-        final double mzx = ma.getElementAt(2, 0);
-        final double mzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var sx = ma.getElementAt(0, 0);
+        final var sy = ma.getElementAt(1, 1);
+        final var sz = ma.getElementAt(2, 2);
+        final var mxy = ma.getElementAt(0, 1);
+        final var mxz = ma.getElementAt(0, 2);
+        final var myx = ma.getElementAt(1, 0);
+        final var myz = ma.getElementAt(1, 2);
+        final var mzx = ma.getElementAt(2, 0);
+        final var mzy = ma.getElementAt(2, 1);
 
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, measurements,
-                        true, ba, ma, this);
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravityNorm, 
+                measurements, true, ba, ma, this);
 
         // check default values
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
                 calibrator.isComputeAndKeepInliersEnabled());
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
@@ -12798,10 +12735,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(bx, calibrator.getInitialBiasX(), 0.0);
         assertEquals(by, calibrator.getInitialBiasY(), 0.0);
         assertEquals(bz, calibrator.getInitialBiasZ(), 0.0);
-        Acceleration acceleration1 = calibrator.getInitialBiasXAsAcceleration();
+        var acceleration1 = calibrator.getInitialBiasXAsAcceleration();
         assertEquals(bx, acceleration1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
-        Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        var acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
         acceleration1 = calibrator.getInitialBiasYAsAcceleration();
@@ -12816,12 +12753,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        final AccelerationTriad initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
+        final var initialBiasTriad1 = calibrator.getInitialBiasAsTriad();
         assertEquals(bx, initialBiasTriad1.getValueX(), 0.0);
         assertEquals(by, initialBiasTriad1.getValueY(), 0.0);
         assertEquals(bz, initialBiasTriad1.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, initialBiasTriad1.getUnit());
-        final AccelerationTriad initialBiasTriad2 = new AccelerationTriad();
+        final var initialBiasTriad2 = new AccelerationTriad();
         calibrator.getInitialBiasAsTriad(initialBiasTriad2);
         assertEquals(initialBiasTriad1, initialBiasTriad2);
         assertEquals(sx, calibrator.getInitialSx(), 0.0);
@@ -12834,15 +12771,15 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
         assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
         assertArrayEquals(bias, calibrator.getInitialBias(), 0.0);
-        final double[] bias2 = new double[3];
+        final var bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(ba, calibrator.getInitialBiasAsMatrix());
-        final Matrix biasMatrix2 = new Matrix(3, 1);
+        final var biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(ma, calibrator.getInitialMa());
-        final Matrix ma2 = new Matrix(3, 3);
+        final var ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertSame(measurements, calibrator.getMeasurements());
@@ -12856,12 +12793,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                calibrator.getProgressDelta(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE,
-                calibrator.getConfidence(), 0.0);
-        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS,
-                calibrator.getMaxIterations(), 0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA, calibrator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
+                0.0);
+        assertEquals(RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, calibrator.getMaxIterations(),
+                0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -12919,7 +12856,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration().equals(gravity.getNormAsAcceleration(),
                 ABSOLUTE_ERROR));
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertTrue(gravity.getNormAsAcceleration().equals(g, ABSOLUTE_ERROR));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
@@ -12943,13 +12880,12 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testGetSetThreshold() throws LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testGetSetThreshold() throws LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default value
-        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD,
-                calibrator.getThreshold(), 0.0);
+        assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.DEFAULT_THRESHOLD, calibrator.getThreshold(),
+                0.0);
 
         // set new value
         calibrator.setThreshold(0.1);
@@ -12962,9 +12898,8 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testIsSetComputeAndKeepInliersEnabled() throws LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testIsSetComputeAndKeepInliersEnabled() throws LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default value
         assertFalse(calibrator.isComputeAndKeepInliersEnabled());
@@ -12977,9 +12912,8 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testIsSetComputeAndKeepResidualsEnabled() throws LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testIsSetComputeAndKeepResidualsEnabled() throws LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default value
         assertFalse(calibrator.isComputeAndKeepResiduals());
@@ -12992,16 +12926,15 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testGetSetInitialBiasX() throws LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testGetSetInitialBiasX() throws LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
 
         // set new value
-        final Matrix ba = generateBa();
-        final double biasX = ba.getElementAtIndex(0);
+        final var ba = generateBa();
+        final var biasX = ba.getElementAtIndex(0);
 
         calibrator.setInitialBiasX(biasX);
 
@@ -13010,16 +12943,15 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testGetSetInitialBiasY() throws LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testGetSetInitialBiasY() throws LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialBiasY(), 0.0);
 
         // set new value
-        final Matrix ba = generateBa();
-        final double biasY = ba.getElementAtIndex(1);
+        final var ba = generateBa();
+        final var biasY = ba.getElementAtIndex(1);
 
         calibrator.setInitialBiasY(biasY);
 
@@ -13028,16 +12960,15 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testGetSetInitialBiasZ() throws LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testGetSetInitialBiasZ() throws LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
 
         // set new value
-        final Matrix ba = generateBa();
-        final double biasZ = ba.getElementAtIndex(2);
+        final var ba = generateBa();
+        final var biasZ = ba.getElementAtIndex(2);
 
         calibrator.setInitialBiasZ(biasZ);
 
@@ -13046,26 +12977,25 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testGetSetInitialBiasXAsAcceleration() throws LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testGetSetInitialBiasXAsAcceleration() throws LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default value
-        final Acceleration biasX1 = calibrator.getInitialBiasXAsAcceleration();
+        final var biasX1 = calibrator.getInitialBiasXAsAcceleration();
 
         assertEquals(0.0, biasX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasX1.getUnit());
 
         // set new value
-        final Matrix ba = generateBa();
-        final double biasX = ba.getElementAtIndex(0);
+        final var ba = generateBa();
+        final var biasX = ba.getElementAtIndex(0);
 
-        final Acceleration biasX2 = new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var biasX2 = new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.setInitialBiasX(biasX2);
 
         // check
-        final Acceleration biasX3 = calibrator.getInitialBiasXAsAcceleration();
-        final Acceleration biasX4 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var biasX3 = calibrator.getInitialBiasXAsAcceleration();
+        final var biasX4 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasXAsAcceleration(biasX4);
 
         assertEquals(biasX2, biasX3);
@@ -13073,26 +13003,25 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testGetSetInitialBiasYAsAcceleration() throws LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testGetSetInitialBiasYAsAcceleration() throws LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default value
-        final Acceleration biasY1 = calibrator.getInitialBiasYAsAcceleration();
+        final var biasY1 = calibrator.getInitialBiasYAsAcceleration();
 
         assertEquals(0.0, biasY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasY1.getUnit());
 
         // set new value
-        final Matrix ba = generateBa();
-        final double biasY = ba.getElementAtIndex(1);
+        final var ba = generateBa();
+        final var biasY = ba.getElementAtIndex(1);
 
-        final Acceleration biasY2 = new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var biasY2 = new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.setInitialBiasY(biasY2);
 
         // check
-        final Acceleration biasY3 = calibrator.getInitialBiasYAsAcceleration();
-        final Acceleration biasY4 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var biasY3 = calibrator.getInitialBiasYAsAcceleration();
+        final var biasY4 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasYAsAcceleration(biasY4);
 
         assertEquals(biasY2, biasY3);
@@ -13100,26 +13029,25 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testGetSetInitialBiasZAsAcceleration() throws LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testGetSetInitialBiasZAsAcceleration() throws LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default value
-        final Acceleration biasZ1 = calibrator.getInitialBiasZAsAcceleration();
+        final var biasZ1 = calibrator.getInitialBiasZAsAcceleration();
 
         assertEquals(0.0, biasZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasZ1.getUnit());
 
         // set new value
-        final Matrix ba = generateBa();
-        final double biasZ = ba.getElementAtIndex(2);
+        final var ba = generateBa();
+        final var biasZ = ba.getElementAtIndex(2);
 
-        final Acceleration biasZ2 = new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var biasZ2 = new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.setInitialBiasZ(biasZ2);
 
         // check
-        final Acceleration biasZ3 = calibrator.getInitialBiasZAsAcceleration();
-        final Acceleration biasZ4 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var biasZ3 = calibrator.getInitialBiasZAsAcceleration();
+        final var biasZ4 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getInitialBiasZAsAcceleration(biasZ4);
 
         assertEquals(biasZ2, biasZ3);
@@ -13127,9 +13055,8 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testSetInitialBias1() throws LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testSetInitialBias1() throws LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
@@ -13137,10 +13064,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
 
         // set new value
-        final Matrix ba = generateBa();
-        final double biasX = ba.getElementAtIndex(0);
-        final double biasY = ba.getElementAtIndex(1);
-        final double biasZ = ba.getElementAtIndex(2);
+        final var ba = generateBa();
+        final var biasX = ba.getElementAtIndex(0);
+        final var biasY = ba.getElementAtIndex(1);
+        final var biasZ = ba.getElementAtIndex(2);
 
         calibrator.setInitialBias(biasX, biasY, biasZ);
 
@@ -13151,9 +13078,8 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testSetInitialBias2() throws LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testSetInitialBias2() throws LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getInitialBiasX(), 0.0);
@@ -13161,14 +13087,14 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialBiasZ(), 0.0);
 
         // set new value
-        final Matrix ba = generateBa();
-        final double biasX = ba.getElementAtIndex(0);
-        final double biasY = ba.getElementAtIndex(1);
-        final double biasZ = ba.getElementAtIndex(2);
+        final var ba = generateBa();
+        final var biasX = ba.getElementAtIndex(0);
+        final var biasY = ba.getElementAtIndex(1);
+        final var biasZ = ba.getElementAtIndex(2);
 
-        final Acceleration bax = new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration bay = new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration baz = new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var bax = new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var bay = new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var baz = new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
         calibrator.setInitialBias(bax, bay, baz);
 
@@ -13179,16 +13105,15 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testGetSetInitialSx() throws WrongSizeException, LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testGetSetInitialSx() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
 
         // set new value
-        final Matrix ma = generateMaGeneral();
-        final double initialSx = ma.getElementAt(0, 0);
+        final var ma = generateMaGeneral();
+        final var initialSx = ma.getElementAt(0, 0);
 
         calibrator.setInitialSx(initialSx);
 
@@ -13197,16 +13122,15 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testGetSetInitialSy() throws WrongSizeException, LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testGetSetInitialSy() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialSy(), 0.0);
 
         // set new value
-        final Matrix ma = generateMaGeneral();
-        final double initialSy = ma.getElementAt(1, 1);
+        final var ma = generateMaGeneral();
+        final var initialSy = ma.getElementAt(1, 1);
 
         calibrator.setInitialSy(initialSy);
 
@@ -13215,16 +13139,15 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testGetSetInitialSz() throws WrongSizeException, LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testGetSetInitialSz() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialSz(), 0.0);
 
         // set new value
-        final Matrix ma = generateMaGeneral();
-        final double initialSz = ma.getElementAt(2, 2);
+        final var ma = generateMaGeneral();
+        final var initialSz = ma.getElementAt(2, 2);
 
         calibrator.setInitialSz(initialSz);
 
@@ -13233,16 +13156,15 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testGetSetInitialMxy() throws WrongSizeException, LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testGetSetInitialMxy() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
 
         // set new value
-        final Matrix ma = generateMaGeneral();
-        final double initialMxy = ma.getElementAt(0, 1);
+        final var ma = generateMaGeneral();
+        final var initialMxy = ma.getElementAt(0, 1);
 
         calibrator.setInitialMxy(initialMxy);
 
@@ -13251,16 +13173,15 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testGetSetInitialMxz() throws WrongSizeException, LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testGetSetInitialMxz() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
 
         // set new value
-        final Matrix ma = generateMaGeneral();
-        final double initialMxz = ma.getElementAt(0, 2);
+        final var ma = generateMaGeneral();
+        final var initialMxz = ma.getElementAt(0, 2);
 
         calibrator.setInitialMxz(initialMxz);
 
@@ -13269,16 +13190,15 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testGetSetInitialMyx() throws WrongSizeException, LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testGetSetInitialMyx() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
 
         // set new value
-        final Matrix ma = generateMaGeneral();
-        final double initialMyx = ma.getElementAt(1, 0);
+        final var ma = generateMaGeneral();
+        final var initialMyx = ma.getElementAt(1, 0);
 
         calibrator.setInitialMyx(initialMyx);
 
@@ -13287,16 +13207,15 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testGetSetInitialMyz() throws WrongSizeException, LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testGetSetInitialMyz() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
 
         // set new value
-        final Matrix ma = generateMaGeneral();
-        final double initialMyz = ma.getElementAt(1, 2);
+        final var ma = generateMaGeneral();
+        final var initialMyz = ma.getElementAt(1, 2);
 
         calibrator.setInitialMyz(initialMyz);
 
@@ -13305,16 +13224,15 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testGetSetInitialMzx() throws WrongSizeException, LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testGetSetInitialMzx() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
 
         // set new value
-        final Matrix ma = generateMaGeneral();
-        final double initialMzx = ma.getElementAt(2, 0);
+        final var ma = generateMaGeneral();
+        final var initialMzx = ma.getElementAt(2, 0);
 
         calibrator.setInitialMzx(initialMzx);
 
@@ -13323,16 +13241,15 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testGetSetInitialMzy() throws WrongSizeException, LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testGetSetInitialMzy() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default value
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         // set new value
-        final Matrix ma = generateMaGeneral();
-        final double initialMzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var initialMzy = ma.getElementAt(2, 1);
 
         calibrator.setInitialMzy(initialMzy);
 
@@ -13341,9 +13258,8 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testGetSetInitialScalingFactors() throws WrongSizeException, LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testGetSetInitialScalingFactors() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -13351,10 +13267,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialSz(), 0.0);
 
         // set new values
-        final Matrix ma = generateMaGeneral();
-        final double initialSx = ma.getElementAt(0, 0);
-        final double initialSy = ma.getElementAt(1, 1);
-        final double initialSz = ma.getElementAt(2, 2);
+        final var ma = generateMaGeneral();
+        final var initialSx = ma.getElementAt(0, 0);
+        final var initialSy = ma.getElementAt(1, 1);
+        final var initialSz = ma.getElementAt(2, 2);
 
         calibrator.setInitialScalingFactors(initialSx, initialSy, initialSz);
 
@@ -13365,9 +13281,8 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testGetSetInitialCrossCouplingErrors() throws WrongSizeException, LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testGetSetInitialCrossCouplingErrors() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
@@ -13378,15 +13293,15 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         // set new values
-        final Matrix ma = generateMaGeneral();
-        final double initialMxy = ma.getElementAt(0, 1);
-        final double initialMxz = ma.getElementAt(0, 2);
-        final double initialMyx = ma.getElementAt(1, 0);
-        final double initialMyz = ma.getElementAt(1, 2);
-        final double initialMzx = ma.getElementAt(2, 0);
-        final double initialMzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var initialMxy = ma.getElementAt(0, 1);
+        final var initialMxz = ma.getElementAt(0, 2);
+        final var initialMyx = ma.getElementAt(1, 0);
+        final var initialMyz = ma.getElementAt(1, 2);
+        final var initialMzx = ma.getElementAt(2, 0);
+        final var initialMzy = ma.getElementAt(2, 1);
 
-        calibrator.setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx,
+        calibrator.setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx, 
                 initialMyz, initialMzx, initialMzy);
 
         // check
@@ -13399,9 +13314,8 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testSetInitialScalingFactorsAndCrossCouplingErrors() throws WrongSizeException, LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testSetInitialScalingFactorsAndCrossCouplingErrors() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default values
         assertEquals(0.0, calibrator.getInitialSx(), 0.0);
@@ -13415,16 +13329,16 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         // set new values
-        final Matrix ma = generateMaGeneral();
-        final double initialSx = ma.getElementAt(0, 0);
-        final double initialSy = ma.getElementAt(1, 1);
-        final double initialSz = ma.getElementAt(2, 2);
-        final double initialMxy = ma.getElementAt(0, 1);
-        final double initialMxz = ma.getElementAt(0, 2);
-        final double initialMyx = ma.getElementAt(1, 0);
-        final double initialMyz = ma.getElementAt(1, 2);
-        final double initialMzx = ma.getElementAt(2, 0);
-        final double initialMzy = ma.getElementAt(2, 1);
+        final var ma = generateMaGeneral();
+        final var initialSx = ma.getElementAt(0, 0);
+        final var initialSy = ma.getElementAt(1, 1);
+        final var initialSz = ma.getElementAt(2, 2);
+        final var initialMxy = ma.getElementAt(0, 1);
+        final var initialMxz = ma.getElementAt(0, 2);
+        final var initialMyx = ma.getElementAt(1, 0);
+        final var initialMyz = ma.getElementAt(1, 2);
+        final var initialMzx = ma.getElementAt(2, 0);
+        final var initialMzy = ma.getElementAt(2, 1);
 
         calibrator.setInitialScalingFactorsAndCrossCouplingErrors(initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
@@ -13442,21 +13356,20 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testGetSetInitialBias() throws LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testGetSetInitialBias() throws LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default value
-        final double[] bias1 = calibrator.getInitialBias();
-        assertArrayEquals(bias1, new double[3], 0.0);
+        final var bias1 = calibrator.getInitialBias();
+        assertArrayEquals(new double[3], bias1, 0.0);
 
         // set new value
-        final double[] bias2 = generateBa().getBuffer();
+        final var bias2 = generateBa().getBuffer();
         calibrator.setInitialBias(bias2);
 
         // check
-        final double[] bias3 = calibrator.getInitialBias();
-        final double[] bias4 = new double[3];
+        final var bias3 = calibrator.getInitialBias();
+        final var bias4 = new double[3];
         calibrator.getInitialBias(bias4);
 
         assertArrayEquals(bias2, bias3, 0.0);
@@ -13468,21 +13381,20 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testGetSetInitialBiasAsMatrix() throws LockedException, WrongSizeException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testGetSetInitialBiasAsMatrix() throws LockedException, WrongSizeException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default value
-        final Matrix bias1 = calibrator.getInitialBiasAsMatrix();
-        assertArrayEquals(bias1.getBuffer(), new double[3], 0.0);
+        final var bias1 = calibrator.getInitialBiasAsMatrix();
+        assertArrayEquals(new double[3], bias1.getBuffer(), 0.0);
 
         // set new values
-        final Matrix bias2 = generateBa();
+        final var bias2 = generateBa();
         calibrator.setInitialBias(bias2);
 
         // check
-        final Matrix bias3 = calibrator.getInitialBiasAsMatrix();
-        final Matrix bias4 = new Matrix(3, 1);
+        final var bias3 = calibrator.getInitialBiasAsMatrix();
+        final var bias4 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(bias4);
 
         assertEquals(bias2, bias3);
@@ -13500,31 +13412,30 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testGetSetInitialMa() throws WrongSizeException, LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testGetSetInitialMa() throws WrongSizeException, LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default value
-        final Matrix ma1 = calibrator.getInitialMa();
-        assertEquals(ma1, new Matrix(3, 3));
+        final var ma1 = calibrator.getInitialMa();
+        assertEquals(new Matrix(3, 3), ma1);
 
         // set new value
-        final Matrix ma2 = generateMaGeneral();
+        final var ma2 = generateMaGeneral();
         calibrator.setInitialMa(ma2);
 
-        final double initialSx = ma2.getElementAt(0, 0);
-        final double initialSy = ma2.getElementAt(1, 1);
-        final double initialSz = ma2.getElementAt(2, 2);
-        final double initialMxy = ma2.getElementAt(0, 1);
-        final double initialMxz = ma2.getElementAt(0, 2);
-        final double initialMyx = ma2.getElementAt(1, 0);
-        final double initialMyz = ma2.getElementAt(1, 2);
-        final double initialMzx = ma2.getElementAt(2, 0);
-        final double initialMzy = ma2.getElementAt(2, 1);
+        final var initialSx = ma2.getElementAt(0, 0);
+        final var initialSy = ma2.getElementAt(1, 1);
+        final var initialSz = ma2.getElementAt(2, 2);
+        final var initialMxy = ma2.getElementAt(0, 1);
+        final var initialMxz = ma2.getElementAt(0, 2);
+        final var initialMyx = ma2.getElementAt(1, 0);
+        final var initialMyz = ma2.getElementAt(1, 2);
+        final var initialMzx = ma2.getElementAt(2, 0);
+        final var initialMzy = ma2.getElementAt(2, 1);
 
         // check
-        final Matrix ma3 = calibrator.getInitialMa();
-        final Matrix ma4 = new Matrix(3, 3);
+        final var ma3 = calibrator.getInitialMa();
+        final var ma4 = new Matrix(3, 3);
         calibrator.getInitialMa(ma4);
 
         assertEquals(ma2, ma3);
@@ -13552,15 +13463,14 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testGetSetMeasurements() throws LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testGetSetMeasurements() throws LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default value
         assertNull(calibrator.getMeasurements());
 
         // set new value
-        final List<StandardDeviationBodyKinematics> measurements = Collections.emptyList();
+        final var measurements = Collections.<StandardDeviationBodyKinematics>emptyList();
         calibrator.setMeasurements(measurements);
 
         // check
@@ -13568,9 +13478,8 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testIsSetCommonAxisUsed() throws LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testIsSetCommonAxisUsed() throws LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default value
         assertFalse(calibrator.isCommonAxisUsed());
@@ -13583,9 +13492,8 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testGetSetListener() throws LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testGetSetListener() throws LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default value
         assertNull(calibrator.getListener());
@@ -13598,80 +13506,76 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testGetSetGroundTruthGravityNorm1() throws LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testGetSetGroundTruthGravityNorm1() throws LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default value
         assertNull(calibrator.getGroundTruthGravityNorm());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final double gravityNorm = gravity.getNorm();
+        final var gravityNorm = gravity.getNorm();
 
         calibrator.setGroundTruthGravityNorm(gravityNorm);
 
         // check
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), 0.0);
-        assertEquals(gravity.getNormAsAcceleration(),
-                calibrator.getGroundTruthGravityNormAsAcceleration());
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        assertEquals(gravity.getNormAsAcceleration(), calibrator.getGroundTruthGravityNormAsAcceleration());
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertEquals(gravity.getNormAsAcceleration(), g);
     }
 
     @Test
-    public void testGetSetGroundTruthGravityNorm2() throws LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testGetSetGroundTruthGravityNorm2() throws LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default value
         assertNull(calibrator.getGroundTruthGravityNorm());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
-        final Acceleration gravityNorm = gravity.getNormAsAcceleration();
+        final var gravityNorm = gravity.getNormAsAcceleration();
 
         calibrator.setGroundTruthGravityNorm(gravityNorm);
 
         // check
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), 0.0);
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNormAsAcceleration());
-        final Acceleration g = new Acceleration(0.0, AccelerationUnit.G);
+        final var g = new Acceleration(0.0, AccelerationUnit.G);
         assertTrue(calibrator.getGroundTruthGravityNormAsAcceleration(g));
         assertEquals(gravityNorm, g);
     }
 
     @Test
-    public void testIsReady() throws LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testIsReady() throws LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check
         assertFalse(calibrator.isReady());
 
         // set empty measurements
-        final List<StandardDeviationBodyKinematics> measurements1 = Collections.emptyList();
+        final var measurements1 = Collections.<StandardDeviationBodyKinematics>emptyList();
         calibrator.setMeasurements(measurements1);
 
         // check
@@ -13680,8 +13584,8 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         // set enough measurements for general case
         calibrator.setCommonAxisUsed(false);
 
-        final List<StandardDeviationBodyKinematics> measurements2 = new ArrayList<>();
-        for (int i = 0; i < KnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL; i++) {
+        final var measurements2 = new ArrayList<StandardDeviationBodyKinematics>();
+        for (var i = 0; i < KnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL; i++) {
             measurements2.add(new StandardDeviationBodyKinematics());
         }
         calibrator.setMeasurements(measurements2);
@@ -13691,16 +13595,16 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
 
 
         // set gravity norm
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-        final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
+        final var randomizer = new UniformRandomizer();
+        final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final var nedPosition = new NEDPosition(latitude, longitude, height);
+        final var nedVelocity = new NEDVelocity();
+        final var ecefPosition = new ECEFPosition();
+        final var ecefVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                 ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
 
         calibrator.setGroundTruthGravityNorm(gravity.getNorm());
@@ -13708,7 +13612,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertFalse(calibrator.isReady());
 
         // set quality scores with different length
-        double[] qualityScores = new double[14];
+        var qualityScores = new double[14];
         calibrator.setQualityScores(qualityScores);
 
         assertFalse(calibrator.isReady());
@@ -13721,7 +13625,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
 
         // set enough measurements for common axis case
         measurements2.clear();
-        for (int i = 0; i < KnownGravityNormAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS; i++) {
+        for (var i = 0; i < KnownGravityNormAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS; i++) {
             measurements2.add(new StandardDeviationBodyKinematics());
         }
         calibrator.setMeasurements(measurements2);
@@ -13741,9 +13645,8 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testGetSetProgressDelta() throws LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testGetSetProgressDelta() throws LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default value
         assertEquals(0.05f, calibrator.getProgressDelta(), 0.0);
@@ -13760,9 +13663,8 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testGetSetConfidence() throws LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testGetSetConfidence() throws LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default value
         assertEquals(0.99, calibrator.getConfidence(), 0.0);
@@ -13779,9 +13681,8 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testGetSetMaxIterations() throws LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testGetSetMaxIterations() throws LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default value
         assertEquals(5000, calibrator.getMaxIterations());
@@ -13796,9 +13697,8 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testIsSetResultRefined() throws LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testIsSetResultRefined() throws LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default value
         assertTrue(calibrator.isResultRefined());
@@ -13811,9 +13711,8 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testIsSetCovarianceKept() throws LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testIsSetCovarianceKept() throws LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default value
         assertTrue(calibrator.isCovarianceKept());
@@ -13826,15 +13725,14 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testGetSetQualityScores() throws LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testGetSetQualityScores() throws LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default value
         assertNull(calibrator.getQualityScores());
 
         // set new value
-        final double[] qualityScores = new double[
+        final var qualityScores = new double[
                 PROSACRobustKnownGravityNormAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL];
         calibrator.setQualityScores(qualityScores);
 
@@ -13846,9 +13744,8 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testGetSetPreliminarySubsetSize() throws LockedException {
-        final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+    void testGetSetPreliminarySubsetSize() throws LockedException {
+        final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator();
 
         // check default value
         assertEquals(PROSACRobustKnownGravityNormAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
@@ -13865,67 +13762,65 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCalibrateGeneralNoNoiseInlier() throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException, LockedException, CalibrationException, NotReadyException {
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Matrix ba = generateBa();
-            final Matrix bg = generateBg();
-            final Matrix ma = generateMaGeneral();
-            final Matrix mg = generateMg();
-            final Matrix gg = generateGg();
-            final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-            final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-            final double accelQuantLevel = 0.0;
-            final double gyroQuantLevel = 0.0;
+    void testCalibrateGeneralNoNoiseInlier() throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException, 
+            LockedException, CalibrationException, NotReadyException {
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var ba = generateBa();
+            final var bg = generateBg();
+            final var ma = generateMaGeneral();
+            final var mg = generateMg();
+            final var gg = generateGg();
+            final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+            final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+            final var accelQuantLevel = 0.0;
+            final var gyroQuantLevel = 0.0;
 
-            final IMUErrors errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg,
+            final var errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg,
                     OUTLIER_ERROR_FACTOR * accelNoiseRootPSD,
                     OUTLIER_ERROR_FACTOR * gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
-            final IMUErrors errorsInlier = new IMUErrors(ba, bg, ma, mg, gg,
+            final var errorsInlier = new IMUErrors(ba, bg, ma, mg, gg,
                     0.0, 0.0, accelQuantLevel, gyroQuantLevel);
-
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-            final NEDVelocity nedVelocity = new NEDVelocity();
-            final ECEFPosition ecefPosition = new ECEFPosition();
-            final ECEFVelocity ecefVelocity = new ECEFVelocity();
+            
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
+            final var nedVelocity = new NEDVelocity();
+            final var ecefPosition = new ECEFPosition();
+            final var ecefVelocity = new ECEFVelocity();
             NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-            final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+            final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                     ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
 
-            final double sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
-            final double specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
-            final double angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
+            final var sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
+            final var specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
+            final var angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
 
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                    random, 0.0, specificForceStandardDeviation);
+            final var errorRandomizer = new GaussianRandomizer(0.0, specificForceStandardDeviation);
 
-            final List<StandardDeviationBodyKinematics> measurements = new ArrayList<>();
-            final double[] qualityScores = new double[MEASUREMENT_NUMBER];
+            final var measurements = new ArrayList<StandardDeviationBodyKinematics>();
+            final var qualityScores = new double[MEASUREMENT_NUMBER];
             double error;
-            for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
-                final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw,
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            for (var i = 0; i < MEASUREMENT_NUMBER; i++) {
+                final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME, 
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+                final var nedFrame = new NEDFrame(nedPosition, nedC);
+                final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
                 // compute ground-truth kinematics that should be generated at provided
                 // position, velocity and orientation
-                final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
                         TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
                 // apply known calibration parameters to distort ground-truth and generate a
                 // measured kinematics sample
+                final var random = new Random();
                 final BodyKinematics measuredKinematics;
                 if (randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE) {
                     // outlier
@@ -13939,39 +13834,38 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                     error = 0.0;
                 }
 
-                final StandardDeviationBodyKinematics measurement = new StandardDeviationBodyKinematics(
-                        measuredKinematics, specificForceStandardDeviation, angularRateStandardDeviation);
+                final var measurement = new StandardDeviationBodyKinematics(measuredKinematics,
+                        specificForceStandardDeviation, angularRateStandardDeviation);
                 measurements.add(measurement);
 
                 qualityScores[i] = 1.0 / (1.0 + error);
             }
 
-            final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                    new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravity.getNorm(),
-                            measurements, false, ba, ma, this);
+            final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores,
+                    gravity.getNorm(), measurements, false, ba, ma, this);
             calibrator.setThreshold(THRESHOLD);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
-            assertEquals(0, mCalibrateNextIteration);
-            assertEquals(0, mCalibrateProgressChange);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
+            assertEquals(0, calibrateNextIteration);
+            assertEquals(0, calibrateProgressChange);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
-            assertTrue(mCalibrateNextIteration > 0);
-            assertTrue(mCalibrateProgressChange >= 0);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
+            assertTrue(calibrateNextIteration > 0);
+            assertTrue(calibrateProgressChange >= 0);
 
-            final Matrix estimatedBa = calibrator.getEstimatedBiasesAsMatrix();
-            final Matrix estimatedMa = calibrator.getEstimatedMa();
+            final var estimatedBa = calibrator.getEstimatedBiasesAsMatrix();
+            final var estimatedMa = calibrator.getEstimatedMa();
 
             if (!ba.equals(estimatedBa, ABSOLUTE_ERROR)) {
                 continue;
@@ -13987,7 +13881,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
+            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
             break;
@@ -13997,67 +13891,65 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCalibrateCommonAxisNoNoiseInlier() throws WrongSizeException,
+    void testCalibrateCommonAxisNoNoiseInlier() throws WrongSizeException,
             InvalidSourceAndDestinationFrameTypeException, LockedException, CalibrationException, NotReadyException {
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Matrix ba = generateBa();
-            final Matrix bg = generateBg();
-            final Matrix ma = generateMaCommonAxis();
-            final Matrix mg = generateMg();
-            final Matrix gg = generateGg();
-            final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-            final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-            final double accelQuantLevel = 0.0;
-            final double gyroQuantLevel = 0.0;
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var ba = generateBa();
+            final var bg = generateBg();
+            final var ma = generateMaCommonAxis();
+            final var mg = generateMg();
+            final var gg = generateGg();
+            final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+            final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+            final var accelQuantLevel = 0.0;
+            final var gyroQuantLevel = 0.0;
 
-            final IMUErrors errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg,
+            final var errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg,
                     OUTLIER_ERROR_FACTOR * accelNoiseRootPSD,
                     OUTLIER_ERROR_FACTOR * gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
-            final IMUErrors errorsInlier = new IMUErrors(ba, bg, ma, mg, gg,
-                    0.0, 0.0, accelQuantLevel, gyroQuantLevel);
+            final var errorsInlier = new IMUErrors(ba, bg, ma, mg, gg, 0.0, 0.0,
+                    accelQuantLevel, gyroQuantLevel);
 
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-            final NEDVelocity nedVelocity = new NEDVelocity();
-            final ECEFPosition ecefPosition = new ECEFPosition();
-            final ECEFVelocity ecefVelocity = new ECEFVelocity();
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
+            final var nedVelocity = new NEDVelocity();
+            final var ecefPosition = new ECEFPosition();
+            final var ecefVelocity = new ECEFVelocity();
             NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-            final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+            final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                     ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
 
-            final double sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
-            final double specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
-            final double angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
+            final var sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
+            final var specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
+            final var angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
 
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                    random, 0.0, specificForceStandardDeviation);
+            final var errorRandomizer = new GaussianRandomizer(0.0, specificForceStandardDeviation);
 
-            final List<StandardDeviationBodyKinematics> measurements = new ArrayList<>();
-            final double[] qualityScores = new double[MEASUREMENT_NUMBER];
+            final var measurements = new ArrayList<StandardDeviationBodyKinematics>();
+            final var qualityScores = new double[MEASUREMENT_NUMBER];
             double error;
-            for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
-                final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw,
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            for (var i = 0; i < MEASUREMENT_NUMBER; i++) {
+                final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+                final var nedFrame = new NEDFrame(nedPosition, nedC);
+                final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
                 // compute ground-truth kinematics that should be generated at provided
                 // position, velocity and orientation
-                final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
                         TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
                 // apply known calibration parameters to distort ground-truth and generate a
                 // measured kinematics sample
+                final var random = new Random();
                 final BodyKinematics measuredKinematics;
                 if (randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE) {
                     // outlier
@@ -14071,39 +13963,38 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                     error = 0.0;
                 }
 
-                final StandardDeviationBodyKinematics measurement = new StandardDeviationBodyKinematics(
-                        measuredKinematics, specificForceStandardDeviation, angularRateStandardDeviation);
+                final var measurement = new StandardDeviationBodyKinematics(measuredKinematics,
+                        specificForceStandardDeviation, angularRateStandardDeviation);
                 measurements.add(measurement);
 
                 qualityScores[i] = 1.0 / (1.0 + error);
             }
 
-            final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                    new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravity.getNorm(),
-                            measurements, true, ba, ma, this);
+            final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores,
+                    gravity.getNorm(), measurements, true, ba, ma, this);
             calibrator.setThreshold(THRESHOLD);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
-            assertEquals(0, mCalibrateNextIteration);
-            assertEquals(0, mCalibrateProgressChange);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
+            assertEquals(0, calibrateNextIteration);
+            assertEquals(0, calibrateProgressChange);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
-            assertTrue(mCalibrateNextIteration > 0);
-            assertTrue(mCalibrateProgressChange >= 0);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
+            assertTrue(calibrateNextIteration > 0);
+            assertTrue(calibrateProgressChange >= 0);
 
-            final Matrix estimatedBa = calibrator.getEstimatedBiasesAsMatrix();
-            final Matrix estimatedMa = calibrator.getEstimatedMa();
+            final var estimatedBa = calibrator.getEstimatedBiasesAsMatrix();
+            final var estimatedMa = calibrator.getEstimatedMa();
 
             if (!ba.equals(estimatedBa, ABSOLUTE_ERROR)) {
                 continue;
@@ -14119,7 +14010,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
+            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
             break;
@@ -14129,67 +14020,65 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCalibrateGeneralWithInlierNoise() throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException, LockedException, CalibrationException, NotReadyException {
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Matrix ba = generateBa();
-            final Matrix bg = generateBg();
-            final Matrix ma = generateMaGeneral();
-            final Matrix mg = generateMg();
-            final Matrix gg = generateGg();
-            final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-            final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-            final double accelQuantLevel = 0.0;
-            final double gyroQuantLevel = 0.0;
+    void testCalibrateGeneralWithInlierNoise() throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException,
+            LockedException, CalibrationException, NotReadyException {
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var ba = generateBa();
+            final var bg = generateBg();
+            final var ma = generateMaGeneral();
+            final var mg = generateMg();
+            final var gg = generateGg();
+            final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+            final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+            final var accelQuantLevel = 0.0;
+            final var gyroQuantLevel = 0.0;
 
-            final IMUErrors errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg,
+            final var errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg,
                     OUTLIER_ERROR_FACTOR * accelNoiseRootPSD,
                     OUTLIER_ERROR_FACTOR * gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
-            final IMUErrors errorsInlier = new IMUErrors(ba, bg, ma, mg, gg,
-                    accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+            final var errorsInlier = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
+                    accelQuantLevel, gyroQuantLevel);
 
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-            final NEDVelocity nedVelocity = new NEDVelocity();
-            final ECEFPosition ecefPosition = new ECEFPosition();
-            final ECEFVelocity ecefVelocity = new ECEFVelocity();
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
+            final var nedVelocity = new NEDVelocity();
+            final var ecefPosition = new ECEFPosition();
+            final var ecefVelocity = new ECEFVelocity();
             NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-            final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+            final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                     ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
 
-            final double sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
-            final double specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
-            final double angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
+            final var sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
+            final var specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
+            final var angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
 
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                    random, 0.0, specificForceStandardDeviation);
+            final var errorRandomizer = new GaussianRandomizer(0.0, specificForceStandardDeviation);
 
-            final List<StandardDeviationBodyKinematics> measurements = new ArrayList<>();
-            final double[] qualityScores = new double[LARGE_MEASUREMENT_NUMBER];
+            final var measurements = new ArrayList<StandardDeviationBodyKinematics>();
+            final var qualityScores = new double[LARGE_MEASUREMENT_NUMBER];
             double error;
-            for (int i = 0; i < LARGE_MEASUREMENT_NUMBER; i++) {
-                final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw,
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            for (var i = 0; i < LARGE_MEASUREMENT_NUMBER; i++) {
+                final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+                final var nedFrame = new NEDFrame(nedPosition, nedC);
+                final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
                 // compute ground-truth kinematics that should be generated at provided
                 // position, velocity and orientation
-                final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
                         TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
                 // apply known calibration parameters to distort ground-truth and generate a
                 // measured kinematics sample
+                final var random = new Random();
                 final BodyKinematics measuredKinematics;
                 if (randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE) {
                     // outlier
@@ -14203,39 +14092,38 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                     error = 0.0;
                 }
 
-                final StandardDeviationBodyKinematics measurement = new StandardDeviationBodyKinematics(
-                        measuredKinematics, specificForceStandardDeviation, angularRateStandardDeviation);
+                final var measurement = new StandardDeviationBodyKinematics(measuredKinematics,
+                        specificForceStandardDeviation, angularRateStandardDeviation);
                 measurements.add(measurement);
 
                 qualityScores[i] = 1.0 / (1.0 + error);
             }
 
-            final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                    new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravity.getNorm(),
-                            measurements, false, this);
+            final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores,
+                    gravity.getNorm(), measurements, false, this);
             calibrator.setThreshold(LARGE_THRESHOLD);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
-            assertEquals(0, mCalibrateNextIteration);
-            assertEquals(0, mCalibrateProgressChange);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
+            assertEquals(0, calibrateNextIteration);
+            assertEquals(0, calibrateProgressChange);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
-            assertTrue(mCalibrateNextIteration > 0);
-            assertTrue(mCalibrateProgressChange >= 0);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
+            assertTrue(calibrateNextIteration > 0);
+            assertTrue(calibrateProgressChange >= 0);
 
-            final Matrix estimatedBa = calibrator.getEstimatedBiasesAsMatrix();
-            final Matrix estimatedMa = calibrator.getEstimatedMa();
+            final var estimatedBa = calibrator.getEstimatedBiasesAsMatrix();
+            final var estimatedMa = calibrator.getEstimatedMa();
 
             if (!ba.equals(estimatedBa, LARGE_ABSOLUTE_ERROR)) {
                 continue;
@@ -14251,7 +14139,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
+            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
             break;
@@ -14261,67 +14149,65 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCalibrateCommonAxisWithInlierNoise() throws WrongSizeException,
+    void testCalibrateCommonAxisWithInlierNoise() throws WrongSizeException,
             InvalidSourceAndDestinationFrameTypeException, LockedException, CalibrationException, NotReadyException {
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Matrix ba = generateBa();
-            final Matrix bg = generateBg();
-            final Matrix ma = generateMaCommonAxis();
-            final Matrix mg = generateMg();
-            final Matrix gg = generateGg();
-            final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-            final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-            final double accelQuantLevel = 0.0;
-            final double gyroQuantLevel = 0.0;
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var ba = generateBa();
+            final var bg = generateBg();
+            final var ma = generateMaCommonAxis();
+            final var mg = generateMg();
+            final var gg = generateGg();
+            final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+            final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+            final var accelQuantLevel = 0.0;
+            final var gyroQuantLevel = 0.0;
 
-            final IMUErrors errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg,
+            final var errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg,
                     OUTLIER_ERROR_FACTOR * accelNoiseRootPSD,
                     OUTLIER_ERROR_FACTOR * gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
-            final IMUErrors errorsInlier = new IMUErrors(ba, bg, ma, mg, gg,
-                    accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+            final var errorsInlier = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
+                    accelQuantLevel, gyroQuantLevel);
 
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-            final NEDVelocity nedVelocity = new NEDVelocity();
-            final ECEFPosition ecefPosition = new ECEFPosition();
-            final ECEFVelocity ecefVelocity = new ECEFVelocity();
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
+            final var nedVelocity = new NEDVelocity();
+            final var ecefPosition = new ECEFPosition();
+            final var ecefVelocity = new ECEFVelocity();
             NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-            final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+            final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                     ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
 
-            final double sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
-            final double specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
-            final double angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
+            final var sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
+            final var specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
+            final var angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
 
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                    random, 0.0, specificForceStandardDeviation);
+            final var errorRandomizer = new GaussianRandomizer(0.0, specificForceStandardDeviation);
 
-            final List<StandardDeviationBodyKinematics> measurements = new ArrayList<>();
-            final double[] qualityScores = new double[LARGE_MEASUREMENT_NUMBER];
+            final var measurements = new ArrayList<StandardDeviationBodyKinematics>();
+            final var qualityScores = new double[LARGE_MEASUREMENT_NUMBER];
             double error;
-            for (int i = 0; i < LARGE_MEASUREMENT_NUMBER; i++) {
-                final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw,
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            for (var i = 0; i < LARGE_MEASUREMENT_NUMBER; i++) {
+                final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+                final var nedFrame = new NEDFrame(nedPosition, nedC);
+                final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
                 // compute ground-truth kinematics that should be generated at provided
                 // position, velocity and orientation
-                final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
                         TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
                 // apply known calibration parameters to distort ground-truth and generate a
                 // measured kinematics sample
+                final var random = new Random();
                 final BodyKinematics measuredKinematics;
                 if (randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE) {
                     // outlier
@@ -14335,39 +14221,38 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                     error = 0.0;
                 }
 
-                final StandardDeviationBodyKinematics measurement = new StandardDeviationBodyKinematics(
-                        measuredKinematics, specificForceStandardDeviation, angularRateStandardDeviation);
+                final var measurement = new StandardDeviationBodyKinematics(measuredKinematics,
+                        specificForceStandardDeviation, angularRateStandardDeviation);
                 measurements.add(measurement);
 
                 qualityScores[i] = 1.0 / (1.0 + error);
             }
 
-            final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                    new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravity.getNorm(),
-                            measurements, true, this);
+            final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores,
+                    gravity.getNorm(), measurements, true, this);
             calibrator.setThreshold(LARGE_THRESHOLD);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
-            assertEquals(0, mCalibrateNextIteration);
-            assertEquals(0, mCalibrateProgressChange);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
+            assertEquals(0, calibrateNextIteration);
+            assertEquals(0, calibrateProgressChange);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
-            assertTrue(mCalibrateNextIteration > 0);
-            assertTrue(mCalibrateProgressChange >= 0);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
+            assertTrue(calibrateNextIteration > 0);
+            assertTrue(calibrateProgressChange >= 0);
 
-            final Matrix estimatedBa = calibrator.getEstimatedBiasesAsMatrix();
-            final Matrix estimatedMa = calibrator.getEstimatedMa();
+            final var estimatedBa = calibrator.getEstimatedBiasesAsMatrix();
+            final var estimatedMa = calibrator.getEstimatedMa();
 
             if (!ba.equals(estimatedBa, LARGE_ABSOLUTE_ERROR)) {
                 continue;
@@ -14383,7 +14268,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
+            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
             break;
@@ -14393,67 +14278,65 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Test
-    public void testCalibrateGeneralNoRefinement() throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException, LockedException, CalibrationException, NotReadyException {
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final Matrix ba = generateBa();
-            final Matrix bg = generateBg();
-            final Matrix ma = generateMaGeneral();
-            final Matrix mg = generateMg();
-            final Matrix gg = generateGg();
-            final double accelNoiseRootPSD = getAccelNoiseRootPSD();
-            final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-            final double accelQuantLevel = 0.0;
-            final double gyroQuantLevel = 0.0;
+    void testCalibrateGeneralNoRefinement() throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException,
+            LockedException, CalibrationException, NotReadyException {
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var ba = generateBa();
+            final var bg = generateBg();
+            final var ma = generateMaGeneral();
+            final var mg = generateMg();
+            final var gg = generateGg();
+            final var accelNoiseRootPSD = getAccelNoiseRootPSD();
+            final var gyroNoiseRootPSD = getGyroNoiseRootPSD();
+            final var accelQuantLevel = 0.0;
+            final var gyroQuantLevel = 0.0;
 
-            final IMUErrors errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg,
+            final var errorsOutlier = new IMUErrors(ba, bg, ma, mg, gg,
                     OUTLIER_ERROR_FACTOR * accelNoiseRootPSD,
                     OUTLIER_ERROR_FACTOR * gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
-            final IMUErrors errorsInlier = new IMUErrors(ba, bg, ma, mg, gg,
+            final var errorsInlier = new IMUErrors(ba, bg, ma, mg, gg,
                     0.0, 0.0, accelQuantLevel, gyroQuantLevel);
 
-            final Random random = new Random();
-            final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-            final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
-            final NEDVelocity nedVelocity = new NEDVelocity();
-            final ECEFPosition ecefPosition = new ECEFPosition();
-            final ECEFVelocity ecefVelocity = new ECEFVelocity();
+            final var randomizer = new UniformRandomizer();
+            final var latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final var longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final var height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+            final var nedPosition = new NEDPosition(latitude, longitude, height);
+            final var nedVelocity = new NEDVelocity();
+            final var ecefPosition = new ECEFPosition();
+            final var ecefVelocity = new ECEFVelocity();
             NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-            final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
+            final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
                     ecefPosition.getX(), ecefPosition.getY(), ecefPosition.getZ());
 
-            final double sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
-            final double specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
-            final double angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
+            final var sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
+            final var specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
+            final var angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
 
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                    random, 0.0, specificForceStandardDeviation);
+            final var errorRandomizer = new GaussianRandomizer(0.0, specificForceStandardDeviation);
 
-            final List<StandardDeviationBodyKinematics> measurements = new ArrayList<>();
-            final double[] qualityScores = new double[MEASUREMENT_NUMBER];
+            final var measurements = new ArrayList<StandardDeviationBodyKinematics>();
+            final var qualityScores = new double[MEASUREMENT_NUMBER];
             double error;
             for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
-                final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw,
-                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+                final var roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final var nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+                        FrameType.LOCAL_NAVIGATION_FRAME);
 
-                final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+                final var nedFrame = new NEDFrame(nedPosition, nedC);
+                final var ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
                 // compute ground-truth kinematics that should be generated at provided
                 // position, velocity and orientation
-                final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                final var trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
                         TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
                 // apply known calibration parameters to distort ground-truth and generate a
                 // measured kinematics sample
+                final var random = new Random();
                 final BodyKinematics measuredKinematics;
                 if (randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE) {
                     // outlier
@@ -14467,16 +14350,15 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
                     error = 0.0;
                 }
 
-                final StandardDeviationBodyKinematics measurement = new StandardDeviationBodyKinematics(
-                        measuredKinematics, specificForceStandardDeviation, angularRateStandardDeviation);
+                final var measurement = new StandardDeviationBodyKinematics(measuredKinematics,
+                        specificForceStandardDeviation, angularRateStandardDeviation);
                 measurements.add(measurement);
 
                 qualityScores[i] = 1.0 / (1.0 + error);
             }
 
-            final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator =
-                    new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores, gravity.getNorm(),
-                            measurements, false, ba, ma, this);
+            final var calibrator = new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores,
+                    gravity.getNorm(), measurements, false, ba, ma, this);
             calibrator.setThreshold(THRESHOLD);
             calibrator.setResultRefined(false);
 
@@ -14484,23 +14366,23 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(0, mCalibrateStart);
-            assertEquals(0, mCalibrateEnd);
-            assertEquals(0, mCalibrateNextIteration);
-            assertEquals(0, mCalibrateProgressChange);
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
+            assertEquals(0, calibrateNextIteration);
+            assertEquals(0, calibrateProgressChange);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(1, mCalibrateStart);
-            assertEquals(1, mCalibrateEnd);
-            assertTrue(mCalibrateNextIteration > 0);
-            assertTrue(mCalibrateProgressChange >= 0);
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
+            assertTrue(calibrateNextIteration > 0);
+            assertTrue(calibrateProgressChange >= 0);
 
-            final Matrix estimatedBa = calibrator.getEstimatedBiasesAsMatrix();
-            final Matrix estimatedMa = calibrator.getEstimatedMa();
+            final var estimatedBa = calibrator.getEstimatedBiasesAsMatrix();
+            final var estimatedMa = calibrator.getEstimatedMa();
 
             if (!ba.equals(estimatedBa, ABSOLUTE_ERROR)) {
                 continue;
@@ -14515,7 +14397,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
 
             assertNotNull(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
+            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
             break;
@@ -14527,20 +14409,20 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     @Override
     public void onCalibrateStart(final RobustKnownGravityNormAccelerometerCalibrator calibrator) {
         checkLocked((PROSACRobustKnownGravityNormAccelerometerCalibrator) calibrator);
-        mCalibrateStart++;
+        calibrateStart++;
     }
 
     @Override
     public void onCalibrateEnd(final RobustKnownGravityNormAccelerometerCalibrator calibrator) {
         checkLocked((PROSACRobustKnownGravityNormAccelerometerCalibrator) calibrator);
-        mCalibrateEnd++;
+        calibrateEnd++;
     }
 
     @Override
     public void onCalibrateNextIteration(
             final RobustKnownGravityNormAccelerometerCalibrator calibrator, final int iteration) {
         checkLocked((PROSACRobustKnownGravityNormAccelerometerCalibrator) calibrator);
-        mCalibrateNextIteration++;
+        calibrateNextIteration++;
 
     }
 
@@ -14548,14 +14430,14 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     public void onCalibrateProgressChange(
             final RobustKnownGravityNormAccelerometerCalibrator calibrator, final float progress) {
         checkLocked((PROSACRobustKnownGravityNormAccelerometerCalibrator) calibrator);
-        mCalibrateProgressChange++;
+        calibrateProgressChange++;
     }
 
     private void reset() {
-        mCalibrateStart = 0;
-        mCalibrateEnd = 0;
-        mCalibrateNextIteration = 0;
-        mCalibrateProgressChange = 0;
+        calibrateStart = 0;
+        calibrateEnd = 0;
+        calibrateNextIteration = 0;
+        calibrateProgressChange = 0;
     }
 
     private void checkLocked(final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator) {
@@ -14608,14 +14490,14 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
             final Matrix ba, final Matrix ma, final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator,
             final boolean checkCovariance) throws WrongSizeException {
 
-        final double[] estimatedBiases = calibrator.getEstimatedBiases();
+        final var estimatedBiases = calibrator.getEstimatedBiases();
         assertArrayEquals(ba.getBuffer(), estimatedBiases, 0.0);
 
-        final double[] estimatedBiases2 = new double[3];
+        final var estimatedBiases2 = new double[3];
         calibrator.getEstimatedBiases(estimatedBiases2);
         assertArrayEquals(estimatedBiases, estimatedBiases2, 0.0);
 
-        final Matrix ba2 = new Matrix(3, 1);
+        final var ba2 = new Matrix(3, 1);
         calibrator.getEstimatedBiasesAsMatrix(ba2);
 
         assertEquals(ba, ba2);
@@ -14624,22 +14506,22 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(ba.getElementAtIndex(1), calibrator.getEstimatedBiasFy(), 0.0);
         assertEquals(ba.getElementAtIndex(2), calibrator.getEstimatedBiasFz(), 0.0);
 
-        final Acceleration bax1 = calibrator.getEstimatedBiasFxAsAcceleration();
-        final Acceleration bax2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var bax1 = calibrator.getEstimatedBiasFxAsAcceleration();
+        final var bax2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getEstimatedBiasFxAsAcceleration(bax2);
         assertEquals(bax1, bax2);
         assertEquals(calibrator.getEstimatedBiasFx(), bax1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, bax1.getUnit());
 
-        final Acceleration bay1 = calibrator.getEstimatedBiasFyAsAcceleration();
-        final Acceleration bay2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var bay1 = calibrator.getEstimatedBiasFyAsAcceleration();
+        final var bay2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getEstimatedBiasFyAsAcceleration(bay2);
         assertEquals(bay1, bay2);
         assertEquals(calibrator.getEstimatedBiasFy(), bay1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, bay1.getUnit());
 
-        final Acceleration baz1 = calibrator.getEstimatedBiasFzAsAcceleration();
-        final Acceleration baz2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var baz1 = calibrator.getEstimatedBiasFzAsAcceleration();
+        final var baz2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getEstimatedBiasFzAsAcceleration(baz2);
         assertEquals(baz1, baz2);
         assertEquals(calibrator.getEstimatedBiasFz(), baz1.getValue().doubleValue(), 0.0);
@@ -14660,58 +14542,57 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         }
     }
 
-    private static void assertCovariance(
-            final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator) {
+    private static void assertCovariance(final PROSACRobustKnownGravityNormAccelerometerCalibrator calibrator) {
         assertNotNull(calibrator.getEstimatedBiasFxVariance());
 
         assertNotNull(calibrator.getEstimatedBiasFxVariance());
         assertNotNull(calibrator.getEstimatedBiasFxStandardDeviation());
-        final Acceleration stdBx1 = calibrator.getEstimatedBiasFxStandardDeviationAsAcceleration();
+        final var stdBx1 = calibrator.getEstimatedBiasFxStandardDeviationAsAcceleration();
         assertNotNull(stdBx1);
-        final Acceleration stdBx2 = new Acceleration(1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var stdBx2 = new Acceleration(1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         assertTrue(calibrator.getEstimatedBiasFxStandardDeviationAsAcceleration(stdBx2));
         assertEquals(stdBx1, stdBx2);
 
         assertNotNull(calibrator.getEstimatedBiasFyVariance());
         assertNotNull(calibrator.getEstimatedBiasFyStandardDeviation());
-        final Acceleration stdBy1 = calibrator.getEstimatedBiasFyStandardDeviationAsAcceleration();
+        final var stdBy1 = calibrator.getEstimatedBiasFyStandardDeviationAsAcceleration();
         assertNotNull(stdBy1);
-        final Acceleration stdBy2 = new Acceleration(1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var stdBy2 = new Acceleration(1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         assertTrue(calibrator.getEstimatedBiasFyStandardDeviationAsAcceleration(stdBy2));
         assertEquals(stdBy1, stdBy2);
 
         assertNotNull(calibrator.getEstimatedBiasFzVariance());
         assertNotNull(calibrator.getEstimatedBiasFzStandardDeviation());
-        final Acceleration stdBz1 = calibrator.getEstimatedBiasFzStandardDeviationAsAcceleration();
+        final var stdBz1 = calibrator.getEstimatedBiasFzStandardDeviationAsAcceleration();
         assertNotNull(stdBz1);
-        final Acceleration stdBz2 = new Acceleration(1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final var stdBz2 = new Acceleration(1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         assertTrue(calibrator.getEstimatedBiasFzStandardDeviationAsAcceleration(stdBz2));
         assertEquals(stdBz1, stdBz2);
 
-        final AccelerationTriad std1 = calibrator.getEstimatedBiasStandardDeviation();
+        final var std1 = calibrator.getEstimatedBiasStandardDeviation();
         assertEquals(std1.getValueX(), calibrator.getEstimatedBiasFxStandardDeviation(), 0.0);
         assertEquals(std1.getValueY(), calibrator.getEstimatedBiasFyStandardDeviation(), 0.0);
         assertEquals(std1.getValueZ(), calibrator.getEstimatedBiasFzStandardDeviation(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, std1.getUnit());
-        final AccelerationTriad std2 = new AccelerationTriad();
+        final var std2 = new AccelerationTriad();
         calibrator.getEstimatedBiasStandardDeviation(std2);
 
-        final double avgStd = (calibrator.getEstimatedBiasFxStandardDeviation() +
+        final var avgStd = (calibrator.getEstimatedBiasFxStandardDeviation() +
                 calibrator.getEstimatedBiasFyStandardDeviation() +
                 calibrator.getEstimatedBiasFzStandardDeviation()) / 3.0;
         assertEquals(avgStd, calibrator.getEstimatedBiasStandardDeviationAverage(), 0.0);
-        final Acceleration avg1 = calibrator.getEstimatedBiasStandardDeviationAverageAsAcceleration();
+        final var avg1 = calibrator.getEstimatedBiasStandardDeviationAverageAsAcceleration();
         assertEquals(avgStd, avg1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, avg1.getUnit());
-        final Acceleration avg2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var avg2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getEstimatedBiasStandardDeviationAverageAsAcceleration(avg2);
         assertEquals(avg1, avg2);
 
         assertEquals(std1.getNorm(), calibrator.getEstimatedBiasStandardDeviationNorm(), ABSOLUTE_ERROR);
-        final Acceleration norm1 = calibrator.getEstimatedBiasStandardDeviationNormAsAcceleration();
+        final var norm1 = calibrator.getEstimatedBiasStandardDeviationNormAsAcceleration();
         assertEquals(std1.getNorm(), norm1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, norm1.getUnit());
-        final Acceleration norm2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final var norm2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         calibrator.getEstimatedBiasStandardDeviationNormAsAcceleration(norm2);
         assertEquals(norm1, norm2);
     }
@@ -14720,10 +14601,10 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(12, covariance.getRows());
         assertEquals(12, covariance.getColumns());
 
-        for (int j = 0; j < 12; j++) {
-            final boolean colIsZero = j == 8 || j == 10 || j == 11;
-            for (int i = 0; i < 12; i++) {
-                final boolean rowIsZero = i == 8 || i == 10 || i == 11;
+        for (var j = 0; j < 12; j++) {
+            final var colIsZero = j == 8 || j == 10 || j == 11;
+            for (var i = 0; i < 12; i++) {
+                final var rowIsZero = i == 8 || i == 10 || i == 11;
                 if (colIsZero || rowIsZero) {
                     assertEquals(0.0, covariance.getElementAt(i, j), 0.0);
                 }
@@ -14735,8 +14616,8 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
         assertEquals(12, covariance.getRows());
         assertEquals(12, covariance.getColumns());
 
-        for (int i = 0; i < 12; i++) {
-            assertNotEquals(covariance.getElementAt(i, i), 0.0);
+        for (var i = 0; i < 12; i++) {
+            assertNotEquals(0.0, covariance.getElementAt(i, i));
         }
     }
 
@@ -14755,7 +14636,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     private static Matrix generateMaGeneral() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
+        final var result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 500e-6, -300e-6, 200e-6,
                 -150e-6, -600e-6, 250e-6,
@@ -14766,7 +14647,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     private static Matrix generateMaCommonAxis() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
+        final var result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 500e-6, -300e-6, 200e-6,
                 0.0, -600e-6, 250e-6,
@@ -14777,7 +14658,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     private static Matrix generateMg() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
+        final var result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 400e-6, -300e-6, 250e-6,
                 0.0, -300e-6, -150e-6,
@@ -14788,8 +14669,8 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     private static Matrix generateGg() throws WrongSizeException {
-        final Matrix result = new Matrix(3, 3);
-        final double tmp = DEG_TO_RAD / (3600 * 9.80665);
+        final var result = new Matrix(3, 3);
+        final var tmp = DEG_TO_RAD / (3600 * 9.80665);
         result.fromArray(new double[]{
                 0.9 * tmp, -1.1 * tmp, -0.6 * tmp,
                 -0.5 * tmp, 1.9 * tmp, -1.6 * tmp,

@@ -18,13 +18,11 @@ package com.irurueta.navigation.inertial;
 import com.irurueta.algebra.Matrix;
 import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import java.util.Random;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import static org.junit.Assert.assertEquals;
-
-public class INSLooselyCoupledKalmanInitializerTest {
+class INSLooselyCoupledKalmanInitializerTest {
 
     private static final double MIN_VALUE = 1e-4;
     private static final double MAX_VALUE = 1e-3;
@@ -32,10 +30,10 @@ public class INSLooselyCoupledKalmanInitializerTest {
     private static final int NUM_PARAMS = INSLooselyCoupledKalmanInitializer.NUM_PARAMS;
 
     @Test
-    public void testInitialize() throws WrongSizeException {
-        final INSLooselyCoupledKalmanInitializerConfig config = generateConfig();
+    void testInitialize() throws WrongSizeException {
+        final var config = generateConfig();
 
-        final Matrix expected = Matrix.diagonal(new double[]{
+        final var expected = Matrix.diagonal(new double[]{
                 config.getInitialAttitudeUncertainty() * config.getInitialAttitudeUncertainty(),
                 config.getInitialAttitudeUncertainty() * config.getInitialAttitudeUncertainty(),
                 config.getInitialAttitudeUncertainty() * config.getInitialAttitudeUncertainty(),
@@ -53,11 +51,11 @@ public class INSLooselyCoupledKalmanInitializerTest {
                 config.getInitialGyroscopeBiasUncertainty() * config.getInitialGyroscopeBiasUncertainty()
         });
 
-        final Matrix result1 = new Matrix(NUM_PARAMS, NUM_PARAMS);
+        final var result1 = new Matrix(NUM_PARAMS, NUM_PARAMS);
         INSLooselyCoupledKalmanInitializer.initialize(config, result1);
-        final Matrix result2 = new Matrix(1, 1);
+        final var result2 = new Matrix(1, 1);
         INSLooselyCoupledKalmanInitializer.initialize(config, result2);
-        final Matrix result3 = INSLooselyCoupledKalmanInitializer.initialize(config);
+        final var result3 = INSLooselyCoupledKalmanInitializer.initialize(config);
 
         assertEquals(expected, result1);
         assertEquals(expected, result2);
@@ -65,12 +63,12 @@ public class INSLooselyCoupledKalmanInitializerTest {
     }
 
     private static INSLooselyCoupledKalmanInitializerConfig generateConfig() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double initialAttitudeUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double initialVelocityUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double initialPositionUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double initialAccelerationBiasUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double initialGyroscopeBiasUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var randomizer = new UniformRandomizer();
+        final var initialAttitudeUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var initialVelocityUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var initialPositionUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var initialAccelerationBiasUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final var initialGyroscopeBiasUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         return new INSLooselyCoupledKalmanInitializerConfig(initialAttitudeUncertainty, initialVelocityUncertainty,
                 initialPositionUncertainty, initialAccelerationBiasUncertainty, initialGyroscopeBiasUncertainty);
     }

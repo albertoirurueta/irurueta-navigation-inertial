@@ -20,7 +20,6 @@ import com.irurueta.algebra.Matrix;
 import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
-import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.inertial.BodyKinematics;
 import com.irurueta.navigation.inertial.INSLooselyCoupledKalmanInitializerConfig;
 import com.irurueta.navigation.inertial.INSTightlyCoupledKalmanInitializerConfig;
@@ -95,70 +94,70 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
     /**
      * Levenberg-Marquardt fitter to find a non-linear solution.
      */
-    private final LevenbergMarquardtMultiVariateFitter mFitter = new LevenbergMarquardtMultiVariateFitter();
+    private final LevenbergMarquardtMultiVariateFitter fitter = new LevenbergMarquardtMultiVariateFitter();
 
     /**
      * Initial x-coordinate of accelerometer bias to be used to find a solution.
      * This is expressed in meters per squared second (m/s^2).
      */
-    private double mInitialBiasX;
+    private double initialBiasX;
 
     /**
      * Initial y-coordinate of accelerometer bias to be used to find a solution.
      * This is expressed in meters per squared second (m/s^2).
      */
-    private double mInitialBiasY;
+    private double initialBiasY;
 
     /**
      * Initial z-coordinate of accelerometer bias to be used to find a solution.
      * This is expressed in meters per squared second (m/s^2).
      */
-    private double mInitialBiasZ;
+    private double initialBiasZ;
 
     /**
      * Initial x scaling factor.
      */
-    private double mInitialSx;
+    private double initialSx;
 
     /**
      * Initial y scaling factor.
      */
-    private double mInitialSy;
+    private double initialSy;
 
     /**
      * Initial z scaling factor.
      */
-    private double mInitialSz;
+    private double initialSz;
 
     /**
      * Initial x-y cross coupling error.
      */
-    private double mInitialMxy;
+    private double initialMxy;
 
     /**
      * Initial x-z cross coupling error.
      */
-    private double mInitialMxz;
+    private double initialMxz;
 
     /**
      * Initial y-x cross coupling error.
      */
-    private double mInitialMyx;
+    private double initialMyx;
 
     /**
      * Initial y-z cross coupling error.
      */
-    private double mInitialMyz;
+    private double initialMyz;
 
     /**
      * Initial z-x cross coupling error.
      */
-    private double mInitialMzx;
+    private double initialMzx;
 
     /**
      * Initial z-y cross coupling error.
      */
-    private double mInitialMzy;
+    private double initialMzy;
 
     /**
      * Contains a collection of body kinematics measurements taken at different
@@ -174,25 +173,25 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      * typically constant at horizontal orientation while the phone remains on a
      * flat surface.
      */
-    private Collection<StandardDeviationFrameBodyKinematics> mMeasurements;
+    private Collection<StandardDeviationFrameBodyKinematics> measurements;
 
     /**
      * This flag indicates whether z-axis is assumed to be common for accelerometer
      * and gyroscope.
      * When enabled, this eliminates 3 variables from Ma matrix.
      */
-    private boolean mCommonAxisUsed = DEFAULT_USE_COMMON_Z_AXIS;
+    private boolean commonAxisUsed = DEFAULT_USE_COMMON_Z_AXIS;
 
     /**
      * Listener to handle events raised by this calibrator.
      */
-    private KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener mListener;
+    private KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener;
 
     /**
      * Estimated accelerometer biases for each IMU axis expressed in meter per squared
      * second (m/s^2).
      */
-    private double[] mEstimatedBiases;
+    private double[] estimatedBiases;
 
     /**
      * Estimated accelerometer scale factors and cross coupling errors.
@@ -233,27 +232,27 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      * </pre>
      * Values of this matrix are unit-less.
      */
-    private Matrix mEstimatedMa;
+    private Matrix estimatedMa;
 
     /**
      * Estimated covariance matrix for estimated parameters.
      */
-    private Matrix mEstimatedCovariance;
+    private Matrix estimatedCovariance;
 
     /**
      * Estimated chi square value.
      */
-    private double mEstimatedChiSq;
+    private double estimatedChiSq;
 
     /**
      * Estimated mean square error respect to provided measurements.
      */
-    private double mEstimatedMse;
+    private double estimatedMse;
 
     /**
      * Indicates whether calibrator is running.
      */
-    private boolean mRunning;
+    private boolean running;
 
     /**
      * Constructor.
@@ -268,7 +267,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     public KnownFrameAccelerometerNonLinearLeastSquaresCalibrator(
             final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -280,7 +279,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     public KnownFrameAccelerometerNonLinearLeastSquaresCalibrator(
             final Collection<StandardDeviationFrameBodyKinematics> measurements) {
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -295,7 +294,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final Collection<StandardDeviationFrameBodyKinematics> measurements,
             final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -305,7 +304,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      *                       accelerometer and gyroscope.
      */
     public KnownFrameAccelerometerNonLinearLeastSquaresCalibrator(final boolean commonAxisUsed) {
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -319,7 +318,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final boolean commonAxisUsed,
             final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -334,7 +333,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
     public KnownFrameAccelerometerNonLinearLeastSquaresCalibrator(
             final Collection<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed) {
         this(measurements);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -351,7 +350,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final Collection<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed,
             final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -394,7 +393,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final double initialBiasX, final double initialBiasY, final double initialBiasZ,
             final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(initialBiasX, initialBiasY, initialBiasZ);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -417,7 +416,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final Collection<StandardDeviationFrameBodyKinematics> measurements,
             final double initialBiasX, final double initialBiasY, final double initialBiasZ) {
         this(initialBiasX, initialBiasY, initialBiasZ);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -442,7 +441,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final double initialBiasX, final double initialBiasY, final double initialBiasZ,
             final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, initialBiasX, initialBiasY, initialBiasZ);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -464,7 +463,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final boolean commonAxisUsed, final double initialBiasX, final double initialBiasY,
             final double initialBiasZ) {
         this(initialBiasX, initialBiasY, initialBiasZ);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -487,7 +486,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final boolean commonAxisUsed, final double initialBiasX, final double initialBiasY,
             final double initialBiasZ, final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -512,7 +511,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final Collection<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed,
             final double initialBiasX, final double initialBiasY, final double initialBiasZ) {
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -539,7 +538,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final double initialBiasX, final double initialBiasY, final double initialBiasZ,
             final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -576,7 +575,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final Acceleration initialBiasX, final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(initialBiasX, initialBiasY, initialBiasZ);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -596,7 +595,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final Collection<StandardDeviationFrameBodyKinematics> measurements,
             final Acceleration initialBiasX, final Acceleration initialBiasY, final Acceleration initialBiasZ) {
         this(initialBiasX, initialBiasY, initialBiasZ);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -618,7 +617,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final Acceleration initialBiasX, final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, initialBiasX, initialBiasY, initialBiasZ);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -637,7 +636,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final boolean commonAxisUsed, final Acceleration initialBiasX, final Acceleration initialBiasY,
             final Acceleration initialBiasZ) {
         this(initialBiasX, initialBiasY, initialBiasZ);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -658,7 +657,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final Acceleration initialBiasZ,
             final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -681,7 +680,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final boolean commonAxisUsed, final Acceleration initialBiasX, final Acceleration initialBiasY,
             final Acceleration initialBiasZ) {
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -705,7 +704,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final Acceleration initialBiasX, final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -759,7 +758,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final double initialBiasX, final double initialBiasY, final double initialBiasZ,
             final double initialSx, final double initialSy, final double initialSz) {
         this(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -788,7 +787,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final double initialSx, final double initialSy, final double initialSz,
             final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -813,7 +812,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final boolean commonAxisUsed, final double initialBiasX, final double initialBiasY,
             final double initialBiasZ, final double initialSx, final double initialSy, final double initialSz) {
         this(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -840,7 +839,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final double initialBiasZ, final double initialSx, final double initialSy, final double initialSz,
             final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -869,7 +868,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final double initialBiasX, final double initialBiasY, final double initialBiasZ,
             final double initialSx, final double initialSy, final double initialSz) {
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -900,7 +899,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final double initialSx, final double initialSy, final double initialSz,
             final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -946,7 +945,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final double initialSx, final double initialSy, final double initialSz,
             final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -970,7 +969,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final Acceleration initialBiasX, final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final double initialSx, final double initialSy, final double initialSz) {
         this(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -996,7 +995,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final double initialSx, final double initialSy, final double initialSz,
             final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1019,7 +1018,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final double initialSx, final double initialSy, final double initialSz) {
         this(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -1043,7 +1042,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final Acceleration initialBiasZ, final double initialSx, final double initialSy, final double initialSz,
             final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1069,7 +1068,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final boolean commonAxisUsed, final Acceleration initialBiasX, final Acceleration initialBiasY,
             final Acceleration initialBiasZ, final double initialSx, final double initialSy, final double initialSz) {
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1097,7 +1096,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final double initialSx, final double initialSy, final double initialSz,
             final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1169,7 +1168,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final double initialMyz, final double initialMzx, final double initialMzy) {
         this(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1207,7 +1206,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1241,7 +1240,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final double initialMyz, final double initialMzx, final double initialMzy) {
         this(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -1277,7 +1276,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1315,7 +1314,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final double initialMyz, final double initialMzx, final double initialMzy) {
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1355,7 +1354,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1419,7 +1418,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1452,7 +1451,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final double initialMyz, final double initialMzx, final double initialMzy) {
         this(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1487,7 +1486,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1518,7 +1517,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final double initialMyz, final double initialMzx, final double initialMzy) {
         this(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -1551,7 +1550,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1586,7 +1585,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final double initialMyz, final double initialMzx, final double initialMzy) {
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1623,7 +1622,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1654,7 +1653,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
     public KnownFrameAccelerometerNonLinearLeastSquaresCalibrator(
             final double[] initialBias, final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(initialBias);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1671,7 +1670,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
     public KnownFrameAccelerometerNonLinearLeastSquaresCalibrator(
             final Collection<StandardDeviationFrameBodyKinematics> measurements, final double[] initialBias) {
         this(initialBias);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1690,7 +1689,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final Collection<StandardDeviationFrameBodyKinematics> measurements, final double[] initialBias,
             final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, initialBias);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1706,7 +1705,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
     public KnownFrameAccelerometerNonLinearLeastSquaresCalibrator(
             final boolean commonAxisUsed, final double[] initialBias) {
         this(initialBias);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -1724,7 +1723,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final boolean commonAxisUsed, final double[] initialBias,
             final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed, initialBias);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1744,7 +1743,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final Collection<StandardDeviationFrameBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] initialBias) {
         this(commonAxisUsed, initialBias);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1765,7 +1764,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final Collection<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed,
             final double[] initialBias, final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed, initialBias);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1792,7 +1791,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
     public KnownFrameAccelerometerNonLinearLeastSquaresCalibrator(
             final Matrix initialBias, final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(initialBias);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1807,7 +1806,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
     public KnownFrameAccelerometerNonLinearLeastSquaresCalibrator(
             final Collection<StandardDeviationFrameBodyKinematics> measurements, final Matrix initialBias) {
         this(initialBias);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1824,7 +1823,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final Collection<StandardDeviationFrameBodyKinematics> measurements, final Matrix initialBias,
             final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, initialBias);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1838,7 +1837,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
     public KnownFrameAccelerometerNonLinearLeastSquaresCalibrator(
             final boolean commonAxisUsed, final Matrix initialBias) {
         this(initialBias);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -1854,7 +1853,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final boolean commonAxisUsed, final Matrix initialBias,
             final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed, initialBias);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1872,7 +1871,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final Collection<StandardDeviationFrameBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix initialBias) {
         this(commonAxisUsed, initialBias);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1891,7 +1890,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final Collection<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed,
             final Matrix initialBias, final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed, initialBias);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1924,7 +1923,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final Matrix initialBias, final Matrix initialMa,
             final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(initialBias, initialMa);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1942,7 +1941,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final Collection<StandardDeviationFrameBodyKinematics> measurements,
             final Matrix initialBias, final Matrix initialMa) {
         this(initialBias, initialMa);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -1962,7 +1961,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final Matrix initialBias, final Matrix initialMa,
             final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, initialBias, initialMa);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1978,7 +1977,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
     public KnownFrameAccelerometerNonLinearLeastSquaresCalibrator(
             final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMa) {
         this(initialBias, initialMa);
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -1996,7 +1995,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMa,
             final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(commonAxisUsed, initialBias, initialMa);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2016,7 +2015,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final Collection<StandardDeviationFrameBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMa) {
         this(commonAxisUsed, initialBias, initialMa);
-        mMeasurements = measurements;
+        this.measurements = measurements;
     }
 
     /**
@@ -2038,7 +2037,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMa,
             final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed, initialBias, initialMa);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2049,7 +2048,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public double getInitialBiasX() {
-        return mInitialBiasX;
+        return initialBiasX;
     }
 
     /**
@@ -2061,10 +2060,10 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialBiasX(final double initialBiasX) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialBiasX = initialBiasX;
+        this.initialBiasX = initialBiasX;
     }
 
     /**
@@ -2075,7 +2074,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public double getInitialBiasY() {
-        return mInitialBiasY;
+        return initialBiasY;
     }
 
     /**
@@ -2087,10 +2086,10 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialBiasY(final double initialBiasY) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialBiasY = initialBiasY;
+        this.initialBiasY = initialBiasY;
     }
 
     /**
@@ -2101,7 +2100,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public double getInitialBiasZ() {
-        return mInitialBiasZ;
+        return initialBiasZ;
     }
 
     /**
@@ -2113,10 +2112,10 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialBiasZ(final double initialBiasZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialBiasZ = initialBiasZ;
+        this.initialBiasZ = initialBiasZ;
     }
 
     /**
@@ -2126,7 +2125,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Acceleration getInitialBiasXAsAcceleration() {
-        return new Acceleration(mInitialBiasX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(initialBiasX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -2136,7 +2135,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void getInitialBiasXAsAcceleration(final Acceleration result) {
-        result.setValue(mInitialBiasX);
+        result.setValue(initialBiasX);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -2148,10 +2147,10 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialBiasX(final Acceleration initialBiasX) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialBiasX = convertAcceleration(initialBiasX);
+        this.initialBiasX = convertAcceleration(initialBiasX);
     }
 
     /**
@@ -2161,7 +2160,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Acceleration getInitialBiasYAsAcceleration() {
-        return new Acceleration(mInitialBiasY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(initialBiasY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -2171,7 +2170,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void getInitialBiasYAsAcceleration(final Acceleration result) {
-        result.setValue(mInitialBiasY);
+        result.setValue(initialBiasY);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -2183,10 +2182,10 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialBiasY(final Acceleration initialBiasY) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialBiasY = convertAcceleration(initialBiasY);
+        this.initialBiasY = convertAcceleration(initialBiasY);
     }
 
     /**
@@ -2196,7 +2195,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Acceleration getInitialBiasZAsAcceleration() {
-        return new Acceleration(mInitialBiasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(initialBiasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -2206,7 +2205,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void getInitialBiasZAsAcceleration(final Acceleration result) {
-        result.setValue(mInitialBiasZ);
+        result.setValue(initialBiasZ);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -2218,10 +2217,10 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialBiasZ(final Acceleration initialBiasZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialBiasZ = convertAcceleration(initialBiasZ);
+        this.initialBiasZ = convertAcceleration(initialBiasZ);
     }
 
     /**
@@ -2236,12 +2235,12 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
     @Override
     public void setInitialBias(
             final double initialBiasX, final double initialBiasY, final double initialBiasZ) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialBiasX = initialBiasX;
-        mInitialBiasY = initialBiasY;
-        mInitialBiasZ = initialBiasZ;
+        this.initialBiasX = initialBiasX;
+        this.initialBiasY = initialBiasY;
+        this.initialBiasZ = initialBiasZ;
     }
 
     /**
@@ -2256,12 +2255,12 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
     public void setInitialBias(
             final Acceleration initialBiasX, final Acceleration initialBiasY, final Acceleration initialBiasZ)
             throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialBiasX = convertAcceleration(initialBiasX);
-        mInitialBiasY = convertAcceleration(initialBiasY);
-        mInitialBiasZ = convertAcceleration(initialBiasZ);
+        this.initialBiasX = convertAcceleration(initialBiasX);
+        this.initialBiasY = convertAcceleration(initialBiasY);
+        this.initialBiasZ = convertAcceleration(initialBiasZ);
     }
 
     /**
@@ -2272,7 +2271,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
     @Override
     public AccelerationTriad getInitialBiasAsTriad() {
         return new AccelerationTriad(AccelerationUnit.METERS_PER_SQUARED_SECOND,
-                mInitialBiasX, mInitialBiasY, mInitialBiasZ);
+                initialBiasX, initialBiasY, initialBiasZ);
     }
 
     /**
@@ -2282,7 +2281,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void getInitialBiasAsTriad(final AccelerationTriad result) {
-        result.setValueCoordinatesAndUnit(mInitialBiasX, mInitialBiasY, mInitialBiasZ,
+        result.setValueCoordinatesAndUnit(initialBiasX, initialBiasY, initialBiasZ,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -2294,13 +2293,13 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialBias(final AccelerationTriad initialBias) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mInitialBiasX = convertAcceleration(initialBias.getValueX(), initialBias.getUnit());
-        mInitialBiasY = convertAcceleration(initialBias.getValueY(), initialBias.getUnit());
-        mInitialBiasZ = convertAcceleration(initialBias.getValueZ(), initialBias.getUnit());
+        initialBiasX = convertAcceleration(initialBias.getValueX(), initialBias.getUnit());
+        initialBiasY = convertAcceleration(initialBias.getValueY(), initialBias.getUnit());
+        initialBiasZ = convertAcceleration(initialBias.getValueZ(), initialBias.getUnit());
     }
 
     /**
@@ -2310,7 +2309,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public double getInitialSx() {
-        return mInitialSx;
+        return initialSx;
     }
 
     /**
@@ -2321,10 +2320,10 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialSx(final double initialSx) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialSx = initialSx;
+        this.initialSx = initialSx;
     }
 
     /**
@@ -2334,7 +2333,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public double getInitialSy() {
-        return mInitialSy;
+        return initialSy;
     }
 
     /**
@@ -2345,10 +2344,10 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialSy(final double initialSy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialSy = initialSy;
+        this.initialSy = initialSy;
     }
 
     /**
@@ -2358,7 +2357,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public double getInitialSz() {
-        return mInitialSz;
+        return initialSz;
     }
 
     /**
@@ -2369,10 +2368,10 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialSz(final double initialSz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialSz = initialSz;
+        this.initialSz = initialSz;
     }
 
     /**
@@ -2382,7 +2381,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public double getInitialMxy() {
-        return mInitialMxy;
+        return initialMxy;
     }
 
     /**
@@ -2393,10 +2392,10 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialMxy(final double initialMxy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMxy = initialMxy;
+        this.initialMxy = initialMxy;
     }
 
     /**
@@ -2406,7 +2405,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public double getInitialMxz() {
-        return mInitialMxz;
+        return initialMxz;
     }
 
     /**
@@ -2417,10 +2416,10 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialMxz(final double initialMxz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMxz = initialMxz;
+        this.initialMxz = initialMxz;
     }
 
     /**
@@ -2430,7 +2429,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public double getInitialMyx() {
-        return mInitialMyx;
+        return initialMyx;
     }
 
     /**
@@ -2441,10 +2440,10 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialMyx(final double initialMyx) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMyx = initialMyx;
+        this.initialMyx = initialMyx;
     }
 
     /**
@@ -2454,7 +2453,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public double getInitialMyz() {
-        return mInitialMyz;
+        return initialMyz;
     }
 
     /**
@@ -2465,10 +2464,10 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialMyz(final double initialMyz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMyz = initialMyz;
+        this.initialMyz = initialMyz;
     }
 
     /**
@@ -2478,7 +2477,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public double getInitialMzx() {
-        return mInitialMzx;
+        return initialMzx;
     }
 
     /**
@@ -2489,10 +2488,10 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialMzx(final double initialMzx) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMzx = initialMzx;
+        this.initialMzx = initialMzx;
     }
 
     /**
@@ -2502,7 +2501,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public double getInitialMzy() {
-        return mInitialMzy;
+        return initialMzy;
     }
 
     /**
@@ -2513,10 +2512,10 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialMzy(final double initialMzy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMzy = initialMzy;
+        this.initialMzy = initialMzy;
     }
 
     /**
@@ -2530,12 +2529,12 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
     @Override
     public void setInitialScalingFactors(
             final double initialSx, final double initialSy, final double initialSz) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialSx = initialSx;
-        mInitialSy = initialSy;
-        mInitialSz = initialSz;
+        this.initialSx = initialSx;
+        this.initialSy = initialSy;
+        this.initialSz = initialSz;
     }
 
     /**
@@ -2553,15 +2552,15 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
     public void setInitialCrossCouplingErrors(
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
-        mInitialMxy = initialMxy;
-        mInitialMxz = initialMxz;
-        mInitialMyx = initialMyx;
-        mInitialMyz = initialMyz;
-        mInitialMzx = initialMzx;
-        mInitialMzy = initialMzy;
+        this.initialMxy = initialMxy;
+        this.initialMxz = initialMxz;
+        this.initialMyx = initialMyx;
+        this.initialMyz = initialMyz;
+        this.initialMzx = initialMzx;
+        this.initialMzy = initialMzy;
     }
 
     /**
@@ -2583,7 +2582,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             final double initialSx, final double initialSy, final double initialSz,
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         setInitialScalingFactors(initialSx, initialSy, initialSz);
@@ -2598,7 +2597,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public double[] getInitialBias() {
-        final double[] result = new double[BodyKinematics.COMPONENTS];
+        final var result = new double[BodyKinematics.COMPONENTS];
         getInitialBias(result);
         return result;
     }
@@ -2615,9 +2614,9 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
         if (result.length != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        result[0] = mInitialBiasX;
-        result[1] = mInitialBiasY;
-        result[2] = mInitialBiasZ;
+        result[0] = initialBiasX;
+        result[1] = initialBiasY;
+        result[2] = initialBiasZ;
     }
 
     /**
@@ -2630,16 +2629,16 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialBias(final double[] initialBias) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
         if (initialBias.length != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        mInitialBiasX = initialBias[0];
-        mInitialBiasY = initialBias[1];
-        mInitialBiasZ = initialBias[2];
+        initialBiasX = initialBias[0];
+        initialBiasY = initialBias[1];
+        initialBiasZ = initialBias[2];
     }
 
     /**
@@ -2673,9 +2672,9 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
         if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
-        result.setElementAtIndex(0, mInitialBiasX);
-        result.setElementAtIndex(1, mInitialBiasY);
-        result.setElementAtIndex(2, mInitialBiasZ);
+        result.setElementAtIndex(0, initialBiasX);
+        result.setElementAtIndex(1, initialBiasY);
+        result.setElementAtIndex(2, initialBiasZ);
     }
 
     /**
@@ -2688,16 +2687,16 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialBias(final Matrix initialBias) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (initialBias.getRows() != BodyKinematics.COMPONENTS || initialBias.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
-        mInitialBiasX = initialBias.getElementAtIndex(0);
-        mInitialBiasY = initialBias.getElementAtIndex(1);
-        mInitialBiasZ = initialBias.getElementAtIndex(2);
+        initialBiasX = initialBias.getElementAtIndex(0);
+        initialBiasY = initialBias.getElementAtIndex(1);
+        initialBiasZ = initialBias.getElementAtIndex(2);
     }
 
     /**
@@ -2729,17 +2728,17 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
         if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        result.setElementAtIndex(0, mInitialSx);
-        result.setElementAtIndex(1, mInitialMyx);
-        result.setElementAtIndex(2, mInitialMzx);
+        result.setElementAtIndex(0, initialSx);
+        result.setElementAtIndex(1, initialMyx);
+        result.setElementAtIndex(2, initialMzx);
 
-        result.setElementAtIndex(3, mInitialMxy);
-        result.setElementAtIndex(4, mInitialSy);
-        result.setElementAtIndex(5, mInitialMzy);
+        result.setElementAtIndex(3, initialMxy);
+        result.setElementAtIndex(4, initialSy);
+        result.setElementAtIndex(5, initialMzy);
 
-        result.setElementAtIndex(6, mInitialMxz);
-        result.setElementAtIndex(7, mInitialMyz);
-        result.setElementAtIndex(8, mInitialSz);
+        result.setElementAtIndex(6, initialMxz);
+        result.setElementAtIndex(7, initialMyz);
+        result.setElementAtIndex(8, initialSz);
     }
 
     /**
@@ -2751,24 +2750,24 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setInitialMa(final Matrix initialMa) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         if (initialMa.getRows() != BodyKinematics.COMPONENTS || initialMa.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
-        mInitialSx = initialMa.getElementAtIndex(0);
-        mInitialMyx = initialMa.getElementAtIndex(1);
-        mInitialMzx = initialMa.getElementAtIndex(2);
+        initialSx = initialMa.getElementAtIndex(0);
+        initialMyx = initialMa.getElementAtIndex(1);
+        initialMzx = initialMa.getElementAtIndex(2);
 
-        mInitialMxy = initialMa.getElementAtIndex(3);
-        mInitialSy = initialMa.getElementAtIndex(4);
-        mInitialMzy = initialMa.getElementAtIndex(5);
+        initialMxy = initialMa.getElementAtIndex(3);
+        initialSy = initialMa.getElementAtIndex(4);
+        initialMzy = initialMa.getElementAtIndex(5);
 
-        mInitialMxz = initialMa.getElementAtIndex(6);
-        mInitialMyz = initialMa.getElementAtIndex(7);
-        mInitialSz = initialMa.getElementAtIndex(8);
+        initialMxz = initialMa.getElementAtIndex(6);
+        initialMyz = initialMa.getElementAtIndex(7);
+        initialSz = initialMa.getElementAtIndex(8);
     }
 
     /**
@@ -2790,7 +2789,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Collection<StandardDeviationFrameBodyKinematics> getMeasurements() {
-        return mMeasurements;
+        return measurements;
     }
 
     /**
@@ -2814,11 +2813,11 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
     @Override
     public void setMeasurements(
             final Collection<? extends StandardDeviationFrameBodyKinematics> measurements) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
         //noinspection unchecked
-        mMeasurements = (Collection<StandardDeviationFrameBodyKinematics>) measurements;
+        this.measurements = (Collection<StandardDeviationFrameBodyKinematics>) measurements;
     }
 
     /**
@@ -2863,7 +2862,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean isCommonAxisUsed() {
-        return mCommonAxisUsed;
+        return commonAxisUsed;
     }
 
     /**
@@ -2877,11 +2876,11 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void setCommonAxisUsed(final boolean commonAxisUsed) throws LockedException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
-        mCommonAxisUsed = commonAxisUsed;
+        this.commonAxisUsed = commonAxisUsed;
     }
 
     /**
@@ -2891,7 +2890,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener getListener() {
-        return mListener;
+        return listener;
     }
 
     /**
@@ -2901,13 +2900,13 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setListener(
-            final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) throws LockedException {
-        if (mRunning) {
+    public void setListener(final KnownFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener)
+            throws LockedException {
+        if (running) {
             throw new LockedException();
         }
 
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -2927,7 +2926,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean isReady() {
-        return mMeasurements != null && mMeasurements.size() >= MINIMUM_MEASUREMENTS;
+        return measurements != null && measurements.size() >= MINIMUM_MEASUREMENTS;
     }
 
     /**
@@ -2937,7 +2936,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean isRunning() {
-        return mRunning;
+        return running;
     }
 
     /**
@@ -2950,7 +2949,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public void calibrate() throws LockedException, NotReadyException, CalibrationException {
-        if (mRunning) {
+        if (running) {
             throw new LockedException();
         }
 
@@ -2959,26 +2958,26 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
         }
 
         try {
-            mRunning = true;
+            running = true;
 
-            if (mListener != null) {
-                mListener.onCalibrateStart(this);
+            if (listener != null) {
+                listener.onCalibrateStart(this);
             }
 
-            if (mCommonAxisUsed) {
+            if (commonAxisUsed) {
                 calibrateCommonAxis();
             } else {
                 calibrateGeneral();
             }
 
-            if (mListener != null) {
-                mListener.onCalibrateEnd(this);
+            if (listener != null) {
+                listener.onCalibrateEnd(this);
             }
 
         } catch (final AlgebraException | FittingException | com.irurueta.numerical.NotReadyException e) {
             throw new CalibrationException(e);
         } finally {
-            mRunning = false;
+            running = false;
         }
     }
 
@@ -2990,7 +2989,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public double[] getEstimatedBiases() {
-        return mEstimatedBiases;
+        return estimatedBiases;
     }
 
     /**
@@ -3003,8 +3002,8 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean getEstimatedBiases(final double[] result) {
-        if (mEstimatedBiases != null) {
-            System.arraycopy(mEstimatedBiases, 0, result, 0, mEstimatedBiases.length);
+        if (estimatedBiases != null) {
+            System.arraycopy(estimatedBiases, 0, result, 0, estimatedBiases.length);
             return true;
         } else {
             return false;
@@ -3020,7 +3019,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Matrix getEstimatedBiasesAsMatrix() {
-        return mEstimatedBiases != null ? Matrix.newFromArray(mEstimatedBiases) : null;
+        return estimatedBiases != null ? Matrix.newFromArray(estimatedBiases) : null;
     }
 
     /**
@@ -3033,8 +3032,8 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean getEstimatedBiasesAsMatrix(final Matrix result) throws WrongSizeException {
-        if (mEstimatedBiases != null) {
-            result.fromArray(mEstimatedBiases);
+        if (estimatedBiases != null) {
+            result.fromArray(estimatedBiases);
             return true;
         } else {
             return false;
@@ -3049,7 +3048,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedBiasFx() {
-        return mEstimatedBiases != null ? mEstimatedBiases[0] : null;
+        return estimatedBiases != null ? estimatedBiases[0] : null;
     }
 
     /**
@@ -3060,7 +3059,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedBiasFy() {
-        return mEstimatedBiases != null ? mEstimatedBiases[1] : null;
+        return estimatedBiases != null ? estimatedBiases[1] : null;
     }
 
     /**
@@ -3071,7 +3070,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedBiasFz() {
-        return mEstimatedBiases != null ? mEstimatedBiases[2] : null;
+        return estimatedBiases != null ? estimatedBiases[2] : null;
     }
 
     /**
@@ -3081,8 +3080,8 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Acceleration getEstimatedBiasFxAsAcceleration() {
-        return mEstimatedBiases != null ?
-                new Acceleration(mEstimatedBiases[0], AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;
+        return estimatedBiases != null
+                ? new Acceleration(estimatedBiases[0], AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;
     }
 
     /**
@@ -3093,8 +3092,8 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean getEstimatedBiasFxAsAcceleration(final Acceleration result) {
-        if (mEstimatedBiases != null) {
-            result.setValue(mEstimatedBiases[0]);
+        if (estimatedBiases != null) {
+            result.setValue(estimatedBiases[0]);
             result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
             return true;
         } else {
@@ -3109,8 +3108,8 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Acceleration getEstimatedBiasFyAsAcceleration() {
-        return mEstimatedBiases != null ?
-                new Acceleration(mEstimatedBiases[1], AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;
+        return estimatedBiases != null
+                ? new Acceleration(estimatedBiases[1], AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;
     }
 
     /**
@@ -3121,8 +3120,8 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean getEstimatedBiasFyAsAcceleration(final Acceleration result) {
-        if (mEstimatedBiases != null) {
-            result.setValue(mEstimatedBiases[1]);
+        if (estimatedBiases != null) {
+            result.setValue(estimatedBiases[1]);
             result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
             return true;
         } else {
@@ -3137,8 +3136,8 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Acceleration getEstimatedBiasFzAsAcceleration() {
-        return mEstimatedBiases != null ?
-                new Acceleration(mEstimatedBiases[2], AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;
+        return estimatedBiases != null
+                ? new Acceleration(estimatedBiases[2], AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;
     }
 
     /**
@@ -3149,8 +3148,8 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean getEstimatedBiasFzAsAcceleration(final Acceleration result) {
-        if (mEstimatedBiases != null) {
-            result.setValue(mEstimatedBiases[2]);
+        if (estimatedBiases != null) {
+            result.setValue(estimatedBiases[2]);
             result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
             return true;
         } else {
@@ -3165,9 +3164,10 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public AccelerationTriad getEstimatedBiasAsTriad() {
-        return mEstimatedBiases != null ?
-                new AccelerationTriad(AccelerationUnit.METERS_PER_SQUARED_SECOND,
-                        mEstimatedBiases[0], mEstimatedBiases[1], mEstimatedBiases[2]) : null;
+        return estimatedBiases != null
+                ? new AccelerationTriad(AccelerationUnit.METERS_PER_SQUARED_SECOND,
+                estimatedBiases[0], estimatedBiases[1], estimatedBiases[2])
+                : null;
     }
 
     /**
@@ -3179,9 +3179,9 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean getEstimatedBiasAsTriad(final AccelerationTriad result) {
-        if (mEstimatedBiases != null) {
+        if (estimatedBiases != null) {
             result.setValueCoordinatesAndUnit(
-                    mEstimatedBiases[0], mEstimatedBiases[1], mEstimatedBiases[2],
+                    estimatedBiases[0], estimatedBiases[1], estimatedBiases[2],
                     AccelerationUnit.METERS_PER_SQUARED_SECOND);
             return true;
         } else {
@@ -3233,7 +3233,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Matrix getEstimatedMa() {
-        return mEstimatedMa;
+        return estimatedMa;
     }
 
     /**
@@ -3243,7 +3243,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedSx() {
-        return mEstimatedMa != null ? mEstimatedMa.getElementAt(0, 0) : null;
+        return estimatedMa != null ? estimatedMa.getElementAt(0, 0) : null;
     }
 
     /**
@@ -3253,7 +3253,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedSy() {
-        return mEstimatedMa != null ? mEstimatedMa.getElementAt(1, 1) : null;
+        return estimatedMa != null ? estimatedMa.getElementAt(1, 1) : null;
     }
 
     /**
@@ -3263,7 +3263,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedSz() {
-        return mEstimatedMa != null ? mEstimatedMa.getElementAt(2, 2) : null;
+        return estimatedMa != null ? estimatedMa.getElementAt(2, 2) : null;
     }
 
     /**
@@ -3273,7 +3273,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedMxy() {
-        return mEstimatedMa != null ? mEstimatedMa.getElementAt(0, 1) : null;
+        return estimatedMa != null ? estimatedMa.getElementAt(0, 1) : null;
     }
 
     /**
@@ -3283,7 +3283,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedMxz() {
-        return mEstimatedMa != null ? mEstimatedMa.getElementAt(0, 2) : null;
+        return estimatedMa != null ? estimatedMa.getElementAt(0, 2) : null;
     }
 
     /**
@@ -3293,7 +3293,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedMyx() {
-        return mEstimatedMa != null ? mEstimatedMa.getElementAt(1, 0) : null;
+        return estimatedMa != null ? estimatedMa.getElementAt(1, 0) : null;
     }
 
     /**
@@ -3303,7 +3303,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedMyz() {
-        return mEstimatedMa != null ? mEstimatedMa.getElementAt(1, 2) : null;
+        return estimatedMa != null ? estimatedMa.getElementAt(1, 2) : null;
     }
 
     /**
@@ -3313,7 +3313,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedMzx() {
-        return mEstimatedMa != null ? mEstimatedMa.getElementAt(2, 0) : null;
+        return estimatedMa != null ? estimatedMa.getElementAt(2, 0) : null;
     }
 
     /**
@@ -3323,7 +3323,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedMzy() {
-        return mEstimatedMa != null ? mEstimatedMa.getElementAt(2, 1) : null;
+        return estimatedMa != null ? estimatedMa.getElementAt(2, 1) : null;
     }
 
     /**
@@ -3336,7 +3336,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Matrix getEstimatedCovariance() {
-        return mEstimatedCovariance;
+        return estimatedCovariance;
     }
 
     /**
@@ -3346,7 +3346,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public double getEstimatedChiSq() {
-        return mEstimatedChiSq;
+        return estimatedChiSq;
     }
 
     /**
@@ -3356,7 +3356,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public double getEstimatedMse() {
-        return mEstimatedMse;
+        return estimatedMse;
     }
 
     /**
@@ -3365,7 +3365,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      * @return variance of estimated x coordinate of accelerometer bias or null if not available.
      */
     public Double getEstimatedBiasFxVariance() {
-        return mEstimatedCovariance != null ? mEstimatedCovariance.getElementAt(0, 0) : null;
+        return estimatedCovariance != null ? estimatedCovariance.getElementAt(0, 0) : null;
     }
 
     /**
@@ -3376,7 +3376,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      * available.
      */
     public Double getEstimatedBiasFxStandardDeviation() {
-        final Double variance = getEstimatedBiasFxVariance();
+        final var variance = getEstimatedBiasFxVariance();
         return variance != null ? Math.sqrt(variance) : null;
     }
 
@@ -3387,9 +3387,9 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      * available.
      */
     public Acceleration getEstimatedBiasFxStandardDeviationAsAcceleration() {
-        return mEstimatedCovariance != null ?
-                new Acceleration(getEstimatedBiasFxStandardDeviation(), AccelerationUnit.METERS_PER_SQUARED_SECOND) :
-                null;
+        return estimatedCovariance != null
+                ? new Acceleration(getEstimatedBiasFxStandardDeviation(), AccelerationUnit.METERS_PER_SQUARED_SECOND)
+                : null;
     }
 
     /**
@@ -3400,7 +3400,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      * false otherwise.
      */
     public boolean getEstimatedBiasFxStandardDeviationAsAcceleration(final Acceleration result) {
-        if (mEstimatedCovariance != null) {
+        if (estimatedCovariance != null) {
             result.setValue(getEstimatedBiasFxStandardDeviation());
             result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
             return true;
@@ -3415,7 +3415,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      * @return variance of estimated y coordinate of accelerometer bias or null if not available.
      */
     public Double getEstimatedBiasFyVariance() {
-        return mEstimatedCovariance != null ? mEstimatedCovariance.getElementAt(1, 1) : null;
+        return estimatedCovariance != null ? estimatedCovariance.getElementAt(1, 1) : null;
     }
 
     /**
@@ -3426,7 +3426,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      * available.
      */
     public Double getEstimatedBiasFyStandardDeviation() {
-        final Double variance = getEstimatedBiasFyVariance();
+        final var variance = getEstimatedBiasFyVariance();
         return variance != null ? Math.sqrt(variance) : null;
     }
 
@@ -3437,9 +3437,9 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      * available.
      */
     public Acceleration getEstimatedBiasFyStandardDeviationAsAcceleration() {
-        return mEstimatedCovariance != null ?
-                new Acceleration(getEstimatedBiasFyStandardDeviation(), AccelerationUnit.METERS_PER_SQUARED_SECOND) :
-                null;
+        return estimatedCovariance != null
+                ? new Acceleration(getEstimatedBiasFyStandardDeviation(), AccelerationUnit.METERS_PER_SQUARED_SECOND)
+                : null;
     }
 
     /**
@@ -3450,7 +3450,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      * false otherwise.
      */
     public boolean getEstimatedBiasFyStandardDeviationAsAcceleration(final Acceleration result) {
-        if (mEstimatedCovariance != null) {
+        if (estimatedCovariance != null) {
             result.setValue(getEstimatedBiasFyStandardDeviation());
             result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
             return true;
@@ -3465,7 +3465,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      * @return variance of estimated z coordinate of accelerometer bias or null if not available.
      */
     public Double getEstimatedBiasFzVariance() {
-        return mEstimatedCovariance != null ? mEstimatedCovariance.getElementAt(2, 2) : null;
+        return estimatedCovariance != null ? estimatedCovariance.getElementAt(2, 2) : null;
     }
 
     /**
@@ -3476,7 +3476,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      * available.
      */
     public Double getEstimatedBiasFzStandardDeviation() {
-        final Double variance = getEstimatedBiasFzVariance();
+        final var variance = getEstimatedBiasFzVariance();
         return variance != null ? Math.sqrt(variance) : null;
     }
 
@@ -3487,9 +3487,9 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      * available.
      */
     public Acceleration getEstimatedBiasFzStandardDeviationAsAcceleration() {
-        return mEstimatedCovariance != null ?
-                new Acceleration(getEstimatedBiasFzStandardDeviation(), AccelerationUnit.METERS_PER_SQUARED_SECOND) :
-                null;
+        return estimatedCovariance != null
+                ? new Acceleration(getEstimatedBiasFzStandardDeviation(), AccelerationUnit.METERS_PER_SQUARED_SECOND)
+                : null;
     }
 
     /**
@@ -3500,7 +3500,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      * false otherwise.
      */
     public boolean getEstimatedBiasFzStandardDeviationAsAcceleration(final Acceleration result) {
-        if (mEstimatedCovariance != null) {
+        if (estimatedCovariance != null) {
             result.setValue(getEstimatedBiasFzStandardDeviation());
             result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
             return true;
@@ -3515,11 +3515,12 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      * @return standard deviation of estimated accelerometer bias coordinates.
      */
     public AccelerationTriad getEstimatedBiasStandardDeviation() {
-        return mEstimatedCovariance != null ?
-                new AccelerationTriad(AccelerationUnit.METERS_PER_SQUARED_SECOND,
-                        getEstimatedBiasFxStandardDeviation(),
-                        getEstimatedBiasFyStandardDeviation(),
-                        getEstimatedBiasFzStandardDeviation()) : null;
+        return estimatedCovariance != null
+                ? new AccelerationTriad(AccelerationUnit.METERS_PER_SQUARED_SECOND,
+                getEstimatedBiasFxStandardDeviation(),
+                getEstimatedBiasFyStandardDeviation(),
+                getEstimatedBiasFzStandardDeviation())
+                : null;
     }
 
     /**
@@ -3530,7 +3531,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      * otherwise.
      */
     public boolean getEstimatedBiasStandardDeviation(final AccelerationTriad result) {
-        if (mEstimatedCovariance != null) {
+        if (estimatedCovariance != null) {
             result.setValueCoordinatesAndUnit(
                     getEstimatedBiasFxStandardDeviation(),
                     getEstimatedBiasFyStandardDeviation(),
@@ -3550,10 +3551,9 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      * if not available.
      */
     public Double getEstimatedBiasStandardDeviationAverage() {
-        return mEstimatedCovariance != null ?
-                (getEstimatedBiasFxStandardDeviation() +
-                        getEstimatedBiasFyStandardDeviation() +
-                        getEstimatedBiasFzStandardDeviation()) / 3.0 : null;
+        return estimatedCovariance != null
+                ? (getEstimatedBiasFxStandardDeviation() + getEstimatedBiasFyStandardDeviation()
+                + getEstimatedBiasFzStandardDeviation()) / 3.0 : null;
     }
 
     /**
@@ -3562,9 +3562,10 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      * @return average of estimated standard deviation of accelerometer bias coordinates or null.
      */
     public Acceleration getEstimatedBiasStandardDeviationAverageAsAcceleration() {
-        return mEstimatedCovariance != null ?
-                new Acceleration(getEstimatedBiasStandardDeviationAverage(),
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;
+        return estimatedCovariance != null
+                ? new Acceleration(getEstimatedBiasStandardDeviationAverage(),
+                AccelerationUnit.METERS_PER_SQUARED_SECOND)
+                : null;
     }
 
     /**
@@ -3575,7 +3576,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      * false otherwise.
      */
     public boolean getEstimatedBiasStandardDeviationAverageAsAcceleration(final Acceleration result) {
-        if (mEstimatedCovariance != null) {
+        if (estimatedCovariance != null) {
             result.setValue(getEstimatedBiasStandardDeviationAverage());
             result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
             return true;
@@ -3595,9 +3596,9 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedBiasStandardDeviationNorm() {
-        return mEstimatedCovariance != null ?
-                Math.sqrt(getEstimatedBiasFxVariance() + getEstimatedBiasFyVariance() + getEstimatedBiasFzVariance()) :
-                null;
+        return estimatedCovariance != null
+                ? Math.sqrt(getEstimatedBiasFxVariance() + getEstimatedBiasFyVariance() + getEstimatedBiasFzVariance())
+                : null;
     }
 
     /**
@@ -3609,9 +3610,9 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      * if not available.
      */
     public Acceleration getEstimatedBiasStandardDeviationNormAsAcceleration() {
-        return mEstimatedCovariance != null ?
-                new Acceleration(getEstimatedBiasStandardDeviationNorm(),
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;
+        return estimatedCovariance != null
+                ? new Acceleration(getEstimatedBiasStandardDeviationNorm(), AccelerationUnit.METERS_PER_SQUARED_SECOND)
+                : null;
     }
 
     /**
@@ -3624,7 +3625,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      * available, false otherwise.
      */
     public boolean getEstimatedBiasStandardDeviationNormAsAcceleration(final Acceleration result) {
-        if (mEstimatedCovariance != null) {
+        if (estimatedCovariance != null) {
             result.setValue(getEstimatedBiasStandardDeviationNorm());
             result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
             return true;
@@ -3689,7 +3690,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
         //                                                             [mxz]
         //                                                             [myz]
 
-        mFitter.setFunctionEvaluator(new LevenbergMarquardtMultiVariateFunctionEvaluator() {
+        fitter.setFunctionEvaluator(new LevenbergMarquardtMultiVariateFunctionEvaluator() {
             @Override
             public int getNumberOfDimensions() {
                 // Input points are true specific force coordinates
@@ -3704,19 +3705,19 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
 
             @Override
             public double[] createInitialParametersArray() {
-                final double[] initial = new double[COMMON_Z_AXIS_UNKNOWNS];
+                final var initial = new double[COMMON_Z_AXIS_UNKNOWNS];
 
-                initial[0] = mInitialBiasX;
-                initial[1] = mInitialBiasY;
-                initial[2] = mInitialBiasZ;
+                initial[0] = initialBiasX;
+                initial[1] = initialBiasY;
+                initial[2] = initialBiasZ;
 
-                initial[3] = mInitialSx;
-                initial[4] = mInitialSy;
-                initial[5] = mInitialSz;
+                initial[3] = initialSx;
+                initial[4] = initialSy;
+                initial[5] = initialSz;
 
-                initial[6] = mInitialMxy;
-                initial[7] = mInitialMxz;
-                initial[8] = mInitialMyz;
+                initial[6] = initialMxy;
+                initial[7] = initialMxz;
+                initial[8] = initialMyz;
 
                 return initial;
             }
@@ -3762,21 +3763,21 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
                 // d(fmeasz)/d(mxz) = 0.0
                 // d(fmeasz)/d(myz) = 0.0
 
-                final double bx = params[0];
-                final double by = params[1];
-                final double bz = params[2];
+                final var bx = params[0];
+                final var by = params[1];
+                final var bz = params[2];
 
-                final double sx = params[3];
-                final double sy = params[4];
-                final double sz = params[5];
+                final var sx = params[3];
+                final var sy = params[4];
+                final var sz = params[5];
 
-                final double mxy = params[6];
-                final double mxz = params[7];
-                final double myz = params[8];
+                final var mxy = params[6];
+                final var mxz = params[7];
+                final var myz = params[8];
 
-                final double ftruex = point[0];
-                final double ftruey = point[1];
-                final double ftruez = point[2];
+                final var ftruex = point[0];
+                final var ftruey = point[1];
+                final var ftruez = point[2];
 
                 result[0] = bx + ftruex + sx * ftruex + mxy * ftruey + mxz * ftruez;
                 result[1] = by + ftruey + sy * ftruey + myz * ftruez;
@@ -3816,46 +3817,46 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
 
         setInputData();
 
-        mFitter.fit();
+        fitter.fit();
 
-        final double[] result = mFitter.getA();
+        final var result = fitter.getA();
 
-        final double bx = result[0];
-        final double by = result[1];
-        final double bz = result[2];
+        final var bx = result[0];
+        final var by = result[1];
+        final var bz = result[2];
 
-        final double sx = result[3];
-        final double sy = result[4];
-        final double sz = result[5];
+        final var sx = result[3];
+        final var sy = result[4];
+        final var sz = result[5];
 
-        final double mxy = result[6];
-        final double mxz = result[7];
-        final double myz = result[8];
+        final var mxy = result[6];
+        final var mxz = result[7];
+        final var myz = result[8];
 
-        if (mEstimatedBiases == null) {
-            mEstimatedBiases = new double[BodyKinematics.COMPONENTS];
+        if (estimatedBiases == null) {
+            estimatedBiases = new double[BodyKinematics.COMPONENTS];
         }
 
-        mEstimatedBiases[0] = bx;
-        mEstimatedBiases[1] = by;
-        mEstimatedBiases[2] = bz;
+        estimatedBiases[0] = bx;
+        estimatedBiases[1] = by;
+        estimatedBiases[2] = bz;
 
-        if (mEstimatedMa == null) {
-            mEstimatedMa = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+        if (estimatedMa == null) {
+            estimatedMa = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         } else {
-            mEstimatedMa.initialize(0.0);
+            estimatedMa.initialize(0.0);
         }
 
-        mEstimatedMa.setElementAt(0, 0, sx);
+        estimatedMa.setElementAt(0, 0, sx);
 
-        mEstimatedMa.setElementAt(0, 1, mxy);
-        mEstimatedMa.setElementAt(1, 1, sy);
+        estimatedMa.setElementAt(0, 1, mxy);
+        estimatedMa.setElementAt(1, 1, sy);
 
-        mEstimatedMa.setElementAt(0, 2, mxz);
-        mEstimatedMa.setElementAt(1, 2, myz);
-        mEstimatedMa.setElementAt(2, 2, sz);
+        estimatedMa.setElementAt(0, 2, mxz);
+        estimatedMa.setElementAt(1, 2, myz);
+        estimatedMa.setElementAt(2, 2, sz);
 
-        mEstimatedCovariance = mFitter.getCovar();
+        estimatedCovariance = fitter.getCovar();
 
         // propagate covariance matrix so that all parameters are taken into
         // account in the order: bx, by, bz, sx, sy, sz, mxy, mxz, myx,
@@ -3879,16 +3880,16 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
         // As defined in com.irurueta.statistics.MultivariateNormalDist,
         // if we consider the jacobian of the lineal application the matrix shown
         // above, then covariance can be propagated as follows
-        final Matrix jacobian = Matrix.identity(GENERAL_UNKNOWNS, COMMON_Z_AXIS_UNKNOWNS);
+        final var jacobian = Matrix.identity(GENERAL_UNKNOWNS, COMMON_Z_AXIS_UNKNOWNS);
         jacobian.setElementAt(8, 8, 0.0);
         jacobian.setElementAt(9, 8, 1.0);
         // propagated covariance is J * Cov * J'
-        final Matrix jacobianTrans = jacobian.transposeAndReturnNew();
-        jacobian.multiply(mEstimatedCovariance);
+        final var jacobianTrans = jacobian.transposeAndReturnNew();
+        jacobian.multiply(estimatedCovariance);
         jacobian.multiply(jacobianTrans);
-        mEstimatedCovariance = jacobian;
-        mEstimatedChiSq = mFitter.getChisq();
-        mEstimatedMse = mFitter.getMse();
+        estimatedCovariance = jacobian;
+        estimatedChiSq = fitter.getChisq();
+        estimatedMse = fitter.getMse();
     }
 
     /**
@@ -3942,7 +3943,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
         //                                                                                     [mzx]
         //                                                                                     [mzy]
 
-        mFitter.setFunctionEvaluator(new LevenbergMarquardtMultiVariateFunctionEvaluator() {
+        fitter.setFunctionEvaluator(new LevenbergMarquardtMultiVariateFunctionEvaluator() {
             @Override
             public int getNumberOfDimensions() {
                 // Input points are true specific force coordinates
@@ -3957,22 +3958,22 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
 
             @Override
             public double[] createInitialParametersArray() {
-                final double[] initial = new double[GENERAL_UNKNOWNS];
+                final var initial = new double[GENERAL_UNKNOWNS];
 
-                initial[0] = mInitialBiasX;
-                initial[1] = mInitialBiasY;
-                initial[2] = mInitialBiasZ;
+                initial[0] = initialBiasX;
+                initial[1] = initialBiasY;
+                initial[2] = initialBiasZ;
 
-                initial[3] = mInitialSx;
-                initial[4] = mInitialSy;
-                initial[5] = mInitialSz;
+                initial[3] = initialSx;
+                initial[4] = initialSy;
+                initial[5] = initialSz;
 
-                initial[6] = mInitialMxy;
-                initial[7] = mInitialMxz;
-                initial[8] = mInitialMyx;
-                initial[9] = mInitialMyz;
-                initial[10] = mInitialMzx;
-                initial[11] = mInitialMzy;
+                initial[6] = initialMxy;
+                initial[7] = initialMxz;
+                initial[8] = initialMyx;
+                initial[9] = initialMyz;
+                initial[10] = initialMzx;
+                initial[11] = initialMzy;
 
                 return initial;
             }
@@ -4027,24 +4028,24 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
                 // d(fmeasz)/d(mzx) = ftruex
                 // d(fmeasz)/d(mzy) = ftruey
 
-                final double bx = params[0];
-                final double by = params[1];
-                final double bz = params[2];
+                final var bx = params[0];
+                final var by = params[1];
+                final var bz = params[2];
 
-                final double sx = params[3];
-                final double sy = params[4];
-                final double sz = params[5];
+                final var sx = params[3];
+                final var sy = params[4];
+                final var sz = params[5];
 
-                final double mxy = params[6];
-                final double mxz = params[7];
-                final double myx = params[8];
-                final double myz = params[9];
-                final double mzx = params[10];
-                final double mzy = params[11];
+                final var mxy = params[6];
+                final var mxz = params[7];
+                final var myx = params[8];
+                final var myz = params[9];
+                final var mzx = params[10];
+                final var mzy = params[11];
 
-                final double ftruex = point[0];
-                final double ftruey = point[1];
-                final double ftruez = point[2];
+                final var ftruex = point[0];
+                final var ftruey = point[1];
+                final var ftruez = point[2];
 
                 result[0] = bx + ftruex + sx * ftruex + mxy * ftruey + mxz * ftruez;
                 result[1] = by + myx * ftruex + ftruey + sy * ftruey + myz * ftruez;
@@ -4093,54 +4094,54 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
 
         setInputData();
 
-        mFitter.fit();
+        fitter.fit();
 
-        final double[] result = mFitter.getA();
+        final var result = fitter.getA();
 
-        final double bx = result[0];
-        final double by = result[1];
-        final double bz = result[2];
+        final var bx = result[0];
+        final var by = result[1];
+        final var bz = result[2];
 
-        final double sx = result[3];
-        final double sy = result[4];
-        final double sz = result[5];
+        final var sx = result[3];
+        final var sy = result[4];
+        final var sz = result[5];
 
-        final double mxy = result[6];
-        final double mxz = result[7];
-        final double myx = result[8];
-        final double myz = result[9];
-        final double mzx = result[10];
-        final double mzy = result[11];
+        final var mxy = result[6];
+        final var mxz = result[7];
+        final var myx = result[8];
+        final var myz = result[9];
+        final var mzx = result[10];
+        final var mzy = result[11];
 
-        if (mEstimatedBiases == null) {
-            mEstimatedBiases = new double[BodyKinematics.COMPONENTS];
+        if (estimatedBiases == null) {
+            estimatedBiases = new double[BodyKinematics.COMPONENTS];
         }
 
-        mEstimatedBiases[0] = bx;
-        mEstimatedBiases[1] = by;
-        mEstimatedBiases[2] = bz;
+        estimatedBiases[0] = bx;
+        estimatedBiases[1] = by;
+        estimatedBiases[2] = bz;
 
-        if (mEstimatedMa == null) {
-            mEstimatedMa = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+        if (estimatedMa == null) {
+            estimatedMa = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         } else {
-            mEstimatedMa.initialize(0.0);
+            estimatedMa.initialize(0.0);
         }
 
-        mEstimatedMa.setElementAt(0, 0, sx);
-        mEstimatedMa.setElementAt(1, 0, myx);
-        mEstimatedMa.setElementAt(2, 0, mzx);
+        estimatedMa.setElementAt(0, 0, sx);
+        estimatedMa.setElementAt(1, 0, myx);
+        estimatedMa.setElementAt(2, 0, mzx);
 
-        mEstimatedMa.setElementAt(0, 1, mxy);
-        mEstimatedMa.setElementAt(1, 1, sy);
-        mEstimatedMa.setElementAt(2, 1, mzy);
+        estimatedMa.setElementAt(0, 1, mxy);
+        estimatedMa.setElementAt(1, 1, sy);
+        estimatedMa.setElementAt(2, 1, mzy);
 
-        mEstimatedMa.setElementAt(0, 2, mxz);
-        mEstimatedMa.setElementAt(1, 2, myz);
-        mEstimatedMa.setElementAt(2, 2, sz);
+        estimatedMa.setElementAt(0, 2, mxz);
+        estimatedMa.setElementAt(1, 2, myz);
+        estimatedMa.setElementAt(2, 2, sz);
 
-        mEstimatedCovariance = mFitter.getCovar();
-        mEstimatedChiSq = mFitter.getChisq();
-        mEstimatedMse = mFitter.getMse();
+        estimatedCovariance = fitter.getCovar();
+        estimatedChiSq = fitter.getChisq();
+        estimatedMse = fitter.getMse();
     }
 
     /**
@@ -4154,28 +4155,28 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
         // fmeasy = by + myx * ftruex + ftruey + sy * ftruey + myz * ftruez
         // fmeasz = bz + mzx * ftruex + mzy * ftruey + ftruez + sz * ftruez
 
-        final BodyKinematics expectedKinematics = new BodyKinematics();
+        final var expectedKinematics = new BodyKinematics();
 
-        final int numMeasurements = mMeasurements.size();
-        final Matrix x = new Matrix(numMeasurements, BodyKinematics.COMPONENTS);
-        final Matrix y = new Matrix(numMeasurements, BodyKinematics.COMPONENTS);
-        final double[] specificForceStandardDeviations = new double[numMeasurements];
-        int i = 0;
-        for (final StandardDeviationFrameBodyKinematics measurement : mMeasurements) {
-            final BodyKinematics measuredKinematics = measurement.getKinematics();
-            final ECEFFrame ecefFrame = measurement.getFrame();
-            final ECEFFrame previousEcefFrame = measurement.getPreviousFrame();
-            final double timeInterval = measurement.getTimeInterval();
+        final var numMeasurements = measurements.size();
+        final var x = new Matrix(numMeasurements, BodyKinematics.COMPONENTS);
+        final var y = new Matrix(numMeasurements, BodyKinematics.COMPONENTS);
+        final var specificForceStandardDeviations = new double[numMeasurements];
+        var i = 0;
+        for (final var measurement : measurements) {
+            final var measuredKinematics = measurement.getKinematics();
+            final var ecefFrame = measurement.getFrame();
+            final var previousEcefFrame = measurement.getPreviousFrame();
+            final var timeInterval = measurement.getTimeInterval();
 
             ECEFKinematicsEstimator.estimateKinematics(timeInterval, ecefFrame, previousEcefFrame, expectedKinematics);
 
-            final double fMeasX = measuredKinematics.getFx();
-            final double fMeasY = measuredKinematics.getFy();
-            final double fMeasZ = measuredKinematics.getFz();
+            final var fMeasX = measuredKinematics.getFx();
+            final var fMeasY = measuredKinematics.getFy();
+            final var fMeasZ = measuredKinematics.getFz();
 
-            final double fTrueX = expectedKinematics.getFx();
-            final double fTrueY = expectedKinematics.getFy();
-            final double fTrueZ = expectedKinematics.getFz();
+            final var fTrueX = expectedKinematics.getFx();
+            final var fTrueY = expectedKinematics.getFy();
+            final var fTrueZ = expectedKinematics.getFz();
 
             x.setElementAt(i, 0, fTrueX);
             x.setElementAt(i, 1, fTrueY);
@@ -4189,7 +4190,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
             i++;
         }
 
-        mFitter.setInputData(x, y, specificForceStandardDeviations);
+        fitter.setInputData(x, y, specificForceStandardDeviations);
     }
 
     /**
